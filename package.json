@@ -1,0 +1,12 @@
+{
+  "name": "one-for-all",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "git@git.internal.yunify.com:markduan/one-for-all.git",
+  "author": "Mark <markduan@yunify.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ]
+}

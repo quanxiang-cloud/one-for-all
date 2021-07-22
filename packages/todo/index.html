@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script type="systemjs-importmap">
+      {
+        "imports": {
+          "react": "/lib/react.development.js",
+          "react-dom": "/lib/react-dom.development.js",
+          "todo-app": "/packages/todo/dist/todo.js"
+        }
+      }
+  </script>
+  <!-- <script src="/lib/system.min.js"></script> -->
+  <script src="/lib/system.js"></script>
+  <script defer src="/lib/adoptedStyleSheets.min.js"></script>
+  <!-- <script src="/dist/core/systemjs-hooks/resolve.js"></script> -->
+  <script>
+    (function () {
+      const endsWithFileExtension = /\/?\.[a-zA-Z]{2,}$/;
+      const originalResolve = System.constructor.prototype.resolve;
+
+      System.constructor.prototype.resolve = (id, parent) => {
+        // apply original resolve to make sure importmaps are resolved first
+        const url = originalResolve.apply(System, [id, parent]);
+        // append .js file extension if url is missing a file extension
+        return endsWithFileExtension.test(url) ? url : url + ".js";
+      };
+    })();
+  </script>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+    }
+
+    .global-header {
+      color: white;
+      padding: 24px;
+      background-color: rgb(39, 39, 177);
+    }
+
+    .side-nav {
+      padding: 24px;
+      outline: 1px dashed brown;
+    }
+
+    .main-content>div {
+      outline: 1px dashed khaki;
+    }
+  </style>
+</head>
+<body>
+  <div id="react-root"></div>
+  <script type="systemjs-module" src="/packages/todo/dist/index.js"></script>
+</body>
+</html>

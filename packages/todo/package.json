@@ -1,0 +1,27 @@
+{
+  "name": "@ofa/todo-app",
+  "version": "0.0.1",
+  "main": "index.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "rollup -c rollup.config.js"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^13.0.0",
+    "@rollup/plugin-sucrase": "^3.1.0",
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/lodash": "^4.14.168",
+    "@types/react": "^17.0.14",
+    "@types/react-dom": "^17.0.9",
+    "comment-json": "^4.1.0",
+    "rollup-plugin-styles": "^3.14.1",
+    "sass": "^1.35.2",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "lodash": "^4.17.20",
+    "observable-hooks": "^3.1.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
+}
