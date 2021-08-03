@@ -36,4 +36,19 @@ api response:
   onChange: (value: string) => void;
   onSubmit: (value: string) => Promise<boolean>;
 }
+
+component property value:
+{
+  [key: string]: [initialValue, FutureValue]
+}
+
+type FutureValue = undefined | FutureAPIResponse | FutureLocalState;
+
+concat(of(initialValue), $FutureAPIResponse)
+concat(of(initialValue), $FutureLocalState)
+
+type FutureAPIResponse = {
+  requesterID: string;
+  responseConvertor?: (responseData: any) => any;
+}
 ```
