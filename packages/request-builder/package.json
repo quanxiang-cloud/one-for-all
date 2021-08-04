@@ -1,0 +1,18 @@
+{
+  "name": "@ofa/request-builder",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "updateSnapshot": "jest --updateSnapshot"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^26.0.24",
+    "jest": "^27.0.6",
+    "openapi-types": "^9.1.0",
+    "ts-jest": "^27.0.4"
+  }
+}
