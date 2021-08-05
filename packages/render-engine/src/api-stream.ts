@@ -18,8 +18,6 @@ export type UseQueryResult = {
 };
 export type UseQueryResult$ = Observable<UseQueryResult>;
 
-const requestBuilder = new RequestBuilder(window.OPEN_API_SPEC);
-
 export const queryResultObsCache: Record<string, [UseQueryResult$, SetParams]> = {};
 
 function convertRequestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
@@ -37,7 +35,7 @@ function convertRequestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
   };
 }
 
-function createQueryResultStream(apiID: string): [UseQueryResult$, SetParams] {
+function createQueryResultStream(apiID: string, requestBuilder: RequestBuilder): [UseQueryResult$, SetParams] {
   let loading = false;
 
   // todo is it appropriate to initialize request$ with an empty param?
@@ -77,9 +75,9 @@ function createQueryResultStream(apiID: string): [UseQueryResult$, SetParams] {
   return [result$, setParams];
 }
 
-export default function getQueryResultStream(apiID: string): [UseQueryResult$, SetParams] {
+export default function getQueryResultStream(apiID: string, requestBuilder: RequestBuilder): [UseQueryResult$, SetParams] {
   if (!queryResultObsCache[apiID]) {
-    const [queryResult$, setParams] = createQueryResultStream(apiID);
+    const [queryResult$, setParams] = createQueryResultStream(apiID, requestBuilder);
     queryResultObsCache[apiID] = [queryResult$, setParams];
   }
 
