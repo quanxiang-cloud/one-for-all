@@ -3,12 +3,12 @@ import { OpenAPIV3 } from 'openapi-types';
 
 type PartialSchema = {
   path: string;
-  method: RequestBuilder.Method;
+  method: Method;
   parameters?: (OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject)[];
   requestBody?: OpenAPIV3.ReferenceObject | OpenAPIV3.RequestBodyObject;
 }
 
-const METHODS: RequestBuilder.Method[] = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch'];
+const METHODS: Method[] = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch'];
 
 export default class Builder {
   schema: OpenAPIV3.Document;
@@ -16,7 +16,7 @@ export default class Builder {
     this.schema = schema;
   }
 
-  fillRequest(operationId: string, requestParam?: RequestBuilder.RequestParams): RequestBuilder.Request | null {
+  fillRequest(operationId: string, requestParam?: RequestParams): RequestConfig | null {
     let schema: PartialSchema | undefined = undefined;
     for (const [path, pathItemObject] of Object.entries(this.schema.paths)) {
       if (!pathItemObject) {
@@ -42,7 +42,7 @@ export default class Builder {
     }
 
     let { path, method, parameters, requestBody } = schema;
-    const request: RequestBuilder.Request = { method, path };
+    const request: RequestConfig = { method, path };
 
     parameters?.forEach((p) => {
       if ('$ref' in p)  {

@@ -2,7 +2,7 @@
   "name": "@ofa/request-builder",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "jest",
     "updateSnapshot": "jest --updateSnapshot"
