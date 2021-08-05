@@ -10,9 +10,7 @@ const defaultResult: UseQueryResult = {
   error: undefined,
 }
 
-const builder = new RequestBuilder(window.OPEN_API_SPEC);
-
-function useQuery(apiID: string): [UseQueryResult, SetParams] {
+function useQuery(apiID: string, builder: RequestBuilder): [UseQueryResult, SetParams] {
   const [queryStateObs$, setParams] = getQueryResultStream(apiID, builder);
 
   return [useObservableState(queryStateObs$) || defaultResult, setParams];
