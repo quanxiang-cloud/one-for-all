@@ -28,7 +28,7 @@ export default class Builder {
     this.schema = schema;
   }
 
-  fillRequest(operationId: string, requestParam?: RequestParams): RequestConfig | null {
+  fillRequest(operationId: string, requestParam?: RequestParams): RequestConfig {
     let schema: PartialSchema | undefined = undefined;
     for (const [path, pathItemObject] of Object.entries(this.schema.paths)) {
       if (!pathItemObject) {
@@ -50,7 +50,7 @@ export default class Builder {
     }
 
     if (!schema) {
-      return null;
+      throw new Error('can not find schema');
     }
 
     let { path, method, parameters, requestBody } = schema;

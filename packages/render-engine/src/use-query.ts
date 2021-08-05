@@ -4,6 +4,7 @@ import { tap, map, switchMap, catchError, share } from 'rxjs/operators';
 import { useObservableState } from 'observable-hooks';
 
 import RequestBuilder from '@ofa/request-builder';
+import { RequestConfig } from 'packages/request-builder/src';
 
 export type RequestParams = Record<string, unknown>;
 export type SetParams = {
@@ -22,6 +23,21 @@ const requestBuilder = new RequestBuilder(window.OPEN_API_SPEC);
 
 export const queryResultObsCache: Record<string, [UseQueryResult$, SetParams]> = {};
 
+function convertRequestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
+  return {
+    method: config.method,
+    url: config.path,
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    async: true,
+    timeout: 1000,
+    crossDomain: false,
+    withCredentials: false,
+    responseType: 'json',
+  };
+}
+
 function createQueryResultStream(apiID: string): [UseQueryResult$, SetParams] {
   let loading = false;
 
@@ -32,7 +48,7 @@ function createQueryResultStream(apiID: string): [UseQueryResult$, SetParams] {
     map((params): AjaxRequest => {
       const config = requestBuilder.fillRequest(apiID, params);
 
-      return config;
+      return convertRequestConfigToAjaxRequest(config);
     }),
     switchMap((ajaxRequest) => ajax(ajaxRequest)),
     map(({ response }) => ({ body: response, error: undefined })),
