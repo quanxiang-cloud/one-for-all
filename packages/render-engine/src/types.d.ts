@@ -24,3 +24,8 @@ interface Document {
 }
 
 type DynamicComponent = React.FC<any> | React.ComponentClass<any>;
+
+interface Window {
+  // todo fix this type
+  OPEN_API_SPEC: any;
+}
