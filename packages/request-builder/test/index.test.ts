@@ -3,10 +3,10 @@ import Builder from '../src/index';
 
 const operations: Record<string, RequestBuilder.RequestParams> = {
   updatePet: {
-    body: {}
+    body: { foo: 'bar' }
   },
   addPet: {
-    body: {}
+    body: { foo: 'bar' }
   },
   findPetsByStatus: {
 

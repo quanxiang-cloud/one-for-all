@@ -63,7 +63,9 @@ export default class Builder {
           throw new Error(`parameter '${p.name}' required in query for ${operationId}`);
         }
 
-        set(request, 'query.${p.name}', requestParam?.params?.[p.name]);
+        if (requestParam?.params?.[p.name] !== undefined) {
+          set(request, `query.${p.name}`, requestParam?.params?.[p.name]);
+        }
       }
 
       if (p.in === 'header') {
@@ -71,9 +73,10 @@ export default class Builder {
           throw new Error(`parameter '${p.name}' required in header for ${operationId}`);
         }
 
-        set(request, 'header.${p.name}', requestParam?.params?.[p.name]);
+        if (requestParam?.params?.[p.name] !== undefined) {
+          set(request, `header.${p.name}`, requestParam?.params?.[p.name]);
+        }
       }
-
     });
 
     // todo support reference object

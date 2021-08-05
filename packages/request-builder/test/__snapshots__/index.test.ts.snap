@@ -2,7 +2,9 @@
 
 exports[`expect to match snapshots 1`] = `
 Object {
-  "body": Object {},
+  "body": Object {
+    "foo": "bar",
+  },
   "method": "put",
   "path": "/pet",
 }
@@ -10,7 +12,9 @@ Object {
 
 exports[`expect to match snapshots 2`] = `
 Object {
-  "body": Object {},
+  "body": Object {
+    "foo": "bar",
+  },
   "method": "post",
   "path": "/pet",
 }
@@ -20,11 +24,6 @@ exports[`expect to match snapshots 3`] = `
 Object {
   "method": "get",
   "path": "/pet/findByStatus",
-  "query": Object {
-    "\${p": Object {
-      "name}": undefined,
-    },
-  },
 }
 `;
 
@@ -32,11 +31,6 @@ exports[`expect to match snapshots 4`] = `
 Object {
   "method": "get",
   "path": "/pet/findByTags",
-  "query": Object {
-    "\${p": Object {
-      "name}": undefined,
-    },
-  },
 }
 `;
 
@@ -51,21 +45,11 @@ exports[`expect to match snapshots 6`] = `
 Object {
   "method": "post",
   "path": "/pet/{petId}",
-  "query": Object {
-    "\${p": Object {
-      "name}": undefined,
-    },
-  },
 }
 `;
 
 exports[`expect to match snapshots 7`] = `
 Object {
-  "header": Object {
-    "\${p": Object {
-      "name}": undefined,
-    },
-  },
   "method": "delete",
   "path": "/pet/{petId}",
 }
@@ -76,11 +60,6 @@ Object {
   "body": undefined,
   "method": "post",
   "path": "/pet/{petId}/uploadImage",
-  "query": Object {
-    "\${p": Object {
-      "name}": undefined,
-    },
-  },
 }
 `;
 
@@ -133,11 +112,6 @@ exports[`expect to match snapshots 15`] = `
 Object {
   "method": "get",
   "path": "/user/login",
-  "query": Object {
-    "\${p": Object {
-      "name}": undefined,
-    },
-  },
 }
 `;
 
