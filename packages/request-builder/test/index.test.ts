@@ -1,7 +1,7 @@
 import spec from './petstore-spec';
-import Builder from '../src/index';
+import Builder, { RequestConfig, RequestParams } from '../src/index';
 
-const operations: Record<string, RequestBuilder.RequestParams> = {
+const operations: Record<string, RequestParams> = {
   updatePet: {
     body: { foo: 'bar' }
   },

@@ -1,6 +1,18 @@
 import { get, set } from 'lodash';
 import { OpenAPIV3 } from 'openapi-types';
 
+type Method = 'get' | 'put' | 'post' | 'delete' | 'options' | 'head' | 'patch';
+export type RequestConfig = {
+  path: string;
+  method: Method;
+  query?: Record<string, string>;
+  body?: any;
+}
+export type RequestParams = {
+  params?: Record<string, any>;
+  body?: any;
+}
+
 type PartialSchema = {
   path: string;
   method: Method;
