@@ -5,12 +5,17 @@
   "license": "MIT",
   "scripts": {
     "prebuilt": "rm -rf dist",
-    "build": "rollup -c rollup.config.js"
+    "build": "rollup -c rollup.config.js",
+    "test": "jest",
+    "updateSnapshot": "jest --updateSnapshot"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",
+    "@types/jest": "^26.0.24",
     "@types/lodash": "^4.14.168",
-    "@types/systemjs": "^6.1.1"
+    "@types/systemjs": "^6.1.1",
+    "jest": "^27.0.6",
+    "ts-jest": "^27.0.4"
   },
   "dependencies": {
     "lodash": "^4.17.20",
