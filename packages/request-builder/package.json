@@ -11,6 +11,12 @@
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^26.0.24",
+    "@typescript-eslint/eslint-plugin": "^4.29.0",
+    "@typescript-eslint/parser": "^4.29.0",
+    "eslint": "^7.32.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-unused-imports": "^1.1.2",
     "jest": "^27.0.6",
     "openapi-types": "^9.1.0",
     "ts-jest": "^27.0.4"
