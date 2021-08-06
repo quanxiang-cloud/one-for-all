@@ -59,3 +59,15 @@ test('api should throw', (done) => {
     done();
   });
 })
+
+test('same streamID same apiStream', () => {
+  mockXHR.get(/.*/, (req, res) => {
+    return res.status(200).body('{"data":{"id":"abc-123"}}');
+  });
+
+  const [apiStream$1, setParams1] = getQueryResultStream('someStream', 'findPetsByStatus', builder);
+  const [apiStream$2, setParams2] = getQueryResultStream('someStream', 'findPetsByStatus', builder);
+
+  expect(apiStream$1).toEqual(apiStream$2);
+  expect(setParams1).toEqual(setParams2);
+})
