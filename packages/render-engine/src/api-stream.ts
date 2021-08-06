@@ -41,7 +41,7 @@ function createAPIResult$(apiID: string, requestBuilder: RequestBuilder): [APIRe
 
   const params$ = new BehaviorSubject<RequestParams | undefined>(undefined);
   const response$ = params$.pipe(
-    // skip zhe initial undefined params
+    // skip the initial undefined params
     skip(1),
     tap(() => (loading = true)),
     map((params): AjaxRequest => {
