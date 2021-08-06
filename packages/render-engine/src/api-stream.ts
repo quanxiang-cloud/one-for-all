@@ -1,27 +1,27 @@
 import { ajax, AjaxRequest } from 'rxjs/ajax';
 import { of, combineLatest, Observable, BehaviorSubject } from 'rxjs';
-import { tap, map, switchMap, catchError, share } from 'rxjs/operators';
+import { tap, map, switchMap, catchError, share, skip } from 'rxjs/operators';
 
 import RequestBuilder from '@ofa/request-builder';
-import { RequestConfig } from 'packages/request-builder/src';
+import { RequestConfig, RequestParams } from 'packages/request-builder/src';
 
-export type RequestParams = Record<string, unknown>;
-export type SetParams = {
-  (params: RequestParams): void;
+export type SendRequest = {
+  (params?: RequestParams): void;
   refresh: () => void;
   _complete: () => void;
 };
-export type UseQueryResult = {
-  params: RequestParams;
+
+export type APIResult = {
+  params?: RequestParams;
   body: any;
   loading: boolean;
   error: Error | undefined;
 };
-export type UseQueryResult$ = Observable<UseQueryResult>;
+type APIResult$ = Observable<APIResult>;
 
-export const queryResultObsCache: Record<string, [UseQueryResult$, SetParams]> = {};
+const streamCache: Record<string, [APIResult$, SendRequest]> = {};
 
-function convertRequestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
+function requestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
   return {
     method: config.method,
     url: config.path,
@@ -36,16 +36,17 @@ function convertRequestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
   };
 }
 
-function createQueryResultStream(apiID: string, requestBuilder: RequestBuilder): [UseQueryResult$, SetParams] {
+function createAPIResult$(apiID: string, requestBuilder: RequestBuilder): [APIResult$, SendRequest] {
   let loading = false;
 
-  // todo is it appropriate to initialize request$ with an empty param?
-  const params$: BehaviorSubject<RequestParams> = new BehaviorSubject<RequestParams>({});
+  const params$ = new BehaviorSubject<RequestParams | undefined>(undefined);
   const response$ = params$.pipe(
+    // skip zhe initial undefined params
+    skip(1),
     tap(() => (loading = true)),
     map((params): AjaxRequest => {
       const config = requestBuilder.fillRequest(apiID, params);
-      return convertRequestConfigToAjaxRequest(config);
+      return requestConfigToAjaxRequest(config);
     }),
     switchMap((ajaxRequest) => ajax(ajaxRequest)),
     map(({ response }) => ({ body: response, error: undefined })),
@@ -58,7 +59,7 @@ function createQueryResultStream(apiID: string, requestBuilder: RequestBuilder):
     share(),
   );
 
-  function setParams(params: RequestParams) {
+  function setParams(params?: RequestParams): void {
     params$.next(params);
   }
 
@@ -70,21 +71,22 @@ function createQueryResultStream(apiID: string, requestBuilder: RequestBuilder):
     params$.complete();
   };
 
-  const result$: UseQueryResult$ = combineLatest([params$, response$]).pipe(
-    map(([params, { body, error }]) => {
-      return { params, body, error, loading };
-    }),
+  const result$: APIResult$ = combineLatest([params$, response$]).pipe(
+    map(([params, { body, error }]) => ({ params, body, error, loading })),
   );
 
   return [result$, setParams];
 }
 
-export default function getQueryResultStream(streamID: string, apiID: string, requestBuilder: RequestBuilder): [UseQueryResult$, SetParams] {
+function getAPIResult$(streamID: string, apiID: string, requestBuilder: RequestBuilder): [APIResult$, SendRequest] {
   const key = `${streamID}-${apiID}`;
-  if (!queryResultObsCache[key]) {
-    const [queryResult$, setParams] = createQueryResultStream(apiID, requestBuilder);
-    queryResultObsCache[key] = [queryResult$, setParams];
+
+  if (!streamCache[key]) {
+    const [apiResult$, setParams] = createAPIResult$(apiID, requestBuilder);
+    streamCache[key] = [apiResult$, setParams];
   }
 
-  return queryResultObsCache[key];
+  return streamCache[key];
 }
+
+export default getAPIResult$;

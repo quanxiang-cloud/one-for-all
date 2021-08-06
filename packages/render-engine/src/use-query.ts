@@ -1,19 +1,19 @@
 import { useObservableState } from 'observable-hooks';
 import RequestBuilder from '@ofa/request-builder';
 
-import getQueryResultStream, { SetParams, UseQueryResult } from './api-stream';
+import getAPIResult$, { SendRequest, APIResult } from './api-stream';
 
-const defaultResult: UseQueryResult = {
+const defaultResult: APIResult = {
   loading: true,
   params: {},
   body: null,
   error: undefined,
 };
 
-function useQuery(streamID: string, apiID: string, builder: RequestBuilder): [UseQueryResult, SetParams] {
-  const [queryStateObs$, setParams] = getQueryResultStream(streamID, apiID, builder);
+function useQuery(streamID: string, apiID: string, builder: RequestBuilder): [APIResult, SendRequest] {
+  const [queryStateObs$, sendRequest] = getAPIResult$(streamID, apiID, builder);
 
-  return [useObservableState(queryStateObs$) || defaultResult, setParams];
+  return [useObservableState(queryStateObs$) || defaultResult, sendRequest];
 }
 
 export default useQuery;

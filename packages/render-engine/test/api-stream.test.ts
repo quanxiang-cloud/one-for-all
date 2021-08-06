@@ -15,12 +15,14 @@ test('api stream resolve value', (done) => {
     return res.status(200).body('{"data":{"id":"abc-123"}}');
   });
 
-  const [apiStream$] = getQueryResultStream('someStream', 'findPetsByStatus', builder);
+  const [apiStream$, sendRequest] = getQueryResultStream('someStream', 'findPetsByStatus', builder);
   apiStream$.subscribe(({ error, body }) => {
     expect(error).toBeUndefined();
     expect(body).toMatchObject({ data: { id: 'abc-123' } });
     done();
   });
+
+  sendRequest();
 });
 
 test('resolve value twice', (done) => {
@@ -40,10 +42,10 @@ test('resolve value twice', (done) => {
     },
   });
 
-  setParams({ foo: 'bar' });
-  setParams({ foo: 'bar' });
-  setParams({ foo: 'bar' });
-  setParams({ foo: 'bar' });
+  setParams({ params: { foo: 'bar' } });
+  setParams({ params: { foo: 'bar' } });
+  setParams({ params: { foo: 'bar' } });
+  setParams({ params: { foo: 'bar' } });
   setParams._complete();
 });
 
@@ -52,12 +54,14 @@ test('api should throw', (done) => {
     return res.status(200).body('');
   });
 
-  const [apiStream$] = getQueryResultStream('someStream', 'some_nonexistent_api', builder);
+  const [apiStream$, sendRequest] = getQueryResultStream('someStream', 'some_nonexistent_api', builder);
   apiStream$.subscribe(({ error, body }) => {
     expect(error).toBeTruthy();
     expect(body).toBeUndefined();
     done();
   });
+
+  sendRequest();
 });
 
 test('same streamID same apiStream', () => {
