@@ -8,3 +8,4 @@ clients/components/table/react-table-config.d.ts
 clients/types/lego-ui.d.ts
 cypress
 .eslintrc.js
+rollup.config.js
