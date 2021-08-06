@@ -79,11 +79,11 @@ function createQueryResultStream(apiID: string, requestBuilder: RequestBuilder):
   return [result$, setParams];
 }
 
-export default function getQueryResultStream(apiID: string, requestBuilder: RequestBuilder): [UseQueryResult$, SetParams] {
-  if (!queryResultObsCache[apiID]) {
+export default function getQueryResultStream(streamID: string, apiID: string, requestBuilder: RequestBuilder): [UseQueryResult$, SetParams] {
+  if (!queryResultObsCache[streamID]) {
     const [queryResult$, setParams] = createQueryResultStream(apiID, requestBuilder);
-    queryResultObsCache[apiID] = [queryResult$, setParams];
+    queryResultObsCache[streamID] = [queryResult$, setParams];
   }
 
-  return queryResultObsCache[apiID];
+  return queryResultObsCache[streamID];
 }

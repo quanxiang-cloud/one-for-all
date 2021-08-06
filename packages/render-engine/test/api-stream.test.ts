@@ -15,7 +15,7 @@ test('api stream resolve value', (done) => {
     return res.status(200).body('{"data":{"id":"abc-123"}}');
   });
 
-  const [apiStream$, setParams] = getQueryResultStream('findPetsByStatus', builder);
+  const [apiStream$] = getQueryResultStream('someStream', 'findPetsByStatus', builder);
   apiStream$.subscribe(({ error, body }) => {
     expect(error).toBeUndefined();
     expect(body).toMatchObject({ "data": { "id": "abc-123" } });
@@ -28,7 +28,7 @@ test('resolve value twice', (done) => {
     return res.status(200).body('{"data":{"id":"abc-123"}}');
   });
 
-  const [apiStream$, setParams] = getQueryResultStream('findPetsByStatus', builder);
+  const [apiStream$, setParams] = getQueryResultStream('someStream', 'findPetsByStatus', builder);
   apiStream$.subscribe({
     next: (value) => {
       try {
@@ -52,7 +52,7 @@ test('api should throw', (done) => {
     return res.status(200).body('');
   });
 
-  const [apiStream$] = getQueryResultStream('some_nonexistent_api', builder);
+  const [apiStream$] = getQueryResultStream('someStream', 'some_nonexistent_api', builder);
   apiStream$.subscribe(({ error, body }) => {
     expect(error).toBeTruthy();
     expect(body).toBeUndefined();
