@@ -7,8 +7,9 @@ import { RequestConfig } from 'packages/request-builder/src';
 
 export type RequestParams = Record<string, unknown>;
 export type SetParams = {
-  (params: RequestParams): void,
-  refresh: () => void,
+  (params: RequestParams): void;
+  refresh: () => void;
+  _complete: () => void;
 };
 export type UseQueryResult = {
   params: RequestParams;
@@ -49,22 +50,29 @@ function createQueryResultStream(apiID: string, requestBuilder: RequestBuilder):
     }),
     switchMap((ajaxRequest) => ajax(ajaxRequest)),
     map(({ response }) => ({ body: response, error: undefined })),
-    // catch network errors
     catchError((error) => {
-      console.log('error: ', error);
+      // todo need better log message
+      // console.debug('error: ', error);
       return of({ error, body: undefined });
     }),
     tap(() => (loading = false)),
     share(),
   );
 
+
+
   function setParams(params: RequestParams) {
+    console.log('next params:', params);
     params$.next(params);
   }
 
   setParams.refresh = () => {
     setParams(params$.getValue());
   };
+
+  setParams._complete = () => {
+    params$.complete();
+  }
 
   const result$: UseQueryResult$ = combineLatest([params$, response$]).pipe(
     map(([params, { body, error }]) => {
