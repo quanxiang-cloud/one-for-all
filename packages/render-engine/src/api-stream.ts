@@ -80,10 +80,10 @@ function createQueryResultStream(apiID: string, requestBuilder: RequestBuilder):
 }
 
 export default function getQueryResultStream(streamID: string, apiID: string, requestBuilder: RequestBuilder): [UseQueryResult$, SetParams] {
-  if (!queryResultObsCache[streamID]) {
+  if (!queryResultObsCache[`${streamID}-${apiID}`]) {
     const [queryResult$, setParams] = createQueryResultStream(apiID, requestBuilder);
-    queryResultObsCache[streamID] = [queryResult$, setParams];
+    queryResultObsCache[`${streamID}-${apiID}`] = [queryResult$, setParams];
   }
 
-  return queryResultObsCache[streamID];
+  return queryResultObsCache[`${streamID}-${apiID}`];
 }
