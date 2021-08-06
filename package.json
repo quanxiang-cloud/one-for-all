@@ -6,6 +6,9 @@
   "author": "Mark <markduan@yunify.com>",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "lint": "eslint 'packages/**/*.tsx' 'packages/**/*.ts' --fix"
+  },
   "workspaces": [
     "packages/*"
   ]

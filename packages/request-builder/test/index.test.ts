@@ -1,12 +1,12 @@
 import spec from './petstore-spec';
-import Builder, { RequestConfig, RequestParams } from '../src/index';
+import Builder, { RequestParams } from '../src/index';
 
 const operations: Record<string, RequestParams> = {
   updatePet: {
-    body: { foo: 'bar' }
+    body: { foo: 'bar' },
   },
   addPet: {
-    body: { foo: 'bar' }
+    body: { foo: 'bar' },
   },
   findPetsByStatus: {
 
@@ -15,16 +15,16 @@ const operations: Record<string, RequestParams> = {
 
   },
   getPetById: {
-    params: { petId: 'foobar' }
+    params: { petId: 'foobar' },
   },
   updatePetWithForm: {
-    params: { petId: 'foobar' }
+    params: { petId: 'foobar' },
   },
   deletePet: {
-    params: { petId: 'foobar' }
+    params: { petId: 'foobar' },
   },
   uploadFile: {
-    params: { petId: 'foobar' }
+    params: { petId: 'foobar' },
   },
   getInventory: {
 
@@ -33,10 +33,10 @@ const operations: Record<string, RequestParams> = {
 
   },
   getOrderById: {
-    params: { orderId: 'foobar' }
+    params: { orderId: 'foobar' },
   },
   deleteOrder: {
-    params: { orderId: 'foobar' }
+    params: { orderId: 'foobar' },
   },
   createUser: {
 
@@ -51,19 +51,19 @@ const operations: Record<string, RequestParams> = {
 
   },
   getUserByName: {
-    params: { username: 'foobar' }
+    params: { username: 'foobar' },
   },
   updateUser: {
-    params: { username: 'foobar' }
+    params: { username: 'foobar' },
   },
   deleteUser: {
-    params: { username: 'foobar' }
+    params: { username: 'foobar' },
   },
-}
+};
 
 test('expect to match snapshots', () => {
   const builder = new Builder(spec as any);
   Object.entries(operations).forEach(([operationId, params]) => {
     expect(builder.fillRequest(operationId, params)).toMatchSnapshot();
-  })
-})
+  });
+});

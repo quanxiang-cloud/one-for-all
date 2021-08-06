@@ -32,17 +32,17 @@ export default class Builder {
     let schema: PartialSchema | undefined = undefined;
     for (const [path, pathItemObject] of Object.entries(this.schema.paths)) {
       if (!pathItemObject) {
-        continue
+        continue;
       }
 
       const method = METHODS.find((method) => get(pathItemObject, `${method}.operationId`) === operationId);
       if (!method) {
-        continue
+        continue;
       }
 
       const operationObject = pathItemObject[method as OpenAPIV3.HttpMethods];
       if (!operationObject) {
-        continue
+        continue;
       }
 
       schema = { path, method, parameters: operationObject.parameters, requestBody: operationObject.requestBody };
@@ -57,7 +57,7 @@ export default class Builder {
     const request: RequestConfig = { method, path };
 
     parameters?.forEach((p) => {
-      if ('$ref' in p)  {
+      if ('$ref' in p) {
         // todo support reference object
         return;
       }

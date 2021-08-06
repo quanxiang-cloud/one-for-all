@@ -18,7 +18,7 @@ test('api stream resolve value', (done) => {
   const [apiStream$] = getQueryResultStream('someStream', 'findPetsByStatus', builder);
   apiStream$.subscribe(({ error, body }) => {
     expect(error).toBeUndefined();
-    expect(body).toMatchObject({ "data": { "id": "abc-123" } });
+    expect(body).toMatchObject({ data: { id: 'abc-123' } });
     done();
   });
 });
@@ -32,10 +32,10 @@ test('resolve value twice', (done) => {
   apiStream$.subscribe({
     next: (value) => {
       try {
-        expect(value.body).toMatchObject({ "data": { "id": "abc-123" } })
+        expect(value.body).toMatchObject({ data: { id: 'abc-123' } });
         done();
       } catch (error) {
-        done(error)
+        done(error);
       }
     },
   });
@@ -58,7 +58,7 @@ test('api should throw', (done) => {
     expect(body).toBeUndefined();
     done();
   });
-})
+});
 
 test('same streamID same apiStream', () => {
   mockXHR.get(/.*/, (req, res) => {
@@ -70,4 +70,4 @@ test('same streamID same apiStream', () => {
 
   expect(apiStream$1).toEqual(apiStream$2);
   expect(setParams1).toEqual(setParams2);
-})
+});

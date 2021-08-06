@@ -12,7 +12,7 @@ type Props = {
 // clear value after enter key down
 export default function TodoInput({ onEnter }: Props): JSX.Element {
   const [value, setValue] = useState('');
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   function clearInputOnEnterDown(e: React.KeyboardEvent<HTMLInputElement>): void {
     if (e.key === 'Enter') {

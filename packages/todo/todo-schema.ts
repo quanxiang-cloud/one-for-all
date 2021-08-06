@@ -9,12 +9,12 @@ const schema = {
         {
           element: 'html:h1',
           props: { key: 'todo-app-title' },
-          children: ['ToDos']
+          children: ['ToDos'],
         },
         {
           element: 'todo-app:TodoInput',
           props: { key: 'todo-app-todo-input' },
-        }
+        },
       ],
     },
     {
@@ -33,9 +33,9 @@ const schema = {
           element: 'todo-app:TodoFilter',
           props: { key: 'todo-app-todo-filter' },
         },
-      ]
+      ],
     },
   ],
-}
+};
 
 export default schema;

@@ -27,7 +27,7 @@ function renderSchema({ schema }: { schema: Schema }): React.ReactElement {
   const asyncModule = React.useRef<DynamicComponent | string>();
 
   React.useEffect(() => {
-    const [elementScope, elementType, version] = schema.element.split(':')
+    const [elementScope, elementType, version] = schema.element.split(':');
     if (elementScope === 'html') {
       asyncModule.current = elementType;
       setLoaded(true);
@@ -41,7 +41,7 @@ function renderSchema({ schema }: { schema: Schema }): React.ReactElement {
       }
       asyncModule.current = comp;
       setLoaded(true);
-    })
+    });
   }, []);
 
   if (!loaded || !asyncModule.current) {

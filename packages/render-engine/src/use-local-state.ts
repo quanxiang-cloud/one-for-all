@@ -1,11 +1,10 @@
 import { Subject } from 'rxjs';
 import { useObservableState } from 'observable-hooks';
-import { result } from 'lodash';
 
 export type SetState<T> = (state: T) => void;
 type LocalStore<T> = Record<string, [Subject<T>, SetState<T>]>;
 
-const localStore: LocalStore<any> = {}
+const localStore: LocalStore<any> = {};
 
 function createLocalStateStream<T>(key: string): [Subject<T>, SetState<T>] {
   if (!localStore[key]) {

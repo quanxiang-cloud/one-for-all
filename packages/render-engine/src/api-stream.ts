@@ -26,7 +26,7 @@ function convertRequestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
     method: config.method,
     url: config.path,
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
     async: true,
     timeout: 1000,
@@ -68,7 +68,7 @@ function createQueryResultStream(apiID: string, requestBuilder: RequestBuilder):
 
   setParams._complete = () => {
     params$.complete();
-  }
+  };
 
   const result$: UseQueryResult$ = combineLatest([params$, response$]).pipe(
     map(([params, { body, error }]) => {

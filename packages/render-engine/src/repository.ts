@@ -36,7 +36,7 @@ export function getBasicComponentsOptions(): RegistryOptions {
     componentURLResolver: (_, version): string => {
       return `/dist/bundle@${version}.js`;
     },
-    importer: (systemModule, componentName): DynamicComponent  => {
+    importer: (systemModule, componentName): DynamicComponent => {
       // todo check module is undefined
       return systemModule[componentName];
     },

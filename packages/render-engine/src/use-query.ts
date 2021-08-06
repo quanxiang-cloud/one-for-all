@@ -8,7 +8,7 @@ const defaultResult: UseQueryResult = {
   params: {},
   body: null,
   error: undefined,
-}
+};
 
 function useQuery(apiID: string, builder: RequestBuilder): [UseQueryResult, SetParams] {
   const [queryStateObs$, setParams] = getQueryResultStream(apiID, builder);

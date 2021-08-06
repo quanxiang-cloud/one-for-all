@@ -3,4 +3,4 @@ import TodoFilter from './components/todo-filter';
 import TodoList from './components/todo-list';
 import TodoCount from './components/todo-count';
 
-export { TodoInput, TodoFilter, TodoList, TodoCount }
+export { TodoInput, TodoFilter, TodoList, TodoCount };
