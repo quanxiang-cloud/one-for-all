@@ -29,28 +29,33 @@ test('resolve value twice', (done) => {
   });
 
   const [apiStream$, setParams] = getQueryResultStream('findPetsByStatus', builder);
-  const mockFn = jest.fn(() => console.log('mock function called!'));
   apiStream$.subscribe({
-    next: mockFn,
-    complete: () => {
-      expect(mockFn).toBeCalledTimes(2);
-      done();
-    }
+    next: (value) => {
+      try {
+        expect(value.body).toMatchObject({ "data": { "id": "abc-123" } })
+        done();
+      } catch (error) {
+        done(error)
+      }
+    },
   });
 
   setParams({ foo: 'bar' });
-  // setParams._complete();
+  setParams({ foo: 'bar' });
+  setParams({ foo: 'bar' });
+  setParams({ foo: 'bar' });
+  setParams._complete();
 });
 
-// test('api should throw', (done) => {
-//   mockXHR.get(/.*/, (req, res) => {
-//     return res.status(200).body('');
-//   });
+test('api should throw', (done) => {
+  mockXHR.get(/.*/, (req, res) => {
+    return res.status(200).body('');
+  });
 
-//   const [apiStream$] = getQueryResultStream('some_nonexistent_api', builder);
-//   apiStream$.subscribe(({ error, body }) => {
-//     expect(error).toBeTruthy();
-//     expect(body).toBeUndefined();
-//     done();
-//   });
-// })
+  const [apiStream$] = getQueryResultStream('some_nonexistent_api', builder);
+  apiStream$.subscribe(({ error, body }) => {
+    expect(error).toBeTruthy();
+    expect(body).toBeUndefined();
+    done();
+  });
+})

@@ -45,7 +45,6 @@ function createQueryResultStream(apiID: string, requestBuilder: RequestBuilder):
     tap(() => (loading = true)),
     map((params): AjaxRequest => {
       const config = requestBuilder.fillRequest(apiID, params);
-
       return convertRequestConfigToAjaxRequest(config);
     }),
     switchMap((ajaxRequest) => ajax(ajaxRequest)),
@@ -55,14 +54,11 @@ function createQueryResultStream(apiID: string, requestBuilder: RequestBuilder):
       // console.debug('error: ', error);
       return of({ error, body: undefined });
     }),
-    tap(() => (loading = false)),
+    tap(() => loading = false),
     share(),
   );
 
-
-
   function setParams(params: RequestParams) {
-    console.log('next params:', params);
     params$.next(params);
   }
 
