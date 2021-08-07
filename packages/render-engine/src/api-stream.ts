@@ -78,8 +78,12 @@ function createAPIResult$(apiID: string, requestBuilder: RequestBuilder): [APIRe
   return [result$, setParams];
 }
 
-function getAPIResult$(streamID: string, apiID: string, requestBuilder: RequestBuilder): [APIResult$, SendRequest] {
-  const key = `${streamID}-${apiID}`;
+function getAPIResult$(
+  streamID: string,
+  apiID: string,
+  requestBuilder: RequestBuilder,
+): [APIResult$, SendRequest] {
+  const key = `${streamID}:${apiID}`;
 
   if (!streamCache[key]) {
     const [apiResult$, setParams] = createAPIResult$(apiID, requestBuilder);
