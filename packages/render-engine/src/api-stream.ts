@@ -1,6 +1,8 @@
 import { ajax, AjaxRequest } from 'rxjs/ajax';
 import { of, combineLatest, Observable, BehaviorSubject } from 'rxjs';
 import { tap, map, switchMap, catchError, share, skip } from 'rxjs/operators';
+import { noop } from 'lodash';
+import { OpenAPIV3 } from 'openapi-types';
 
 import RequestBuilder from '@ofa/request-builder';
 import { RequestConfig, RequestParams } from 'packages/request-builder/src';
@@ -18,8 +20,6 @@ export type APIResult = {
   error: Error | undefined;
 };
 type APIResult$ = Observable<APIResult>;
-
-const streamCache: Record<string, [APIResult$, SendRequest]> = {};
 
 function requestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
   return {
@@ -78,19 +78,37 @@ function createAPIResult$(apiID: string, requestBuilder: RequestBuilder): [APIRe
   return [result$, setParams];
 }
 
-function getAPIResult$(
-  streamID: string,
-  apiID: string,
-  requestBuilder: RequestBuilder,
-): [APIResult$, SendRequest] {
-  const key = `${streamID}:${apiID}`;
+const dummyStream$ = new BehaviorSubject<APIResult>({ body: null, loading: false, error: undefined });
+const dummySendRequest: SendRequest = (params?: RequestParams) => {
+  // todo refactor this
+  console.log('invalid send request call', params);
+};
+dummySendRequest.refresh = noop;
+dummySendRequest._complete = noop;
 
-  if (!streamCache[key]) {
-    const [apiResult$, setParams] = createAPIResult$(apiID, requestBuilder);
-    streamCache[key] = [apiResult$, setParams];
+export default class APIStream {
+  requestBuilder: RequestBuilder;
+  // map of streamID and apiID
+  streamIDMap: Record<string, string>;
+  streamCache: Record<string, [APIResult$, SendRequest]> = {};
+
+  constructor(apiDoc: OpenAPIV3.Document, streamIDMap: Record<string, string>) {
+    this.requestBuilder = new RequestBuilder(apiDoc);
+    this.streamIDMap = streamIDMap;
   }
 
-  return streamCache[key];
-}
+  getStream(streamID: string): [APIResult$, SendRequest] {
+    if (!this.streamIDMap[streamID]) {
+      // todo log error message
+      return [dummyStream$, dummySendRequest];
+    }
 
-export default getAPIResult$;
+    const key = `${streamID}:${this.streamIDMap[streamID]}`;
+    if (!this.streamCache[key]) {
+      const [apiResult$, setParams] = createAPIResult$(this.streamIDMap[streamID], this.requestBuilder);
+      this.streamCache[key] = [apiResult$, setParams];
+    }
+
+    return this.streamCache[key];
+  }
+}

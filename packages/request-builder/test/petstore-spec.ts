@@ -1,4 +1,6 @@
-export default {
+import { OpenAPIV3 } from 'openapi-types';
+
+const schema: OpenAPIV3.Document = {
   openapi: '3.0.2',
   info: {
     title: 'Swagger Petstore - OpenAPI 3.0',
@@ -1223,3 +1225,5 @@ export default {
     },
   },
 };
+
+export default schema;
