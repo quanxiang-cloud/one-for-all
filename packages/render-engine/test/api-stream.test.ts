@@ -14,7 +14,7 @@ test('should resolve value', (done) => {
   });
 
   const apiStream = new APIStream(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
-  const [apiStream$, sendRequest] = apiStream.getStream('stream_findPetsByTags');
+  const [apiStream$, { next }] = apiStream.getStream('stream_findPetsByTags');
 
   apiStream$.subscribe(({ error, body }) => {
     expect(error).toBeUndefined();
@@ -22,7 +22,7 @@ test('should resolve value', (done) => {
     done();
   });
 
-  sendRequest();
+  next();
 });
 
 test('same streamID, same stream', () => {
@@ -34,58 +34,21 @@ test('same streamID, same stream', () => {
   expect(sendRequest1).toEqual(sendRequest2);
 });
 
-test('resolve value twice', (done) => {
+test('param match input', (done) => {
   mockXHR.get(/.*/, (req, res) => {
-    return res.status(200).body('{"data":{"id":"abc-123"}}');
+    return res.status(200);
   });
 
-  const apiStream = new APIStream(petStoreSpec, {});
-  const [apiStream$, setParams] = apiStream.getStream('someStream');
+  const apiStream = new APIStream(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
+  const [apiStream$, { next }] = apiStream.getStream('stream_findPetsByTags');
+  const requestParams = { foo: 'bar' };
+  const requestBody = { baz: 'bzz' };
 
-  apiStream$.subscribe({
-    next: (value) => {
-      try {
-        expect(value.body).toMatchObject({ data: { id: 'abc-123' } });
-        done();
-      } catch (error) {
-        done(error);
-      }
-    },
-  });
-
-  setParams({ params: { foo: 'bar' } });
-  setParams({ params: { foo: 'bar' } });
-  setParams({ params: { foo: 'bar' } });
-  setParams({ params: { foo: 'bar' } });
-  setParams._complete();
-});
-
-test('api should throw', (done) => {
-  mockXHR.get(/.*/, (req, res) => {
-    return res.status(200).body('');
-  });
-
-  const apiStream = new APIStream(petStoreSpec, {});
-  const [apiStream$, sendRequest] = apiStream.getStream('someStream');
-
-  apiStream$.subscribe(({ error, body }) => {
-    expect(error).toBeTruthy();
-    expect(body).toBeUndefined();
+  apiStream$.subscribe(({ params }) => {
+    expect(params?.params).toMatchObject(requestParams);
+    expect(params?.body).toMatchObject(requestBody);
     done();
   });
 
-  sendRequest();
-});
-
-test('same streamID same apiStream', () => {
-  mockXHR.get(/.*/, (req, res) => {
-    return res.status(200).body('{"data":{"id":"abc-123"}}');
-  });
-
-  const apiStream = new APIStream(petStoreSpec, {});
-  const [apiStream$1, setParams1] = apiStream.getStream('someStream');
-  const [apiStream$2, setParams2] = apiStream.getStream('someStream');
-
-  expect(apiStream$1).toEqual(apiStream$2);
-  expect(setParams1).toEqual(setParams2);
+  next({ params: requestParams, body: requestBody });
 });

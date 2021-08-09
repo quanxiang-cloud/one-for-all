@@ -7,8 +7,8 @@ import { OpenAPIV3 } from 'openapi-types';
 import RequestBuilder from '@ofa/request-builder';
 import { RequestConfig, RequestParams } from 'packages/request-builder/src';
 
-export type SendRequest = {
-  (params?: RequestParams): void;
+export type StreamActions = {
+  next: (params?: RequestParams) => void;
   refresh: () => void;
   _complete: () => void;
 };
@@ -36,7 +36,7 @@ function requestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
   };
 }
 
-function createAPIResult$(apiID: string, requestBuilder: RequestBuilder): [APIResult$, SendRequest] {
+function createAPIResult$(apiID: string, requestBuilder: RequestBuilder): [APIResult$, StreamActions] {
   let loading = false;
 
   const params$ = new BehaviorSubject<RequestParams | undefined>(undefined);
@@ -59,29 +59,37 @@ function createAPIResult$(apiID: string, requestBuilder: RequestBuilder): [APIRe
     share(),
   );
 
-  function setParams(params?: RequestParams): void {
-    params$.next(params);
-  }
-
-  setParams.refresh = () => {
-    setParams(params$.getValue());
-  };
-
-  setParams._complete = () => {
-    params$.complete();
+  const streamActions = {
+    next: (params?: RequestParams): void => {
+      params$.next(params);
+    },
+    refresh: () => {
+      params$.next(params$.getValue());
+    },
+    _complete: () => {
+      params$.complete();
+    },
   };
 
   const result$: APIResult$ = combineLatest([params$, response$]).pipe(
     map(([params, { body, error }]) => ({ params, body, error, loading })),
   );
 
-  return [result$, setParams];
+  return [result$, streamActions];
 }
 
 const dummyStream$ = new BehaviorSubject<APIResult>({ body: null, loading: false, error: undefined });
-const dummySendRequest: SendRequest = (params?: RequestParams) => {
+const dummySendRequest: StreamActions = {
   // todo refactor this
-  console.log('invalid send request call', params);
+  next: (params?: RequestParams): void => {
+    console.log(params);
+  },
+  refresh: () => {
+    console.log('refresh called');
+  },
+  _complete: () => {
+    console.log('completed called');
+  },
 };
 dummySendRequest.refresh = noop;
 dummySendRequest._complete = noop;
@@ -90,14 +98,14 @@ export default class APIStream {
   requestBuilder: RequestBuilder;
   // map of streamID and apiID
   streamIDMap: Record<string, string>;
-  streamCache: Record<string, [APIResult$, SendRequest]> = {};
+  streamCache: Record<string, [APIResult$, StreamActions]> = {};
 
   constructor(apiDoc: OpenAPIV3.Document, streamIDMap: Record<string, string>) {
     this.requestBuilder = new RequestBuilder(apiDoc);
     this.streamIDMap = streamIDMap;
   }
 
-  getStream(streamID: string): [APIResult$, SendRequest] {
+  getStream(streamID: string): [APIResult$, StreamActions] {
     if (!this.streamIDMap[streamID]) {
       // todo log error message
       return [dummyStream$, dummySendRequest];
