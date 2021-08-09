@@ -10,10 +10,23 @@ const defaultResult: APIResult = {
   error: undefined,
 };
 
-function useQuery(streamID: string, apiID: string, builder: RequestBuilder): [APIResult, SendRequest] {
-  const [queryStateObs$, sendRequest] = getAPIResult$(streamID, apiID, builder);
+type Convertor<T extends Record<string, unknown>> = (response: any) => T;
 
-  return [useObservableState(queryStateObs$) || defaultResult, sendRequest];
+function getAPIAndBuilderByStreamID(streamID: string): [string, RequestBuilder] {
+  // todo implement this
+  return ['someAPIId', new RequestBuilder({} as any)];
 }
 
-export default useQuery;
+function useAPI<T extends Record<string, unknown>>(
+  streamID: string,
+  convertor: Convertor<T>,
+): [T, SendRequest] {
+  const [apiID, builder] = getAPIAndBuilderByStreamID(streamID);
+  const [queryStateObs$, sendRequest] = getAPIResult$(streamID, apiID, builder);
+
+  const result = convertor(useObservableState(queryStateObs$) || defaultResult);
+
+  return [result, sendRequest];
+}
+
+export default useAPI;

@@ -51,4 +51,5 @@ type FutureAPIResponse = {
   requesterID: string;
   responseConvertor?: (responseData: any) => any;
 }
+
 ```
