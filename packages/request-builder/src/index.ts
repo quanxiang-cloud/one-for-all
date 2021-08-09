@@ -1,10 +1,9 @@
 import { get, set } from 'lodash';
 import { OpenAPIV3 } from 'openapi-types';
 
-type Method = 'get' | 'put' | 'post' | 'delete' | 'options' | 'head' | 'patch';
 export type RequestConfig = {
   path: string;
-  method: Method;
+  method: OpenAPIV3.HttpMethods;
   query?: Record<string, string>;
   body?: any;
 }
@@ -15,15 +14,16 @@ export type RequestParams = {
 
 type PartialSchema = {
   path: string;
-  method: Method;
+  method: OpenAPIV3.HttpMethods;
   parameters?: (OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject)[];
   requestBody?: OpenAPIV3.ReferenceObject | OpenAPIV3.RequestBodyObject;
 }
 
-const METHODS: Method[] = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch'];
+const METHODS = Object.values(OpenAPIV3.HttpMethods);
 
 export default class Builder {
   schema: OpenAPIV3.Document;
+
   constructor(schema: OpenAPIV3.Document) {
     this.schema = schema;
   }
@@ -45,7 +45,12 @@ export default class Builder {
         continue;
       }
 
-      schema = { path, method, parameters: operationObject.parameters, requestBody: operationObject.requestBody };
+      schema = {
+        path,
+        method,
+        parameters: operationObject.parameters,
+        requestBody: operationObject.requestBody,
+      };
       break;
     }
 
