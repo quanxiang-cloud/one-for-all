@@ -3,6 +3,15 @@ type Selector<T> = StringSelector | ((data: any) => T);
 
 type ElementIdentifier = string;
 
+type APIResult = {
+  params: import('@ofa/request-builder/src/types').RequestParams;
+  body: any;
+  loading: boolean;
+  error: Error | undefined;
+};
+
+type APIResult$ = import('rxjs').Observable<APIResult>;
+
 type APIReference = {
   apiID: string;
   requestConvert: (params: any) => void;
@@ -36,16 +45,22 @@ type OFASchema = {
   component: Component;
 }
 
-type ConstProp = {
-  type: 'constant';
+type ConstantProperty = {
+  type: 'constant_property';
   value: any;
 }
 
-type APIProp = {
-  type: 'api';
-  defaultValue: any;
+type APIDerivedProperty<T = any> = {
+  type: 'api_derived_property';
+  initialValue: T;
   streamID: string;
-  responseConvert: (response: any) => any;
+  convertor: (res: APIResult) => T;
+}
+
+type APICallProperty = {
+  type: 'api_call_property';
+  streamID: string;
+  convertor: (callbackParams: any) => import('@ofa/request-builder/src/types').RequestParams;
 }
 
 type LocalStateProp = {
@@ -63,7 +78,7 @@ type CallbackProps = Array<{
 type Component = {
   componentID: string;
   type: 'html-element' | 'react-element' | 'layout-component';
-  props: Record<string, APIProp | LocalStateProp | CallbackProps>;
+  props: Record<string, APIDerivedProperty | LocalStateProp | CallbackProps>;
   // todo local state props
   children?: Component[];
 }

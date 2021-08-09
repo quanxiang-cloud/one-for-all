@@ -1,14 +1,12 @@
 import { set } from 'lodash';
 import { OpenAPIV3 } from 'openapi-types';
 
+import { RequestParams } from './types';
+
 export type RequestConfig = {
   path: string;
   method: OpenAPIV3.HttpMethods;
   query?: Record<string, string>;
-  body?: any;
-}
-export type RequestParams = {
-  params?: Record<string, any>;
   body?: any;
 }
 

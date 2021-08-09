@@ -1,5 +1,5 @@
 import { ajax, AjaxRequest } from 'rxjs/ajax';
-import { of, combineLatest, Observable, BehaviorSubject } from 'rxjs';
+import { of, combineLatest, BehaviorSubject } from 'rxjs';
 import { tap, map, switchMap, catchError, share, skip } from 'rxjs/operators';
 import { noop } from 'lodash';
 import { OpenAPIV3 } from 'openapi-types';
@@ -12,14 +12,6 @@ export type StreamActions = {
   refresh: () => void;
   _complete: () => void;
 };
-
-export type APIResult = {
-  params?: RequestParams;
-  body: any;
-  loading: boolean;
-  error: Error | undefined;
-};
-type APIResult$ = Observable<APIResult>;
 
 function requestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
   return {

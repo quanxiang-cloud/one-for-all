@@ -4,18 +4,18 @@ import { combineLatest, Observable } from 'rxjs';
 import QueryResult from './use-query';
 
 type UseAPIProps = {
-  props: Array<{ propsName: string } & APIProp>;
+  props: Array<{ propsName: string } & APIDerivedProperty>;
   queryResult: QueryResult;
 }
 
 export default function useAPIProps({ props, queryResult }: UseAPIProps): Record<string, unknown> {
-  const initialResult: Record<string, unknown> = props.reduce((acc, { propsName, defaultValue }) => {
-    acc[propsName] = defaultValue;
+  const initialResult: Record<string, unknown> = props.reduce((acc, { propsName, initialValue }) => {
+    acc[propsName] = initialValue;
     return acc;
   }, {} as Record<string, unknown>);
   const [result, setResult] = useState<Record<string, unknown>>(initialResult);
-  const resList$ = props.map<[string, Observable<any>]>(({ streamID, responseConvert, propsName }) => {
-    return [propsName, queryResult.getValue(streamID, responseConvert)];
+  const resList$ = props.map<[string, Observable<any>]>(({ streamID, convertor, propsName }) => {
+    return [propsName, queryResult.getValue(streamID, convertor)];
   }).reduce<Record<string, Observable<any>>>((acc, [propsName, res$]) => {
     acc[propsName] = res$;
     return acc;

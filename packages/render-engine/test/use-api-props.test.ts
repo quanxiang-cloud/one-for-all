@@ -16,22 +16,22 @@ test('resolve expect initial value', () => {
 
   const streamIDMap = { stream_findPetsByTags: 'findPetsByTags' };
   const queryResult = new QueryResult(petStoreSpec, streamIDMap);
-  const props: Array<{ propsName: string } & APIProp> = [
+  const props: Array<{ propsName: string } & APIDerivedProperty> = [
     {
       propsName: 'foo',
-      type: 'api',
-      defaultValue: { foo: 123 },
+      type: 'api_derived_property',
+      initialValue: { foo: 123 },
       streamID: 'stream_findPetsByTags',
-      responseConvert: () => {
+      convertor: () => {
         return { foo: 'bar' };
       },
     },
     {
       propsName: 'bar',
-      type: 'api',
-      defaultValue: { bar: 456 },
+      type: 'api_derived_property',
+      initialValue: { bar: 456 },
       streamID: 'stream_findPetsByTags',
-      responseConvert: () => {
+      convertor: () => {
         return { foo: 'bar' };
       },
     },
@@ -49,22 +49,22 @@ test('resolve expect expect converted value', () => {
 
   const streamIDMap = { stream_findPetsByTags: 'findPetsByTags' };
   const queryResult = new QueryResult(petStoreSpec, streamIDMap);
-  const props: Array<{ propsName: string } & APIProp> = [
+  const props: Array<{ propsName: string } & APIDerivedProperty> = [
     {
       propsName: 'foo',
-      type: 'api',
-      defaultValue: { foo: 123 },
+      type: 'api_derived_property',
+      initialValue: { foo: 123 },
       streamID: 'stream_findPetsByTags',
-      responseConvert: () => {
+      convertor: () => {
         return { foo: 'bar' };
       },
     },
     {
       propsName: 'bar',
-      type: 'api',
-      defaultValue: { bar: 456 },
+      type: 'api_derived_property',
+      initialValue: { bar: 456 },
       streamID: 'stream_findPetsByTags',
-      responseConvert: () => {
+      convertor: () => {
         return { foo: 'bar' };
       },
     },
