@@ -1,4 +1,4 @@
-import { get, set } from 'lodash';
+import { set } from 'lodash';
 import { OpenAPIV3 } from 'openapi-types';
 
 export type RequestConfig = {
@@ -19,41 +19,44 @@ type PartialSchema = {
   requestBody?: OpenAPIV3.ReferenceObject | OpenAPIV3.RequestBodyObject;
 }
 
-const METHODS = Object.values(OpenAPIV3.HttpMethods);
+function indexing(schema: OpenAPIV3.Document): Record<string, PartialSchema | undefined> {
+  const operationIDMap: Record<string, PartialSchema | undefined> = {};
+  for (const [path, pathItemObject] of Object.entries(schema.paths)) {
+    if (!pathItemObject) {
+      continue;
+    }
 
-export default class Builder {
-  schema: OpenAPIV3.Document;
-
-  constructor(schema: OpenAPIV3.Document) {
-    this.schema = schema;
-  }
-
-  fillRequest(operationId: string, requestParam?: RequestParams): RequestConfig {
-    let schema: PartialSchema | undefined = undefined;
-    for (const [path, pathItemObject] of Object.entries(this.schema.paths)) {
-      if (!pathItemObject) {
-        continue;
-      }
-
-      const method = METHODS.find((method) => get(pathItemObject, `${method}.operationId`) === operationId);
-      if (!method) {
-        continue;
-      }
-
-      const operationObject = pathItemObject[method as OpenAPIV3.HttpMethods];
+    for (const method of METHODS) {
+      const operationObject = pathItemObject[method];
       if (!operationObject) {
         continue;
       }
 
-      schema = {
+      operationIDMap[`${operationObject.operationId}`] = {
         path,
         method,
         parameters: operationObject.parameters,
         requestBody: operationObject.requestBody,
       };
-      break;
     }
+  }
 
+  return operationIDMap;
+}
+
+const METHODS = Object.values(OpenAPIV3.HttpMethods);
+
+export default class Builder {
+  schema: OpenAPIV3.Document;
+  operationIDMap: Record<string, PartialSchema | undefined>;
+
+  constructor(schema: OpenAPIV3.Document) {
+    this.schema = schema;
+    this.operationIDMap = indexing(schema);
+  }
+
+  buildRequest(operationId: string, requestParam?: RequestParams): RequestConfig {
+    const schema = this.operationIDMap[operationId];
     if (!schema) {
       throw new Error('can not find schema');
     }

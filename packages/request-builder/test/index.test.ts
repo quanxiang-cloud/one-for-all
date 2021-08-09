@@ -64,6 +64,6 @@ const operations: Record<string, RequestParams> = {
 test('expect to match snapshots', () => {
   const builder = new Builder(spec as any);
   Object.entries(operations).forEach(([operationId, params]) => {
-    expect(builder.fillRequest(operationId, params)).toMatchSnapshot();
+    expect(builder.buildRequest(operationId, params)).toMatchSnapshot();
   });
 });

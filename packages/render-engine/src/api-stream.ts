@@ -45,7 +45,7 @@ function createAPIResult$(apiID: string, requestBuilder: RequestBuilder): [APIRe
     skip(1),
     tap(() => (loading = true)),
     map((params): AjaxRequest => {
-      const config = requestBuilder.fillRequest(apiID, params);
+      const config = requestBuilder.buildRequest(apiID, params);
       return requestConfigToAjaxRequest(config);
     }),
     switchMap((ajaxRequest) => ajax(ajaxRequest)),
