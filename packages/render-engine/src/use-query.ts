@@ -7,7 +7,7 @@ import { RequestParams } from 'packages/request-builder/src';
 
 type Convertor<T> = (result: APIResult) => T;
 
-export class QueryResult {
+export default class QueryResult {
   apiDoc: OpenAPIV3.Document;
   apiStream: APIStream;
 

@@ -43,7 +43,7 @@ type ConstProp = {
 
 type APIProp = {
   type: 'api';
-  default: any;
+  defaultValue: any;
   streamID: string;
   responseConvert: (response: any) => any;
 }
