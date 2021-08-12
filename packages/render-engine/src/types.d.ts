@@ -57,7 +57,7 @@ export type APIDerivedProperty<T = any, R = any> = {
   convertor: (res: APIResult<R>) => T;
 }
 
-type APICallProperty<T = any> = {
+export type APICallProperty<T = any> = {
   type: 'api_call_property';
   streamID: string;
   convertor: (callbackParams: T) => import('@ofa/request-builder/src/types').RequestParams;

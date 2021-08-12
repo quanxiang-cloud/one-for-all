@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { queryResultObsCache } from './use-query';
+import { queryResultObsCache } from './query-result';
 
 export type UseMutationResult = {
   mutate: (params: any) => void,

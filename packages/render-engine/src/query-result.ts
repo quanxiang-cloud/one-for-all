@@ -27,6 +27,7 @@ export default class QueryResult {
 
   getAction(streamID: string, convertor?: ActionParamsConvertor): (...args: any[]) => void {
     const [, { next }] = this.apiStream.getStream(streamID);
+
     return (...args: any[]) => {
       next(convertor?.(...args));
     };

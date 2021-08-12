@@ -1,5 +1,5 @@
 import { ajax, AjaxRequest } from 'rxjs/ajax';
-import { of, combineLatest, BehaviorSubject } from 'rxjs';
+import { of, combineLatest, BehaviorSubject, Observable } from 'rxjs';
 import { tap, map, switchMap, catchError, share, skip } from 'rxjs/operators';
 import { noop } from 'lodash';
 import { OpenAPIV3 } from 'openapi-types';
@@ -35,7 +35,7 @@ function createAPIResult$(apiID: string, requestBuilder: RequestBuilder): [APIRe
   let loading = false;
 
   const params$ = new BehaviorSubject<RequestParams | undefined>(undefined);
-  const response$ = params$.pipe(
+  const response$: Observable<Pick<APIResult, 'body' | 'error'>> = params$.pipe(
     // skip the initial undefined params
     skip(1),
     tap(() => (loading = true)),
