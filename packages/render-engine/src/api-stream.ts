@@ -1,6 +1,6 @@
 import { ajax, AjaxRequest } from 'rxjs/ajax';
-import { of, combineLatest, BehaviorSubject, Observable } from 'rxjs';
-import { tap, map, switchMap, catchError, share, skip } from 'rxjs/operators';
+import { of, combineLatest, BehaviorSubject, Observable, Subject } from 'rxjs';
+import { tap, map, switchMap, catchError, share, skip, startWith } from 'rxjs/operators';
 import { noop } from 'lodash';
 import { OpenAPIV3 } from 'openapi-types';
 
@@ -35,26 +35,35 @@ function requestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
 }
 
 function createAPIResult$(apiID: string, requestBuilder: RequestBuilder): [APIResult$, StreamActions] {
-  let loading = false;
-
+  const loading$ = new Subject<boolean>();
   const params$ = new BehaviorSubject<RequestParams | undefined>(undefined);
   const response$: Observable<Pick<APIResult, 'body' | 'error'>> = params$.pipe(
     // skip the initial undefined params
     skip(1),
-    tap(() => (loading = true)),
+    // tap(() => (loading = true)),
+    tap(() => {
+      console.log('value resolved, change loading to true');
+      loading$.next(true);
+    }),
     map((params): AjaxRequest => {
       const config = requestBuilder.buildRequest(apiID, params);
       return requestConfigToAjaxRequest(config);
     }),
     switchMap((ajaxRequest) => ajax(ajaxRequest)),
     map(({ response }) => ({ body: response, error: undefined })),
+    // tap(() => loading = false),
+    tap(() => {
+      // loading = false;
+      console.log('value resolved, change loading to false');
+      loading$.next(false);
+    }),
     catchError((error) => {
       // todo need better log message
       // console.debug('error: ', error);
       return of({ error, body: undefined });
     }),
-    tap(() => loading = false),
     share(),
+    startWith({ body: undefined, error: undefined }),
   );
 
   const streamActions = {
@@ -69,8 +78,8 @@ function createAPIResult$(apiID: string, requestBuilder: RequestBuilder): [APIRe
     },
   };
 
-  const result$: APIResult$ = combineLatest([params$, response$]).pipe(
-    map(([params, { body, error }]) => ({ params, body, error, loading })),
+  const result$: APIResult$ = combineLatest([params$, response$, loading$]).pipe(
+    map(([params, { body, error }, loading]) => ({ params, body, error, loading })),
   );
 
   return [result$, streamActions];
