@@ -1,18 +1,17 @@
-import QueryResult from './query-result';
+import APIStream from './api-stream';
 import { APICallProperty } from './types';
 
 type Props = {
   props: Record<string, APICallProperty>;
-  queryResult: QueryResult;
+  apiStream: APIStream;
 }
 
 type APICallProps = Record<string, (...args: any[]) => void>;
 
-// todo assign callback to ref?
-export default function useAPICallProps({ props, queryResult }: Props): APICallProps {
+export default function useAPICallProps({ props, apiStream }: Props): APICallProps {
   return Object.entries(props)
     .reduce<APICallProps>((acc, [propName, { streamID, convertor }]) => {
-      acc[propName] = queryResult.getAction(streamID, convertor);
+      acc[propName] = apiStream.getAction(streamID, convertor);
       return acc;
     }, {});
 }

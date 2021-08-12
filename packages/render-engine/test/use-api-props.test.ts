@@ -6,7 +6,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import petStoreSpec from '@ofa/request-builder/test/petstore-spec';
 import useAPIDerivedProps from '../src/use-api-derived-props';
 import useAPICallProps from '../src/use-api-call-props';
-import QueryResult from '../src/query-result';
+import APIStream from '../src/api-stream';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
@@ -18,7 +18,7 @@ test('resolve expect initial value', () => {
   });
 
   const streamIDMap = { stream_findPetsByTags: 'findPetsByTags' };
-  const queryResult = new QueryResult(petStoreSpec, streamIDMap);
+  const apiStream = new APIStream(petStoreSpec, streamIDMap);
   const props: Record<string, APIDerivedProperty> = {
     foo: {
       type: 'api_derived_property',
@@ -38,7 +38,7 @@ test('resolve expect initial value', () => {
     },
   };
 
-  const { result } = renderHook(() => useAPIDerivedProps({ queryResult, props }));
+  const { result } = renderHook(() => useAPIDerivedProps({ apiStream, props }));
   expect(result.current).toMatchObject({ foo: { foo: 123 }, bar: { bar: 456 } });
 });
 
@@ -47,7 +47,7 @@ test('resolve expect expect converted value', (done) => {
   mockXHR.get(/.*/, (req, res) => res.status(200).body(JSON.stringify(mockRes)));
 
   const streamIDMap = { stream_findPetsByTags: 'findPetsByTags' };
-  const queryResult = new QueryResult(petStoreSpec, streamIDMap);
+  const apiStream = new APIStream(petStoreSpec, streamIDMap);
 
   const apiCallProps: Record<string, APICallProperty> = {
     update: {
@@ -58,8 +58,8 @@ test('resolve expect expect converted value', (done) => {
       },
     },
   };
-  const apiCallPropsResult = useAPICallProps({ queryResult, props: apiCallProps });
-  queryResult.getValue('stream_findPetsByTags', (result) => result).subscribe((result) => {
+  const apiCallPropsResult = useAPICallProps({ apiStream, props: apiCallProps });
+  apiStream.getValue('stream_findPetsByTags', (result) => result).subscribe((result) => {
     expect(result.body).toMatchObject(mockRes);
     done();
   });

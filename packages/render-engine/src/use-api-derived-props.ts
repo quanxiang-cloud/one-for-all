@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import { combineLatest, Observable } from 'rxjs';
 
-import QueryResult from './query-result';
+import APIStream from './api-stream';
 import { APIDerivedProperty } from './types';
 
 type UseAPIProps = {
   props: Record<string, APIDerivedProperty>;
-  queryResult: QueryResult;
+  apiStream: APIStream;
 }
 
-export default function useAPIDerivedProps({ props, queryResult }: UseAPIProps): Record<string, unknown> {
+export default function useAPIDerivedProps({ props, apiStream }: UseAPIProps): Record<string, unknown> {
   const initialResult = Object.entries(props).reduce<Record<string, unknown>>(
     (initialResult, [propName, { initialValue }]) => {
       initialResult[propName] = initialValue;
@@ -18,7 +18,7 @@ export default function useAPIDerivedProps({ props, queryResult }: UseAPIProps):
 
   const resList$ = Object.entries(props)
     .map<[string, Observable<unknown>]>(([propName, { streamID, convertor }]) => {
-      return [propName, queryResult.getValue(streamID, convertor)];
+      return [propName, apiStream.getValue(streamID, convertor)];
     })
     .reduce<Record<string, Observable<unknown>>>((acc, [propName, res$]) => {
       acc[propName] = res$;

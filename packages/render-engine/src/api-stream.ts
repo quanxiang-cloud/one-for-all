@@ -16,6 +16,9 @@ export type StreamActions = {
   _complete: () => void;
 };
 
+type ResultConvertor<T> = (result: APIResult) => T;
+type ActionParamsConvertor = (...args: any[]) => RequestParams;
+
 function requestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
   return {
     method: config.method,
@@ -99,6 +102,20 @@ export default class APIStream {
   constructor(apiDoc: OpenAPIV3.Document, streamIDMap: Record<string, string>) {
     this.requestBuilder = new RequestBuilder(apiDoc);
     this.streamIDMap = streamIDMap;
+  }
+
+  getValue<T>(streamID: string, convertor: ResultConvertor<T>): Observable<T> {
+    const [apiStream$] = this.getStream(streamID);
+
+    return apiStream$.pipe(map(convertor));
+  }
+
+  getAction(streamID: string, convertor?: ActionParamsConvertor): (...args: any[]) => void {
+    const [, { next }] = this.getStream(streamID);
+
+    return (...args: any[]) => {
+      next(convertor?.(...args));
+    };
   }
 
   getStream(streamID: string): [APIResult$, StreamActions] {
