@@ -3,9 +3,9 @@ type Selector<T> = StringSelector | ((data: any) => T);
 
 type ElementIdentifier = string;
 
-export type APIResult = {
+export type APIResult<T = any> = {
   params: import('@ofa/request-builder/src/types').RequestParams;
-  body: any;
+  body: T;
   loading: boolean;
   error: Error | undefined;
 };
@@ -50,17 +50,17 @@ type ConstantProperty = {
   value: any;
 }
 
-export type APIDerivedProperty<T = any> = {
+export type APIDerivedProperty<T = any, R = any> = {
   type: 'api_derived_property';
   initialValue: T;
   streamID: string;
-  convertor: (res: APIResult) => T;
+  convertor: (res: APIResult<R>) => T;
 }
 
-type APICallProperty = {
+type APICallProperty<T = any> = {
   type: 'api_call_property';
   streamID: string;
-  convertor: (callbackParams: any) => import('@ofa/request-builder/src/types').RequestParams;
+  convertor: (callbackParams: T) => import('@ofa/request-builder/src/types').RequestParams;
 }
 
 type LocalStateProp = {

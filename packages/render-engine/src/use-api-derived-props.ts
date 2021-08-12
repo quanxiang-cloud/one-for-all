@@ -9,7 +9,7 @@ type UseAPIProps = {
   queryResult: QueryResult;
 }
 
-export default function useAPIProps({ props, queryResult }: UseAPIProps): Record<string, unknown> {
+export default function useAPIDerivedProps({ props, queryResult }: UseAPIProps): Record<string, unknown> {
   const initialResult: Record<string, unknown> = props.reduce((acc, { propsName, initialValue }) => {
     acc[propsName] = initialValue;
     return acc;

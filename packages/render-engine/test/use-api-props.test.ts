@@ -4,7 +4,7 @@ import mockXHR from 'xhr-mock';
 import { renderHook } from '@testing-library/react-hooks';
 
 import petStoreSpec from '@ofa/request-builder/test/petstore-spec';
-import useAPIProps from '../src/use-api-props';
+import useAPIDerivedProps from '../src/use-api-derived-props';
 import QueryResult from '../src/use-query';
 
 beforeEach(() => mockXHR.setup());
@@ -39,7 +39,7 @@ test('resolve expect initial value', () => {
     },
   ];
 
-  const { result } = renderHook(() => useAPIProps({ queryResult, props }));
+  const { result } = renderHook(() => useAPIDerivedProps({ queryResult, props }));
   expect(result.current).toMatchObject({ foo: { foo: 123 }, bar: { bar: 456 } });
 });
 
@@ -57,8 +57,8 @@ test('resolve expect expect converted value', () => {
       type: 'api_derived_property',
       initialValue: { foo: 123 },
       streamID: 'stream_findPetsByTags',
-      convertor: () => {
-        return { foo: 'bar' };
+      convertor: ({ body }) => {
+        return { foo: body.foo * 2 };
       },
     },
     {
@@ -66,12 +66,13 @@ test('resolve expect expect converted value', () => {
       type: 'api_derived_property',
       initialValue: { bar: 456 },
       streamID: 'stream_findPetsByTags',
-      convertor: () => {
-        return { foo: 'bar' };
+      convertor: ({ body }) => {
+        return { foo: body.bar * 2 };
       },
     },
   ];
 
-  const { result } = renderHook(() => useAPIProps({ queryResult, props }));
-  expect(result.current).toMatchObject({ foo: { foo: 123 }, bar: { bar: 456 } });
+  const { result } = renderHook(() => useAPIDerivedProps({ queryResult, props }));
+  // todo initial param called then assert
+  expect(result.current).toMatchObject({ foo: { foo: 123 * 2 }, bar: { bar: 456 * 2 } });
 });
