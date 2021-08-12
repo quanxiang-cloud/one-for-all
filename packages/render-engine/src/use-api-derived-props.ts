@@ -5,27 +5,30 @@ import QueryResult from './use-query';
 import { APIDerivedProperty } from './types';
 
 type UseAPIProps = {
-  props: Array<{ propsName: string } & APIDerivedProperty>;
+  props: Record<string, APIDerivedProperty>;
   queryResult: QueryResult;
 }
 
 export default function useAPIDerivedProps({ props, queryResult }: UseAPIProps): Record<string, unknown> {
-  const initialResult: Record<string, unknown> = props.reduce((acc, { propsName, initialValue }) => {
-    acc[propsName] = initialValue;
-    return acc;
-  }, {} as Record<string, unknown>);
+  const initialResult = Object.entries(props).reduce<Record<string, unknown>>(
+    (initialResult, [propName, { initialValue }]) => {
+      initialResult[propName] = initialValue;
+      return initialResult;
+    }, {});
+
+  const resList$ = Object.entries(props)
+    .map<[string, Observable<unknown>]>(([propName, { streamID, convertor }]) => {
+      return [propName, queryResult.getValue(streamID, convertor)];
+    })
+    .reduce<Record<string, Observable<unknown>>>((acc, [propName, res$]) => {
+      acc[propName] = res$;
+      return acc;
+    }, {});
+
   const [result, setResult] = useState<Record<string, unknown>>(initialResult);
-  const resList$ = props.map<[string, Observable<any>]>(({ streamID, convertor, propsName }) => {
-    return [propsName, queryResult.getValue(streamID, convertor)];
-  }).reduce<Record<string, Observable<any>>>((acc, [propsName, res$]) => {
-    acc[propsName] = res$;
-    return acc;
-  }, {});
 
   useEffect(() => {
-    const subscription = combineLatest(resList$).subscribe((res) => {
-      setResult(res);
-    });
+    const subscription = combineLatest(resList$).subscribe(setResult);
 
     return subscription.unsubscribe();
   }, []);

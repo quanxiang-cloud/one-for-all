@@ -18,9 +18,8 @@ test('resolve expect initial value', () => {
 
   const streamIDMap = { stream_findPetsByTags: 'findPetsByTags' };
   const queryResult = new QueryResult(petStoreSpec, streamIDMap);
-  const props: Array<{ propsName: string } & APIDerivedProperty> = [
-    {
-      propsName: 'foo',
+  const props: Record<string, APIDerivedProperty> = {
+    foo: {
       type: 'api_derived_property',
       initialValue: { foo: 123 },
       streamID: 'stream_findPetsByTags',
@@ -28,8 +27,7 @@ test('resolve expect initial value', () => {
         return { foo: 'bar' };
       },
     },
-    {
-      propsName: 'bar',
+    bar: {
       type: 'api_derived_property',
       initialValue: { bar: 456 },
       streamID: 'stream_findPetsByTags',
@@ -37,7 +35,7 @@ test('resolve expect initial value', () => {
         return { foo: 'bar' };
       },
     },
-  ];
+  };
 
   const { result } = renderHook(() => useAPIDerivedProps({ queryResult, props }));
   expect(result.current).toMatchObject({ foo: { foo: 123 }, bar: { bar: 456 } });
@@ -51,9 +49,8 @@ test('resolve expect expect converted value', () => {
 
   const streamIDMap = { stream_findPetsByTags: 'findPetsByTags' };
   const queryResult = new QueryResult(petStoreSpec, streamIDMap);
-  const props: Array<{ propsName: string } & APIDerivedProperty> = [
-    {
-      propsName: 'foo',
+  const props: Record<string, APIDerivedProperty> = {
+    foo: {
       type: 'api_derived_property',
       initialValue: { foo: 123 },
       streamID: 'stream_findPetsByTags',
@@ -61,8 +58,7 @@ test('resolve expect expect converted value', () => {
         return { foo: body.foo * 2 };
       },
     },
-    {
-      propsName: 'bar',
+    bar: {
       type: 'api_derived_property',
       initialValue: { bar: 456 },
       streamID: 'stream_findPetsByTags',
@@ -70,7 +66,7 @@ test('resolve expect expect converted value', () => {
         return { foo: body.bar * 2 };
       },
     },
-  ];
+  };
 
   const { result } = renderHook(() => useAPIDerivedProps({ queryResult, props }));
   // todo initial param called then assert
