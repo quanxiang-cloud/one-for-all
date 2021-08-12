@@ -1,5 +1,6 @@
 import spec from './petstore-spec';
-import Builder, { RequestParams } from '../src/index';
+import Builder from '../src/index';
+import { RequestParams } from '../src/types';
 
 const operations: Record<string, RequestParams> = {
   updatePet: {

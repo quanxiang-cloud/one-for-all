@@ -5,7 +5,10 @@ import { noop } from 'lodash';
 import { OpenAPIV3 } from 'openapi-types';
 
 import RequestBuilder from '@ofa/request-builder';
-import { RequestConfig, RequestParams } from 'packages/request-builder/src';
+import { RequestConfig } from '@ofa/request-builder/src';
+import { RequestParams } from '@ofa/request-builder/src/types';
+
+import { APIResult, APIResult$ } from './types';
 
 export type StreamActions = {
   next: (params?: RequestParams) => void;
@@ -70,7 +73,8 @@ function createAPIResult$(apiID: string, requestBuilder: RequestBuilder): [APIRe
   return [result$, streamActions];
 }
 
-const dummyStream$ = new BehaviorSubject<APIResult>({ body: null, loading: false, error: undefined });
+const dummyResult = { body: null, loading: false, error: undefined, params: undefined };
+const dummyStream$ = new BehaviorSubject<APIResult>(dummyResult);
 const dummySendRequest: StreamActions = {
   // todo refactor this
   next: (params?: RequestParams): void => {

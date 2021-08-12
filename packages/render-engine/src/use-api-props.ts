@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { combineLatest, Observable } from 'rxjs';
 
 import QueryResult from './use-query';
+import { APIDerivedProperty } from './types';
 
 type UseAPIProps = {
   props: Array<{ propsName: string } & APIDerivedProperty>;

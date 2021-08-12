@@ -2,8 +2,10 @@ import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { OpenAPIV3 } from 'openapi-types';
 
-import APIStream, { APIResult } from './api-stream';
-import { RequestParams } from 'packages/request-builder/src';
+import { RequestParams } from '@ofa/request-builder/src/types';
+
+import APIStream from './api-stream';
+import { APIResult } from './types';
 
 type Convertor<T> = (result: APIResult) => T;
 

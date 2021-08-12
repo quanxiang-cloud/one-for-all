@@ -1,3 +1,5 @@
+import type { APIDerivedProperty } from '../src/types';
+
 import mockXHR from 'xhr-mock';
 import { renderHook } from '@testing-library/react-hooks';
 

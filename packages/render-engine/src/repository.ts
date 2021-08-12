@@ -1,3 +1,5 @@
+import { DynamicComponent } from './types';
+
 type ComponentURLResolver = (componentName: string, version?: string) => string;
 // todo support import const value and prune functions
 type Importer = (systemModule: System.Module, componentName: string, version?: string) => DynamicComponent;

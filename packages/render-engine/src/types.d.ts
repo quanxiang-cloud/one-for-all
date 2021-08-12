@@ -3,7 +3,7 @@ type Selector<T> = StringSelector | ((data: any) => T);
 
 type ElementIdentifier = string;
 
-type APIResult = {
+export type APIResult = {
   params: import('@ofa/request-builder/src/types').RequestParams;
   body: any;
   loading: boolean;
@@ -50,7 +50,7 @@ type ConstantProperty = {
   value: any;
 }
 
-type APIDerivedProperty<T = any> = {
+export type APIDerivedProperty<T = any> = {
   type: 'api_derived_property';
   initialValue: T;
   streamID: string;
