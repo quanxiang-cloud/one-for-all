@@ -1,4 +1,4 @@
-import type { APIInvokeProperty, APIDerivedProperty } from '../src/types';
+import type { APIInvokeProperty, ResultDerivedProperty } from '../src/types';
 
 import mockXHR from 'xhr-mock';
 import { renderHook } from '@testing-library/react-hooks';
@@ -19,7 +19,7 @@ test('resolve expect initial value', () => {
 
   const streamIDMap = { stream_findPetsByTags: 'findPetsByTags' };
   const apiStream = new APIStream(petStoreSpec, streamIDMap);
-  const props: Record<string, APIDerivedProperty> = {
+  const props: Record<string, ResultDerivedProperty> = {
     foo: {
       type: 'result_derived_property',
       initialValue: { foo: 123 },
