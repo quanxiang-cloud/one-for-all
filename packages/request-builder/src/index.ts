@@ -53,8 +53,8 @@ export default class Builder {
     this.operationIDMap = indexing(schema);
   }
 
-  buildRequest(operationId: string, requestParam?: RequestParams): RequestConfig {
-    const schema = this.operationIDMap[operationId];
+  buildRequest(operationID: string, requestParam?: RequestParams): RequestConfig {
+    const schema = this.operationIDMap[operationID];
     if (!schema) {
       throw new Error('can not find schema');
     }
@@ -70,7 +70,7 @@ export default class Builder {
 
       if (p.in === 'path') {
         if (p.required && requestParam?.params?.[p.name] === undefined) {
-          throw new Error(`parameter '${p.name}' required in path for ${operationId}`);
+          throw new Error(`parameter '${p.name}' required in path for ${operationID}`);
         }
 
         path = path.replace(`{${p.name}}`, requestParam?.params?.[p.name]);
@@ -78,7 +78,7 @@ export default class Builder {
 
       if (p.in === 'query') {
         if (p.required && requestParam?.params?.[p.name] === undefined) {
-          throw new Error(`parameter '${p.name}' required in query for ${operationId}`);
+          throw new Error(`parameter '${p.name}' required in query for ${operationID}`);
         }
 
         if (requestParam?.params?.[p.name] !== undefined) {
@@ -88,7 +88,7 @@ export default class Builder {
 
       if (p.in === 'header') {
         if (p.required && requestParam?.params?.[p.name] === undefined) {
-          throw new Error(`parameter '${p.name}' required in header for ${operationId}`);
+          throw new Error(`parameter '${p.name}' required in header for ${operationID}`);
         }
 
         if (requestParam?.params?.[p.name] !== undefined) {
@@ -100,7 +100,7 @@ export default class Builder {
     // todo support reference object
     if (requestBody && !('$ref' in requestBody)) {
       if (requestBody.required && requestParam?.body === undefined) {
-        throw new Error(`body required for operation: ${operationId}`);
+        throw new Error(`body required for operation: ${operationID}`);
       }
 
       request.body = requestParam?.body;

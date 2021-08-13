@@ -48,7 +48,7 @@ function requestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
   };
 }
 
-function createAPIResult$(apiID: string, requestBuilder: RequestBuilder): [APIResult$, StreamActions] {
+function createAPIResult$(operationID: string, requestBuilder: RequestBuilder): [APIResult$, StreamActions] {
   const loading$ = new BehaviorSubject<boolean>(false);
   const params$ = new BehaviorSubject<RequestParams | undefined>(undefined);
   const response$: Observable<Pick<APIResult, 'body' | 'error'>> = params$.pipe(
@@ -56,7 +56,7 @@ function createAPIResult$(apiID: string, requestBuilder: RequestBuilder): [APIRe
     skip(1),
     tap(() => loading$.next(true)),
     map((params): AjaxRequest => {
-      const config = requestBuilder.buildRequest(apiID, params);
+      const config = requestBuilder.buildRequest(operationID, params);
       return requestConfigToAjaxRequest(config);
     }),
     switchMap((ajaxRequest) => ajax(ajaxRequest)),
@@ -119,7 +119,7 @@ dummySendRequest._complete = noop;
 
 export default class APIStream {
   requestBuilder: RequestBuilder;
-  // map of streamID and apiID
+  // map of streamID and operationID
   streamIDMap: Record<string, string>;
   streamCache: Record<string, [APIResult$, StreamActions]> = {};
 

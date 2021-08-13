@@ -39,12 +39,6 @@ interface Window {
   OPEN_API_SPEC: any;
 }
 
-type OFASchema = {
-  apiSchema: import('openapi-types').OpenAPIV3.Document;
-  streams: Record<string, { apiID: string; }>;
-  component: Component;
-}
-
 type ConstantProperty = {
   type: 'constant_property';
   value: any;
