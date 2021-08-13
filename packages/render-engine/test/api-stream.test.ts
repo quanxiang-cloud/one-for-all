@@ -21,7 +21,7 @@ test('should not resolve value if next is not been called', () => {
   expect(shouldNotBeCalledFn).not.toBeCalled();
 });
 
-test('resolve count match next called count', async () => {
+test('call next once, resolve value twice', async () => {
   const mockRes = { data: { id: 'abc-123' } };
   mockXHR.get(/.*/, delay((req, res) => {
     return res.status(200).body(JSON.stringify(mockRes));
@@ -30,7 +30,7 @@ test('resolve count match next called count', async () => {
   const apiStream = new APIStream(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
   const [apiStream$, { next }] = apiStream.getStream('stream_findPetsByTags');
 
-  const mockFn = jest.fn((value) => console.log('result:', value));
+  const mockFn = jest.fn();
   apiStream$.subscribe(mockFn);
 
   await new Promise((r) => setTimeout(() => {
@@ -38,22 +38,14 @@ test('resolve count match next called count', async () => {
     next();
   }, 500));
 
-  // await new Promise((r) => setTimeout(() => {
-  //   r(true);
-  //   next();
-  // }, 500));
-
   await new Promise((r) => setTimeout(() => {
     r(true);
+    next();
   }, 500));
 
+  await new Promise((r) => setTimeout(r, 500));
+
   expect(mockFn).toBeCalledTimes(4);
-
-  // await new Promise((r) => setTimeout(() => {
-  //   r(true);
-  //   next();
-  // }, 100));
-
 });
 
 test('should resolve value', (done) => {
