@@ -1,16 +1,32 @@
+import { Observable } from 'rxjs';
+import { RequestParams } from '@ofa/request-builder/src/types';
+
 type StringSelector = string;
 type Selector<T> = StringSelector | ((data: any) => T);
 
 type ElementIdentifier = string;
 
-export type APIResult<T = any> = {
-  params: import('@ofa/request-builder/src/types').RequestParams;
-  body: T;
+export type APIResult = {
+  params: RequestParams;
   loading: boolean;
-  error: Error | undefined;
+  data?: any;
+  error?: string;
 };
 
-type APIResult$ = import('rxjs').Observable<APIResult>;
+export type APIResult$ = Observable<APIResult>;
+
+export type ResultDerivedProperty<T = any> = {
+  type: 'result_derived_property';
+  initialValue: T;
+  streamID: string;
+  convertor: (res: APIResult) => T;
+}
+
+export type APIInvokeProperty<T = any> = {
+  type: 'api_invoke_property';
+  streamID: string;
+  convertor: (callbackParams: T) => RequestParams;
+}
 
 type APIReference = {
   apiID: string;
@@ -44,19 +60,6 @@ type ConstantProperty = {
   value: any;
 }
 
-export type APIDerivedProperty<T = any, R = any> = {
-  type: 'api_derived_property';
-  initialValue: T;
-  streamID: string;
-  convertor: (res: APIResult<R>) => T;
-}
-
-export type APICallProperty<T = any> = {
-  type: 'api_call_property';
-  streamID: string;
-  convertor: (callbackParams: T) => import('@ofa/request-builder/src/types').RequestParams;
-}
-
 type LocalStateProp = {
   type: 'local';
   default: any;
@@ -72,7 +75,7 @@ type CallbackProps = Array<{
 type Component = {
   componentID: string;
   type: 'html-element' | 'react-element' | 'layout-component';
-  props: Record<string, APIDerivedProperty | LocalStateProp | CallbackProps>;
+  props: Record<string, ResultDerivedProperty | LocalStateProp | CallbackProps>;
   // todo local state props
   children?: Component[];
 }

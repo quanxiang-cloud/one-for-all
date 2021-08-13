@@ -47,7 +47,7 @@ function requestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
 function createAPIResult$(operationID: string, requestBuilder: RequestBuilder): [APIResult$, StreamActions] {
   const loading$ = new BehaviorSubject<boolean>(false);
   const params$ = new BehaviorSubject<RequestParams | undefined>(undefined);
-  const response$: Observable<Pick<APIResult, 'body' | 'error'>> = params$.pipe(
+  const response$: Observable<Pick<APIResult, 'data' | 'error'>> = params$.pipe(
     // skip the initial undefined params
     skip(1),
     tap(() => loading$.next(true)),
@@ -82,7 +82,7 @@ function createAPIResult$(operationID: string, requestBuilder: RequestBuilder): 
   const result$: APIResult$ = combineLatest(
     { params: params$, res: response$, loading: loading$ },
   ).pipe(
-    map(({ loading, res, params }) => ({ params, body: res.body, error: res.error, loading })),
+    map(({ loading, res, params }) => ({ params, data: res.data, error: res.error, loading })),
   );
 
   const emit$: APIResult$ = loading$.pipe(
@@ -97,7 +97,7 @@ function createAPIResult$(operationID: string, requestBuilder: RequestBuilder): 
 }
 
 const dummyResult = { body: null, loading: false, error: undefined, params: undefined };
-export const dummyStream$ = new BehaviorSubject<APIResult>(dummyResult);
+export const dummyStream$: APIResult$ = new BehaviorSubject(dummyResult);
 export const dummySendRequest: StreamActions = {
   // todo refactor this
   next: noop,

@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { combineLatest, Observable } from 'rxjs';
 
 import APIStream from './api-stream';
-import { APIDerivedProperty } from './types';
+import { ResultDerivedProperty } from './types';
 
 type UseAPIProps = {
-  props: Record<string, APIDerivedProperty>;
+  props: Record<string, ResultDerivedProperty>;
   apiStream: APIStream;
 }
 

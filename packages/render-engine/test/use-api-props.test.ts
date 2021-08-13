@@ -1,4 +1,4 @@
-import type { APICallProperty, APIDerivedProperty } from '../src/types';
+import type { APIInvokeProperty, APIDerivedProperty } from '../src/types';
 
 import mockXHR from 'xhr-mock';
 import { renderHook } from '@testing-library/react-hooks';
@@ -21,7 +21,7 @@ test('resolve expect initial value', () => {
   const apiStream = new APIStream(petStoreSpec, streamIDMap);
   const props: Record<string, APIDerivedProperty> = {
     foo: {
-      type: 'api_derived_property',
+      type: 'result_derived_property',
       initialValue: { foo: 123 },
       streamID: 'stream_findPetsByTags',
       convertor: () => {
@@ -29,7 +29,7 @@ test('resolve expect initial value', () => {
       },
     },
     bar: {
-      type: 'api_derived_property',
+      type: 'result_derived_property',
       initialValue: { bar: 456 },
       streamID: 'stream_findPetsByTags',
       convertor: () => {
@@ -49,9 +49,9 @@ test('resolve expect expect converted value', (done) => {
   const streamIDMap = { stream_findPetsByTags: 'findPetsByTags' };
   const apiStream = new APIStream(petStoreSpec, streamIDMap);
 
-  const apiCallProps: Record<string, APICallProperty> = {
+  const apiCallProps: Record<string, APIInvokeProperty> = {
     update: {
-      type: 'api_call_property',
+      type: 'api_invoke_property',
       streamID: 'stream_findPetsByTags',
       convertor: () => {
         return { params: { foo: 'bar' } };
@@ -60,7 +60,7 @@ test('resolve expect expect converted value', (done) => {
   };
   const apiCallPropsResult = useAPICallProps({ apiStream, props: apiCallProps });
   apiStream.getValue('stream_findPetsByTags', (result) => result).subscribe((result) => {
-    expect(result.body).toMatchObject(mockRes);
+    expect(result.data).toMatchObject(mockRes);
     done();
   });
 

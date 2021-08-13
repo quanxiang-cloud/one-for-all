@@ -1,8 +1,8 @@
 import APIStream from './api-stream';
-import { APICallProperty } from './types';
+import { APIInvokeProperty } from './types';
 
 type Props = {
-  props: Record<string, APICallProperty>;
+  props: Record<string, APIInvokeProperty>;
   apiStream: APIStream;
 }
 

@@ -57,7 +57,7 @@ test('should resolve value', (done) => {
   const apiStream = new APIStream(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
   const [apiStream$, { next }] = apiStream.getStream('stream_findPetsByTags');
 
-  apiStream$.subscribe(({ error, body }) => {
+  apiStream$.subscribe(({ error, data: body }) => {
     expect(error).toBeUndefined();
     expect(body).toMatchObject(mockRes);
     done();
