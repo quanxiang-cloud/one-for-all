@@ -3,11 +3,17 @@ import mockXHR, { delay } from 'xhr-mock';
 import petStoreSpec from '@ofa/request-builder/test/petstore-spec';
 
 import APIStream from '../src/api-stream';
+import { APIResult } from '../src/types';
+import { initialState } from '../src/create-stream';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
 
-test('should not resolve value if next is not been called', () => {
+function logResult(result: APIResult): void {
+  console.log('result:', result);
+}
+
+test('resolve initial value when no next called', (done) => {
   const mockRes = { data: { id: 'abc-123' } };
   mockXHR.get(/.*/, (req, res) => {
     return res.status(200).body(JSON.stringify(mockRes));
@@ -16,12 +22,13 @@ test('should not resolve value if next is not been called', () => {
   const apiStream = new APIStream(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
   const [apiStream$] = apiStream.getStream('stream_findPetsByTags');
 
-  const shouldNotBeCalledFn = jest.fn();
-  apiStream$.subscribe(shouldNotBeCalledFn);
-  expect(shouldNotBeCalledFn).not.toBeCalled();
+  apiStream$.subscribe((result) => {
+    expect(result).toMatchObject(initialState);
+    done();
+  });
 });
 
-test('call next once, resolve value twice', async () => {
+test('call_next_times', async () => {
   const mockRes = { data: { id: 'abc-123' } };
   mockXHR.get(/.*/, delay((req, res) => {
     return res.status(200).body(JSON.stringify(mockRes));
@@ -30,7 +37,7 @@ test('call next once, resolve value twice', async () => {
   const apiStream = new APIStream(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
   const [apiStream$, { next }] = apiStream.getStream('stream_findPetsByTags');
 
-  const mockFn = jest.fn();
+  const mockFn = jest.fn(logResult);
   apiStream$.subscribe(mockFn);
 
   await new Promise((r) => setTimeout(() => {
@@ -42,6 +49,28 @@ test('call next once, resolve value twice', async () => {
     r(true);
     next();
   }, 500));
+
+  await new Promise((r) => setTimeout(r, 500));
+
+  expect(mockFn).toBeCalledTimes(5);
+});
+
+test('only resolve the last value', async () => {
+  // const mockRes = { data: { id: 'abc-123' } };
+  // mockXHR.get(/.*/, delay((req, res) => {
+  //   return res.status(200).body(JSON.stringify(mockRes));
+  // }, 100));
+
+  const apiStream = new APIStream(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
+  const [apiStream$, { next }] = apiStream.getStream('stream_findPetsByTags');
+
+  const mockFn = jest.fn((value) => console.log('value', value));
+  apiStream$.subscribe(mockFn);
+
+  next();
+  next();
+  next();
+  next();
 
   await new Promise((r) => setTimeout(r, 500));
 
