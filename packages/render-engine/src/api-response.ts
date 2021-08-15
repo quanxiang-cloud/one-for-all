@@ -32,13 +32,13 @@ type Props = {
 }
 
 type APIResponse = [
-  Observable<{ params: RequestParams; data?: any; error?: string; }>,
+  Observable<{ params: RequestParams; data?: any; error?: any; }>,
   (requestParams?: RequestParams) => void,
 ]
 
 function getResponse$({ requestBuilder, operationID, beforeStart, afterSolved }: Props): APIResponse {
   const params$ = new Subject<RequestParams>();
-  const response$: Observable<{ data?: any; error?: string; params: RequestParams; }> = params$.pipe(
+  const response$: Observable<{ data?: any; error?: any; params: RequestParams; }> = params$.pipe(
     // skip initial undefined request params
     // skip(1),
     tap(() => beforeStart?.()),
@@ -50,12 +50,13 @@ function getResponse$({ requestBuilder, operationID, beforeStart, afterSolved }:
     map(({ response }) => ({ data: response, error: undefined })),
     catchError((error) => {
       // todo need better log message
-      console.log('error', error);
-      return of({ error: String(error), data: undefined });
+      // console.debug('error', error);
+      return of({ error: error, data: undefined });
     }),
     withLatestFrom(params$),
     map(([{ data, error }, params]) => ({ data, error, params })),
     tap(() => afterSolved?.()),
+    // keep response$ hot
     share(),
   );
 

@@ -118,8 +118,31 @@ test('before_and_after_callback', (done) => {
 
   expect(beforeStartFn).toBeCalledTimes(4);
 
-  response$.subscribe(() => {
+  response$.subscribe(({ data }) => {
     expect(afterSolvedFn).toBeCalledTimes(1);
+    expect(data).toMatchObject(mockRes);
+    done();
+  });
+});
+
+test('error_should_not_be_undefined', (done) => {
+  const mockRes = { data: { id: 'abc-123' } };
+  mockXHR.get(/.*/, (req, res) => {
+    return res.status(400).body(JSON.stringify(mockRes));
+  });
+
+  const requestBuilder = new RequestBuilder(petStoreSpec);
+
+  const [response$, nextParams] = getResponse$({
+    requestBuilder,
+    operationID: 'findPetsByTags',
+  });
+
+  const requestParams: RequestParams = { params: { foo: 'bar' } };
+  nextParams(requestParams);
+
+  response$.subscribe(({ error }) => {
+    expect(error).toBeTruthy();
     done();
   });
 });
