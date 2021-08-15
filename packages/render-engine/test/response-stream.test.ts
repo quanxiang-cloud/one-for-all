@@ -240,7 +240,37 @@ test('stream_return_normal_after_retry_2', () => {
     return response$.subscribe(({ error, data }) => {
       expect(data).toBeTruthy();
       // todo jest bug?
-      expect(error).toEqual(3);
+      expect(error).toBeUndefined();
     });
+  });
+});
+
+test('later_subscriber_should_have_expected_value', (done) => {
+  const mockRes = { data: { id: 'abc-123' } };
+  mockXHR.get(/.*/, (req, res) => {
+    return res.status(200).body(JSON.stringify(mockRes));
+  });
+
+  const requestBuilder = new RequestBuilder(petStoreSpec);
+  const beforeStartFn = jest.fn();
+
+  const [response$, nextParams] = getResponse$({
+    requestBuilder,
+    operationID: 'findPetsByTags',
+    beforeStart: beforeStartFn,
+  });
+
+  const requestParams: RequestParams = { params: { foo: 'bar' } };
+  nextParams(requestParams);
+
+  expect(beforeStartFn).toBeCalled();
+
+  response$.subscribe(({ data }) => {
+    expect(data).toMatchObject(mockRes);
+  });
+
+  response$.subscribe(({ data }) => {
+    expect(data).toMatchObject(mockRes);
+    done();
   });
 });
