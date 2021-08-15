@@ -1,4 +1,4 @@
-import mockXHR from 'xhr-mock';
+import mockXHR, { sequence } from 'xhr-mock';
 
 import petStoreSpec from '@ofa/request-builder/test/petstore-spec';
 
@@ -9,9 +9,10 @@ import { RequestParams } from '@ofa/request-builder/src/types';
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
 
-test('initial_response_should_be_undefined', (done) => {
+test('value_would_not_resolve_without_call_next', () => {
   const beforeStartFn = jest.fn();
   const afterSolvedFn = jest.fn();
+  const subscriber = jest.fn();
   const requestBuilder = new RequestBuilder(petStoreSpec);
 
   const [response$] = getResponse$({
@@ -21,10 +22,37 @@ test('initial_response_should_be_undefined', (done) => {
     afterSolved: afterSolvedFn,
   });
 
-  response$.subscribe((result) => {
-    expect(result).toMatchObject({ data: undefined, error: undefined, params: undefined });
-    expect(beforeStartFn).not.toBeCalled();
-    expect(afterSolvedFn).not.toBeCalled();
+  response$.subscribe(subscriber);
+
+  expect(beforeStartFn).not.toBeCalled();
+  expect(afterSolvedFn).not.toBeCalled();
+  expect(subscriber).not.toBeCalled();
+});
+
+test('value_should_resolve_after_call_next', (done) => {
+  const mockRes = { data: { id: 'abc-123' } };
+  mockXHR.get(/.*/, (req, res) => {
+    return res.status(200).body(JSON.stringify(mockRes));
+  });
+
+  const beforeStartFn = jest.fn();
+  const afterSolvedFn = jest.fn();
+  const requestBuilder = new RequestBuilder(petStoreSpec);
+
+  const [response$, nextParams] = getResponse$({
+    requestBuilder,
+    operationID: 'findPetsByTags',
+    beforeStart: beforeStartFn,
+    afterSolved: afterSolvedFn,
+  });
+
+  nextParams({ params: { foo: 'bar' } });
+
+  response$.subscribe(({ data, params }) => {
+    expect(beforeStartFn).toBeCalled();
+    expect(afterSolvedFn).toBeCalled();
+    expect(data).toMatchObject(mockRes);
+    expect(params).toMatchObject({ params: { foo: 'bar' } });
     done();
   });
 });
@@ -37,15 +65,17 @@ test('resolve_same_value_no_matter_how_many_subscribers', () => {
 
   const requestBuilder = new RequestBuilder(petStoreSpec);
 
-  const [response$] = getResponse$({
+  const [response$, nextParams] = getResponse$({
     requestBuilder,
     operationID: 'findPetsByTags',
   });
 
+  nextParams();
+
   function assertFn(resolve: (value: unknown) => void): void {
-    response$.subscribe((response) => {
-      expect(response).toMatchObject({ data: undefined, error: undefined, params: undefined });
-      resolve(response);
+    response$.subscribe(({ data }) => {
+      expect(data).toMatchObject(mockRes);
+      resolve(data);
     });
   }
 
@@ -79,7 +109,7 @@ test('resolve_expected_data', () => {
 
   function assertFn(resolve: (value: unknown) => void): void {
     response$.subscribe((response) => {
-      expect(response.params).toMatchObject(requestParams as any);
+      expect(response.params).toMatchObject({ params: { foo: 'bar' } });
       expect(response.data).toMatchObject(mockRes);
       resolve(response);
     });
@@ -144,5 +174,73 @@ test('error_should_not_be_undefined', (done) => {
   response$.subscribe(({ error }) => {
     expect(error).toBeTruthy();
     done();
+  });
+});
+
+test('stream_return_normal_after_retry_1', () => {
+  const mockRes = { data: { id: 'abc-123' } };
+  mockXHR.get(/.*/, sequence([
+    (req, res) => {
+      return res.status(400).body(JSON.stringify(mockRes));
+    },
+    (req, res) => {
+      return res.status(200).body(JSON.stringify(mockRes));
+    },
+  ]));
+
+  const requestBuilder = new RequestBuilder(petStoreSpec);
+
+  const [response$, nextParams] = getResponse$({
+    requestBuilder,
+    operationID: 'findPetsByTags',
+  });
+
+  const requestParams: RequestParams = { params: { foo: 'bar' } };
+  nextParams(requestParams);
+  nextParams(requestParams);
+
+  response$.subscribe(({ error, data }) => {
+    expect(data).toBeTruthy();
+    expect(error).toBeUndefined();
+  });
+});
+
+test('stream_return_normal_after_retry_2', () => {
+  const mockRes = { data: { id: 'abc-123' } };
+  mockXHR.get(/.*/, sequence([
+    (req, res) => {
+      return res.status(400).body(JSON.stringify(mockRes));
+    },
+    (req, res) => {
+      return res.status(200).body(JSON.stringify(mockRes));
+    },
+  ]));
+
+  const requestBuilder = new RequestBuilder(petStoreSpec);
+
+  const [response$, nextParams] = getResponse$({
+    requestBuilder,
+    operationID: 'findPetsByTags',
+  });
+
+  const requestParams: RequestParams = { params: { foo: 'bar' } };
+  nextParams(requestParams);
+  expect.assertions(4);
+
+  return new Promise((resolve) => {
+    const sub = response$.subscribe(({ error, data }) => {
+      expect(data).toBeUndefined();
+      expect(error).toBeTruthy();
+      resolve(true);
+      sub.unsubscribe();
+    });
+  }).then(() => {
+    nextParams(requestParams);
+  }).then(() => {
+    return response$.subscribe(({ error, data }) => {
+      expect(data).toBeTruthy();
+      // todo jest bug?
+      expect(error).toEqual(3);
+    });
   });
 });

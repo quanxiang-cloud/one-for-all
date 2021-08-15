@@ -1,13 +1,11 @@
+import { noop } from 'lodash';
 import { ajax, AjaxRequest } from 'rxjs/ajax';
-import { of, Observable, Subject } from 'rxjs';
-import {
-  tap, map, switchMap, catchError, withLatestFrom, concatWith, share,
-} from 'rxjs/operators';
+import { of, Observable, ReplaySubject } from 'rxjs';
+import { tap, map, switchMap, catchError, withLatestFrom, share } from 'rxjs/operators';
 
 import RequestBuilder from '@ofa/request-builder';
 import { RequestConfig } from '@ofa/request-builder/src';
 import { RequestParams } from '@ofa/request-builder/src/types';
-import { noop } from 'lodash';
 
 function requestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
   return {
@@ -37,9 +35,8 @@ type APIResponse = [
 ]
 
 function getResponse$({ requestBuilder, operationID, beforeStart, afterSolved }: Props): APIResponse {
-  const params$ = new Subject<RequestParams>();
+  const params$ = new ReplaySubject<RequestParams>(1);
   const response$: Observable<{ data?: any; error?: any; params: RequestParams; }> = params$.pipe(
-    // skip initial undefined request params
     // skip(1),
     tap(() => beforeStart?.()),
     map((params): AjaxRequest => {
@@ -60,11 +57,11 @@ function getResponse$({ requestBuilder, operationID, beforeStart, afterSolved }:
     share(),
   );
 
-  // at least one Subscriber
+  // keep at least one subscriber
   response$.subscribe(noop);
 
   return [
-    of({ data: undefined, error: undefined, params: undefined }).pipe(concatWith(response$)),
+    response$,
     (requestParams?: RequestParams) => {
       params$.next(requestParams);
     },
