@@ -35,13 +35,8 @@ function responseState$(operationID: string, requestBuilder: RequestBuilder): [A
     source$.next({ ...result, loading: false });
   }
 
-  const loading$ = new BehaviorSubject<boolean>(false);
-
   const response$ = getResponse$(request$);
-
   response$.subscribe(onLoad);
-
-  response$.subscribe(() => loading$.next(false));
 
   source$.pipe(
     withLatestFrom(params$),
