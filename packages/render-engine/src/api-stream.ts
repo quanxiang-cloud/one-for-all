@@ -6,10 +6,15 @@ import RequestBuilder from '@ofa/request-builder';
 import { RequestParams } from '@ofa/request-builder/src/types';
 
 import { APIState } from './types';
-import getState$, { dummySendRequest, dummyStream$, StreamActions } from './state/state';
+import getState$ from './state/state';
 
 type ResultConvertor<T> = (result: APIState) => T;
 type ActionParamsConvertor = (...args: any[]) => RequestParams;
+type StreamActions = {
+  next: (params?: RequestParams) => void;
+  refresh: () => void;
+  // __complete: () => void;
+};
 
 export default class APIStream {
   requestBuilder: RequestBuilder;
@@ -39,7 +44,6 @@ export default class APIStream {
   getStream(streamID: string): [Observable<APIState>, StreamActions] {
     if (!this.streamIDMap[streamID]) {
       // todo log error message
-      return [dummyStream$, dummySendRequest];
     }
 
     const key = `${streamID}:${this.streamIDMap[streamID]}`;
@@ -63,10 +67,15 @@ export default class APIStream {
       map(([state, params]) => ({ ...state, params })),
     );
 
+    let latestParams: RequestParams = undefined;
+
     const streamActions: StreamActions = {
-      next: (params: RequestParams) => params$.next(params),
+      next: (params: RequestParams) => {
+        params$.next(params);
+        latestParams = params;
+      },
       refresh: () => {
-        // todo
+        params$.next(latestParams);
       },
     };
 

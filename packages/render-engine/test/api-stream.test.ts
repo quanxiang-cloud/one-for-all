@@ -3,15 +3,10 @@ import mockXHR, { delay } from 'xhr-mock';
 import petStoreSpec from '@ofa/request-builder/test/petstore-spec';
 
 import APIStream from '../src/api-stream';
-import { APIState } from '../src/types';
 import { initialState } from '../src/state/state';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
-
-function logResult(result: APIState): void {
-  console.log('result:', result);
-}
 
 test('resolve initial value when no next called', (done) => {
   const mockRes = { data: { id: 'abc-123' } };
@@ -37,7 +32,7 @@ test('call_next_times', async () => {
   const apiStream = new APIStream(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
   const [apiStream$, { next }] = apiStream.getStream('stream_findPetsByTags');
 
-  const mockFn = jest.fn(logResult);
+  const mockFn = jest.fn();
   apiStream$.subscribe(mockFn);
 
   await new Promise((r) => setTimeout(() => {
