@@ -1,7 +1,5 @@
 import { noop } from 'lodash';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { map, pairwise, filter, withLatestFrom, startWith,
-} from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
 import RequestBuilder from '@ofa/request-builder';
 import { RequestParams } from '@ofa/request-builder/src/types';
@@ -30,30 +28,35 @@ export type StreamActions = {
 export const initialState = { data: undefined, error: undefined, params: undefined, loading: false };
 
 function responseState$(operationID: string, requestBuilder: RequestBuilder): [APIResult$, StreamActions] {
-  const loading$ = new Subject<boolean>();
+  const source$ = new BehaviorSubject<APIResult>(initialState);
+  function onLoading(): void {
+    source$.next({ ...source$.getValue(), loading: true });
+  }
+
+  function onLoad(result: Omit<APIResult, 'loading'>): void {
+    source$.next({ ...result, loading: false });
+  }
+
+  const loading$ = new BehaviorSubject<boolean>(false);
 
   const [response$, nextParams] = getResponse$({
     requestBuilder,
     operationID,
     beforeStart: () => loading$.next(true),
-    afterSolved: () => loading$.next(false),
+    // afterSolved: () => loading$.next(false),
   });
 
-  const source$ = new BehaviorSubject<APIResult>(initialState);
+  response$.subscribe(onLoad);
 
-  const emit$: APIResult$ = loading$.pipe(
-    pairwise(),
-    filter((pair) => pair[0] !== pair[1]),
-    map((pair) => pair[1]),
-    withLatestFrom(response$),
-    map(([loading, response]) => ({ loading, ...response })),
-    startWith({ data: undefined, error: undefined, params: undefined, loading: false }),
-  );
-
-  emit$.subscribe((result) => source$.next(result));
+  response$.subscribe(() => loading$.next(false));
 
   const streamActions = {
-    next: nextParams,
+    next: (params: RequestParams) => {
+      nextParams(params);
+      if (!source$.getValue().loading) {
+        onLoading();
+      }
+    },
     refresh: () => {
       // params$.next(latestParams);
     },

@@ -52,9 +52,9 @@ function getResponse$({ requestBuilder, operationID, beforeStart, afterSolved }:
     }),
     withLatestFrom(params$),
     map(([{ data, error }, params]) => ({ data, error, params })),
-    tap(() => afterSolved?.()),
     // keep response$ hot
     share(),
+    tap(() => afterSolved?.()),
   );
 
   // keep at least one subscriber
