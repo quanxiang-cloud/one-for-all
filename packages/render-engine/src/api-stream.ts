@@ -60,7 +60,7 @@ export default class APIStream {
       map((params) => this.requestBuilder.buildRequest(this.streamIDMap[streamID], params)),
     );
 
-    const fullState = getState$(request$).pipe(
+    const fullState$ = getState$(request$).pipe(
       withLatestFrom(
         of(undefined).pipe(concatWith(params$)),
       ),
@@ -79,6 +79,6 @@ export default class APIStream {
       },
     };
 
-    return [fullState, streamActions];
+    return [fullState$, streamActions];
   }
 }

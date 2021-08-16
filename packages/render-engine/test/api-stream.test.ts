@@ -8,7 +8,7 @@ import { initialState } from '../src/state/state';
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
 
-test('resolve initial value when no next called', (done) => {
+test('resolve_initial_value_when_no_next_called', (done) => {
   const mockRes = { data: { id: 'abc-123' } };
   mockXHR.get(/.*/, (req, res) => {
     return res.status(200).body(JSON.stringify(mockRes));
@@ -50,16 +50,16 @@ test('call_next_times', async () => {
   expect(mockFn).toBeCalledTimes(5);
 });
 
-test('only resolve the last value', async () => {
-  // const mockRes = { data: { id: 'abc-123' } };
-  // mockXHR.get(/.*/, delay((req, res) => {
-  //   return res.status(200).body(JSON.stringify(mockRes));
-  // }, 100));
+test('only_resolve_the_last_value', async () => {
+  const mockRes = { data: { id: 'abc-123' } };
+  mockXHR.get(/.*/, delay((req, res) => {
+    return res.status(200).body(JSON.stringify(mockRes));
+  }, 100));
 
   const apiStream = new APIStream(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
   const [apiStream$, { next }] = apiStream.getStream('stream_findPetsByTags');
 
-  const mockFn = jest.fn((value) => console.log('value', value));
+  const mockFn = jest.fn();
   apiStream$.subscribe(mockFn);
 
   next();
@@ -69,10 +69,10 @@ test('only resolve the last value', async () => {
 
   await new Promise((r) => setTimeout(r, 500));
 
-  expect(mockFn).toBeCalledTimes(4);
+  expect(mockFn).toBeCalledTimes(3);
 });
 
-test('should resolve value', (done) => {
+test('should_resolve_value', (done) => {
   const mockRes = { data: { id: 'abc-123' } };
   mockXHR.get(/.*/, (req, res) => {
     return res.status(200).body(JSON.stringify(mockRes));
@@ -90,7 +90,7 @@ test('should resolve value', (done) => {
   next();
 });
 
-test('same streamID, same stream', () => {
+test('same_streamID_same_stream', () => {
   const apiStream = new APIStream(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
   const [apiStream$1, sendRequest1] = apiStream.getStream('stream_findPetsByTags');
   const [apiStream$2, sendRequest2] = apiStream.getStream('stream_findPetsByTags');
