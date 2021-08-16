@@ -5,8 +5,8 @@ import { OpenAPIV3 } from 'openapi-types';
 import RequestBuilder from '@ofa/request-builder';
 import { RequestParams } from '@ofa/request-builder/src/types';
 
-import { APIState, Observable<APIState> } from './types';
-import responseState$, { dummySendRequest, dummyStream$, StreamActions } from ./state/statee';
+import { APIState } from './types';
+import responseState$, { dummySendRequest, dummyStream$, StreamActions } from './state/state';
 
 type ResultConvertor<T> = (result: APIState) => T;
 type ActionParamsConvertor = (...args: any[]) => RequestParams;

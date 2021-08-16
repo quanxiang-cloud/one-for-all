@@ -26,7 +26,7 @@ function getState$(operationID: string, requestBuilder: RequestBuilder): [Observ
   response$.pipe(
     withLatestFrom(params$),
     map(([resp, params]) => ({ ...resp, params, loading: false })),
-  ).subscribe((result) => state$.next(result));
+  ).subscribe(state$);
 
   params$.pipe(
     filter(() => state$.getValue().loading === false),
@@ -34,12 +34,15 @@ function getState$(operationID: string, requestBuilder: RequestBuilder): [Observ
     state$.next({ ...state$.getValue(), loading: true });
   });
 
+  let latestParams: RequestParams = undefined;
+
   const streamActions = {
     next: (params: RequestParams) => {
       params$.next(params);
+      latestParams = params;
     },
     refresh: () => {
-      // params$.next(latestParams);
+      params$.next(latestParams);
     },
     __complete: () => {
       // params$.complete();

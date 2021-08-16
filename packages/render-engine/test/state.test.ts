@@ -5,6 +5,7 @@ import petStoreSpec from '@ofa/request-builder/test/petstore-spec';
 import getResponseService$, { initialState } from '../src/state/state';
 import RequestBuilder from '@ofa/request-builder';
 import { APIState } from '../src/types';
+import { filter, pairwise, skip, tap } from 'rxjs';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
@@ -74,4 +75,31 @@ test('response_state_table', (done) => {
   });
 
   streamActions.next({ params: { foo: 'bar' } });
+});
+
+test('state_refresh', (done) => {
+  const mockRes = { data: { id: 'abc-123' } };
+  mockXHR.get(/.*/, (req, res) => {
+    return res.status(200).body(JSON.stringify(mockRes));
+  });
+
+  let refreshCalled = false;
+
+  const [apiState$, streamActions] = getResponseService$('findPetsByTags', requestBuilder);
+  apiState$.pipe(
+    skip(1),
+    filter(({ loading }) => !loading),
+    tap(() => {
+      if (!refreshCalled) {
+        refreshCalled = true;
+        streamActions.refresh();
+      }
+    }),
+    pairwise(),
+  ).subscribe(([r1, r2]) => {
+    expect(r1.data).toMatchObject(r2.data);
+    done();
+  });
+
+  streamActions.next(undefined);
 });
