@@ -6,7 +6,7 @@ import RequestBuilder from '@ofa/request-builder';
 import { RequestParams } from '@ofa/request-builder/src/types';
 
 import { APIResult, APIResult$ } from './types';
-import createAPIResult$, { dummySendRequest, dummyStream$, StreamActions } from './create-stream';
+import responseState$, { dummySendRequest, dummyStream$, StreamActions } from './state/response-service';
 
 type ResultConvertor<T> = (result: APIResult) => T;
 type ActionParamsConvertor = (...args: any[]) => RequestParams;
@@ -44,7 +44,7 @@ export default class APIStream {
 
     const key = `${streamID}:${this.streamIDMap[streamID]}`;
     if (!this.streamCache[key]) {
-      const [apiResult$, setParams] = createAPIResult$(this.streamIDMap[streamID], this.requestBuilder);
+      const [apiResult$, setParams] = responseState$(this.streamIDMap[streamID], this.requestBuilder);
       this.streamCache[key] = [apiResult$, setParams];
     }
 

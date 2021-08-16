@@ -2,7 +2,7 @@ import mockXHR, { sequence } from 'xhr-mock';
 
 import petStoreSpec from '@ofa/request-builder/test/petstore-spec';
 
-import getResponse$ from '../src/api-response';
+import getResponse$ from '../src/state/request';
 import RequestBuilder from '@ofa/request-builder';
 import { RequestParams } from '@ofa/request-builder/src/types';
 

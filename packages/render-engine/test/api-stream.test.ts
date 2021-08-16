@@ -4,7 +4,7 @@ import petStoreSpec from '@ofa/request-builder/test/petstore-spec';
 
 import APIStream from '../src/api-stream';
 import { APIResult } from '../src/types';
-import { initialState } from '../src/create-stream';
+import { initialState } from '../src/state/response-service';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());

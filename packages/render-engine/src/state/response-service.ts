@@ -6,8 +6,8 @@ import { map, pairwise, filter, withLatestFrom, startWith,
 import RequestBuilder from '@ofa/request-builder';
 import { RequestParams } from '@ofa/request-builder/src/types';
 
-import createResponse$ from './api-response';
-import { APIResult, APIResult$ } from './types';
+import getResponse$ from './request';
+import { APIResult, APIResult$ } from '../types';
 
 // API Stream State Table
 /*
@@ -29,10 +29,10 @@ export type StreamActions = {
 
 export const initialState = { data: undefined, error: undefined, params: undefined, loading: false };
 
-function createAPIResult$(operationID: string, requestBuilder: RequestBuilder): [APIResult$, StreamActions] {
+function responseState$(operationID: string, requestBuilder: RequestBuilder): [APIResult$, StreamActions] {
   const loading$ = new Subject<boolean>();
 
-  const [response$, nextParams] = createResponse$({
+  const [response$, nextParams] = getResponse$({
     requestBuilder,
     operationID,
     beforeStart: () => loading$.next(true),
@@ -74,4 +74,4 @@ export const dummySendRequest: StreamActions = {
   __complete: noop,
 };
 
-export default createAPIResult$;
+export default responseState$;
