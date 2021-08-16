@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs';
 import { RequestParams } from '@ofa/request-builder/src/types';
 
 type StringSelector = string;
@@ -12,8 +11,6 @@ export type APIState = {
   data?: any;
   error?: string;
 };
-
-export type APIState$ = Observable<APIState>;
 
 export type ResultDerivedProperty<T = any> = {
   type: 'result_derived_property';

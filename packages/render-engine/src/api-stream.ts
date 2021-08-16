@@ -5,7 +5,7 @@ import { OpenAPIV3 } from 'openapi-types';
 import RequestBuilder from '@ofa/request-builder';
 import { RequestParams } from '@ofa/request-builder/src/types';
 
-import { APIState, APIState$ } from './types';
+import { APIState, Observable<APIState> } from './types';
 import responseState$, { dummySendRequest, dummyStream$, StreamActions } from ./state/statee';
 
 type ResultConvertor<T> = (result: APIState) => T;
@@ -15,7 +15,7 @@ export default class APIStream {
   requestBuilder: RequestBuilder;
   // map of streamID and operationID
   streamIDMap: Record<string, string>;
-  streamCache: Record<string, [APIState$, StreamActions]> = {};
+  streamCache: Record<string, [Observable<APIState>, StreamActions]> = {};
 
   constructor(apiDoc: OpenAPIV3.Document, streamIDMap: Record<string, string>) {
     this.requestBuilder = new RequestBuilder(apiDoc);
@@ -36,7 +36,7 @@ export default class APIStream {
     };
   }
 
-  getStream(streamID: string): [APIState$, StreamActions] {
+  getStream(streamID: string): [Observable<APIState>, StreamActions] {
     if (!this.streamIDMap[streamID]) {
       // todo log error message
       return [dummyStream$, dummySendRequest];
