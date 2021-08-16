@@ -4,7 +4,7 @@ import { BehaviorSubject, map, Subject, withLatestFrom } from 'rxjs';
 import RequestBuilder from '@ofa/request-builder';
 import { RequestParams } from '@ofa/request-builder/src/types';
 
-import getResponse$ from './request';
+import getResponse$ from './response';
 import { APIResult, APIResult$ } from '../types';
 
 export type StreamActions = {
