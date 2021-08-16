@@ -5,7 +5,7 @@ import petStoreSpec from '@ofa/request-builder/test/petstore-spec';
 import getResponse$ from '../src/state/request';
 import RequestBuilder from '@ofa/request-builder';
 import { RequestParams } from '@ofa/request-builder/src/types';
-import { ReplaySubject, Subject } from 'rxjs';
+import { map, ReplaySubject, Subject } from 'rxjs';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
@@ -14,8 +14,11 @@ test('value_would_not_resolve_without_call_next', () => {
   const subscriber = jest.fn();
   const requestBuilder = new RequestBuilder(petStoreSpec);
   const params$ = new Subject<RequestParams>();
+  const request$ = params$.pipe(
+    map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
+  );
 
-  const response$ = getResponse$({ requestBuilder, operationID: 'findPetsByTags', params$ });
+  const response$ = getResponse$(request$);
 
   response$.subscribe(subscriber);
 
@@ -30,21 +33,19 @@ test('value_should_resolve_after_call_next', (done) => {
 
   const requestBuilder = new RequestBuilder(petStoreSpec);
   const params$ = new Subject<RequestParams>();
+  const request$ = params$.pipe(
+    map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
+  );
   function nextParams(params: RequestParams): void {
     params$.next(params);
   }
 
-  const response$ = getResponse$({
-    requestBuilder,
-    operationID: 'findPetsByTags',
-    params$,
-  });
+  const response$ = getResponse$(request$);
 
   nextParams({ params: { foo: 'bar' } });
 
-  response$.subscribe(({ data, params }) => {
+  response$.subscribe(({ data }) => {
     expect(data).toMatchObject(mockRes);
-    expect(params).toMatchObject({ params: { foo: 'bar' } });
     done();
   });
 });
@@ -57,15 +58,14 @@ test('resolve_same_value_no_matter_how_many_subscribers', () => {
 
   const requestBuilder = new RequestBuilder(petStoreSpec);
   const params$ = new Subject<RequestParams>();
+  const request$ = params$.pipe(
+    map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
+  );
   function nextParams(params: RequestParams): void {
     params$.next(params);
   }
 
-  const response$ = getResponse$({
-    requestBuilder,
-    operationID: 'findPetsByTags',
-    params$,
-  });
+  const response$ = getResponse$(request$);
 
   nextParams(undefined);
 
@@ -92,22 +92,20 @@ test('resolve_expected_data', () => {
 
   const requestBuilder = new RequestBuilder(petStoreSpec);
   const params$ = new Subject<RequestParams>();
+  const request$ = params$.pipe(
+    map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
+  );
   function nextParams(params: RequestParams): void {
     params$.next(params);
   }
 
-  const response$ = getResponse$({
-    requestBuilder,
-    operationID: 'findPetsByTags',
-    params$,
-  });
+  const response$ = getResponse$(request$);
 
   const requestParams: RequestParams = { params: { foo: 'bar' } };
   nextParams(requestParams);
 
   function assertFn(resolve: (value: unknown) => void): void {
     response$.subscribe((response) => {
-      expect(response.params).toMatchObject({ params: { foo: 'bar' } });
       expect(response.data).toMatchObject(mockRes);
       resolve(response);
     });
@@ -129,15 +127,14 @@ test('before_and_after_callback', (done) => {
 
   const requestBuilder = new RequestBuilder(petStoreSpec);
   const params$ = new Subject<RequestParams>();
+  const request$ = params$.pipe(
+    map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
+  );
   function nextParams(params: RequestParams): void {
     params$.next(params);
   }
 
-  const response$ = getResponse$({
-    requestBuilder,
-    operationID: 'findPetsByTags',
-    params$,
-  });
+  const response$ = getResponse$(request$);
 
   const requestParams: RequestParams = { params: { foo: 'bar' } };
   nextParams(requestParams);
@@ -159,15 +156,14 @@ test('error_should_not_be_undefined', (done) => {
 
   const requestBuilder = new RequestBuilder(petStoreSpec);
   const params$ = new Subject<RequestParams>();
+  const request$ = params$.pipe(
+    map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
+  );
   function nextParams(params: RequestParams): void {
     params$.next(params);
   }
 
-  const response$ = getResponse$({
-    requestBuilder,
-    operationID: 'findPetsByTags',
-    params$,
-  });
+  const response$ = getResponse$(request$);
 
   const requestParams: RequestParams = { params: { foo: 'bar' } };
   nextParams(requestParams);
@@ -191,15 +187,14 @@ test('stream_return_normal_after_retry_1', () => {
 
   const requestBuilder = new RequestBuilder(petStoreSpec);
   const params$ = new Subject<RequestParams>();
+  const request$ = params$.pipe(
+    map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
+  );
   function nextParams(params: RequestParams): void {
     params$.next(params);
   }
 
-  const response$ = getResponse$({
-    requestBuilder,
-    operationID: 'findPetsByTags',
-    params$,
-  });
+  const response$ = getResponse$(request$);
 
   const requestParams: RequestParams = { params: { foo: 'bar' } };
   nextParams(requestParams);
@@ -224,15 +219,14 @@ test('stream_return_normal_after_retry_2', () => {
 
   const requestBuilder = new RequestBuilder(petStoreSpec);
   const params$ = new ReplaySubject<RequestParams>(1);
+  const request$ = params$.pipe(
+    map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
+  );
   function nextParams(params: RequestParams): void {
     params$.next(params);
   }
 
-  const response$ = getResponse$({
-    requestBuilder,
-    operationID: 'findPetsByTags',
-    params$,
-  });
+  const response$ = getResponse$(request$);
 
   const requestParams: RequestParams = { params: { foo: 'bar' } };
   nextParams(requestParams);
@@ -264,15 +258,14 @@ test('later_subscriber_should_have_expected_value', (done) => {
 
   const requestBuilder = new RequestBuilder(petStoreSpec);
   const params$ = new Subject<RequestParams>();
+  const request$ = params$.pipe(
+    map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
+  );
   function nextParams(params: RequestParams): void {
     params$.next(params);
   }
 
-  const response$ = getResponse$({
-    requestBuilder,
-    operationID: 'findPetsByTags',
-    params$,
-  });
+  const response$ = getResponse$(request$);
 
   const requestParams: RequestParams = { params: { foo: 'bar' } };
   nextParams(requestParams);

@@ -1,23 +1,11 @@
 import { noop } from 'lodash';
-import { BehaviorSubject, ReplaySubject } from 'rxjs';
+import { BehaviorSubject, map, Subject, withLatestFrom } from 'rxjs';
 
 import RequestBuilder from '@ofa/request-builder';
 import { RequestParams } from '@ofa/request-builder/src/types';
 
 import getResponse$ from './request';
 import { APIResult, APIResult$ } from '../types';
-
-// API Stream State Table
-/*
-    |     | loading |   body    |   error   |
-    | --- | :-----: | :-------: | :-------: |
-    | 1   |  false  | undefined | undefined |
-    | 2   |  true   | undefined | undefined |
-┌──►| 3   |  false  |    {}     | undefined |◄────┐
-└───| 4   |  true   |    {}     | undefined |     │
-    | 5   |  false  | undefined |    xxx    |     │
-    | 6   |  true   | undefined |    xxx    |─────┘
-*/
 
 export type StreamActions = {
   next: (params?: RequestParams) => void;
@@ -28,32 +16,44 @@ export type StreamActions = {
 export const initialState = { data: undefined, error: undefined, params: undefined, loading: false };
 
 function responseState$(operationID: string, requestBuilder: RequestBuilder): [APIResult$, StreamActions] {
-  const source$ = new BehaviorSubject<APIResult>(initialState);
-  const params$ = new ReplaySubject<RequestParams>(1);
+  const state$ = new BehaviorSubject<APIResult>(initialState);
+  const source$ = new Subject<Omit<APIResult, 'params'>>();
+
+  const params$ = new Subject<RequestParams>();
+  const request$ = params$.pipe(
+    map((params) => requestBuilder.buildRequest(operationID, params)),
+  );
   // todo refactor this
   function nextParams(params: RequestParams): void {
     params$.next(params);
   }
   function onLoading(): void {
-    source$.next({ ...source$.getValue(), loading: true });
+    state$.next({ ...state$.getValue(), loading: true });
   }
 
-  function onLoad(result: Omit<APIResult, 'loading'>): void {
+  function onLoad(result: Omit<APIResult, 'loading' | 'params'>): void {
     source$.next({ ...result, loading: false });
   }
 
   const loading$ = new BehaviorSubject<boolean>(false);
 
-  const response$ = getResponse$({ requestBuilder, operationID, params$ });
+  const response$ = getResponse$(request$);
 
   response$.subscribe(onLoad);
 
   response$.subscribe(() => loading$.next(false));
 
+  source$.pipe(
+    withLatestFrom(params$),
+    map(([resp, params]) => ({ ...resp, params })),
+  ).subscribe((state) => {
+    state$.next(state);
+  });
+
   const streamActions = {
     next: (params: RequestParams) => {
       nextParams(params);
-      if (!source$.getValue().loading) {
+      if (!state$.getValue().loading) {
         onLoading();
       }
     },
@@ -65,7 +65,7 @@ function responseState$(operationID: string, requestBuilder: RequestBuilder): [A
     },
   };
 
-  return [source$, streamActions];
+  return [state$, streamActions];
 }
 
 const dummyResult = { body: null, loading: false, error: undefined, params: undefined };
