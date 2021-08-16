@@ -1,55 +1,40 @@
 import { noop } from 'lodash';
-import { BehaviorSubject, filter, map, Observable, Subject, withLatestFrom } from 'rxjs';
+import { BehaviorSubject, filter, map, Observable } from 'rxjs';
 
-import RequestBuilder from '@ofa/request-builder';
 import { RequestParams } from '@ofa/request-builder/src/types';
 
 import getResponse$ from './response';
 import { APIState } from '../types';
+import { RequestConfig } from 'packages/request-builder/src';
 
 export type StreamActions = {
   next: (params?: RequestParams) => void;
   refresh: () => void;
-  __complete: () => void;
+  // __complete: () => void;
 };
 
 export const initialState = { data: undefined, error: undefined, params: undefined, loading: false };
 
-function getState$(operationID: string, requestBuilder: RequestBuilder): [Observable<APIState>, StreamActions] {
-  const state$ = new BehaviorSubject<APIState>(initialState);
-  const params$ = new Subject<RequestParams>();
-  const request$ = params$.pipe(
-    map((params) => requestBuilder.buildRequest(operationID, params)),
-  );
+type State = Omit<APIState, 'params'>;
+// operationID: string, requestBuilder: RequestBuilder
+function getState$(request$: Observable<RequestConfig>): Observable<State> {
+  const state$ = new BehaviorSubject<State>(initialState);
+  // const params$ = new Subject<RequestParams>();
+  // const request$ = params$.pipe(
+  //   map((params) => requestBuilder.buildRequest(operationID, params)),
+  // );
   const response$ = getResponse$(request$);
 
   response$.pipe(
-    withLatestFrom(params$),
-    map(([resp, params]) => ({ ...resp, params, loading: false })),
+    map((resp) => ({ ...resp, loading: false })),
   ).subscribe(state$);
 
-  params$.pipe(
+  request$.pipe(
     filter(() => state$.getValue().loading === false),
-  ).subscribe(() => {
-    state$.next({ ...state$.getValue(), loading: true });
-  });
+    map(() => ({ ...state$.getValue(), loading: true })),
+  ).subscribe(state$);
 
-  let latestParams: RequestParams = undefined;
-
-  const streamActions = {
-    next: (params: RequestParams) => {
-      params$.next(params);
-      latestParams = params;
-    },
-    refresh: () => {
-      params$.next(latestParams);
-    },
-    __complete: () => {
-      // params$.complete();
-    },
-  };
-
-  return [state$, streamActions];
+  return state$;
 }
 
 const dummyResult = { body: null, loading: false, error: undefined, params: undefined };
@@ -58,7 +43,7 @@ export const dummySendRequest: StreamActions = {
   // todo refactor this
   next: noop,
   refresh: noop,
-  __complete: noop,
+  // __complete: noop,
 };
 
 export default getState$;

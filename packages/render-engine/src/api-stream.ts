@@ -1,12 +1,12 @@
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, of, Subject } from 'rxjs';
+import { concatWith, map, withLatestFrom } from 'rxjs/operators';
 import { OpenAPIV3 } from 'openapi-types';
 
 import RequestBuilder from '@ofa/request-builder';
 import { RequestParams } from '@ofa/request-builder/src/types';
 
 import { APIState } from './types';
-import responseState$, { dummySendRequest, dummyStream$, StreamActions } from './state/state';
+import getState$, { dummySendRequest, dummyStream$, StreamActions } from './state/state';
 
 type ResultConvertor<T> = (result: APIState) => T;
 type ActionParamsConvertor = (...args: any[]) => RequestParams;
@@ -44,10 +44,32 @@ export default class APIStream {
 
     const key = `${streamID}:${this.streamIDMap[streamID]}`;
     if (!this.streamCache[key]) {
-      const [apiState$, setParams] = responseState$(this.streamIDMap[streamID], this.requestBuilder);
-      this.streamCache[key] = [apiState$, setParams];
+      this.streamCache[key] = this.initState(streamID);
     }
 
     return this.streamCache[key];
+  }
+
+  initState(streamID: string): [Observable<APIState>, StreamActions] {
+    const params$ = new Subject<RequestParams>();
+    const request$ = params$.pipe(
+      map((params) => this.requestBuilder.buildRequest(this.streamIDMap[streamID], params)),
+    );
+
+    const fullState = getState$(request$).pipe(
+      withLatestFrom(
+        of(undefined).pipe(concatWith(params$)),
+      ),
+      map(([state, params]) => ({ ...state, params })),
+    );
+
+    const streamActions: StreamActions = {
+      next: (params: RequestParams) => params$.next(params),
+      refresh: () => {
+        // todo
+      },
+    };
+
+    return [fullState, streamActions];
   }
 }
