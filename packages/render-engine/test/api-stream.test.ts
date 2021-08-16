@@ -3,13 +3,13 @@ import mockXHR, { delay } from 'xhr-mock';
 import petStoreSpec from '@ofa/request-builder/test/petstore-spec';
 
 import APIStream from '../src/api-stream';
-import { APIResult } from '../src/types';
-import { initialState } from '../src/state/response-service';
+import { APIState } from '../src/types';
+import { initialState } from '../src/state/state';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
 
-function logResult(result: APIResult): void {
+function logResult(result: APIState): void {
   console.log('result:', result);
 }
 

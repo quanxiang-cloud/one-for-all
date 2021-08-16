@@ -6,20 +6,20 @@ type Selector<T> = StringSelector | ((data: any) => T);
 
 type ElementIdentifier = string;
 
-export type APIResult = {
+export type APIState = {
   params: RequestParams;
   loading: boolean;
   data?: any;
   error?: string;
 };
 
-export type APIResult$ = Observable<APIResult>;
+export type APIState$ = Observable<APIState>;
 
 export type ResultDerivedProperty<T = any> = {
   type: 'result_derived_property';
   initialValue: T;
   streamID: string;
-  convertor: (res: APIResult) => T;
+  convertor: (res: APIState) => T;
 }
 
 export type APIInvokeProperty<T = any> = {
