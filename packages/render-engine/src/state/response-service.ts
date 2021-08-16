@@ -42,8 +42,6 @@ function responseState$(operationID: string, requestBuilder: RequestBuilder): [A
   const [response$, nextParams] = getResponse$({
     requestBuilder,
     operationID,
-    beforeStart: () => loading$.next(true),
-    // afterSolved: () => loading$.next(false),
   });
 
   response$.subscribe(onLoad);

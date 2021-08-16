@@ -10,22 +10,16 @@ beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
 
 test('value_would_not_resolve_without_call_next', () => {
-  const beforeStartFn = jest.fn();
-  const afterSolvedFn = jest.fn();
   const subscriber = jest.fn();
   const requestBuilder = new RequestBuilder(petStoreSpec);
 
   const [response$] = getResponse$({
     requestBuilder,
     operationID: 'findPetsByTags',
-    beforeStart: beforeStartFn,
-    afterSolved: afterSolvedFn,
   });
 
   response$.subscribe(subscriber);
 
-  expect(beforeStartFn).not.toBeCalled();
-  expect(afterSolvedFn).not.toBeCalled();
   expect(subscriber).not.toBeCalled();
 });
 
@@ -35,22 +29,16 @@ test('value_should_resolve_after_call_next', (done) => {
     return res.status(200).body(JSON.stringify(mockRes));
   });
 
-  const beforeStartFn = jest.fn();
-  const afterSolvedFn = jest.fn();
   const requestBuilder = new RequestBuilder(petStoreSpec);
 
   const [response$, nextParams] = getResponse$({
     requestBuilder,
     operationID: 'findPetsByTags',
-    beforeStart: beforeStartFn,
-    afterSolved: afterSolvedFn,
   });
 
   nextParams({ params: { foo: 'bar' } });
 
   response$.subscribe(({ data, params }) => {
-    expect(beforeStartFn).toBeCalled();
-    expect(afterSolvedFn).toBeCalled();
     expect(data).toMatchObject(mockRes);
     expect(params).toMatchObject({ params: { foo: 'bar' } });
     done();
@@ -94,18 +82,14 @@ test('resolve_expected_data', () => {
   });
 
   const requestBuilder = new RequestBuilder(petStoreSpec);
-  const beforeStartFn = jest.fn();
 
   const [response$, nextParams] = getResponse$({
     requestBuilder,
     operationID: 'findPetsByTags',
-    beforeStart: beforeStartFn,
   });
 
   const requestParams: RequestParams = { params: { foo: 'bar' } };
   nextParams(requestParams);
-
-  expect(beforeStartFn).toBeCalled();
 
   function assertFn(resolve: (value: unknown) => void): void {
     response$.subscribe((response) => {
@@ -130,14 +114,10 @@ test('before_and_after_callback', (done) => {
   });
 
   const requestBuilder = new RequestBuilder(petStoreSpec);
-  const beforeStartFn = jest.fn();
-  const afterSolvedFn = jest.fn();
 
   const [response$, nextParams] = getResponse$({
     requestBuilder,
     operationID: 'findPetsByTags',
-    beforeStart: beforeStartFn,
-    afterSolved: afterSolvedFn,
   });
 
   const requestParams: RequestParams = { params: { foo: 'bar' } };
@@ -146,10 +126,7 @@ test('before_and_after_callback', (done) => {
   nextParams(requestParams);
   nextParams(requestParams);
 
-  expect(beforeStartFn).toBeCalledTimes(4);
-
   response$.subscribe(({ data }) => {
-    expect(afterSolvedFn).toBeCalledTimes(1);
     expect(data).toMatchObject(mockRes);
     done();
   });
@@ -252,18 +229,14 @@ test('later_subscriber_should_have_expected_value', (done) => {
   });
 
   const requestBuilder = new RequestBuilder(petStoreSpec);
-  const beforeStartFn = jest.fn();
 
   const [response$, nextParams] = getResponse$({
     requestBuilder,
     operationID: 'findPetsByTags',
-    beforeStart: beforeStartFn,
   });
 
   const requestParams: RequestParams = { params: { foo: 'bar' } };
   nextParams(requestParams);
-
-  expect(beforeStartFn).toBeCalled();
 
   response$.subscribe(({ data }) => {
     expect(data).toMatchObject(mockRes);

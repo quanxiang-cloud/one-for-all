@@ -1,7 +1,7 @@
 import { noop } from 'lodash';
 import { ajax, AjaxRequest } from 'rxjs/ajax';
 import { of, Observable, ReplaySubject } from 'rxjs';
-import { tap, map, switchMap, catchError, withLatestFrom, share } from 'rxjs/operators';
+import { map, switchMap, catchError, withLatestFrom, share } from 'rxjs/operators';
 
 import RequestBuilder from '@ofa/request-builder';
 import { RequestConfig } from '@ofa/request-builder/src';
@@ -25,8 +25,6 @@ function requestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
 type Props = {
   requestBuilder: RequestBuilder;
   operationID: string;
-  beforeStart?: () => void;
-  afterSolved?: () => void;
 }
 
 type APIResponse = [
@@ -34,11 +32,9 @@ type APIResponse = [
   (requestParams?: RequestParams) => void,
 ]
 
-function getResponse$({ requestBuilder, operationID, beforeStart, afterSolved }: Props): APIResponse {
+function getResponse$({ requestBuilder, operationID }: Props): APIResponse {
   const params$ = new ReplaySubject<RequestParams>(1);
   const response$: Observable<{ data?: any; error?: any; params: RequestParams; }> = params$.pipe(
-    // skip(1),
-    tap(() => beforeStart?.()),
     map((params): AjaxRequest => {
       const config = requestBuilder.buildRequest(operationID, params);
       return requestConfigToAjaxRequest(config);
@@ -54,7 +50,6 @@ function getResponse$({ requestBuilder, operationID, beforeStart, afterSolved }:
     map(([{ data, error }, params]) => ({ data, error, params })),
     // keep response$ hot
     share(),
-    tap(() => afterSolved?.()),
   );
 
   // keep at least one subscriber
