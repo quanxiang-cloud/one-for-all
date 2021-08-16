@@ -1,5 +1,5 @@
 import { noop } from 'lodash';
-import { BehaviorSubject, map, Subject, withLatestFrom } from 'rxjs';
+import { BehaviorSubject, filter, map, Subject, withLatestFrom } from 'rxjs';
 
 import RequestBuilder from '@ofa/request-builder';
 import { RequestParams } from '@ofa/request-builder/src/types';
@@ -17,40 +17,26 @@ export const initialState = { data: undefined, error: undefined, params: undefin
 
 function responseState$(operationID: string, requestBuilder: RequestBuilder): [APIResult$, StreamActions] {
   const state$ = new BehaviorSubject<APIResult>(initialState);
-  const source$ = new Subject<Omit<APIResult, 'params'>>();
-
   const params$ = new Subject<RequestParams>();
   const request$ = params$.pipe(
     map((params) => requestBuilder.buildRequest(operationID, params)),
   );
-  // todo refactor this
-  function nextParams(params: RequestParams): void {
-    params$.next(params);
-  }
-  function onLoading(): void {
-    state$.next({ ...state$.getValue(), loading: true });
-  }
-
-  function onLoad(result: Omit<APIResult, 'loading' | 'params'>): void {
-    source$.next({ ...result, loading: false });
-  }
-
   const response$ = getResponse$(request$);
-  response$.subscribe(onLoad);
 
-  source$.pipe(
+  response$.pipe(
     withLatestFrom(params$),
-    map(([resp, params]) => ({ ...resp, params })),
-  ).subscribe((state) => {
-    state$.next(state);
+    map(([resp, params]) => ({ ...resp, params, loading: false })),
+  ).subscribe((result) => state$.next(result));
+
+  params$.pipe(
+    filter(() => state$.getValue().loading === false),
+  ).subscribe(() => {
+    state$.next({ ...state$.getValue(), loading: true });
   });
 
   const streamActions = {
     next: (params: RequestParams) => {
-      nextParams(params);
-      if (!state$.getValue().loading) {
-        onLoading();
-      }
+      params$.next(params);
     },
     refresh: () => {
       // params$.next(latestParams);
