@@ -1,6 +1,6 @@
 import { noop } from 'lodash';
 import { ajax, AjaxRequest } from 'rxjs/ajax';
-import { of, Observable, ReplaySubject } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { map, switchMap, catchError, withLatestFrom, share } from 'rxjs/operators';
 
 import RequestBuilder from '@ofa/request-builder';
@@ -25,15 +25,12 @@ function requestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
 type Props = {
   requestBuilder: RequestBuilder;
   operationID: string;
+  params$: Observable<RequestParams>;
 }
 
-type APIResponse = [
-  Observable<{ params: RequestParams; data?: any; error?: any; }>,
-  (requestParams?: RequestParams) => void,
-]
+type Response$ = Observable<{ params: RequestParams; data?: any; error?: any; }>
 
-function getResponse$({ requestBuilder, operationID }: Props): APIResponse {
-  const params$ = new ReplaySubject<RequestParams>(1);
+function getResponse$({ requestBuilder, operationID, params$ }: Props): Response$ {
   const response$: Observable<{ data?: any; error?: any; params: RequestParams; }> = params$.pipe(
     map((params): AjaxRequest => {
       const config = requestBuilder.buildRequest(operationID, params);
@@ -55,12 +52,7 @@ function getResponse$({ requestBuilder, operationID }: Props): APIResponse {
   // keep at least one subscriber
   response$.subscribe(noop);
 
-  return [
-    response$,
-    (requestParams?: RequestParams) => {
-      params$.next(requestParams);
-    },
-  ];
+  return response$;
 }
 
 export default getResponse$;

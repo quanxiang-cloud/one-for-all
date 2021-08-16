@@ -1,5 +1,5 @@
 import { noop } from 'lodash';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
 
 import RequestBuilder from '@ofa/request-builder';
 import { RequestParams } from '@ofa/request-builder/src/types';
@@ -29,6 +29,11 @@ export const initialState = { data: undefined, error: undefined, params: undefin
 
 function responseState$(operationID: string, requestBuilder: RequestBuilder): [APIResult$, StreamActions] {
   const source$ = new BehaviorSubject<APIResult>(initialState);
+  const params$ = new ReplaySubject<RequestParams>(1);
+  // todo refactor this
+  function nextParams(params: RequestParams): void {
+    params$.next(params);
+  }
   function onLoading(): void {
     source$.next({ ...source$.getValue(), loading: true });
   }
@@ -39,10 +44,7 @@ function responseState$(operationID: string, requestBuilder: RequestBuilder): [A
 
   const loading$ = new BehaviorSubject<boolean>(false);
 
-  const [response$, nextParams] = getResponse$({
-    requestBuilder,
-    operationID,
-  });
+  const response$ = getResponse$({ requestBuilder, operationID, params$ });
 
   response$.subscribe(onLoad);
 

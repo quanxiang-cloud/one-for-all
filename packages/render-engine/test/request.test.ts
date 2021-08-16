@@ -5,6 +5,7 @@ import petStoreSpec from '@ofa/request-builder/test/petstore-spec';
 import getResponse$ from '../src/state/request';
 import RequestBuilder from '@ofa/request-builder';
 import { RequestParams } from '@ofa/request-builder/src/types';
+import { ReplaySubject, Subject } from 'rxjs';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
@@ -12,11 +13,9 @@ afterEach(() => mockXHR.teardown());
 test('value_would_not_resolve_without_call_next', () => {
   const subscriber = jest.fn();
   const requestBuilder = new RequestBuilder(petStoreSpec);
+  const params$ = new Subject<RequestParams>();
 
-  const [response$] = getResponse$({
-    requestBuilder,
-    operationID: 'findPetsByTags',
-  });
+  const response$ = getResponse$({ requestBuilder, operationID: 'findPetsByTags', params$ });
 
   response$.subscribe(subscriber);
 
@@ -30,10 +29,15 @@ test('value_should_resolve_after_call_next', (done) => {
   });
 
   const requestBuilder = new RequestBuilder(petStoreSpec);
+  const params$ = new Subject<RequestParams>();
+  function nextParams(params: RequestParams): void {
+    params$.next(params);
+  }
 
-  const [response$, nextParams] = getResponse$({
+  const response$ = getResponse$({
     requestBuilder,
     operationID: 'findPetsByTags',
+    params$,
   });
 
   nextParams({ params: { foo: 'bar' } });
@@ -52,13 +56,18 @@ test('resolve_same_value_no_matter_how_many_subscribers', () => {
   });
 
   const requestBuilder = new RequestBuilder(petStoreSpec);
+  const params$ = new Subject<RequestParams>();
+  function nextParams(params: RequestParams): void {
+    params$.next(params);
+  }
 
-  const [response$, nextParams] = getResponse$({
+  const response$ = getResponse$({
     requestBuilder,
     operationID: 'findPetsByTags',
+    params$,
   });
 
-  nextParams();
+  nextParams(undefined);
 
   function assertFn(resolve: (value: unknown) => void): void {
     response$.subscribe(({ data }) => {
@@ -82,10 +91,15 @@ test('resolve_expected_data', () => {
   });
 
   const requestBuilder = new RequestBuilder(petStoreSpec);
+  const params$ = new Subject<RequestParams>();
+  function nextParams(params: RequestParams): void {
+    params$.next(params);
+  }
 
-  const [response$, nextParams] = getResponse$({
+  const response$ = getResponse$({
     requestBuilder,
     operationID: 'findPetsByTags',
+    params$,
   });
 
   const requestParams: RequestParams = { params: { foo: 'bar' } };
@@ -114,10 +128,15 @@ test('before_and_after_callback', (done) => {
   });
 
   const requestBuilder = new RequestBuilder(petStoreSpec);
+  const params$ = new Subject<RequestParams>();
+  function nextParams(params: RequestParams): void {
+    params$.next(params);
+  }
 
-  const [response$, nextParams] = getResponse$({
+  const response$ = getResponse$({
     requestBuilder,
     operationID: 'findPetsByTags',
+    params$,
   });
 
   const requestParams: RequestParams = { params: { foo: 'bar' } };
@@ -139,10 +158,15 @@ test('error_should_not_be_undefined', (done) => {
   });
 
   const requestBuilder = new RequestBuilder(petStoreSpec);
+  const params$ = new Subject<RequestParams>();
+  function nextParams(params: RequestParams): void {
+    params$.next(params);
+  }
 
-  const [response$, nextParams] = getResponse$({
+  const response$ = getResponse$({
     requestBuilder,
     operationID: 'findPetsByTags',
+    params$,
   });
 
   const requestParams: RequestParams = { params: { foo: 'bar' } };
@@ -166,10 +190,15 @@ test('stream_return_normal_after_retry_1', () => {
   ]));
 
   const requestBuilder = new RequestBuilder(petStoreSpec);
+  const params$ = new Subject<RequestParams>();
+  function nextParams(params: RequestParams): void {
+    params$.next(params);
+  }
 
-  const [response$, nextParams] = getResponse$({
+  const response$ = getResponse$({
     requestBuilder,
     operationID: 'findPetsByTags',
+    params$,
   });
 
   const requestParams: RequestParams = { params: { foo: 'bar' } };
@@ -194,15 +223,19 @@ test('stream_return_normal_after_retry_2', () => {
   ]));
 
   const requestBuilder = new RequestBuilder(petStoreSpec);
+  const params$ = new ReplaySubject<RequestParams>(1);
+  function nextParams(params: RequestParams): void {
+    params$.next(params);
+  }
 
-  const [response$, nextParams] = getResponse$({
+  const response$ = getResponse$({
     requestBuilder,
     operationID: 'findPetsByTags',
+    params$,
   });
 
   const requestParams: RequestParams = { params: { foo: 'bar' } };
   nextParams(requestParams);
-  expect.assertions(4);
 
   return new Promise((resolve) => {
     const sub = response$.subscribe(({ error, data }) => {
@@ -218,6 +251,7 @@ test('stream_return_normal_after_retry_2', () => {
       expect(data).toBeTruthy();
       // todo jest bug?
       expect(error).toBeUndefined();
+      // expect.assertions(4);
     });
   });
 });
@@ -229,10 +263,15 @@ test('later_subscriber_should_have_expected_value', (done) => {
   });
 
   const requestBuilder = new RequestBuilder(petStoreSpec);
+  const params$ = new Subject<RequestParams>();
+  function nextParams(params: RequestParams): void {
+    params$.next(params);
+  }
 
-  const [response$, nextParams] = getResponse$({
+  const response$ = getResponse$({
     requestBuilder,
     operationID: 'findPetsByTags',
+    params$,
   });
 
   const requestParams: RequestParams = { params: { foo: 'bar' } };
