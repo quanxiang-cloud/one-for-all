@@ -5,7 +5,7 @@ import petStoreSpec from '@ofa/request-builder/test/petstore-spec';
 import getResponse$ from '../src/state/response';
 import RequestBuilder from '@ofa/request-builder';
 import { RequestParams } from '@ofa/request-builder/src/types';
-import { map, ReplaySubject, Subject } from 'rxjs';
+import { interval, map, pairwise, ReplaySubject, Subject, take, tap } from 'rxjs';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
@@ -174,7 +174,7 @@ test('error_should_not_be_undefined', (done) => {
   });
 });
 
-test('stream_return_normal_after_retry_1', () => {
+test('stream_return_normal_after_retry_1', (done) => {
   const mockRes = { data: { id: 'abc-123' } };
   mockXHR.get(/.*/, sequence([
     (req, res) => {
@@ -190,20 +190,27 @@ test('stream_return_normal_after_retry_1', () => {
   const request$ = params$.pipe(
     map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
   );
-  function nextParams(params: RequestParams): void {
-    params$.next(params);
-  }
-
-  const response$ = getResponse$(request$);
 
   const requestParams: RequestParams = { params: { foo: 'bar' } };
-  nextParams(requestParams);
-  nextParams(requestParams);
+  const response$ = getResponse$(request$);
 
-  response$.subscribe(({ error, data }) => {
-    expect(data).toBeTruthy();
-    expect(error).toBeUndefined();
+  const fn = jest.fn();
+
+  response$.pipe(
+    pairwise(),
+    tap(fn),
+  ).subscribe(([res1, res2]) => {
+    expect(res1.data).toBeUndefined();
+    expect(res1.error).toBeTruthy();
+    expect(res2.data).toBeTruthy();
+    expect(res2.error).toBeUndefined();
+    expect(fn).toBeCalledTimes(1);
   });
+
+  interval(1000).pipe(
+    take(2),
+    tap(() => params$.next(requestParams)),
+  ).subscribe({ complete: () => done() });
 });
 
 test('stream_return_normal_after_retry_2', () => {

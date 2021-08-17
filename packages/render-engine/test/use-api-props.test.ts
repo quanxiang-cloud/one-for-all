@@ -11,7 +11,7 @@ import APIStream from '../src/api-stream';
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
 
-test('resolve expect initial value', () => {
+test('resolve_expect_initial_value', () => {
   const mockRes = { data: { id: 'abc-123' } };
   mockXHR.get(/.*/, (req, res) => {
     return res.status(200).body(JSON.stringify(mockRes));

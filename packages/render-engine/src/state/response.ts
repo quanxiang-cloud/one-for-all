@@ -22,17 +22,21 @@ function requestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
 
 type Response$ = Observable<{ data?: any; error?: any; }>
 
-function getResponse$(request$: Observable<RequestConfig>): Response$ {
-  const response$: Response$ = request$.pipe(
-    map(requestConfigToAjaxRequest),
-    switchMap((ajaxRequest) => ajax(ajaxRequest)),
+function getRawResponse(ajaxRequest: AjaxRequest): Response$ {
+  return ajax(ajaxRequest).pipe(
     map(({ response }) => ({ data: response, error: undefined })),
     catchError((error) => {
       // todo need better log message
       // console.debug('error', error);
       return of({ error: error, data: undefined });
     }),
-    // keep response$ hot
+  );
+}
+
+function getResponse$(request$: Observable<RequestConfig>): Response$ {
+  const response$: Response$ = request$.pipe(
+    map(requestConfigToAjaxRequest),
+    switchMap(getRawResponse),
     share(),
   );
 
