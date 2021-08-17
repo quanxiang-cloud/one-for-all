@@ -24,7 +24,7 @@ function requestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
 
 type Response$ = Observable<{ data?: any; error?: any; }>
 
-export function httpClient(request$: Observable<RequestConfig>): Response$ {
+export function http(request$: Observable<RequestConfig>): Response$ {
   const response$: Response$ = request$.pipe(
     map(requestConfigToAjaxRequest),
     switchMap((ajaxRequest) => {
@@ -50,14 +50,10 @@ export function httpClient(request$: Observable<RequestConfig>): Response$ {
 export const initialState: Omit<APIState, 'params'> = { data: undefined, error: undefined, loading: false };
 
 type State = Omit<APIState, 'params'>;
-// operationID: string, requestBuilder: RequestBuilder
+
 export default function getState(request$: Observable<RequestConfig>): Observable<State> {
   const state$ = new BehaviorSubject<State>(initialState);
-  // const params$ = new Subject<RequestParams>();
-  // const request$ = params$.pipe(
-  //   map((params) => requestBuilder.buildRequest(operationID, params)),
-  // );
-  const response$ = httpClient(request$);
+  const response$ = http(request$);
 
   response$.pipe(
     map((resp) => ({ ...resp, loading: false })),
