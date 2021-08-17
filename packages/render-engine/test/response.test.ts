@@ -5,7 +5,7 @@ import petStoreSpec from '@ofa/request-builder/test/petstore-spec';
 import RequestBuilder from '@ofa/request-builder';
 import { RequestParams } from '@ofa/request-builder/src/types';
 import { interval, map, pairwise, Subject, take, tap } from 'rxjs';
-import getState, { http, initialState } from '../src/response';
+import getResponseState$, { http, initialState } from '../src/response';
 import { APIState } from '../src/types';
 
 const requestBuilder = new RequestBuilder(petStoreSpec);
@@ -161,7 +161,6 @@ test('error_should_not_be_undefined', (done) => {
   }
 
   const response$ = http(request$);
-
   const requestParams: RequestParams = { params: { foo: 'bar' } };
   nextParams(requestParams);
 
@@ -216,7 +215,7 @@ test('initial_value', (done) => {
   const request$ = params$.pipe(
     map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
   );
-  const apiState$ = getState(request$);
+  const apiState$ = getResponseState$(request$);
 
   apiState$.subscribe((result) => {
     expect(result).toMatchObject(initialState);
@@ -229,7 +228,7 @@ test('multiple_subscriber_get_same_value', (done) => {
   const request$ = params$.pipe(
     map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
   );
-  const apiState$ = getState(request$);
+  const apiState$ = getResponseState$(request$);
 
   const fn = jest.fn();
 
@@ -252,7 +251,7 @@ test('response_state_table', (done) => {
   const request$ = params$.pipe(
     map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
   );
-  const apiState$ = getState(request$);
+  const apiState$ = getResponseState$(request$);
 
   let times = 0;
   const resultList: Array<Omit<APIState, 'params'>> = [];

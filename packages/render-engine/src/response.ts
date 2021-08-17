@@ -22,26 +22,29 @@ function requestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
   };
 }
 
+function sendRequest(ajaxRequest: AjaxRequest): Observable<{ data: unknown; error: any; }> {
+  return ajax(ajaxRequest).pipe(
+    map(({ response }) => ({ data: response, error: undefined })),
+    catchError((error) => {
+      // todo
+      // - need better log message
+      // - return an readable error object
+      return of({ error: error, data: undefined });
+    }),
+  );
+}
+
 type Response$ = Observable<{ data?: any; error?: any; }>
 
 export function http(request$: Observable<RequestConfig>): Response$ {
   const response$: Response$ = request$.pipe(
     map(requestConfigToAjaxRequest),
-    switchMap((ajaxRequest) => {
-      return ajax(ajaxRequest).pipe(
-        map(({ response }) => ({ data: response, error: undefined })),
-        catchError((error) => {
-          // todo need better log message
-          // console.debug('error', error);
-          return of({ error: error, data: undefined });
-        }),
-      );
-    }),
+    switchMap(sendRequest),
     share(),
   );
 
-  // keep at least one subscriber
-  // todo remove this?
+  // keep at least one subscriber to ensure response$ hot
+  // todo give more explanation
   response$.subscribe(noop);
 
   return response$;
@@ -51,7 +54,7 @@ export const initialState: Omit<APIState, 'params'> = { data: undefined, error: 
 
 type State = Omit<APIState, 'params'>;
 
-export default function getState(request$: Observable<RequestConfig>): Observable<State> {
+export default function getResponseState$(request$: Observable<RequestConfig>): Observable<State> {
   const state$ = new BehaviorSubject<State>(initialState);
   const response$ = http(request$);
 

@@ -6,7 +6,7 @@ import RequestBuilder from '@ofa/request-builder';
 import { RequestParams } from '@ofa/request-builder/src/types';
 
 import { APIState } from './types';
-import getState$ from './response';
+import getResponseState$ from './response';
 
 type ResultConvertor<T> = (result: APIState) => T;
 type ActionParamsConvertor = (...args: any[]) => RequestParams;
@@ -60,7 +60,7 @@ export default class APIStream {
       map((params) => this.requestBuilder.buildRequest(this.streamIDMap[streamID], params)),
     );
 
-    const fullState$ = getState$(request$).pipe(
+    const fullState$ = getResponseState$(request$).pipe(
       withLatestFrom(
         of(undefined).pipe(concatWith(params$)),
       ),
