@@ -2,7 +2,7 @@ import mockXHR, { sequence } from 'xhr-mock';
 
 import petStoreSpec from '@ofa/request-builder/test/petstore-spec';
 
-import getResponse$ from '../src/state/response';
+import { httpClient } from '../src/response';
 import RequestBuilder from '@ofa/request-builder';
 import { RequestParams } from '@ofa/request-builder/src/types';
 import { interval, map, pairwise, Subject, take, tap } from 'rxjs';
@@ -18,7 +18,7 @@ test('value_would_not_resolve_without_call_next', () => {
     map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
   );
 
-  const response$ = getResponse$(request$);
+  const response$ = httpClient(request$);
 
   response$.subscribe(subscriber);
 
@@ -40,7 +40,7 @@ test('value_should_resolve_after_call_next', (done) => {
     params$.next(params);
   }
 
-  const response$ = getResponse$(request$);
+  const response$ = httpClient(request$);
 
   nextParams({ params: { foo: 'bar' } });
 
@@ -65,7 +65,7 @@ test('resolve_same_value_no_matter_how_many_subscribers', () => {
     params$.next(params);
   }
 
-  const response$ = getResponse$(request$);
+  const response$ = httpClient(request$);
 
   nextParams(undefined);
 
@@ -99,7 +99,7 @@ test('resolve_expected_data', () => {
     params$.next(params);
   }
 
-  const response$ = getResponse$(request$);
+  const response$ = httpClient(request$);
 
   const requestParams: RequestParams = { params: { foo: 'bar' } };
   nextParams(requestParams);
@@ -134,7 +134,7 @@ test('before_and_after_callback', (done) => {
     params$.next(params);
   }
 
-  const response$ = getResponse$(request$);
+  const response$ = httpClient(request$);
 
   const requestParams: RequestParams = { params: { foo: 'bar' } };
   nextParams(requestParams);
@@ -163,7 +163,7 @@ test('error_should_not_be_undefined', (done) => {
     params$.next(params);
   }
 
-  const response$ = getResponse$(request$);
+  const response$ = httpClient(request$);
 
   const requestParams: RequestParams = { params: { foo: 'bar' } };
   nextParams(requestParams);
@@ -192,7 +192,7 @@ test('stream_return_normal_after_retry_1', (done) => {
   );
 
   const requestParams: RequestParams = { params: { foo: 'bar' } };
-  const response$ = getResponse$(request$);
+  const response$ = httpClient(request$);
 
   const fn = jest.fn();
 

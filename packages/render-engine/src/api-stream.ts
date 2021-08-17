@@ -6,7 +6,7 @@ import RequestBuilder from '@ofa/request-builder';
 import { RequestParams } from '@ofa/request-builder/src/types';
 
 import { APIState } from './types';
-import getState$ from './state/state';
+import getState$ from './response';
 
 type ResultConvertor<T> = (result: APIState) => T;
 type ActionParamsConvertor = (...args: any[]) => RequestParams;

@@ -2,7 +2,7 @@ import mockXHR from 'xhr-mock';
 
 import petStoreSpec from '@ofa/request-builder/test/petstore-spec';
 
-import getResponseService$, { initialState } from '../src/state/state';
+import getState, { initialState } from '../src/response';
 import RequestBuilder from '@ofa/request-builder';
 import { APIState } from '../src/types';
 import { map, Subject } from 'rxjs';
@@ -18,7 +18,7 @@ test('initial_value', (done) => {
   const request$ = params$.pipe(
     map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
   );
-  const apiState$ = getResponseService$(request$);
+  const apiState$ = getState(request$);
 
   apiState$.subscribe((result) => {
     expect(result).toMatchObject(initialState);
@@ -31,7 +31,7 @@ test('multiple_subscriber_get_same_value', (done) => {
   const request$ = params$.pipe(
     map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
   );
-  const apiState$ = getResponseService$(request$);
+  const apiState$ = getState(request$);
 
   const fn = jest.fn();
 
@@ -54,7 +54,7 @@ test('response_state_table', (done) => {
   const request$ = params$.pipe(
     map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
   );
-  const apiState$ = getResponseService$(request$);
+  const apiState$ = getState(request$);
 
   let times = 0;
   const resultList: Array<Omit<APIState, 'params'>> = [];

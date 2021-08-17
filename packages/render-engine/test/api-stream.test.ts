@@ -3,7 +3,7 @@ import mockXHR, { delay } from 'xhr-mock';
 import petStoreSpec from '@ofa/request-builder/test/petstore-spec';
 
 import APIStream from '../src/api-stream';
-import { initialState } from '../src/state/state';
+import { initialState } from '../src/response';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
