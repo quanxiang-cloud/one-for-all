@@ -196,6 +196,8 @@ test('stream_return_normal_after_retry_1', (done) => {
 
   const fn = jest.fn();
 
+  expect.assertions(5);
+
   response$.pipe(
     pairwise(),
     tap(fn),
