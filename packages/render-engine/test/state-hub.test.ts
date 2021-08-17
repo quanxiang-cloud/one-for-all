@@ -2,7 +2,7 @@ import mockXHR, { delay } from 'xhr-mock';
 
 import petStoreSpec from '@ofa/request-builder/test/petstore-spec';
 
-import APIStream from '../src/api-stream';
+import StateHub from '../src/state-hub';
 import { initialState } from '../src/response';
 
 beforeEach(() => mockXHR.setup());
@@ -14,10 +14,10 @@ test('resolve_initial_value_when_no_next_called', (done) => {
     return res.status(200).body(JSON.stringify(mockRes));
   });
 
-  const apiStream = new APIStream(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
-  const [apiStream$] = apiStream.getStream('stream_findPetsByTags');
+  const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
+  const [stateHub$] = stateHub.getStream('stream_findPetsByTags');
 
-  apiStream$.subscribe((result) => {
+  stateHub$.subscribe((result) => {
     expect(result).toMatchObject(initialState);
     done();
   });
@@ -29,11 +29,11 @@ test('call_next_times', async () => {
     return res.status(200).body(JSON.stringify(mockRes));
   }, 100));
 
-  const apiStream = new APIStream(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
-  const [apiStream$, { next }] = apiStream.getStream('stream_findPetsByTags');
+  const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
+  const [stateHub$, { next }] = stateHub.getStream('stream_findPetsByTags');
 
   const mockFn = jest.fn();
-  apiStream$.subscribe(mockFn);
+  stateHub$.subscribe(mockFn);
 
   await new Promise((r) => setTimeout(() => {
     r(true);
@@ -56,11 +56,11 @@ test('only_resolve_the_last_value', async () => {
     return res.status(200).body(JSON.stringify(mockRes));
   }, 100));
 
-  const apiStream = new APIStream(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
-  const [apiStream$, { next }] = apiStream.getStream('stream_findPetsByTags');
+  const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
+  const [stateHub$, { next }] = stateHub.getStream('stream_findPetsByTags');
 
   const mockFn = jest.fn();
-  apiStream$.subscribe(mockFn);
+  stateHub$.subscribe(mockFn);
 
   next();
   next();
@@ -78,10 +78,10 @@ test('should_resolve_value', (done) => {
     return res.status(200).body(JSON.stringify(mockRes));
   });
 
-  const apiStream = new APIStream(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
-  const [apiStream$, { next }] = apiStream.getStream('stream_findPetsByTags');
+  const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
+  const [stateHub$, { next }] = stateHub.getStream('stream_findPetsByTags');
 
-  apiStream$.subscribe(({ error, data: body }) => {
+  stateHub$.subscribe(({ error, data: body }) => {
     expect(error).toBeUndefined();
     expect(body).toMatchObject(mockRes);
     done();
@@ -91,11 +91,11 @@ test('should_resolve_value', (done) => {
 });
 
 test('same_streamID_same_stream', () => {
-  const apiStream = new APIStream(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
-  const [apiStream$1, sendRequest1] = apiStream.getStream('stream_findPetsByTags');
-  const [apiStream$2, sendRequest2] = apiStream.getStream('stream_findPetsByTags');
+  const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
+  const [stateHub$1, sendRequest1] = stateHub.getStream('stream_findPetsByTags');
+  const [stateHub$2, sendRequest2] = stateHub.getStream('stream_findPetsByTags');
 
-  expect(apiStream$1).toEqual(apiStream$2);
+  expect(stateHub$1).toEqual(stateHub$2);
   expect(sendRequest1).toEqual(sendRequest2);
 });
 
@@ -104,12 +104,12 @@ test('param match input', (done) => {
     return res.status(200);
   });
 
-  const apiStream = new APIStream(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
-  const [apiStream$, { next }] = apiStream.getStream('stream_findPetsByTags');
+  const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
+  const [stateHub$, { next }] = stateHub.getStream('stream_findPetsByTags');
   const requestParams = { foo: 'bar' };
   const requestBody = { baz: 'bzz' };
 
-  apiStream$.subscribe(({ params }) => {
+  stateHub$.subscribe(({ params }) => {
     expect(params?.params).toMatchObject(requestParams);
     expect(params?.body).toMatchObject(requestBody);
     done();

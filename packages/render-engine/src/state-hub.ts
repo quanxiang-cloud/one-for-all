@@ -16,7 +16,7 @@ type StreamActions = {
   // __complete: () => void;
 };
 
-export default class APIStream {
+export default class StateHub {
   requestBuilder: RequestBuilder;
   // map of streamID and operationID
   streamIDMap: Record<string, string>;
@@ -28,9 +28,10 @@ export default class APIStream {
   }
 
   getValue<T>(streamID: string, convertor: ResultConvertor<T>): Observable<T> {
-    const [apiStream$] = this.getStream(streamID);
+    const [stateHub$] = this.getStream(streamID);
 
-    return apiStream$.pipe(map(convertor));
+    // todo test error when run convertor
+    return stateHub$.pipe(map(convertor));
   }
 
   getAction(streamID: string, convertor?: ActionParamsConvertor): (...args: any[]) => void {
@@ -61,21 +62,20 @@ export default class APIStream {
     );
 
     const fullState$ = getResponseState$(request$).pipe(
-      withLatestFrom(
-        of(undefined).pipe(concatWith(params$)),
-      ),
+      // todo refine this
+      withLatestFrom(of(undefined).pipe(concatWith(params$))),
       map(([state, params]) => ({ ...state, params })),
     );
 
-    let latestParams: RequestParams = undefined;
+    let _latestParams: RequestParams = undefined;
 
     const streamActions: StreamActions = {
       next: (params: RequestParams) => {
         params$.next(params);
-        latestParams = params;
+        _latestParams = params;
       },
       refresh: () => {
-        params$.next(latestParams);
+        params$.next(_latestParams);
       },
     };
 
