@@ -5,7 +5,7 @@ import petStoreSpec from '@ofa/request-builder/test/petstore-spec';
 import getResponse$ from '../src/state/response';
 import RequestBuilder from '@ofa/request-builder';
 import { RequestParams } from '@ofa/request-builder/src/types';
-import { interval, map, pairwise, ReplaySubject, Subject, take, tap } from 'rxjs';
+import { interval, map, pairwise, Subject, take, tap } from 'rxjs';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
@@ -213,78 +213,4 @@ test('stream_return_normal_after_retry_1', (done) => {
     take(2),
     tap(() => params$.next(requestParams)),
   ).subscribe({ complete: () => done() });
-});
-
-test('stream_return_normal_after_retry_2', () => {
-  const mockRes = { data: { id: 'abc-123' } };
-  mockXHR.get(/.*/, sequence([
-    (req, res) => {
-      return res.status(400).body(JSON.stringify(mockRes));
-    },
-    (req, res) => {
-      return res.status(200).body(JSON.stringify(mockRes));
-    },
-  ]));
-
-  const requestBuilder = new RequestBuilder(petStoreSpec);
-  const params$ = new ReplaySubject<RequestParams>(1);
-  const request$ = params$.pipe(
-    map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
-  );
-  function nextParams(params: RequestParams): void {
-    params$.next(params);
-  }
-
-  const response$ = getResponse$(request$);
-
-  const requestParams: RequestParams = { params: { foo: 'bar' } };
-  nextParams(requestParams);
-
-  return new Promise((resolve) => {
-    const sub = response$.subscribe(({ error, data }) => {
-      expect(data).toBeUndefined();
-      expect(error).toBeTruthy();
-      resolve(true);
-      sub.unsubscribe();
-    });
-  }).then(() => {
-    nextParams(requestParams);
-  }).then(() => {
-    return response$.subscribe(({ error, data }) => {
-      expect(data).toBeTruthy();
-      // todo jest bug?
-      expect(error).toBeUndefined();
-      // expect.assertions(4);
-    });
-  });
-});
-
-test('later_subscriber_should_have_expected_value', (done) => {
-  const mockRes = { data: { id: 'abc-123' } };
-  mockXHR.get(/.*/, (req, res) => {
-    return res.status(200).body(JSON.stringify(mockRes));
-  });
-
-  const requestBuilder = new RequestBuilder(petStoreSpec);
-  const params$ = new Subject<RequestParams>();
-  const request$ = params$.pipe(
-    map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
-  );
-  function nextParams(params: RequestParams): void {
-    params$.next(params);
-  }
-
-  const response$ = getResponse$(request$);
-
-  const requestParams: RequestParams = { params: { foo: 'bar' } };
-  nextParams(requestParams);
-
-  response$.subscribe(({ data }) => {
-    expect(data).toMatchObject(mockRes);
-  });
-
-  response$.subscribe(({ data }) => {
-    expect(data).toMatchObject(mockRes);
-    done();
-  });
 });
