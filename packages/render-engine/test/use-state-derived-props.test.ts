@@ -11,8 +11,8 @@ import StateHub from '../src/state-hub';
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
 
-const streamIDMap = { stream_findPetsByTags: 'findPetsByTags' };
-const stateHub = new StateHub(petStoreSpec, streamIDMap);
+const stateIDMap = { stream_findPetsByTags: 'findPetsByTags' };
+const stateHub = new StateHub(petStoreSpec, stateIDMap);
 
 test('expect_resolve_initial_value', () => {
   const convertorFn = jest.fn();
@@ -21,13 +21,13 @@ test('expect_resolve_initial_value', () => {
     foo: {
       type: 'result_derived_property',
       initialValue: { foo: 123 },
-      streamID: 'stream_findPetsByTags',
+      stateID: 'stream_findPetsByTags',
       convertor: convertorFn,
     },
     bar: {
       type: 'result_derived_property',
       initialValue: { bar: 456 },
-      streamID: 'stream_findPetsByTags',
+      stateID: 'stream_findPetsByTags',
       convertor: convertorFn,
     },
   };
@@ -44,7 +44,7 @@ test('expect_resolve_converted_value', (done) => {
   const apiCallProps: Record<string, APIInvokeProperty> = {
     update: {
       type: 'api_invoke_property',
-      streamID: 'stream_findPetsByTags',
+      stateID: 'stream_findPetsByTags',
       convertor: () => {
         return { params: { foo: 'bar' } };
       },

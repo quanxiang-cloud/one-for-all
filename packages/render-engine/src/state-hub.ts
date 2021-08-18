@@ -17,47 +17,47 @@ type StreamActions = {
 
 export default class StateHub {
   specInterpreter: SpecInterpreter;
-  // map of streamID and operationID
-  streamIDMap: Record<string, string>;
+  // map of stateID and operationID
+  stateIDMap: Record<string, string>;
   streamCache: Record<string, [Observable<APIState>, StreamActions]> = {};
 
-  constructor(apiDoc: OpenAPIV3.Document, streamIDMap: Record<string, string>) {
+  constructor(apiDoc: OpenAPIV3.Document, stateIDMap: Record<string, string>) {
     this.specInterpreter = new SpecInterpreter(apiDoc);
-    this.streamIDMap = streamIDMap;
+    this.stateIDMap = stateIDMap;
   }
 
-  getValue(streamID: string): Observable<APIState> {
-    const [stateHub$] = this.getStream(streamID);
+  getValue(stateID: string): Observable<APIState> {
+    const [stateHub$] = this.getStream(stateID);
 
     // todo test error when run convertor
     return stateHub$;
   }
 
-  getAction(streamID: string, convertor?: ActionParamsConvertor): (...args: any[]) => void {
-    const [, { next }] = this.getStream(streamID);
+  getAction(stateID: string, convertor?: ActionParamsConvertor): (...args: any[]) => void {
+    const [, { next }] = this.getStream(stateID);
 
     return (...args: any[]) => {
       next(convertor?.(...args));
     };
   }
 
-  getStream(streamID: string): [Observable<APIState>, StreamActions] {
-    if (!this.streamIDMap[streamID]) {
+  getStream(stateID: string): [Observable<APIState>, StreamActions] {
+    if (!this.stateIDMap[stateID]) {
       // todo log error message
     }
 
-    const key = `${streamID}:${this.streamIDMap[streamID]}`;
+    const key = `${stateID}:${this.stateIDMap[stateID]}`;
     if (!this.streamCache[key]) {
-      this.streamCache[key] = this.initState(streamID);
+      this.streamCache[key] = this.initState(stateID);
     }
 
     return this.streamCache[key];
   }
 
-  initState(streamID: string): [Observable<APIState>, StreamActions] {
+  initState(stateID: string): [Observable<APIState>, StreamActions] {
     const params$ = new Subject<RequestParams>();
     const request$ = params$.pipe(
-      map((params) => this.specInterpreter.buildRequest(this.streamIDMap[streamID], params)),
+      map((params) => this.specInterpreter.buildRequest(this.stateIDMap[stateID], params)),
     );
 
     const fullState$ = getResponseState$(request$).pipe(

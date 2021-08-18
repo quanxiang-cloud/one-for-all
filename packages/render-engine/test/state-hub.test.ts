@@ -90,7 +90,7 @@ test('should_resolve_value', (done) => {
   next();
 });
 
-test('same_streamID_same_stream', () => {
+test('same_stateID_same_stream', () => {
   const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
   const [stateHub$1, sendRequest1] = stateHub.getStream('stream_findPetsByTags');
   const [stateHub$2, sendRequest2] = stateHub.getStream('stream_findPetsByTags');

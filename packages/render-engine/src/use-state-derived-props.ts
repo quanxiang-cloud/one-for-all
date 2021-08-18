@@ -32,10 +32,10 @@ export default function useStateDerivedProps({ props, stateHub }: UseAPIProps): 
   const convertors: Record<string, ResultConvertor | undefined> = {};
   const resList$: Record<string, Observable<any>> = {};
 
-  Object.entries(props).forEach(([propName, { initialValue, convertor, streamID }]) => {
+  Object.entries(props).forEach(([propName, { initialValue, convertor, stateID }]) => {
     initialState[propName] = initialValue;
     convertors[propName] = convertor;
-    resList$[propName] = stateHub.getValue(streamID);
+    resList$[propName] = stateHub.getValue(stateID);
   });
 
   const [state, setState] = useState<Record<string, any>>(initialState);

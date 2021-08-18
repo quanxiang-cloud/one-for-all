@@ -15,13 +15,13 @@ export type APIState = {
 export type ResultDerivedProperty<T = any> = {
   type: 'result_derived_property';
   initialValue: T;
-  streamID: string;
+  stateID: string;
   convertor?: (res?: APIState) => T;
 }
 
 export type APIInvokeProperty<T = any> = {
   type: 'api_invoke_property';
-  streamID: string;
+  stateID: string;
   convertor: (callbackParams: T) => RequestParams;
 }
 
@@ -66,7 +66,7 @@ type CallbackProps = Array<{
   type: 'callback';
   target: 'muteState' | 'api_call';
   // api stream or local state stream
-  streamID: string;
+  stateID: string;
 }>;
 
 type Component = {
