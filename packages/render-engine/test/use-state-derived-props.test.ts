@@ -5,7 +5,6 @@ import { renderHook } from '@testing-library/react-hooks';
 
 import petStoreSpec from '@ofa/spec-interpreter/test/petstore-spec';
 import useStateDerivedProps from '../src/use-state-derived-props';
-import useAPICallProps from '../src/use-api-call-props';
 import StateHub from '../src/state-hub';
 
 beforeEach(() => mockXHR.setup());
@@ -50,11 +49,13 @@ test('expect_resolve_converted_value', (done) => {
       },
     },
   };
-  const apiCallPropsResult = useAPICallProps({ stateHub, props: apiCallProps });
+
+  const next = stateHub.getAction('stream_findPetsByTags');
+
   stateHub.getState('stream_findPetsByTags').subscribe((result) => {
     expect(result.data).toMatchObject(mockRes);
     done();
   });
 
-  apiCallPropsResult.update();
+  next();
 });

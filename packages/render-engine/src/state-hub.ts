@@ -8,7 +8,6 @@ import SpecInterpreter from '@ofa/spec-interpreter';
 import { APIState } from './types';
 import getResponseState$ from './response';
 
-type ActionParamsConvertor = (...args: any[]) => RequestParams;
 type StreamActions = {
   next: (params?: RequestParams) => void;
   refresh: () => void;
@@ -33,12 +32,9 @@ export default class StateHub {
     return state$;
   }
 
-  getAction(stateID: string, convertor?: ActionParamsConvertor): (...args: any[]) => void {
+  getAction(stateID: string): (...args: any[]) => void {
     const [, { next }] = this.getStream(stateID);
-
-    return (...args: any[]) => {
-      next(convertor?.(...args));
-    };
+    return next;
   }
 
   getStream(stateID: string): [Observable<APIState>, StreamActions] {
