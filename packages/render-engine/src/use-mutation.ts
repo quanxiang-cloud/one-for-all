@@ -1,7 +1,5 @@
 import { useState } from 'react';
 
-import { queryResultObsCache } from './query-result';
-
 export type UseMutationResult = {
   mutate: (params: any) => void,
   loading: boolean,
@@ -13,9 +11,7 @@ export type UseMutationCallbacks = Partial<{
 }>;
 
 function refreshQueryResult(key: string) {
-  if (queryResultObsCache[key]) {
-    queryResultObsCache[key][1].refresh();
-  }
+  // todo implement this
 }
 
 function useMutation(apiID: string, callbacks?: UseMutationCallbacks): UseMutationResult {

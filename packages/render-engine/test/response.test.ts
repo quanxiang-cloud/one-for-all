@@ -1,14 +1,14 @@
 import mockXHR, { sequence } from 'xhr-mock';
 
-import petStoreSpec from '@ofa/request-builder/test/petstore-spec';
+import petStoreSpec from '@ofa/spec-interpreter/test/petstore-spec';
 
-import RequestBuilder from '@ofa/request-builder';
-import { RequestParams } from '@ofa/request-builder/src/types';
+import SpecInterpreter from '@ofa/spec-interpreter';
+import { RequestParams } from '@ofa/spec-interpreter/src/types';
 import { interval, map, pairwise, Subject, take, tap } from 'rxjs';
 import getResponseState$, { http, initialState } from '../src/response';
 import { APIState } from '../src/types';
 
-const requestBuilder = new RequestBuilder(petStoreSpec);
+const specInterpreter = new SpecInterpreter(petStoreSpec);
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
@@ -17,7 +17,7 @@ test('value_would_not_resolve_without_call_next', () => {
   const subscriber = jest.fn();
   const params$ = new Subject<RequestParams>();
   const request$ = params$.pipe(
-    map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
+    map((params) => specInterpreter.buildRequest('findPetsByTags', params)),
   );
 
   const response$ = http(request$);
@@ -35,7 +35,7 @@ test('value_should_resolve_after_call_next', (done) => {
 
   const params$ = new Subject<RequestParams>();
   const request$ = params$.pipe(
-    map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
+    map((params) => specInterpreter.buildRequest('findPetsByTags', params)),
   );
   function nextParams(params: RequestParams): void {
     params$.next(params);
@@ -59,7 +59,7 @@ test('resolve_same_value_no_matter_how_many_subscribers', () => {
 
   const params$ = new Subject<RequestParams>();
   const request$ = params$.pipe(
-    map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
+    map((params) => specInterpreter.buildRequest('findPetsByTags', params)),
   );
   function nextParams(params: RequestParams): void {
     params$.next(params);
@@ -92,7 +92,7 @@ test('resolve_expected_data', () => {
 
   const params$ = new Subject<RequestParams>();
   const request$ = params$.pipe(
-    map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
+    map((params) => specInterpreter.buildRequest('findPetsByTags', params)),
   );
   function nextParams(params: RequestParams): void {
     params$.next(params);
@@ -126,7 +126,7 @@ test('before_and_after_callback', (done) => {
 
   const params$ = new Subject<RequestParams>();
   const request$ = params$.pipe(
-    map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
+    map((params) => specInterpreter.buildRequest('findPetsByTags', params)),
   );
   function nextParams(params: RequestParams): void {
     params$.next(params);
@@ -154,7 +154,7 @@ test('error_should_not_be_undefined', (done) => {
 
   const params$ = new Subject<RequestParams>();
   const request$ = params$.pipe(
-    map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
+    map((params) => specInterpreter.buildRequest('findPetsByTags', params)),
   );
   function nextParams(params: RequestParams): void {
     params$.next(params);
@@ -183,7 +183,7 @@ test('stream_return_normal_after_retry_1', (done) => {
 
   const params$ = new Subject<RequestParams>();
   const request$ = params$.pipe(
-    map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
+    map((params) => specInterpreter.buildRequest('findPetsByTags', params)),
   );
 
   const requestParams: RequestParams = { params: { foo: 'bar' } };
@@ -213,7 +213,7 @@ test('stream_return_normal_after_retry_1', (done) => {
 test('initial_value', (done) => {
   const params$ = new Subject<RequestParams>();
   const request$ = params$.pipe(
-    map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
+    map((params) => specInterpreter.buildRequest('findPetsByTags', params)),
   );
   const apiState$ = getResponseState$(request$);
 
@@ -226,7 +226,7 @@ test('initial_value', (done) => {
 test('multiple_subscriber_get_same_value', (done) => {
   const params$ = new Subject<RequestParams>();
   const request$ = params$.pipe(
-    map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
+    map((params) => specInterpreter.buildRequest('findPetsByTags', params)),
   );
   const apiState$ = getResponseState$(request$);
 
@@ -249,7 +249,7 @@ test('response_state_table', (done) => {
 
   const params$ = new Subject<RequestParams>();
   const request$ = params$.pipe(
-    map((params) => requestBuilder.buildRequest('findPetsByTags', params)),
+    map((params) => specInterpreter.buildRequest('findPetsByTags', params)),
   );
   const apiState$ = getResponseState$(request$);
 

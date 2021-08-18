@@ -1,4 +1,4 @@
-import { RequestParams } from '@ofa/request-builder/src/types';
+import { RequestParams } from '@ofa/spec-interpreter/src/types';
 
 type StringSelector = string;
 type Selector<T> = StringSelector | ((data: any) => T);

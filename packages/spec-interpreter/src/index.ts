@@ -1,14 +1,7 @@
 import { set } from 'lodash';
 import { OpenAPIV3 } from 'openapi-types';
 
-import { RequestParams } from './types';
-
-export type RequestConfig = {
-  path: string;
-  method: OpenAPIV3.HttpMethods;
-  query?: Record<string, string>;
-  body?: any;
-}
+import { RequestConfig, RequestParams } from './types';
 
 type PartialSchema = {
   path: string;

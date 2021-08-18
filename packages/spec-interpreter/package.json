@@ -1,5 +1,5 @@
 {
-  "name": "@ofa/request-builder",
+  "name": "@ofa/spec-interpreter",
   "version": "0.0.1",
   "description": "",
   "main": "index.ts",
@@ -19,6 +19,7 @@
     "eslint-plugin-unused-imports": "^1.1.2",
     "jest": "^27.0.6",
     "openapi-types": "^9.1.0",
-    "ts-jest": "^27.0.4"
+    "ts-jest": "^27.0.4",
+    "tsconfig-paths-jest": "^0.0.1"
   }
 }

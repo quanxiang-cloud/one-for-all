@@ -7,6 +7,7 @@ import {
   // getBasicComponentsOptions,
   // getAdvancedComponentsOptions,
 } from './repository';
+import { DynamicComponent, Schema } from './types';
 
 function renderChildren(schemas: Array<Schema | string>): React.ReactNode[] | undefined {
   if (!schemas.length) {

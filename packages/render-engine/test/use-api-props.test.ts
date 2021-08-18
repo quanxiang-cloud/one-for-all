@@ -3,7 +3,7 @@ import type { APIInvokeProperty, ResultDerivedProperty } from '../src/types';
 import mockXHR from 'xhr-mock';
 import { renderHook } from '@testing-library/react-hooks';
 
-import petStoreSpec from '@ofa/request-builder/test/petstore-spec';
+import petStoreSpec from '@ofa/spec-interpreter/test/petstore-spec';
 import useAPIDerivedProps from '../src/use-api-derived-props';
 import useAPICallProps from '../src/use-api-call-props';
 import StateHub from '../src/state-hub';

@@ -1,6 +1,6 @@
 import mockXHR, { delay } from 'xhr-mock';
 
-import petStoreSpec from '@ofa/request-builder/test/petstore-spec';
+import petStoreSpec from '@ofa/spec-interpreter/test/petstore-spec';
 
 import StateHub from '../src/state-hub';
 import { initialState } from '../src/response';
