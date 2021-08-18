@@ -1,5 +1,6 @@
 import { OpenAPIV3 } from 'openapi-types';
 
+// the shape of RequestParams is too complicated
 export type RequestParams = Partial<{
   params: Record<string, any>;
   body: any;

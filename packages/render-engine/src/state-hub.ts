@@ -1,5 +1,5 @@
 import { Observable, of, Subject } from 'rxjs';
-import { concatWith, map, withLatestFrom } from 'rxjs/operators';
+import { concatWith, map, tap, withLatestFrom } from 'rxjs/operators';
 import { OpenAPIV3 } from 'openapi-types';
 
 import { RequestParams } from '@ofa/spec-interpreter/src/types';
@@ -8,11 +8,30 @@ import SpecInterpreter from '@ofa/spec-interpreter';
 import { APIState } from './types';
 import getResponseState$ from './response';
 
+type RunParam = {
+  params?: RequestParams;
+  onSuccess?: (state: APIState) => void;
+  onError?: (state: APIState) => void;
+}
+
 type StreamActions = {
-  run: (params?: RequestParams) => void;
-  refresh: () => void;
+  run: (runParam?: RunParam) => void;
+  refresh: (refreshParam?: Omit<RunParam, 'params'>) => void;
   // __complete: () => void;
 };
+
+function executeCallback(state: APIState, runParams?: RunParam): void {
+  if (state.loading) {
+    return;
+  }
+
+  if (state.error) {
+    runParams?.onError?.(state);
+    return;
+  }
+
+  runParams?.onSuccess?.(state);
+}
 
 export default class StateHub {
   specInterpreter: SpecInterpreter;
@@ -53,6 +72,7 @@ export default class StateHub {
   initState(stateID: string): [Observable<APIState>, StreamActions] {
     const params$ = new Subject<RequestParams>();
     const request$ = params$.pipe(
+      // todo catch builder error
       map((params) => this.specInterpreter.buildRequest(this.stateIDMap[stateID], params)),
     );
 
@@ -60,17 +80,21 @@ export default class StateHub {
       // todo refine this
       withLatestFrom(of(undefined).pipe(concatWith(params$))),
       map(([state, params]) => ({ ...state, params })),
+      tap((state) => {
+        executeCallback(state, _latestRunParams);
+      }),
     );
 
-    let _latestParams: RequestParams = undefined;
+    let _latestRunParams: RunParam | undefined = undefined;
 
     const streamActions: StreamActions = {
-      run: (params: RequestParams) => {
-        params$.next(params);
-        _latestParams = params;
+      run: (runParam?: RunParam) => {
+        _latestRunParams = runParam;
+        params$.next(runParam?.params);
       },
-      refresh: () => {
-        params$.next(_latestParams);
+      refresh: (refreshParam?: Omit<RunParam, 'params'>) => {
+        _latestRunParams = Object.assign({}, refreshParam, { params: _latestRunParams?.params });
+        params$.next(_latestRunParams?.params);
       },
     };
 

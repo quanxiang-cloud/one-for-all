@@ -37,12 +37,12 @@ test('call_next_times', async () => {
 
   await new Promise((r) => setTimeout(() => {
     r(true);
-    run();
+    run({ params: undefined });
   }, 500));
 
   await new Promise((r) => setTimeout(() => {
     r(true);
-    run();
+    run({ params: undefined });
   }, 500));
 
   await new Promise((r) => setTimeout(r, 500));
@@ -115,5 +115,5 @@ test('param match input', (done) => {
     done();
   });
 
-  run({ params: requestParams, body: requestBody });
+  run({ params: { params: requestParams, body: requestBody } });
 });
