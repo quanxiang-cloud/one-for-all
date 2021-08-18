@@ -99,7 +99,7 @@ test('same_stateID_same_stream', () => {
   expect(sendRequest1).toEqual(sendRequest2);
 });
 
-test('param match input', (done) => {
+test('param_match_input', (done) => {
   mockXHR.get(/.*/, (req, res) => {
     return res.status(200);
   });
@@ -112,8 +112,82 @@ test('param match input', (done) => {
   state$.subscribe(({ params }) => {
     expect(params?.params).toMatchObject(requestParams);
     expect(params?.body).toMatchObject(requestBody);
+  });
+
+  run({
+    params: { params: requestParams, body: requestBody },
+    onSuccess: () => done(),
+  });
+});
+
+test('on_success_should_be_called', (done) => {
+  mockXHR.get(/.*/, (req, res) => {
+    return res.status(200);
+  });
+
+  const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
+  const [state$, { run }] = stateHub.getStream('stream_findPetsByTags');
+  const requestParams = { foo: 'bar' };
+  const requestBody = { baz: 'bzz' };
+
+  const onSuccessFn = jest.fn();
+
+  state$.subscribe((state) => {
+    expect(onSuccessFn).toBeCalledTimes(1);
+    expect(onSuccessFn).toBeCalledWith(state);
     done();
   });
 
-  run({ params: { params: requestParams, body: requestBody } });
+  run({
+    params: { params: requestParams, body: requestBody },
+    onSuccess: onSuccessFn,
+  });
+  run({
+    params: { params: requestParams, body: requestBody },
+    onSuccess: onSuccessFn,
+  });
+  run({
+    params: { params: requestParams, body: requestBody },
+    onSuccess: onSuccessFn,
+  });
+  run({
+    params: { params: requestParams, body: requestBody },
+    onSuccess: onSuccessFn,
+  });
+});
+
+test('on_error_should_be_called', (done) => {
+  mockXHR.get(/.*/, (req, res) => {
+    return res.status(400);
+  });
+
+  const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
+  const [state$, { run }] = stateHub.getStream('stream_findPetsByTags');
+  const requestParams = { foo: 'bar' };
+  const requestBody = { baz: 'bzz' };
+
+  const onErrorFn = jest.fn();
+
+  state$.subscribe((state) => {
+    expect(onErrorFn).toBeCalledTimes(1);
+    expect(onErrorFn).toBeCalledWith(state);
+    done();
+  });
+
+  run({
+    params: { params: requestParams, body: requestBody },
+    onError: onErrorFn,
+  });
+  run({
+    params: { params: requestParams, body: requestBody },
+    onError: onErrorFn,
+  });
+  run({
+    params: { params: requestParams, body: requestBody },
+    onError: onErrorFn,
+  });
+  run({
+    params: { params: requestParams, body: requestBody },
+    onError: onErrorFn,
+  });
 });
