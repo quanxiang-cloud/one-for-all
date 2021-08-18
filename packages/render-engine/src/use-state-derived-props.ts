@@ -9,7 +9,7 @@ type UseAPIProps = {
   stateHub: StateHub;
 }
 
-export default function useAPIDerivedProps({ props, stateHub }: UseAPIProps): Record<string, unknown> {
+export default function useStateDerivedProps({ props, stateHub }: UseAPIProps): Record<string, unknown> {
   const initialResult = Object.entries(props).reduce<Record<string, unknown>>(
     (initialResult, [propName, { initialValue }]) => {
       initialResult[propName] = initialValue;
