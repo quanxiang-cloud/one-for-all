@@ -30,19 +30,19 @@ test('call_next_times', async () => {
   }, 100));
 
   const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
-  const [state$, { next }] = stateHub.getStream('stream_findPetsByTags');
+  const [state$, { run }] = stateHub.getStream('stream_findPetsByTags');
 
   const mockFn = jest.fn();
   state$.subscribe(mockFn);
 
   await new Promise((r) => setTimeout(() => {
     r(true);
-    next();
+    run();
   }, 500));
 
   await new Promise((r) => setTimeout(() => {
     r(true);
-    next();
+    run();
   }, 500));
 
   await new Promise((r) => setTimeout(r, 500));
@@ -57,15 +57,15 @@ test('only_resolve_the_last_value', async () => {
   }, 100));
 
   const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
-  const [state$, { next }] = stateHub.getStream('stream_findPetsByTags');
+  const [state$, { run }] = stateHub.getStream('stream_findPetsByTags');
 
   const mockFn = jest.fn();
   state$.subscribe(mockFn);
 
-  next();
-  next();
-  next();
-  next();
+  run();
+  run();
+  run();
+  run();
 
   await new Promise((r) => setTimeout(r, 500));
 
@@ -79,7 +79,7 @@ test('should_resolve_value', (done) => {
   });
 
   const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
-  const [state$, { next }] = stateHub.getStream('stream_findPetsByTags');
+  const [state$, { run }] = stateHub.getStream('stream_findPetsByTags');
 
   state$.subscribe(({ error, data: body }) => {
     expect(error).toBeUndefined();
@@ -87,7 +87,7 @@ test('should_resolve_value', (done) => {
     done();
   });
 
-  next();
+  run();
 });
 
 test('same_stateID_same_stream', () => {
@@ -105,7 +105,7 @@ test('param match input', (done) => {
   });
 
   const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
-  const [state$, { next }] = stateHub.getStream('stream_findPetsByTags');
+  const [state$, { run }] = stateHub.getStream('stream_findPetsByTags');
   const requestParams = { foo: 'bar' };
   const requestBody = { baz: 'bzz' };
 
@@ -115,5 +115,5 @@ test('param match input', (done) => {
     done();
   });
 
-  next({ params: requestParams, body: requestBody });
+  run({ params: requestParams, body: requestBody });
 });

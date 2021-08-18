@@ -9,7 +9,7 @@ import { APIState } from './types';
 import getResponseState$ from './response';
 
 type StreamActions = {
-  next: (params?: RequestParams) => void;
+  run: (params?: RequestParams) => void;
   refresh: () => void;
   // __complete: () => void;
 };
@@ -33,7 +33,7 @@ export default class StateHub {
   }
 
   getAction(stateID: string): (...args: any[]) => void {
-    const [, { next }] = this.getStream(stateID);
+    const [, { run: next }] = this.getStream(stateID);
     return next;
   }
 
@@ -65,7 +65,7 @@ export default class StateHub {
     let _latestParams: RequestParams = undefined;
 
     const streamActions: StreamActions = {
-      next: (params: RequestParams) => {
+      run: (params: RequestParams) => {
         params$.next(params);
         _latestParams = params;
       },
