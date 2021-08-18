@@ -15,9 +15,9 @@ test('resolve_initial_value_when_no_next_called', (done) => {
   });
 
   const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
-  const [stateHub$] = stateHub.getStream('stream_findPetsByTags');
+  const [state$] = stateHub.getStream('stream_findPetsByTags');
 
-  stateHub$.subscribe((result) => {
+  state$.subscribe((result) => {
     expect(result).toMatchObject(initialState);
     done();
   });
@@ -30,10 +30,10 @@ test('call_next_times', async () => {
   }, 100));
 
   const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
-  const [stateHub$, { next }] = stateHub.getStream('stream_findPetsByTags');
+  const [state$, { next }] = stateHub.getStream('stream_findPetsByTags');
 
   const mockFn = jest.fn();
-  stateHub$.subscribe(mockFn);
+  state$.subscribe(mockFn);
 
   await new Promise((r) => setTimeout(() => {
     r(true);
@@ -57,10 +57,10 @@ test('only_resolve_the_last_value', async () => {
   }, 100));
 
   const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
-  const [stateHub$, { next }] = stateHub.getStream('stream_findPetsByTags');
+  const [state$, { next }] = stateHub.getStream('stream_findPetsByTags');
 
   const mockFn = jest.fn();
-  stateHub$.subscribe(mockFn);
+  state$.subscribe(mockFn);
 
   next();
   next();
@@ -79,9 +79,9 @@ test('should_resolve_value', (done) => {
   });
 
   const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
-  const [stateHub$, { next }] = stateHub.getStream('stream_findPetsByTags');
+  const [state$, { next }] = stateHub.getStream('stream_findPetsByTags');
 
-  stateHub$.subscribe(({ error, data: body }) => {
+  state$.subscribe(({ error, data: body }) => {
     expect(error).toBeUndefined();
     expect(body).toMatchObject(mockRes);
     done();
@@ -92,10 +92,10 @@ test('should_resolve_value', (done) => {
 
 test('same_stateID_same_stream', () => {
   const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
-  const [stateHub$1, sendRequest1] = stateHub.getStream('stream_findPetsByTags');
-  const [stateHub$2, sendRequest2] = stateHub.getStream('stream_findPetsByTags');
+  const [state$1, sendRequest1] = stateHub.getStream('stream_findPetsByTags');
+  const [state$2, sendRequest2] = stateHub.getStream('stream_findPetsByTags');
 
-  expect(stateHub$1).toEqual(stateHub$2);
+  expect(state$1).toEqual(state$2);
   expect(sendRequest1).toEqual(sendRequest2);
 });
 
@@ -105,11 +105,11 @@ test('param match input', (done) => {
   });
 
   const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
-  const [stateHub$, { next }] = stateHub.getStream('stream_findPetsByTags');
+  const [state$, { next }] = stateHub.getStream('stream_findPetsByTags');
   const requestParams = { foo: 'bar' };
   const requestBody = { baz: 'bzz' };
 
-  stateHub$.subscribe(({ params }) => {
+  state$.subscribe(({ params }) => {
     expect(params?.params).toMatchObject(requestParams);
     expect(params?.body).toMatchObject(requestBody);
     done();

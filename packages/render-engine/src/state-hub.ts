@@ -26,11 +26,11 @@ export default class StateHub {
     this.stateIDMap = stateIDMap;
   }
 
-  getValue(stateID: string): Observable<APIState> {
-    const [stateHub$] = this.getStream(stateID);
+  getState(stateID: string): Observable<APIState> {
+    const [state$] = this.getStream(stateID);
 
     // todo test error when run convertor
-    return stateHub$;
+    return state$;
   }
 
   getAction(stateID: string, convertor?: ActionParamsConvertor): (...args: any[]) => void {

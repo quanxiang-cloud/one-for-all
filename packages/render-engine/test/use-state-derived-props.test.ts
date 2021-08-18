@@ -51,7 +51,7 @@ test('expect_resolve_converted_value', (done) => {
     },
   };
   const apiCallPropsResult = useAPICallProps({ stateHub, props: apiCallProps });
-  stateHub.getValue('stream_findPetsByTags').subscribe((result) => {
+  stateHub.getState('stream_findPetsByTags').subscribe((result) => {
     expect(result.data).toMatchObject(mockRes);
     done();
   });

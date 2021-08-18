@@ -35,7 +35,7 @@ export default function useStateDerivedProps({ props, stateHub }: UseAPIProps): 
   Object.entries(props).forEach(([propName, { initialValue, convertor, stateID }]) => {
     initialState[propName] = initialValue;
     convertors[propName] = convertor;
-    resList$[propName] = stateHub.getValue(stateID);
+    resList$[propName] = stateHub.getState(stateID);
   });
 
   const [state, setState] = useState<Record<string, any>>(initialState);
