@@ -8,7 +8,6 @@ import SpecInterpreter from '@ofa/spec-interpreter';
 import { APIState } from './types';
 import getResponseState$ from './response';
 
-type ResultConvertor<T> = (result: APIState) => T;
 type ActionParamsConvertor = (...args: any[]) => RequestParams;
 type StreamActions = {
   next: (params?: RequestParams) => void;
@@ -27,11 +26,11 @@ export default class StateHub {
     this.streamIDMap = streamIDMap;
   }
 
-  getValue<T>(streamID: string, convertor: ResultConvertor<T>): Observable<T> {
+  getValue(streamID: string): Observable<APIState> {
     const [stateHub$] = this.getStream(streamID);
 
     // todo test error when run convertor
-    return stateHub$.pipe(map(convertor));
+    return stateHub$;
   }
 
   getAction(streamID: string, convertor?: ActionParamsConvertor): (...args: any[]) => void {

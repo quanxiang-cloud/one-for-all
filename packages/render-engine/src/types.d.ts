@@ -16,7 +16,7 @@ export type ResultDerivedProperty<T = any> = {
   type: 'result_derived_property';
   initialValue: T;
   streamID: string;
-  convertor: (res: APIState) => T;
+  convertor?: (res?: APIState) => T;
 }
 
 export type APIInvokeProperty<T = any> = {

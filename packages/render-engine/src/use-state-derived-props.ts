@@ -1,37 +1,53 @@
 import { useEffect, useState } from 'react';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, map, Observable, skip } from 'rxjs';
 
 import StateHub from './state-hub';
-import { ResultDerivedProperty } from './types';
+import { APIState, ResultDerivedProperty } from './types';
+
+type ResultConvertor = (result?: APIState) => any;
 
 type UseAPIProps = {
   props: Record<string, ResultDerivedProperty>;
   stateHub: StateHub;
 }
 
-export default function useStateDerivedProps({ props, stateHub }: UseAPIProps): Record<string, unknown> {
-  const initialResult = Object.entries(props).reduce<Record<string, unknown>>(
-    (initialResult, [propName, { initialValue }]) => {
-      initialResult[propName] = initialValue;
-      return initialResult;
-    }, {});
+function convertResult(
+  result: Record<string, any>,
+  convertors: Record<string, ResultConvertor | undefined>,
+): Record<string, any> {
+  return Object.entries(result).map(([propName, propValue]) => {
+    return [
+      propName,
+      // TODO handle convert error case
+      convertors[propName] ? convertors[propName]?.(propValue) : propValue,
+    ];
+  }).reduce<Record<string, any>>((res, [propName, value]) => {
+    res[propName] = value;
+    return res;
+  }, {});
+}
 
-  const resList$ = Object.entries(props)
-    .map<[string, Observable<unknown>]>(([propName, { streamID, convertor }]) => {
-      return [propName, stateHub.getValue(streamID, convertor)];
-    })
-    .reduce<Record<string, Observable<unknown>>>((acc, [propName, res$]) => {
-      acc[propName] = res$;
-      return acc;
-    }, {});
+export default function useStateDerivedProps({ props, stateHub }: UseAPIProps): Record<string, any> {
+  const initialState: Record<string, any> = {};
+  const convertors: Record<string, ResultConvertor | undefined> = {};
+  const resList$: Record<string, Observable<any>> = {};
 
-  const [result, setResult] = useState<Record<string, unknown>>(initialResult);
+  Object.entries(props).forEach(([propName, { initialValue, convertor, streamID }]) => {
+    initialState[propName] = initialValue;
+    convertors[propName] = convertor;
+    resList$[propName] = stateHub.getValue(streamID);
+  });
+
+  const [state, setState] = useState<Record<string, any>>(initialState);
 
   useEffect(() => {
-    const subscription = combineLatest(resList$).subscribe(setResult);
+    const subscription = combineLatest(resList$).pipe(
+      skip(1),
+      map((result) => convertResult(result, convertors)),
+    ).subscribe(setState);
 
-    return subscription.unsubscribe();
+    return () => subscription.unsubscribe();
   }, []);
 
-  return result;
+  return state;
 }
