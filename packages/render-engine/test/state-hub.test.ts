@@ -81,13 +81,17 @@ test('should_resolve_value', (done) => {
   const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
   const [state$, { run }] = stateHub.getStream('stream_findPetsByTags');
 
-  state$.subscribe(({ error, data: body }) => {
-    expect(error).toBeUndefined();
-    expect(body).toMatchObject(mockRes);
-    done();
-  });
+  const fn = jest.fn();
+  state$.subscribe(fn);
 
-  run();
+  run({
+    onSuccess: (state) => {
+      expect(fn).toBeCalledWith(state);
+      expect(state.error).toBeUndefined();
+      expect(state.data).toMatchObject(mockRes);
+      done();
+    },
+  });
 });
 
 test('same_stateID_same_stream', () => {
@@ -109,14 +113,18 @@ test('param_match_input', (done) => {
   const requestParams = { foo: 'bar' };
   const requestBody = { baz: 'bzz' };
 
+  const fn = jest.fn();
+
   state$.subscribe(({ params }) => {
-    expect(params?.params).toMatchObject(requestParams);
-    expect(params?.body).toMatchObject(requestBody);
+    fn(params?.params);
   });
 
   run({
     params: { params: requestParams, body: requestBody },
-    onSuccess: () => done(),
+    onSuccess: () => {
+      expect(fn).toBeCalledWith(requestParams);
+      done();
+    },
   });
 });
 
@@ -126,18 +134,12 @@ test('on_success_should_be_called', (done) => {
   });
 
   const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
-  const [state$, { run }] = stateHub.getStream('stream_findPetsByTags');
+  const [, { run }] = stateHub.getStream('stream_findPetsByTags');
   const requestParams = { foo: 'bar' };
   const requestBody = { baz: 'bzz' };
 
   const onSuccessFn = jest.fn();
 
-  state$.subscribe((state) => {
-    expect(onSuccessFn).toBeCalledTimes(1);
-    expect(onSuccessFn).toBeCalledWith(state);
-    done();
-  });
-
   run({
     params: { params: requestParams, body: requestBody },
     onSuccess: onSuccessFn,
@@ -152,7 +154,12 @@ test('on_success_should_be_called', (done) => {
   });
   run({
     params: { params: requestParams, body: requestBody },
-    onSuccess: onSuccessFn,
+    onSuccess: (state) => {
+      onSuccessFn(state);
+      expect(onSuccessFn).toBeCalledTimes(1);
+      expect(onSuccessFn).toBeCalledWith(state);
+      done();
+    },
   });
 });
 
@@ -162,18 +169,12 @@ test('on_error_should_be_called', (done) => {
   });
 
   const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
-  const [state$, { run }] = stateHub.getStream('stream_findPetsByTags');
+  const [, { run }] = stateHub.getStream('stream_findPetsByTags');
   const requestParams = { foo: 'bar' };
   const requestBody = { baz: 'bzz' };
 
   const onErrorFn = jest.fn();
 
-  state$.subscribe((state) => {
-    expect(onErrorFn).toBeCalledTimes(1);
-    expect(onErrorFn).toBeCalledWith(state);
-    done();
-  });
-
   run({
     params: { params: requestParams, body: requestBody },
     onError: onErrorFn,
@@ -188,6 +189,11 @@ test('on_error_should_be_called', (done) => {
   });
   run({
     params: { params: requestParams, body: requestBody },
-    onError: onErrorFn,
+    onError: (state) => {
+      onErrorFn(state);
+      expect(onErrorFn).toBeCalledTimes(1);
+      expect(onErrorFn).toBeCalledWith(state);
+      done();
+    },
   });
 });

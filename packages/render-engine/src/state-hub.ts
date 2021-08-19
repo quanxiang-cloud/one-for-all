@@ -1,5 +1,5 @@
 import { Observable, of, Subject } from 'rxjs';
-import { concatWith, map, share, withLatestFrom } from 'rxjs/operators';
+import { concatWith, map, share, skip, withLatestFrom } from 'rxjs/operators';
 import { OpenAPIV3 } from 'openapi-types';
 
 import { RequestParams } from '@ofa/spec-interpreter/src/types';
@@ -84,7 +84,7 @@ export default class StateHub {
     );
 
     // run callbacks after value resolved
-    fullState$.subscribe((state) => {
+    fullState$.pipe(skip(1)).subscribe((state) => {
       setTimeout(() => {
         executeCallback(state, _latestRunParams);
       }, 10);
