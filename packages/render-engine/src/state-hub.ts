@@ -1,5 +1,5 @@
 import { Observable, of, Subject } from 'rxjs';
-import { concatWith, map, tap, withLatestFrom } from 'rxjs/operators';
+import { concatWith, map, share, withLatestFrom } from 'rxjs/operators';
 import { OpenAPIV3 } from 'openapi-types';
 
 import { RequestParams } from '@ofa/spec-interpreter/src/types';
@@ -51,7 +51,7 @@ export default class StateHub {
     return state$;
   }
 
-  getAction(stateID: string): (...args: any[]) => void {
+  getAction(stateID: string): (runParam?: RunParam) => void {
     const [, { run }] = this.getStream(stateID);
     return run;
   }
@@ -80,10 +80,15 @@ export default class StateHub {
       // todo refine this
       withLatestFrom(of(undefined).pipe(concatWith(params$))),
       map(([state, params]) => ({ ...state, params })),
-      tap((state) => {
-        executeCallback(state, _latestRunParams);
-      }),
+      share(),
     );
+
+    // run callbacks after value resolved
+    fullState$.subscribe((state) => {
+      setTimeout(() => {
+        executeCallback(state, _latestRunParams);
+      }, 10);
+    });
 
     let _latestRunParams: RunParam | undefined = undefined;
 

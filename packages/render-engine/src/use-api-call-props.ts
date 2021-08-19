@@ -16,7 +16,7 @@ export default function useAPICallProps({ props, stateHub }: Props): APICallProp
       function handleAction(...args: any[]): void {
         try {
           const requestParams = convertor(...args);
-          run({ requestParams, onError, onSuccess });
+          run({ params: requestParams, onError, onSuccess });
         } catch (error) {
           console.log('failed to run convertor or run action:', error);
         }

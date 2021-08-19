@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { combineLatest, map, Observable, skip } from 'rxjs';
+import { combineLatest, map, Observable, skip, tap } from 'rxjs';
 
 import StateHub from './state-hub';
 import { APIState, ResultDerivedProperty } from './types';
@@ -44,6 +44,7 @@ export default function useStateDerivedProps({ props, stateHub }: UseAPIProps): 
     const subscription = combineLatest(resList$).pipe(
       skip(1),
       map((result) => convertResult(result, convertors)),
+      tap((res) => console.log('res:', res)),
     ).subscribe(setState);
 
     return () => subscription.unsubscribe();
