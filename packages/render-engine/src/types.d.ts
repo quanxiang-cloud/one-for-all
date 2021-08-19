@@ -19,10 +19,12 @@ export type ResultDerivedProperty<T = any> = {
   convertor?: (res?: APIState) => T;
 }
 
-export type APIInvokeProperty<T = any> = {
+export type APIInvokeProperty = {
   type: 'api_invoke_property';
   stateID: string;
-  convertor: (callbackParams: T) => RequestParams;
+  convertor: (...args: any[]) => RequestParams;
+  onSuccess?: (state: APIState) => void;
+  onError?: (state: APIState) => void;
 }
 
 type APIReference = {

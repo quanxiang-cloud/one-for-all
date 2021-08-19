@@ -50,12 +50,12 @@ test('expect_resolve_converted_value', (done) => {
     },
   };
 
-  const next = stateHub.getAction('stream_findPetsByTags');
+  const run = stateHub.getAction('stream_findPetsByTags');
 
   stateHub.getState('stream_findPetsByTags').subscribe((result) => {
     expect(result.data).toMatchObject(mockRes);
     done();
   });
 
-  next();
+  run();
 });
