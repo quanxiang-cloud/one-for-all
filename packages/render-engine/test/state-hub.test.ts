@@ -9,14 +9,8 @@ beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
 
 test('resolve_initial_value_when_no_next_called', (done) => {
-  const mockRes = { data: { id: 'abc-123' } };
-  mockXHR.get(/.*/, (req, res) => {
-    return res.status(200).body(JSON.stringify(mockRes));
-  });
-
   const stateHub = new StateHub(petStoreSpec, { stream_findPetsByTags: 'findPetsByTags' });
   const [state$] = stateHub.getStream('stream_findPetsByTags');
-
   state$.subscribe((result) => {
     expect(result).toMatchObject(initialState);
     done();

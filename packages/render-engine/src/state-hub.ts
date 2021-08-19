@@ -1,5 +1,5 @@
 import { Observable, of, Subject } from 'rxjs';
-import { concatWith, map, share, skip, withLatestFrom } from 'rxjs/operators';
+import { concatWith, map, skip, withLatestFrom } from 'rxjs/operators';
 import { OpenAPIV3 } from 'openapi-types';
 
 import { RequestParams } from '@ofa/spec-interpreter/src/types';
@@ -80,7 +80,6 @@ export default class StateHub {
       // todo refine this
       withLatestFrom(of(undefined).pipe(concatWith(params$))),
       map(([state, params]) => ({ ...state, params })),
-      share(),
     );
 
     // run callbacks after value resolved
