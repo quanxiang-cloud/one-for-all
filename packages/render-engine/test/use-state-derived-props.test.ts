@@ -4,7 +4,7 @@ import mockXHR from 'xhr-mock';
 import { renderHook } from '@testing-library/react-hooks';
 
 import petStoreSpec from '@ofa/spec-interpreter/test/petstore-spec';
-import useStateDerivedProps from '../src/use-state-derived-props';
+import useStateDerivedProps from '../src/use-api-state-derived-props';
 import StateHub from '../src/state-hub';
 
 beforeEach(() => mockXHR.setup());

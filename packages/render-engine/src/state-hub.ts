@@ -37,7 +37,7 @@ export default class StateHub {
   specInterpreter: SpecInterpreter;
   // map of stateID and operationID
   stateIDMap: Record<string, string>;
-  streamCache: Record<string, [Observable<APIState>, StreamActions]> = {};
+  statesCache: Record<string, [Observable<APIState>, StreamActions]> = {};
 
   constructor(apiDoc: OpenAPIV3.Document, stateIDMap: Record<string, string>) {
     this.specInterpreter = new SpecInterpreter(apiDoc);
@@ -52,8 +52,8 @@ export default class StateHub {
   }
 
   getAction(stateID: string): (...args: any[]) => void {
-    const [, { run: next }] = this.getStream(stateID);
-    return next;
+    const [, { run }] = this.getStream(stateID);
+    return run;
   }
 
   getStream(stateID: string): [Observable<APIState>, StreamActions] {
@@ -62,11 +62,11 @@ export default class StateHub {
     }
 
     const key = `${stateID}:${this.stateIDMap[stateID]}`;
-    if (!this.streamCache[key]) {
-      this.streamCache[key] = this.initState(stateID);
+    if (!this.statesCache[key]) {
+      this.statesCache[key] = this.initState(stateID);
     }
 
-    return this.streamCache[key];
+    return this.statesCache[key];
   }
 
   initState(stateID: string): [Observable<APIState>, StreamActions] {
