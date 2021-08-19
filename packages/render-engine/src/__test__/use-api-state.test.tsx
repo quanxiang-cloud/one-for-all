@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import mockXHR from 'xhr-mock';
 
@@ -45,3 +45,37 @@ test('Link_changes_the_class_when_hovered', async () => {
   await waitFor(() => getByText('abc:abc'));
   expect(container).toMatchSnapshot();
 });
+
+test('search_btn', async () => {
+  const mockRes = { data: { id: 'abc-123' } };
+  mockXHR.get(/.*/, (req, res) => res.status(200).body(JSON.stringify(mockRes)));
+
+  const onSuccessFn = jest.fn();
+
+  const props: Record<string, ResultDerivedProperty | APIInvokeProperty> = {
+    foo: {
+      type: 'result_derived_property',
+      initialValue: 'foo',
+      stateID: 'stream_findPetsByTags',
+      convertor: () => 'abc',
+    },
+    bar: {
+      type: 'result_derived_property',
+      initialValue: 'bar',
+      stateID: 'stream_findPetsByTags',
+      convertor: () => 'abc',
+    },
+    onFetch: {
+      type: 'api_invoke_property',
+      stateID: 'stream_findPetsByTags',
+      convertor: () => undefined,
+      onSuccess: onSuccessFn,
+    },
+  };
+  const { container, getByText } = render(<Link props={props} stateHub={stateHub} />);
+  await waitFor(() => expect(onSuccessFn).toBeCalledTimes(1));
+  fireEvent(getByText('abc:abc'), new Event('click'));
+  await waitFor(() => getByText('abc:abc'));
+  expect(container).toMatchSnapshot();
+});
+

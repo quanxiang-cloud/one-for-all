@@ -9,3 +9,13 @@ exports[`Link_changes_the_class_when_hovered 1`] = `
   </button>
 </div>
 `;
+
+exports[`search_btn 1`] = `
+<div>
+  <button
+    id="button"
+  >
+    abc:abc
+  </button>
+</div>
+`;
