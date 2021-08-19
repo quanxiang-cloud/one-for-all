@@ -1,0 +1,24 @@
+{
+  "name": "@ofa/utils",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "test": "jest",
+    "updateSnapshot": "jest --updateSnapshot"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^26.0.24",
+    "@typescript-eslint/eslint-plugin": "^4.29.0",
+    "@typescript-eslint/parser": "^4.29.0",
+    "eslint": "^7.32.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-unused-imports": "^1.1.2",
+    "jest": "^27.0.6",
+    "ts-jest": "^27.0.4",
+    "tsconfig-paths-jest": "^0.0.1"
+  }
+}
