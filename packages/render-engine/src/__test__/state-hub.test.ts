@@ -1,9 +1,9 @@
 import mockXHR, { delay } from 'xhr-mock';
 
-import petStoreSpec from '@ofa/spec-interpreter/test/petstore-spec';
+import petStoreSpec from '@ofa/spec-interpreter/src/__test__/petstore-spec';
 
-import StateHub from '../src/state-hub';
-import { initialState } from '../src/response';
+import StateHub from '../state-hub';
+import { initialState } from '../response';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());

@@ -5,7 +5,7 @@
     "outDir": "dist",
     "rootDir": "."
   },
-  "include": ["src/**/*", "test/**/*"],
+  "include": ["src/**/*"],
   "references": [
     { "path": "../spec-interpreter/tsconfig.json" },
     { "path": "../utils/tsconfig.json" }

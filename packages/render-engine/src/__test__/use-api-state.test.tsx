@@ -3,9 +3,9 @@ import { render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import mockXHR from 'xhr-mock';
 
-import petStoreSpec from '@ofa/spec-interpreter/test/petstore-spec';
-import type { APIInvokeProperty, ResultDerivedProperty } from '../src/types';
-import StateHub from '../src/state-hub';
+import petStoreSpec from '@ofa/spec-interpreter/src/__test__/petstore-spec';
+import type { APIInvokeProperty, ResultDerivedProperty } from '../types';
+import StateHub from '../state-hub';
 import Link from './link';
 
 beforeEach(() => mockXHR.setup());
