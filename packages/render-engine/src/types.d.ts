@@ -32,6 +32,27 @@ export type APIInvokeProperty = {
   onError?: (state: APIState) => void;
 }
 
+interface Node {
+  key: string;
+  type: 'html-element' | 'react-component';
+  props: Record<string, ConstantProperty | APIDerivedProperty | APIInvokeProperty>;
+  children?: Node[];
+}
+
+interface HTMLNode extends Node {
+  type: 'html-element';
+  name: string;
+}
+
+interface ReactComponentNode extends Node {
+  type: 'react-component';
+  packageName: string;
+  packageVersion: string;
+  exportName: 'default' | string;
+  // not recommend, should avoid
+  // subModule?: string;
+}
+
 type Schema = {
   element: ElementIdentifier;
   props: {
@@ -52,17 +73,3 @@ type LocalStateProp = {
   default: any;
 }
 
-type CallbackProps = Array<{
-  type: 'callback';
-  target: 'muteState' | 'api_call';
-  // api stream or local state stream
-  stateID: string;
-}>;
-
-type Component = {
-  componentID: string;
-  type: 'html-element' | 'react-element' | 'layout-component';
-  props: Record<string, APIDerivedProperty | LocalStateProp | CallbackProps>;
-  // todo local state props
-  children?: Component[];
-}
