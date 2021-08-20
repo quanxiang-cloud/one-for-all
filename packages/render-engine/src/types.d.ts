@@ -9,11 +9,16 @@ export type APIState = {
   params: RequestParams;
   loading: boolean;
   data?: any;
-  error?: string;
+  error?: Error;
 };
 
-export type ResultDerivedProperty<T = any> = {
-  type: 'result_derived_property';
+type ConstantProperty = {
+  type: 'constant_property';
+  value: any;
+}
+
+export type APIDerivedProperty<T = any> = {
+  type: 'api_derived_property';
   initialValue: T;
   stateID: string;
   convertor?: (res?: APIState) => T;
@@ -25,13 +30,6 @@ export type APIInvokeProperty = {
   convertor: (...args: any[]) => RequestParams;
   onSuccess?: (state: APIState) => void;
   onError?: (state: APIState) => void;
-}
-
-type APIReference = {
-  apiID: string;
-  requestConvert: (params: any) => void;
-  responseConvert: (response: any) => any;
-  groupID?: string;
 }
 
 type Schema = {
@@ -49,16 +47,6 @@ interface Document {
 
 type DynamicComponent = React.FC<any> | React.ComponentClass<any>;
 
-interface Window {
-  // todo fix this type
-  OPEN_API_SPEC: any;
-}
-
-type ConstantProperty = {
-  type: 'constant_property';
-  value: any;
-}
-
 type LocalStateProp = {
   type: 'local';
   default: any;
@@ -74,7 +62,7 @@ type CallbackProps = Array<{
 type Component = {
   componentID: string;
   type: 'html-element' | 'react-element' | 'layout-component';
-  props: Record<string, ResultDerivedProperty | LocalStateProp | CallbackProps>;
+  props: Record<string, APIDerivedProperty | LocalStateProp | CallbackProps>;
   // todo local state props
   children?: Component[];
 }

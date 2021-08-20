@@ -1,4 +1,4 @@
-import type { ResultDerivedProperty } from '../types';
+import type { APIDerivedProperty } from '../types';
 
 import mockXHR from 'xhr-mock';
 import { renderHook } from '@testing-library/react-hooks';
@@ -16,15 +16,15 @@ const stateHub = new StateHub(petStoreSpec, stateIDMap);
 test('expect_resolve_initial_value', () => {
   const convertorFn = jest.fn();
 
-  const props: Record<string, ResultDerivedProperty> = {
+  const props: Record<string, APIDerivedProperty> = {
     foo: {
-      type: 'result_derived_property',
+      type: 'api_derived_property',
       initialValue: { foo: 123 },
       stateID: 'stream_findPetsByTags',
       convertor: convertorFn,
     },
     bar: {
-      type: 'result_derived_property',
+      type: 'api_derived_property',
       initialValue: { bar: 456 },
       stateID: 'stream_findPetsByTags',
       convertor: convertorFn,

@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import logger from '@ofa/utils/src/logger';
 
 import {
   importComponent,
@@ -23,7 +24,7 @@ function renderChildren(schemas: Array<Schema | string>): React.ReactNode[] | un
   });
 }
 
-function renderSchema({ schema }: { schema: Schema }): React.ReactElement {
+function renderSchema({ schema }: { schema: Schema }): React.ReactElement | null {
   const [loaded, setLoaded] = React.useState(false);
   const asyncModule = React.useRef<DynamicComponent | string>();
 
@@ -38,7 +39,10 @@ function renderSchema({ schema }: { schema: Schema }): React.ReactElement {
     // todo catch import error
     importComponent(elementScope, elementType, version).then((comp) => {
       if (!comp) {
-        console.error(`got empty component for elementScope: ${elementScope}, elementType: ${elementType}, version: ${version}`);
+        logger.error(
+          `got empty component for elementScope: ${elementScope},`,
+          `elementType: ${elementType}, version: ${version }`,
+        );
       }
       asyncModule.current = comp;
       setLoaded(true);
@@ -46,8 +50,7 @@ function renderSchema({ schema }: { schema: Schema }): React.ReactElement {
   }, []);
 
   if (!loaded || !asyncModule.current) {
-    // todo loading component
-    return React.createElement('span', null, 'loading');
+    return null;
   }
 
   return React.createElement(asyncModule.current, schema.props, renderChildren(schema.children || []));

@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { combineLatest, map, Observable, skip } from 'rxjs';
 
 import StateHub from './state-hub';
-import { APIState, ResultDerivedProperty } from './types';
+import { APIState, APIDerivedProperty } from './types';
 
 type ResultConvertor = (result?: APIState) => any;
 
 type UseAPIProps = {
-  props: Record<string, ResultDerivedProperty>;
+  props: Record<string, APIDerivedProperty>;
   stateHub: StateHub;
 }
 

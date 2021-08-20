@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import mockXHR from 'xhr-mock';
 
 import petStoreSpec from '@ofa/spec-interpreter/src/__test__/petstore-spec';
-import type { APIInvokeProperty, ResultDerivedProperty } from '../types';
+import type { APIInvokeProperty, APIDerivedProperty } from '../types';
 import StateHub from '../state-hub';
 import Link from './link';
 
@@ -20,15 +20,15 @@ test('Link_changes_the_class_when_hovered', async () => {
 
   const onSuccessFn = jest.fn();
 
-  const props: Record<string, ResultDerivedProperty | APIInvokeProperty> = {
+  const props: Record<string, APIDerivedProperty | APIInvokeProperty> = {
     foo: {
-      type: 'result_derived_property',
+      type: 'api_derived_property',
       initialValue: 'foo',
       stateID: 'stream_findPetsByTags',
       convertor: () => 'abc',
     },
     bar: {
-      type: 'result_derived_property',
+      type: 'api_derived_property',
       initialValue: 'bar',
       stateID: 'stream_findPetsByTags',
       convertor: () => 'abc',
@@ -52,15 +52,15 @@ test('search_btn', async () => {
 
   const onSuccessFn = jest.fn();
 
-  const props: Record<string, ResultDerivedProperty | APIInvokeProperty> = {
+  const props: Record<string, APIDerivedProperty | APIInvokeProperty> = {
     foo: {
-      type: 'result_derived_property',
+      type: 'api_derived_property',
       initialValue: 'foo',
       stateID: 'stream_findPetsByTags',
       convertor: () => 'abc',
     },
     bar: {
-      type: 'result_derived_property',
+      type: 'api_derived_property',
       initialValue: 'bar',
       stateID: 'stream_findPetsByTags',
       convertor: () => 'abc',

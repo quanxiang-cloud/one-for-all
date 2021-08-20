@@ -1,10 +1,10 @@
 import React from 'react';
 import StateHub from '../state-hub';
-import { APIInvokeProperty, ResultDerivedProperty } from '../types';
+import { APIInvokeProperty, APIDerivedProperty } from '../types';
 import useAPIState from '../use-api-state';
 
 type Props = {
-  props: Record<string, APIInvokeProperty | ResultDerivedProperty>;
+  props: Record<string, APIInvokeProperty | APIDerivedProperty>;
   stateHub: StateHub;
 }
 

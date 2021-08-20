@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import useStateDerivedProps from './use-api-state-derived-props';
-import { APIInvokeProperty, ResultDerivedProperty } from './types';
+import { APIInvokeProperty, APIDerivedProperty } from './types';
 import StateHub from './state-hub';
 import getAPICallProps from './get-api-call-props';
 
 type Props = {
-  props: Record<string, APIInvokeProperty | ResultDerivedProperty>;
+  props: Record<string, APIInvokeProperty | APIDerivedProperty>;
   stateHub: StateHub;
 }
 
 function groupProps(
-  props: Record<string, APIInvokeProperty | ResultDerivedProperty>,
-): [Record<string, ResultDerivedProperty>, Record<string, APIInvokeProperty>] {
-  const apiDerivedProps: Record<string, ResultDerivedProperty> = {};
+  props: Record<string, APIInvokeProperty | APIDerivedProperty>,
+): [Record<string, APIDerivedProperty>, Record<string, APIInvokeProperty>] {
+  const apiDerivedProps: Record<string, APIDerivedProperty> = {};
   const apiInvokeProps: Record<string, APIInvokeProperty> = {};
   Object.entries(props).forEach(([propName, propDesc]) => {
     if (propDesc.type === 'api_invoke_property') {
