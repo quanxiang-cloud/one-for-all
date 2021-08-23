@@ -1,4 +1,6 @@
-export default {
+import { OpenAPIV3 } from 'openapi-types';
+
+const todoSpec: OpenAPIV3.Document = {
   openapi: '3.0.0',
   info: {
     contact: {
@@ -366,3 +368,5 @@ export default {
     },
   },
 };
+
+export default todoSpec;

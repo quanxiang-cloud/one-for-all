@@ -55,7 +55,7 @@ interface ReactComponentNode extends Node {
   children?: Array<HTMLNode | ReactComponentNode>;
 }
 
-type Schema = {
+export type Schema = {
   node: HTMLNode | ReactComponentNode;
   stateAPIMap: Record<string, string>;
 }

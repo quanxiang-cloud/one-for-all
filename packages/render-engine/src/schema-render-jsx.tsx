@@ -10,7 +10,8 @@ import {
   // getBasicComponentsOptions,
   // getAdvancedComponentsOptions,
 } from './repository';
-import { APIDerivedProperty,
+import {
+  APIDerivedProperty,
   APIInvokeProperty,
   ConstantProperty,
   DynamicComponent,
@@ -26,12 +27,12 @@ type RenderNodesProps = {
   stateHub: StateHub;
 }
 
-function renderChildren({ nodes, stateHub }: RenderNodesProps): React.ReactNode[] {
+function RenderChildren({ nodes, stateHub }: RenderNodesProps): JSX.Element | null {
   if (!nodes.length) {
-    return [];
+    return null;
   }
 
-  return nodes.map((node) => renderNode({ node, stateHub }));
+  return (<>{nodes.map((node) => (<RenderNode key={node.key} node={node} stateHub={stateHub} />))}</>);
 }
 
 type RenderNodeProps = {
@@ -39,7 +40,7 @@ type RenderNodeProps = {
   stateHub: StateHub;
 }
 
-function renderNode({ node, stateHub }: RenderNodeProps): React.ReactElement | null {
+function RenderNode({ node, stateHub }: RenderNodeProps): React.ReactElement | null {
   const [loaded, setLoaded] = React.useState(false);
   const asyncModule = React.useRef<DynamicComponent | string>();
 
@@ -68,10 +69,16 @@ function renderNode({ node, stateHub }: RenderNodeProps): React.ReactElement | n
     return null;
   }
 
-  return React.createElement(
-    asyncModule.current,
-    props,
-    ...renderChildren({ nodes: node.children || [], stateHub }),
+  const Comp = asyncModule.current;
+
+  if (!node.children || !node.children.length) {
+    return (<Comp {...props} />);
+  }
+
+  return (
+    <Comp {...props}>
+      <RenderChildren nodes={node.children || []} stateHub={stateHub} />
+    </Comp>
   );
 }
 
@@ -109,7 +116,7 @@ function renderSchema({ schema, rootEle, apiDoc }: RenderSchemaParams): void {
 
   const stateHub = new StateHub(apiDoc, schema.stateAPIMap);
 
-  ReactDOM.render(React.createElement(renderNode, { node: schema.node, stateHub }), rootEle);
+  ReactDOM.render(React.createElement(RenderNode, { node: schema.node, stateHub }), rootEle);
 }
 
 export default renderSchema;

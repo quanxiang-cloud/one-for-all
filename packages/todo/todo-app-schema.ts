@@ -1,5 +1,5 @@
-import { RequestParams } from 'packages/spec-interpreter/src/types';
-import { Schema } from '../types';
+import { RequestParams } from '@ofa/spec-interpreter/src/types';
+import { Schema } from '@ofa/render-engine/src/types';
 
 const todoAppSchema: Schema = {
   stateAPIMap: {
@@ -21,7 +21,7 @@ const todoAppSchema: Schema = {
           id: { type: 'constant_property', value: 'todo-input-form' },
           onSubmit: {
             type: 'api_invoke_property',
-            stateID: 'addTodo',
+            stateID: 'createTodo',
             // onSubmit => requestParams => run
             convertor: (e: React.FormEvent<HTMLFormElement>): RequestParams | undefined => {
               e.preventDefault();

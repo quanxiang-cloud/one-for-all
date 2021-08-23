@@ -1,4 +1,4 @@
-import logger from '@ofa/utils/src/logger';
+// import logger from '@ofa/utils/src/logger';
 
 import StateHub from './state-hub';
 import { APIInvokeProperty } from './types';
@@ -17,7 +17,7 @@ export default function getAPICallProps(
           const requestParams = convertor(...args);
           run({ params: requestParams, onError, onSuccess });
         } catch (error) {
-          logger.log('failed to run convertor or run action:', error);
+          console.log('failed to run convertor or run action:', error);
         }
       }
 
