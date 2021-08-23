@@ -1,4 +1,5 @@
 import { RequestParams } from '@ofa/spec-interpreter/src/types';
+import StateHub from './state-hub';
 
 type StringSelector = string;
 type Selector<T> = StringSelector | ((data: any) => T);
@@ -71,3 +72,8 @@ type LocalStateProp = {
   default: any;
 }
 
+declare global {
+  interface Window {
+    stateHub: StateHub;
+  }
+}

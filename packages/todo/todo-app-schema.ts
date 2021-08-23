@@ -4,6 +4,7 @@ import { Schema } from '@ofa/render-engine/src/types';
 const todoAppSchema: Schema = {
   stateAPIMap: {
     createTodo: 'createTodo',
+    listTodos: 'listTodos',
   },
   node: {
     key: 'container',
@@ -40,6 +41,7 @@ const todoAppSchema: Schema = {
               // reset form
               const form = document.getElementById('todo-input-form') as HTMLFormElement;
               form?.reset?.();
+              window.stateHub.getAction('listTodos')();
             },
           },
         },

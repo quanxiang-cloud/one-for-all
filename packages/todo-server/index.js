@@ -30,7 +30,8 @@ app.post('/todos', (req, res) => {
     status: 'working',
     create_date: (new Date()).toISOString(),
   };
-  tasks.push(newTask);
+
+  tasks.unshift(newTask);
 
   res.send(newTask);
 });
@@ -48,7 +49,7 @@ app.delete('/todos/:todoId', (req, res) => {
   res.status(204);
 });
 
-app.updateTodo('/todos/:todoId', (req, res) => {
+app.put('/todos/:todoId', (req, res) => {
   const todoID = parseInt(req.params.todoId);
   const index = tasks.findIndex(({ id }) => id === todoID);
 

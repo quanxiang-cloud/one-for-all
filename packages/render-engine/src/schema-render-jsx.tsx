@@ -115,6 +115,8 @@ function renderSchema({ schema, rootEle, apiDoc }: RenderSchemaParams): void {
   // register('@advancesComponents', getAdvancedComponentsOptions());
 
   const stateHub = new StateHub(apiDoc, schema.stateAPIMap);
+  // todo give this a better design
+  window.stateHub = stateHub;
 
   ReactDOM.render(React.createElement(RenderNode, { node: schema.node, stateHub }), rootEle);
 }
