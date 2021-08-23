@@ -5,6 +5,9 @@ const todoAppSchema: Schema = {
   stateAPIMap: {
     createTodo: 'createTodo',
     listTodos: 'listTodos',
+    updateTodo: 'updateTodo',
+    todoStatus: 'todoStatus',
+    deleteTodo: 'deleteTodo',
   },
   node: {
     key: 'container',
@@ -29,10 +32,7 @@ const todoAppSchema: Schema = {
               e.stopPropagation();
 
               const formData = new FormData(e.target as HTMLFormElement);
-              const body = {};
-              for (const key of formData.keys()) {
-                body[key] = formData.get(key);
-              }
+              const body = { title: formData.get('title') };
 
               return { body };
             },
@@ -81,6 +81,78 @@ const todoAppSchema: Schema = {
             convertor: (apiState: APIState): Array<any> => {
               return apiState.data || [];
             },
+          },
+          toggleTodo: {
+            type: 'api_invoke_property',
+            stateID: 'updateTodo',
+            convertor: (todo: any): RequestParams | undefined => {
+              return { params: { todoId: todo.id }, body: todo };
+            },
+            onSuccess: (): void => {
+              window.stateHub.getAction('listTodos')();
+              window.stateHub.getAction('todoStatus')();
+            },
+          },
+          onFetchTodos: {
+            type: 'api_invoke_property',
+            stateID: 'listTodos',
+            convertor: () => undefined,
+          },
+          onDeleteTodo: {
+            type: 'api_invoke_property',
+            stateID: 'deleteTodo',
+            convertor: (todoID: number): RequestParams => {
+              return { params: { todoId: todoID } };
+            },
+            onSuccess: (): void => {
+              window.stateHub.getAction('listTodos')();
+              window.stateHub.getAction('todoStatus')();
+            },
+          },
+        },
+      },
+      {
+        key: 'todo-filter',
+        type: 'react-component',
+        packageName: 'todo-app',
+        exportName: 'TodoFilter',
+        packageVersion: 'whatever',
+        props: {
+          all: {
+            type: 'api_derived_property',
+            stateID: 'todoStatus',
+            initialValue: 0,
+            convertor: (apiState: APIState): number => {
+              return apiState.data?.all || 0;
+            },
+          },
+          working: {
+            type: 'api_derived_property',
+            stateID: 'todoStatus',
+            initialValue: 0,
+            convertor: (apiState: APIState): number => {
+              return apiState.data?.working || 0;
+            },
+          },
+          done: {
+            type: 'api_derived_property',
+            stateID: 'todoStatus',
+            initialValue: 0,
+            convertor: (apiState: APIState): number => {
+              return apiState.data?.done || 0;
+            },
+          },
+          onToggleStatus: {
+            type: 'api_invoke_property',
+            stateID: 'listTodos',
+            convertor: (status: string): RequestParams | undefined => {
+              return { params: { status } };
+            },
+          },
+          onFetchStatus: {
+            type: 'api_invoke_property',
+            stateID: 'todoStatus',
+            convertor: () => undefined,
           },
         },
       },

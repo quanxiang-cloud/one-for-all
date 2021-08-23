@@ -8,10 +8,16 @@ import { RequestConfig } from '@ofa/spec-interpreter/src/types';
 import { APIState } from './types';
 
 function requestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
+  let url = `http://localhost:8080${config.path}`;
+  const query = Object.entries(config.query || {}).map(([key, value]) => `${key}=${value}`).join('&');
+  if (query) {
+    url = `${url}?${query}`;
+  }
+
   return {
     method: config.method,
     // url: config.path,
-    url: `http://localhost:8080${config.path}`,
+    url,
     headers: {
       'Content-Type': 'application/json',
     },

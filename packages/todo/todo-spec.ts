@@ -39,6 +39,12 @@ const todoSpec: OpenAPIV3.Document = {
     },
   ],
   paths: {
+    '/todo_status': {
+      get: {
+        description: 'get todo status count',
+        operationId: 'todoStatus',
+      },
+    },
     '/todos': {
       get: {
         description: 'The list of tasks can be filtered by their status.\n',

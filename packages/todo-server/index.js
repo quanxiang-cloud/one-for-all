@@ -20,7 +20,12 @@ const tasks = [
 
 // list todos
 app.get('/todos', function(req, res) {
-  res.send(tasks);
+  const status = req.query.status;
+  if (!status) {
+    return res.send(tasks);
+  }
+
+  return res.send(tasks.filter((task) => task.status === status));
 });
 
 app.post('/todos', (req, res) => {
@@ -42,11 +47,13 @@ app.delete('/todos/:todoId', (req, res) => {
 
   if (index === -1) {
     res.status(404);
+    res.send();
     return;
   }
 
   tasks.splice(index, 1);
   res.status(204);
+  res.send();
 });
 
 app.put('/todos/:todoId', (req, res) => {
@@ -55,11 +62,21 @@ app.put('/todos/:todoId', (req, res) => {
 
   if (index === -1) {
     res.status(404);
+    res.send();
     return;
   }
 
   tasks.splice(index, 1, req.body);
   res.status(200);
+  res.send();
+});
+
+app.get('/todo_status', (req, res) => {
+  res.send({
+    all: tasks.length,
+    working: tasks.filter(({ status }) => status === 'working').length,
+    done: tasks.filter(({ status }) => status === 'done').length,
+  });
 });
 
 app.listen(8080, function() {
