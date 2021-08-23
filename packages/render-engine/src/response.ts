@@ -10,7 +10,8 @@ import { APIState } from './types';
 function requestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
   return {
     method: config.method,
-    url: config.path,
+    // url: config.path,
+    url: `http://localhost:8080${config.path}`,
     headers: {
       'Content-Type': 'application/json',
     },
