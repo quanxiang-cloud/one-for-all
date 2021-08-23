@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { OpenAPIV3 } from 'openapi-types';
 
-// import logger from '@ofa/utils/src/logger';
+import { logger } from '@ofa/utils';
 
 import {
   importComponent,
@@ -10,9 +10,7 @@ import {
   // getBasicComponentsOptions,
   // getAdvancedComponentsOptions,
 } from './repository';
-import { APIDerivedProperty,
-  APIInvokeProperty,
-  ConstantProperty,
+import {
   DynamicComponent,
   HTMLNode,
   ReactComponentNode,
@@ -26,12 +24,16 @@ type RenderNodesProps = {
   stateHub: StateHub;
 }
 
-function renderChildren({ nodes, stateHub }: RenderNodesProps): React.ReactNode[] {
+function renderChildren({ nodes, stateHub }: RenderNodesProps): React.FunctionComponentElement<any> | null {
   if (!nodes.length) {
-    return [];
+    return null;
   }
 
-  return nodes.map((node) => renderNode({ node, stateHub }));
+  return React.createElement(
+    React.Fragment,
+    null,
+    nodes.map((node) => React.createElement(renderNode, { key: node.key, node: node, stateHub: stateHub })),
+  );
 }
 
 type RenderNodeProps = {
@@ -43,7 +45,7 @@ function renderNode({ node, stateHub }: RenderNodeProps): React.ReactElement | n
   const [loaded, setLoaded] = React.useState(false);
   const asyncModule = React.useRef<DynamicComponent | string>();
 
-  const props = bindProps(node.props || {}, stateHub);
+  const props = useAPIState({ props: node.props || {}, stateHub });
 
   React.useEffect(() => {
     if (node.type === 'html-element') {
@@ -54,7 +56,7 @@ function renderNode({ node, stateHub }: RenderNodeProps): React.ReactElement | n
 
     importComponent(node.packageName, node.exportName, node.packageVersion).then((comp) => {
       if (!comp) {
-        console.error(
+        logger.error(
           `got empty component for package: ${node.packageName},`,
           `exportName: ${node.exportName}, version: ${node.packageVersion}`,
         );
@@ -68,33 +70,17 @@ function renderNode({ node, stateHub }: RenderNodeProps): React.ReactElement | n
     return null;
   }
 
-  return React.createElement(
-    asyncModule.current,
-    props,
-    ...renderChildren({ nodes: node.children || [], stateHub }),
+  if (!node.children || !node.children.length) {
+    return (React.createElement(asyncModule.current, props));
+  }
+
+  return (
+    React.createElement(
+      asyncModule.current,
+      props,
+      React.createElement(renderChildren, { nodes: node.children || [], stateHub: stateHub }),
+    )
   );
-}
-
-// todo give me a better name
-function bindProps(
-  props: Record<string, ConstantProperty | APIDerivedProperty | APIInvokeProperty>,
-  stateHub: StateHub,
-): Record<string, any> {
-  const constantProps: Record<string, any> = {};
-  const apiStateProps: Record<string, APIInvokeProperty | APIDerivedProperty> = {};
-  Object.entries(props).forEach(([key, propDesc]) => {
-    if (propDesc.type === 'constant_property') {
-      constantProps[key] = propDesc.value;
-      return;
-    }
-
-    apiStateProps[key] = propDesc;
-  });
-
-  const apiProps = useAPIState({ props: apiStateProps, stateHub });
-  const [finalProps] = useState(Object.assign(constantProps, apiProps));
-
-  return finalProps;
 }
 
 type RenderSchemaParams = {
@@ -108,6 +94,7 @@ function renderSchema({ schema, rootEle, apiDoc }: RenderSchemaParams): void {
   // register('@advancesComponents', getAdvancedComponentsOptions());
 
   const stateHub = new StateHub(apiDoc, schema.stateAPIMap);
+  // todo give this a better design
   window.stateHub = stateHub;
 
   ReactDOM.render(React.createElement(renderNode, { node: schema.node, stateHub }), rootEle);
