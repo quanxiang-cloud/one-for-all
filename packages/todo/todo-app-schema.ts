@@ -3,7 +3,7 @@ import { Schema } from '@ofa/render-engine/src/types';
 
 const todoAppSchema: Schema = {
   stateAPIMap: {
-    addTodo: 'addTodo',
+    createTodo: 'createTodo',
   },
   node: {
     key: 'container',
@@ -27,7 +27,13 @@ const todoAppSchema: Schema = {
               e.preventDefault();
               e.stopPropagation();
 
-              return { body: new FormData(e.target as HTMLFormElement) };
+              const formData = new FormData(e.target as HTMLFormElement);
+              const body = {};
+              for (const key of formData.keys()) {
+                body[key] = formData.get(key);
+              }
+
+              return { body };
             },
             onSuccess: (): void => {
               // contexts.store.call refresh again

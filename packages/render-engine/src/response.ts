@@ -19,6 +19,7 @@ function requestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
     crossDomain: false,
     withCredentials: false,
     responseType: 'json',
+    body: config.body,
   };
 }
 
