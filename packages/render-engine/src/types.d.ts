@@ -35,13 +35,14 @@ export type APIInvokeProperty = {
 interface Node {
   key: string;
   type: 'html-element' | 'react-component';
-  props: Record<string, ConstantProperty | APIDerivedProperty | APIInvokeProperty>;
+  props?: Record<string, ConstantProperty | APIDerivedProperty | APIInvokeProperty>;
   children?: Node[];
 }
 
 interface HTMLNode extends Node {
   type: 'html-element';
   name: string;
+  children?: Array<HTMLNode | ReactComponentNode>;
 }
 
 interface ReactComponentNode extends Node {
@@ -51,15 +52,12 @@ interface ReactComponentNode extends Node {
   exportName: 'default' | string;
   // not recommend, should avoid
   // subModule?: string;
+  children?: Array<HTMLNode | ReactComponentNode>;
 }
 
 type Schema = {
-  element: ElementIdentifier;
-  props: {
-    key: React.Key;
-    [key: string]: unknown;
-  };
-  children?: Array<Schema | string>;
+  node: HTMLNode | ReactComponentNode;
+  stateAPIMap: Record<string, string>;
 }
 
 interface Document {
