@@ -96,22 +96,6 @@ const todoSpec: OpenAPIV3.Document = {
         operationId: 'createTodo',
         requestBody: {
           $ref: '#/components/requestBodies/inline_object',
-          content: {
-            'application/x-www-form-urlencoded': {
-              schema: {
-                properties: {
-                  title: {
-                    description: 'The todo title',
-                    type: 'string',
-                  },
-                },
-                required: [
-                  'title',
-                ],
-                type: 'object',
-              },
-            },
-          },
         },
         responses: {
           200: {
@@ -198,28 +182,6 @@ const todoSpec: OpenAPIV3.Document = {
         ],
         requestBody: {
           $ref: '#/components/requestBodies/inline_object_1',
-          content: {
-            'application/x-www-form-urlencoded': {
-              schema: {
-                properties: {
-                  title: {
-                    description: 'The todo title',
-                    type: 'string',
-                  },
-                  status: {
-                    description: 'The todo status',
-                    enum: [
-                      'working',
-                      'waiting',
-                      'done',
-                    ],
-                    type: 'string',
-                  },
-                },
-                type: 'object',
-              },
-            },
-          },
         },
         responses: {
           200: {
