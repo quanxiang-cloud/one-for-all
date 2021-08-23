@@ -22,7 +22,7 @@ export type APIDerivedProperty<T = any> = {
   type: 'api_derived_property';
   initialValue: T;
   stateID: string;
-  convertor?: (res?: APIState) => T;
+  convertor?: (res: APIState) => T;
 }
 
 export type APIInvokeProperty = {

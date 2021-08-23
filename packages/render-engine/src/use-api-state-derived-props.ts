@@ -4,7 +4,7 @@ import { combineLatest, map, Observable, skip } from 'rxjs';
 import StateHub from './state-hub';
 import { APIState, APIDerivedProperty } from './types';
 
-type ResultConvertor = (result?: APIState) => any;
+type ResultConvertor = (result: APIState) => any;
 
 type UseAPIProps = {
   props: Record<string, APIDerivedProperty>;
@@ -44,7 +44,11 @@ export default function useStateDerivedProps({ props, stateHub }: UseAPIProps): 
     const subscription = combineLatest(resList$).pipe(
       skip(1),
       map((result) => convertResult(result, convertors)),
-    ).subscribe(setState);
+    // ).subscribe(setState);
+    ).subscribe((nextState) => {
+      console.log('set next state', nextState);
+      setState(nextState);
+    });
 
     return () => subscription.unsubscribe();
   }, []);

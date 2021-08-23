@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { OpenAPIV3 } from 'openapi-types';
 
-// import logger from '@ofa/utils/src/logger';
+import { logger } from '@ofa/utils';
 
 import {
   importComponent,
@@ -11,9 +11,6 @@ import {
   // getAdvancedComponentsOptions,
 } from './repository';
 import {
-  APIDerivedProperty,
-  APIInvokeProperty,
-  ConstantProperty,
   DynamicComponent,
   HTMLNode,
   ReactComponentNode,
@@ -44,7 +41,7 @@ function RenderNode({ node, stateHub }: RenderNodeProps): React.ReactElement | n
   const [loaded, setLoaded] = React.useState(false);
   const asyncModule = React.useRef<DynamicComponent | string>();
 
-  const props = bindProps(node.props || {}, stateHub);
+  const props = useAPIState({ props: node.props || {}, stateHub });
 
   React.useEffect(() => {
     if (node.type === 'html-element') {
@@ -55,7 +52,7 @@ function RenderNode({ node, stateHub }: RenderNodeProps): React.ReactElement | n
 
     importComponent(node.packageName, node.exportName, node.packageVersion).then((comp) => {
       if (!comp) {
-        console.error(
+        logger.error(
           `got empty component for package: ${node.packageName},`,
           `exportName: ${node.exportName}, version: ${node.packageVersion}`,
         );
@@ -80,28 +77,6 @@ function RenderNode({ node, stateHub }: RenderNodeProps): React.ReactElement | n
       <RenderChildren nodes={node.children || []} stateHub={stateHub} />
     </Comp>
   );
-}
-
-// todo give me a better name
-function bindProps(
-  props: Record<string, ConstantProperty | APIDerivedProperty | APIInvokeProperty>,
-  stateHub: StateHub,
-): Record<string, any> {
-  const constantProps: Record<string, any> = {};
-  const apiStateProps: Record<string, APIInvokeProperty | APIDerivedProperty> = {};
-  Object.entries(props).forEach(([key, propDesc]) => {
-    if (propDesc.type === 'constant_property') {
-      constantProps[key] = propDesc.value;
-      return;
-    }
-
-    apiStateProps[key] = propDesc;
-  });
-
-  const apiProps = useAPIState({ props: apiStateProps, stateHub });
-  const [finalProps] = useState(Object.assign(constantProps, apiProps));
-
-  return finalProps;
 }
 
 type RenderSchemaParams = {

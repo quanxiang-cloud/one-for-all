@@ -1,5 +1,5 @@
 import { RequestParams } from '@ofa/spec-interpreter/src/types';
-import { Schema } from '@ofa/render-engine/src/types';
+import { APIState, Schema } from '@ofa/render-engine/src/types';
 
 const todoAppSchema: Schema = {
   stateAPIMap: {
@@ -66,6 +66,23 @@ const todoAppSchema: Schema = {
             },
           },
         ],
+      },
+      {
+        key: 'todo-list',
+        type: 'react-component',
+        packageName: 'todo-app',
+        exportName: 'TodoList',
+        packageVersion: 'whatever',
+        props: {
+          todos: {
+            type: 'api_derived_property',
+            stateID: 'listTodos',
+            initialValue: [],
+            convertor: (apiState: APIState): Array<any> => {
+              return apiState.data || [];
+            },
+          },
+        },
       },
     ],
   },
