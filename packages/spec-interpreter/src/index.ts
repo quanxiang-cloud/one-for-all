@@ -3,16 +3,18 @@ import { OpenAPIV3 } from 'openapi-types';
 
 import { RequestConfig, RequestParams } from './types';
 
-type PartialSchema = {
+type OperationSpec = {
   path: string;
   method: OpenAPIV3.HttpMethods;
   parameters?: (OpenAPIV3.ReferenceObject | OpenAPIV3.ParameterObject)[];
   requestBody?: OpenAPIV3.ReferenceObject | OpenAPIV3.RequestBodyObject;
 }
 
-function indexing(schema: OpenAPIV3.Document): Record<string, PartialSchema | undefined> {
-  const operationIDMap: Record<string, PartialSchema | undefined> = {};
-  for (const [path, pathItemObject] of Object.entries(schema.paths)) {
+const METHODS = Object.values(OpenAPIV3.HttpMethods);
+
+function indexOperation(apiDoc: OpenAPIV3.Document): Record<string, OperationSpec | undefined> {
+  const operationIDMap: Record<string, OperationSpec | undefined> = {};
+  for (const [path, pathItemObject] of Object.entries(apiDoc.paths)) {
     if (!pathItemObject) {
       continue;
     }
@@ -35,25 +37,23 @@ function indexing(schema: OpenAPIV3.Document): Record<string, PartialSchema | un
   return operationIDMap;
 }
 
-const METHODS = Object.values(OpenAPIV3.HttpMethods);
+class SpecInterpreter {
+  docComponents: OpenAPIV3.ComponentsObject | undefined;
+  operationMap: Record<string, OperationSpec | undefined>;
 
-export default class Builder {
-  schema: OpenAPIV3.Document;
-  operationIDMap: Record<string, PartialSchema | undefined>;
-
-  constructor(schema: OpenAPIV3.Document) {
-    this.schema = schema;
-    this.operationIDMap = indexing(schema);
+  constructor(apiDoc: OpenAPIV3.Document) {
+    this.operationMap = indexOperation(apiDoc);
+    this.docComponents = apiDoc.components;
   }
 
   buildRequest(operationID: string, requestParam?: RequestParams): RequestConfig {
-    const schema = this.operationIDMap[operationID];
-    if (!schema) {
-      throw new Error('can not find schema');
+    const operationSpec = this.operationMap[operationID];
+    if (!operationSpec) {
+      throw new Error(`can not find spec for operation: ${operationID}`);
     }
 
-    let { path, method, parameters, requestBody } = schema;
-    const request: RequestConfig = { method, path };
+    const { path, method, parameters } = operationSpec;
+    const requestConfig: RequestConfig = { method, path };
 
     parameters?.forEach((p) => {
       if ('$ref' in p) {
@@ -66,7 +66,7 @@ export default class Builder {
           throw new Error(`parameter '${p.name}' required in path for ${operationID}`);
         }
 
-        path = path.replace(`{${p.name}}`, requestParam?.params?.[p.name]);
+        requestConfig.path = requestConfig.path.replace(`{${p.name}}`, requestParam?.params?.[p.name]);
       }
 
       if (p.in === 'query') {
@@ -75,7 +75,7 @@ export default class Builder {
         }
 
         if (requestParam?.params?.[p.name] !== undefined) {
-          set(request, `query.${p.name}`, requestParam?.params?.[p.name]);
+          set(requestConfig, `query.${p.name}`, requestParam?.params?.[p.name]);
         }
       }
 
@@ -85,20 +85,15 @@ export default class Builder {
         }
 
         if (requestParam?.params?.[p.name] !== undefined) {
-          set(request, `header.${p.name}`, requestParam?.params?.[p.name]);
+          set(requestConfig, `header.${p.name}`, requestParam?.params?.[p.name]);
         }
       }
     });
 
-    // todo support reference object
-    if (requestBody && !('$ref' in requestBody)) {
-      if (requestBody.required && requestParam?.body === undefined) {
-        throw new Error(`body required for operation: ${operationID}`);
-      }
+    requestConfig.body = requestParam?.body;
 
-      request.body = requestParam?.body;
-    }
-
-    return request;
+    return requestConfig;
   }
 }
+
+export default SpecInterpreter;

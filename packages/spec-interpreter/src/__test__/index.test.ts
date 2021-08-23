@@ -1,5 +1,5 @@
 import spec from './petstore-spec';
-import Builder from '../index';
+import SpecInterpreter from '../index';
 import { RequestParams } from '../types';
 
 const operations: Record<string, RequestParams> = {
@@ -63,7 +63,7 @@ const operations: Record<string, RequestParams> = {
 };
 
 test('expect to match snapshots', () => {
-  const builder = new Builder(spec as any);
+  const builder = new SpecInterpreter(spec as any);
   Object.entries(operations).forEach(([operationId, params]) => {
     expect(builder.buildRequest(operationId, params)).toMatchSnapshot();
   });
