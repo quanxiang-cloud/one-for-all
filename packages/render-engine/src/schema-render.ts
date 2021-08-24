@@ -93,7 +93,7 @@ function renderSchema({ schema, rootEle, apiDoc }: RenderSchemaParams): void {
   // register('@basicComponents', getBasicComponentsOptions());
   // register('@advancesComponents', getAdvancedComponentsOptions());
 
-  const stateHub = new StateHub(apiDoc, schema.stateAPIMap);
+  const stateHub = new StateHub(apiDoc, schema.statesMap);
   // TODO: give this a better design
   window.stateHub = stateHub;
 

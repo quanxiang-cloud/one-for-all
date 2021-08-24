@@ -2,12 +2,12 @@ import { RequestParams } from '@ofa/spec-interpreter/src/types';
 import { APIState, Schema } from '@ofa/render-engine/src/types';
 
 const todoAppSchema: Schema = {
-  stateAPIMap: {
-    createTodo: 'createTodo',
-    listTodos: 'listTodos',
-    updateTodo: 'updateTodo',
-    todoStatus: 'todoStatus',
-    deleteTodo: 'deleteTodo',
+  statesMap: {
+    createTodo: { operationID: 'createTodo' },
+    listTodos: { operationID: 'listTodos' },
+    updateTodo: { operationID: 'updateTodo' },
+    todoStatus: { operationID: 'todoStatus' },
+    deleteTodo: { operationID: 'deleteTodo' },
   },
   node: {
     key: 'container',

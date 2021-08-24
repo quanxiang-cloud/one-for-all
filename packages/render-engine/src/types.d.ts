@@ -56,9 +56,14 @@ interface ReactComponentNode extends Node {
   children?: Array<HTMLNode | ReactComponentNode>;
 }
 
+export type StatesMap = Record<string, {
+  operationID: string;
+  [key: string]: any;
+}>;
+
 export type Schema = {
   node: HTMLNode | ReactComponentNode;
-  stateAPIMap: Record<string, string>;
+  statesMap: StatesMap;
 }
 
 interface Document {

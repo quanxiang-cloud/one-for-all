@@ -5,7 +5,7 @@ import { OpenAPIV3 } from 'openapi-types';
 import { RequestParams } from '@ofa/spec-interpreter/src/types';
 import SpecInterpreter from '@ofa/spec-interpreter';
 
-import { APIState } from './types';
+import { APIState, StatesMap } from './types';
 import getResponseState$ from './response';
 
 type RunParam = {
@@ -36,10 +36,10 @@ function executeCallback(state: APIState, runParams?: RunParam): void {
 export default class StateHub {
   specInterpreter: SpecInterpreter;
   // map of stateID and operationID
-  stateIDMap: Record<string, string>;
+  stateIDMap: StatesMap;
   statesCache: Record<string, [Observable<APIState>, StreamActions]> = {};
 
-  constructor(apiDoc: OpenAPIV3.Document, stateIDMap: Record<string, string>) {
+  constructor(apiDoc: OpenAPIV3.Document, stateIDMap: StatesMap) {
     this.specInterpreter = new SpecInterpreter(apiDoc);
     this.stateIDMap = stateIDMap;
   }
@@ -78,7 +78,7 @@ export default class StateHub {
     const params$ = new Subject<RequestParams>();
     const request$ = params$.pipe(
       // TODO: catch builder error
-      map((params) => this.specInterpreter.buildRequest(this.stateIDMap[stateID], params)),
+      map((params) => this.specInterpreter.buildRequest(this.stateIDMap[stateID]?.operationID, params)),
     );
 
     const fullState$ = getResponseState$(request$).pipe(
