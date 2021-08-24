@@ -33,28 +33,30 @@ export type APIInvokeProperty = {
   onError?: (state: APIState) => void;
 }
 
-interface Node {
+interface BaseNode {
   key: string;
   type: 'html-element' | 'react-component';
   props?: Record<string, ConstantProperty | APIDerivedProperty | APIInvokeProperty>;
-  children?: Node[];
+  children?: BaseNode[];
 }
 
-interface HTMLNode extends Node {
+interface HTMLNode extends BaseNode {
   type: 'html-element';
   name: string;
-  children?: Array<HTMLNode | ReactComponentNode>;
+  children?: Array<SchemaNode>;
 }
 
-interface ReactComponentNode extends Node {
+interface ReactComponentNode extends BaseNode {
   type: 'react-component';
   packageName: string;
   packageVersion: string;
   exportName: 'default' | string;
   // not recommend, should avoid
   // subModule?: string;
-  children?: Array<HTMLNode | ReactComponentNode>;
+  children?: Array<SchemaNode>;
 }
+
+type SchemaNode = HTMLNode | ReactComponentNode;
 
 export type StatesMap = Record<string, {
   operationID: string;
@@ -62,7 +64,7 @@ export type StatesMap = Record<string, {
 }>;
 
 export type Schema = {
-  node: HTMLNode | ReactComponentNode;
+  node: SchemaNode;
   statesMap: StatesMap;
 }
 
