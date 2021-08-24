@@ -16,7 +16,7 @@ type RunParam = {
 
 type StreamActions = {
   run: (runParam?: RunParam) => void;
-  refresh: (refreshParam?: Omit<RunParam, 'params'>) => void;
+  refresh: () => void;
   // __complete: () => void;
 };
 
@@ -69,6 +69,11 @@ export default class StateHub {
     return this.statesCache[key];
   }
 
+  refresh(stateID: string): void {
+    const [, { refresh }] = this.getStream(stateID);
+    refresh();
+  }
+
   initState(stateID: string): [Observable<APIState>, StreamActions] {
     const params$ = new Subject<RequestParams>();
     const request$ = params$.pipe(
@@ -96,8 +101,9 @@ export default class StateHub {
         _latestRunParams = runParam;
         params$.next(runParam?.params);
       },
-      refresh: (refreshParam?: Omit<RunParam, 'params'>) => {
-        _latestRunParams = Object.assign({}, refreshParam, { params: _latestRunParams?.params });
+      refresh: () => {
+        // override onSuccess and onError to undefined
+        _latestRunParams = { params: _latestRunParams?.params };
         params$.next(_latestRunParams?.params);
       },
     };

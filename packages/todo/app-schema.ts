@@ -125,6 +125,7 @@ const todoAppSchema: Schema = {
               return { params: { todoId: todo.id }, body: todo };
             },
             onSuccess: (): void => {
+              // 提供一个 refresh event？
               window.stateHub.getAction('listTodos')();
               window.stateHub.getAction('todoStatus')();
             },
