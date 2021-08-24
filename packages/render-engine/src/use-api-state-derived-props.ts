@@ -44,11 +44,7 @@ export default function useStateDerivedProps({ props, stateHub }: UseAPIProps): 
     const subscription = combineLatest(resList$).pipe(
       skip(1),
       map((result) => convertResult(result, convertors)),
-    // ).subscribe(setState);
-    ).subscribe((nextState) => {
-      console.log('set next state', nextState);
-      setState(nextState);
-    });
+    ).subscribe(setState);
 
     return () => subscription.unsubscribe();
   }, []);

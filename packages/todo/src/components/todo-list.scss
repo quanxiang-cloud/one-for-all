@@ -48,14 +48,18 @@
   display: flex;
   height: 32px;
   align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
 }
 
 .todo-status {
   padding: 8px;
   margin-right: 16px;
   cursor: pointer;
+  border: 1px solid transparent;
 }
 
 .todo-status[data-active="true"] {
   border: 1px solid orange;
+  border-radius: 4px;
 }

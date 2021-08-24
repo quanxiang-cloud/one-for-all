@@ -72,6 +72,7 @@ const todoAppSchema: Schema = {
               type: { type: 'constant_property', value: 'input' },
               name: { type: 'constant_property', value: 'title' },
               placeholder: { type: 'constant_property', value: 'What do you want to do?' },
+              autoComplete: { type: 'constant_property', value: 'off' },
               style: {
                 type: 'constant_property',
                 value: {
