@@ -47,7 +47,7 @@ export default class StateHub {
   getState(stateID: string): Observable<APIState> {
     const [state$] = this.getStream(stateID);
 
-    // todo test error when run convertor
+    // TODO: test error when run convertor
     return state$;
   }
 
@@ -58,7 +58,7 @@ export default class StateHub {
 
   getStream(stateID: string): [Observable<APIState>, StreamActions] {
     if (!this.stateIDMap[stateID]) {
-      // todo log error message
+      // TODO: log error message
     }
 
     const key = `${stateID}:${this.stateIDMap[stateID]}`;
@@ -72,12 +72,12 @@ export default class StateHub {
   initState(stateID: string): [Observable<APIState>, StreamActions] {
     const params$ = new Subject<RequestParams>();
     const request$ = params$.pipe(
-      // todo catch builder error
+      // TODO: catch builder error
       map((params) => this.specInterpreter.buildRequest(this.stateIDMap[stateID], params)),
     );
 
     const fullState$ = getResponseState$(request$).pipe(
-      // todo refine this
+      // TODO: refine this
       withLatestFrom(of(undefined).pipe(concatWith(params$))),
       map(([state, params]) => ({ ...state, params })),
     );

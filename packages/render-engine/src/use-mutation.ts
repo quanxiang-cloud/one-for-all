@@ -11,7 +11,7 @@ export type UseMutationCallbacks = Partial<{
 }>;
 
 function refreshQueryResult(key: string) {
-  // todo implement this
+  // TODO: implement this
 }
 
 function useMutation(apiID: string, callbacks?: UseMutationCallbacks): UseMutationResult {
@@ -28,7 +28,7 @@ function useMutation(apiID: string, callbacks?: UseMutationCallbacks): UseMutati
       },
     });
 
-    // todo this is pseudo code
+    // TODO: this is pseudo code
     fetch(request).then((response) => {
       setLoading(false);
       refreshQueryResult(apiID);

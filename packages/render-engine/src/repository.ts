@@ -1,7 +1,7 @@
 import { DynamicComponent } from './types';
 
 type ComponentURLResolver = (componentName: string, version?: string) => string;
-// todo support import const value and prune functions
+// TODO: support import const value and prune functions
 type Importer = (systemModule: System.Module, componentName: string, version?: string) => DynamicComponent;
 
 export type RegistryOptions = {
@@ -32,14 +32,14 @@ export function importComponent(packageName: string, exportName: string, version
   });
 }
 
-// todo component name should be lower case
+// TODO: component name should be lower case
 export function getBasicComponentsOptions(): RegistryOptions {
   return {
     componentURLResolver: (_, version): string => {
       return `/dist/bundle@${version}.js`;
     },
     importer: (systemModule, componentName): DynamicComponent => {
-      // todo check module is undefined
+      // TODO: check module is undefined
       return systemModule[componentName];
     },
   };

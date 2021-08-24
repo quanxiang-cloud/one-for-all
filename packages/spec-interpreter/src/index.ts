@@ -57,7 +57,7 @@ class SpecInterpreter {
 
     parameters?.forEach((p) => {
       if ('$ref' in p) {
-        // todo support reference object
+        // TODO: support reference object
         return;
       }
 

@@ -120,6 +120,7 @@ const todoAppSchema: Schema = {
           toggleTodo: {
             type: 'api_invoke_property',
             stateID: 'updateTodo',
+            // template: ${data.foo}
             convertor: (todo: any): RequestParams | undefined => {
               return { params: { todoId: todo.id }, body: todo };
             },

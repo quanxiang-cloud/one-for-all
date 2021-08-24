@@ -34,7 +34,7 @@ function sendRequest(ajaxRequest: AjaxRequest): Observable<{ data: unknown; erro
   return ajax(ajaxRequest).pipe(
     map(({ response }) => ({ data: response, error: undefined })),
     catchError((error) => {
-      // todo
+      // TODO:
       // - need better log message
       // - return an readable error object
       return of({ error: error, data: undefined });
@@ -52,7 +52,7 @@ export function http(request$: Observable<RequestConfig>): Response$ {
   );
 
   // keep at least one subscriber to ensure response$ hot
-  // todo give more explanation
+  // TODO: give more explanation
   response$.subscribe(noop);
 
   return response$;

@@ -18,7 +18,7 @@ function convertResult(
   return Object.entries(result).map(([propName, propValue]) => {
     return [
       propName,
-      // TODO handle convert error case
+      // TODO: handle convert error case
       convertors[propName] ? convertors[propName]?.(propValue) : propValue,
     ];
   }).reduce<Record<string, any>>((res, [propName, value]) => {
