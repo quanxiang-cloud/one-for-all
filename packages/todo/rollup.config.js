@@ -1,5 +1,6 @@
 import commonjs from '@rollup/plugin-commonjs';
 import sucrase from '@rollup/plugin-sucrase';
+import styles from 'rollup-plugin-styles';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 import typescriptPaths from '../../rollup-plugin-typescript-paths';
@@ -16,6 +17,7 @@ export default [
 
     plugins: [
       commonjs(),
+      styles({ modules: false }),
       nodeResolve({
         browser: true,
         mainFields: ['main'],
@@ -39,6 +41,7 @@ export default [
 
     plugins: [
       commonjs(),
+      styles({ modules: false }),
       nodeResolve({
         browser: true,
         mainFields: ['main'],

@@ -20,21 +20,24 @@ function TodoFilter({ all, working, done, onToggleStatus, onFetchStatus }: Props
   }
 
   return (
-    <div>
+    <div className="todo-filter">
       <span
-        className={status === '' ? 'active' : ''}
+        className="todo-status"
+        data-active={status === '' ? 'true' : 'false'}
         onClick={() => toggleStatus('')}
       >
         {`All (${all})`}
       </span>
       <span
-        className={status === 'working' ? 'active' : ''}
+        className="todo-status"
+        data-active={status === 'working' ? 'true' : 'false'}
         onClick={() => toggleStatus('working')}
       >
         {`Working (${working})`}
       </span>
       <span
-        className={status === 'done' ? 'active' : ''}
+        className="todo-status"
+        data-active={status === 'done' ? 'true' : 'false'}
         onClick={() => toggleStatus('done')}
       >
         {`Done (${done})`}

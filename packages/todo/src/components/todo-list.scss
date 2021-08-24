@@ -1,0 +1,61 @@
+.todo-list {
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.todo-list__todo:not(:last-child) {
+  border-bottom: 1px solid #eee;
+}
+
+.todo {
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0;
+}
+
+.todo__toggle, .todo__action {
+  flex-shrink: 0;
+}
+
+.todo__toggle {
+  margin-right: 8px;
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+}
+
+.todo__action {
+  margin-left: 8px;
+  visibility: hidden;
+  color: red;
+  cursor: pointer;
+  font-size: 20px;
+  background: none;
+  border: none;
+}
+
+.todo:hover .todo__action {
+  visibility: visible;
+}
+
+.todo__title {
+  flex-grow: 1;
+}
+
+.todo-filter {
+  display: flex;
+  height: 32px;
+  align-items: center;
+}
+
+.todo-status {
+  padding: 8px;
+  margin-right: 16px;
+  cursor: pointer;
+}
+
+.todo-status[data-active="true"] {
+  border: 1px solid orange;
+}
