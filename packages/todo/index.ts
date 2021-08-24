@@ -1,6 +1,7 @@
 import { schemaRender } from '@ofa/render-engine';
-import schema from './todo-app-schema';
-import apiDoc from './todo-spec';
+
+import schema from './app-schema';
+import apiDoc from './api-doc';
 
 const rootEle = document.querySelector('#react-root');
 if (rootEle) {
