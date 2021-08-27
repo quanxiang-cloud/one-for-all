@@ -1,16 +1,16 @@
 import { useState, useMemo } from 'react';
 import useStateDerivedProps from './use-api-state-derived-props';
-import { APIInvokeProperty, APIDerivedProperty, ConstantProperty } from './types';
+import { APIInvokeProperty, APIDerivedProperty, ConstantProperty, NodeProps } from './types';
 import StateHub from './state-hub';
 import getAPICallProps from './get-api-call-props';
 
 type Props = {
-  props: Record<string, ConstantProperty | APIDerivedProperty | APIInvokeProperty>;
+  props: NodeProps;
   stateHub: StateHub;
 }
 
 function groupProps(
-  props: Record<string, ConstantProperty | APIInvokeProperty | APIDerivedProperty>,
+  props: NodeProps,
 ): {
   apiDerivedProps: Record<string, APIDerivedProperty>;
   apiInvokeProps: Record<string, APIInvokeProperty>;
@@ -20,6 +20,11 @@ function groupProps(
   const apiInvokeProps: Record<string, APIInvokeProperty> = {};
   const constantProps: Record<string, ConstantProperty> = {};
   Object.entries(props).forEach(([propName, propDesc]) => {
+    // todo support array props
+    if (Array.isArray(propDesc)) {
+      return;
+    }
+
     if (propDesc.type === 'constant_property') {
       constantProps[propName] = propDesc.value;
       return;

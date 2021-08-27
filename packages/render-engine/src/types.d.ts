@@ -1,11 +1,6 @@
 import { RequestParams } from '@ofa/spec-interpreter/src/types';
 import StateHub from './state-hub';
 
-type StringSelector = string;
-type Selector<T> = StringSelector | ((data: any) => T);
-
-type ElementIdentifier = string;
-
 export type APIState = {
   params: RequestParams;
   loading: boolean;
@@ -22,7 +17,7 @@ export type APIDerivedProperty<T = any> = {
   type: 'api_derived_property';
   initialValue: T;
   stateID: string;
-  convertor?: (res: APIState) => T;
+  convertor?: (apiState: APIState) => T;
 }
 
 export type APIInvokeProperty = {
@@ -33,10 +28,14 @@ export type APIInvokeProperty = {
   onError?: (state: APIState) => void;
 }
 
+export type NodeProps = Record<string,
+  ConstantProperty | APIDerivedProperty | APIInvokeProperty | Array<APIInvokeProperty>
+>;
+
 interface BaseNode {
   key: string;
   type: 'html-element' | 'react-component';
-  props?: Record<string, ConstantProperty | APIDerivedProperty | APIInvokeProperty>;
+  props?: NodeProps;
   children?: BaseNode[];
 }
 
