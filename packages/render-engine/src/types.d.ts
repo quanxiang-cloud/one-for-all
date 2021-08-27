@@ -1,6 +1,11 @@
 import { RequestParams } from '@ofa/spec-interpreter/src/types';
 import StateHub from './state-hub';
 
+declare enum ISRawSchema {
+  YES = 'yes',
+  NO = 'no',
+}
+
 export type APIState = {
   params: RequestParams;
   loading: boolean;
@@ -13,59 +18,110 @@ type ConstantProperty = {
   value: any;
 }
 
-export type APIDerivedProperty<T = any> = {
-  type: 'api_derived_property';
-  initialValue: T;
-  stateID: string;
-  convertor?: (apiState: APIState) => T;
+type FunctionSpec = {
+  type: string;
+  args: string;
+  body: string;
 }
 
-export type APIInvokeProperty = {
+export type APIStateConvertorFuncSpec = FunctionSpec & {
+  type: 'api_derive_function';
+  arguments: 'apiState';
+};
+
+export type APIInvokeConvertorFuncSpec = FunctionSpec & {
+  type: 'api_invoke_convertor_function';
+}
+
+export type APIInvokeCallbackFuncSpec = FunctionSpec & {
+  type: 'api_invoke_call_function';
+  arguments: 'state';
+}
+
+export type FunctionSpecs =
+  APIStateConvertorFuncSpec |
+  APIInvokeConvertorFuncSpec |
+  APIInvokeCallbackFuncSpec;
+
+type APIStateConvertor<T> = T extends ISRawSchema.YES ?
+  APIStateConvertorFuncSpec :
+  (apiState: APIState) => any;
+
+type APIInvokeConvertor<T> = T extends ISRawSchema.YES ?
+  APIInvokeConvertorFuncSpec :
+  (...args: any[]) => RequestParams;
+
+type APIInvokeCallBack<T> = T extends ISRawSchema.YES ?
+  APIInvokeCallbackFuncSpec :
+  (apiState: APIState) => void;
+
+export type APIDerivedProperty<T> = {
+  type: 'api_derived_property';
+  initialValue: any;
+  stateID: string;
+  convertor?: APIStateConvertor<T>;
+}
+
+export type APIInvokeProperty<T> = {
   type: 'api_invoke_property';
   stateID: string;
-  convertor: (...args: any[]) => RequestParams;
-  onSuccess?: (state: APIState) => void;
-  onError?: (state: APIState) => void;
+  convertor: APIInvokeConvertor<T>;
+  onSuccess?: APIInvokeCallBack<T>;
+  onError?: APIInvokeCallBack<T>;
 }
 
-export type NodeProps = Record<string,
-  ConstantProperty | APIDerivedProperty | APIInvokeProperty | Array<APIInvokeProperty>
->;
+export type NodeProp<T> =
+  ConstantProperty |
+  APIDerivedProperty<T> |
+  APIInvokeProperty<T> |
+  Array<APIInvokeProperty<T>>;
 
-interface BaseNode {
+export type NodeProps<T> = Record<string, NodeProp<T>>;
+
+interface BaseNode<T> {
   key: string;
   type: 'html-element' | 'react-component';
-  props?: NodeProps;
-  children?: BaseNode[];
+  props?: NodeProps<T>;
+  children?: BaseNode<T>[];
 }
 
-interface HTMLNode extends BaseNode {
+interface HTMLNode<T> extends BaseNode<T> {
   type: 'html-element';
   name: string;
-  children?: Array<SchemaNode>;
+  children?: Array<SchemaNode<T>>;
 }
 
-interface ReactComponentNode extends BaseNode {
+interface ReactComponentNode<T> extends BaseNode<T> {
   type: 'react-component';
   packageName: string;
   packageVersion: string;
   exportName: 'default' | string;
   // not recommend, should avoid
   // subModule?: string;
-  children?: Array<SchemaNode>;
+  children?: Array<SchemaNode<T>>;
 }
 
-type SchemaNode = HTMLNode | ReactComponentNode;
+type SchemaNode<T> = HTMLNode<T> | ReactComponentNode<T>;
 
 export type StatesMap = Record<string, {
   operationID: string;
   [key: string]: any;
 }>;
 
-export type Schema = {
-  node: SchemaNode;
+export type Schema<T extends ISRawSchema> = {
+  node: SchemaNode<T>;
   statesMap: StatesMap;
 }
+
+export type RawSchema = {
+  node: SchemaNode<ISRawSchema.YES>;
+  statesMap: StatesMap;
+};
+
+export type EvaluatedSchema = {
+  node: SchemaNode<ISRawSchema.NO>;
+  statesMap: StatesMap;
+};
 
 interface Document {
   adoptedStyleSheets: any[];

@@ -1,7 +1,7 @@
 import { RequestParams } from '@ofa/spec-interpreter/src/types';
-import { APIState, Schema } from '@ofa/render-engine/src/types';
+import { APIState, EvaluatedSchema } from '@ofa/render-engine/src/types';
 
-const todoAppSchema: Schema = {
+const todoAppSchema: EvaluatedSchema = {
   statesMap: {
     createTodo: { operationID: 'createTodo' },
     listTodos: { operationID: 'listTodos' },

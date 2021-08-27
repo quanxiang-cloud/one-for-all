@@ -15,7 +15,7 @@
     "@testing-library/react-hooks": "^7.0.1",
     "@tsconfig/recommended": "^1.0.1",
     "@types/jest": "^26.0.24",
-    "@types/lodash": "^4.14.168",
+    "@types/lodash": "^4.14.172",
     "@types/systemjs": "^6.1.1",
     "@typescript-eslint/eslint-plugin": "^4.29.0",
     "@typescript-eslint/parser": "^4.29.0",
