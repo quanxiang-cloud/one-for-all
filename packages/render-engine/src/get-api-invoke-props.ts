@@ -5,7 +5,7 @@ import { APIInvokeProperty, Instantiated } from './types';
 
 type APICallProps = Record<string, (...args: any[]) => void>;
 
-export default function getAPICallProps(
+export default function getAPIInvokeProps(
   props: Record<string, APIInvokeProperty<Instantiated>[]>,
   stateHub: StateHub,
 ): APICallProps {

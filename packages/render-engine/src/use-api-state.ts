@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import useStateDerivedProps from './use-api-state-derived-props';
 import { APIInvokeProperty, APIDerivedProperty, ConstantProperty, NodeProps, Instantiated } from './types';
 import StateHub from './state-hub';
-import getAPICallProps from './get-api-call-props';
+import getAPICallProps from './get-api-invoke-props';
 
 type Props = {
   props: NodeProps<Instantiated>;
