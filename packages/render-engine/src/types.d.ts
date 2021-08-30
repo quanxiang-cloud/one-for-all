@@ -65,7 +65,7 @@ export type APIDerivedProperty<T> = {
 export type APIInvokeProperty<T> = {
   type: 'api_invoke_property';
   stateID: string;
-  convertor: APIInvokeConvertor<T>;
+  convertor?: APIInvokeConvertor<T>;
   onSuccess?: APIInvokeCallBack<T>;
   onError?: APIInvokeCallBack<T>;
 }
@@ -108,17 +108,12 @@ export type StatesMap = Record<string, {
   [key: string]: any;
 }>;
 
-export type Schema<T extends ISRawSchema> = {
-  node: SchemaNode<T>;
+export type Schema = {
+  node: SchemaNode<ISRawSchema.YES>;
   statesMap: StatesMap;
 }
 
-export type RawSchema = {
-  node: SchemaNode<ISRawSchema.YES>;
-  statesMap: StatesMap;
-};
-
-export type EvaluatedSchema = {
+export type instantiatedSchema = {
   node: SchemaNode<ISRawSchema.NO>;
   statesMap: StatesMap;
 };
