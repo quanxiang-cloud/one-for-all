@@ -60,6 +60,17 @@ export function http(request$: Observable<RequestConfig>): Response$ {
 
 export const initialState: Omit<APIState, 'params'> = { data: undefined, error: undefined, loading: false };
 
+// API State Table
+/*
+    |     | loading |   data    |   error   |
+    | --- | :-----: | :-------: | :-------: |
+    | 1   |  false  | undefined | undefined |
+    | 2   |  true   | undefined | undefined |
+┌──►| 3   |  false  |    {}     | undefined |◄────┐
+└───| 4   |  true   |    {}     | undefined |     │
+    | 5   |  false  | undefined |    xxx    |     │
+    | 6   |  true   | undefined |    xxx    |─────┘
+*/
 type State = Omit<APIState, 'params'>;
 
 export default function getResponseState$(request$: Observable<RequestConfig>): Observable<State> {
