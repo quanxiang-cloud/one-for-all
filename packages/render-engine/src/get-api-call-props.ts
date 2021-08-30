@@ -12,10 +12,10 @@ export default function getAPICallProps(
   return Object.entries(props)
     .reduce<APICallProps>((acc, [propName, apiCalls]) => {
       function handleAction(...args: any[]): void {
-        apiCalls.forEach(({ stateID, convertor, onError, onSuccess }) => {
+        apiCalls.forEach(({ stateID, paramsBuilder, onError, onSuccess }) => {
           const run = stateHub.getAction(stateID);
           try {
-            const requestParams = convertor?.(...args);
+            const requestParams = paramsBuilder?.(...args);
             run({ params: requestParams, onError, onSuccess });
           } catch (error) {
             console.log('failed to run convertor or run action:', error);

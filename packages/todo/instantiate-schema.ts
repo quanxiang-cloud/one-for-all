@@ -45,7 +45,7 @@ const todoAppSchema: InstantiatedSchema = {
             type: 'api_invoke_property',
             stateID: 'createTodo',
             // onSubmit => requestParams => run
-            convertor: (e: React.FormEvent<HTMLFormElement>): RequestParams | undefined => {
+            paramsBuilder: (e: React.FormEvent<HTMLFormElement>): RequestParams | undefined => {
               e.preventDefault();
               e.stopPropagation();
 
@@ -113,7 +113,7 @@ const todoAppSchema: InstantiatedSchema = {
             type: 'api_derived_property',
             stateID: 'listTodos',
             initialValue: [],
-            convertor: (apiState: APIState): Array<any> => {
+            mapper: (apiState: APIState): Array<any> => {
               return apiState.data || [];
             },
           },
@@ -121,7 +121,7 @@ const todoAppSchema: InstantiatedSchema = {
             type: 'api_invoke_property',
             stateID: 'updateTodo',
             // template: ${data.foo}
-            convertor: (todo: any): RequestParams | undefined => {
+            paramsBuilder: (todo: any): RequestParams | undefined => {
               return { params: { todoId: todo.id }, body: todo };
             },
             onSuccess: (): void => {
@@ -133,12 +133,12 @@ const todoAppSchema: InstantiatedSchema = {
           onFetchTodos: {
             type: 'api_invoke_property',
             stateID: 'listTodos',
-            convertor: () => undefined,
+            paramsBuilder: () => undefined,
           },
           onDeleteTodo: {
             type: 'api_invoke_property',
             stateID: 'deleteTodo',
-            convertor: (todoID: number): RequestParams => {
+            paramsBuilder: (todoID: number): RequestParams => {
               return { params: { todoId: todoID } };
             },
             onSuccess: (): void => {
@@ -159,7 +159,7 @@ const todoAppSchema: InstantiatedSchema = {
             type: 'api_derived_property',
             stateID: 'todoStatus',
             initialValue: 0,
-            convertor: (apiState: APIState): number => {
+            mapper: (apiState: APIState): number => {
               return apiState.data?.all || 0;
             },
           },
@@ -167,7 +167,7 @@ const todoAppSchema: InstantiatedSchema = {
             type: 'api_derived_property',
             stateID: 'todoStatus',
             initialValue: 0,
-            convertor: (apiState: APIState): number => {
+            mapper: (apiState: APIState): number => {
               return apiState.data?.working || 0;
             },
           },
@@ -175,21 +175,21 @@ const todoAppSchema: InstantiatedSchema = {
             type: 'api_derived_property',
             stateID: 'todoStatus',
             initialValue: 0,
-            convertor: (apiState: APIState): number => {
+            mapper: (apiState: APIState): number => {
               return apiState.data?.done || 0;
             },
           },
           onToggleStatus: {
             type: 'api_invoke_property',
             stateID: 'listTodos',
-            convertor: (status: string): RequestParams | undefined => {
+            paramsBuilder: (status: string): RequestParams | undefined => {
               return { params: { status } };
             },
           },
           onFetchStatus: {
             type: 'api_invoke_property',
             stateID: 'todoStatus',
-            convertor: () => undefined,
+            paramsBuilder: () => undefined,
           },
         },
       },

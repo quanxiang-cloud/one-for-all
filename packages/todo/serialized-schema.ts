@@ -43,8 +43,8 @@ const todoAppSchema: Schema = {
           onSubmit: {
             type: 'api_invoke_property',
             stateID: 'createTodo',
-            convertor: {
-              type: 'api_invoke_convertor_function',
+            paramsBuilder: {
+              type: 'param_builder_func_spec',
               args: 'e',
               body: `e.preventDefault();
                 e.stopPropagation();
@@ -56,7 +56,7 @@ const todoAppSchema: Schema = {
               `,
             },
             onSuccess: {
-              type: 'api_invoke_call_function',
+              type: 'api_invoke_call_func_spec',
               args: 'apiState',
               body: `
                 // contexts.store.call refresh again
@@ -118,8 +118,8 @@ const todoAppSchema: Schema = {
             type: 'api_derived_property',
             stateID: 'listTodos',
             initialValue: [],
-            convertor: {
-              type: 'api_derive_function',
+            mapper: {
+              type: 'api_state_mapper_func_spec',
               args: 'apiState',
               body: `
                 return apiState.data || [];
@@ -130,15 +130,15 @@ const todoAppSchema: Schema = {
             type: 'api_invoke_property',
             stateID: 'updateTodo',
             // template: ${data.foo}
-            convertor: {
-              type: 'api_invoke_convertor_function',
+            paramsBuilder: {
+              type: 'param_builder_func_spec',
               args: 'todo',
               body: `
                 return { params: { todoId: todo.id }, body: todo };
               `,
             },
             onSuccess: {
-              type: 'api_invoke_call_function',
+              type: 'api_invoke_call_func_spec',
               args: 'apiState',
               body: `
                 // 提供一个 refresh event？
@@ -155,15 +155,15 @@ const todoAppSchema: Schema = {
           onDeleteTodo: {
             type: 'api_invoke_property',
             stateID: 'deleteTodo',
-            convertor: {
-              type: 'api_invoke_convertor_function',
+            paramsBuilder: {
+              type: 'param_builder_func_spec',
               args: 'todoID',
               body: `
                 return { params: { todoId: todoID } };
               `,
             },
             onSuccess: {
-              type: 'api_invoke_call_function',
+              type: 'api_invoke_call_func_spec',
               args: 'apiState',
               body: `
                 window.stateHub.getAction('listTodos')();
@@ -184,8 +184,8 @@ const todoAppSchema: Schema = {
             type: 'api_derived_property',
             stateID: 'todoStatus',
             initialValue: 0,
-            convertor: {
-              type: 'api_derive_function',
+            mapper: {
+              type: 'api_state_mapper_func_spec',
               args: 'apiState',
               body: `
                 return apiState.data?.all || 0;
@@ -199,8 +199,8 @@ const todoAppSchema: Schema = {
             // convertor: (apiState: APIState): number => {
             //   return apiState.data?.working || 0;
             // },
-            convertor: {
-              type: 'api_derive_function',
+            mapper: {
+              type: 'api_state_mapper_func_spec',
               args: 'apiState',
               body: `
                 return apiState.data?.working || 0;
@@ -211,8 +211,8 @@ const todoAppSchema: Schema = {
             type: 'api_derived_property',
             stateID: 'todoStatus',
             initialValue: 0,
-            convertor: {
-              type: 'api_derive_function',
+            mapper: {
+              type: 'api_state_mapper_func_spec',
               args: 'apiState',
               body: `
                 return apiState.data?.done || 0;
@@ -222,8 +222,8 @@ const todoAppSchema: Schema = {
           onToggleStatus: {
             type: 'api_invoke_property',
             stateID: 'listTodos',
-            convertor: {
-              type: 'api_invoke_convertor_function',
+            paramsBuilder: {
+              type: 'param_builder_func_spec',
               args: 'status',
               body: `
                 return { params: { status } };

@@ -2,24 +2,28 @@ import {
   NodeProp,
   InstantiatedSchema,
   Schema,
-  FunctionSpecs,
   APIState,
   SchemaNode,
   NodeProps,
   Serialized,
   Instantiated,
+  APIStateMapperFuncSpec,
+  ParamsBuilderFuncSpec,
+  APIInvokeCallbackFuncSpec,
 } from './types';
 
+type FunctionSpecs = APIStateMapperFuncSpec | ParamsBuilderFuncSpec | APIInvokeCallbackFuncSpec;
+
 function instantiateFuncSpec({ type, args, body }: FunctionSpecs): ((...args: any[]) => any) | undefined {
-  if (type === 'api_derive_function') {
+  if (type === 'api_state_mapper_func_spec') {
     return new Function('apiState', body) as (apiState: APIState) => any;
   }
 
-  if (type === 'api_invoke_convertor_function') {
+  if (type === 'param_builder_func_spec') {
     return new Function(args, body) as (...args: any[]) => any;
   }
 
-  if (type === 'api_invoke_call_function') {
+  if (type === 'api_invoke_call_func_spec') {
     return new Function('apiState', body) as (...args: any[]) => any;
   }
 
@@ -27,16 +31,16 @@ function instantiateFuncSpec({ type, args, body }: FunctionSpecs): ((...args: an
 }
 
 function transformProps(props: NodeProps<Serialized>): NodeProps<Instantiated> {
-  return Object.entries(props).map<[string, NodeProp<Instantiated>]>(([propName, propDesc]) => {
+  return Object.entries(props).map<[string, NodeProp<Instantiated>] | null>(([propName, propDesc]) => {
     // instantiate Array<APIInvokeProperty<T>>
     if (Array.isArray(propDesc)) {
       return [
         propName,
-        propDesc.map(({ type, stateID, convertor, onSuccess, onError }) => {
+        propDesc.map(({ type, stateID, paramsBuilder, onSuccess, onError }) => {
           return {
             type,
             stateID,
-            convertor: convertor ? instantiateFuncSpec(convertor) : undefined,
+            paramsBuilder: paramsBuilder ? instantiateFuncSpec(paramsBuilder) : undefined,
             onSuccess: onSuccess ? instantiateFuncSpec(onSuccess) : undefined,
             onError: onError ? instantiateFuncSpec(onError) : undefined,
           };
@@ -51,16 +55,22 @@ function transformProps(props: NodeProps<Serialized>): NodeProps<Instantiated> {
     if (propDesc.type === 'api_derived_property') {
       return [propName, {
         ...propDesc,
-        convertor: propDesc.convertor ? instantiateFuncSpec(propDesc.convertor) : undefined,
+        mapper: propDesc.mapper ? instantiateFuncSpec(propDesc.mapper) : undefined,
       }];
     }
 
-    return [propName, {
-      ...propDesc,
-      convertor: propDesc.convertor ? instantiateFuncSpec(propDesc.convertor) : undefined,
-      onSuccess: propDesc.onSuccess ? instantiateFuncSpec(propDesc.onSuccess) : undefined,
-      onError: propDesc.onError ? instantiateFuncSpec(propDesc.onError) : undefined,
-    }];
+    if (propDesc.type === 'api_invoke_property') {
+      return [propName, {
+        ...propDesc,
+        paramsBuilder: propDesc.paramsBuilder ? instantiateFuncSpec(propDesc.paramsBuilder) : undefined,
+        onSuccess: propDesc.onSuccess ? instantiateFuncSpec(propDesc.onSuccess) : undefined,
+        onError: propDesc.onError ? instantiateFuncSpec(propDesc.onError) : undefined,
+      }];
+    }
+
+    return null;
+  }).filter((pair): pair is [string, NodeProp<Instantiated>] => {
+    return !!pair;
   }).reduce<NodeProps<Instantiated>>((acc, [propName, propDesc]) => {
     acc[propName] = propDesc;
     return acc;

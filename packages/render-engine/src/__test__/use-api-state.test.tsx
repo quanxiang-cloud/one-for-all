@@ -25,18 +25,18 @@ test('Link_changes_the_class_when_hovered', async () => {
       type: 'api_derived_property',
       initialValue: 'foo',
       stateID: 'stream_findPetsByTags',
-      convertor: () => 'abc',
+      mapper: () => 'abc',
     },
     bar: {
       type: 'api_derived_property',
       initialValue: 'bar',
       stateID: 'stream_findPetsByTags',
-      convertor: () => 'abc',
+      mapper: () => 'abc',
     },
     onFetch: {
       type: 'api_invoke_property',
       stateID: 'stream_findPetsByTags',
-      convertor: () => undefined,
+      paramsBuilder: () => undefined,
       onSuccess: onSuccessFn,
     },
   };
@@ -57,18 +57,18 @@ test('search_btn', async () => {
       type: 'api_derived_property',
       initialValue: 'foo',
       stateID: 'stream_findPetsByTags',
-      convertor: () => 'abc',
+      mapper: () => 'abc',
     },
     bar: {
       type: 'api_derived_property',
       initialValue: 'bar',
       stateID: 'stream_findPetsByTags',
-      convertor: () => 'abc',
+      mapper: () => 'abc',
     },
     onFetch: {
       type: 'api_invoke_property',
       stateID: 'stream_findPetsByTags',
-      convertor: () => undefined,
+      paramsBuilder: () => undefined,
       onSuccess: onSuccessFn,
     },
   };
