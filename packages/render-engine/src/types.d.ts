@@ -1,10 +1,8 @@
 import { RequestParams } from '@ofa/spec-interpreter/src/types';
 import StateHub from './state-hub';
 
-declare enum ISRawSchema {
-  YES = 'yes',
-  NO = 'no',
-}
+export type Serialized = 'Serialized';
+export type Instantiated = 'Instantiated';
 
 export type APIState = {
   params: RequestParams;
@@ -43,15 +41,15 @@ export type FunctionSpecs =
   APIInvokeConvertorFuncSpec |
   APIInvokeCallbackFuncSpec;
 
-type APIStateConvertor<T> = T extends ISRawSchema.YES ?
+type APIStateConvertor<T> = T extends Serialized ?
   APIStateConvertorFuncSpec :
   (apiState: APIState) => any;
 
-type APIInvokeConvertor<T> = T extends ISRawSchema.YES ?
+type APIInvokeConvertor<T> = T extends Serialized ?
   APIInvokeConvertorFuncSpec :
   (...args: any[]) => RequestParams;
 
-type APIInvokeCallBack<T> = T extends ISRawSchema.YES ?
+type APIInvokeCallBack<T> = T extends Serialized ?
   APIInvokeCallbackFuncSpec :
   (apiState: APIState) => void;
 
@@ -109,12 +107,12 @@ export type StatesMap = Record<string, {
 }>;
 
 export type Schema = {
-  node: SchemaNode<ISRawSchema.YES>;
+  node: SchemaNode<Serialized>;
   statesMap: StatesMap;
 }
 
 export type instantiatedSchema = {
-  node: SchemaNode<ISRawSchema.NO>;
+  node: SchemaNode<Instantiated>;
   statesMap: StatesMap;
 };
 

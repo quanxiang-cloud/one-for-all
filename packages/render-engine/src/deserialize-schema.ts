@@ -1,12 +1,13 @@
 import {
   NodeProp,
   instantiatedSchema,
-  ISRawSchema,
   Schema,
   FunctionSpecs,
   APIState,
   SchemaNode,
   NodeProps,
+  Serialized,
+  Instantiated,
 } from './types';
 
 function instantiateFuncSpec({ type, args, body }: FunctionSpecs): ((...args: any[]) => any) | undefined {
@@ -25,8 +26,8 @@ function instantiateFuncSpec({ type, args, body }: FunctionSpecs): ((...args: an
   return;
 }
 
-function transformProps(props: NodeProps<ISRawSchema.YES>): NodeProps<ISRawSchema.NO> {
-  return Object.entries(props).map<[string, NodeProp<ISRawSchema.NO>]>(([propName, propDesc]) => {
+function transformProps(props: NodeProps<Serialized>): NodeProps<Instantiated> {
+  return Object.entries(props).map<[string, NodeProp<Instantiated>]>(([propName, propDesc]) => {
     // instantiate Array<APIInvokeProperty<T>>
     if (Array.isArray(propDesc)) {
       return [
@@ -60,13 +61,13 @@ function transformProps(props: NodeProps<ISRawSchema.YES>): NodeProps<ISRawSchem
       onSuccess: propDesc.onSuccess ? instantiateFuncSpec(propDesc.onSuccess) : undefined,
       onError: propDesc.onError ? instantiateFuncSpec(propDesc.onError) : undefined,
     }];
-  }).reduce<NodeProps<ISRawSchema.NO>>((acc, [propName, propDesc]) => {
+  }).reduce<NodeProps<Instantiated>>((acc, [propName, propDesc]) => {
     acc[propName] = propDesc;
     return acc;
   }, {});
 }
 
-function transformNode(node: SchemaNode<ISRawSchema.YES>): SchemaNode<ISRawSchema.NO> {
+function transformNode(node: SchemaNode<Serialized>): SchemaNode<Instantiated> {
   const children = (node.children || []).map((n) => transformNode(n));
 
   return {
