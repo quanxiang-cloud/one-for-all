@@ -81,6 +81,7 @@ export default function deserializeSchema({ node, statesMap }: Schema): Instanti
   try {
     return { statesMap, node: transformNode(node) };
   } catch (error) {
+    console.error(error);
     return null;
   }
 }

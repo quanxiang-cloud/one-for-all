@@ -61,7 +61,7 @@ const todoAppSchema: Schema = {
               body: `
                 // contexts.store.call refresh again
                 // reset form
-                const form = document.getElementById('todo-input-form') as HTMLFormElement;
+                const form = document.getElementById('todo-input-form');
                 form?.reset?.();
                 window.stateHub.getAction('listTodos')();
               `,
