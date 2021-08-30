@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import StateHub from '../state-hub';
-import { APIInvokeProperty, APIDerivedProperty } from '../types';
+import { APIInvokeProperty, APIDerivedProperty, Instantiated } from '../types';
 import useAPIState from '../use-api-state';
 
 type Props = {
-  props: Record<string, APIInvokeProperty | APIDerivedProperty>;
+  props: Record<string, APIInvokeProperty<Instantiated> | APIDerivedProperty<Instantiated>>;
   stateHub: StateHub;
 }
 

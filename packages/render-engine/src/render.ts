@@ -1,24 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { OpenAPIV3 } from 'openapi-types';
 
 import { logger } from '@ofa/utils';
 
 import {
   importComponent,
-  register,
+  // register,
   // getBasicComponentsOptions,
   // getAdvancedComponentsOptions,
 } from './repository';
 import {
   DynamicComponent,
   Instantiated,
-  Schema,
+  InstantiatedSchema,
   SchemaNode,
 } from './types';
 import StateHub from './state-hub';
 import useAPIState from './use-api-state';
-import deserializeSchema from './deserialize-schema';
 
 type RenderNodesProps = {
   nodes: SchemaNode<Instantiated>[];
@@ -85,27 +83,16 @@ function renderNode({ node, stateHub }: RenderNodeProps): React.ReactElement | n
 }
 
 type RenderSchemaParams = {
-  schema: Schema;
+  schema: InstantiatedSchema;
   rootEle: Element;
-  apiDoc: OpenAPIV3.Document;
+  stateHub: StateHub;
 }
 
-function renderSchema({ schema, rootEle, apiDoc }: RenderSchemaParams): void {
+function renderSchema({ schema, rootEle, stateHub }: RenderSchemaParams): void {
   // register('@basicComponents', getBasicComponentsOptions());
   // register('@advancesComponents', getAdvancedComponentsOptions());
-  const instantiatedSchema = deserializeSchema(schema);
-  if (!instantiatedSchema) {
-    // todo paint error
-    return;
-  }
 
-  const stateHub = new StateHub(apiDoc, instantiatedSchema.statesMap);
-  // TODO: give this a better design
-  window.stateHub = stateHub;
-
-  ReactDOM.render(React.createElement(renderNode, { node: instantiatedSchema.node, stateHub }), rootEle);
+  ReactDOM.render(React.createElement(renderNode, { node: schema.node, stateHub }), rootEle);
 }
 
 export default renderSchema;
-
-export { register };

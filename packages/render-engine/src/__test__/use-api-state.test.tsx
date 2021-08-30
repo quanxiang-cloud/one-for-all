@@ -4,14 +4,14 @@ import '@testing-library/jest-dom';
 import mockXHR from 'xhr-mock';
 
 import petStoreSpec from '@ofa/spec-interpreter/src/__test__/petstore-spec';
-import type { APIInvokeProperty, APIDerivedProperty } from '../types';
+import type { APIInvokeProperty, APIDerivedProperty, Instantiated, StatesMap } from '../types';
 import StateHub from '../state-hub';
 import Link from './link';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
 
-const stateIDMap = { stream_findPetsByTags: 'findPetsByTags' };
+const stateIDMap: StatesMap = { stream_findPetsByTags: { operationID: 'findPetsByTags' } };
 const stateHub = new StateHub(petStoreSpec, stateIDMap);
 
 test('Link_changes_the_class_when_hovered', async () => {
@@ -20,7 +20,7 @@ test('Link_changes_the_class_when_hovered', async () => {
 
   const onSuccessFn = jest.fn();
 
-  const props: Record<string, APIDerivedProperty | APIInvokeProperty> = {
+  const props: Record<string, APIDerivedProperty<Instantiated> | APIInvokeProperty<Instantiated>> = {
     foo: {
       type: 'api_derived_property',
       initialValue: 'foo',
@@ -52,7 +52,7 @@ test('search_btn', async () => {
 
   const onSuccessFn = jest.fn();
 
-  const props: Record<string, APIDerivedProperty | APIInvokeProperty> = {
+  const props: Record<string, APIDerivedProperty<Instantiated> | APIInvokeProperty<Instantiated>> = {
     foo: {
       type: 'api_derived_property',
       initialValue: 'foo',

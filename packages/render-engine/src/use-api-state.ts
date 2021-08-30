@@ -1,23 +1,23 @@
 import { useState, useMemo } from 'react';
 import useStateDerivedProps from './use-api-state-derived-props';
-import { APIInvokeProperty, APIDerivedProperty, ConstantProperty, NodeProps } from './types';
+import { APIInvokeProperty, APIDerivedProperty, ConstantProperty, NodeProps, Instantiated } from './types';
 import StateHub from './state-hub';
 import getAPICallProps from './get-api-call-props';
 
 type Props = {
-  props: NodeProps;
+  props: NodeProps<Instantiated>;
   stateHub: StateHub;
 }
 
 function groupProps(
-  props: NodeProps,
+  props: NodeProps<Instantiated>,
 ): {
-  apiDerivedProps: Record<string, APIDerivedProperty>;
-  apiInvokeProps: Record<string, APIInvokeProperty>;
+  apiDerivedProps: Record<string, APIDerivedProperty<Instantiated>>;
+  apiInvokeProps: Record<string, APIInvokeProperty<Instantiated>[]>;
   constantProps: Record<string, any>;
 } {
-  const apiDerivedProps: Record<string, APIDerivedProperty> = {};
-  const apiInvokeProps: Record<string, APIInvokeProperty> = {};
+  const apiDerivedProps: Record<string, APIDerivedProperty<Instantiated>> = {};
+  const apiInvokeProps: Record<string, APIInvokeProperty<Instantiated>[]> = {};
   const constantProps: Record<string, ConstantProperty> = {};
   Object.entries(props).forEach(([propName, propDesc]) => {
     // todo support array props
@@ -31,7 +31,10 @@ function groupProps(
     }
 
     if (propDesc.type === 'api_invoke_property') {
-      apiInvokeProps[propName] = propDesc;
+      if (!apiInvokeProps[propName]) {
+        apiInvokeProps[propName] = [];
+      }
+      apiInvokeProps[propName].push(propDesc);
       return;
     }
 

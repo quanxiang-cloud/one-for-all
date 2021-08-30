@@ -1,9 +1,9 @@
-import { schemaRender } from '@ofa/render-engine';
+import renderEngine from '@ofa/render-engine';
 
-import schema from './app-schema';
+import schema from './serialized-schema';
 import apiDoc from './api-doc';
 
 const rootEle = document.querySelector('#react-root');
 if (rootEle) {
-  schemaRender({ schema, apiDoc, rootEle });
+  renderEngine({ schema, apiDoc, rootEle });
 }
