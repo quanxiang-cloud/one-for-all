@@ -24,7 +24,7 @@ type FunctionSpec = {
 
 export type APIStateConvertorFuncSpec = FunctionSpec & {
   type: 'api_derive_function';
-  arguments: 'apiState';
+  args: 'apiState';
 };
 
 export type APIInvokeConvertorFuncSpec = FunctionSpec & {
@@ -33,7 +33,7 @@ export type APIInvokeConvertorFuncSpec = FunctionSpec & {
 
 export type APIInvokeCallbackFuncSpec = FunctionSpec & {
   type: 'api_invoke_call_function';
-  arguments: 'state';
+  args: 'apiState';
 }
 
 export type FunctionSpecs =
@@ -69,10 +69,10 @@ export type APIInvokeProperty<T> = {
 }
 
 export type NodeProp<T> =
+Array<APIInvokeProperty<T>> |
   ConstantProperty |
   APIDerivedProperty<T> |
-  APIInvokeProperty<T> |
-  Array<APIInvokeProperty<T>>;
+  APIInvokeProperty<T>;
 
 export type NodeProps<T> = Record<string, NodeProp<T>>;
 

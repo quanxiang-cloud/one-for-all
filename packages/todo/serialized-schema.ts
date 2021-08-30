@@ -1,5 +1,4 @@
-import { RequestParams } from '@ofa/spec-interpreter/src/types';
-import { APIState, Schema } from '@ofa/render-engine/src/types';
+import { Schema } from '@ofa/render-engine/src/types';
 
 const todoAppSchema: Schema = {
   statesMap: {
@@ -44,22 +43,28 @@ const todoAppSchema: Schema = {
           onSubmit: {
             type: 'api_invoke_property',
             stateID: 'createTodo',
-            // onSubmit => requestParams => run
-            convertor: (e: React.FormEvent<HTMLFormElement>): RequestParams | undefined => {
-              e.preventDefault();
-              e.stopPropagation();
+            convertor: {
+              type: 'api_invoke_convertor_function',
+              args: 'e',
+              body: `e.preventDefault();
+                e.stopPropagation();
 
-              const formData = new FormData(e.target as HTMLFormElement);
-              const body = { title: formData.get('title') };
+                const formData = new FormData(e.target);
+                const body = { title: formData.get('title') };
 
-              return { body };
+                return { body };
+              `,
             },
-            onSuccess: (): void => {
-              // contexts.store.call refresh again
-              // reset form
-              const form = document.getElementById('todo-input-form') as HTMLFormElement;
-              form?.reset?.();
-              window.stateHub.getAction('listTodos')();
+            onSuccess: {
+              type: 'api_invoke_call_function',
+              args: 'apiState',
+              body: `
+                // contexts.store.call refresh again
+                // reset form
+                const form = document.getElementById('todo-input-form') as HTMLFormElement;
+                form?.reset?.();
+                window.stateHub.getAction('listTodos')();
+              `,
             },
           },
         },
@@ -113,37 +118,57 @@ const todoAppSchema: Schema = {
             type: 'api_derived_property',
             stateID: 'listTodos',
             initialValue: [],
-            convertor: (apiState: APIState): Array<any> => {
-              return apiState.data || [];
+            convertor: {
+              type: 'api_derive_function',
+              args: 'apiState',
+              body: `
+                return apiState.data || [];
+              `,
             },
           },
           toggleTodo: {
             type: 'api_invoke_property',
             stateID: 'updateTodo',
             // template: ${data.foo}
-            convertor: (todo: any): RequestParams | undefined => {
-              return { params: { todoId: todo.id }, body: todo };
+            convertor: {
+              type: 'api_invoke_convertor_function',
+              args: 'todo',
+              body: `
+                return { params: { todoId: todo.id }, body: todo };
+              `,
             },
-            onSuccess: (): void => {
-              // 提供一个 refresh event？
-              window.stateHub.getAction('listTodos')();
-              window.stateHub.getAction('todoStatus')();
+            onSuccess: {
+              type: 'api_invoke_call_function',
+              args: 'apiState',
+              body: `
+                // 提供一个 refresh event？
+                window.stateHub.getAction('listTodos')();
+                window.stateHub.getAction('todoStatus')();
+              `,
             },
           },
           onFetchTodos: {
             type: 'api_invoke_property',
             stateID: 'listTodos',
-            convertor: () => undefined,
+            // convertor: () => undefined,
           },
           onDeleteTodo: {
             type: 'api_invoke_property',
             stateID: 'deleteTodo',
-            convertor: (todoID: number): RequestParams => {
-              return { params: { todoId: todoID } };
+            convertor: {
+              type: 'api_invoke_convertor_function',
+              args: 'todoID',
+              body: `
+                return { params: { todoId: todoID } };
+              `,
             },
-            onSuccess: (): void => {
-              window.stateHub.getAction('listTodos')();
-              window.stateHub.getAction('todoStatus')();
+            onSuccess: {
+              type: 'api_invoke_call_function',
+              args: 'apiState',
+              body: `
+                window.stateHub.getAction('listTodos')();
+                window.stateHub.getAction('todoStatus')();
+              `,
             },
           },
         },
@@ -159,37 +184,55 @@ const todoAppSchema: Schema = {
             type: 'api_derived_property',
             stateID: 'todoStatus',
             initialValue: 0,
-            convertor: (apiState: APIState): number => {
-              return apiState.data?.all || 0;
+            convertor: {
+              type: 'api_derive_function',
+              args: 'apiState',
+              body: `
+                return apiState.data?.all || 0;
+              `,
             },
           },
           working: {
             type: 'api_derived_property',
             stateID: 'todoStatus',
             initialValue: 0,
-            convertor: (apiState: APIState): number => {
-              return apiState.data?.working || 0;
+            // convertor: (apiState: APIState): number => {
+            //   return apiState.data?.working || 0;
+            // },
+            convertor: {
+              type: 'api_derive_function',
+              args: 'apiState',
+              body: `
+                return apiState.data?.working || 0;
+              `,
             },
           },
           done: {
             type: 'api_derived_property',
             stateID: 'todoStatus',
             initialValue: 0,
-            convertor: (apiState: APIState): number => {
-              return apiState.data?.done || 0;
+            convertor: {
+              type: 'api_derive_function',
+              args: 'apiState',
+              body: `
+                return apiState.data?.done || 0;
+              `,
             },
           },
           onToggleStatus: {
             type: 'api_invoke_property',
             stateID: 'listTodos',
-            convertor: (status: string): RequestParams | undefined => {
-              return { params: { status } };
+            convertor: {
+              type: 'api_invoke_convertor_function',
+              args: 'status',
+              body: `
+                return { params: { status } };
+              `,
             },
           },
           onFetchStatus: {
             type: 'api_invoke_property',
             stateID: 'todoStatus',
-            convertor: () => undefined,
           },
         },
       },
