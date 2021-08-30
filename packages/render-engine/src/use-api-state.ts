@@ -9,19 +9,19 @@ type Props = {
   stateHub: StateHub;
 }
 
-function groupProps(
-  props: NodeProps<Instantiated>,
-): {
+type GroupedProps = {
   apiDerivedProps: Record<string, APIDerivedProperty<Instantiated>>;
   apiInvokeProps: Record<string, APIInvokeProperty<Instantiated>[]>;
   constantProps: Record<string, any>;
-} {
+}
+
+function groupProps(props: NodeProps<Instantiated>): GroupedProps {
   const apiDerivedProps: Record<string, APIDerivedProperty<Instantiated>> = {};
   const apiInvokeProps: Record<string, APIInvokeProperty<Instantiated>[]> = {};
   const constantProps: Record<string, ConstantProperty> = {};
   Object.entries(props).forEach(([propName, propDesc]) => {
-    // todo support array props
     if (Array.isArray(propDesc)) {
+      apiInvokeProps[propName] = propDesc;
       return;
     }
 
