@@ -111,7 +111,7 @@ export type Schema = {
   statesMap: StatesMap;
 }
 
-export type instantiatedSchema = {
+export type InstantiatedSchema = {
   node: SchemaNode<Instantiated>;
   statesMap: StatesMap;
 };

@@ -12,15 +12,16 @@ import {
 } from './repository';
 import {
   DynamicComponent,
-  HTMLNode,
-  ReactComponentNode,
+  Instantiated,
   Schema,
+  SchemaNode,
 } from './types';
 import StateHub from './state-hub';
 import useAPIState from './use-api-state';
+import deserializeSchema from './deserialize-schema';
 
 type RenderNodesProps = {
-  nodes: Array<HTMLNode | ReactComponentNode>;
+  nodes: SchemaNode<Instantiated>[];
   stateHub: StateHub;
 }
 
@@ -37,7 +38,7 @@ function renderChildren({ nodes, stateHub }: RenderNodesProps): React.FunctionCo
 }
 
 type RenderNodeProps = {
-  node: HTMLNode | ReactComponentNode;
+  node: SchemaNode<Instantiated>
   stateHub: StateHub;
 }
 
@@ -92,13 +93,19 @@ type RenderSchemaParams = {
 function renderSchema({ schema, rootEle, apiDoc }: RenderSchemaParams): void {
   // register('@basicComponents', getBasicComponentsOptions());
   // register('@advancesComponents', getAdvancedComponentsOptions());
+  const instantiatedSchema = deserializeSchema(schema);
+  if (!instantiatedSchema) {
+    // todo paint error
+    return;
+  }
 
-  const stateHub = new StateHub(apiDoc, schema.statesMap);
+  const stateHub = new StateHub(apiDoc, instantiatedSchema.statesMap);
   // TODO: give this a better design
   window.stateHub = stateHub;
 
-  ReactDOM.render(React.createElement(renderNode, { node: schema.node, stateHub }), rootEle);
+  ReactDOM.render(React.createElement(renderNode, { node: instantiatedSchema.node, stateHub }), rootEle);
 }
 
 export default renderSchema;
+
 export { register };

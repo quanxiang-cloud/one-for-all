@@ -1,6 +1,6 @@
 import {
   NodeProp,
-  instantiatedSchema,
+  InstantiatedSchema,
   Schema,
   FunctionSpecs,
   APIState,
@@ -77,7 +77,7 @@ function transformNode(node: SchemaNode<Serialized>): SchemaNode<Instantiated> {
   };
 }
 
-export default function deserializeSchema({ node, statesMap }: Schema): instantiatedSchema | null {
+export default function deserializeSchema({ node, statesMap }: Schema): InstantiatedSchema | null {
   try {
     return { statesMap, node: transformNode(node) };
   } catch (error) {
