@@ -8,6 +8,7 @@ import { RequestConfig } from '@ofa/spec-interpreter/src/types';
 import { APIState } from './types';
 
 function requestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
+  // TODO: fix me
   let url = `http://localhost:8080${config.path}`;
   const query = Object.entries(config.query || {}).map(([key, value]) => `${key}=${value}`).join('&');
   if (query) {
@@ -58,8 +59,6 @@ export function http(request$: Observable<RequestConfig>): Response$ {
   return response$;
 }
 
-export const initialState: Omit<APIState, 'params'> = { data: undefined, error: undefined, loading: false };
-
 // API State Table
 /*
     |     | loading |   data    |   error   |
@@ -72,6 +71,8 @@ export const initialState: Omit<APIState, 'params'> = { data: undefined, error: 
     | 6   |  true   | undefined |    xxx    |─────┘
 */
 type State = Omit<APIState, 'params'>;
+
+export const initialState: Omit<APIState, 'params'> = { data: undefined, error: undefined, loading: false };
 
 export default function getResponseState$(request$: Observable<RequestConfig>): Observable<State> {
   const state$ = new BehaviorSubject<State>(initialState);
