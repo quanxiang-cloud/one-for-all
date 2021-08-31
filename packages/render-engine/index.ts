@@ -13,7 +13,7 @@ type RenderSchemaParams = {
 function Render({ schema, rootEle, apiDoc }: RenderSchemaParams): void {
   const instantiatedSchema = deserializeSchema(schema);
   if (!instantiatedSchema) {
-    // todo paint error
+    // TODO: paint error
     return;
   }
 

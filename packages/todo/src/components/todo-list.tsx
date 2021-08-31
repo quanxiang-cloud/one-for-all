@@ -20,7 +20,7 @@ export default function TodoList({ todos, toggleTodo, onFetchTodos, onDeleteTodo
       {
         todos.map((todo) => {
           return (
-            <p key={todo.id} className="todo-list__todo todo">
+            <p key={todo.id} className="todo-list__todo todo" data-done={todo.status === 'done'}>
               <input
                 className="todo__toggle"
                 type="checkbox"

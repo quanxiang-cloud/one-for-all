@@ -15,6 +15,10 @@
   margin: 0;
 }
 
+.todo[data-done="true"] .todo__title {
+  text-decoration: line-through;
+}
+
 .todo__toggle, .todo__action {
   flex-shrink: 0;
 }
