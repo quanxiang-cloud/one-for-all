@@ -47,11 +47,9 @@ function groupProps(props: NodeProps<Instantiated>): GroupedProps {
   return { apiDerivedProps, apiInvokeProps, constantProps };
 }
 
-export default function useAPIState({ props, stateHub }: Props): Record<string, any> {
+export default function useConnection({ props, stateHub }: Props): Record<string, any> {
   const { apiDerivedProps, apiInvokeProps, constantProps } = groupProps(props);
-  const [apiStateProps] = useState<Record<string, any>>(
-    () => getAPICallProps(apiInvokeProps, stateHub),
-  );
+  const [apiStateProps] = useState<Record<string, any>>(() => getAPICallProps(apiInvokeProps, stateHub));
   const derivedProps = useStateDerivedProps({ props: apiDerivedProps, stateHub });
 
   return useMemo(() => Object.assign(constantProps, apiStateProps, derivedProps), [derivedProps]);

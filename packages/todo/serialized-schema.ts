@@ -101,7 +101,7 @@ const todoAppSchema: Schema = {
               children: { type: 'constant_property', value: 'add todo' },
               style: {
                 type: 'constant_property',
-                value: { width: '80px', textAlign: 'center' },
+                value: { width: '80px', textAlign: 'center', textTransform: 'capitalize' },
               },
             },
           },

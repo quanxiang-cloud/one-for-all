@@ -16,7 +16,7 @@ import {
   SchemaNode,
 } from './types';
 import StateHub from './state-hub';
-import useAPIState from './use-api-state';
+import useConnection from './use-connection';
 
 type RenderNodesProps = {
   nodes: SchemaNode<Instantiated>[];
@@ -44,7 +44,7 @@ function renderNode({ node, stateHub }: RenderNodeProps): React.ReactElement | n
   const [loaded, setLoaded] = React.useState(false);
   const asyncModule = React.useRef<DynamicComponent | string>();
 
-  const props = useAPIState({ props: node.props || {}, stateHub });
+  const props = useConnection({ props: node.props || {}, stateHub });
 
   React.useEffect(() => {
     if (node.type === 'html-element') {
