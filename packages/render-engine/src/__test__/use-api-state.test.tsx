@@ -40,7 +40,7 @@ test('Link_changes_the_class_when_hovered', async () => {
       onSuccess: onSuccessFn,
     },
   };
-  const { container, getByText } = render(<Link props={props} stateHub={stateHub} />);
+  const { container, getByText } = render(<Link nodeProps={props} stateHub={stateHub} />);
   await waitFor(() => expect(onSuccessFn).toBeCalledTimes(1));
   await waitFor(() => getByText('abc:abc'));
   expect(container).toMatchSnapshot();
@@ -72,7 +72,7 @@ test('search_btn', async () => {
       onSuccess: onSuccessFn,
     },
   };
-  const { container, getByText } = render(<Link props={props} stateHub={stateHub} />);
+  const { container, getByText } = render(<Link nodeProps={props} stateHub={stateHub} />);
   await waitFor(() => expect(onSuccessFn).toBeCalledTimes(1));
   fireEvent(getByText('abc:abc'), new Event('click'));
   await waitFor(() => getByText('abc:abc'));

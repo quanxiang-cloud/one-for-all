@@ -44,7 +44,7 @@ function renderNode({ node, stateHub }: RenderNodeProps): React.ReactElement | n
   const [loaded, setLoaded] = React.useState(false);
   const asyncModule = React.useRef<DynamicComponent | string>();
 
-  const props = useConnection({ props: node.props || {}, stateHub });
+  const props = useConnection({ nodeProps: node.props || {}, stateHub });
 
   React.useEffect(() => {
     if (node.type === 'html-element') {

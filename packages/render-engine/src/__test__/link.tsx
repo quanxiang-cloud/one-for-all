@@ -4,12 +4,12 @@ import { APIInvokeProperty, APIDerivedProperty, Instantiated } from '../types';
 import useConnection from '../use-connection';
 
 type Props = {
-  props: Record<string, APIInvokeProperty<Instantiated> | APIDerivedProperty<Instantiated>>;
+  nodeProps: Record<string, APIInvokeProperty<Instantiated> | APIDerivedProperty<Instantiated>>;
   stateHub: StateHub;
 }
 
-export default function Link({ props, stateHub }: Props): JSX.Element {
-  const { foo, bar, onFetch } = useConnection({ props, stateHub });
+export default function Link({ nodeProps, stateHub }: Props): JSX.Element {
+  const { foo, bar, onFetch } = useConnection({ nodeProps, stateHub });
 
   useEffect(() => {
     onFetch();
