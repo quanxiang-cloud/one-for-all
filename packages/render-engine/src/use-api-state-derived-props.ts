@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { combineLatest, map, Observable, skip } from 'rxjs';
 
 import StateHub from './state-hub';
-import { APIDerivedProperty, Instantiated, APIStateMapperFunc } from './types';
+import { APIDerivedProperty, Instantiated, APIStateConvertFunc } from './types';
 
 type UseAPIProps = {
   props: Record<string, APIDerivedProperty<Instantiated>>;
@@ -11,7 +11,7 @@ type UseAPIProps = {
 
 function convertResult(
   result: Record<string, any>,
-  convertors: Record<string, APIStateMapperFunc | undefined>,
+  convertors: Record<string, APIStateConvertFunc | undefined>,
 ): Record<string, any> {
   return Object.entries(result).map(([propName, propValue]) => {
     return [
@@ -27,10 +27,10 @@ function convertResult(
 
 export default function useAPIStateDerivedProps({ props, stateHub }: UseAPIProps): Record<string, any> {
   const initialState: Record<string, any> = {};
-  const mappers: Record<string, APIStateMapperFunc | undefined> = {};
+  const mappers: Record<string, APIStateConvertFunc | undefined> = {};
   const resList$: Record<string, Observable<any>> = {};
 
-  Object.entries(props).forEach(([propName, { initialValue, mapper, stateID }]) => {
+  Object.entries(props).forEach(([propName, { initialValue, template: mapper, stateID }]) => {
     initialState[propName] = initialValue;
     mappers[propName] = mapper;
     resList$[propName] = stateHub.getState(stateID);

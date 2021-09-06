@@ -113,7 +113,7 @@ const todoAppSchema: InstantiatedSchema = {
             type: 'api_derived_property',
             stateID: 'listTodos',
             initialValue: [],
-            mapper: (apiState: APIState): Array<any> => {
+            template: (apiState: APIState): Array<any> => {
               return apiState.data || [];
             },
           },
@@ -159,7 +159,7 @@ const todoAppSchema: InstantiatedSchema = {
             type: 'api_derived_property',
             stateID: 'todoStatus',
             initialValue: 0,
-            mapper: (apiState: APIState): number => {
+            template: (apiState: APIState): number => {
               return apiState.data?.all || 0;
             },
           },
@@ -167,7 +167,7 @@ const todoAppSchema: InstantiatedSchema = {
             type: 'api_derived_property',
             stateID: 'todoStatus',
             initialValue: 0,
-            mapper: (apiState: APIState): number => {
+            template: (apiState: APIState): number => {
               return apiState.data?.working || 0;
             },
           },
@@ -175,7 +175,7 @@ const todoAppSchema: InstantiatedSchema = {
             type: 'api_derived_property',
             stateID: 'todoStatus',
             initialValue: 0,
-            mapper: (apiState: APIState): number => {
+            template: (apiState: APIState): number => {
               return apiState.data?.done || 0;
             },
           },

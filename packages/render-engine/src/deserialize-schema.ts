@@ -7,12 +7,12 @@ import {
   NodeProps,
   Serialized,
   Instantiated,
-  APIStateMapperFuncSpec,
+  APIStateConvertFuncSpec,
   ParamsBuilderFuncSpec,
   APIInvokeCallbackFuncSpec,
 } from './types';
 
-type FunctionSpecs = APIStateMapperFuncSpec | ParamsBuilderFuncSpec | APIInvokeCallbackFuncSpec;
+type FunctionSpecs = APIStateConvertFuncSpec | ParamsBuilderFuncSpec | APIInvokeCallbackFuncSpec;
 
 function instantiateFuncSpec({ type, args, body }: FunctionSpecs): ((...args: any[]) => any) | undefined {
   if (type === 'api_state_mapper_func_spec') {
@@ -55,7 +55,7 @@ function transformProps(props: NodeProps<Serialized>): NodeProps<Instantiated> {
     if (propDesc.type === 'api_derived_property') {
       return [propName, {
         ...propDesc,
-        mapper: propDesc.mapper ? instantiateFuncSpec(propDesc.mapper) : undefined,
+        template: propDesc.template ? instantiateFuncSpec(propDesc.template) : undefined,
       }];
     }
 

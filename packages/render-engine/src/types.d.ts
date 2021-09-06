@@ -22,7 +22,7 @@ type FunctionSpec = {
   body: string;
 }
 
-export type APIStateMapperFuncSpec = FunctionSpec & {
+export type APIStateConvertFuncSpec = FunctionSpec & {
   type: 'api_state_mapper_func_spec';
   args: 'apiState';
 };
@@ -36,8 +36,8 @@ export type APIInvokeCallbackFuncSpec = FunctionSpec & {
   args: 'apiState';
 }
 
-export type APIStateMapperFunc = (apiState: APIState) => any;
-type APIStateMapper<T> = T extends Serialized ? APIStateMapperFuncSpec : APIStateMapperFunc;
+export type APIStateConvertFunc = (apiState: APIState) => any;
+type APIStateConvertor<T> = T extends Serialized ? APIStateConvertFuncSpec : APIStateConvertFunc;
 type ParamsBuilder<T> = T extends Serialized ? ParamsBuilderFuncSpec : (...args: any[]) => RequestParams;
 type APIInvokeCallBack<T> = T extends Serialized ? APIInvokeCallbackFuncSpec : (apiState: APIState) => void;
 
@@ -45,7 +45,7 @@ export type APIDerivedProperty<T> = {
   type: 'api_derived_property';
   initialValue: any;
   stateID: string;
-  mapper?: APIStateMapper<T>;
+  template?: APIStateConvertor<T>;
 }
 
 export type APIInvokeProperty<T> = {
@@ -55,6 +55,12 @@ export type APIInvokeProperty<T> = {
   paramsBuilder?: ParamsBuilder<T>;
   onSuccess?: APIInvokeCallBack<T>;
   onError?: APIInvokeCallBack<T>;
+}
+
+export type LocalStateProps<T> = {
+  type: 'local_state_property';
+  initialValue: any;
+  stateID: string;
 }
 
 export type NodeProp<T> =
@@ -110,11 +116,6 @@ interface Document {
 }
 
 type DynamicComponent = React.FC<any> | React.ComponentClass<any>;
-
-type LocalStateProp = {
-  type: 'local';
-  default: any;
-}
 
 declare global {
   interface Window {

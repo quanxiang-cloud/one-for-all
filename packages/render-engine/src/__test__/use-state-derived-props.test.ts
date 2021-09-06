@@ -21,13 +21,13 @@ test('expect_resolve_initial_value', () => {
       type: 'api_derived_property',
       initialValue: { foo: 123 },
       stateID: 'stream_findPetsByTags',
-      mapper: convertorFn,
+      template: convertorFn,
     },
     bar: {
       type: 'api_derived_property',
       initialValue: { bar: 456 },
       stateID: 'stream_findPetsByTags',
-      mapper: convertorFn,
+      template: convertorFn,
     },
   };
 
