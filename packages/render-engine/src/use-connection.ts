@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import useStateDerivedProps from './use-api-state-derived-props';
+import useAPIStateDerivedProps from './use-api-state-derived-props';
 import { APIInvokeProperty, APIDerivedProperty, ConstantProperty, NodeProps, Instantiated } from './types';
 import StateHub from './state-hub';
 import getAPIInvokeProps from './get-api-invoke-props';
@@ -51,7 +51,7 @@ type Props = {
 export default function useConnection({ nodeProps, stateHub }: Props): Record<string, any> {
   const { apiDerivedProps, apiInvokeProps, constantProps } = groupProps(nodeProps);
   const [apiStateProps] = useState<Record<string, any>>(() => getAPIInvokeProps(apiInvokeProps, stateHub));
-  const derivedProps = useStateDerivedProps({ props: apiDerivedProps, stateHub });
+  const derivedProps = useAPIStateDerivedProps({ props: apiDerivedProps, stateHub });
 
   return useMemo(() => Object.assign(constantProps, apiStateProps, derivedProps), [derivedProps]);
 }

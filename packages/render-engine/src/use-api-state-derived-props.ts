@@ -25,7 +25,7 @@ function convertResult(
   }, {});
 }
 
-export default function useStateDerivedProps({ props, stateHub }: UseAPIProps): Record<string, any> {
+export default function useAPIStateDerivedProps({ props, stateHub }: UseAPIProps): Record<string, any> {
   const initialState: Record<string, any> = {};
   const mappers: Record<string, APIStateMapperFunc | undefined> = {};
   const resList$: Record<string, Observable<any>> = {};
