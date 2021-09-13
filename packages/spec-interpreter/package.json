@@ -2,16 +2,15 @@
   "name": "@ofa/spec-interpreter",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "jest",
-    "build": "rollup -c rollup.config.js",
+    "build": "tsc --build tsconfig.json",
     "updateSnapshot": "jest --updateSnapshot"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^20.0.0",
     "@types/jest": "^26.0.24",
     "@typescript-eslint/eslint-plugin": "^4.29.0",
     "@typescript-eslint/parser": "^4.29.0",
@@ -23,5 +22,8 @@
     "openapi-types": "^9.1.0",
     "ts-jest": "^27.0.4",
     "tsconfig-paths-jest": "^0.0.1"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
   }
 }

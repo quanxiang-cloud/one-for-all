@@ -9,3 +9,4 @@ yarn-error.log
 *.log
 *.iml
 tmp
+packages/**/lib

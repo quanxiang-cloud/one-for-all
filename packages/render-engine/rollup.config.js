@@ -10,7 +10,7 @@ export default {
     format: 'system'
   },
 
-  external: ['react', 'react-dom'],
+  external: ['react', 'react-dom', 'lodash'],
 
   plugins: [
     nodeResolve(),
