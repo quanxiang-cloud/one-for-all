@@ -1,5 +1,5 @@
+import { useState, useEffect } from 'react';
 import { Subject } from 'rxjs';
-import { useObservableState } from 'observable-hooks';
 
 export type SetState<T> = (state: T) => void;
 type LocalStore<T> = Record<string, [Subject<T>, SetState<T>]>;
@@ -24,9 +24,19 @@ function getLocalStateStream<T>(key: string): [Subject<T>, SetState<T>] {
 }
 
 function useLocalState<T>(key: string, defaultState?: T): [T | undefined, SetState<T>] {
-  const [state$, updater] = getLocalStateStream<T>(key);
+  const [state, setState] = useState<T | undefined>(defaultState);
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  const [updater, setUpdater] = useState<SetState<T>>(() => {});
 
-  return [useObservableState(state$), updater];
+  useEffect(() => {
+    const [state$, updater] = getLocalStateStream<T>(key);
+    setUpdater(updater);
+    const subscription = state$.subscribe(setState);
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  return [state, updater];
 }
 
 export default useLocalState;

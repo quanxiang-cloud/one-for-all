@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "prebuilt": "rm -rf dist",
-    "build": "rollup -c rollup.config.js",
+    "build": "tsc --build tsconfig.json",
+    "postbuild": "cp src/types.d.ts lib/src",
     "test": "jest",
     "updateSnapshot": "jest --updateSnapshot"
   },
@@ -30,7 +31,8 @@
   },
   "dependencies": {
     "lodash": "^4.17.20",
-    "observable-hooks": "^3.1.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "rxjs": "^7.2.0"
   }
 }
