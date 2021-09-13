@@ -2,14 +2,16 @@
   "name": "@ofa/spec-interpreter",
   "version": "0.0.1",
   "description": "",
-  "main": "index.ts",
+  "main": "dist/index.js",
   "scripts": {
     "test": "jest",
+    "build": "rollup -c rollup.config.js",
     "updateSnapshot": "jest --updateSnapshot"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^20.0.0",
     "@types/jest": "^26.0.24",
     "@typescript-eslint/eslint-plugin": "^4.29.0",
     "@typescript-eslint/parser": "^4.29.0",

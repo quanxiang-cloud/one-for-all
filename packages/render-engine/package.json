@@ -1,7 +1,7 @@
 {
   "name": "@ofa/render-engine",
   "version": "0.0.7",
-  "main": "index.ts",
+  "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
     "prebuilt": "rm -rf dist",
