@@ -2,7 +2,7 @@
   "name": "@ofa/todo-app",
   "version": "0.0.1",
   "main": "index.ts",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "scripts": {
     "build": "rollup -c rollup.config.js"
   },

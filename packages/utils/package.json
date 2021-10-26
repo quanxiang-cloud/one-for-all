@@ -2,15 +2,17 @@
   "name": "@ofa/utils",
   "version": "0.0.1",
   "description": "",
-  "main": "index.ts",
+  "license": "Apache-2.0",
+  "author": "",
+  "main": "dist/index.js",
+  "module": "lib",
+  "types": "lib/index.d.ts",
   "scripts": {
     "build": "rm -rf lib & tsc --build tsconfig.json",
     "bundle": "rm -rf dist & rollup -c rollup.config.js",
     "test": "jest",
     "updateSnapshot": "jest --updateSnapshot"
   },
-  "author": "",
-  "license": "MIT",
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@types/jest": "^26.0.24",
