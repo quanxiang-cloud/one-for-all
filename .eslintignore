@@ -9,4 +9,4 @@ clients/types/lego-ui.d.ts
 cypress
 .eslintrc.js
 rollup.config.js
-jest.config.js
+jest.*.js

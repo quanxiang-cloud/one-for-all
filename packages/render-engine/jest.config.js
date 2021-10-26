@@ -3,10 +3,8 @@
 // const moduleNameMapper = require('tsconfig-paths-jest')(tsconfig)
 
 module.exports = {
-  ...require('../../jest.config'),
-  testEnvironment: 'jsdom',
+  ...require('../../jest.base.config'),
   name: '@ofa/render-engine',
   displayName: 'Render Engine',
-  modulePathIgnorePatterns: ['__tests__/fixtures']
   // moduleNameMapper,
 };

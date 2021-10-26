@@ -1,6 +1,5 @@
 module.exports = {
-  ...require('../../jest.config'),
-  testEnvironment: 'jsdom',
+  ...require('../../jest.base.config'),
   name: '@ofa/utils',
   displayName: 'OFA Utils',
 };
