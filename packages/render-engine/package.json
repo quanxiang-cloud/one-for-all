@@ -1,16 +1,17 @@
 {
   "name": "@ofa/render-engine",
   "version": "0.0.7",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "license": "MIT",
   "scripts": {
-    "prebuilt": "rm -rf dist",
+    "prebuild": "rm -rf lib",
     "build": "tsc --build tsconfig.json",
-    "postbuild": "cp src/types.d.ts lib/src",
+    "bundle": "rollup -c rollup.config.js",
     "test": "jest",
     "updateSnapshot": "jest --updateSnapshot"
   },
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "^13.0.6",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@testing-library/react-hooks": "^7.0.1",
@@ -20,17 +21,21 @@
     "@types/systemjs": "^6.1.1",
     "@typescript-eslint/eslint-plugin": "^4.29.0",
     "@typescript-eslint/parser": "^4.29.0",
+    "esbuild": "^0.13.8",
     "eslint": "^7.32.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-unused-imports": "^1.1.2",
-    "jest": "^27.0.6",
+    "jest": "^27.3.1",
+    "rollup-plugin-esbuild": "^4.6.0",
+    "rollup-plugin-terser": "^7.0.2",
     "ts-jest": "^27.0.4",
     "tsconfig-paths-jest": "^0.0.1",
     "xhr-mock": "^2.5.1"
   },
   "dependencies": {
     "lodash": "^4.17.20",
+    "openapi-types": "^9.3.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "rxjs": "^7.2.0"

@@ -1,9 +1,9 @@
 import mockXHR, { sequence } from 'xhr-mock';
 
-import petStoreSpec from '@ofa/spec-interpreter/src/__test__/petstore-spec';
+import petStoreSpec from '../spec-interpreter/__tests__/fixtures/petstore-spec';
 
-import SpecInterpreter from '@ofa/spec-interpreter';
-import { RequestParams } from '@ofa/spec-interpreter/src/types';
+import SpecInterpreter from '../spec-interpreter';
+import type { RequestParams } from '../types';
 import { interval, map, pairwise, Subject, take, tap } from 'rxjs';
 import getResponseState$, { http, initialState } from '../response';
 import { APIState } from '../types';

@@ -3,7 +3,7 @@ import { ajax, AjaxRequest } from 'rxjs/ajax';
 import { of, Observable, BehaviorSubject } from 'rxjs';
 import { map, switchMap, catchError, share, filter } from 'rxjs/operators';
 
-import { RequestConfig } from '@ofa/spec-interpreter/src/types';
+import type { RequestConfig } from './types';
 
 import { APIState } from './types';
 

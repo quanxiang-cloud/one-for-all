@@ -7,5 +7,6 @@ module.exports = {
   testEnvironment: 'jsdom',
   name: '@ofa/render-engine',
   displayName: 'Render Engine',
+  modulePathIgnorePatterns: ['__tests__/fixtures']
   // moduleNameMapper,
 };

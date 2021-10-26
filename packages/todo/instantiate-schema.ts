@@ -1,4 +1,4 @@
-import { RequestParams } from '@ofa/spec-interpreter/src/types';
+import { RequestParams } from '@ofa/spec-interpreter/types';
 import { APIState, InstantiatedSchema } from '@ofa/render-engine/src/types';
 
 const todoAppSchema: InstantiatedSchema = {

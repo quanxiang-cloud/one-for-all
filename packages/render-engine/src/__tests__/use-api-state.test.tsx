@@ -3,10 +3,10 @@ import { fireEvent, render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import mockXHR from 'xhr-mock';
 
-import petStoreSpec from '@ofa/spec-interpreter/src/__test__/petstore-spec';
+import petStoreSpec from '../spec-interpreter/__tests__/fixtures/petstore-spec';
 import type { APIInvokeProperty, APIDerivedProperty, Instantiated, StatesMap } from '../types';
 import StateHub from '../state-hub';
-import Link from './link';
+import Link from './fixtures/link';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());

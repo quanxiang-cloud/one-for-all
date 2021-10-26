@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import StateHub from '../state-hub';
-import { APIInvokeProperty, APIDerivedProperty, Instantiated } from '../types';
-import useConnection from '../use-connection';
+import StateHub from '../../state-hub';
+import { APIInvokeProperty, APIDerivedProperty, Instantiated } from '../../types';
+import useConnection from '../../use-connection';
 
 type Props = {
   nodeProps: Record<string, APIInvokeProperty<Instantiated> | APIDerivedProperty<Instantiated>>;

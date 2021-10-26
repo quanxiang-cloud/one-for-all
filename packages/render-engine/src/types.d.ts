@@ -1,8 +1,21 @@
-import { RequestParams } from '@ofa/spec-interpreter/src/types';
+import { OpenAPIV3 } from 'openapi-types';
 import StateHub from './state-hub';
 
 export type Serialized = 'Serialized';
 export type Instantiated = 'Instantiated';
+
+// the shape of RequestParams is too complicated
+export type RequestParams = Partial<{
+  params: Record<string, any>;
+  body: any;
+}> | undefined;
+
+export type RequestConfig = {
+  path: string;
+  method: OpenAPIV3.HttpMethods;
+  query?: Record<string, string>;
+  body?: any;
+}
 
 export type APIState = {
   params: RequestParams;

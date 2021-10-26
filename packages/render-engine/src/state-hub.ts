@@ -2,10 +2,9 @@ import { Observable, of, Subject } from 'rxjs';
 import { concatWith, map, skip, withLatestFrom } from 'rxjs/operators';
 import { OpenAPIV3 } from 'openapi-types';
 
-import { RequestParams } from '@ofa/spec-interpreter/src/types';
-import SpecInterpreter from '@ofa/spec-interpreter';
+import SpecInterpreter from './spec-interpreter';
 
-import { APIState, StatesMap } from './types';
+import type { APIState, StatesMap, RequestParams } from './types';
 import getResponseState$ from './response';
 
 type RunParam = {

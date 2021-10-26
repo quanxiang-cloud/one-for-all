@@ -1,7 +1,7 @@
 import { set } from 'lodash';
-import { OpenAPIV3 } from 'openapi-types';
+import type { OpenAPIV3 } from 'openapi-types';
 
-import { RequestConfig, RequestParams } from './types';
+import type { RequestConfig, RequestParams } from '../types';
 
 type OperationSpec = {
   path: string;
@@ -10,7 +10,18 @@ type OperationSpec = {
   requestBody?: OpenAPIV3.ReferenceObject | OpenAPIV3.RequestBodyObject;
 }
 
-const METHODS = Object.values(OpenAPIV3.HttpMethods);
+enum HttpMethods {
+  GET = 'get',
+  PUT = 'put',
+  POST = 'post',
+  DELETE = 'delete',
+  OPTIONS = 'options',
+  HEAD = 'head',
+  PATCH = 'patch',
+  TRACE = 'trace'
+}
+
+const METHODS = Object.values(HttpMethods);
 
 function indexOperation(apiDoc: OpenAPIV3.Document): Record<string, OperationSpec | undefined> {
   const operationIDMap: Record<string, OperationSpec | undefined> = {};
