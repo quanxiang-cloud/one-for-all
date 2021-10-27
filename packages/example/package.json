@@ -1,5 +1,5 @@
 {
-  "name": "@ofa/todo-app",
+  "name": "@ofa/example",
   "version": "0.0.1",
   "main": "index.ts",
   "license": "Apache-2.0",
