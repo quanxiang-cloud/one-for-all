@@ -5,7 +5,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "build": "rollup -c rollup.config.js",
-    "bundle": "rm -rf dist & rollup -c rollup.config.js"
+    "bundle": "echo example bundle done"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^20.0.0",

@@ -9,17 +9,17 @@ export default {
   input: 'index.ts',
   output: [
     {
-      file: `dist/@ofa/render-engine@${packageJSON.version}/index.js`,
+      file: `dist/index.js`,
       format: 'system',
     },
     {
-      file: `dist/@ofa/render-engine@${packageJSON.version}/index.min.js`,
+      file: `dist/index.min.js`,
       format: 'system',
       plugins: [terser()],
     }
   ],
 
-  external: ['react', 'react-dom', 'rxjs'],
+  external: ['react', 'react-dom', 'rxjs', '@ofa/utils', /rxjs\/.*/],
 
   plugins: [
     typescriptPaths(),
