@@ -6,9 +6,8 @@
   "module": "lib",
   "types": "lib/index.d.ts",
   "scripts": {
-    "prebuild": "rm -rf lib",
-    "build": "tsc --build tsconfig.json",
-    "bundle": "rollup -c rollup.config.js",
+    "build": "rm -rf lib & tsc --build tsconfig.json",
+    "bundle": "rm -rf dist & rollup -c rollup.config.js",
     "test": "jest",
     "updateSnapshot": "jest --updateSnapshot"
   },

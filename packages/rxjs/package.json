@@ -11,6 +11,7 @@
   "main": "dist",
   "scripts": {
     "build": "rm -rf dist & rollup -c rollup.config.js",
+    "bundle": "rm -rf dist & rollup -c rollup.config.js",
     "prepublishOnly": "yarn build"
   },
   "devDependencies": {
