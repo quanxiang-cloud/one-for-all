@@ -14,6 +14,7 @@ export type RequestConfig = {
   path: string;
   method: OpenAPIV3.HttpMethods;
   query?: Record<string, string>;
+  header?: Record<string, string>;
   body?: any;
 }
 

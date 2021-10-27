@@ -19,7 +19,7 @@ export default {
     }
   ],
 
-  external: ['react', 'react-dom', 'lodash', 'rxjs'],
+  external: ['react', 'react-dom', 'rxjs'],
 
   plugins: [
     typescriptPaths(),

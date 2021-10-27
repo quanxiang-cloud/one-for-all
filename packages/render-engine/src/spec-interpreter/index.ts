@@ -1,4 +1,3 @@
-import { set } from 'lodash';
 import type { OpenAPIV3 } from 'openapi-types';
 
 import type { RequestConfig, RequestParams } from '../types';
@@ -86,7 +85,8 @@ class SpecInterpreter {
         }
 
         if (requestParam?.params?.[p.name] !== undefined) {
-          set(requestConfig, `query.${p.name}`, requestParam?.params?.[p.name]);
+          requestConfig.query = requestConfig.query || {};
+          requestConfig.query[p.name] = requestParam?.params?.[p.name];
         }
       }
 
@@ -96,7 +96,8 @@ class SpecInterpreter {
         }
 
         if (requestParam?.params?.[p.name] !== undefined) {
-          set(requestConfig, `header.${p.name}`, requestParam?.params?.[p.name]);
+          requestConfig.header = requestConfig.header || {};
+          requestConfig.header[p.name] = requestParam?.params?.[p.name];
         }
       }
     });
