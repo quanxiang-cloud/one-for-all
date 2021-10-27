@@ -1,5 +1,4 @@
-import { RequestParams } from '@ofa/spec-interpreter/types';
-import { APIState, InstantiatedSchema } from '@ofa/render-engine/src/types';
+import { APIState, InstantiatedSchema, RequestParams } from '@ofa/render-engine/src/types';
 
 const todoAppSchema: InstantiatedSchema = {
   statesMap: {
