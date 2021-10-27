@@ -9,11 +9,11 @@ export default {
   input: 'index.ts',
   output: [
     {
-      file: `dist/index.${packageJSON.version}.js`,
+      file: `dist/@ofa/render-engine@${packageJSON.version}/index.js`,
       format: 'system',
     },
     {
-      file: `dist/index.${packageJSON.version}.min.js`,
+      file: `dist/@ofa/render-engine@${packageJSON.version}/index.min.js`,
       format: 'system',
       plugins: [terser()],
     }
