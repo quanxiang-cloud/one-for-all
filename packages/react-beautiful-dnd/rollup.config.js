@@ -1,5 +1,6 @@
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
+import replace from "@rollup/plugin-replace";
 import { terser } from "rollup-plugin-terser";
 
 import packageJSON from './package.json';
@@ -26,5 +27,8 @@ export default {
       mainFields: ['module', 'main'],
     }),
     commonjs(),
+    replace({
+      'process.env.NODE_ENV': JSON.stringify('production')
+    }),
   ]
 };
