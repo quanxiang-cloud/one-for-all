@@ -1,0 +1,16 @@
+{
+  "name": "@ofa/html-to-draftjs",
+  "version": "1.14.7",
+  "main": "index.js",
+  "license": "Apache-2.0",
+  "private": false,
+  "scripts": {
+    "bundle": "rm -rf dist & rollup -c"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "html-to-draftjs": "^1.5.0",
+    "rollup": "^2.58.3"
+  }
+}

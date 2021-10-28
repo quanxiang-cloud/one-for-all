@@ -1,0 +1,16 @@
+{
+  "name": "@ofa/react-highlight",
+  "version": "0.14.0",
+  "main": "index.js",
+  "license": "Apache-2.0",
+  "private": false,
+  "scripts": {
+    "bundle": "rm -rf dist & rollup -c"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "react-highlight": "^0.14.0",
+    "rollup": "^2.58.3"
+  }
+}

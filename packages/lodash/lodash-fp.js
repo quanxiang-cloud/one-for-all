@@ -1,2 +1,3 @@
 var _ = require("lodash").runInContext();
-module.exports = require("lodash/fp/_baseConvert")(_, _);
+
+exports = require("lodash/fp/_baseConvert")(_, _);

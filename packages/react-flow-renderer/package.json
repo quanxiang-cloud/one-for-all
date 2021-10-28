@@ -1,0 +1,17 @@
+{
+  "name": "@ofa/react-flow-renderer",
+  "version": "9.6.9",
+  "main": "index.js",
+  "license": "Apache-2.0",
+  "private": false,
+  "scripts": {
+    "bundle": "rm -rf dist & rollup -c"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "@rollup/plugin-replace": "^3.0.0",
+    "react-flow-renderer": "^9.6.9",
+    "rollup": "^2.58.3"
+  }
+}
