@@ -1,0 +1,41 @@
+{
+  "name": "@ofa/lodash",
+  "version": "4.17.21",
+  "description": "Repo/project to create a systemjs bundle of lodash",
+  "main": "index.js",
+  "module": "esm/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "yarn build && concurrently -n w: 'yarn:test:*'",
+    "test:browser": "karma start karma.conf.cjs --single-run",
+    "debug:test:browser": "karma start karma.conf.cjs",
+    "test:unit": "mocha -r chai/register-expect 'node-test/**/*.*'",
+    "test:formatting": "prettier --check './**/*'",
+    "build": "rollup -c",
+    "bundle": "rm -rf dist & rollup -c",
+    "format": "prettier --write './**/*'",
+    "release": "release-it",
+    "prepublishOnly": "yarn build"
+  },
+  "files": [
+    "esm",
+    "system"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/esm-bundle/lodash.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/esm-bundle/lodash/issues"
+  },
+  "homepage": "https://github.com/esm-bundle/lodash#readme",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "esm-bundle-scripts": "1.2.0",
+    "lodash": "4.17.21",
+    "lodash-es": "4.17.21"
+  }
+}
