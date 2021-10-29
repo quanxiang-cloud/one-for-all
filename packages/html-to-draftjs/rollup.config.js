@@ -1,31 +1,14 @@
-import commonjs from '@rollup/plugin-commonjs';
-import resolve from '@rollup/plugin-node-resolve';
-import { terser } from "rollup-plugin-terser";
-
 import packageJSON from './package.json';
+import getOutput from '../../scripts/get-common-output';
+import commonPlugins from '../../scripts/common-plugins';
+
+const packageName = `${packageJSON.name}@${packageJSON.version}`;
 
 export default {
   input: require.resolve('html-to-draftjs'),
-  output: [
-    {
-      file: `dist/index.${packageJSON.version}.js`,
-      format: 'system',
-    },
-    {
-      file: `dist/index.${packageJSON.version}.min.js`,
-      format: 'system',
-      plugins: [terser()],
-    }
-  ],
+  output: getOutput(packageName),
 
   external: ['react', 'react-dom', 'draft-js'],
 
-  plugins: [
-    resolve({
-      preferBuiltins: false,
-      browser: true,
-      mainFields: ['module', 'main'],
-    }),
-    commonjs(),
-  ]
+  plugins: commonPlugins,
 };

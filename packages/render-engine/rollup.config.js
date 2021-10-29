@@ -1,23 +1,15 @@
 import esbuild from 'rollup-plugin-esbuild';
 import resolve from '@rollup/plugin-node-resolve';
-import { terser } from "rollup-plugin-terser";
 
 import typescriptPaths from '../../scripts/rollup-plugin-typescript-paths';
+import getOutput from '../../scripts/get-common-output';
 import packageJSON from './package.json';
+
+const packageName = `${packageJSON.name}@${packageJSON.version}`;
 
 export default {
   input: 'index.ts',
-  output: [
-    {
-      file: `dist/index.js`,
-      format: 'system',
-    },
-    {
-      file: `dist/index.min.js`,
-      format: 'system',
-      plugins: [terser()],
-    }
-  ],
+  output: getOutput(packageName),
 
   external: ['react', 'react-dom', 'rxjs', '@ofa/utils', /rxjs\/.*/],
 

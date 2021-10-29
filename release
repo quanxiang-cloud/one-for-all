@@ -1,0 +1,7 @@
+#!/bin/bash
+
+lerna run bundle
+
+rm -rf dist
+mkdir dist
+cp -r packages/*/dist/* dist/

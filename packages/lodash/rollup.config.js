@@ -1,9 +1,10 @@
 import { terser } from "rollup-plugin-terser";
-import packageJSON from "./package.json";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
-// import lodash from 'lodash-es';
-// import fp from 'lodash/fp';
+
+import packageJSON from './package.json';
+
+// const packageName = `${packageJSON.name}@${packageJSON.version}`
 
 const lodashConfig = {
   input: require.resolve("lodash"),

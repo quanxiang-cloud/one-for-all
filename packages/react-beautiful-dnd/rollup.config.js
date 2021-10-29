@@ -1,34 +1,15 @@
-import commonjs from '@rollup/plugin-commonjs';
-import resolve from '@rollup/plugin-node-resolve';
-import replace from "@rollup/plugin-replace";
-import { terser } from "rollup-plugin-terser";
-
 import packageJSON from './package.json';
+import getOutput from '../../scripts/get-common-output';
+import commonPlugins from '../../scripts/common-plugins';
+
+const packageName = `${packageJSON.name}@${packageJSON.version}`;
 
 export default {
   input: require.resolve('react-beautiful-dnd'),
-  output: [
-    {
-      file: `dist/index.${packageJSON.version}.js`,
-      format: 'system',
-    },
-    {
-      file: `dist/index.${packageJSON.version}.min.js`,
-      format: 'system',
-      plugins: [terser()],
-    }
-  ],
+
+  output: getOutput(packageName),
+
   external: ['react', 'react-dom'],
 
-  plugins: [
-    resolve({
-      preferBuiltins: false,
-      browser: true,
-      mainFields: ['module', 'main'],
-    }),
-    commonjs(),
-    replace({
-      'process.env.NODE_ENV': JSON.stringify('production')
-    }),
-  ]
+  plugins: commonPlugins,
 };
