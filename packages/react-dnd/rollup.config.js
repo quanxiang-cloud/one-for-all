@@ -5,7 +5,7 @@ import commonPlugins from '../../scripts/common-plugins';
 const packageName = `${packageJSON.name}@${packageJSON.version}`;
 
 export default {
-  input: require.resolve('react-dnd'),
+  input: 'index.js',
 
   output: getOutput(packageName),
 
