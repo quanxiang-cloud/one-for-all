@@ -5,11 +5,11 @@ import commonPlugins from '../../scripts/common-plugins';
 const packageName = `${packageJSON.name}@${packageJSON.version}`;
 
 export default {
-  input: 'index.js',
+  input: require.resolve('draftjs-utils'),
 
   output: getOutput(packageName),
 
-  external: ['react', 'react-dom', 'draft-js', 'html-to-draftjs'],
+  external: ['react', 'react-dom', 'draft-js'],
 
   plugins: commonPlugins,
 };

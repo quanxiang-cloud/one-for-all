@@ -1,6 +1,6 @@
 {
-  "name": "@ofa/react-draft-wysiwyg",
-  "version": "1.14.7",
+  "name": "@ofa/draftjs-utils",
+  "version": "0.10.2",
   "main": "index.js",
   "license": "Apache-2.0",
   "private": false,
@@ -10,7 +10,7 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
-    "react-draft-wysiwyg": "^1.14.7",
+    "draftjs-utils": "^0.10.2",
     "rollup": "^2.58.3"
   }
 }
