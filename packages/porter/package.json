@@ -1,0 +1,15 @@
+{
+  "name": "@ofa/porter",
+  "version": "0.0.1",
+  "description": "utils for uploading files to qingstor",
+  "main": "index.js",
+  "license": "Apache-2.0",
+  "private": false,
+  "devDependencies": {
+    "@types/mime-types": "^2.1.1",
+    "glob": "^7.2.0",
+    "mime-types": "^2.1.33",
+    "mkdirp": "^1.0.4",
+    "undici": "^4.9.3"
+  }
+}
