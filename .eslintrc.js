@@ -140,7 +140,6 @@ module.exports = {
         varsIgnorePattern: '^_',
       },
     ],
-    eqeqeq: 'warn',
   },
   settings: {
     react: {
