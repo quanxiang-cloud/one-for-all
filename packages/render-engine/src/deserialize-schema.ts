@@ -87,9 +87,9 @@ function transformNode(node: SchemaNode<Serialized>): SchemaNode<Instantiated> {
   };
 }
 
-export default function deserializeSchema({ node, statesMap }: Schema): InstantiatedSchema | null {
+export default function deserializeSchema({ node, apiStateSpec }: Schema): InstantiatedSchema | null {
   try {
-    return { statesMap, node: transformNode(node) };
+    return { apiStateSpec, node: transformNode(node) };
   } catch (error) {
     console.error(error);
     return null;

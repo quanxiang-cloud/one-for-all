@@ -44,6 +44,7 @@ export default function useAPIStateDerivedProps({ props, stateHub }: UseAPIProps
       map((result) => convertResult(result, mappers)),
     ).subscribe(setState);
 
+    // todo remove state from stateHub when last subscriber unsubscribed
     return () => subscription.unsubscribe();
   }, []);
 

@@ -110,19 +110,20 @@ interface ReactComponentNode<T> extends BaseNode<T> {
 
 type SchemaNode<T> = HTMLNode<T> | ReactComponentNode<T>;
 
-export type StatesMap = Record<string, {
+// map of stateID and operationID
+export type APIStateSpec = Record<string, {
   operationID: string;
   [key: string]: any;
 }>;
 
 export type Schema = {
   node: SchemaNode<Serialized>;
-  statesMap: StatesMap;
+  apiStateSpec: APIStateSpec;
 }
 
 export type InstantiatedSchema = {
   node: SchemaNode<Instantiated>;
-  statesMap: StatesMap;
+  apiStateSpec: APIStateSpec;
 };
 
 interface Document {

@@ -4,14 +4,14 @@ import '@testing-library/jest-dom';
 import mockXHR from 'xhr-mock';
 
 import petStoreSpec from '../spec-interpreter/__tests__/fixtures/petstore-spec';
-import type { APIInvokeProperty, APIDerivedProperty, Instantiated, StatesMap } from '../types';
+import type { APIInvokeProperty, APIDerivedProperty, Instantiated, APIStateSpec } from '../types';
 import StateHub from '../state-hub';
 import Link from './fixtures/link';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
 
-const stateIDMap: StatesMap = { stream_findPetsByTags: { operationID: 'findPetsByTags' } };
+const stateIDMap: APIStateSpec = { stream_findPetsByTags: { operationID: 'findPetsByTags' } };
 const stateHub = new StateHub(petStoreSpec, stateIDMap);
 
 test('Link_changes_the_class_when_hovered', async () => {

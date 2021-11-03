@@ -1,7 +1,7 @@
 import { APIState, InstantiatedSchema, RequestParams } from '@ofa/render-engine/src/types';
 
 const todoAppSchema: InstantiatedSchema = {
-  statesMap: {
+  apiStateSpec: {
     createTodo: { operationID: 'createTodo' },
     listTodos: { operationID: 'listTodos' },
     updateTodo: { operationID: 'updateTodo' },

@@ -4,7 +4,7 @@ import { OpenAPIV3 } from 'openapi-types';
 
 import SpecInterpreter from './spec-interpreter';
 
-import type { APIState, StatesMap, RequestParams } from './types';
+import type { APIState, APIStateSpec, RequestParams } from './types';
 import getResponseState$ from './response';
 
 type RunParam = {
@@ -35,12 +35,12 @@ function executeCallback(state: APIState, runParams?: RunParam): void {
 export default class StateHub {
   specInterpreter: SpecInterpreter;
   // map of stateID and operationID
-  stateIDMap: StatesMap;
+  apiStateSpec: APIStateSpec;
   statesCache: Record<string, [Observable<APIState>, StreamActions]> = {};
 
-  constructor(apiDoc: OpenAPIV3.Document, stateIDMap: StatesMap) {
+  constructor(apiDoc: OpenAPIV3.Document, apiStateSpec: APIStateSpec) {
     this.specInterpreter = new SpecInterpreter(apiDoc);
-    this.stateIDMap = stateIDMap;
+    this.apiStateSpec = apiStateSpec;
   }
 
   getState(stateID: string): Observable<APIState> {
@@ -56,11 +56,11 @@ export default class StateHub {
   }
 
   getStream(stateID: string): [Observable<APIState>, StreamActions] {
-    if (!this.stateIDMap[stateID]) {
+    if (!this.apiStateSpec[stateID]) {
       // TODO: log error message
     }
 
-    const key = `${stateID}:${this.stateIDMap[stateID]}`;
+    const key = `${stateID}:${this.apiStateSpec[stateID]}`;
     if (!this.statesCache[key]) {
       this.statesCache[key] = this.initState(stateID);
     }
@@ -77,7 +77,7 @@ export default class StateHub {
     const params$ = new Subject<RequestParams>();
     const request$ = params$.pipe(
       // TODO: catch builder error
-      map((params) => this.specInterpreter.buildRequest(this.stateIDMap[stateID]?.operationID, params)),
+      map((params) => this.specInterpreter.buildRequest(this.apiStateSpec[stateID]?.operationID, params)),
     );
 
     const fullState$ = getResponseState$(request$).pipe(
