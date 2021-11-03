@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import useAPIStateDerivedProps from './use-api-state-derived-props';
 import { APIInvokeProperty, APIDerivedProperty, ConstantProperty, NodeProps, Instantiated } from './types';
-import StateHub from './state-hub';
+import APIStateHub from './api-state-hub';
 import getAPIInvokeProps from './get-api-invoke-props';
 
 type GroupedProps = {
@@ -45,7 +45,7 @@ function groupProps(props: NodeProps<Instantiated>): GroupedProps {
 
 type Props = {
   nodeProps: NodeProps<Instantiated>;
-  stateHub: StateHub;
+  stateHub: APIStateHub;
 }
 
 export default function useConnection({ nodeProps, stateHub }: Props): Record<string, any> {

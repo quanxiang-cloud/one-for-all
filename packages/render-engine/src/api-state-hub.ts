@@ -32,7 +32,7 @@ function executeCallback(state: APIState, runParams?: RunParam): void {
   runParams?.onSuccess?.(state);
 }
 
-export default class StateHub {
+export default class APIStateHub {
   specInterpreter: SpecInterpreter;
   // map of stateID and operationID
   apiStateSpec: APIStateSpec;

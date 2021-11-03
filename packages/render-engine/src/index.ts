@@ -2,7 +2,7 @@ import { OpenAPIV3 } from 'openapi-types';
 import renderSchema from './render';
 import deserializeSchema from './deserialize-schema';
 import { Schema } from './types';
-import StateHub from './state-hub';
+import APIStateHub from './api-state-hub';
 
 type RenderSchemaParams = {
   schema: Schema;
@@ -17,7 +17,7 @@ function Render({ schema, rootEle, apiDoc }: RenderSchemaParams): void {
     return;
   }
 
-  const stateHub = new StateHub(apiDoc, instantiatedSchema.apiStateSpec);
+  const stateHub = new APIStateHub(apiDoc, instantiatedSchema.apiStateSpec);
   // TODO: give this a better design
   // each render-engine instance should have a uniq key,
   // this key could be used by stateHub,

@@ -5,13 +5,13 @@ import { renderHook } from '@testing-library/react-hooks';
 
 import petStoreSpec from '../spec-interpreter/__tests__/fixtures/petstore-spec';
 import useStateDerivedProps from '../use-api-state-derived-props';
-import StateHub from '../state-hub';
+import APIStateHub from '../api-state-hub';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
 
 const stateIDMap = { stream_findPetsByTags: { operationID: 'findPetsByTags' } };
-const stateHub = new StateHub(petStoreSpec, stateIDMap);
+const stateHub = new APIStateHub(petStoreSpec, stateIDMap);
 
 test('expect_resolve_initial_value', () => {
   const convertorFn = jest.fn();

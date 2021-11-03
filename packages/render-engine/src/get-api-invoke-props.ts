@@ -1,13 +1,13 @@
 import { logger } from '@ofa/utils';
 
-import StateHub from './state-hub';
+import APIStateHub from './api-state-hub';
 import { APIInvokeProperty, Instantiated } from './types';
 
 type APICallProps = Record<string, (...args: any[]) => void>;
 
 export default function getAPIInvokeProps(
   props: Record<string, APIInvokeProperty<Instantiated>[]>,
-  stateHub: StateHub,
+  stateHub: APIStateHub,
 ): APICallProps {
   return Object.entries(props)
     .reduce<APICallProps>((acc, [propName, apiCalls]) => {

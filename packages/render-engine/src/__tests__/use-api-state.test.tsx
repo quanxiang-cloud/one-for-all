@@ -5,14 +5,14 @@ import mockXHR from 'xhr-mock';
 
 import petStoreSpec from '../spec-interpreter/__tests__/fixtures/petstore-spec';
 import type { APIInvokeProperty, APIDerivedProperty, Instantiated, APIStateSpec } from '../types';
-import StateHub from '../state-hub';
+import APIStateHub from '../api-state-hub';
 import Link from './fixtures/link';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
 
 const stateIDMap: APIStateSpec = { stream_findPetsByTags: { operationID: 'findPetsByTags' } };
-const stateHub = new StateHub(petStoreSpec, stateIDMap);
+const stateHub = new APIStateHub(petStoreSpec, stateIDMap);
 
 test('Link_changes_the_class_when_hovered', async () => {
   const mockRes = { data: { id: 'abc-123' } };

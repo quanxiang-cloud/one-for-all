@@ -15,12 +15,12 @@ import {
   InstantiatedSchema,
   SchemaNode,
 } from './types';
-import StateHub from './state-hub';
+import APIStateHub from './api-state-hub';
 import useConnection from './use-connection';
 
 type RenderNodesProps = {
   nodes: SchemaNode<Instantiated>[];
-  stateHub: StateHub;
+  stateHub: APIStateHub;
 }
 
 function renderChildren({ nodes, stateHub }: RenderNodesProps): React.FunctionComponentElement<any> | null {
@@ -37,7 +37,7 @@ function renderChildren({ nodes, stateHub }: RenderNodesProps): React.FunctionCo
 
 type RenderNodeProps = {
   node: SchemaNode<Instantiated>
-  stateHub: StateHub;
+  stateHub: APIStateHub;
 }
 
 function renderNode({ node, stateHub }: RenderNodeProps): React.ReactElement | null {
@@ -85,7 +85,7 @@ function renderNode({ node, stateHub }: RenderNodeProps): React.ReactElement | n
 type RenderSchemaParams = {
   schema: InstantiatedSchema;
   rootEle: Element;
-  stateHub: StateHub;
+  stateHub: APIStateHub;
 }
 
 function renderSchema({ schema, rootEle, stateHub }: RenderSchemaParams): void {

@@ -1,5 +1,5 @@
 import { OpenAPIV3 } from 'openapi-types';
-import StateHub from './state-hub';
+import APIStateHub from './api-state-hub';
 
 export type Serialized = 'Serialized';
 export type Instantiated = 'Instantiated';
@@ -134,6 +134,6 @@ type DynamicComponent = React.FC<any> | React.ComponentClass<any>;
 
 declare global {
   interface Window {
-    stateHub: StateHub;
+    stateHub: APIStateHub;
   }
 }
