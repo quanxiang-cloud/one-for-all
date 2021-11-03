@@ -1,16 +1,17 @@
 {
   "name": "one-for-all",
   "version": "0.0.1",
-  "main": "index.js",
-  "repository": "git@git.internal.yunify.com:markduan/one-for-all.git",
-  "author": "Mark <markduan@yunify.com>",
-  "license": "Apache-2.0",
   "private": true,
-  "scripts": {
-    "lint": "eslint 'packages/**/*.tsx' 'packages/**/*.ts' --fix",
-    "cp": "node scripts/copy-packages-dist.js"
-  },
+  "repository": "git@git.internal.yunify.com:markduan/one-for-all.git",
+  "license": "Apache-2.0",
+  "author": "Mark <markduan@yunify.com>",
+  "type": "module",
+  "main": "index.js",
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "cp": "node scripts/copy-packages-dist.js",
+    "lint": "eslint 'packages/**/*.tsx' 'packages/**/*.ts' --fix"
+  }
 }

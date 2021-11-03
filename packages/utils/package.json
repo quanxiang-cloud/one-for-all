@@ -4,9 +4,10 @@
   "description": "",
   "license": "Apache-2.0",
   "author": "",
-  "main": "dist/index.js",
-  "module": "lib",
-  "types": "lib/index.d.ts",
+  "main": "lib/src/index.js",
+  "module": "lib/src/index.js",
+  "type": "module",
+  "types": "lib/src/index.d.ts",
   "scripts": {
     "build": "rm -rf lib & tsc --build tsconfig.json",
     "bundle": "rm -rf dist & rollup -c rollup.config.js",

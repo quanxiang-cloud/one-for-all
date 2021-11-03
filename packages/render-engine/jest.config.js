@@ -1,10 +1,12 @@
-// Only use the following if you use tsconfig paths
-// const tsconfig = require('./tsconfig.json')
-// const moduleNameMapper = require('tsconfig-paths-jest')(tsconfig)
+import base from '../../jest.base.config.js';
 
-module.exports = {
-  ...require('../../jest.base.config'),
+export default {
+  ...base,
   name: '@ofa/render-engine',
   displayName: 'Render Engine',
-  // moduleNameMapper,
+  // transform: {},
+  transformIgnorePatterns: ['packages/utils'],
+  // moduleNameMapper: {
+  //   '^@ofa/utils/(.*)$': '<rootDir>/packages/utils/$1',
+  // },
 };

@@ -3,8 +3,8 @@
   "compilerOptions": {
     "outDir": "lib",
     "rootDir": ".",
-    "module": "ESNext"
+    "module": "es2015"
   },
-  "include": ["src/**/*", "index.ts"],
+  "include": ["src/**/*"],
   "exclude": ["**/__tests__"],
 }

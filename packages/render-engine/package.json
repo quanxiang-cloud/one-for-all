@@ -4,6 +4,7 @@
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "module": "lib",
+  "type": "module",
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "rm -rf lib & tsc --build tsconfig.json",

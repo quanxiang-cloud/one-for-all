@@ -8,7 +8,7 @@ import getOutput from '../../scripts/get-common-output';
 const packageName = `${packageJSON.name}@${packageJSON.version}`;
 
 export default {
-  input: 'index.ts',
+  input: 'src/index.ts',
   output: getOutput(packageName),
 
   plugins: [
