@@ -1,10 +1,10 @@
 import {
-  NodeProp,
+  NodeProperty,
   InstantiatedSchema,
   Schema,
   APIState,
   SchemaNode,
-  NodeProps,
+  NodeProperties,
   Serialized,
   Instantiated,
   APIStateConvertFuncSpec,
@@ -30,8 +30,8 @@ function instantiateFuncSpec({ type, args, body }: FunctionSpecs): ((...args: an
   return;
 }
 
-function transformProps(props: NodeProps<Serialized>): NodeProps<Instantiated> {
-  return Object.entries(props).map<[string, NodeProp<Instantiated>] | null>(([propName, propDesc]) => {
+function transformProps(props: NodeProperties<Serialized>): NodeProperties<Instantiated> {
+  return Object.entries(props).map<[string, NodeProperty<Instantiated>] | null>(([propName, propDesc]) => {
     // instantiate Array<APIInvokeProperty<T>>
     if (Array.isArray(propDesc)) {
       return [
@@ -69,9 +69,9 @@ function transformProps(props: NodeProps<Serialized>): NodeProps<Instantiated> {
     }
 
     return null;
-  }).filter((pair): pair is [string, NodeProp<Instantiated>] => {
+  }).filter((pair): pair is [string, NodeProperty<Instantiated>] => {
     return !!pair;
-  }).reduce<NodeProps<Instantiated>>((acc, [propName, propDesc]) => {
+  }).reduce<NodeProperties<Instantiated>>((acc, [propName, propDesc]) => {
     acc[propName] = propDesc;
     return acc;
   }, {});

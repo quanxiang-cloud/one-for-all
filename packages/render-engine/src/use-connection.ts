@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import useAPIStateDerivedProps from './use-api-state-derived-props';
-import { APIInvokeProperty, APIDerivedProperty, ConstantProperty, NodeProps, Instantiated } from './types';
+import { APIInvokeProperty, APIDerivedProperty, ConstantProperty, NodeProperties, Instantiated } from './types';
 import APIStateHub from './api-state-hub';
 import getAPIInvokeProps from './get-api-invoke-props';
 
@@ -10,7 +10,7 @@ type GroupedProps = {
   constantProps: Record<string, any>;
 }
 
-function groupProps(props: NodeProps<Instantiated>): GroupedProps {
+function groupProps(props: NodeProperties<Instantiated>): GroupedProps {
   const apiDerivedProps: Record<string, APIDerivedProperty<Instantiated>> = {};
   const apiInvokeProps: Record<string, APIInvokeProperty<Instantiated>[]> = {};
   const constantProps: Record<string, ConstantProperty> = {};
@@ -44,7 +44,7 @@ function groupProps(props: NodeProps<Instantiated>): GroupedProps {
 }
 
 type Props = {
-  nodeProps: NodeProps<Instantiated>;
+  nodeProps: NodeProperties<Instantiated>;
   stateHub: APIStateHub;
 }
 

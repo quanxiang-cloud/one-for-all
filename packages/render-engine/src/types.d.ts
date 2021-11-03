@@ -71,24 +71,24 @@ export type APIInvokeProperty<T> = {
   onError?: APIInvokeCallBack<T>;
 }
 
-export type LocalStateProps<T> = {
+export type LocalStateProperty<T> = {
   type: 'local_state_property';
   initialValue: any;
   stateID: string;
 }
 
-export type NodeProp<T> =
+export type NodeProperty<T> =
   ConstantProperty |
   APIDerivedProperty<T> |
   APIInvokeProperty<T> |
   Array<APIInvokeProperty<T>>;
 
-export type NodeProps<T> = Record<string, NodeProp<T>>;
+export type NodeProperties<T> = Record<string, NodeProperty<T>>;
 
 interface BaseNode<T> {
   key: string;
   type: 'html-element' | 'react-component';
-  props?: NodeProps<T>;
+  props?: NodeProperties<T>;
   children?: BaseNode<T>[];
 }
 
