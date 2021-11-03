@@ -9,9 +9,5 @@
   "main": "index.js",
   "workspaces": [
     "packages/*"
-  ],
-  "scripts": {
-    "cp": "node scripts/copy-packages-dist.js",
-    "lint": "eslint 'packages/**/*.tsx' 'packages/**/*.ts' --fix"
-  }
+  ]
 }
