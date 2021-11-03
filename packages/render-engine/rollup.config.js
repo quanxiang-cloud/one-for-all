@@ -8,7 +8,7 @@ import packageJSON from './package.json';
 const packageName = `${packageJSON.name}@${packageJSON.version}`;
 
 export default {
-  input: 'index.ts',
+  input: 'src/index.ts',
   output: getOutput(packageName),
 
   external: ['react', 'react-dom', 'rxjs', '@ofa/utils', /rxjs\/.*/],

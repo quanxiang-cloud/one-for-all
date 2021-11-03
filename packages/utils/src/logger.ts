@@ -1,3 +1,9 @@
+declare global {
+  interface Window {
+    __verbose_log__: boolean;
+  }
+}
+
 const noop = (): void => undefined;
 
 export default new Proxy(console, {

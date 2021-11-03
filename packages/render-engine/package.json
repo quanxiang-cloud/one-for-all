@@ -7,7 +7,7 @@
   "type": "module",
   "types": "lib/index.d.ts",
   "scripts": {
-    "build": "rm -rf lib & tsc --build tsconfig.json",
+    "build": "tsc --build tsconfig.json",
     "bundle": "rm -rf dist & rollup -c rollup.config.js",
     "test": "jest",
     "updateSnapshot": "jest --updateSnapshot"
