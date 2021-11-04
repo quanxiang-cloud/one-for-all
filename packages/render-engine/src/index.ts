@@ -22,6 +22,8 @@ function Render({ schema, rootEle, apiDoc }: RenderSchemaParams): void {
   // each render-engine instance should have a uniq key,
   // this key could be used by stateHub,
   // or create a symbol for each stateHub?
+  //
+  // store stateHub in context
   window.stateHub = stateHub;
 
   renderSchema({ schema: instantiatedSchema, stateHub, rootEle });

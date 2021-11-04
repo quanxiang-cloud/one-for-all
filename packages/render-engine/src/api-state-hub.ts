@@ -86,14 +86,14 @@ export default class APIStateHub {
       map(([state, params]) => ({ ...state, params })),
     );
 
+    let _latestRunParams: RunParam | undefined = undefined;
+
     // run callbacks after value resolved
     fullState$.pipe(skip(1)).subscribe((state) => {
       setTimeout(() => {
         executeCallback(state, _latestRunParams);
       }, 10);
     });
-
-    let _latestRunParams: RunParam | undefined = undefined;
 
     const streamActions: StreamActions = {
       run: (runParam?: RunParam) => {

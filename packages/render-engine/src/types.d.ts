@@ -25,6 +25,10 @@ export type APIState = {
   error?: Error;
 };
 
+export type LocalState = {
+  data?: any;
+}
+
 type ConstantProperty = {
   type: 'constant_property';
   value: any;
@@ -50,8 +54,17 @@ export type APIInvokeCallbackFuncSpec = FunctionSpec & {
   args: 'apiState';
 }
 
+export type LocalStateConvertFuncSpec = FunctionSpec & {
+  type: 'local_state_convert_func_spec';
+  // `data` is unacceptable!
+  args: 'data';
+}
+
 export type APIStateConvertFunc = (apiState: APIState) => any;
+export type LocalStateConvertFunc = (data: any) => any;
+
 type APIStateConvertor<T> = T extends Serialized ? APIStateConvertFuncSpec : APIStateConvertFunc;
+type LocalStateConvertor<T> = T extends Serialized ? LocalStateConvertFuncSpec : LocalStateConvertFunc;
 type ParamsBuilder<T> = T extends Serialized ? ParamsBuilderFuncSpec : (...args: any[]) => RequestParams;
 type APIInvokeCallBack<T> = T extends Serialized ? APIInvokeCallbackFuncSpec : (apiState: APIState) => void;
 
@@ -74,12 +87,15 @@ export type APIInvokeProperty<T> = {
 export type LocalStateProperty<T> = {
   type: 'local_state_property';
   initialValue: any;
+  // this is not a good design
   stateID: string;
+  template?: LocalStateConvertor<T>;
 }
 
 export type NodeProperty<T> =
   ConstantProperty |
   APIDerivedProperty<T> |
+  LocalStateProperty<T> |
   APIInvokeProperty<T> |
   Array<APIInvokeProperty<T>>;
 
