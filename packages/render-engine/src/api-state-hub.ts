@@ -4,13 +4,13 @@ import { OpenAPIV3 } from 'openapi-types';
 
 import SpecInterpreter from './spec-interpreter';
 
-import type { APIState, APIStateSpec, RequestParams } from './types';
+import type { APIInvokeCallBack, APIState, APIStateSpec, CTX, Instantiated, RequestParams } from './types';
 import getResponseState$ from './response';
 
 type RunParam = {
   params?: RequestParams;
-  onSuccess?: (state: APIState) => void;
-  onError?: (state: APIState) => void;
+  onSuccess?: APIInvokeCallBack<Instantiated>;
+  onError?: APIInvokeCallBack<Instantiated>;
 }
 
 type StreamActions = {
@@ -19,17 +19,17 @@ type StreamActions = {
   // __complete: () => void;
 };
 
-function executeCallback(state: APIState, runParams?: RunParam): void {
+function executeCallback(ctx: CTX, state: APIState, runParams?: RunParam): void {
   if (state.loading) {
     return;
   }
 
   if (state.error) {
-    runParams?.onError?.(state);
+    runParams?.onError?.({ ...state, ...ctx, });
     return;
   }
 
-  runParams?.onSuccess?.(state);
+  runParams?.onSuccess?.({ ...state, ...ctx, });
 }
 
 export default class APIStateHub {
@@ -91,7 +91,8 @@ export default class APIStateHub {
     // run callbacks after value resolved
     fullState$.pipe(skip(1)).subscribe((state) => {
       setTimeout(() => {
-        executeCallback(state, _latestRunParams);
+        // todo refactor this
+        executeCallback({ ctx: { apiStateHub: this } } , state, _latestRunParams);
       }, 10);
     });
 

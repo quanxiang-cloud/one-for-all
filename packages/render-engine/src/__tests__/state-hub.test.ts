@@ -80,7 +80,13 @@ test('should_resolve_value', (done) => {
 
   run({
     onSuccess: (state) => {
-      expect(fn).toBeCalledWith(state);
+      expect(state.ctx.apiStateHub).toEqual(stateHub);
+      expect(fn).toBeCalledWith({
+        data: state.data,
+        error: state.error,
+        loading: state.loading,
+        params: state.params,
+      });
       expect(state.error).toBeUndefined();
       expect(state.data).toMatchObject(mockRes);
       done();

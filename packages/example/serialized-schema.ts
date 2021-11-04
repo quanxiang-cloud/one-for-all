@@ -57,7 +57,7 @@ const todoAppSchema: Schema = {
             },
             onSuccess: {
               type: 'api_invoke_call_func_spec',
-              args: 'apiState',
+              args: '{ data, error, loading, params, ctx }',
               body: `
                 // contexts.store.call refresh again
                 // reset form
@@ -120,7 +120,7 @@ const todoAppSchema: Schema = {
             initialValue: [],
             template: {
               type: 'api_state_mapper_func_spec',
-              args: 'apiState',
+              args: '{ data, error, loading, params, ctx }',
               body: `
                 return apiState.data || [];
               `,
@@ -139,7 +139,7 @@ const todoAppSchema: Schema = {
             },
             onSuccess: {
               type: 'api_invoke_call_func_spec',
-              args: 'apiState',
+              args: '{ data, error, loading, params, ctx }',
               body: `
                 // 提供一个 refresh event？
                 window.stateHub.getAction('listTodos')();
@@ -164,7 +164,7 @@ const todoAppSchema: Schema = {
             },
             onSuccess: {
               type: 'api_invoke_call_func_spec',
-              args: 'apiState',
+              args: '{ data, error, loading, params, ctx }',
               body: `
                 window.stateHub.getAction('listTodos')();
                 window.stateHub.getAction('todoStatus')();
@@ -186,7 +186,7 @@ const todoAppSchema: Schema = {
             initialValue: 0,
             template: {
               type: 'api_state_mapper_func_spec',
-              args: 'apiState',
+              args: '{ data, error, loading, params, ctx }',
               body: `
                 return apiState.data?.all || 0;
               `,
@@ -201,7 +201,7 @@ const todoAppSchema: Schema = {
             // },
             template: {
               type: 'api_state_mapper_func_spec',
-              args: 'apiState',
+              args: '{ data, error, loading, params, ctx }',
               body: `
                 return apiState.data?.working || 0;
               `,
@@ -213,7 +213,7 @@ const todoAppSchema: Schema = {
             initialValue: 0,
             template: {
               type: 'api_state_mapper_func_spec',
-              args: 'apiState',
+              args: '{ data, error, loading, params, ctx }',
               body: `
                 return apiState.data?.done || 0;
               `,

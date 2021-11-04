@@ -42,7 +42,7 @@ type FunctionSpec = {
 
 export type APIStateConvertFuncSpec = FunctionSpec & {
   type: 'api_state_mapper_func_spec';
-  args: 'apiState';
+  args: '{ data, error, loading, params, ctx }';
 };
 
 export type ParamsBuilderFuncSpec = FunctionSpec & {
@@ -51,7 +51,7 @@ export type ParamsBuilderFuncSpec = FunctionSpec & {
 
 export type APIInvokeCallbackFuncSpec = FunctionSpec & {
   type: 'api_invoke_call_func_spec';
-  args: 'apiState';
+  args: '{ data, error, loading, params, ctx }';
 }
 
 export type LocalStateConvertFuncSpec = FunctionSpec & {
@@ -60,13 +60,19 @@ export type LocalStateConvertFuncSpec = FunctionSpec & {
   args: 'data';
 }
 
-export type APIStateConvertFunc = (apiState: APIState) => any;
+export type CTX = {
+  ctx: {
+    apiStateHub: APIStateHub;
+  };
+}
+
+export type APIStateConvertFunc = (apiState: APIState & CTX) => any;
 export type LocalStateConvertFunc = (data: any) => any;
 
-type APIStateConvertor<T> = T extends Serialized ? APIStateConvertFuncSpec : APIStateConvertFunc;
-type LocalStateConvertor<T> = T extends Serialized ? LocalStateConvertFuncSpec : LocalStateConvertFunc;
-type ParamsBuilder<T> = T extends Serialized ? ParamsBuilderFuncSpec : (...args: any[]) => RequestParams;
-type APIInvokeCallBack<T> = T extends Serialized ? APIInvokeCallbackFuncSpec : (apiState: APIState) => void;
+export type APIStateConvertor<T> = T extends Serialized ? APIStateConvertFuncSpec : APIStateConvertFunc;
+export type LocalStateConvertor<T> = T extends Serialized ? LocalStateConvertFuncSpec : LocalStateConvertFunc;
+export type ParamsBuilder<T> = T extends Serialized ? ParamsBuilderFuncSpec : (...args: any[]) => RequestParams;
+export type APIInvokeCallBack<T> = T extends Serialized ? APIInvokeCallbackFuncSpec : (apiState: APIState & CTX) => void;
 
 export type APIDerivedProperty<T> = {
   type: 'api_derived_property';

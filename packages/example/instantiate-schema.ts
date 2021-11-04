@@ -112,8 +112,8 @@ const todoAppSchema: InstantiatedSchema = {
             type: 'api_derived_property',
             stateID: 'listTodos',
             initialValue: [],
-            template: (apiState: APIState): Array<any> => {
-              return apiState.data || [];
+            template: ({ data, error, loading, params, }: APIState): Array<any> => {
+              return data || [];
             },
           },
           toggleTodo: {
