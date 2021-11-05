@@ -25,11 +25,11 @@ function executeCallback(ctx: CTX, state: APIState, runParams?: RunParam): void 
   }
 
   if (state.error) {
-    runParams?.onError?.({ ...state, ...ctx, });
+    runParams?.onError?.({ ...state, ctx, });
     return;
   }
 
-  runParams?.onSuccess?.({ ...state, ...ctx, });
+  runParams?.onSuccess?.({ ...state, ctx, });
 }
 
 export default class APIStateHub {
@@ -92,7 +92,7 @@ export default class APIStateHub {
     fullState$.pipe(skip(1)).subscribe((state) => {
       setTimeout(() => {
         // todo refactor this
-        executeCallback({ ctx: { apiStateHub: this } } , state, _latestRunParams);
+        executeCallback({ apiStateHub: this } , state, _latestRunParams);
       }, 10);
     });
 
