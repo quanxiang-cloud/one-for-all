@@ -1,42 +1,33 @@
-import { useState, useEffect } from 'react';
-import { Subject } from 'rxjs';
+import { useState, useEffect, useMemo } from 'react';
+import { BehaviorSubject, skip } from 'rxjs';
 
-export type SetState<T> = (state: T) => void;
-type LocalStore<T> = Record<string, [Subject<T>, SetState<T>]>;
+const localStateCache: Record<string, BehaviorSubject<any>> = {};
 
-const localStore: LocalStore<any> = {};
-
-function createLocalStream<T>(): [Subject<T>, SetState<T>] {
-  const state$ = new Subject<T>();
-  function updater(state: T): void {
-    state$.next(state);
+function getLocalStateStream<T>(key: string): BehaviorSubject<any> {
+  if (!localStateCache[key]) {
+    localStateCache[key] = new BehaviorSubject(undefined);
   }
 
-  return [state$, updater];
+  return localStateCache[key];
 }
 
-function getLocalStateStream<T>(key: string): [Subject<T>, SetState<T>] {
-  if (!localStore[key]) {
-    localStore[key] = createLocalStream();
-  }
-
-  return localStore[key];
-}
-
-function useLocalState<T>(key: string, defaultState?: T): [T | undefined, SetState<T>] {
-  const [state, setState] = useState<T | undefined>(defaultState);
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const [updater, setUpdater] = useState<SetState<T>>(() => {});
+export function useLocalState<T>(key: string, initialValue?: T): T {
+  const localState$ = getLocalStateStream<T>(key);
+  const [value, setValue] = useState<T>(localState$.getValue() ?? initialValue);
 
   useEffect(() => {
-    const [state$, updater] = getLocalStateStream<T>(key);
-    setUpdater(updater);
-    const subscription = state$.subscribe(setState);
+    const subscription = localState$.pipe(skip(1)).subscribe(setValue);
 
     return () => subscription.unsubscribe();
   }, []);
 
-  return [state, updater];
+  return value;
 }
 
-export default useLocalState;
+export function useSetLocalState<T>(key: string): (value: any) => void {
+  return useMemo(() => {
+    const localState$ = getLocalStateStream<T>(key);
+
+    return (value: any) => localState$.next(value);
+  }, []);
+}
