@@ -16,7 +16,7 @@ type FunctionSpecs = APIStateConvertFuncSpec | ParamsBuilderFuncSpec | APIInvoke
 
 function instantiateFuncSpec({ type, args, body }: FunctionSpecs): ((...args: any[]) => any) | undefined {
   if (type === 'api_state_mapper_func_spec') {
-    return new Function('apiState', body) as (apiState: APIState) => any;
+    return new Function('{ data, error, loading, params, ctx }', body) as (apiState: APIState) => any;
   }
 
   if (type === 'param_builder_func_spec') {
@@ -24,7 +24,7 @@ function instantiateFuncSpec({ type, args, body }: FunctionSpecs): ((...args: an
   }
 
   if (type === 'api_invoke_call_func_spec') {
-    return new Function('apiState', body) as (...args: any[]) => any;
+    return new Function('{ data, error, loading, params, ctx }', body) as (...args: any[]) => any;
   }
 
   return;

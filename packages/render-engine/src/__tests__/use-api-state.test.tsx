@@ -19,6 +19,7 @@ test('Link_changes_the_class_when_hovered', async () => {
   mockXHR.get(/.*/, (req, res) => res.status(200).body(JSON.stringify(mockRes)));
 
   const onSuccessFn = jest.fn();
+  const onErrorFn = jest.fn();
 
   const props: Record<string, APIDerivedProperty<Instantiated> | APIInvokeProperty<Instantiated>> = {
     foo: {
@@ -38,10 +39,19 @@ test('Link_changes_the_class_when_hovered', async () => {
       stateID: 'stream_findPetsByTags',
       paramsBuilder: () => undefined,
       onSuccess: onSuccessFn,
+      onError: onErrorFn,
     },
   };
   const { container, getByText } = render(<Link nodeProps={props} stateHub={stateHub} />);
   await waitFor(() => expect(onSuccessFn).toBeCalledTimes(1));
+  await waitFor(() => expect(onSuccessFn).toBeCalledWith({
+    ctx: { apiStateHub: stateHub },
+    data: mockRes,
+    error: undefined,
+    loading: false,
+    params: undefined,
+  }));
+  await waitFor(() => expect(onErrorFn).toBeCalledTimes(0));
   await waitFor(() => getByText('abc:abc'));
   expect(container).toMatchSnapshot();
 });
@@ -51,6 +61,7 @@ test('search_btn', async () => {
   mockXHR.get(/.*/, (req, res) => res.status(200).body(JSON.stringify(mockRes)));
 
   const onSuccessFn = jest.fn();
+  const onErrorFn = jest.fn();
 
   const props: Record<string, APIDerivedProperty<Instantiated> | APIInvokeProperty<Instantiated>> = {
     foo: {
@@ -70,10 +81,19 @@ test('search_btn', async () => {
       stateID: 'stream_findPetsByTags',
       paramsBuilder: () => undefined,
       onSuccess: onSuccessFn,
+      onError: onErrorFn,
     },
   };
   const { container, getByText } = render(<Link nodeProps={props} stateHub={stateHub} />);
   await waitFor(() => expect(onSuccessFn).toBeCalledTimes(1));
+  await waitFor(() => expect(onSuccessFn).toBeCalledWith({
+    ctx: { apiStateHub: stateHub },
+    data: mockRes,
+    error: undefined,
+    loading: false,
+    params: undefined,
+  }));
+  await waitFor(() => expect(onErrorFn).toBeCalledTimes(0));
   fireEvent(getByText('abc:abc'), new Event('click'));
   await waitFor(() => getByText('abc:abc'));
   expect(container).toMatchSnapshot();
