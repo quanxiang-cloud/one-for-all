@@ -60,8 +60,19 @@ export type LocalStateConvertFuncSpec = FunctionSpec & {
   args: 'data';
 }
 
+type RunParam = {
+  params?: RequestParams;
+  onSuccess?: APIInvokeCallBack<Instantiated>;
+  onError?: APIInvokeCallBack<Instantiated>;
+}
+
+interface APIctx {
+  runAction: (stateID: string, runParam?: RunParam) => void;
+  refresh: (stateID: string) => void;
+}
+
 export type CTX = {
-  apiStateHub: APIStateHub;
+  apiCTX: APIctx;
 }
 
 export type APIStateConvertFunc = (apiState: APIState & { ctx: CTX }) => any;

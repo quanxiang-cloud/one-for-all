@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { combineLatest, map, Observable, skip } from 'rxjs';
 
 import APIStateHub from './api-state-hub';
-import { APIDerivedProperty, Instantiated, APIStateConvertFunc, APIState } from './types';
+import { APIDerivedProperty, Instantiated, APIStateConvertFunc, APIState, APIctx } from './types';
 
 type UseAPIProps = {
   props: Record<string, APIDerivedProperty<Instantiated>>;
@@ -12,13 +12,13 @@ type UseAPIProps = {
 function convertResult(
   result: Record<string, APIState>,
   convertors: Record<string, APIStateConvertFunc | undefined>,
-  stateHub: APIStateHub,
+  apiCTX: APIctx,
 ): Record<string, any> {
   return Object.entries(result).map(([propName, propValue]) => {
     return [
       propName,
       // TODO: handle convert error case
-      convertors[propName] ? convertors[propName]?.({ ...propValue, ctx: { apiStateHub: stateHub  } }) : propValue,
+      convertors[propName] ? convertors[propName]?.({ ...propValue, ctx: { apiCTX } }) : propValue,
     ];
   }).reduce<Record<string, any>>((res, [propName, value]) => {
     res[propName] = value;

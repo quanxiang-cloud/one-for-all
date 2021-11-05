@@ -4,14 +4,8 @@ import { OpenAPIV3 } from 'openapi-types';
 
 import SpecInterpreter from './spec-interpreter';
 
-import type { APIInvokeCallBack, APIState, APIStateSpec, CTX, Instantiated, RequestParams } from './types';
+import type { APIctx, APIInvokeCallBack, APIState, APIStateSpec, CTX, Instantiated, RequestParams, RunParam } from './types';
 import getResponseState$ from './response';
-
-type RunParam = {
-  params?: RequestParams;
-  onSuccess?: APIInvokeCallBack<Instantiated>;
-  onError?: APIInvokeCallBack<Instantiated>;
-}
 
 type StreamActions = {
   run: (runParam?: RunParam) => void;
@@ -32,7 +26,7 @@ function executeCallback(ctx: CTX, state: APIState, runParams?: RunParam): void 
   runParams?.onSuccess?.({ ...state, ctx, });
 }
 
-export default class APIStateHub {
+export default class APIStateHub implements APIctx {
   specInterpreter: SpecInterpreter;
   // map of stateID and operationID
   apiStateSpec: APIStateSpec;
@@ -48,6 +42,13 @@ export default class APIStateHub {
 
     // TODO: test error when run convertor
     return state$;
+  }
+
+  runAction(stateID: string, runParam?: RunParam): void {
+    const action = this.getAction(stateID);
+    if (action) {
+      action(runParam);
+    }
   }
 
   getAction(stateID: string): (runParam?: RunParam) => void {
@@ -92,7 +93,7 @@ export default class APIStateHub {
     fullState$.pipe(skip(1)).subscribe((state) => {
       setTimeout(() => {
         // todo refactor this
-        executeCallback({ apiStateHub: this } , state, _latestRunParams);
+        executeCallback({ apiCTX: this } , state, _latestRunParams);
       }, 10);
     });
 
