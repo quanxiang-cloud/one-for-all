@@ -29,6 +29,12 @@ app.get('/todos', function(req, res) {
 });
 
 app.post('/todos', (req, res) => {
+  if (!req.body.title) {
+    res.status(400);
+    res.send({ message: 'title required' });
+    return;
+  }
+
   const newTask = {
     id: Date.now(),
     title: req.body.title,

@@ -55,6 +55,13 @@ const todoAppSchema: Schema = {
                 return { body };
               `,
             },
+            onError: {
+              type: 'api_invoke_call_func_spec',
+              args: '{ data, error, loading, params, ctx }',
+              body: `
+                console.log(error.response);
+              `,
+            },
             onSuccess: {
               type: 'api_invoke_call_func_spec',
               args: '{ data, error, loading, params, ctx }',
