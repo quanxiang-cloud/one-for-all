@@ -59,6 +59,7 @@ const todoAppSchema: Schema = {
               type: 'api_invoke_call_func_spec',
               args: '{ data, error, loading, params, ctx }',
               body: `
+                // todo show error message, error message should be store in localState
                 console.log(error.response);
               `,
             },
