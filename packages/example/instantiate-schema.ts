@@ -53,12 +53,12 @@ const todoAppSchema: InstantiatedSchema = {
 
               return { body };
             },
-            onSuccess: (): void => {
+            onSuccess: ({ ctx }): void => {
               // contexts.store.call refresh again
               // reset form
               const form = document.getElementById('todo-input-form') as HTMLFormElement;
               form?.reset?.();
-              window.stateHub.getAction('listTodos')();
+              ctx.apiStateHub.getAction('listTodos')();
             },
           },
         },
@@ -123,10 +123,10 @@ const todoAppSchema: InstantiatedSchema = {
             paramsBuilder: (todo: any): RequestParams | undefined => {
               return { params: { todoId: todo.id }, body: todo };
             },
-            onSuccess: (): void => {
+            onSuccess: ({ ctx }): void => {
               // 提供一个 refresh event？
-              window.stateHub.getAction('listTodos')();
-              window.stateHub.getAction('todoStatus')();
+              ctx.apiStateHub.getAction('listTodos')();
+              ctx.apiStateHub.getAction('todoStatus')();
             },
           },
           onFetchTodos: {
@@ -140,9 +140,9 @@ const todoAppSchema: InstantiatedSchema = {
             paramsBuilder: (todoID: number): RequestParams => {
               return { params: { todoId: todoID } };
             },
-            onSuccess: (): void => {
-              window.stateHub.getAction('listTodos')();
-              window.stateHub.getAction('todoStatus')();
+            onSuccess: ({ ctx }): void => {
+              ctx.apiStateHub.getAction('listTodos')();
+              ctx.apiStateHub.getAction('todoStatus')();
             },
           },
         },

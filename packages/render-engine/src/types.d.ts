@@ -64,7 +64,7 @@ export type CTX = {
   apiStateHub: APIStateHub;
 }
 
-export type APIStateConvertFunc = (apiState: APIState & CTX) => any;
+export type APIStateConvertFunc = (apiState: APIState & { ctx: CTX }) => any;
 export type LocalStateConvertFunc = (data: any) => any;
 
 export type APIStateConvertor<T> = T extends Serialized ? APIStateConvertFuncSpec : APIStateConvertFunc;

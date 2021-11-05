@@ -18,6 +18,7 @@
     "@typescript-eslint/eslint-plugin": "^4.29.0",
     "@typescript-eslint/parser": "^4.29.0",
     "comment-json": "^4.1.0",
+    "cors": "^2.8.5",
     "esbuild": "^0.13.8",
     "eslint": "^7.32.0",
     "eslint-config-google": "^0.14.0",

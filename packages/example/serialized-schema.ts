@@ -63,7 +63,7 @@ const todoAppSchema: Schema = {
                 // reset form
                 const form = document.getElementById('todo-input-form');
                 form?.reset?.();
-                window.stateHub.getAction('listTodos')();
+                ctx.apiStateHub.getAction('listTodos')();
               `,
             },
           },
@@ -122,7 +122,7 @@ const todoAppSchema: Schema = {
               type: 'api_state_mapper_func_spec',
               args: '{ data, error, loading, params, ctx }',
               body: `
-                return apiState.data || [];
+                return data || [];
               `,
             },
           },
@@ -142,8 +142,8 @@ const todoAppSchema: Schema = {
               args: '{ data, error, loading, params, ctx }',
               body: `
                 // 提供一个 refresh event？
-                window.stateHub.getAction('listTodos')();
-                window.stateHub.getAction('todoStatus')();
+                ctx.apiStateHub.getAction('listTodos')();
+                ctx.apiStateHub.getAction('todoStatus')();
               `,
             },
           },
@@ -166,8 +166,8 @@ const todoAppSchema: Schema = {
               type: 'api_invoke_call_func_spec',
               args: '{ data, error, loading, params, ctx }',
               body: `
-                window.stateHub.getAction('listTodos')();
-                window.stateHub.getAction('todoStatus')();
+                ctx.apiStateHub.getAction('listTodos')();
+                ctx.apiStateHub.getAction('todoStatus')();
               `,
             },
           },
@@ -188,7 +188,7 @@ const todoAppSchema: Schema = {
               type: 'api_state_mapper_func_spec',
               args: '{ data, error, loading, params, ctx }',
               body: `
-                return apiState.data?.all || 0;
+                return data?.all || 0;
               `,
             },
           },
@@ -197,13 +197,13 @@ const todoAppSchema: Schema = {
             stateID: 'todoStatus',
             initialValue: 0,
             // convertor: (apiState: APIState): number => {
-            //   return apiState.data?.working || 0;
+            //   return data?.working || 0;
             // },
             template: {
               type: 'api_state_mapper_func_spec',
               args: '{ data, error, loading, params, ctx }',
               body: `
-                return apiState.data?.working || 0;
+                return data?.working || 0;
               `,
             },
           },
@@ -215,7 +215,7 @@ const todoAppSchema: Schema = {
               type: 'api_state_mapper_func_spec',
               args: '{ data, error, loading, params, ctx }',
               body: `
-                return apiState.data?.done || 0;
+                return data?.done || 0;
               `,
             },
           },

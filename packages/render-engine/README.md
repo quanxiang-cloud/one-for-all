@@ -28,7 +28,7 @@ local state 是用的场景
 
 
 当一个页面上有多个 render engine 实例的时候，stateHub 是不能冲突的
-new function 的时候将 window.stateHub 做字符串替换？
+new function 的时候将 ctx.apiStateHub 做字符串替换？
 
 之后在各种 callback 或者 convertor 中才有是引用 stateHub 的需求，那把 stateHub 作为 ctx，作为 function 的第一个参数？？？宜搭也是怎么做的
 嗯，暂时想不到更好的设计了
