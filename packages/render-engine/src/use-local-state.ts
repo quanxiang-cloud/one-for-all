@@ -37,7 +37,7 @@ export class LocalStateHub implements LocalStateContext {
   cache: Record<string, BehaviorSubject<any>> = {};
   ctx: CTX | null = null;
 
-  bindAPIContext(apiStateContext: APIStateContext): void {
+  initContext(apiStateContext: APIStateContext): void {
     this.ctx = {
       apiStateContext: apiStateContext,
       localStateContext: this,
