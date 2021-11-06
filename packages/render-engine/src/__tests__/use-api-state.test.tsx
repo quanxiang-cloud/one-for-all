@@ -14,7 +14,7 @@ afterEach(() => mockXHR.teardown());
 
 const stateIDMap: APIStateSpec = { stream_findPetsByTags: { operationID: 'findPetsByTags' } };
 const apiStateHub = new APIStateHub(petStoreSpec, stateIDMap);
-apiStateHub.initContext(new LocalStateHub());
+apiStateHub.initContext(new LocalStateHub({}));
 
 test('Link_changes_the_class_when_hovered', async () => {
   const mockRes = { data: { id: 'abc-123' } };

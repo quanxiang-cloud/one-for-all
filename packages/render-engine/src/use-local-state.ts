@@ -1,41 +1,15 @@
 import { useState, useEffect, useMemo } from 'react';
-import { BehaviorSubject, combineLatest, skip } from 'rxjs';
-import { APIStateContext, CTX, Instantiated, LocalStateContext, LocalStateConvertFunc, LocalStateProperty } from './types';
-
-const localStateCache: Record<string, BehaviorSubject<any>> = {};
-
-function getLocalStateStream<T>(key: string): BehaviorSubject<any> {
-  if (!localStateCache[key]) {
-    localStateCache[key] = new BehaviorSubject(undefined);
-  }
-
-  return localStateCache[key];
-}
-
-export function useLocalState<T>(key: string, initialValue?: T): T {
-  const localState$ = getLocalStateStream<T>(key);
-  const [value, setValue] = useState<T>(localState$.getValue() ?? initialValue);
-
-  useEffect(() => {
-    const subscription = localState$.pipe(skip(1)).subscribe(setValue);
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  return value;
-}
-
-export function useSetLocalState<T>(key: string): (value: any) => void {
-  return useMemo(() => {
-    const localState$ = getLocalStateStream<T>(key);
-
-    return (value: any) => localState$.next(value);
-  }, []);
-}
+import { BehaviorSubject, combineLatest, map, skip } from 'rxjs';
+import { APIStateContext, CTX, Instantiated, LocalStateContext, LocalStateConvertFunc, LocalStateProperty, LocalStateSpec, SetLocalStateProperty } from './types';
 
 export class LocalStateHub implements LocalStateContext {
   cache: Record<string, BehaviorSubject<any>> = {};
   ctx: CTX | null = null;
+  spec: LocalStateSpec;
+
+  constructor(spec: LocalStateSpec) {
+    this.spec = spec;
+  }
 
   initContext(apiStateContext: APIStateContext): void {
     this.ctx = {
@@ -44,9 +18,9 @@ export class LocalStateHub implements LocalStateContext {
     };
   }
 
-  getState(stateID: string): BehaviorSubject<any> {
+  getState$(stateID: string): BehaviorSubject<any> {
     if (!this.cache[stateID]) {
-      this.cache[stateID] = new BehaviorSubject(undefined);
+      this.cache[stateID] = new BehaviorSubject(this.spec[stateID]?.initial);
     }
 
     return this.cache[stateID];
@@ -60,6 +34,7 @@ function convertResult(
 ): Record<string, any> {
   return Object.entries(result).reduce<Record<string, any>>((acc, [key, value]) => {
     const convertedValue = typeof convertor[key] === 'function' ? convertor[key]?.({ data: value, ctx }) : value;
+    console.log(key, value, 'convertor[key]:', convertor[key], 'convertedValue:', convertedValue)
 
     return acc[key] = convertedValue;
   }, {});
@@ -67,31 +42,53 @@ function convertResult(
 
 type UseLocalStateProps = {
   props: Record<string, LocalStateProperty<Instantiated>>;
-  stateHub: LocalStateHub;
-  apiStateContext: APIStateContext;
+  ctx: CTX;
 }
 
-export function useLocalStateProps({ props, stateHub, apiStateContext }: UseLocalStateProps): Record<string, any> {
-  const state$ = Object.entries(props).reduce<Record<string, BehaviorSubject<any>>>((acc, [key, propSpec]) => {
-    acc[key] = stateHub.getState(propSpec.stateID);
-    return acc;
-  }, {});
+export function useLocalStateProps({ props, ctx }: UseLocalStateProps): Record<string, any> {
+  const mappers: Record<string, LocalStateConvertFunc | undefined> = {};
+  const states$: Record<string, BehaviorSubject<any>> = {};
+
+  Object.entries(props).forEach(([key, propSpec]) => {
+    states$[key] = ctx.localStateContext.getState$(propSpec.stateID);
+    mappers[key] = propSpec.template;
+  });
 
   const [state, setState] = useState(() => {
-    return Object.entries(props).reduce<Record<string, any>>((acc, [key, propSpec]) => {
-      const initialValue = stateHub.getState(propSpec.stateID).getValue() ?? propSpec.initialValue;
-      return acc[key] = initialValue;
+    return Object.entries(states$).reduce<Record<string, any>>((acc, [key, state$]) => {
+      acc[key] = state$.getValue();
+      return acc;
     }, {});
   });
 
   useEffect(() => {
-    const subscription = combineLatest(state$).pipe(
+    const subscription = combineLatest(states$).pipe(
       skip(1),
-      // map((result) => convertResult(result, mappers, stateHub)),
+      map((result) => convertResult(result, mappers, ctx)),
     ).subscribe(setState);
 
     return () => subscription.unsubscribe();
   }, []);
 
   return state;
+}
+
+type UseSetLocalStateProps = {
+  props: Record<string, SetLocalStateProperty<Instantiated>>;
+  ctx: CTX;
+}
+
+export function useSetLocalStateProps({ props, ctx }: UseSetLocalStateProps): Record<string, (value: any) => void> {
+  const [funcProps] = useState(() => {
+    return Object.entries(props).reduce<Record<string, (value: any) => void>>((acc, [key, propSpec]) => {
+      const state$ = ctx.localStateContext.getState$(propSpec.stateID);
+      acc[key] = (value: any) => {
+        state$.next(value);
+      };
+
+      return acc;
+    }, {});
+  });
+
+  return funcProps;
 }

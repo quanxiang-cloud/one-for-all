@@ -75,7 +75,7 @@ test('should_resolve_value', (done) => {
 
   const apiStateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
   // todo this must be call before using apiStateHub, this is not a good design
-  apiStateHub.initContext(new LocalStateHub());
+  apiStateHub.initContext(new LocalStateHub({}));
 
   const [state$, { run }] = apiStateHub.getStream('stream_findPetsByTags');
 

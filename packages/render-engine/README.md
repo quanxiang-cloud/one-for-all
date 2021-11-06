@@ -27,8 +27,4 @@ local state 是用的场景
 - 关于数据结构的定义可以直接复用 open API 的规范
 
 
-当一个页面上有多个 render engine 实例的时候，stateHub 是不能冲突的
-new function 的时候将 ctx.apiStateHub 做字符串替换？
-
-之后在各种 callback 或者 convertor 中才有是引用 stateHub 的需求，那把 stateHub 作为 ctx，作为 function 的第一个参数？？？宜搭也是怎么做的
-嗯，暂时想不到更好的设计了
+function props 不应该区分是发 API 请求还是 set local value, 应该是通用的，不过可以提供两个特列！

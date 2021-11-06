@@ -1,4 +1,5 @@
 import { OpenAPIV3 } from 'openapi-types';
+import { BehaviorSubject } from 'rxjs';
 import APIStateHub from './api-state-hub';
 
 export type Serialized = 'Serialized';
@@ -72,7 +73,7 @@ export interface APIStateContext {
 }
 
 export interface LocalStateContext {
-  // apiStateContext: APIStateContext;
+  getState$: (stateID: string) => BehaviorSubject<any>;
 }
 
 export type CTX = {
@@ -106,7 +107,6 @@ export type APIInvokeProperty<T> = {
 
 export type LocalStateProperty<T> = {
   type: 'local_state_property';
-  initialValue: any;
   // this is not a good design
   stateID: string;
   template?: LocalStateConvertor<T>;
@@ -159,9 +159,12 @@ export type APIStateSpec = Record<string, {
   [key: string]: any;
 }>;
 
+export type LocalStateSpec = Record<string, { initial: any; }>;
+
 export type Schema = {
   node: SchemaNode<Serialized>;
   apiStateSpec: APIStateSpec;
+  localStateSpec: LocalStateSpec;
 }
 
 export type InstantiatedSchema = {
