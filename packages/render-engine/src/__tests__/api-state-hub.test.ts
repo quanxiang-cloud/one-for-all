@@ -10,8 +10,8 @@ beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
 
 test('resolve_initial_value_when_no_next_called', (done) => {
-  const stateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
-  const [state$] = stateHub.getStream('stream_findPetsByTags');
+  const apiStateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
+  const [state$] = apiStateHub.getStream('stream_findPetsByTags');
   state$.subscribe((result) => {
     expect(result).toMatchObject(initialState);
     done();
@@ -24,8 +24,8 @@ test('call_next_times', async () => {
     return res.status(200).body(JSON.stringify(mockRes));
   }, 100));
 
-  const stateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
-  const [state$, { run }] = stateHub.getStream('stream_findPetsByTags');
+  const apiStateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
+  const [state$, { run }] = apiStateHub.getStream('stream_findPetsByTags');
 
   const mockFn = jest.fn();
   state$.subscribe(mockFn);
@@ -51,8 +51,8 @@ test('only_resolve_the_last_value', async () => {
     return res.status(200).body(JSON.stringify(mockRes));
   }, 100));
 
-  const stateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
-  const [state$, { run }] = stateHub.getStream('stream_findPetsByTags');
+  const apiStateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
+  const [state$, { run }] = apiStateHub.getStream('stream_findPetsByTags');
 
   const mockFn = jest.fn();
   state$.subscribe(mockFn);
@@ -99,9 +99,9 @@ test('should_resolve_value', (done) => {
 });
 
 test('same_stateID_same_stream', () => {
-  const stateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
-  const [state$1, sendRequest1] = stateHub.getStream('stream_findPetsByTags');
-  const [state$2, sendRequest2] = stateHub.getStream('stream_findPetsByTags');
+  const apiStateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
+  const [state$1, sendRequest1] = apiStateHub.getStream('stream_findPetsByTags');
+  const [state$2, sendRequest2] = apiStateHub.getStream('stream_findPetsByTags');
 
   expect(state$1).toEqual(state$2);
   expect(sendRequest1).toEqual(sendRequest2);
@@ -112,8 +112,8 @@ test('param_match_input', (done) => {
     return res.status(200);
   });
 
-  const stateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
-  const [state$, { run }] = stateHub.getStream('stream_findPetsByTags');
+  const apiStateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
+  const [state$, { run }] = apiStateHub.getStream('stream_findPetsByTags');
   const requestParams = { foo: 'bar' };
   const requestBody = { baz: 'bzz' };
 
@@ -137,8 +137,8 @@ test('on_success_should_be_called', (done) => {
     return res.status(200);
   });
 
-  const stateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
-  const [, { run }] = stateHub.getStream('stream_findPetsByTags');
+  const apiStateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
+  const [, { run }] = apiStateHub.getStream('stream_findPetsByTags');
   const requestParams = { foo: 'bar' };
   const requestBody = { baz: 'bzz' };
 
@@ -172,8 +172,8 @@ test('on_error_should_be_called', (done) => {
     return res.status(400);
   });
 
-  const stateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
-  const [, { run }] = stateHub.getStream('stream_findPetsByTags');
+  const apiStateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
+  const [, { run }] = apiStateHub.getStream('stream_findPetsByTags');
   const requestParams = { foo: 'bar' };
   const requestBody = { baz: 'bzz' };
 
