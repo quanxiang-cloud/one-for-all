@@ -20,10 +20,10 @@ import useConnection from './use-connection';
 
 type RenderNodesProps = {
   nodes: SchemaNode<Instantiated>[];
-  stateHub: APIStateHub;
+  apiStateHub: APIStateHub;
 }
 
-function renderChildren({ nodes, stateHub }: RenderNodesProps): React.FunctionComponentElement<any> | null {
+function renderChildren({ nodes, apiStateHub }: RenderNodesProps): React.FunctionComponentElement<any> | null {
   if (!nodes.length) {
     return null;
   }
@@ -31,20 +31,20 @@ function renderChildren({ nodes, stateHub }: RenderNodesProps): React.FunctionCo
   return React.createElement(
     React.Fragment,
     null,
-    nodes.map((node) => React.createElement(renderNode, { key: node.key, node: node, stateHub: stateHub })),
+    nodes.map((node) => React.createElement(renderNode, { key: node.key, node: node, apiStateHub })),
   );
 }
 
 type RenderNodeProps = {
   node: SchemaNode<Instantiated>
-  stateHub: APIStateHub;
+  apiStateHub: APIStateHub;
 }
 
-function renderNode({ node, stateHub }: RenderNodeProps): React.ReactElement | null {
+function renderNode({ node, apiStateHub }: RenderNodeProps): React.ReactElement | null {
   const [loaded, setLoaded] = React.useState(false);
   const asyncModule = React.useRef<DynamicComponent | string>();
 
-  const props = useConnection({ nodeProps: node.props || {}, stateHub });
+  const props = useConnection({ nodeProps: node.props || {}, apiStateHub });
 
   React.useEffect(() => {
     if (node.type === 'html-element') {
@@ -77,7 +77,7 @@ function renderNode({ node, stateHub }: RenderNodeProps): React.ReactElement | n
     React.createElement(
       asyncModule.current,
       props,
-      React.createElement(renderChildren, { nodes: node.children || [], stateHub: stateHub }),
+      React.createElement(renderChildren, { nodes: node.children || [], apiStateHub }),
     )
   );
 }
@@ -85,14 +85,14 @@ function renderNode({ node, stateHub }: RenderNodeProps): React.ReactElement | n
 type RenderSchemaParams = {
   schema: InstantiatedSchema;
   rootEle: Element;
-  stateHub: APIStateHub;
+  apiStateHub: APIStateHub;
 }
 
-function renderSchema({ schema, rootEle, stateHub }: RenderSchemaParams): void {
+function renderSchema({ schema, rootEle, apiStateHub }: RenderSchemaParams): void {
   // register('@basicComponents', getBasicComponentsOptions());
   // register('@advancesComponents', getAdvancedComponentsOptions());
 
-  ReactDOM.render(React.createElement(renderNode, { node: schema.node, stateHub }), rootEle);
+  ReactDOM.render(React.createElement(renderNode, { node: schema.node, apiStateHub }), rootEle);
 }
 
 export default renderSchema;

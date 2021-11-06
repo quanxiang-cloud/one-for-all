@@ -6,7 +6,7 @@ import { APIDerivedProperty, Instantiated, APIStateConvertFunc, APIState, APIctx
 
 type UseAPIProps = {
   props: Record<string, APIDerivedProperty<Instantiated>>;
-  stateHub: APIStateHub;
+  apiStateHub: APIStateHub;
 }
 
 function convertResult(
@@ -26,7 +26,7 @@ function convertResult(
   }, {});
 }
 
-export default function useAPIStateDerivedProps({ props, stateHub }: UseAPIProps): Record<string, any> {
+export default function useAPIStateDerivedProps({ props, apiStateHub: stateHub }: UseAPIProps): Record<string, any> {
   const initialState: Record<string, any> = {};
   const mappers: Record<string, APIStateConvertFunc | undefined> = {};
   const resList$: Record<string, Observable<APIState>> = {};

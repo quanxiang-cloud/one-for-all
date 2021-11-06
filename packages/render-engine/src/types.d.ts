@@ -57,7 +57,7 @@ export type APIInvokeCallbackFuncSpec = FunctionSpec & {
 export type LocalStateConvertFuncSpec = FunctionSpec & {
   type: 'local_state_convert_func_spec';
   // `data` is unacceptable!
-  args: 'data';
+  args: '{ data, ctx }';
 }
 
 type RunParam = {
@@ -76,7 +76,7 @@ export type CTX = {
 }
 
 export type APIStateConvertFunc = (apiState: APIState & { ctx: CTX }) => any;
-export type LocalStateConvertFunc = (data: any) => any;
+export type LocalStateConvertFunc = (data: { data: any; ctx: CTX }) => any;
 
 export type APIStateConvertor<T> = T extends Serialized ? APIStateConvertFuncSpec : APIStateConvertFunc;
 export type LocalStateConvertor<T> = T extends Serialized ? LocalStateConvertFuncSpec : LocalStateConvertFunc;
@@ -107,10 +107,17 @@ export type LocalStateProperty<T> = {
   template?: LocalStateConvertor<T>;
 }
 
+export type SetLocalStateProperty<T> = {
+  type: 'set_local_state_property';
+  stateID: string;
+  callbacks?: Array<() => void>;
+}
+
 export type NodeProperty<T> =
   ConstantProperty |
   APIDerivedProperty<T> |
   LocalStateProperty<T> |
+  SetLocalStateProperty<T> |
   APIInvokeProperty<T> |
   Array<APIInvokeProperty<T>>;
 

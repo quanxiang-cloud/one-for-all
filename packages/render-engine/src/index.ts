@@ -3,6 +3,7 @@ import renderSchema from './render';
 import deserializeSchema from './deserialize-schema';
 import { Schema } from './types';
 import APIStateHub from './api-state-hub';
+import { LocalStateHub } from './use-local-state';
 
 type RenderSchemaParams = {
   schema: Schema;
@@ -17,9 +18,9 @@ function Render({ schema, rootEle, apiDoc }: RenderSchemaParams): void {
     return;
   }
 
-  const stateHub = new APIStateHub(apiDoc, instantiatedSchema.apiStateSpec);
+  const apiStateHub = new APIStateHub(apiDoc, instantiatedSchema.apiStateSpec);
 
-  renderSchema({ schema: instantiatedSchema, stateHub, rootEle });
+  renderSchema({ schema: instantiatedSchema, apiStateHub: apiStateHub, rootEle });
 }
 
 export default Render;

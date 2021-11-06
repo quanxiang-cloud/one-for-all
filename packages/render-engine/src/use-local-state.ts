@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
-import { BehaviorSubject, skip } from 'rxjs';
+import { BehaviorSubject, combineLatest, skip } from 'rxjs';
+import { APIctx, Instantiated, LocalStateConvertFunc, LocalStateProperty } from './types';
 
 const localStateCache: Record<string, BehaviorSubject<any>> = {};
 
@@ -30,4 +31,59 @@ export function useSetLocalState<T>(key: string): (value: any) => void {
 
     return (value: any) => localState$.next(value);
   }, []);
+}
+
+export class LocalStateHub {
+  cache: Record<string, BehaviorSubject<any>> = {};
+  getState(stateID: string): BehaviorSubject<any> {
+    if (!this.cache[stateID]) {
+      this.cache[stateID] = new BehaviorSubject(undefined);
+    }
+
+    return this.cache[stateID];
+  }
+}
+
+function convertResult(
+  result: Record<string, any>,
+  convertor: Record<string, LocalStateConvertFunc | undefined>,
+  stateHub: LocalStateHub,
+  apiCtx: APIctx,
+): Record<string, any> {
+  return Object.entries(result).reduce<Record<string, any>>((acc, [key, value]) => {
+    const convertedValue = typeof convertor[key] === 'function' ? convertor[key]?.({ data: value, ctx: { apiCTX: apiCtx } }) : value;
+
+    return acc[key] = convertedValue;
+  }, {});
+}
+
+type UseLocalStateProps = {
+  props: Record<string, LocalStateProperty<Instantiated>>;
+  stateHub: LocalStateHub;
+  apiCtx: APIctx;
+}
+
+export function useLocalStateProps({ props, stateHub, apiCtx }: UseLocalStateProps): Record<string, any> {
+  const state$ = Object.entries(props).reduce<Record<string, BehaviorSubject<any>>>((acc, [key, propSpec]) => {
+    acc[key] = stateHub.getState(propSpec.stateID);
+    return acc;
+  }, {});
+
+  const [state, setState] = useState(() => {
+    return Object.entries(props).reduce<Record<string, any>>((acc, [key, propSpec]) => {
+      const initialValue = stateHub.getState(propSpec.stateID).getValue() ?? propSpec.initialValue;
+      return acc[key] = initialValue;
+    }, {});
+  });
+
+  useEffect(() => {
+    const subscription = combineLatest(state$).pipe(
+      skip(1),
+      // map((result) => convertResult(result, mappers, stateHub)),
+    ).subscribe(setState);
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  return state;
 }
