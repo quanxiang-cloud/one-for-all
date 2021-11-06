@@ -66,13 +66,18 @@ type RunParam = {
   onError?: APIInvokeCallBack<Instantiated>;
 }
 
-interface APIStateContext {
+export interface APIStateContext {
   runAction: (stateID: string, runParam?: RunParam) => void;
   refresh: (stateID: string) => void;
 }
 
+export interface LocalStateContext {
+  // apiStateContext: APIStateContext;
+}
+
 export type CTX = {
   apiStateContext: APIStateContext;
+  localStateContext: LocalStateContext;
 }
 
 export type APIStateConvertFunc = (apiState: APIState & { ctx: CTX }) => any;

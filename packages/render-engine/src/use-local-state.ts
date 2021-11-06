@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { BehaviorSubject, combineLatest, skip } from 'rxjs';
-import { APIStateContext, Instantiated, LocalStateConvertFunc, LocalStateProperty } from './types';
+import { APIStateContext, CTX, Instantiated, LocalStateContext, LocalStateConvertFunc, LocalStateProperty } from './types';
 
 const localStateCache: Record<string, BehaviorSubject<any>> = {};
 
@@ -33,16 +33,15 @@ export function useSetLocalState<T>(key: string): (value: any) => void {
   }, []);
 }
 
-interface LocalStateContext {
-  // apiStateContext: APIStateContext;
-}
-
 export class LocalStateHub implements LocalStateContext {
   cache: Record<string, BehaviorSubject<any>> = {};
-  _apiStateContext: APIStateContext | null = null;
+  ctx: CTX | null = null;
 
   bindAPIContext(apiStateContext: APIStateContext): void {
-    this._apiStateContext = apiStateContext;
+    this.ctx = {
+      apiStateContext: apiStateContext,
+      localStateContext: this,
+    };
   }
 
   getState(stateID: string): BehaviorSubject<any> {
@@ -57,11 +56,10 @@ export class LocalStateHub implements LocalStateContext {
 function convertResult(
   result: Record<string, any>,
   convertor: Record<string, LocalStateConvertFunc | undefined>,
-  stateHub: LocalStateHub,
-  apiStateContext: APIStateContext,
+  ctx: CTX,
 ): Record<string, any> {
   return Object.entries(result).reduce<Record<string, any>>((acc, [key, value]) => {
-    const convertedValue = typeof convertor[key] === 'function' ? convertor[key]?.({ data: value, ctx: { apiStateContext: apiStateContext } }) : value;
+    const convertedValue = typeof convertor[key] === 'function' ? convertor[key]?.({ data: value, ctx }) : value;
 
     return acc[key] = convertedValue;
   }, {});

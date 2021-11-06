@@ -4,7 +4,7 @@ import { OpenAPIV3 } from 'openapi-types';
 
 import SpecInterpreter from './spec-interpreter';
 
-import type { APIStateContext, APIInvokeCallBack, APIState, APIStateSpec, CTX, Instantiated, RequestParams, RunParam } from './types';
+import type { APIStateContext, APIState, APIStateSpec, CTX, RequestParams, RunParam } from './types';
 import getResponseState$ from './response';
 import { LocalStateHub } from './use-local-state';
 
@@ -32,8 +32,7 @@ export default class APIStateHub implements APIStateContext {
   // map of stateID and operationID
   apiStateSpec: APIStateSpec;
   statesCache: Record<string, [Observable<APIState>, StreamActions]> = {};
-
-  _localStateContext: LocalStateHub | null = null;
+  ctx: CTX | null = null;
 
   constructor(apiDoc: OpenAPIV3.Document, apiStateSpec: APIStateSpec) {
     this.specInterpreter = new SpecInterpreter(apiDoc);
@@ -41,7 +40,10 @@ export default class APIStateHub implements APIStateContext {
   }
 
   bindLocalStateContext(localStateContext: LocalStateHub): void {
-    this._localStateContext = localStateContext;
+    this.ctx = {
+      apiStateContext: this,
+      localStateContext: localStateContext,
+    };
   }
 
   getState(stateID: string): Observable<APIState> {
@@ -100,7 +102,11 @@ export default class APIStateHub implements APIStateContext {
     fullState$.pipe(skip(1)).subscribe((state) => {
       setTimeout(() => {
         // todo refactor this
-        executeCallback({ apiStateContext: this } , state, _latestRunParams);
+        executeCallback(
+          this.ctx as CTX,
+          state,
+          _latestRunParams,
+        );
       }, 10);
     });
 
