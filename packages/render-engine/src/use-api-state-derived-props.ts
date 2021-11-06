@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { combineLatest, map, Observable, skip } from 'rxjs';
 
 import APIStateHub from './api-state-hub';
-import { APIDerivedProperty, Instantiated, APIStateConvertFunc, APIState, APIStateContext } from './types';
+import { APIDerivedProperty, Instantiated, APIStateConvertFunc, APIState, CTX } from './types';
 
 type UseAPIProps = {
   props: Record<string, APIDerivedProperty<Instantiated>>;
@@ -12,13 +12,13 @@ type UseAPIProps = {
 function convertResult(
   result: Record<string, APIState>,
   convertors: Record<string, APIStateConvertFunc | undefined>,
-  apiCTX: APIStateContext,
+  ctx: CTX,
 ): Record<string, any> {
   return Object.entries(result).map(([propName, propValue]) => {
     return [
       propName,
       // TODO: handle convert error case
-      convertors[propName] ? convertors[propName]?.({ ...propValue, ctx: { apiStateContext: apiCTX } }) : propValue,
+      convertors[propName] ? convertors[propName]?.({ ...propValue, ctx }) : propValue,
     ];
   }).reduce<Record<string, any>>((res, [propName, value]) => {
     res[propName] = value;
@@ -42,7 +42,7 @@ export default function useAPIStateDerivedProps({ props, apiStateHub }: UseAPIPr
   useEffect(() => {
     const subscription = combineLatest(resList$).pipe(
       skip(1),
-      map((result) => convertResult(result, mappers, apiStateHub)),
+      map((result) => convertResult(result, mappers, apiStateHub.ctx as CTX)),
     ).subscribe(setState);
 
     // todo remove state from stateHub when last subscriber unsubscribed

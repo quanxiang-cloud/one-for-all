@@ -4,6 +4,7 @@ import petStoreSpec from '../spec-interpreter/__tests__/fixtures/petstore-spec';
 
 import APIStateHub from '../api-state-hub';
 import { initialState } from '../response';
+import { LocalStateHub } from '../use-local-state';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
@@ -72,15 +73,18 @@ test('should_resolve_value', (done) => {
     return res.status(200).body(JSON.stringify(mockRes));
   });
 
-  const stateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
-  const [state$, { run }] = stateHub.getStream('stream_findPetsByTags');
+  const apiStateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
+  // todo this must be call before using apiStateHub, this is not a good design
+  apiStateHub.initContext(new LocalStateHub());
+
+  const [state$, { run }] = apiStateHub.getStream('stream_findPetsByTags');
 
   const fn = jest.fn();
   state$.subscribe(fn);
 
   run({
     onSuccess: ({ ctx, data, error, loading, params }) => {
-      expect(ctx.apiStateHub).toEqual(stateHub);
+      expect(ctx.apiStateContext).toEqual(apiStateHub);
       expect(fn).toBeCalledWith({
         data: data,
         error: error,

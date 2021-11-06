@@ -11,7 +11,7 @@ beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
 
 const stateIDMap = { stream_findPetsByTags: { operationID: 'findPetsByTags' } };
-const stateHub = new APIStateHub(petStoreSpec, stateIDMap);
+const apiStateHub = new APIStateHub(petStoreSpec, stateIDMap);
 
 test('expect_resolve_initial_value', () => {
   const convertorFn = jest.fn();
@@ -31,7 +31,7 @@ test('expect_resolve_initial_value', () => {
     },
   };
 
-  const { result } = renderHook(() => useStateDerivedProps({ stateHub, props }));
+  const { result } = renderHook(() => useStateDerivedProps({ apiStateHub, props }));
   expect(result.current).toMatchObject({ foo: { foo: 123 }, bar: { bar: 456 } });
   expect(convertorFn).not.toBeCalled();
 });

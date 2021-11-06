@@ -39,7 +39,7 @@ export default class APIStateHub implements APIStateContext {
     this.apiStateSpec = apiStateSpec;
   }
 
-  bindLocalStateContext(localStateContext: LocalStateHub): void {
+  initContext(localStateContext: LocalStateHub): void {
     this.ctx = {
       apiStateContext: this,
       localStateContext: localStateContext,

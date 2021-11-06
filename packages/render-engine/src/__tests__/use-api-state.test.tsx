@@ -7,12 +7,14 @@ import petStoreSpec from '../spec-interpreter/__tests__/fixtures/petstore-spec';
 import type { APIInvokeProperty, APIDerivedProperty, Instantiated, APIStateSpec } from '../types';
 import APIStateHub from '../api-state-hub';
 import Link from './fixtures/link';
+import { LocalStateHub } from '../use-local-state';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
 
 const stateIDMap: APIStateSpec = { stream_findPetsByTags: { operationID: 'findPetsByTags' } };
-const stateHub = new APIStateHub(petStoreSpec, stateIDMap);
+const apiStateHub = new APIStateHub(petStoreSpec, stateIDMap);
+apiStateHub.initContext(new LocalStateHub());
 
 test('Link_changes_the_class_when_hovered', async () => {
   const mockRes = { data: { id: 'abc-123' } };
@@ -42,10 +44,10 @@ test('Link_changes_the_class_when_hovered', async () => {
       onError: onErrorFn,
     },
   };
-  const { container, getByText } = render(<Link nodeProps={props} stateHub={stateHub} />);
+  const { container, getByText } = render(<Link nodeProps={props} apiStateHub={apiStateHub} />);
   await waitFor(() => expect(onSuccessFn).toBeCalledTimes(1));
   await waitFor(() => expect(onSuccessFn).toBeCalledWith({
-    ctx: { apiStateHub: stateHub },
+    ctx: apiStateHub.ctx,
     data: mockRes,
     error: undefined,
     loading: false,
@@ -84,10 +86,10 @@ test('search_btn', async () => {
       onError: onErrorFn,
     },
   };
-  const { container, getByText } = render(<Link nodeProps={props} stateHub={stateHub} />);
+  const { container, getByText } = render(<Link nodeProps={props} apiStateHub={apiStateHub} />);
   await waitFor(() => expect(onSuccessFn).toBeCalledTimes(1));
   await waitFor(() => expect(onSuccessFn).toBeCalledWith({
-    ctx: { apiStateHub: stateHub },
+    ctx: apiStateHub.ctx,
     data: mockRes,
     error: undefined,
     loading: false,

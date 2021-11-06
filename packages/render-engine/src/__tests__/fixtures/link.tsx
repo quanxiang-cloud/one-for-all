@@ -5,11 +5,11 @@ import useConnection from '../../use-connection';
 
 type Props = {
   nodeProps: Record<string, APIInvokeProperty<Instantiated> | APIDerivedProperty<Instantiated>>;
-  stateHub: APIStateHub;
+  apiStateHub: APIStateHub;
 }
 
-export default function Link({ nodeProps, stateHub }: Props): JSX.Element {
-  const { foo, bar, onFetch } = useConnection({ nodeProps, stateHub });
+export default function Link({ nodeProps, apiStateHub }: Props): JSX.Element {
+  const { foo, bar, onFetch } = useConnection({ nodeProps, apiStateHub });
 
   useEffect(() => {
     onFetch();
