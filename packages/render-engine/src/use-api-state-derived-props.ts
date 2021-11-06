@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { combineLatest, map, Observable, skip } from 'rxjs';
 
 import APIStateHub from './api-state-hub';
-import { APIDerivedProperty, Instantiated, APIStateConvertFunc, APIState, APIctx } from './types';
+import { APIDerivedProperty, Instantiated, APIStateConvertFunc, APIState, APIStateContext } from './types';
 
 type UseAPIProps = {
   props: Record<string, APIDerivedProperty<Instantiated>>;
@@ -12,13 +12,13 @@ type UseAPIProps = {
 function convertResult(
   result: Record<string, APIState>,
   convertors: Record<string, APIStateConvertFunc | undefined>,
-  apiCTX: APIctx,
+  apiCTX: APIStateContext,
 ): Record<string, any> {
   return Object.entries(result).map(([propName, propValue]) => {
     return [
       propName,
       // TODO: handle convert error case
-      convertors[propName] ? convertors[propName]?.({ ...propValue, ctx: { apiCTX } }) : propValue,
+      convertors[propName] ? convertors[propName]?.({ ...propValue, ctx: { apiStateContext: apiCTX } }) : propValue,
     ];
   }).reduce<Record<string, any>>((res, [propName, value]) => {
     res[propName] = value;
@@ -26,7 +26,7 @@ function convertResult(
   }, {});
 }
 
-export default function useAPIStateDerivedProps({ props, apiStateHub: stateHub }: UseAPIProps): Record<string, any> {
+export default function useAPIStateDerivedProps({ props, apiStateHub }: UseAPIProps): Record<string, any> {
   const initialState: Record<string, any> = {};
   const mappers: Record<string, APIStateConvertFunc | undefined> = {};
   const resList$: Record<string, Observable<APIState>> = {};
@@ -34,7 +34,7 @@ export default function useAPIStateDerivedProps({ props, apiStateHub: stateHub }
   Object.entries(props).forEach(([propName, { initialValue, template: mapper, stateID }]) => {
     initialState[propName] = initialValue;
     mappers[propName] = mapper;
-    resList$[propName] = stateHub.getState(stateID);
+    resList$[propName] = apiStateHub.getState(stateID);
   });
 
   const [state, setState] = useState<Record<string, any>>(initialState);
@@ -42,7 +42,7 @@ export default function useAPIStateDerivedProps({ props, apiStateHub: stateHub }
   useEffect(() => {
     const subscription = combineLatest(resList$).pipe(
       skip(1),
-      map((result) => convertResult(result, mappers, stateHub)),
+      map((result) => convertResult(result, mappers, apiStateHub)),
     ).subscribe(setState);
 
     // todo remove state from stateHub when last subscriber unsubscribed

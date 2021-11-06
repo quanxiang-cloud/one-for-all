@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { BehaviorSubject, combineLatest, skip } from 'rxjs';
-import { APIctx, Instantiated, LocalStateConvertFunc, LocalStateProperty } from './types';
+import { APIStateContext, Instantiated, LocalStateConvertFunc, LocalStateProperty } from './types';
 
 const localStateCache: Record<string, BehaviorSubject<any>> = {};
 
@@ -33,8 +33,18 @@ export function useSetLocalState<T>(key: string): (value: any) => void {
   }, []);
 }
 
-export class LocalStateHub {
+interface LocalStateContext {
+  // apiStateContext: APIStateContext;
+}
+
+export class LocalStateHub implements LocalStateContext {
   cache: Record<string, BehaviorSubject<any>> = {};
+  _apiStateContext: APIStateContext | null = null;
+
+  bindAPIContext(apiStateContext: APIStateContext): void {
+    this._apiStateContext = apiStateContext;
+  }
+
   getState(stateID: string): BehaviorSubject<any> {
     if (!this.cache[stateID]) {
       this.cache[stateID] = new BehaviorSubject(undefined);
@@ -48,10 +58,10 @@ function convertResult(
   result: Record<string, any>,
   convertor: Record<string, LocalStateConvertFunc | undefined>,
   stateHub: LocalStateHub,
-  apiCtx: APIctx,
+  apiStateContext: APIStateContext,
 ): Record<string, any> {
   return Object.entries(result).reduce<Record<string, any>>((acc, [key, value]) => {
-    const convertedValue = typeof convertor[key] === 'function' ? convertor[key]?.({ data: value, ctx: { apiCTX: apiCtx } }) : value;
+    const convertedValue = typeof convertor[key] === 'function' ? convertor[key]?.({ data: value, ctx: { apiStateContext: apiStateContext } }) : value;
 
     return acc[key] = convertedValue;
   }, {});
@@ -60,10 +70,10 @@ function convertResult(
 type UseLocalStateProps = {
   props: Record<string, LocalStateProperty<Instantiated>>;
   stateHub: LocalStateHub;
-  apiCtx: APIctx;
+  apiStateContext: APIStateContext;
 }
 
-export function useLocalStateProps({ props, stateHub, apiCtx }: UseLocalStateProps): Record<string, any> {
+export function useLocalStateProps({ props, stateHub, apiStateContext }: UseLocalStateProps): Record<string, any> {
   const state$ = Object.entries(props).reduce<Record<string, BehaviorSubject<any>>>((acc, [key, propSpec]) => {
     acc[key] = stateHub.getState(propSpec.stateID);
     return acc;

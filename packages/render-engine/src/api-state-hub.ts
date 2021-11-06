@@ -4,8 +4,9 @@ import { OpenAPIV3 } from 'openapi-types';
 
 import SpecInterpreter from './spec-interpreter';
 
-import type { APIctx, APIInvokeCallBack, APIState, APIStateSpec, CTX, Instantiated, RequestParams, RunParam } from './types';
+import type { APIStateContext, APIInvokeCallBack, APIState, APIStateSpec, CTX, Instantiated, RequestParams, RunParam } from './types';
 import getResponseState$ from './response';
+import { LocalStateHub } from './use-local-state';
 
 type StreamActions = {
   run: (runParam?: RunParam) => void;
@@ -26,15 +27,21 @@ function executeCallback(ctx: CTX, state: APIState, runParams?: RunParam): void 
   runParams?.onSuccess?.({ ...state, ctx, });
 }
 
-export default class APIStateHub implements APIctx {
+export default class APIStateHub implements APIStateContext {
   specInterpreter: SpecInterpreter;
   // map of stateID and operationID
   apiStateSpec: APIStateSpec;
   statesCache: Record<string, [Observable<APIState>, StreamActions]> = {};
 
+  _localStateContext: LocalStateHub | null = null;
+
   constructor(apiDoc: OpenAPIV3.Document, apiStateSpec: APIStateSpec) {
     this.specInterpreter = new SpecInterpreter(apiDoc);
     this.apiStateSpec = apiStateSpec;
+  }
+
+  bindLocalStateContext(localStateContext: LocalStateHub): void {
+    this._localStateContext = localStateContext;
   }
 
   getState(stateID: string): Observable<APIState> {
@@ -93,7 +100,7 @@ export default class APIStateHub implements APIctx {
     fullState$.pipe(skip(1)).subscribe((state) => {
       setTimeout(() => {
         // todo refactor this
-        executeCallback({ apiCTX: this } , state, _latestRunParams);
+        executeCallback({ apiStateContext: this } , state, _latestRunParams);
       }, 10);
     });
 

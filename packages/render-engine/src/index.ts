@@ -19,6 +19,8 @@ function Render({ schema, rootEle, apiDoc }: RenderSchemaParams): void {
   }
 
   const apiStateHub = new APIStateHub(apiDoc, instantiatedSchema.apiStateSpec);
+  const localStateHub = new LocalStateHub();
+  localStateHub.bindAPIContext(apiStateHub);
 
   renderSchema({ schema: instantiatedSchema, apiStateHub: apiStateHub, rootEle });
 }
