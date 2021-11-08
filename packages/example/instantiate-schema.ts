@@ -56,13 +56,13 @@ const todoAppSchema: InstantiatedSchema = {
 
               return { body };
             },
-            onSuccess: ({ ctx }): void => {
+            onSuccess: (): void => {
               // contexts.store.call refresh again
               // reset form
               // todo don't refer dom, store input value in local store instead
               const form = document.getElementById('todo-input-form') as HTMLFormElement;
               form?.reset?.();
-              ctx.apiStateContext.runAction('listTodos');
+              this.apiStateContext.runAction('listTodos');
             },
           },
         },
@@ -127,10 +127,10 @@ const todoAppSchema: InstantiatedSchema = {
             paramsBuilder: (todo: any): RequestParams | undefined => {
               return { params: { todoId: todo.id }, body: todo };
             },
-            onSuccess: ({ ctx }): void => {
+            onSuccess: (): void => {
               // 提供一个 refresh event？
-              ctx.apiStateContext.runAction('listTodos');
-              ctx.apiStateContext.runAction('todoStatus');
+              this.apiStateContext.runAction('listTodos');
+              this.apiStateContext.runAction('todoStatus');
             },
           },
           onFetchTodos: {
@@ -144,9 +144,9 @@ const todoAppSchema: InstantiatedSchema = {
             paramsBuilder: (todoID: number): RequestParams => {
               return { params: { todoId: todoID } };
             },
-            onSuccess: ({ ctx }): void => {
-              ctx.apiStateContext.runAction('listTodos');
-              ctx.apiStateContext.runAction('todoStatus');
+            onSuccess: (): void => {
+              this.apiStateContext.runAction('listTodos');
+              this.apiStateContext.runAction('todoStatus');
             },
           },
         },

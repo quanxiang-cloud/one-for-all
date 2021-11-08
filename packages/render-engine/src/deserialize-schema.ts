@@ -16,7 +16,7 @@ type FunctionSpecs = APIStateConvertFuncSpec | ParamsBuilderFuncSpec | APIInvoke
 
 function instantiateFuncSpec({ type, args, body }: FunctionSpecs): ((...args: any[]) => any) | undefined {
   if (type === 'api_state_mapper_func_spec') {
-    return new Function('{ data, error, loading, params, ctx }', body) as (apiState: APIState) => any;
+    return new Function('{ data, error, loading, params }', body) as (apiState: APIState) => any;
   }
 
   if (type === 'param_builder_func_spec') {
@@ -24,7 +24,7 @@ function instantiateFuncSpec({ type, args, body }: FunctionSpecs): ((...args: an
   }
 
   if (type === 'api_invoke_call_func_spec') {
-    return new Function('{ data, error, loading, params, ctx }', body) as (...args: any[]) => any;
+    return new Function('{ data, error, loading, params }', body) as (...args: any[]) => any;
   }
 
   return;
@@ -87,9 +87,9 @@ function transformNode(node: SchemaNode<Serialized>): SchemaNode<Instantiated> {
   };
 }
 
-export default function deserializeSchema({ node, apiStateSpec }: Schema): InstantiatedSchema | null {
+export default function deserializeSchema({ node, apiStateSpec, localStateSpec }: Schema): InstantiatedSchema | null {
   try {
-    return { apiStateSpec, node: transformNode(node) };
+    return { apiStateSpec, node: transformNode(node), localStateSpec };
   } catch (error) {
     console.error(error);
     return null;

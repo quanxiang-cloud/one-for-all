@@ -6,7 +6,7 @@ import { APIDerivedProperty, Instantiated, APIStateConvertFunc, APIState, CTX } 
 
 type UseAPIProps = {
   props: Record<string, APIDerivedProperty<Instantiated>>;
-  apiStateHub: APIStateHub;
+  ctx: CTX;
 }
 
 function convertResult(
@@ -18,7 +18,7 @@ function convertResult(
     return [
       propName,
       // TODO: handle convert error case
-      convertors[propName] ? convertors[propName]?.({ ...propValue, ctx }) : propValue,
+      convertors[propName] ? convertors[propName]?.call(ctx, { ...propValue }) : propValue,
     ];
   }).reduce<Record<string, any>>((res, [propName, value]) => {
     res[propName] = value;
@@ -26,7 +26,7 @@ function convertResult(
   }, {});
 }
 
-export default function useAPIStateDerivedProps({ props, apiStateHub }: UseAPIProps): Record<string, any> {
+export default function useAPIStateDerivedProps({ props, ctx }: UseAPIProps): Record<string, any> {
   const initialState: Record<string, any> = {};
   const mappers: Record<string, APIStateConvertFunc | undefined> = {};
   const resList$: Record<string, Observable<APIState>> = {};
@@ -34,7 +34,7 @@ export default function useAPIStateDerivedProps({ props, apiStateHub }: UseAPIPr
   Object.entries(props).forEach(([propName, { initialValue, template: mapper, stateID }]) => {
     initialState[propName] = initialValue;
     mappers[propName] = mapper;
-    resList$[propName] = apiStateHub.getState(stateID);
+    resList$[propName] = ctx.apiStateContext.getState(stateID);
   });
 
   const [state, setState] = useState<Record<string, any>>(initialState);
@@ -42,7 +42,7 @@ export default function useAPIStateDerivedProps({ props, apiStateHub }: UseAPIPr
   useEffect(() => {
     const subscription = combineLatest(resList$).pipe(
       skip(1),
-      map((result) => convertResult(result, mappers, apiStateHub.ctx as CTX)),
+      map((result) => convertResult(result, mappers, ctx)),
     ).subscribe(setState);
 
     // todo remove state from stateHub when last subscriber unsubscribed

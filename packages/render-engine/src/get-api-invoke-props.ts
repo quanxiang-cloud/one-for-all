@@ -1,19 +1,19 @@
 import { logger } from '@ofa/utils';
 
 import APIStateHub from './api-state-hub';
-import { APIInvokeProperty, Instantiated } from './types';
+import { APIInvokeProperty, CTX, Instantiated } from './types';
 
 type APICallProps = Record<string, (...args: any[]) => void>;
 
 export default function getAPIInvokeProps(
   props: Record<string, APIInvokeProperty<Instantiated>[]>,
-  stateHub: APIStateHub,
+  ctx: CTX,
 ): APICallProps {
   return Object.entries(props)
     .reduce<APICallProps>((acc, [propName, apiCalls]) => {
       function handleAction(...args: any[]): void {
         apiCalls.forEach(({ stateID, paramsBuilder, onError, onSuccess }) => {
-          const run = stateHub.getAction(stateID);
+          const run = ctx.apiStateContext.getAction(stateID);
           try {
             const requestParams = paramsBuilder?.(...args);
             run({ params: requestParams, onError, onSuccess });

@@ -62,7 +62,7 @@ const todoAppSchema: Schema = {
             },
             onError: {
               type: 'api_invoke_call_func_spec',
-              args: '{ data, error, loading, params, ctx }',
+              args: '{ data, error, loading, params }',
               body: `
                 // todo show error message, error message should be store in localState
                 console.log(error.response);
@@ -70,13 +70,13 @@ const todoAppSchema: Schema = {
             },
             onSuccess: {
               type: 'api_invoke_call_func_spec',
-              args: '{ data, error, loading, params, ctx }',
+              args: '{ data, error, loading, params }',
               body: `
                 // contexts.store.call refresh again
                 // reset form
                 const form = document.getElementById('todo-input-form');
                 form?.reset?.();
-                ctx.apiStateContext.runAction('listTodos');
+                this.apiStateContext.runAction('listTodos');
               `,
             },
           },
@@ -133,7 +133,7 @@ const todoAppSchema: Schema = {
             initialValue: [],
             template: {
               type: 'api_state_mapper_func_spec',
-              args: '{ data, error, loading, params, ctx }',
+              args: '{ data, error, loading, params }',
               body: `
                 return data || [];
               `,
@@ -152,11 +152,11 @@ const todoAppSchema: Schema = {
             },
             onSuccess: {
               type: 'api_invoke_call_func_spec',
-              args: '{ data, error, loading, params, ctx }',
+              args: '{ data, error, loading, params }',
               body: `
                 // 提供一个 refresh event？
-                ctx.apiStateContext.runAction('listTodos');
-                ctx.apiStateContext.runAction('todoStatus');
+                this.apiStateContext.runAction('listTodos');
+                this.apiStateContext.runAction('todoStatus');
               `,
             },
           },
@@ -177,10 +177,10 @@ const todoAppSchema: Schema = {
             },
             onSuccess: {
               type: 'api_invoke_call_func_spec',
-              args: '{ data, error, loading, params, ctx }',
+              args: '{ data, error, loading, params }',
               body: `
-                ctx.apiStateContext.runAction('listTodos');
-                ctx.apiStateContext.runAction('todoStatus');
+                this.apiStateContext.runAction('listTodos');
+                this.apiStateContext.runAction('todoStatus');
               `,
             },
           },
@@ -199,7 +199,7 @@ const todoAppSchema: Schema = {
             initialValue: 0,
             template: {
               type: 'api_state_mapper_func_spec',
-              args: '{ data, error, loading, params, ctx }',
+              args: '{ data, error, loading, params }',
               body: `
                 return data?.all || 0;
               `,
@@ -214,7 +214,7 @@ const todoAppSchema: Schema = {
             // },
             template: {
               type: 'api_state_mapper_func_spec',
-              args: '{ data, error, loading, params, ctx }',
+              args: '{ data, error, loading, params }',
               body: `
                 return data?.working || 0;
               `,
@@ -226,7 +226,7 @@ const todoAppSchema: Schema = {
             initialValue: 0,
             template: {
               type: 'api_state_mapper_func_spec',
-              args: '{ data, error, loading, params, ctx }',
+              args: '{ data, error, loading, params }',
               body: `
                 return data?.done || 0;
               `,

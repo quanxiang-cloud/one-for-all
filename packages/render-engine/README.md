@@ -26,5 +26,5 @@ local state 是用的场景
 - 满足的时候自然直接返回数据就好了，不满足的情况应该是返回 零 值
 - 关于数据结构的定义可以直接复用 open API 的规范
 
-
 function props 不应该区分是发 API 请求还是 set local value, 应该是通用的，不过可以提供两个特列！
+需要首先重构的就是将 ctx 从 function call 参数中移除，因为来就是 context，可以在 call function 的时候，改为 callback.call(ctx, params)

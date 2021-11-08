@@ -1,11 +1,11 @@
 import { OpenAPIV3 } from 'openapi-types';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import APIStateHub from './api-state-hub';
 
 export type Serialized = 'Serialized';
 export type Instantiated = 'Instantiated';
 
-// the shape of RequestParams is too complicated
+// the shape of RequestParams is too complex
 export type RequestParams = Partial<{
   params: Record<string, any>;
   body: any;
@@ -35,27 +35,27 @@ type ConstantProperty = {
   value: any;
 }
 
-type FunctionSpec = {
+type RawFunctionSpec = {
   type: string;
   args: string;
   body: string;
 }
 
-export type APIStateConvertFuncSpec = FunctionSpec & {
+export type APIStateConvertFuncSpec = RawFunctionSpec & {
   type: 'api_state_mapper_func_spec';
-  args: '{ data, error, loading, params, ctx }';
+  args: '{ data, error, loading, params }';
 };
 
-export type ParamsBuilderFuncSpec = FunctionSpec & {
+export type ParamsBuilderFuncSpec = RawFunctionSpec & {
   type: 'param_builder_func_spec';
 }
 
-export type APIInvokeCallbackFuncSpec = FunctionSpec & {
+export type APIInvokeCallbackFuncSpec = RawFunctionSpec & {
   type: 'api_invoke_call_func_spec';
-  args: '{ data, error, loading, params, ctx }';
+  args: '{ data, error, loading, params }';
 }
 
-export type LocalStateConvertFuncSpec = FunctionSpec & {
+export type LocalStateConvertFuncSpec = RawFunctionSpec & {
   type: 'local_state_convert_func_spec';
   // `data` is unacceptable!
   args: '{ data, ctx }';
@@ -70,6 +70,8 @@ type RunParam = {
 export interface APIStateContext {
   runAction: (stateID: string, runParam?: RunParam) => void;
   refresh: (stateID: string) => void;
+  getState: (stateID: string) => Observable<APIState>;
+  getAction: (stateID: string) => (runParam?: RunParam) => void;
 }
 
 export interface LocalStateContext {
@@ -81,13 +83,13 @@ export type CTX = {
   localStateContext: LocalStateContext;
 }
 
-export type APIStateConvertFunc = (apiState: APIState & { ctx: CTX }) => any;
-export type LocalStateConvertFunc = (data: { data: any; ctx: CTX }) => any;
+export type APIStateConvertFunc = (apiState: APIState) => any;
+export type LocalStateConvertFunc = (data: any) => any;
 
 export type APIStateConvertor<T> = T extends Serialized ? APIStateConvertFuncSpec : APIStateConvertFunc;
 export type LocalStateConvertor<T> = T extends Serialized ? LocalStateConvertFuncSpec : LocalStateConvertFunc;
 export type ParamsBuilder<T> = T extends Serialized ? ParamsBuilderFuncSpec : (...args: any[]) => RequestParams;
-export type APIInvokeCallBack<T> = T extends Serialized ? APIInvokeCallbackFuncSpec : (apiState: APIState & { ctx: CTX }) => void;
+export type APIInvokeCallBack<T> = T extends Serialized ? APIInvokeCallbackFuncSpec : (apiState: APIState) => void;
 
 export type APIDerivedProperty<T> = {
   type: 'api_derived_property';
@@ -118,10 +120,16 @@ export type SetLocalStateProperty<T> = {
   callbacks?: Array<() => void>;
 }
 
+export type FunctionProperty<T> = {
+  type: 'raw_function_property';
+  spec: T extends Serialized ? RawFunctionSpec : (...args: any) => void;
+}
+
 export type NodeProperty<T> =
   ConstantProperty |
   APIDerivedProperty<T> |
   LocalStateProperty<T> |
+  FunctionProperty<T> |
   SetLocalStateProperty<T> |
   APIInvokeProperty<T> |
   Array<APIInvokeProperty<T>>;

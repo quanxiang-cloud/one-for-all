@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import mockXHR from 'xhr-mock';
 
 import petStoreSpec from '../spec-interpreter/__tests__/fixtures/petstore-spec';
-import type { APIInvokeProperty, APIDerivedProperty, Instantiated, APIStateSpec } from '../types';
+import type { APIInvokeProperty, APIDerivedProperty, Instantiated, APIStateSpec, CTX } from '../types';
 import APIStateHub from '../api-state-hub';
 import Link from './fixtures/link';
 import { LocalStateHub } from '../use-local-state';
@@ -15,6 +15,10 @@ afterEach(() => mockXHR.teardown());
 const stateIDMap: APIStateSpec = { stream_findPetsByTags: { operationID: 'findPetsByTags' } };
 const apiStateHub = new APIStateHub(petStoreSpec, stateIDMap);
 apiStateHub.initContext(new LocalStateHub({}));
+const ctx: CTX = {
+  apiStateContext: apiStateHub,
+  localStateContext: new LocalStateHub({}),
+}
 
 test('Link_changes_the_class_when_hovered', async () => {
   const mockRes = { data: { id: 'abc-123' } };
@@ -44,7 +48,7 @@ test('Link_changes_the_class_when_hovered', async () => {
       onError: onErrorFn,
     },
   };
-  const { container, getByText } = render(<Link nodeProps={props} apiStateHub={apiStateHub} />);
+  const { container, getByText } = render(<Link nodeProps={props} ctx={ctx} />);
   await waitFor(() => expect(onSuccessFn).toBeCalledTimes(1));
   await waitFor(() => expect(onSuccessFn).toBeCalledWith({
     ctx: apiStateHub.ctx,
@@ -86,7 +90,7 @@ test('search_btn', async () => {
       onError: onErrorFn,
     },
   };
-  const { container, getByText } = render(<Link nodeProps={props} apiStateHub={apiStateHub} />);
+  const { container, getByText } = render(<Link nodeProps={props} ctx={ctx} />);
   await waitFor(() => expect(onSuccessFn).toBeCalledTimes(1));
   await waitFor(() => expect(onSuccessFn).toBeCalledWith({
     ctx: apiStateHub.ctx,

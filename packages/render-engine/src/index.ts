@@ -1,7 +1,7 @@
 import { OpenAPIV3 } from 'openapi-types';
 import renderSchema from './render';
 import deserializeSchema from './deserialize-schema';
-import { Schema } from './types';
+import { CTX, Schema } from './types';
 import APIStateHub from './api-state-hub';
 import { LocalStateHub } from './use-local-state';
 
@@ -25,7 +25,12 @@ function Render({ schema, rootEle, apiDoc }: RenderSchemaParams): void {
   apiStateHub.initContext(localStateHub);
   localStateHub.initContext(apiStateHub);
 
-  renderSchema({ schema: instantiatedSchema, apiStateHub: apiStateHub, rootEle });
+  const ctx: CTX = {
+    apiStateContext: apiStateHub,
+    localStateContext: localStateHub,
+  };
+
+  renderSchema({ schema: instantiatedSchema, ctx, rootEle });
 }
 
 export default Render;
