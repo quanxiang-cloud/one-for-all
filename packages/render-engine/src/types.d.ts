@@ -120,10 +120,9 @@ export type SetLocalStateProperty<T> = {
   callbacks?: Array<() => void>;
 }
 
-export type FunctionProperty<T> = {
-  type: 'raw_function_property';
-  spec: T extends Serialized ? RawFunctionSpec : (...args: any) => void;
-}
+type FunctionalProperty = (...args: any) => any;
+
+export type FunctionProperty<T> = T extends Serialized ? RawFunctionSpec : FunctionalProperty;
 
 export type NodeProperty<T> =
   ConstantProperty |
