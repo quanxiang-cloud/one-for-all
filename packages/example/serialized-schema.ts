@@ -9,7 +9,9 @@ const todoAppSchema: Schema = {
     deleteTodo: { operationID: 'deleteTodo' },
   },
   localStateSpec: {
-
+    currentTodo: {
+      initial: '',
+    },
   },
   node: {
     key: 'container',
