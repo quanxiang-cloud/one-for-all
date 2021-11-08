@@ -59,6 +59,7 @@ const todoAppSchema: InstantiatedSchema = {
             onSuccess: ({ ctx }): void => {
               // contexts.store.call refresh again
               // reset form
+              // todo don't refer dom, store input value in local store instead
               const form = document.getElementById('todo-input-form') as HTMLFormElement;
               form?.reset?.();
               ctx.apiStateContext.runAction('listTodos');

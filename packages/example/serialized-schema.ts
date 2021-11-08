@@ -74,7 +74,7 @@ const todoAppSchema: Schema = {
                 // reset form
                 const form = document.getElementById('todo-input-form');
                 form?.reset?.();
-                ctx.apiCTX.runAction('listTodos');
+                ctx.apiStateContext.runAction('listTodos');
               `,
             },
           },
@@ -153,8 +153,8 @@ const todoAppSchema: Schema = {
               args: '{ data, error, loading, params, ctx }',
               body: `
                 // 提供一个 refresh event？
-                ctx.apiCTX.runAction('listTodos');
-                ctx.apiCTX.runAction('todoStatus');
+                ctx.apiStateContext.runAction('listTodos');
+                ctx.apiStateContext.runAction('todoStatus');
               `,
             },
           },
@@ -177,8 +177,8 @@ const todoAppSchema: Schema = {
               type: 'api_invoke_call_func_spec',
               args: '{ data, error, loading, params, ctx }',
               body: `
-                ctx.apiCTX.runAction('listTodos');
-                ctx.apiCTX.runAction('todoStatus');
+                ctx.apiStateContext.runAction('listTodos');
+                ctx.apiStateContext.runAction('todoStatus');
               `,
             },
           },
