@@ -170,6 +170,7 @@ export type Schema = {
 export type InstantiatedSchema = {
   node: SchemaNode<Instantiated>;
   apiStateSpec: APIStateSpec;
+  localStateSpec: LocalStateSpec;
 };
 
 interface Document {

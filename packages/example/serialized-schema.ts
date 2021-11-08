@@ -8,6 +8,9 @@ const todoAppSchema: Schema = {
     todoStatus: { operationID: 'todoStatus' },
     deleteTodo: { operationID: 'deleteTodo' },
   },
+  localStateSpec: {
+
+  },
   node: {
     key: 'container',
     type: 'html-element',
