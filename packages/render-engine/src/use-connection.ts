@@ -1,7 +1,17 @@
 import { useState, useMemo } from 'react';
 import useAPIStateDerivedProps from './use-api-state-derived-props';
-import { APIInvokeProperty, APIDerivedProperty, ConstantProperty, NodeProperties, Instantiated, LocalStateProperty, SetLocalStateProperty, CTX } from './types';
+import {
+  APIInvokeProperty,
+  APIDerivedProperty,
+  ConstantProperty,
+  NodeProperties,
+  Instantiated,
+  LocalStateProperty,
+  SetLocalStateProperty,
+  CTX,
+} from './types';
 import getAPIInvokeProps from './get-api-invoke-props';
+import { useLocalStateProps } from './use-local-state';
 
 type GroupedProps = {
   apiDerivedProps: Record<string, APIDerivedProperty<Instantiated>>;
@@ -61,9 +71,18 @@ type Props = {
 }
 
 export default function useConnection({ nodeProps, ctx }: Props): Record<string, any> {
-  const { apiDerivedProps, apiInvokeProps, constantProps, localStateProps, setLocalStateProps } = groupProps(nodeProps);
-  const [apiStateProps] = useState<Record<string, any>>(() => getAPIInvokeProps(apiInvokeProps, ctx));
-  const derivedProps = useAPIStateDerivedProps({ props: apiDerivedProps, ctx });
+  const {
+    apiDerivedProps,
+    apiInvokeProps,
+    constantProps,
+    localStateProps,
+  } = groupProps(nodeProps);
 
-  return useMemo(() => Object.assign(constantProps, apiStateProps, derivedProps), [derivedProps]);
+  const [apiStateInvokeProps] = useState<Record<string, any>>(() => getAPIInvokeProps(apiInvokeProps, ctx));
+  const derivedProps = useAPIStateDerivedProps({ props: apiDerivedProps, ctx });
+  const localValueProps = useLocalStateProps({ props: localStateProps, ctx });
+
+  return useMemo(() => {
+    return Object.assign(constantProps, apiStateInvokeProps, derivedProps, localValueProps);
+  }, [derivedProps, localValueProps]);
 }

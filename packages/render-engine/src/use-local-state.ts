@@ -1,6 +1,15 @@
 import { useState, useEffect } from 'react';
 import { BehaviorSubject, combineLatest, map, skip } from 'rxjs';
-import { APIStateContext, CTX, Instantiated, LocalStateContext, LocalStateConvertFunc, LocalStateProperty, LocalStateSpec, SetLocalStateProperty } from './types';
+import {
+  APIStateContext,
+  CTX,
+  Instantiated,
+  LocalStateContext,
+  LocalStateConvertFunc,
+  LocalStateProperty,
+  LocalStateSpec,
+  SetLocalStateProperty,
+} from './types';
 
 export class LocalStateHub implements LocalStateContext {
   cache: Record<string, BehaviorSubject<any>> = {};
@@ -22,7 +31,6 @@ export class LocalStateHub implements LocalStateContext {
     if (!this.cache[stateID]) {
       this.cache[stateID] = new BehaviorSubject(this.spec[stateID]?.initial);
     }
-
     return this.cache[stateID];
   }
 }
@@ -33,19 +41,20 @@ function convertResult(
   ctx: CTX,
 ): Record<string, any> {
   return Object.entries(result).reduce<Record<string, any>>((acc, [key, value]) => {
-    const convertedValue = typeof convertor[key] === 'function' ? convertor[key]?.({ data: value, ctx }) : value;
-    console.log(key, value, 'convertor[key]:', convertor[key], 'convertedValue:', convertedValue);
+    const convertedValue = typeof convertor[key] === 'function' ?
+      convertor[key]?.({ data: value, ctx }) : value;
 
-    return acc[key] = convertedValue;
+    acc[key] = convertedValue;
+    return acc;
   }, {});
 }
 
-type UseLocalStateProps = {
+type UseLocalStatePropsProps = {
   props: Record<string, LocalStateProperty<Instantiated>>;
   ctx: CTX;
 }
 
-export function useLocalStateProps({ props, ctx }: UseLocalStateProps): Record<string, any> {
+export function useLocalStateProps({ props, ctx }: UseLocalStatePropsProps): Record<string, any> {
   const mappers: Record<string, LocalStateConvertFunc | undefined> = {};
   const states$: Record<string, BehaviorSubject<any>> = {};
 
@@ -78,9 +87,11 @@ type UseSetLocalStateProps = {
   ctx: CTX;
 }
 
-export function useSetLocalStateProps({ props, ctx }: UseSetLocalStateProps): Record<string, (value: any) => void> {
+type SetLocalStateFuncProps = Record<string, (value: any) => void>;
+
+export function useSetLocalStateProps({ props, ctx }: UseSetLocalStateProps): SetLocalStateFuncProps {
   const [funcProps] = useState(() => {
-    return Object.entries(props).reduce<Record<string, (value: any) => void>>((acc, [key, propSpec]) => {
+    return Object.entries(props).reduce<SetLocalStateFuncProps>((acc, [key, propSpec]) => {
       const state$ = ctx.localStateContext.getState$(propSpec.stateID);
       acc[key] = (value: any) => {
         state$.next(value);
