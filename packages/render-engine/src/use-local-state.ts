@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { BehaviorSubject, combineLatest, map, skip } from 'rxjs';
 import { APIStateContext, CTX, Instantiated, LocalStateContext, LocalStateConvertFunc, LocalStateProperty, LocalStateSpec, SetLocalStateProperty } from './types';
 
@@ -34,7 +34,7 @@ function convertResult(
 ): Record<string, any> {
   return Object.entries(result).reduce<Record<string, any>>((acc, [key, value]) => {
     const convertedValue = typeof convertor[key] === 'function' ? convertor[key]?.({ data: value, ctx }) : value;
-    console.log(key, value, 'convertor[key]:', convertor[key], 'convertedValue:', convertedValue)
+    console.log(key, value, 'convertor[key]:', convertor[key], 'convertedValue:', convertedValue);
 
     return acc[key] = convertedValue;
   }, {});
