@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { combineLatest, map, Observable, skip } from 'rxjs';
 
-import APIStateHub from './api-state-hub';
 import { APIDerivedProperty, Instantiated, APIStateConvertFunc, APIState, CTX } from './types';
 
 type UseAPIProps = {

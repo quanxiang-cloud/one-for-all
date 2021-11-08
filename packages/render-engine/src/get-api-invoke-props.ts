@@ -1,6 +1,5 @@
 import { logger } from '@ofa/utils';
 
-import APIStateHub from './api-state-hub';
 import { APIInvokeProperty, CTX, Instantiated } from './types';
 
 type APICallProps = Record<string, (...args: any[]) => void>;

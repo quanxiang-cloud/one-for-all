@@ -25,7 +25,7 @@ function executeCallback(ctx: CTX, state: APIState, runParams?: RunParam): void 
   }
 
   // runParams?.onSuccess?.({ ...state, ctx, });
-  runParams?.onSuccess?.call(ctx, { ...state, ctx, });
+  runParams?.onSuccess?.call(ctx, { ...state, ctx });
 }
 
 export default class APIStateHub implements APIStateContext {

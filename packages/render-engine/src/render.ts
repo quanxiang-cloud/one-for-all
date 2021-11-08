@@ -16,7 +16,6 @@ import {
   InstantiatedSchema,
   SchemaNode,
 } from './types';
-import APIStateHub from './api-state-hub';
 import useConnection from './use-connection';
 
 type RenderNodesProps = {
