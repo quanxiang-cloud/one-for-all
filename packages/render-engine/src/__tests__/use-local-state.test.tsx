@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks/pure';
 import APIStateHub from '../api-state-hub';
-import { APIStateSpec, CTX, Instantiated, LocalStateProperty, SetLocalStateProperty } from '../types';
+import { APIStateSpec, ComponentPropType, CTX, Instantiated, LocalStateProperty, SetLocalStateProperty } from '../types';
 
 import { useLocalStateProps, useSetLocalStateProps, LocalStateHub } from '../use-local-state';
 
@@ -11,23 +11,23 @@ const apiStateHub = new APIStateHub(petStoreSpec, stateIDMap);
 test('local_state_should_resolve_expected_initial_value', () => {
   const props: Record<string, LocalStateProperty<Instantiated>> = {
     foo: {
-      type: 'local_state_property',
+      type: ComponentPropType.LocalStateProperty,
       stateID: 'value_should_be_undefined',
     },
     bar: {
-      type: 'local_state_property',
+      type: ComponentPropType.LocalStateProperty,
       stateID: 'value_should_be_foo',
     },
     baz: {
-      type: 'local_state_property',
+      type: ComponentPropType.LocalStateProperty,
       stateID: 'value_should_be_object',
     },
     twins_one: {
-      type: 'local_state_property',
+      type: ComponentPropType.LocalStateProperty,
       stateID: 'twins',
     },
     twins_two: {
-      type: 'local_state_property',
+      type: ComponentPropType.LocalStateProperty,
       stateID: 'twins',
     },
   };
@@ -53,23 +53,23 @@ test('local_state_should_resolve_expected_initial_value', () => {
 test('local_state_should_resolve_expected_update_changed', () => {
   const props: Record<string, LocalStateProperty<Instantiated>> = {
     foo: {
-      type: 'local_state_property',
+      type: ComponentPropType.LocalStateProperty,
       stateID: 'value_should_be_undefined',
     },
     bar: {
-      type: 'local_state_property',
+      type: ComponentPropType.LocalStateProperty,
       stateID: 'value_should_be_foo',
     },
     baz: {
-      type: 'local_state_property',
+      type: ComponentPropType.LocalStateProperty,
       stateID: 'value_should_be_object',
     },
     twins_one: {
-      type: 'local_state_property',
+      type: ComponentPropType.LocalStateProperty,
       stateID: 'twins',
     },
     twins_two: {
-      type: 'local_state_property',
+      type: ComponentPropType.LocalStateProperty,
       stateID: 'twins',
     },
   };
@@ -101,11 +101,11 @@ test('local_state_should_resolve_expected_update_changed', () => {
 test('useSetLocalStateProps', () => {
   const props: Record<string, LocalStateProperty<Instantiated>> = {
     foo: {
-      type: 'local_state_property',
+      type: ComponentPropType.LocalStateProperty,
       stateID: 'value_should_be_undefined',
     },
     bar: {
-      type: 'local_state_property',
+      type: ComponentPropType.LocalStateProperty,
       stateID: 'value_should_be_foo',
     },
   };
@@ -120,7 +120,7 @@ test('useSetLocalStateProps', () => {
 
   const funcProps: Record<string, SetLocalStateProperty<Instantiated>> = {
     updateFoo: {
-      type: 'set_local_state_property',
+      type: ComponentPropType.SetLocalStateProperty,
       stateID: 'value_should_be_undefined',
     },
   };

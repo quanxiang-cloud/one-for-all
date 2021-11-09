@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import mockXHR from 'xhr-mock';
 
 import petStoreSpec from '../spec-interpreter/__tests__/fixtures/petstore-spec';
-import type { APIInvokeProperty, APIDerivedProperty, Instantiated, APIStateSpec, CTX } from '../types';
+import { APIInvokeProperty, APIDerivedProperty, Instantiated, APIStateSpec, CTX, ComponentPropType } from '../types';
 import APIStateHub from '../api-state-hub';
 import Link from './fixtures/link';
 import { LocalStateHub } from '../use-local-state';
@@ -18,7 +18,7 @@ apiStateHub.initContext(new LocalStateHub({}));
 const ctx: CTX = {
   apiStateContext: apiStateHub,
   localStateContext: new LocalStateHub({}),
-}
+};
 
 test('Link_changes_the_class_when_hovered', async () => {
   const mockRes = { data: { id: 'abc-123' } };
@@ -29,19 +29,19 @@ test('Link_changes_the_class_when_hovered', async () => {
 
   const props: Record<string, APIDerivedProperty<Instantiated> | APIInvokeProperty<Instantiated>> = {
     foo: {
-      type: 'api_derived_property',
+      type: ComponentPropType.APIDerivedProperty,
       initialValue: 'foo',
       stateID: 'stream_findPetsByTags',
       adapter: () => 'abc',
     },
     bar: {
-      type: 'api_derived_property',
+      type: ComponentPropType.APIDerivedProperty,
       initialValue: 'bar',
       stateID: 'stream_findPetsByTags',
       adapter: () => 'abc',
     },
     onFetch: {
-      type: 'api_invoke_property',
+      type: ComponentPropType.APIInvokeProperty,
       stateID: 'stream_findPetsByTags',
       paramsBuilder: () => undefined,
       onSuccess: onSuccessFn,
@@ -71,19 +71,19 @@ test('search_btn', async () => {
 
   const props: Record<string, APIDerivedProperty<Instantiated> | APIInvokeProperty<Instantiated>> = {
     foo: {
-      type: 'api_derived_property',
+      type: ComponentPropType.APIDerivedProperty,
       initialValue: 'foo',
       stateID: 'stream_findPetsByTags',
       adapter: () => 'abc',
     },
     bar: {
-      type: 'api_derived_property',
+      type: ComponentPropType.APIDerivedProperty,
       initialValue: 'bar',
       stateID: 'stream_findPetsByTags',
       adapter: () => 'abc',
     },
     onFetch: {
-      type: 'api_invoke_property',
+      type: ComponentPropType.APIInvokeProperty,
       stateID: 'stream_findPetsByTags',
       paramsBuilder: () => undefined,
       onSuccess: onSuccessFn,

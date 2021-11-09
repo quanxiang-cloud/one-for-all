@@ -1,4 +1,4 @@
-import type { APIDerivedProperty, CTX, Instantiated } from '../types';
+import { APIDerivedProperty, ComponentPropType, CTX, Instantiated } from '../types';
 
 import mockXHR from 'xhr-mock';
 import { renderHook } from '@testing-library/react-hooks';
@@ -16,20 +16,20 @@ const apiStateHub = new APIStateHub(petStoreSpec, stateIDMap);
 const ctx: CTX = {
   apiStateContext: apiStateHub,
   localStateContext: new LocalStateHub({}),
-}
+};
 
 test('expect_resolve_initial_value', () => {
   const convertorFn = jest.fn();
 
   const props: Record<string, APIDerivedProperty<Instantiated>> = {
     foo: {
-      type: 'api_derived_property',
+      type: ComponentPropType.APIDerivedProperty,
       initialValue: { foo: 123 },
       stateID: 'stream_findPetsByTags',
       adapter: convertorFn,
     },
     bar: {
-      type: 'api_derived_property',
+      type: ComponentPropType.APIDerivedProperty,
       initialValue: { bar: 456 },
       stateID: 'stream_findPetsByTags',
       adapter: convertorFn,
