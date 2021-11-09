@@ -99,7 +99,7 @@ export default function useConnection({ nodeProps, ctx }: Props): Record<string,
   const [apiStateInvokeProps] = useState<Record<string, any>>(() => getAPIInvokeProps(apiInvokeProps, ctx));
   const derivedProps = useAPIStateDerivedProps({ props: apiDerivedProps, ctx });
   const localValueProps = useLocalStateProps({ props: localStateProps, ctx });
-  const funcProps = useFuncProps({ props: functionalProps, ctx });
+  const funcProps = useFuncProps({ props: functionalProps });
 
   return useMemo(() => {
     return Object.assign(constantProps, apiStateInvokeProps, derivedProps, localValueProps, funcProps);
