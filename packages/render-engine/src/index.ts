@@ -5,6 +5,8 @@ import { CTX, Schema } from './types';
 import APIStateHub from './api-state-hub';
 import { LocalStateHub } from './use-local-state';
 
+export * from './types';
+
 type RenderSchemaParams = {
   schema: Schema;
   rootEle: Element;
@@ -12,15 +14,8 @@ type RenderSchemaParams = {
 }
 
 function Render({ schema, rootEle, apiDoc }: RenderSchemaParams): void {
-  const instantiatedSchema = deserializeSchema(schema);
-  if (!instantiatedSchema) {
-    // TODO: paint error
-    return;
-  }
-
-  const apiStateHub = new APIStateHub(apiDoc, instantiatedSchema.apiStateSpec);
-  // todo render localStateSpec from schema
-  const localStateHub = new LocalStateHub({});
+  const apiStateHub = new APIStateHub(apiDoc, schema.apiStateSpec);
+  const localStateHub = new LocalStateHub(schema.localStateSpec);
 
   apiStateHub.initContext(localStateHub);
   localStateHub.initContext(apiStateHub);
@@ -30,7 +25,13 @@ function Render({ schema, rootEle, apiDoc }: RenderSchemaParams): void {
     localStateContext: localStateHub,
   };
 
-  renderSchema({ schema: instantiatedSchema, ctx, rootEle });
+  const instantiatedNode = deserializeSchema({ node: schema.node, ctx });
+  if (!instantiatedNode) {
+    // TODO: paint error
+    return;
+  }
+
+  renderSchema({ node: instantiatedNode, ctx, rootEle });
 }
 
 export default Render;

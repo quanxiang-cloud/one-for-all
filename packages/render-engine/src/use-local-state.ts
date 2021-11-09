@@ -57,10 +57,9 @@ type UseLocalStatePropsProps = {
 export function useLocalStateProps({ props, ctx }: UseLocalStatePropsProps): Record<string, any> {
   const mappers: Record<string, LocalStateConvertFunc | undefined> = {};
   const states$: Record<string, BehaviorSubject<any>> = {};
-
   Object.entries(props).forEach(([key, propSpec]) => {
     states$[key] = ctx.localStateContext.getState$(propSpec.stateID);
-    mappers[key] = propSpec.template;
+    mappers[key] = propSpec.adapter;
   });
 
   const [state, setState] = useState(() => {
