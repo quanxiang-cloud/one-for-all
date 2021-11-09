@@ -77,11 +77,11 @@ export type LocalStateProperty<T> = BaseComponentProperty & {
 
 export type FunctionalProperty<T> = BaseComponentProperty & {
   type: ComponentPropType.FunctionalProperty;
-  func: T extends Serialized ? RawFunctionSpec : VersatileFunc;
+  func: T extends Serialized ? BaseFunctionSpec : VersatileFunc;
 }
 
 // todo refactor this type property spec
-export type APIStateConvertFuncSpec = RawFunctionSpec & {
+export type APIStateConvertFuncSpec = BaseFunctionSpec & {
   type: 'api_state_mapper_func_spec';
   args: '{ data, error, loading, params }';
 };
@@ -103,22 +103,26 @@ export type APIInvokeProperty<T> = {
   onError?: APIInvokeCallBack<T>;
 }
 
-type RawFunctionSpec = {
+type BaseFunctionSpec = {
   type: string;
   args: string;
   body: string;
 }
 
-export type ParamsBuilderFuncSpec = RawFunctionSpec & {
+export type RawFunctionSpec = BaseFunctionSpec & {
+  type: 'raw';
+}
+
+export type ParamsBuilderFuncSpec = BaseFunctionSpec & {
   type: 'param_builder_func_spec';
 }
 
-export type APIInvokeCallbackFuncSpec = RawFunctionSpec & {
+export type APIInvokeCallbackFuncSpec = BaseFunctionSpec & {
   type: 'api_invoke_call_func_spec';
   args: '{ data, error, loading, params }';
 }
 
-export type LocalStateConvertFuncSpec = RawFunctionSpec & {
+export type LocalStateConvertFuncSpec = BaseFunctionSpec & {
   type: 'local_state_convert_func_spec';
   // `data` is unacceptable!
   args: '{ data, ctx }';

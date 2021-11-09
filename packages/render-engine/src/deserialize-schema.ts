@@ -1,3 +1,4 @@
+import { noop } from 'rxjs';
 import {
   NodeProperty,
   InstantiatedSchema,
@@ -10,12 +11,19 @@ import {
   APIStateConvertFuncSpec,
   ParamsBuilderFuncSpec,
   APIInvokeCallbackFuncSpec,
+  ComponentPropType,
+  RawFunctionSpec,
+  VersatileFunc,
 } from './types';
 
-type FunctionSpecs = APIStateConvertFuncSpec | ParamsBuilderFuncSpec | APIInvokeCallbackFuncSpec;
+type FunctionSpecs =
+  APIStateConvertFuncSpec |
+  ParamsBuilderFuncSpec |
+  APIInvokeCallbackFuncSpec |
+  RawFunctionSpec;
 
 // todo bind ctx on function
-function instantiateFuncSpec({ type, args, body }: FunctionSpecs): ((...args: any[]) => any) | undefined {
+function instantiateFuncSpec({ type, args, body }: FunctionSpecs): VersatileFunc {
   if (type === 'api_state_mapper_func_spec') {
     return new Function('{ data, error, loading, params }', body) as (apiState: APIState) => any;
   }
@@ -28,7 +36,12 @@ function instantiateFuncSpec({ type, args, body }: FunctionSpecs): ((...args: an
     return new Function('{ data, error, loading, params }', body) as (...args: any[]) => any;
   }
 
-  return;
+  if (type === 'raw') {
+    // args should be single parameter?
+    return new Function(args, body) as VersatileFunc;
+  }
+
+  return noop;
 }
 
 function transformProps(props: NodeProperties<Serialized>): NodeProperties<Instantiated> {
@@ -58,6 +71,20 @@ function transformProps(props: NodeProperties<Serialized>): NodeProperties<Insta
         ...propDesc,
         adapter: propDesc.adapter ? instantiateFuncSpec(propDesc.adapter) : undefined,
       }];
+    }
+
+    if (propDesc.type === ComponentPropType.FunctionalProperty) {
+      return [
+        propName,
+        {
+          type: ComponentPropType.FunctionalProperty,
+          func: instantiateFuncSpec({
+            type: 'raw',
+            args: propDesc.func.args,
+            body: propDesc.func.body,
+          }),
+        },
+      ];
     }
 
     if (propDesc.type === 'api_invoke_property') {
