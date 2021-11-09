@@ -13,7 +13,7 @@ import {
   CTX,
   DynamicComponent,
   Instantiated,
-  InstantiatedSchema,
+  InstantiatedNode,
   SchemaNode,
 } from './types';
 import useConnection from './use-connection';
@@ -83,16 +83,16 @@ function renderNode({ node, ctx }: RenderNodeProps): React.ReactElement | null {
 }
 
 type RenderSchemaParams = {
-  schema: InstantiatedSchema;
+  node: InstantiatedNode;
   rootEle: Element;
   ctx: CTX;
 }
 
-function renderSchema({ schema, rootEle, ctx }: RenderSchemaParams): void {
+function renderSchema({ node, rootEle, ctx }: RenderSchemaParams): void {
   // register('@basicComponents', getBasicComponentsOptions());
   // register('@advancesComponents', getAdvancedComponentsOptions());
 
-  ReactDOM.render(React.createElement(renderNode, { node: schema.node, ctx }), rootEle);
+  ReactDOM.render(React.createElement(renderNode, { node, ctx }), rootEle);
 }
 
 export default renderSchema;

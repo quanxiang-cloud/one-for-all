@@ -30,7 +30,7 @@ export default function useAPIStateDerivedProps({ props, ctx }: UseAPIProps): Re
   const mappers: Record<string, APIStateConvertFunc | undefined> = {};
   const resList$: Record<string, Observable<APIState>> = {};
 
-  Object.entries(props).forEach(([propName, { initialValue, template: mapper, stateID }]) => {
+  Object.entries(props).forEach(([propName, { initialValue, adapter: mapper, stateID }]) => {
     initialState[propName] = initialValue;
     mappers[propName] = mapper;
     resList$[propName] = ctx.apiStateContext.getState(stateID);

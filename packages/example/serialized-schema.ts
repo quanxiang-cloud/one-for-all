@@ -1,4 +1,4 @@
-import { Schema } from '@ofa/render-engine/src/types';
+import { ComponentPropType, Schema } from '@ofa/render-engine';
 
 const todoAppSchema: Schema = {
   apiStateSpec: {
@@ -18,9 +18,9 @@ const todoAppSchema: Schema = {
     type: 'html-element',
     name: 'div',
     props: {
-      id: { type: 'constant_property', value: 'container' },
+      id: { type: ComponentPropType.ConstantProperty, value: 'container' },
       style: {
-        type: 'constant_property',
+        type: ComponentPropType.ConstantProperty,
         value: {
           width: '500px',
           margin: 'auto',
@@ -37,16 +37,16 @@ const todoAppSchema: Schema = {
         type: 'html-element',
         name: 'form',
         props: {
-          id: { type: 'constant_property', value: 'todo-input-form' },
+          id: { type: ComponentPropType.ConstantProperty, value: 'todo-input-form' },
           style: {
-            type: 'constant_property',
+            type: ComponentPropType.ConstantProperty,
             value: {
               display: 'flex',
               justifyContent: 'space-between',
             },
           },
           onSubmit: {
-            type: 'api_invoke_property',
+            type: ComponentPropType.APIInvokeProperty,
             stateID: 'createTodo',
             paramsBuilder: {
               type: 'param_builder_func_spec',
@@ -87,12 +87,12 @@ const todoAppSchema: Schema = {
             type: 'html-element',
             name: 'input',
             props: {
-              type: { type: 'constant_property', value: 'input' },
-              name: { type: 'constant_property', value: 'title' },
-              placeholder: { type: 'constant_property', value: 'What do you want to do?' },
-              autoComplete: { type: 'constant_property', value: 'off' },
+              type: { type: ComponentPropType.ConstantProperty, value: 'input' },
+              name: { type: ComponentPropType.ConstantProperty, value: 'title' },
+              placeholder: { type: ComponentPropType.ConstantProperty, value: 'What do you want to do?' },
+              autoComplete: { type: ComponentPropType.ConstantProperty, value: 'off' },
               style: {
-                type: 'constant_property',
+                type: ComponentPropType.ConstantProperty,
                 value: {
                   width: '200px',
                   padding: '16px',
@@ -103,6 +103,16 @@ const todoAppSchema: Schema = {
                   outline: 'none',
                 },
               },
+              onChange: {
+                type: ComponentPropType.FunctionalProperty,
+                func: {
+                  type: 'raw',
+                  args: 'e',
+                  body: `
+                    this.localStateContext.getState$('todo_title').next(e.target.value);
+                  `,
+                },
+              },
             },
           },
           {
@@ -110,11 +120,22 @@ const todoAppSchema: Schema = {
             type: 'html-element',
             name: 'button',
             props: {
-              type: { type: 'constant_property', value: 'submit' },
-              children: { type: 'constant_property', value: 'add todo' },
+              type: { type: ComponentPropType.ConstantProperty, value: 'submit' },
+              children: { type: ComponentPropType.ConstantProperty, value: 'add todo' },
               style: {
-                type: 'constant_property',
+                type: ComponentPropType.ConstantProperty,
                 value: { width: '80px', textAlign: 'center', textTransform: 'capitalize' },
+              },
+            },
+          },
+          {
+            key: 'shadow_input',
+            type: 'html-element',
+            name: 'p',
+            props: {
+              children: {
+                type: ComponentPropType.LocalStateProperty,
+                stateID: 'todo_title',
               },
             },
           },
@@ -128,10 +149,10 @@ const todoAppSchema: Schema = {
         packageVersion: 'whatever',
         props: {
           todos: {
-            type: 'api_derived_property',
+            type: ComponentPropType.APIDerivedProperty,
             stateID: 'listTodos',
             initialValue: [],
-            template: {
+            adapter: {
               type: 'api_state_mapper_func_spec',
               args: '{ data, error, loading, params }',
               body: `
@@ -140,7 +161,7 @@ const todoAppSchema: Schema = {
             },
           },
           toggleTodo: {
-            type: 'api_invoke_property',
+            type: ComponentPropType.APIInvokeProperty,
             stateID: 'updateTodo',
             // template: ${data.foo}
             paramsBuilder: {
@@ -161,12 +182,12 @@ const todoAppSchema: Schema = {
             },
           },
           onFetchTodos: {
-            type: 'api_invoke_property',
+            type: ComponentPropType.APIInvokeProperty,
             stateID: 'listTodos',
             // convertor: () => undefined,
           },
           onDeleteTodo: {
-            type: 'api_invoke_property',
+            type: ComponentPropType.APIInvokeProperty,
             stateID: 'deleteTodo',
             paramsBuilder: {
               type: 'param_builder_func_spec',
@@ -194,10 +215,10 @@ const todoAppSchema: Schema = {
         packageVersion: 'whatever',
         props: {
           all: {
-            type: 'api_derived_property',
+            type: ComponentPropType.APIDerivedProperty,
             stateID: 'todoStatus',
             initialValue: 0,
-            template: {
+            adapter: {
               type: 'api_state_mapper_func_spec',
               args: '{ data, error, loading, params }',
               body: `
@@ -206,13 +227,13 @@ const todoAppSchema: Schema = {
             },
           },
           working: {
-            type: 'api_derived_property',
+            type: ComponentPropType.APIDerivedProperty,
             stateID: 'todoStatus',
             initialValue: 0,
             // convertor: (apiState: APIState): number => {
             //   return data?.working || 0;
             // },
-            template: {
+            adapter: {
               type: 'api_state_mapper_func_spec',
               args: '{ data, error, loading, params }',
               body: `
@@ -221,10 +242,10 @@ const todoAppSchema: Schema = {
             },
           },
           done: {
-            type: 'api_derived_property',
+            type: ComponentPropType.APIDerivedProperty,
             stateID: 'todoStatus',
             initialValue: 0,
-            template: {
+            adapter: {
               type: 'api_state_mapper_func_spec',
               args: '{ data, error, loading, params }',
               body: `
@@ -233,7 +254,7 @@ const todoAppSchema: Schema = {
             },
           },
           onToggleStatus: {
-            type: 'api_invoke_property',
+            type: ComponentPropType.APIInvokeProperty,
             stateID: 'listTodos',
             paramsBuilder: {
               type: 'param_builder_func_spec',
@@ -244,7 +265,7 @@ const todoAppSchema: Schema = {
             },
           },
           onFetchStatus: {
-            type: 'api_invoke_property',
+            type: ComponentPropType.APIInvokeProperty,
             stateID: 'todoStatus',
           },
         },
