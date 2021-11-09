@@ -73,11 +73,7 @@ export function useLocalStateProps({ props, ctx }: UseLocalStatePropsProps): Rec
     const subscription = combineLatest(states$).pipe(
       skip(1),
       map((result) => convertResult(result, mappers, ctx)),
-    // ).subscribe(setState);
-    ).subscribe((value) => {
-      console.log(value);
-      setState(value);
-    });
+    ).subscribe(setState);
 
     return () => subscription.unsubscribe();
   }, []);

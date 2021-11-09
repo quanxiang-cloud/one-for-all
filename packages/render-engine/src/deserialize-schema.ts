@@ -1,9 +1,7 @@
 import { noop } from 'rxjs';
-import { LocalStateConvertFuncSpec } from '.';
+import { CTX, LocalStateConvertFuncSpec } from '.';
 import {
   NodeProperty,
-  InstantiatedSchema,
-  Schema,
   APIState,
   SchemaNode,
   NodeProperties,
@@ -131,9 +129,14 @@ function transformNode(node: SchemaNode<Serialized>): SchemaNode<Instantiated> {
   };
 }
 
-export default function deserializeSchema({ node, apiStateSpec, localStateSpec }: Schema): InstantiatedSchema | null {
+type DeserializeSchema = {
+  node: SchemaNode<Serialized>;
+  ctx: CTX;
+}
+
+export default function deserializeSchema({ node, ctx }: DeserializeSchema): SchemaNode<Instantiated> | null {
   try {
-    return { apiStateSpec, node: transformNode(node), localStateSpec };
+    return transformNode(node);
   } catch (error) {
     console.error(error);
     return null;

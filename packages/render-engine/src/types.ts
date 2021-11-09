@@ -199,11 +199,7 @@ export type Schema = {
   localStateSpec: LocalStateSpec;
 }
 
-export type InstantiatedSchema = {
-  node: SchemaNode<Instantiated>;
-  apiStateSpec: APIStateSpec;
-  localStateSpec: LocalStateSpec;
-};
+export type InstantiatedNode = SchemaNode<Instantiated>;
 
 interface Document {
   adoptedStyleSheets: any[];
