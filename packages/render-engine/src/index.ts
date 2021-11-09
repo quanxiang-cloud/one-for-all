@@ -5,6 +5,8 @@ import { CTX, Schema } from './types';
 import APIStateHub from './api-state-hub';
 import { LocalStateHub } from './use-local-state';
 
+export * from './types';
+
 type RenderSchemaParams = {
   schema: Schema;
   rootEle: Element;

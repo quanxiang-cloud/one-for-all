@@ -57,7 +57,6 @@ type UseLocalStatePropsProps = {
 export function useLocalStateProps({ props, ctx }: UseLocalStatePropsProps): Record<string, any> {
   const mappers: Record<string, LocalStateConvertFunc | undefined> = {};
   const states$: Record<string, BehaviorSubject<any>> = {};
-
   Object.entries(props).forEach(([key, propSpec]) => {
     states$[key] = ctx.localStateContext.getState$(propSpec.stateID);
     mappers[key] = propSpec.adapter;
@@ -74,7 +73,11 @@ export function useLocalStateProps({ props, ctx }: UseLocalStatePropsProps): Rec
     const subscription = combineLatest(states$).pipe(
       skip(1),
       map((result) => convertResult(result, mappers, ctx)),
-    ).subscribe(setState);
+    // ).subscribe(setState);
+    ).subscribe((value) => {
+      console.log(value);
+      setState(value);
+    });
 
     return () => subscription.unsubscribe();
   }, []);

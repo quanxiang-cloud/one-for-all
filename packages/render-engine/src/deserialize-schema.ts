@@ -1,4 +1,5 @@
 import { noop } from 'rxjs';
+import { LocalStateConvertFuncSpec } from '.';
 import {
   NodeProperty,
   InstantiatedSchema,
@@ -20,6 +21,7 @@ type FunctionSpecs =
   APIStateConvertFuncSpec |
   ParamsBuilderFuncSpec |
   APIInvokeCallbackFuncSpec |
+  LocalStateConvertFuncSpec |
   RawFunctionSpec;
 
 // todo bind ctx on function
@@ -39,6 +41,10 @@ function instantiateFuncSpec({ type, args, body }: FunctionSpecs): VersatileFunc
   if (type === 'raw') {
     // args should be single parameter?
     return new Function(args, body) as VersatileFunc;
+  }
+
+  if (type === 'local_state_convert_func_spec') {
+    return new Function('{ data }', body) as VersatileFunc;
   }
 
   return noop;
@@ -71,6 +77,16 @@ function transformProps(props: NodeProperties<Serialized>): NodeProperties<Insta
         ...propDesc,
         adapter: propDesc.adapter ? instantiateFuncSpec(propDesc.adapter) : undefined,
       }];
+    }
+
+    if (propDesc.type === ComponentPropType.LocalStateProperty) {
+      return [
+        propName,
+        {
+          ...propDesc,
+          adapter: propDesc.adapter ? instantiateFuncSpec(propDesc.adapter) : undefined,
+        },
+      ];
     }
 
     if (propDesc.type === ComponentPropType.FunctionalProperty) {

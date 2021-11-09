@@ -29,7 +29,7 @@ export type LocalState = {
   data?: any;
 }
 
-export enum ComponentPropType {
+export const enum ComponentPropType {
   ConstantProperty = 'constant_property',
   APIDerivedProperty = 'api_derived_property',
   LocalStateProperty = 'local_state_property',
@@ -39,7 +39,7 @@ export enum ComponentPropType {
   APIInvokeProperty = 'api_invoke_property',
 }
 
-type NodeProperty<T> =
+export type NodeProperty<T> =
   ConstantProperty |
   APIDerivedProperty<T> |
   LocalStateProperty<T> |
@@ -48,7 +48,7 @@ type NodeProperty<T> =
   APIInvokeProperty<T> |
   Array<APIInvokeProperty<T>>;
 
-type NodeProperties<T> = Record<string, NodeProperty<T>>;
+export type NodeProperties<T> = Record<string, NodeProperty<T>>;
 
 type BaseComponentProperty = {
   type: ComponentPropType;
@@ -125,10 +125,10 @@ export type APIInvokeCallbackFuncSpec = BaseFunctionSpec & {
 export type LocalStateConvertFuncSpec = BaseFunctionSpec & {
   type: 'local_state_convert_func_spec';
   // `data` is unacceptable!
-  args: '{ data, ctx }';
+  args: '{ data }';
 }
 
-type RunParam = {
+export type RunParam = {
   params?: RequestParams;
   onSuccess?: APIInvokeCallBack<Instantiated>;
   onError?: APIInvokeCallBack<Instantiated>;
@@ -158,7 +158,7 @@ export type LocalStateConvertor<T> = T extends Serialized ? LocalStateConvertFun
 export type ParamsBuilder<T> = T extends Serialized ? ParamsBuilderFuncSpec : (...args: any[]) => RequestParams;
 export type APIInvokeCallBack<T> = T extends Serialized ? APIInvokeCallbackFuncSpec : (apiState: APIState) => void;
 
-type VersatileFunc = (...args: any) => any;
+export type VersatileFunc = (...args: any) => any;
 
 interface BaseNode<T> {
   key: string;
@@ -183,7 +183,7 @@ interface ReactComponentNode<T> extends BaseNode<T> {
   children?: Array<SchemaNode<T>>;
 }
 
-type SchemaNode<T> = HTMLNode<T> | ReactComponentNode<T>;
+export type SchemaNode<T> = HTMLNode<T> | ReactComponentNode<T>;
 
 // map of stateID and operationID
 export type APIStateSpec = Record<string, {
@@ -209,4 +209,4 @@ interface Document {
   adoptedStyleSheets: any[];
 }
 
-type DynamicComponent = React.FC<any> | React.ComponentClass<any>;
+export type DynamicComponent = React.FC<any> | React.ComponentClass<any>;
