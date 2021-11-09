@@ -4801,8 +4801,8 @@ onetime@^5.1.2:
 
 openapi-types@^9.3.0:
   version "9.3.0"
-  resolved "https://registry.yarnpkg.com/openapi-types/-/openapi-types-9.3.0.tgz#2d90549edb928cf06cf83018485a1a5961fbd2b9"
-  integrity sha512-sR23YjmuwDSMsQVZDHbV9mPgi0RyniQlqR0AQxTC2/F3cpSjRFMH3CFPjoWvNqhC4OxPkDYNb2l8Mc1Me6D/KQ==
+  resolved "https://registry.nlark.com/openapi-types/download/openapi-types-9.3.0.tgz#2d90549edb928cf06cf83018485a1a5961fbd2b9"
+  integrity sha1-LZBUntuSjPBs+DAYSFoaWWH70rk=
 
 optionator@^0.8.1:
   version "0.8.3"
