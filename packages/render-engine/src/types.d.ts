@@ -1,6 +1,5 @@
 import { OpenAPIV3 } from 'openapi-types';
 import { BehaviorSubject, Observable } from 'rxjs';
-import APIStateHub from './api-state-hub';
 
 export type Serialized = 'Serialized';
 export type Instantiated = 'Instantiated';
@@ -30,7 +29,17 @@ export type LocalState = {
   data?: any;
 }
 
-export type NodeProperty<T> =
+export enum ComponentPropType {
+  ConstantProperty = 'constant_property',
+  APIDerivedProperty = 'api_derived_property',
+  LocalStateProperty = 'local_state_property',
+  FunctionalProperty = 'functional_property',
+
+  SetLocalStateProperty = 'set_local_state_property',
+  APIInvokeProperty = 'api_invoke_property',
+}
+
+type NodeProperty<T> =
   ConstantProperty |
   APIDerivedProperty<T> |
   LocalStateProperty<T> |
@@ -39,17 +48,19 @@ export type NodeProperty<T> =
   APIInvokeProperty<T> |
   Array<APIInvokeProperty<T>>;
 
+type NodeProperties<T> = Record<string, NodeProperty<T>>;
+
 type BaseComponentProperty = {
-  type: string;
+  type: ComponentPropType;
 }
 
 export type ConstantProperty = BaseComponentProperty & {
-  type: 'constant_property';
+  type: ComponentPropType.ConstantProperty;
   value: any;
 }
 
 export type APIDerivedProperty<T> = BaseComponentProperty & {
-  type: 'api_derived_property';
+  type: ComponentPropType.APIDerivedProperty;
   initialValue?: any;
   stateID: string;
   // todo define different type adapter
@@ -57,7 +68,7 @@ export type APIDerivedProperty<T> = BaseComponentProperty & {
 }
 
 export type LocalStateProperty<T> = BaseComponentProperty & {
-  type: 'local_state_property';
+  type: ComponentPropType.LocalStateProperty;
   // this is not a good design
   stateID: string;
   // todo define different type adapter
@@ -65,7 +76,7 @@ export type LocalStateProperty<T> = BaseComponentProperty & {
 }
 
 export type FunctionalProperty<T> = BaseComponentProperty & {
-  type: 'functional_property';
+  type: ComponentPropType.FunctionalProperty;
   func: T extends Serialized ? RawFunctionSpec : VersatileFunc;
 }
 
@@ -77,14 +88,14 @@ export type APIStateConvertFuncSpec = RawFunctionSpec & {
 
 // todo refactor this type property spec
 export type SetLocalStateProperty<T> = {
-  type: 'set_local_state_property';
+  type: ComponentPropType.SetLocalStateProperty;
   stateID: string;
   callbacks?: Array<() => void>;
 }
 
 // todo refactor this type property spec
 export type APIInvokeProperty<T> = {
-  type: 'api_invoke_property';
+  type: ComponentPropType.APIInvokeProperty;
   stateID: string;
   // the required return type is too complex
   paramsBuilder?: ParamsBuilder<T>;
@@ -144,8 +155,6 @@ export type ParamsBuilder<T> = T extends Serialized ? ParamsBuilderFuncSpec : (.
 export type APIInvokeCallBack<T> = T extends Serialized ? APIInvokeCallbackFuncSpec : (apiState: APIState) => void;
 
 type VersatileFunc = (...args: any) => any;
-
-export type NodeProperties<T> = Record<string, NodeProperty<T>>;
 
 interface BaseNode<T> {
   key: string;

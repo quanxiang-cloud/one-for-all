@@ -10,6 +10,7 @@ export function useFuncProps({ props, ctx }: Props): Record<string, VersatileFun
   return useMemo(() => {
     return Object.entries(props).reduce<Record<string, VersatileFunc>>((acc, [key, { func }]) => {
       // just binding execution context is enough
+      // todo move this to instantiateFuncSpec
       acc[key] = func.bind(ctx);
 
       return acc;
