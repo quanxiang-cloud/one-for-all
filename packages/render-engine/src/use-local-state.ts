@@ -60,7 +60,7 @@ export function useLocalStateProps({ props, ctx }: UseLocalStatePropsProps): Rec
 
   Object.entries(props).forEach(([key, propSpec]) => {
     states$[key] = ctx.localStateContext.getState$(propSpec.stateID);
-    mappers[key] = propSpec.template;
+    mappers[key] = propSpec.adapter;
   });
 
   const [state, setState] = useState(() => {

@@ -14,6 +14,7 @@ import {
 
 type FunctionSpecs = APIStateConvertFuncSpec | ParamsBuilderFuncSpec | APIInvokeCallbackFuncSpec;
 
+// todo bind ctx on function
 function instantiateFuncSpec({ type, args, body }: FunctionSpecs): ((...args: any[]) => any) | undefined {
   if (type === 'api_state_mapper_func_spec') {
     return new Function('{ data, error, loading, params }', body) as (apiState: APIState) => any;
@@ -55,7 +56,7 @@ function transformProps(props: NodeProperties<Serialized>): NodeProperties<Insta
     if (propDesc.type === 'api_derived_property') {
       return [propName, {
         ...propDesc,
-        template: propDesc.template ? instantiateFuncSpec(propDesc.template) : undefined,
+        adapter: propDesc.adapter ? instantiateFuncSpec(propDesc.adapter) : undefined,
       }];
     }
 

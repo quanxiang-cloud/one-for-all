@@ -116,7 +116,7 @@ const todoAppSchema: InstantiatedSchema = {
             type: 'api_derived_property',
             stateID: 'listTodos',
             initialValue: [],
-            template: ({ data, error, loading, params, }: APIState): Array<any> => {
+            adapter: ({ data, error, loading, params, }: APIState): Array<any> => {
               return data || [];
             },
           },
@@ -162,7 +162,7 @@ const todoAppSchema: InstantiatedSchema = {
             type: 'api_derived_property',
             stateID: 'todoStatus',
             initialValue: 0,
-            template: (apiState: APIState): number => {
+            adapter: (apiState: APIState): number => {
               return apiState.data?.all || 0;
             },
           },
@@ -170,7 +170,7 @@ const todoAppSchema: InstantiatedSchema = {
             type: 'api_derived_property',
             stateID: 'todoStatus',
             initialValue: 0,
-            template: (apiState: APIState): number => {
+            adapter: (apiState: APIState): number => {
               return apiState.data?.working || 0;
             },
           },
@@ -178,7 +178,7 @@ const todoAppSchema: InstantiatedSchema = {
             type: 'api_derived_property',
             stateID: 'todoStatus',
             initialValue: 0,
-            template: (apiState: APIState): number => {
+            adapter: (apiState: APIState): number => {
               return apiState.data?.done || 0;
             },
           },

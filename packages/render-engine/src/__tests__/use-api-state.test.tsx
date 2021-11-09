@@ -32,13 +32,13 @@ test('Link_changes_the_class_when_hovered', async () => {
       type: 'api_derived_property',
       initialValue: 'foo',
       stateID: 'stream_findPetsByTags',
-      template: () => 'abc',
+      adapter: () => 'abc',
     },
     bar: {
       type: 'api_derived_property',
       initialValue: 'bar',
       stateID: 'stream_findPetsByTags',
-      template: () => 'abc',
+      adapter: () => 'abc',
     },
     onFetch: {
       type: 'api_invoke_property',
@@ -74,13 +74,13 @@ test('search_btn', async () => {
       type: 'api_derived_property',
       initialValue: 'foo',
       stateID: 'stream_findPetsByTags',
-      template: () => 'abc',
+      adapter: () => 'abc',
     },
     bar: {
       type: 'api_derived_property',
       initialValue: 'bar',
       stateID: 'stream_findPetsByTags',
-      template: () => 'abc',
+      adapter: () => 'abc',
     },
     onFetch: {
       type: 'api_invoke_property',
