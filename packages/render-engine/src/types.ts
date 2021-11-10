@@ -157,6 +157,17 @@ export type APIStateTemplate = {
   template: string;
 }
 
+export type LocalStateTemplate = {
+  type: 'local_state_template';
+  // template for data
+  // {{ data.foo }}
+  // {{ data.offset / (data.limit + data.offset) }}
+  // {{ data.list.map((item) => item.name)) }}
+  // {{ data.list.map((item) => `名称：${item.name}`)) }}
+  // {{ data.foo?.bar?.baz || 'someValue' }}
+  template: string;
+}
+
 // todo refactor this type property spec
 export type APIStateConvertFuncSpec = BaseFunctionSpec & {
   type: 'api_state_convertor_func_spec';
@@ -164,11 +175,12 @@ export type APIStateConvertFuncSpec = BaseFunctionSpec & {
 };
 
 export type SerializedAPIStateAdapter = APIStateTemplate | APIStateConvertFuncSpec;
+export type SerializedLocalStateAdapter = LocalStateTemplate | LocalStateConvertFuncSpec;
 
 export type LocalStateConvertFunc = (data: any) => any;
 
 export type APIStateAdapter<T> = T extends Serialized ? SerializedAPIStateAdapter : APIStateConvertor;
-export type LocalStateConvertor<T> = T extends Serialized ? LocalStateConvertFuncSpec : LocalStateConvertFunc;
+export type LocalStateConvertor<T> = T extends Serialized ? SerializedLocalStateAdapter : LocalStateConvertFunc;
 export type ParamsBuilder<T> = T extends Serialized ? ParamsBuilderFuncSpec : (...args: any[]) => RequestParams;
 export type APIInvokeCallBack<T> = T extends Serialized ? APIInvokeCallbackFuncSpec : (apiState: APIState) => void;
 

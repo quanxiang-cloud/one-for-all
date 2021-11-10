@@ -1,5 +1,5 @@
 import { noop } from 'rxjs';
-import { APIStateTemplate, CTX, LocalStateConvertFuncSpec } from '.';
+import { APIStateTemplate, CTX, LocalStateConvertFuncSpec, LocalStateTemplate } from '.';
 import {
   NodeProperty,
   SchemaNode,
@@ -14,16 +14,19 @@ import {
   VersatileFunc,
 } from './types';
 
+// todo refactor this type
 type FunctionSpecs =
   APIStateConvertFuncSpec |
   ParamsBuilderFuncSpec |
   APIInvokeCallbackFuncSpec |
   LocalStateConvertFuncSpec |
   RawFunctionSpec |
-  APIStateTemplate;
+  APIStateTemplate |
+  LocalStateTemplate;
 
 // todo move this to constant, and should be defined as a type
 const API_STATE_FUNC_ARGS = '{ data, error, loading, params }';
+const LOCAL_STATE_FUNC_ARGS = '{ data }';
 
 function instantiateFuncSpec(spec: FunctionSpecs, ctx: CTX): VersatileFunc {
   if (spec.type === 'api_state_template') {
@@ -51,7 +54,11 @@ function instantiateFuncSpec(spec: FunctionSpecs, ctx: CTX): VersatileFunc {
   }
 
   if (spec.type === 'local_state_convert_func_spec') {
-    return new Function('{ data }', spec.body).bind(ctx);
+    return new Function(LOCAL_STATE_FUNC_ARGS, spec.body).bind(ctx);
+  }
+
+  if (spec.type === 'local_state_template') {
+    return new Function(LOCAL_STATE_FUNC_ARGS, `return ${spec.template}`).bind(ctx);
   }
 
   return noop;
