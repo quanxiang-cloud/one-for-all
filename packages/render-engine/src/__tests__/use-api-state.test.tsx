@@ -30,13 +30,13 @@ test('Link_changes_the_class_when_hovered', async () => {
   const props: Record<string, APIDerivedProperty<Instantiated> | APIInvokeProperty<Instantiated>> = {
     foo: {
       type: ComponentPropType.APIDerivedProperty,
-      initialValue: 'foo',
+      fallback: 'foo',
       stateID: 'stream_findPetsByTags',
       adapter: () => 'abc',
     },
     bar: {
       type: ComponentPropType.APIDerivedProperty,
-      initialValue: 'bar',
+      fallback: 'bar',
       stateID: 'stream_findPetsByTags',
       adapter: () => 'abc',
     },
@@ -72,13 +72,13 @@ test('search_btn', async () => {
   const props: Record<string, APIDerivedProperty<Instantiated> | APIInvokeProperty<Instantiated>> = {
     foo: {
       type: ComponentPropType.APIDerivedProperty,
-      initialValue: 'foo',
+      fallback: 'foo',
       stateID: 'stream_findPetsByTags',
       adapter: () => 'abc',
     },
     bar: {
       type: ComponentPropType.APIDerivedProperty,
-      initialValue: 'bar',
+      fallback: 'bar',
       stateID: 'stream_findPetsByTags',
       adapter: () => 'abc',
     },

@@ -61,7 +61,12 @@ export type ConstantProperty = BaseComponentProperty & {
 
 export type APIDerivedProperty<T> = BaseComponentProperty & {
   type: ComponentPropType.APIDerivedProperty;
-  initialValue?: any;
+  // in the previous implementation, this property is called: initialValue,
+  // why changed to `fallback`?
+  // - please refer to API State Table, it's hard to modify the `data` in second state to initialValue
+  // - always defining a fallback value for API response is best practices,
+  //   no matter when before API result returned or encounter a API error.
+  fallback: any;
   stateID: string;
   // todo define different type adapter
   adapter?: APIStateAdapter<T>;

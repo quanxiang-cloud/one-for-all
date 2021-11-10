@@ -34,7 +34,7 @@ export default function useAPIStateDerivedProps({ props, ctx }: UseAPIProps): Re
   const mappers: Record<string, APIStateConvertor | undefined> = {};
   const resList$: Record<string, Observable<APIState>> = {};
 
-  Object.entries(props).forEach(([propName, { initialValue, adapter: mapper, stateID }]) => {
+  Object.entries(props).forEach(([propName, { fallback: initialValue, adapter: mapper, stateID }]) => {
     initialState[propName] = initialValue;
     mappers[propName] = mapper;
     resList$[propName] = ctx.apiStateContext.getState(stateID);
@@ -43,8 +43,20 @@ export default function useAPIStateDerivedProps({ props, ctx }: UseAPIProps): Re
   const [state, setState] = useState<Record<string, any>>(initialState);
 
   useEffect(() => {
+    if (!Object.keys(resList$).length) {
+      return;
+    }
+
     const subscription = combineLatest(resList$).pipe(
       skip(1),
+      map((result) => {
+        return Object.entries(result).reduce<Record<string, any>>((acc, [key, state]) => {
+          state.data = state.data ?? initialState[key];
+          acc[key] = state;
+
+          return acc;
+        }, {});
+      }),
       map((result) => convertResult(result, mappers)),
     ).subscribe(setState);
 
