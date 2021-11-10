@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { combineLatest, map, Observable, skip } from 'rxjs';
 
-import { APIDerivedProperty, Instantiated, APIStateConvertFunc, APIState, CTX } from './types';
+import { APIDerivedProperty, Instantiated, APIStateConvertor, APIState, CTX } from './types';
 
 type UseAPIProps = {
   props: Record<string, APIDerivedProperty<Instantiated>>;
@@ -10,14 +10,18 @@ type UseAPIProps = {
 
 function convertResult(
   result: Record<string, APIState>,
-  convertors: Record<string, APIStateConvertFunc | undefined>,
-  ctx: CTX,
+  adapters: Record<string, APIStateConvertor | undefined>,
 ): Record<string, any> {
   return Object.entries(result).map(([propName, propValue]) => {
+    const adapter = adapters[propName];
+    if (!adapter) {
+      return [propName, propValue.data];
+    }
+
     return [
       propName,
       // TODO: handle convert error case
-      convertors[propName] ? convertors[propName]?.call(ctx, { ...propValue }) : propValue,
+      adapter(propValue),
     ];
   }).reduce<Record<string, any>>((res, [propName, value]) => {
     res[propName] = value;
@@ -27,7 +31,7 @@ function convertResult(
 
 export default function useAPIStateDerivedProps({ props, ctx }: UseAPIProps): Record<string, any> {
   const initialState: Record<string, any> = {};
-  const mappers: Record<string, APIStateConvertFunc | undefined> = {};
+  const mappers: Record<string, APIStateConvertor | undefined> = {};
   const resList$: Record<string, Observable<APIState>> = {};
 
   Object.entries(props).forEach(([propName, { initialValue, adapter: mapper, stateID }]) => {
@@ -41,7 +45,7 @@ export default function useAPIStateDerivedProps({ props, ctx }: UseAPIProps): Re
   useEffect(() => {
     const subscription = combineLatest(resList$).pipe(
       skip(1),
-      map((result) => convertResult(result, mappers, ctx)),
+      map((result) => convertResult(result, mappers)),
     ).subscribe(setState);
 
     // todo remove state from stateHub when last subscriber unsubscribed

@@ -64,7 +64,7 @@ export type APIDerivedProperty<T> = BaseComponentProperty & {
   initialValue?: any;
   stateID: string;
   // todo define different type adapter
-  adapter?: APIStateConvertor<T>;
+  adapter?: APIStateAdapter<T>;
 }
 
 export type LocalStateProperty<T> = BaseComponentProperty & {
@@ -150,10 +150,24 @@ export type CTX = {
   localStateContext: LocalStateContext;
 }
 
-export type APIStateConvertFunc = (apiState: APIState) => any;
+export type APIStateConvertor = (apiState: APIState) => any;
+
+export type APIStateTemplate = {
+  type: 'api_state_template';
+  // template for data, loading, params, error
+  // {{ data.foo }}
+  // {{ data.offset / (data.limit + data.offset) }}
+  // {{ data.list.map((item) => item.name)) }}
+  // {{ data.list.map((item) => `名称：${item.name}`)) }}
+  // {{ data.foo?.bar?.baz || 'someValue' }}
+  template: string;
+}
+
+export type SerializedAPIStateAdapter = APIStateTemplate | APIStateConvertFuncSpec;
+
 export type LocalStateConvertFunc = (data: any) => any;
 
-export type APIStateConvertor<T> = T extends Serialized ? APIStateConvertFuncSpec : APIStateConvertFunc;
+export type APIStateAdapter<T> = T extends Serialized ? SerializedAPIStateAdapter : APIStateConvertor;
 export type LocalStateConvertor<T> = T extends Serialized ? LocalStateConvertFuncSpec : LocalStateConvertFunc;
 export type ParamsBuilder<T> = T extends Serialized ? ParamsBuilderFuncSpec : (...args: any[]) => RequestParams;
 export type APIInvokeCallBack<T> = T extends Serialized ? APIInvokeCallbackFuncSpec : (apiState: APIState) => void;

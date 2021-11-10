@@ -1,8 +1,7 @@
 import { noop } from 'rxjs';
-import { CTX, LocalStateConvertFuncSpec } from '.';
+import { APIStateTemplate, CTX, LocalStateConvertFuncSpec } from '.';
 import {
   NodeProperty,
-  APIState,
   SchemaNode,
   NodeProperties,
   Serialized,
@@ -20,28 +19,39 @@ type FunctionSpecs =
   ParamsBuilderFuncSpec |
   APIInvokeCallbackFuncSpec |
   LocalStateConvertFuncSpec |
-  RawFunctionSpec;
+  RawFunctionSpec |
+  APIStateTemplate;
 
-function instantiateFuncSpec({ type, args, body }: FunctionSpecs, ctx: CTX): VersatileFunc {
-  if (type === 'api_state_mapper_func_spec') {
-    return new Function('{ data, error, loading, params }', body).bind(ctx) as (apiState: APIState) => any;
+// todo move this to constant, and should be defined as a type
+const API_STATE_FUNC_ARGS = '{ data, error, loading, params }';
+
+function instantiateFuncSpec(spec: FunctionSpecs, ctx: CTX): VersatileFunc {
+  if (spec.type === 'api_state_template') {
+    return new Function(
+      API_STATE_FUNC_ARGS,
+      `return ${spec.template}`,
+    ).bind(ctx);
   }
 
-  if (type === 'param_builder_func_spec') {
-    return new Function(args, body).bind(ctx) as (...args: any[]) => any;
+  if (spec.type === 'api_state_mapper_func_spec') {
+    return new Function(API_STATE_FUNC_ARGS, spec.body).bind(ctx);
   }
 
-  if (type === 'api_invoke_call_func_spec') {
-    return new Function('{ data, error, loading, params }', body).bind(ctx) as (...args: any[]) => any;
+  if (spec.type === 'param_builder_func_spec') {
+    return new Function(spec.args, spec.body).bind(ctx);
   }
 
-  if (type === 'raw') {
+  if (spec.type === 'api_invoke_call_func_spec') {
+    return new Function(API_STATE_FUNC_ARGS, spec.body).bind(ctx);
+  }
+
+  if (spec.type === 'raw') {
     // args should be single parameter?
-    return new Function(args, body).bind(ctx) as VersatileFunc;
+    return new Function(spec.args, spec.body).bind(ctx);
   }
 
-  if (type === 'local_state_convert_func_spec') {
-    return new Function('{ data }', body).bind(ctx) as VersatileFunc;
+  if (spec.type === 'local_state_convert_func_spec') {
+    return new Function('{ data }', spec.body).bind(ctx);
   }
 
   return noop;
