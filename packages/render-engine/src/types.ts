@@ -81,12 +81,6 @@ export type FunctionalProperty<T> = BaseComponentProperty & {
 }
 
 // todo refactor this type property spec
-export type APIStateConvertFuncSpec = BaseFunctionSpec & {
-  type: 'api_state_mapper_func_spec';
-  args: '{ data, error, loading, params }';
-};
-
-// todo refactor this type property spec
 export type SetLocalStateProperty<T> = {
   type: ComponentPropType.SetLocalStateProperty;
   stateID: string;
@@ -162,6 +156,12 @@ export type APIStateTemplate = {
   // {{ data.foo?.bar?.baz || 'someValue' }}
   template: string;
 }
+
+// todo refactor this type property spec
+export type APIStateConvertFuncSpec = BaseFunctionSpec & {
+  type: 'api_state_convertor_func_spec';
+  args: '{ data, error, loading, params }';
+};
 
 export type SerializedAPIStateAdapter = APIStateTemplate | APIStateConvertFuncSpec;
 

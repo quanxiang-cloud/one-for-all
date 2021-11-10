@@ -33,7 +33,7 @@ function instantiateFuncSpec(spec: FunctionSpecs, ctx: CTX): VersatileFunc {
     ).bind(ctx);
   }
 
-  if (spec.type === 'api_state_mapper_func_spec') {
+  if (spec.type === 'api_state_convertor_func_spec') {
     return new Function(API_STATE_FUNC_ARGS, spec.body).bind(ctx);
   }
 

@@ -153,7 +153,7 @@ const todoAppSchema: Schema = {
             stateID: 'listTodos',
             initialValue: [],
             adapter: {
-              type: 'api_state_mapper_func_spec',
+              type: 'api_state_convertor_func_spec',
               args: '{ data, error, loading, params }',
               body: `
                 return data || [];
@@ -219,7 +219,7 @@ const todoAppSchema: Schema = {
             stateID: 'todoStatus',
             initialValue: 0,
             adapter: {
-              type: 'api_state_mapper_func_spec',
+              type: 'api_state_convertor_func_spec',
               args: '{ data, error, loading, params }',
               body: `
                 return data?.all || 0;
@@ -234,7 +234,7 @@ const todoAppSchema: Schema = {
             //   return data?.working || 0;
             // },
             adapter: {
-              type: 'api_state_mapper_func_spec',
+              type: 'api_state_convertor_func_spec',
               args: '{ data, error, loading, params }',
               body: `
                 return data?.working || 0;
@@ -246,7 +246,7 @@ const todoAppSchema: Schema = {
             stateID: 'todoStatus',
             initialValue: 0,
             adapter: {
-              type: 'api_state_mapper_func_spec',
+              type: 'api_state_convertor_func_spec',
               args: '{ data, error, loading, params }',
               body: `
                 return data?.done || 0;
