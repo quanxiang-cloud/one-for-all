@@ -61,10 +61,15 @@ export type ConstantProperty = BaseComponentProperty & {
 
 export type APIDerivedProperty<T> = BaseComponentProperty & {
   type: ComponentPropType.APIDerivedProperty;
-  initialValue?: any;
+  // in the previous implementation, this property is called: initialValue,
+  // why changed to `fallback`?
+  // - please refer to API State Table, it's hard to modify the `data` in second state to initialValue
+  // - always defining a fallback value for API response is best practices,
+  //   no matter when before API result returned or encounter a API error.
+  fallback: any;
   stateID: string;
   // todo define different type adapter
-  adapter?: APIStateConvertor<T>;
+  adapter?: APIStateAdapter<T>;
 }
 
 export type LocalStateProperty<T> = BaseComponentProperty & {
@@ -79,12 +84,6 @@ export type FunctionalProperty<T> = BaseComponentProperty & {
   type: ComponentPropType.FunctionalProperty;
   func: T extends Serialized ? BaseFunctionSpec : VersatileFunc;
 }
-
-// todo refactor this type property spec
-export type APIStateConvertFuncSpec = BaseFunctionSpec & {
-  type: 'api_state_mapper_func_spec';
-  args: '{ data, error, loading, params }';
-};
 
 // todo refactor this type property spec
 export type SetLocalStateProperty<T> = {
@@ -150,11 +149,43 @@ export type CTX = {
   localStateContext: LocalStateContext;
 }
 
-export type APIStateConvertFunc = (apiState: APIState) => any;
+export type APIStateConvertor = (apiState: APIState) => any;
+
+export type APIStateTemplate = {
+  type: 'api_state_template';
+  // template for data, loading, params, error
+  // {{ data.foo }}
+  // {{ data.offset / (data.limit + data.offset) }}
+  // {{ data.list.map((item) => item.name)) }}
+  // {{ data.list.map((item) => `名称：${item.name}`)) }}
+  // {{ data.foo?.bar?.baz || 'someValue' }}
+  template: string;
+}
+
+export type LocalStateTemplate = {
+  type: 'local_state_template';
+  // template for data
+  // {{ data.foo }}
+  // {{ data.offset / (data.limit + data.offset) }}
+  // {{ data.list.map((item) => item.name)) }}
+  // {{ data.list.map((item) => `名称：${item.name}`)) }}
+  // {{ data.foo?.bar?.baz || 'someValue' }}
+  template: string;
+}
+
+// todo refactor this type property spec
+export type APIStateConvertFuncSpec = BaseFunctionSpec & {
+  type: 'api_state_convertor_func_spec';
+  args: '{ data, error, loading, params }';
+};
+
+export type SerializedAPIStateAdapter = APIStateTemplate | APIStateConvertFuncSpec;
+export type SerializedLocalStateAdapter = LocalStateTemplate | LocalStateConvertFuncSpec;
+
 export type LocalStateConvertFunc = (data: any) => any;
 
-export type APIStateConvertor<T> = T extends Serialized ? APIStateConvertFuncSpec : APIStateConvertFunc;
-export type LocalStateConvertor<T> = T extends Serialized ? LocalStateConvertFuncSpec : LocalStateConvertFunc;
+export type APIStateAdapter<T> = T extends Serialized ? SerializedAPIStateAdapter : APIStateConvertor;
+export type LocalStateConvertor<T> = T extends Serialized ? SerializedLocalStateAdapter : LocalStateConvertFunc;
 export type ParamsBuilder<T> = T extends Serialized ? ParamsBuilderFuncSpec : (...args: any[]) => RequestParams;
 export type APIInvokeCallBack<T> = T extends Serialized ? APIInvokeCallbackFuncSpec : (apiState: APIState) => void;
 

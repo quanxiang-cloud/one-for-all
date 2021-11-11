@@ -151,14 +151,18 @@ const todoAppSchema: Schema = {
           todos: {
             type: ComponentPropType.APIDerivedProperty,
             stateID: 'listTodos',
-            initialValue: [],
+            fallback: [],
             adapter: {
-              type: 'api_state_mapper_func_spec',
-              args: '{ data, error, loading, params }',
-              body: `
-                return data || [];
-              `,
+              type: 'api_state_template',
+              template: 'data',
             },
+            // adapter: {
+            //   type: 'api_state_convertor_func_spec',
+            //   args: '{ data, error, loading, params }',
+            //   body: `
+            //     return data || [];
+            //   `,
+            // },
           },
           toggleTodo: {
             type: ComponentPropType.APIInvokeProperty,
@@ -217,9 +221,9 @@ const todoAppSchema: Schema = {
           all: {
             type: ComponentPropType.APIDerivedProperty,
             stateID: 'todoStatus',
-            initialValue: 0,
+            fallback: 0,
             adapter: {
-              type: 'api_state_mapper_func_spec',
+              type: 'api_state_convertor_func_spec',
               args: '{ data, error, loading, params }',
               body: `
                 return data?.all || 0;
@@ -229,12 +233,12 @@ const todoAppSchema: Schema = {
           working: {
             type: ComponentPropType.APIDerivedProperty,
             stateID: 'todoStatus',
-            initialValue: 0,
+            fallback: 0,
             // convertor: (apiState: APIState): number => {
             //   return data?.working || 0;
             // },
             adapter: {
-              type: 'api_state_mapper_func_spec',
+              type: 'api_state_convertor_func_spec',
               args: '{ data, error, loading, params }',
               body: `
                 return data?.working || 0;
@@ -244,9 +248,9 @@ const todoAppSchema: Schema = {
           done: {
             type: ComponentPropType.APIDerivedProperty,
             stateID: 'todoStatus',
-            initialValue: 0,
+            fallback: 0,
             adapter: {
-              type: 'api_state_mapper_func_spec',
+              type: 'api_state_convertor_func_spec',
               args: '{ data, error, loading, params }',
               body: `
                 return data?.done || 0;

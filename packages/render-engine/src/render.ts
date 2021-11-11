@@ -43,7 +43,6 @@ type RenderNodeProps = {
 function renderNode({ node, ctx }: RenderNodeProps): React.ReactElement | null {
   const [loaded, setLoaded] = React.useState(false);
   const asyncModule = React.useRef<DynamicComponent | string>();
-
   const props = useConnection({ nodeProps: node.props || {}, ctx });
 
   React.useEffect(() => {

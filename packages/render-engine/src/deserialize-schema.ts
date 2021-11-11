@@ -1,8 +1,7 @@
 import { noop } from 'rxjs';
-import { CTX, LocalStateConvertFuncSpec } from '.';
+import { APIStateTemplate, CTX, LocalStateConvertFuncSpec, LocalStateTemplate } from '.';
 import {
   NodeProperty,
-  APIState,
   SchemaNode,
   NodeProperties,
   Serialized,
@@ -15,40 +14,57 @@ import {
   VersatileFunc,
 } from './types';
 
+// todo refactor this type
 type FunctionSpecs =
   APIStateConvertFuncSpec |
   ParamsBuilderFuncSpec |
   APIInvokeCallbackFuncSpec |
   LocalStateConvertFuncSpec |
-  RawFunctionSpec;
+  RawFunctionSpec |
+  APIStateTemplate |
+  LocalStateTemplate;
 
-// todo bind ctx on function
-function instantiateFuncSpec({ type, args, body }: FunctionSpecs): VersatileFunc {
-  if (type === 'api_state_mapper_func_spec') {
-    return new Function('{ data, error, loading, params }', body) as (apiState: APIState) => any;
+// todo move this to constant, and should be defined as a type
+const API_STATE_FUNC_ARGS = '{ data, error, loading, params }';
+const LOCAL_STATE_FUNC_ARGS = '{ data }';
+
+function instantiateFuncSpec(spec: FunctionSpecs, ctx: CTX): VersatileFunc {
+  if (spec.type === 'api_state_template') {
+    return new Function(
+      API_STATE_FUNC_ARGS,
+      `return ${spec.template}`,
+    ).bind(ctx);
   }
 
-  if (type === 'param_builder_func_spec') {
-    return new Function(args, body) as (...args: any[]) => any;
+  if (spec.type === 'api_state_convertor_func_spec') {
+    return new Function(API_STATE_FUNC_ARGS, spec.body).bind(ctx);
   }
 
-  if (type === 'api_invoke_call_func_spec') {
-    return new Function('{ data, error, loading, params }', body) as (...args: any[]) => any;
+  if (spec.type === 'param_builder_func_spec') {
+    return new Function(spec.args, spec.body).bind(ctx);
   }
 
-  if (type === 'raw') {
+  if (spec.type === 'api_invoke_call_func_spec') {
+    return new Function(API_STATE_FUNC_ARGS, spec.body).bind(ctx);
+  }
+
+  if (spec.type === 'raw') {
     // args should be single parameter?
-    return new Function(args, body) as VersatileFunc;
+    return new Function(spec.args, spec.body).bind(ctx);
   }
 
-  if (type === 'local_state_convert_func_spec') {
-    return new Function('{ data }', body) as VersatileFunc;
+  if (spec.type === 'local_state_convert_func_spec') {
+    return new Function(LOCAL_STATE_FUNC_ARGS, spec.body).bind(ctx);
+  }
+
+  if (spec.type === 'local_state_template') {
+    return new Function(LOCAL_STATE_FUNC_ARGS, `return ${spec.template}`).bind(ctx);
   }
 
   return noop;
 }
 
-function transformProps(props: NodeProperties<Serialized>): NodeProperties<Instantiated> {
+function transformProps(props: NodeProperties<Serialized>, ctx: CTX): NodeProperties<Instantiated> {
   return Object.entries(props).map<[string, NodeProperty<Instantiated>] | null>(([propName, propDesc]) => {
     // instantiate Array<APIInvokeProperty<T>>
     if (Array.isArray(propDesc)) {
@@ -58,9 +74,9 @@ function transformProps(props: NodeProperties<Serialized>): NodeProperties<Insta
           return {
             type,
             stateID,
-            paramsBuilder: paramsBuilder ? instantiateFuncSpec(paramsBuilder) : undefined,
-            onSuccess: onSuccess ? instantiateFuncSpec(onSuccess) : undefined,
-            onError: onError ? instantiateFuncSpec(onError) : undefined,
+            paramsBuilder: paramsBuilder ? instantiateFuncSpec(paramsBuilder, ctx) : undefined,
+            onSuccess: onSuccess ? instantiateFuncSpec(onSuccess, ctx) : undefined,
+            onError: onError ? instantiateFuncSpec(onError, ctx) : undefined,
           };
         }),
       ];
@@ -73,7 +89,7 @@ function transformProps(props: NodeProperties<Serialized>): NodeProperties<Insta
     if (propDesc.type === 'api_derived_property') {
       return [propName, {
         ...propDesc,
-        adapter: propDesc.adapter ? instantiateFuncSpec(propDesc.adapter) : undefined,
+        adapter: propDesc.adapter ? instantiateFuncSpec(propDesc.adapter, ctx) : undefined,
       }];
     }
 
@@ -82,7 +98,7 @@ function transformProps(props: NodeProperties<Serialized>): NodeProperties<Insta
         propName,
         {
           ...propDesc,
-          adapter: propDesc.adapter ? instantiateFuncSpec(propDesc.adapter) : undefined,
+          adapter: propDesc.adapter ? instantiateFuncSpec(propDesc.adapter, ctx) : undefined,
         },
       ];
     }
@@ -96,7 +112,7 @@ function transformProps(props: NodeProperties<Serialized>): NodeProperties<Insta
             type: 'raw',
             args: propDesc.func.args,
             body: propDesc.func.body,
-          }),
+          }, ctx),
         },
       ];
     }
@@ -104,9 +120,9 @@ function transformProps(props: NodeProperties<Serialized>): NodeProperties<Insta
     if (propDesc.type === 'api_invoke_property') {
       return [propName, {
         ...propDesc,
-        paramsBuilder: propDesc.paramsBuilder ? instantiateFuncSpec(propDesc.paramsBuilder) : undefined,
-        onSuccess: propDesc.onSuccess ? instantiateFuncSpec(propDesc.onSuccess) : undefined,
-        onError: propDesc.onError ? instantiateFuncSpec(propDesc.onError) : undefined,
+        paramsBuilder: propDesc.paramsBuilder ? instantiateFuncSpec(propDesc.paramsBuilder, ctx) : undefined,
+        onSuccess: propDesc.onSuccess ? instantiateFuncSpec(propDesc.onSuccess, ctx) : undefined,
+        onError: propDesc.onError ? instantiateFuncSpec(propDesc.onError, ctx) : undefined,
       }];
     }
 
@@ -119,13 +135,13 @@ function transformProps(props: NodeProperties<Serialized>): NodeProperties<Insta
   }, {});
 }
 
-function transformNode(node: SchemaNode<Serialized>): SchemaNode<Instantiated> {
-  const children = (node.children || []).map((n) => transformNode(n));
+function transformNode(node: SchemaNode<Serialized>, ctx: CTX): SchemaNode<Instantiated> {
+  const children = (node.children || []).map((n) => transformNode(n, ctx));
 
   return {
     ...node,
     children,
-    props: transformProps(node.props || {}),
+    props: transformProps(node.props || {}, ctx),
   };
 }
 
@@ -136,7 +152,7 @@ type DeserializeSchema = {
 
 export default function deserializeSchema({ node, ctx }: DeserializeSchema): SchemaNode<Instantiated> | null {
   try {
-    return transformNode(node);
+    return transformNode(node, ctx);
   } catch (error) {
     console.error(error);
     return null;
