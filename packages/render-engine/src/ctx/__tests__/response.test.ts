@@ -3,10 +3,10 @@ import mockXHR, { sequence } from 'xhr-mock';
 import petStoreSpec from '../spec-interpreter/__tests__/fixtures/petstore-spec';
 
 import SpecInterpreter from '../spec-interpreter';
-import type { RequestParams } from '../types';
+import type { RequestParams } from '../../types';
 import { interval, map, pairwise, Subject, take, tap } from 'rxjs';
 import getResponseState$, { http, initialState } from '../response';
-import { APIState } from '../types';
+import { APIState } from '../../types';
 
 const specInterpreter = new SpecInterpreter(petStoreSpec);
 

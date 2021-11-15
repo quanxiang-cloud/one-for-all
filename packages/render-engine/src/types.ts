@@ -1,5 +1,6 @@
 import { OpenAPIV3 } from 'openapi-types';
 import { BehaviorSubject, Observable } from 'rxjs';
+import NodeInternalStates from './ctx/node-internal-states';
 
 export type Serialized = 'Serialized';
 export type Instantiated = 'Instantiated';
@@ -25,42 +26,40 @@ export type APIState = {
   error?: Error;
 };
 
-export type LocalState = {
-  data?: any;
-}
-
-export const enum ComponentPropType {
+export const enum NodePropType {
   ConstantProperty = 'constant_property',
   APIDerivedProperty = 'api_derived_property',
-  LocalStateProperty = 'local_state_property',
+  SharedStateProperty = 'shared_state_property',
   FunctionalProperty = 'functional_property',
+  SharedStateMutationProperty = 'shared_state_mutation_property',
+  NodeStateProperty = 'node_state_property',
 
-  SetLocalStateProperty = 'set_local_state_property',
   APIInvokeProperty = 'api_invoke_property',
 }
 
 export type NodeProperty<T> =
   ConstantProperty |
   APIDerivedProperty<T> |
-  LocalStateProperty<T> |
+  SharedStateProperty<T> |
   FunctionalProperty<T> |
-  SetLocalStateProperty<T> |
-  APIInvokeProperty<T> |
-  Array<APIInvokeProperty<T>>;
+  SharedStateMutationProperty<T> |
+  NodeStateProperty<T> |
+  APIInvokeProperty<T>;
+  // Array<APIInvokeProperty<T>>;
 
 export type NodeProperties<T> = Record<string, NodeProperty<T>>;
 
-type BaseComponentProperty = {
-  type: ComponentPropType;
+type BaseNodeProperty = {
+  type: NodePropType;
 }
 
-export type ConstantProperty = BaseComponentProperty & {
-  type: ComponentPropType.ConstantProperty;
+export type ConstantProperty = BaseNodeProperty & {
+  type: NodePropType.ConstantProperty;
   value: any;
 }
 
-export type APIDerivedProperty<T> = BaseComponentProperty & {
-  type: ComponentPropType.APIDerivedProperty;
+export type APIDerivedProperty<T> = BaseNodeProperty & {
+  type: NodePropType.APIDerivedProperty;
   // in the previous implementation, this property is called: initialValue,
   // why changed to `fallback`?
   // - please refer to API State Table, it's hard to modify the `data` in second state to initialValue
@@ -72,34 +71,42 @@ export type APIDerivedProperty<T> = BaseComponentProperty & {
   adapter?: APIStateAdapter<T>;
 }
 
-export type LocalStateProperty<T> = BaseComponentProperty & {
-  type: ComponentPropType.LocalStateProperty;
+export type SharedStateProperty<T> = BaseNodeProperty & {
+  type: NodePropType.SharedStateProperty;
   // this is not a good design
   stateID: string;
   // todo define different type adapter
-  adapter?: LocalStateConvertor<T>;
+  adapter?: RawStateAdapter<T>;
+  fallback: any;
 }
 
-export type FunctionalProperty<T> = BaseComponentProperty & {
-  type: ComponentPropType.FunctionalProperty;
+export type FunctionalProperty<T> = BaseNodeProperty & {
+  type: NodePropType.FunctionalProperty;
   func: T extends Serialized ? BaseFunctionSpec : VersatileFunc;
 }
 
 // todo refactor this type property spec
-export type SetLocalStateProperty<T> = {
-  type: ComponentPropType.SetLocalStateProperty;
+export type SharedStateMutationProperty<T> = {
+  type: NodePropType.SharedStateMutationProperty;
   stateID: string;
-  callbacks?: Array<() => void>;
+  adapter?: T extends Serialized ? RawFunctionSpec : VersatileFunc;
 }
 
 // todo refactor this type property spec
 export type APIInvokeProperty<T> = {
-  type: ComponentPropType.APIInvokeProperty;
+  type: NodePropType.APIInvokeProperty;
   stateID: string;
   // the required return type is too complex
   paramsBuilder?: ParamsBuilder<T>;
   onSuccess?: APIInvokeCallBack<T>;
   onError?: APIInvokeCallBack<T>;
+}
+
+export type NodeStateProperty<T> = BaseNodeProperty & {
+  type: NodePropType.NodeStateProperty;
+  nodeKey: string;
+  fallback: any;
+  adapter?: RawStateAdapter<T>;
 }
 
 type BaseFunctionSpec = {
@@ -121,10 +128,10 @@ export type APIInvokeCallbackFuncSpec = BaseFunctionSpec & {
   args: '{ data, error, loading, params }';
 }
 
-export type LocalStateConvertFuncSpec = BaseFunctionSpec & {
-  type: 'local_state_convert_func_spec';
+export type RawDataConvertorSpec = BaseFunctionSpec & {
+  type: 'raw_data_convert_func_spec';
   // `data` is unacceptable!
-  args: '{ data }';
+  args: 'data';
 }
 
 export type RunParam = {
@@ -133,23 +140,25 @@ export type RunParam = {
   onError?: APIInvokeCallBack<Instantiated>;
 }
 
-export interface APIStateContext {
+export interface APIStates {
   runAction: (stateID: string, runParam?: RunParam) => void;
   refresh: (stateID: string) => void;
   getState: (stateID: string) => Observable<APIState>;
   getAction: (stateID: string) => (runParam?: RunParam) => void;
 }
 
-export interface LocalStateContext {
+export interface SharedStates {
   getState$: (stateID: string) => BehaviorSubject<any>;
+  initContext: (ctx: CTX) => void;
 }
 
 export type CTX = {
-  apiStateContext: APIStateContext;
-  localStateContext: LocalStateContext;
+  apiStates: APIStates;
+  sharedStates: SharedStates;
+  nodeInternalStates: NodeInternalStates;
 }
 
-export type APIStateConvertor = (apiState: APIState) => any;
+export type APIStateConvertor = (state: APIState) => any;
 
 export type APIStateTemplate = {
   type: 'api_state_template';
@@ -162,15 +171,15 @@ export type APIStateTemplate = {
   template: string;
 }
 
-export type LocalStateTemplate = {
-  type: 'local_state_template';
+export type ExpressionStatement = {
+  type: 'expression_statement';
   // template for data
   // {{ data.foo }}
   // {{ data.offset / (data.limit + data.offset) }}
   // {{ data.list.map((item) => item.name)) }}
   // {{ data.list.map((item) => `名称：${item.name}`)) }}
   // {{ data.foo?.bar?.baz || 'someValue' }}
-  template: string;
+  expression: string;
 }
 
 // todo refactor this type property spec
@@ -180,12 +189,12 @@ export type APIStateConvertFuncSpec = BaseFunctionSpec & {
 };
 
 export type SerializedAPIStateAdapter = APIStateTemplate | APIStateConvertFuncSpec;
-export type SerializedLocalStateAdapter = LocalStateTemplate | LocalStateConvertFuncSpec;
+export type SerializedRawDataAdapter = ExpressionStatement | RawDataConvertorSpec;
 
-export type LocalStateConvertFunc = (data: any) => any;
+export type RawDataConvertor = (data: any) => any;
 
 export type APIStateAdapter<T> = T extends Serialized ? SerializedAPIStateAdapter : APIStateConvertor;
-export type LocalStateConvertor<T> = T extends Serialized ? SerializedLocalStateAdapter : LocalStateConvertFunc;
+export type RawStateAdapter<T> = T extends Serialized ? SerializedRawDataAdapter : RawDataConvertor;
 export type ParamsBuilder<T> = T extends Serialized ? ParamsBuilderFuncSpec : (...args: any[]) => RequestParams;
 export type APIInvokeCallBack<T> = T extends Serialized ? APIInvokeCallbackFuncSpec : (apiState: APIState) => void;
 
@@ -194,7 +203,8 @@ export type VersatileFunc = (...args: any) => any;
 interface BaseNode<T> {
   key: string;
   type: 'html-element' | 'react-component';
-  props?: NodeProperties<T>;
+  props: NodeProperties<T>;
+  supportStateExposure?: boolean;
   children?: BaseNode<T>[];
 }
 
@@ -222,12 +232,12 @@ export type APIStateSpec = Record<string, {
   [key: string]: any;
 }>;
 
-export type LocalStateSpec = Record<string, { initial: any; }>;
+export type SharedStatesSpec = Record<string, { initial: any; }>;
 
 export type Schema = {
   node: SchemaNode<Serialized>;
   apiStateSpec: APIStateSpec;
-  localStateSpec: LocalStateSpec;
+  sharedStatesSpec: SharedStatesSpec;
 }
 
 export type InstantiatedNode = SchemaNode<Instantiated>;

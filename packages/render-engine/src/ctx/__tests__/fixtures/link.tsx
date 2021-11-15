@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import APIStateHub from '../../api-state-hub';
-import { APIInvokeProperty, APIDerivedProperty, Instantiated, CTX } from '../../types';
-import useConnection from '../../use-connection';
+import { SchemaNode } from '../../..';
+import { APIInvokeProperty, APIDerivedProperty, Instantiated, CTX } from '../../../types';
+import useInstantiateProps from '../../../use-instantiate-props';
 
 type Props = {
   nodeProps: Record<string, APIInvokeProperty<Instantiated> | APIDerivedProperty<Instantiated>>;
@@ -9,7 +9,13 @@ type Props = {
 }
 
 export default function Link({ nodeProps, ctx }: Props): JSX.Element {
-  const { foo, bar, onFetch } = useConnection({ nodeProps, ctx });
+  const node: SchemaNode<Instantiated> = {
+    key: 'link',
+    type: 'html-element',
+    props: nodeProps,
+    name: 'div',
+  };
+  const { foo, bar, onFetch } = useInstantiateProps(node, ctx);
 
   useEffect(() => {
     onFetch();

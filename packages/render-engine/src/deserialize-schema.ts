@@ -1,5 +1,6 @@
 import { noop } from 'rxjs';
-import { APIStateTemplate, CTX, LocalStateConvertFuncSpec, LocalStateTemplate } from '.';
+import { logger } from '@ofa/utils';
+
 import {
   NodeProperty,
   SchemaNode,
@@ -9,9 +10,13 @@ import {
   APIStateConvertFuncSpec,
   ParamsBuilderFuncSpec,
   APIInvokeCallbackFuncSpec,
-  ComponentPropType,
+  NodePropType,
   RawFunctionSpec,
   VersatileFunc,
+  APIStateTemplate,
+  CTX,
+  RawDataConvertorSpec,
+  ExpressionStatement,
 } from './types';
 
 // todo refactor this type
@@ -19,14 +24,14 @@ type FunctionSpecs =
   APIStateConvertFuncSpec |
   ParamsBuilderFuncSpec |
   APIInvokeCallbackFuncSpec |
-  LocalStateConvertFuncSpec |
+  RawDataConvertorSpec |
   RawFunctionSpec |
   APIStateTemplate |
-  LocalStateTemplate;
+  ExpressionStatement;
 
 // todo move this to constant, and should be defined as a type
 const API_STATE_FUNC_ARGS = '{ data, error, loading, params }';
-const LOCAL_STATE_FUNC_ARGS = '{ data }';
+const LOCAL_STATE_FUNC_ARGS = 'data';
 
 function instantiateFuncSpec(spec: FunctionSpecs, ctx: CTX): VersatileFunc {
   if (spec.type === 'api_state_template') {
@@ -53,12 +58,12 @@ function instantiateFuncSpec(spec: FunctionSpecs, ctx: CTX): VersatileFunc {
     return new Function(spec.args, spec.body).bind(ctx);
   }
 
-  if (spec.type === 'local_state_convert_func_spec') {
+  if (spec.type === 'raw_data_convert_func_spec') {
     return new Function(LOCAL_STATE_FUNC_ARGS, spec.body).bind(ctx);
   }
 
-  if (spec.type === 'local_state_template') {
-    return new Function(LOCAL_STATE_FUNC_ARGS, `return ${spec.template}`).bind(ctx);
+  if (spec.type === 'expression_statement') {
+    return new Function(LOCAL_STATE_FUNC_ARGS, `return ${spec.expression}`).bind(ctx);
   }
 
   return noop;
@@ -67,20 +72,20 @@ function instantiateFuncSpec(spec: FunctionSpecs, ctx: CTX): VersatileFunc {
 function transformProps(props: NodeProperties<Serialized>, ctx: CTX): NodeProperties<Instantiated> {
   return Object.entries(props).map<[string, NodeProperty<Instantiated>] | null>(([propName, propDesc]) => {
     // instantiate Array<APIInvokeProperty<T>>
-    if (Array.isArray(propDesc)) {
-      return [
-        propName,
-        propDesc.map(({ type, stateID, paramsBuilder, onSuccess, onError }) => {
-          return {
-            type,
-            stateID,
-            paramsBuilder: paramsBuilder ? instantiateFuncSpec(paramsBuilder, ctx) : undefined,
-            onSuccess: onSuccess ? instantiateFuncSpec(onSuccess, ctx) : undefined,
-            onError: onError ? instantiateFuncSpec(onError, ctx) : undefined,
-          };
-        }),
-      ];
-    }
+    // if (Array.isArray(propDesc)) {
+    //   return [
+    //     propName,
+    //     propDesc.map(({ type, stateID, paramsBuilder, onSuccess, onError }) => {
+    //       return {
+    //         type,
+    //         stateID,
+    //         paramsBuilder: paramsBuilder ? instantiateFuncSpec(paramsBuilder, ctx) : undefined,
+    //         onSuccess: onSuccess ? instantiateFuncSpec(onSuccess, ctx) : undefined,
+    //         onError: onError ? instantiateFuncSpec(onError, ctx) : undefined,
+    //       };
+    //     }),
+    //   ];
+    // }
 
     if (propDesc.type === 'constant_property') {
       return [propName, propDesc];
@@ -93,7 +98,7 @@ function transformProps(props: NodeProperties<Serialized>, ctx: CTX): NodeProper
       }];
     }
 
-    if (propDesc.type === ComponentPropType.LocalStateProperty) {
+    if (propDesc.type === NodePropType.SharedStateProperty) {
       return [
         propName,
         {
@@ -103,16 +108,29 @@ function transformProps(props: NodeProperties<Serialized>, ctx: CTX): NodeProper
       ];
     }
 
-    if (propDesc.type === ComponentPropType.FunctionalProperty) {
+    if (propDesc.type === NodePropType.FunctionalProperty) {
       return [
         propName,
         {
-          type: ComponentPropType.FunctionalProperty,
+          type: NodePropType.FunctionalProperty,
           func: instantiateFuncSpec({
             type: 'raw',
             args: propDesc.func.args,
             body: propDesc.func.body,
           }, ctx),
+        },
+      ];
+    }
+
+    if (propDesc.type === NodePropType.NodeStateProperty) {
+      return [
+        propName,
+        {
+          ...propDesc,
+          type: propDesc.type,
+          nodeKey: propDesc.nodeKey,
+          fallback: propDesc.fallback,
+          adapter: instantiateFuncSpec(propDesc.adapter || { type: 'raw', args: 'v', body: 'return v' }, ctx),
         },
       ];
     }
@@ -125,6 +143,19 @@ function transformProps(props: NodeProperties<Serialized>, ctx: CTX): NodeProper
         onError: propDesc.onError ? instantiateFuncSpec(propDesc.onError, ctx) : undefined,
       }];
     }
+
+    if (propDesc.type === NodePropType.SharedStateMutationProperty) {
+      return [
+        propName,
+        {
+          type: propDesc.type,
+          stateID: propDesc.stateID,
+          adapter: instantiateFuncSpec(propDesc.adapter || { type: 'raw', args: 'v', body: 'return v' }, ctx),
+        },
+      ];
+    }
+
+    logger.warn('unsupported property:', propDesc);
 
     return null;
   }).filter((pair): pair is [string, NodeProperty<Instantiated>] => {
@@ -154,7 +185,7 @@ export default function deserializeSchema({ node, ctx }: DeserializeSchema): Sch
   try {
     return transformNode(node, ctx);
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return null;
   }
 }

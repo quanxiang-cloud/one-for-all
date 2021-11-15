@@ -1,6 +1,6 @@
 import type { OpenAPIV3 } from 'openapi-types';
 
-import type { RequestConfig, RequestParams } from '../types';
+import type { RequestConfig, RequestParams } from '../../types';
 
 type OperationSpec = {
   path: string;

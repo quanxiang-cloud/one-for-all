@@ -1,9 +1,11 @@
 import { OpenAPIV3 } from 'openapi-types';
+
 import renderSchema from './render';
 import deserializeSchema from './deserialize-schema';
 import { CTX, Schema } from './types';
-import APIStateHub from './api-state-hub';
-import { LocalStateHub } from './use-local-state';
+import APIStateHub from './ctx/api-state-hub';
+import SharedStatesHub from './ctx/shared-states-hub';
+import NodeInternalStates from './ctx/node-internal-states';
 
 export * from './types';
 
@@ -13,25 +15,27 @@ type RenderSchemaParams = {
   apiDoc: OpenAPIV3.Document;
 }
 
-function Render({ schema, rootEle, apiDoc }: RenderSchemaParams): void {
+function Render({ schema, rootEle, apiDoc }: RenderSchemaParams): CTX {
   const apiStateHub = new APIStateHub(apiDoc, schema.apiStateSpec);
-  const localStateHub = new LocalStateHub(schema.localStateSpec);
-
-  apiStateHub.initContext(localStateHub);
-  localStateHub.initContext(apiStateHub);
+  const sharedStatesHub = new SharedStatesHub(schema.sharedStatesSpec);
 
   const ctx: CTX = {
-    apiStateContext: apiStateHub,
-    localStateContext: localStateHub,
+    apiStates: apiStateHub,
+    sharedStates: sharedStatesHub,
+    nodeInternalStates: new NodeInternalStates(),
   };
+
+  apiStateHub.initContext(ctx);
+  sharedStatesHub.initContext(ctx);
 
   const instantiatedNode = deserializeSchema({ node: schema.node, ctx });
   if (!instantiatedNode) {
     // TODO: paint error
-    return;
+    return ctx;
   }
 
   renderSchema({ node: instantiatedNode, ctx, rootEle });
+  return ctx;
 }
 
 export default Render;

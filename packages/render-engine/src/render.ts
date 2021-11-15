@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
-
 import { logger } from '@ofa/utils';
 
 import {
@@ -16,7 +15,7 @@ import {
   InstantiatedNode,
   SchemaNode,
 } from './types';
-import useConnection from './use-connection';
+import useInstantiateProps from './use-instantiate-props';
 
 type RenderNodesProps = {
   nodes: SchemaNode<Instantiated>[];
@@ -36,16 +35,25 @@ function renderChildren({ nodes, ctx }: RenderNodesProps): React.FunctionCompone
 }
 
 type RenderNodeProps = {
-  node: SchemaNode<Instantiated>
+  node: SchemaNode<Instantiated>;
   ctx: CTX;
 }
 
 function renderNode({ node, ctx }: RenderNodeProps): React.ReactElement | null {
   const [loaded, setLoaded] = React.useState(false);
   const asyncModule = React.useRef<DynamicComponent | string>();
-  const props = useConnection({ nodeProps: node.props || {}, ctx });
+  const props = useInstantiateProps(node, ctx);
 
-  React.useEffect(() => {
+  // implement didMountHook and willUnmount here
+  // useEffect(() => {
+  //   if (loaded) {
+  //     setTimeout(() => node.didMount?.call(ctx), 0);
+  //   }
+
+  //   return () => node.willUnmount?.call(ctx);
+  // }, [loaded]);
+
+  useEffect(() => {
     if (node.type === 'html-element') {
       asyncModule.current = node.name;
       setLoaded(true);

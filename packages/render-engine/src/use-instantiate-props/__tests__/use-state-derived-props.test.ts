@@ -2,11 +2,13 @@
 import mockXHR from 'xhr-mock';
 import { renderHook } from '@testing-library/react-hooks/pure';
 
-import petStoreSpec from '../spec-interpreter/__tests__/fixtures/petstore-spec';
+import petStoreSpec from '../../ctx/spec-interpreter/__tests__/fixtures/petstore-spec';
 import useAPIStateDerivedProps from '../use-api-state-derived-props';
-import APIStateHub from '../api-state-hub';
-import { LocalStateHub } from '../use-local-state';
-import { APIDerivedProperty, ComponentPropType, CTX, Instantiated } from '../types';
+import APIStateHub from '../../ctx/api-state-hub';
+import SharedStatesHub from '../../ctx/shared-states-hub';
+import { APIDerivedProperty, ComponentPropType, CTX, Instantiated } from '../../types';
+import NodeInternalStates from '../../ctx/node-internal-states';
+import { SchemaNode } from '../..';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
@@ -17,8 +19,9 @@ const stateIDMap = {
 };
 const apiStateHub = new APIStateHub(petStoreSpec, stateIDMap);
 const ctx: CTX = {
-  apiStateContext: apiStateHub,
-  localStateContext: new LocalStateHub({}),
+  apiStates: apiStateHub,
+  sharedStates: new SharedStatesHub({}),
+  nodeInternalStates: new NodeInternalStates(),
 };
 
 test('expect_resolve_initial_value', () => {
@@ -39,7 +42,14 @@ test('expect_resolve_initial_value', () => {
     },
   };
 
-  const { result, unmount } = renderHook(() => useAPIStateDerivedProps({ ctx, props }));
+  const node: SchemaNode<Instantiated> = {
+    key: 'some_key',
+    props: props,
+    type: 'html-element',
+    name: 'div',
+  };
+
+  const { result, unmount } = renderHook(() => useAPIStateDerivedProps(node, ctx));
   expect(result.current).toMatchObject({ foo: { foo: 123 }, bar: { bar: 456 } });
   expect(result.all.length).toBe(1);
   expect(convertorFn).not.toBeCalled();
