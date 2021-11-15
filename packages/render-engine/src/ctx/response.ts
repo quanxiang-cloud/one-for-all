@@ -1,13 +1,8 @@
 import { ajax, AjaxRequest } from 'rxjs/ajax';
-import { of, Observable, BehaviorSubject } from 'rxjs';
+import { of, Observable, BehaviorSubject, noop } from 'rxjs';
 import { map, switchMap, catchError, share, filter } from 'rxjs/operators';
 
-import type { RequestConfig } from './types';
-
-import { APIState } from './types';
-
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-const noop = (): void => {};
+import type { RequestConfig, APIState } from '../types';
 
 function requestConfigToAjaxRequest(config: RequestConfig): AjaxRequest {
   // TODO: fix me

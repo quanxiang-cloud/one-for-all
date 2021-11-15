@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import { combineLatest, map, Observable, skip } from 'rxjs';
 
-import { APIDerivedProperty, Instantiated, APIStateConvertor, APIState, CTX } from './types';
-
-type UseAPIProps = {
-  props: Record<string, APIDerivedProperty<Instantiated>>;
-  ctx: CTX;
-}
+import {
+  APIDerivedProperty,
+  APIState,
+  APIStateConvertor,
+  NodePropType,
+  CTX,
+  Instantiated,
+  SchemaNode,
+} from '../types';
 
 function convertResult(
   result: Record<string, APIState>,
@@ -29,18 +32,20 @@ function convertResult(
   }, {});
 }
 
-export default function useAPIStateDerivedProps({ props, ctx }: UseAPIProps): Record<string, any> {
-  const initialState: Record<string, any> = {};
-  const mappers: Record<string, APIStateConvertor | undefined> = {};
+function useAPIStateDerivedProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, any> {
+  const adapters: Record<string, APIStateConvertor | undefined> = {};
   const resList$: Record<string, Observable<APIState>> = {};
+  const fallbacks: Record<string, any> = {};
 
-  Object.entries(props).forEach(([propName, { fallback: initialValue, adapter: mapper, stateID }]) => {
-    initialState[propName] = initialValue;
-    mappers[propName] = mapper;
-    resList$[propName] = ctx.apiStateContext.getState(stateID);
+  Object.entries(node.props).filter((pair): pair is [string, APIDerivedProperty<Instantiated>] => {
+    return pair[1].type === NodePropType.APIDerivedProperty;
+  }).forEach(([propName, { fallback, adapter, stateID }]) => {
+    fallbacks[propName] = fallback;
+    adapters[propName] = adapter;
+    resList$[propName] = ctx.apiStates.getState(stateID);
   });
 
-  const [state, setState] = useState<Record<string, any>>(initialState);
+  const [state, setState] = useState<Record<string, any>>(fallbacks);
 
   useEffect(() => {
     if (!Object.keys(resList$).length) {
@@ -51,13 +56,13 @@ export default function useAPIStateDerivedProps({ props, ctx }: UseAPIProps): Re
       skip(1),
       map((result) => {
         return Object.entries(result).reduce<Record<string, any>>((acc, [key, state]) => {
-          state.data = state.data ?? initialState[key];
+          state.data = state.data ?? fallbacks[key];
           acc[key] = state;
 
           return acc;
         }, {});
       }),
-      map((result) => convertResult(result, mappers)),
+      map((result) => convertResult(result, adapters)),
     ).subscribe(setState);
 
     // todo remove state from stateHub when last subscriber unsubscribed
@@ -66,3 +71,5 @@ export default function useAPIStateDerivedProps({ props, ctx }: UseAPIProps): Re
 
   return state;
 }
+
+export default useAPIStateDerivedProps;

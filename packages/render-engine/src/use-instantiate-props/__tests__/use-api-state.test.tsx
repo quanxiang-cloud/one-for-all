@@ -3,22 +3,24 @@ import { fireEvent, render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import mockXHR from 'xhr-mock';
 
-import petStoreSpec from '../spec-interpreter/__tests__/fixtures/petstore-spec';
-import { APIInvokeProperty, APIDerivedProperty, Instantiated, APIStateSpec, CTX, ComponentPropType } from '../types';
-import APIStateHub from '../api-state-hub';
-import Link from './fixtures/link';
-import { LocalStateHub } from '../use-local-state';
+import petStoreSpec from '../../ctx/spec-interpreter/__tests__/fixtures/petstore-spec';
+import { APIInvokeProperty, APIDerivedProperty, Instantiated, APIStateSpec, CTX, ComponentPropType } from '../../types';
+import APIStateHub from '../../ctx/api-state-hub';
+import Link from '../../ctx/__tests__/fixtures/link';
+import SharedStatesHub from '../../ctx/shared-states-hub';
+import NodeInternalStates from '../../ctx/node-internal-states';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
 
 const stateIDMap: APIStateSpec = { stream_findPetsByTags: { operationID: 'findPetsByTags' } };
 const apiStateHub = new APIStateHub(petStoreSpec, stateIDMap);
-apiStateHub.initContext(new LocalStateHub({}));
 const ctx: CTX = {
-  apiStateContext: apiStateHub,
-  localStateContext: new LocalStateHub({}),
+  apiStates: apiStateHub,
+  sharedStates: new SharedStatesHub({}),
+  nodeInternalStates: new NodeInternalStates(),
 };
+apiStateHub.initContext(ctx);
 
 test('Link_changes_the_class_when_hovered', async () => {
   const mockRes = { data: { id: 'abc-123' } };

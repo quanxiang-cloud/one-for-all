@@ -4,7 +4,9 @@ import petStoreSpec from '../spec-interpreter/__tests__/fixtures/petstore-spec';
 
 import APIStateHub from '../api-state-hub';
 import { initialState } from '../response';
-import { LocalStateHub } from '../use-local-state';
+import SharedStatesHub from '../shared-states-hub';
+import { CTX } from '../../types';
+import NodeInternalStates from '../node-internal-states';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
@@ -74,8 +76,13 @@ test('should_resolve_value', (done) => {
   });
 
   const apiStateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
+  const ctx: CTX = {
+    apiStates: apiStateHub,
+    sharedStates: new SharedStatesHub({}),
+    nodeInternalStates: new NodeInternalStates(),
+  };
   // todo this must be call before using apiStateHub, this is not a good design
-  apiStateHub.initContext(new LocalStateHub({}));
+  apiStateHub.initContext(ctx);
 
   const [state$, { run }] = apiStateHub.getStream('stream_findPetsByTags');
 
@@ -84,7 +91,7 @@ test('should_resolve_value', (done) => {
 
   run({
     onSuccess: ({ data, error, loading, params }) => {
-      // expect(ctx.apiStateContext).toEqual(apiStateHub);
+      // expect(ctx.apiStates).toEqual(apiStateHub);
       expect(fn).toBeCalledWith({
         data: data,
         error: error,

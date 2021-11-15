@@ -1,6 +1,6 @@
 import spec from './fixtures/petstore-spec';
 import SpecInterpreter from '..';
-import { RequestParams } from '../../types';
+import { RequestParams } from '../../../types';
 
 const operations: Record<string, RequestParams> = {
   updatePet: {

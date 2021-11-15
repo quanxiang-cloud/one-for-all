@@ -4,9 +4,8 @@ import { OpenAPIV3 } from 'openapi-types';
 
 import SpecInterpreter from './spec-interpreter';
 
-import type { APIStateContext, APIState, APIStateSpec, CTX, RequestParams, RunParam } from './types';
+import type { APIStates, APIState, APIStateSpec, CTX, RequestParams, RunParam } from '../types';
 import getResponseState$ from './response';
-import { LocalStateHub } from './use-local-state';
 
 type StreamActions = {
   run: (runParam?: RunParam) => void;
@@ -28,7 +27,7 @@ function executeCallback(ctx: CTX, state: APIState, runParams?: RunParam): void 
   runParams?.onSuccess?.call(ctx, { ...state, ctx });
 }
 
-export default class APIStateHub implements APIStateContext {
+export default class APIStateHub implements APIStates {
   specInterpreter: SpecInterpreter;
   // map of stateID and operationID
   apiStateSpec: APIStateSpec;
@@ -40,11 +39,8 @@ export default class APIStateHub implements APIStateContext {
     this.apiStateSpec = apiStateSpec;
   }
 
-  initContext(localStateContext: LocalStateHub): void {
-    this.ctx = {
-      apiStateContext: this,
-      localStateContext: localStateContext,
-    };
+  initContext(ctx: CTX): void {
+    this.ctx = ctx;
   }
 
   getState(stateID: string): Observable<APIState> {
