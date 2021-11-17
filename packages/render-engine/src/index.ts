@@ -1,4 +1,4 @@
-import { Builder } from '@ofa/request-builder';
+import { Adapter } from '@ofa/api-spec-adapter';
 
 import renderSchema from './render';
 import deserializeSchema from './deserialize-schema';
@@ -12,11 +12,11 @@ export * from './types';
 type RenderSchemaParams = {
   schema: Schema;
   rootEle: Element;
-  builder: Builder;
+  apiSpecAdapter: Adapter;
 }
 
-function Render({ schema, rootEle, builder }: RenderSchemaParams): CTX {
-  const apiStateHub = new APIStateHub(builder, schema.apiStateSpec);
+function Render({ schema, rootEle, apiSpecAdapter }: RenderSchemaParams): CTX {
+  const apiStateHub = new APIStateHub(apiSpecAdapter, schema.apiStateSpec);
   const sharedStatesHub = new SharedStatesHub(schema.sharedStatesSpec);
 
   const ctx: CTX = {

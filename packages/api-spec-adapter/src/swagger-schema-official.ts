@@ -146,6 +146,7 @@ export interface Response {
   description: string;
   schema?: Schema | undefined;
   headers?: { [headerName: string]: Header } | undefined;
+  // eslint-disable-next-line @typescript-eslint/ban-types
   examples?: { [exampleName: string]: {} } | undefined;
 }
 

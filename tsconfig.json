@@ -69,7 +69,7 @@
       "path": "./packages/render-engine"
     },
     {
-      "path": "./packages/request-builder"
+      "path": "./packages/api-spec-adapter"
     },
     {
       "path": "./packages/utils"

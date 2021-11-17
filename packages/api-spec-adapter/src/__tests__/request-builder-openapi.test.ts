@@ -1,5 +1,5 @@
 import spec from './fixtures/petstore-spec';
-import RequestBuilderOpenAPI from '../request-builder-openapi';
+import SwaggerAdapter from '../adapter-swagger';
 import { RequestParams } from '../types';
 
 const actions: Array<{ path: string; method: string; requestParams?: RequestParams; }> = [
@@ -24,7 +24,7 @@ const actions: Array<{ path: string; method: string; requestParams?: RequestPara
 ];
 
 test('expect_specInterpreter_to_match_snapshots', () => {
-  const builder = new RequestBuilderOpenAPI(spec);
+  const builder = new SwaggerAdapter(spec);
   actions.forEach(({ path, method, requestParams }) => {
     expect(builder.build(path, method, requestParams)).toMatchSnapshot();
   });

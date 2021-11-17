@@ -1,9 +1,9 @@
 import type { Spec, Operation } from './swagger-schema-official';
 
-import type { Builder, AjaxConfig, RequestParams } from './types';
+import type { Adapter, AjaxConfig, RequestParams } from './types';
 import { indexOperation } from './utils';
 
-export default class RequestBuilderOpenAPI implements Builder {
+export default class SwaggerAdapter implements Adapter {
   operationMap: Record<string, Operation>;
 
   constructor(spec: Spec) {

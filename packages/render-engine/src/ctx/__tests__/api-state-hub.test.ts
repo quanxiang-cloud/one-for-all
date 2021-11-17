@@ -1,5 +1,5 @@
 import mockXHR, { delay } from 'xhr-mock';
-import { Builder } from '@ofa/request-builder';
+import { Adapter } from '@ofa/api-spec-adapter';
 
 import APIStateHub from '../api-state-hub';
 import { initialState } from '../http/response';
@@ -11,7 +11,7 @@ import { APIStateSpec } from '../..';
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
 
-const builder: Builder = {
+const builder: Adapter = {
   build: () => ({ url: '', method: '' }),
 };
 

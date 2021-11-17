@@ -1,6 +1,6 @@
 import { Observable, of, Subject } from 'rxjs';
 import { concatWith, map, skip, withLatestFrom } from 'rxjs/operators';
-import { Builder } from '@ofa/request-builder';
+import { Adapter } from '@ofa/api-spec-adapter';
 
 import type { APIStates, APIState, APIStateSpec, CTX, RequestParams, RunParam } from '../types';
 import getResponseState$ from './http/response';
@@ -26,15 +26,15 @@ function executeCallback(ctx: CTX, state: APIState, runParams?: RunParam): void 
 }
 
 export default class APIStateHub implements APIStates {
-  builder: Builder;
+  adapter: Adapter;
   // map of stateID and operationID
   apiStateSpec: APIStateSpec;
   statesCache: Record<string, [Observable<APIState>, StreamActions]> = {};
   ctx: CTX | null = null;
 
-  constructor(builder: Builder, apiStateSpec: APIStateSpec) {
+  constructor(adapter: Adapter, apiStateSpec: APIStateSpec) {
     this.apiStateSpec = apiStateSpec;
-    this.builder = builder;
+    this.adapter = adapter;
   }
 
   initContext(ctx: CTX): void {
@@ -87,7 +87,7 @@ export default class APIStateHub implements APIStates {
     const request$ = params$.pipe(
       // TODO: catch builder error
       // todo what params should be passed to build?
-      map((params) => this.builder.build(operation.path, operation.method, params)),
+      map((params) => this.adapter.build(operation.path, operation.method, params)),
     );
 
     const fullState$ = getResponseState$(request$).pipe(

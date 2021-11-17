@@ -1,5 +1,5 @@
 {
-  "name": "@ofa/request-builder",
+  "name": "@ofa/api-spec-adapter",
   "version": "0.0.1",
   "description": "Construct HTTP Request based on API Spec and params",
   "license": "Apache-2.0",

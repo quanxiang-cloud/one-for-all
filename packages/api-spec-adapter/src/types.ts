@@ -1,4 +1,4 @@
-export interface Builder {
+export interface Adapter {
   build: (...args: any[]) => AjaxConfig;
 }
 

@@ -9,6 +9,6 @@
   "exclude": ["**/__tests__"],
   "references": [
     { "path": "../utils"},
-    { "path": "../request-builder"}
+    { "path": "../api-spec-adapter"}
   ]
 }
