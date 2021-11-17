@@ -1,18 +1,26 @@
 import mockXHR, { delay } from 'xhr-mock';
-
-import petStoreSpec from '../spec-interpreter/__tests__/fixtures/petstore-spec';
+import { Builder } from '@ofa/request-builder';
 
 import APIStateHub from '../api-state-hub';
 import { initialState } from '../http/response';
 import SharedStatesHub from '../shared-states-hub';
 import { CTX } from '../../types';
 import NodeStateHub from '../node-state-hub';
+import { APIStateSpec } from '../..';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
 
+const builder: Builder = {
+  build: () => ({ url: '', method: '' }),
+};
+
+const apiStateSpec: APIStateSpec = {
+  stream_findPetsByTags: { path: '', method: '' },
+};
+
 test('resolve_initial_value_when_no_next_called', (done) => {
-  const apiStateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
+  const apiStateHub = new APIStateHub(builder, apiStateSpec);
   const [state$] = apiStateHub.getStream('stream_findPetsByTags');
   state$.subscribe((result) => {
     expect(result).toMatchObject(initialState);
@@ -26,7 +34,7 @@ test('call_next_times', async () => {
     return res.status(200).body(JSON.stringify(mockRes));
   }, 100));
 
-  const apiStateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
+  const apiStateHub = new APIStateHub(builder, apiStateSpec);
   const [state$, { run }] = apiStateHub.getStream('stream_findPetsByTags');
 
   const mockFn = jest.fn();
@@ -53,7 +61,7 @@ test('only_resolve_the_last_value', async () => {
     return res.status(200).body(JSON.stringify(mockRes));
   }, 100));
 
-  const apiStateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
+  const apiStateHub = new APIStateHub(builder, apiStateSpec);
   const [state$, { run }] = apiStateHub.getStream('stream_findPetsByTags');
 
   const mockFn = jest.fn();
@@ -75,7 +83,7 @@ test('should_resolve_value', (done) => {
     return res.status(200).body(JSON.stringify(mockRes));
   });
 
-  const apiStateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
+  const apiStateHub = new APIStateHub(builder, apiStateSpec);
   const ctx: CTX = {
     apiStates: apiStateHub,
     sharedStates: new SharedStatesHub({}),
@@ -106,7 +114,7 @@ test('should_resolve_value', (done) => {
 });
 
 test('same_stateID_same_stream', () => {
-  const apiStateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
+  const apiStateHub = new APIStateHub(builder, apiStateSpec);
   const [state$1, sendRequest1] = apiStateHub.getStream('stream_findPetsByTags');
   const [state$2, sendRequest2] = apiStateHub.getStream('stream_findPetsByTags');
 
@@ -119,7 +127,7 @@ test('param_match_input', (done) => {
     return res.status(200);
   });
 
-  const apiStateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
+  const apiStateHub = new APIStateHub(builder, apiStateSpec);
   const [state$, { run }] = apiStateHub.getStream('stream_findPetsByTags');
   const requestParams = { foo: 'bar' };
   const requestBody = { baz: 'bzz' };
@@ -144,7 +152,7 @@ test('on_success_should_be_called', (done) => {
     return res.status(200);
   });
 
-  const apiStateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
+  const apiStateHub = new APIStateHub(builder, apiStateSpec);
   const [, { run }] = apiStateHub.getStream('stream_findPetsByTags');
   const requestParams = { foo: 'bar' };
   const requestBody = { baz: 'bzz' };
@@ -179,7 +187,7 @@ test('on_error_should_be_called', (done) => {
     return res.status(400);
   });
 
-  const apiStateHub = new APIStateHub(petStoreSpec, { stream_findPetsByTags: { operationID: 'findPetsByTags' } });
+  const apiStateHub = new APIStateHub(builder, apiStateSpec);
   const [, { run }] = apiStateHub.getStream('stream_findPetsByTags');
   const requestParams = { foo: 'bar' };
   const requestBody = { baz: 'bzz' };

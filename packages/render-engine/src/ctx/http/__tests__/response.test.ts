@@ -3,9 +3,8 @@ import { Observable, Subject } from 'rxjs';
 
 // import petStoreSpec from '../../spec-interpreter/__tests__/fixtures/petstore-spec';
 // import SpecInterpreter from '../../spec-interpreter';
-import type { RequestConfig } from '../../../types';
 import getResponseState$ from '../response';
-import { OpenAPIV3 } from 'openapi-types';
+import { AjaxConfig } from 'rxjs/ajax';
 
 // const specInterpreter = new SpecInterpreter(petStoreSpec);
 
@@ -21,7 +20,7 @@ function wait(timeSecond: number): Promise<boolean> {
 }
 
 test('response_return_initial_state', (done) => {
-  const response$ = getResponseState$(new Observable<RequestConfig>());
+  const response$ = getResponseState$(new Observable<AjaxConfig>());
 
   response$.subscribe(({ data, loading, error }) => {
     try {
@@ -42,16 +41,16 @@ describe('response_state_table', () => {
       return res.status(200).body(JSON.stringify(mockRes));
     });
 
-    const request$ = new Subject<RequestConfig>();
+    const request$ = new Subject<AjaxConfig>();
     const response$ = getResponseState$(request$);
     const loadings: Array<boolean> = [];
 
     response$.subscribe(({ loading }) => loadings.push(loading));
 
-    request$.next({ path: '/api/foo', method: OpenAPIV3.HttpMethods.GET });
+    request$.next({ url: '/api/foo', method: 'get' });
     await wait(1);
 
-    request$.next({ path: '/api/foo', method: OpenAPIV3.HttpMethods.GET });
+    request$.next({ url: '/api/foo', method: 'get' });
     await wait(1);
 
     expect(loadings).toEqual([false, true, false, true, false]);
@@ -65,7 +64,7 @@ describe('response_state_table', () => {
       { status: 404, body: JSON.stringify(mockRes) },
     ]));
 
-    const request$ = new Subject<RequestConfig>();
+    const request$ = new Subject<AjaxConfig>();
     const response$ = getResponseState$(request$);
     const dataList: Array<any> = [];
     const errorList: Array<any> = [];
@@ -75,13 +74,13 @@ describe('response_state_table', () => {
       errorList.push(error);
     });
 
-    request$.next({ path: '/api/foo', method: OpenAPIV3.HttpMethods.GET });
+    request$.next({ url: '/api/foo', method: 'get' });
     await wait(1);
 
-    request$.next({ path: '/api/foo', method: OpenAPIV3.HttpMethods.GET });
+    request$.next({ url: '/api/foo', method: 'get' });
     await wait(1);
 
-    request$.next({ path: '/api/foo', method: OpenAPIV3.HttpMethods.GET });
+    request$.next({ url: '/api/foo', method: 'get' });
     await wait(1);
 
     expect(dataList).toEqual([

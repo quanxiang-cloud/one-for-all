@@ -1,13 +1,12 @@
 import mockXHR, { MockResponse } from 'xhr-mock';
 import { Subject } from 'rxjs';
+import { AjaxConfig } from 'rxjs/ajax';
 
 import http from '../http';
-import { RequestConfig } from '../../../types';
-import { OpenAPIV3 } from 'openapi-types';
 
 test('http_will_not_resolve_value_if_no_request_emitted', () => {
   expect.assertions(0);
-  const request$ = new Subject<RequestConfig>();
+  const request$ = new Subject<AjaxConfig>();
 
   const response$ = http(request$);
 
@@ -21,7 +20,7 @@ test('http_should_resolve_value_when_request_emitted', (done) => {
     return res.status(200).body(JSON.stringify(mockRes));
   });
 
-  const request$ = new Subject<RequestConfig>();
+  const request$ = new Subject<AjaxConfig>();
 
   const response$ = http(request$);
 
@@ -36,16 +35,16 @@ test('http_should_resolve_value_when_request_emitted', (done) => {
   });
 
   request$.next({
-    path: '/api/foo',
-    method: OpenAPIV3.HttpMethods.GET,
-    query: { foo: 'bar' },
+    url: '/api/foo',
+    method: 'get',
+    queryParams: { foo: 'bar' },
   });
   mockXHR.teardown();
 });
 
 describe('http_resolve_expected_error', () => {
   test('should_resolve_network_error', (done) => {
-    const request$ = new Subject<RequestConfig>();
+    const request$ = new Subject<AjaxConfig>();
 
     const response$ = http(request$);
 
@@ -60,9 +59,9 @@ describe('http_resolve_expected_error', () => {
     });
 
     request$.next({
-      path: '/api/foo',
-      method: OpenAPIV3.HttpMethods.GET,
-      query: { foo: 'bar' },
+      url: '/api/foo',
+      method: 'get',
+      queryParams: { foo: 'bar' },
     });
   });
 
@@ -73,7 +72,7 @@ describe('http_resolve_expected_error', () => {
       return res.status(404).body(JSON.stringify(mockRes));
     });
 
-    const request$ = new Subject<RequestConfig>();
+    const request$ = new Subject<AjaxConfig>();
 
     const response$ = http(request$);
 
@@ -89,9 +88,9 @@ describe('http_resolve_expected_error', () => {
     });
 
     request$.next({
-      path: '/api/foo',
-      method: OpenAPIV3.HttpMethods.GET,
-      query: { foo: 'bar' },
+      url: '/api/foo',
+      method: 'get',
+      queryParams: { foo: 'bar' },
     });
 
     mockXHR.teardown();
@@ -111,7 +110,7 @@ test('http_should_cancel_pending_request', (done) => {
     });
   });
 
-  const request$ = new Subject<RequestConfig>();
+  const request$ = new Subject<AjaxConfig>();
 
   const response$ = http(request$);
 
@@ -127,15 +126,15 @@ test('http_should_cancel_pending_request', (done) => {
   response$.subscribe(callback);
 
   request$.next({
-    path: '/api/foo',
-    method: OpenAPIV3.HttpMethods.GET,
-    query: { foo: 'bar' },
+    url: '/api/foo',
+    method: 'get',
+    queryParams: { foo: 'bar' },
   });
 
   request$.next({
-    path: '/api/foo',
-    method: OpenAPIV3.HttpMethods.GET,
-    query: { foo: 'bar' },
+    url: '/api/foo',
+    method: 'get',
+    queryParams: { foo: 'bar' },
   });
 
   mockXHR.teardown();
