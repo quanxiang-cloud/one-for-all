@@ -4,11 +4,11 @@ import '@testing-library/jest-dom';
 import mockXHR from 'xhr-mock';
 
 import petStoreSpec from '../../ctx/spec-interpreter/__tests__/fixtures/petstore-spec';
-import { APIInvokeProperty, APIDerivedProperty, Instantiated, APIStateSpec, CTX, ComponentPropType } from '../../types';
+import { APIInvokeProperty, APIDerivedProperty, Instantiated, APIStateSpec, CTX, NodePropType } from '../../types';
 import APIStateHub from '../../ctx/api-state-hub';
 import Link from '../../ctx/__tests__/fixtures/link';
 import SharedStatesHub from '../../ctx/shared-states-hub';
-import NodeInternalStates from '../../ctx/node-internal-states';
+import NodeStateHub from '../../ctx/node-state-hub';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
@@ -18,7 +18,7 @@ const apiStateHub = new APIStateHub(petStoreSpec, stateIDMap);
 const ctx: CTX = {
   apiStates: apiStateHub,
   sharedStates: new SharedStatesHub({}),
-  nodeInternalStates: new NodeInternalStates(),
+  nodeStates: new NodeStateHub(),
 };
 apiStateHub.initContext(ctx);
 
@@ -31,19 +31,19 @@ test('Link_changes_the_class_when_hovered', async () => {
 
   const props: Record<string, APIDerivedProperty<Instantiated> | APIInvokeProperty<Instantiated>> = {
     foo: {
-      type: ComponentPropType.APIDerivedProperty,
+      type: NodePropType.APIDerivedProperty,
       fallback: 'foo',
       stateID: 'stream_findPetsByTags',
       adapter: () => 'abc',
     },
     bar: {
-      type: ComponentPropType.APIDerivedProperty,
+      type: NodePropType.APIDerivedProperty,
       fallback: 'bar',
       stateID: 'stream_findPetsByTags',
       adapter: () => 'abc',
     },
     onFetch: {
-      type: ComponentPropType.APIInvokeProperty,
+      type: NodePropType.APIInvokeProperty,
       stateID: 'stream_findPetsByTags',
       paramsBuilder: () => undefined,
       onSuccess: onSuccessFn,
@@ -73,19 +73,19 @@ test('search_btn', async () => {
 
   const props: Record<string, APIDerivedProperty<Instantiated> | APIInvokeProperty<Instantiated>> = {
     foo: {
-      type: ComponentPropType.APIDerivedProperty,
+      type: NodePropType.APIDerivedProperty,
       fallback: 'foo',
       stateID: 'stream_findPetsByTags',
       adapter: () => 'abc',
     },
     bar: {
-      type: ComponentPropType.APIDerivedProperty,
+      type: NodePropType.APIDerivedProperty,
       fallback: 'bar',
       stateID: 'stream_findPetsByTags',
       adapter: () => 'abc',
     },
     onFetch: {
-      type: ComponentPropType.APIInvokeProperty,
+      type: NodePropType.APIInvokeProperty,
       stateID: 'stream_findPetsByTags',
       paramsBuilder: () => undefined,
       onSuccess: onSuccessFn,

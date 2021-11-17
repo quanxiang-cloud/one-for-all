@@ -7,10 +7,10 @@ import {
   NodePropType,
   SchemaNode,
 } from '../types';
-import useAPIStateDerivedProps from './use-api-state-derived-props';
-import getAPIInvokeProps from './get-api-invoke-props';
+import useAPIStateProps from './use-api-state-props';
+import useAPIInvokeProps from './use-api-invoke-props';
 import useSharedStateProps from './use-shared-state-props';
-import { useFuncProps } from './use-func-props';
+import useFuncProps from './use-func-props';
 import useSharedStateMutationProps from './use-shared-state-mutation';
 import useInternalHookProps from './use-internal-hook-props';
 import useNodeStateProps from './use-node-state-props';
@@ -28,8 +28,8 @@ function useConstantProps(node: SchemaNode<Instantiated>): Record<string, any> {
 
 function useInstantiateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, any> {
   const constantProps = useConstantProps(node);
-  const apiStateInvokeProps = getAPIInvokeProps(node, ctx);
-  const derivedProps = useAPIStateDerivedProps(node, ctx);
+  const apiStateInvokeProps = useAPIInvokeProps(node, ctx);
+  const derivedProps = useAPIStateProps(node, ctx);
   const sharedStateProps = useSharedStateProps(node, ctx);
   const sharedStateMutationProps = useSharedStateMutationProps(node, ctx);
   const internalHookProps = useInternalHookProps(node, ctx);

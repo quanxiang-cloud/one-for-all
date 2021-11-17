@@ -3,10 +3,10 @@ import mockXHR, { delay } from 'xhr-mock';
 import petStoreSpec from '../spec-interpreter/__tests__/fixtures/petstore-spec';
 
 import APIStateHub from '../api-state-hub';
-import { initialState } from '../response';
+import { initialState } from '../http/response';
 import SharedStatesHub from '../shared-states-hub';
 import { CTX } from '../../types';
-import NodeInternalStates from '../node-internal-states';
+import NodeStateHub from '../node-state-hub';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
@@ -79,7 +79,7 @@ test('should_resolve_value', (done) => {
   const ctx: CTX = {
     apiStates: apiStateHub,
     sharedStates: new SharedStatesHub({}),
-    nodeInternalStates: new NodeInternalStates(),
+    nodeStates: new NodeStateHub(),
   };
   // todo this must be call before using apiStateHub, this is not a good design
   apiStateHub.initContext(ctx);

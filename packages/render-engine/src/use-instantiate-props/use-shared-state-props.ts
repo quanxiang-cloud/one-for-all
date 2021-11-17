@@ -4,15 +4,15 @@ import { BehaviorSubject, combineLatest, map, skip } from 'rxjs';
 import {
   CTX,
   Instantiated,
-  RawDataConvertor,
+  VersatileFunc,
   SharedStateProperty,
   NodePropType,
   SchemaNode,
 } from '../types';
-import { convertResult } from './use-node-state-props';
+import { convertResult } from './adaptor';
 
 function useSharedStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, any> {
-  const adapters: Record<string, RawDataConvertor | undefined> = {};
+  const adapters: Record<string, VersatileFunc | undefined> = {};
   const states$: Record<string, BehaviorSubject<any>> = {};
   const fallbacks: Record<string, any> = {};
 
@@ -25,17 +25,18 @@ function useSharedStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<s
   });
 
   const [state, setState] = useState(() => {
-    return Object.entries(states$).reduce<Record<string, any>>((acc, [key, state$]) => {
-      // todo fallback
+    const currentStates = Object.entries(states$).reduce<Record<string, any>>((acc, [key, state$]) => {
       acc[key] = state$.getValue();
       return acc;
     }, {});
+
+    return convertResult(currentStates, adapters, fallbacks);
   });
 
   useEffect(() => {
     const subscription = combineLatest(states$).pipe(
       skip(1),
-      map((result) => convertResult(result, adapters, ctx, fallbacks)),
+      map((result) => convertResult(result, adapters, fallbacks)),
     ).subscribe(setState);
 
     return () => subscription.unsubscribe();

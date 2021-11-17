@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
 
+import { logger } from '@ofa/utils';
+
 import {
   CTX,
   Instantiated,
@@ -18,8 +20,17 @@ function useSharedStateMutationProps(node: SchemaNode<Instantiated>, ctx: CTX): 
       }).reduce<MutateProps>((acc, [key, { stateID, adapter }]) => {
         const state$ = ctx.sharedStates.getState$(stateID);
         acc[key] = (value: any) => {
-          const v = adapter ? adapter(value) : value;
-          state$.next(v);
+          if (typeof adapter !== 'function') {
+            state$.next(value);
+            return;
+          }
+
+          try {
+            const v = adapter(value);
+            state$.next(v);
+          } catch (error) {
+            logger.error('failed to run adapter:\n', adapter.toString(), '\n', error);
+          }
         };
 
         return acc;

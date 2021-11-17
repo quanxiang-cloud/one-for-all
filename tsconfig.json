@@ -64,6 +64,17 @@
     /* Advanced Options */
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
   },
+  "references": [
+    {
+      "path": "./packages/render-engine"
+    },
+    {
+      "path": "./packages/request-builder"
+    },
+    {
+      "path": "./packages/utils"
+    }
+  ],
   "plugins": [
     {
       "name":  "typescript-plugin-css-modules",
