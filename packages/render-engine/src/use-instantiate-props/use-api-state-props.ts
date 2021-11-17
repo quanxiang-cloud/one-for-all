@@ -1,3 +1,4 @@
+import { logger } from '@ofa/utils';
 import { useEffect, useState } from 'react';
 import { combineLatest, map, Observable, skip } from 'rxjs';
 
@@ -14,25 +15,27 @@ import {
 function convertResult(
   result: Record<string, APIState>,
   adapters: Record<string, APIStateConvertor | undefined>,
+  fallbacks: Record<string, any>,
 ): Record<string, any> {
-  return Object.entries(result).map(([propName, propValue]) => {
-    const adapter = adapters[propName];
-    if (!adapter) {
-      return [propName, propValue.data];
+  return Object.entries(result).reduce<Record<string, any>>((acc, [key, state]) => {
+    if (typeof adapters[key] === 'function') {
+      try {
+        const v = adapters[key]?.(state) ?? fallbacks[key];
+        acc[key] = v;
+      } catch (error) {
+        logger.error('failed to run adapter:\n', adapters[key]?.toString(), '\n', error);
+        acc[key] = fallbacks[key];
+      }
+
+      return acc;
     }
 
-    return [
-      propName,
-      // TODO: handle convert error case
-      adapter(propValue),
-    ];
-  }).reduce<Record<string, any>>((res, [propName, value]) => {
-    res[propName] = value;
-    return res;
+    acc[key] = state.data ?? fallbacks[key];
+    return acc;
   }, {});
 }
 
-function useAPIStateDerivedProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, any> {
+function useAPIStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, any> {
   const adapters: Record<string, APIStateConvertor | undefined> = {};
   const resList$: Record<string, Observable<APIState>> = {};
   const fallbacks: Record<string, any> = {};
@@ -45,24 +48,19 @@ function useAPIStateDerivedProps(node: SchemaNode<Instantiated>, ctx: CTX): Reco
     resList$[propName] = ctx.apiStates.getState(stateID);
   });
 
-  const [state, setState] = useState<Record<string, any>>(fallbacks);
+  const [state, setState] = useState<Record<string, any>>(() => {
+    const currentStates = Object.entries(resList$).reduce<Record<string, any>>((acc, [key, state$]) => {
+      // acc[key] = state$.getValue();
+      return acc;
+    }, {});
+
+    return convertResult(currentStates, adapters, fallbacks);
+  });
 
   useEffect(() => {
-    if (!Object.keys(resList$).length) {
-      return;
-    }
-
     const subscription = combineLatest(resList$).pipe(
       skip(1),
-      map((result) => {
-        return Object.entries(result).reduce<Record<string, any>>((acc, [key, state]) => {
-          state.data = state.data ?? fallbacks[key];
-          acc[key] = state;
-
-          return acc;
-        }, {});
-      }),
-      map((result) => convertResult(result, adapters)),
+      map((result) => convertResult(result, adapters, fallbacks)),
     ).subscribe(setState);
 
     // todo remove state from stateHub when last subscriber unsubscribed
@@ -72,4 +70,4 @@ function useAPIStateDerivedProps(node: SchemaNode<Instantiated>, ctx: CTX): Reco
   return state;
 }
 
-export default useAPIStateDerivedProps;
+export default useAPIStateProps;

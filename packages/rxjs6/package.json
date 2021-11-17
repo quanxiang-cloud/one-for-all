@@ -27,6 +27,5 @@
   "exports": {
     ".": "./dist/rxjs.min.js",
     "./operators": "./dist/rxjs-operators.min.js"
-  },
-  "dependencies": {}
+  }
 }

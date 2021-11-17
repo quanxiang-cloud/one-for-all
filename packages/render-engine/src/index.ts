@@ -1,28 +1,28 @@
-import { OpenAPIV3 } from 'openapi-types';
+import { Builder } from '@ofa/request-builder';
 
 import renderSchema from './render';
 import deserializeSchema from './deserialize-schema';
 import { CTX, Schema } from './types';
 import APIStateHub from './ctx/api-state-hub';
 import SharedStatesHub from './ctx/shared-states-hub';
-import NodeInternalStates from './ctx/node-internal-states';
+import NodeStateHub from './ctx/node-state-hub';
 
 export * from './types';
 
 type RenderSchemaParams = {
   schema: Schema;
   rootEle: Element;
-  apiDoc: OpenAPIV3.Document;
+  builder: Builder;
 }
 
-function Render({ schema, rootEle, apiDoc }: RenderSchemaParams): CTX {
-  const apiStateHub = new APIStateHub(apiDoc, schema.apiStateSpec);
+function Render({ schema, rootEle, builder }: RenderSchemaParams): CTX {
+  const apiStateHub = new APIStateHub(builder, schema.apiStateSpec);
   const sharedStatesHub = new SharedStatesHub(schema.sharedStatesSpec);
 
   const ctx: CTX = {
     apiStates: apiStateHub,
     sharedStates: sharedStatesHub,
-    nodeInternalStates: new NodeInternalStates(),
+    nodeStates: new NodeStateHub(),
   };
 
   apiStateHub.initContext(ctx);

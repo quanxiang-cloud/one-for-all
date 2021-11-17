@@ -54,7 +54,7 @@ const todoAppSchema: Schema = {
             }
           },
           // onSubmit: {
-          //   type: ComponentPropType.APIInvokeProperty,
+          //   type: NodePropType.APIInvokeProperty,
           //   stateID: '新建待办',
           //   paramsBuilder: {
           //     type: 'param_builder_func_spec',
@@ -147,7 +147,7 @@ const todoAppSchema: Schema = {
                 }
               }
               // onChange: {
-              //   type: ComponentPropType.FunctionalProperty,
+              //   type: NodePropType.FunctionalProperty,
               //   func: {
               //     type: 'raw',
               //     args: 'e',

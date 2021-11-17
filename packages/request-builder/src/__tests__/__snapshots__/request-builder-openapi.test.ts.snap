@@ -6,7 +6,7 @@ Object {
     "foo": "bar",
   },
   "method": "put",
-  "path": "/pet",
+  "url": "/pet",
 }
 `;
 
@@ -16,7 +16,7 @@ Object {
     "foo": "bar",
   },
   "method": "post",
-  "path": "/pet",
+  "url": "/pet",
 }
 `;
 
@@ -24,7 +24,7 @@ exports[`expect_specInterpreter_to_match_snapshots 3`] = `
 Object {
   "body": undefined,
   "method": "get",
-  "path": "/pet/findByStatus",
+  "url": "/pet/findByStatus",
 }
 `;
 
@@ -32,7 +32,7 @@ exports[`expect_specInterpreter_to_match_snapshots 4`] = `
 Object {
   "body": undefined,
   "method": "get",
-  "path": "/pet/findByTags",
+  "url": "/pet/findByTags",
 }
 `;
 
@@ -40,7 +40,7 @@ exports[`expect_specInterpreter_to_match_snapshots 5`] = `
 Object {
   "body": undefined,
   "method": "get",
-  "path": "/pet/foobar",
+  "url": "/pet/foobar",
 }
 `;
 
@@ -48,7 +48,7 @@ exports[`expect_specInterpreter_to_match_snapshots 6`] = `
 Object {
   "body": undefined,
   "method": "post",
-  "path": "/pet/foobar",
+  "url": "/pet/foobar",
 }
 `;
 
@@ -56,7 +56,7 @@ exports[`expect_specInterpreter_to_match_snapshots 7`] = `
 Object {
   "body": undefined,
   "method": "delete",
-  "path": "/pet/foobar",
+  "url": "/pet/foobar",
 }
 `;
 
@@ -64,7 +64,7 @@ exports[`expect_specInterpreter_to_match_snapshots 8`] = `
 Object {
   "body": undefined,
   "method": "post",
-  "path": "/pet/foobar/uploadImage",
+  "url": "/pet/foobar/uploadImage",
 }
 `;
 
@@ -72,7 +72,7 @@ exports[`expect_specInterpreter_to_match_snapshots 9`] = `
 Object {
   "body": undefined,
   "method": "get",
-  "path": "/store/inventory",
+  "url": "/store/inventory",
 }
 `;
 
@@ -80,7 +80,7 @@ exports[`expect_specInterpreter_to_match_snapshots 10`] = `
 Object {
   "body": undefined,
   "method": "post",
-  "path": "/store/order",
+  "url": "/store/order",
 }
 `;
 
@@ -88,7 +88,7 @@ exports[`expect_specInterpreter_to_match_snapshots 11`] = `
 Object {
   "body": undefined,
   "method": "get",
-  "path": "/store/order/foobar",
+  "url": "/store/order/foobar",
 }
 `;
 
@@ -96,7 +96,7 @@ exports[`expect_specInterpreter_to_match_snapshots 12`] = `
 Object {
   "body": undefined,
   "method": "delete",
-  "path": "/store/order/foobar",
+  "url": "/store/order/foobar",
 }
 `;
 
@@ -104,7 +104,7 @@ exports[`expect_specInterpreter_to_match_snapshots 13`] = `
 Object {
   "body": undefined,
   "method": "post",
-  "path": "/user",
+  "url": "/user",
 }
 `;
 
@@ -112,7 +112,7 @@ exports[`expect_specInterpreter_to_match_snapshots 14`] = `
 Object {
   "body": undefined,
   "method": "post",
-  "path": "/user/createWithList",
+  "url": "/user/createWithList",
 }
 `;
 
@@ -120,7 +120,7 @@ exports[`expect_specInterpreter_to_match_snapshots 15`] = `
 Object {
   "body": undefined,
   "method": "get",
-  "path": "/user/login",
+  "url": "/user/login",
 }
 `;
 
@@ -128,7 +128,7 @@ exports[`expect_specInterpreter_to_match_snapshots 16`] = `
 Object {
   "body": undefined,
   "method": "get",
-  "path": "/user/logout",
+  "url": "/user/logout",
 }
 `;
 
@@ -136,7 +136,7 @@ exports[`expect_specInterpreter_to_match_snapshots 17`] = `
 Object {
   "body": undefined,
   "method": "get",
-  "path": "/user/foobar",
+  "url": "/user/foobar",
 }
 `;
 
@@ -144,7 +144,7 @@ exports[`expect_specInterpreter_to_match_snapshots 18`] = `
 Object {
   "body": undefined,
   "method": "put",
-  "path": "/user/foobar",
+  "url": "/user/foobar",
 }
 `;
 
@@ -152,6 +152,6 @@ exports[`expect_specInterpreter_to_match_snapshots 19`] = `
 Object {
   "body": undefined,
   "method": "delete",
-  "path": "/user/foobar",
+  "url": "/user/foobar",
 }
 `;

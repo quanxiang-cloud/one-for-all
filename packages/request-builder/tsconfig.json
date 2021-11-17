@@ -1,14 +1,14 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "composite": true,
     "outDir": "lib",
     "rootDir": ".",
-    "module": "ESNext"
+    "module": "es2015"
   },
   "include": ["src/**/*"],
   "exclude": ["**/__tests__"],
   "references": [
-    { "path": "../utils"},
-    { "path": "../request-builder"}
+    { "path": "../utils/tsconfig.json" }
   ]
 }

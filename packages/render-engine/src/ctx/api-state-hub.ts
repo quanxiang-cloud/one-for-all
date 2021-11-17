@@ -1,11 +1,9 @@
 import { Observable, of, Subject } from 'rxjs';
 import { concatWith, map, skip, withLatestFrom } from 'rxjs/operators';
-import { OpenAPIV3 } from 'openapi-types';
-
-import SpecInterpreter from './spec-interpreter';
+import { Builder } from '@ofa/request-builder';
 
 import type { APIStates, APIState, APIStateSpec, CTX, RequestParams, RunParam } from '../types';
-import getResponseState$ from './response';
+import getResponseState$ from './http/response';
 
 type StreamActions = {
   run: (runParam?: RunParam) => void;
@@ -28,15 +26,15 @@ function executeCallback(ctx: CTX, state: APIState, runParams?: RunParam): void 
 }
 
 export default class APIStateHub implements APIStates {
-  specInterpreter: SpecInterpreter;
+  builder: Builder;
   // map of stateID and operationID
   apiStateSpec: APIStateSpec;
   statesCache: Record<string, [Observable<APIState>, StreamActions]> = {};
   ctx: CTX | null = null;
 
-  constructor(apiDoc: OpenAPIV3.Document, apiStateSpec: APIStateSpec) {
-    this.specInterpreter = new SpecInterpreter(apiDoc);
+  constructor(builder: Builder, apiStateSpec: APIStateSpec) {
     this.apiStateSpec = apiStateSpec;
+    this.builder = builder;
   }
 
   initContext(ctx: CTX): void {
@@ -81,10 +79,15 @@ export default class APIStateHub implements APIStates {
   }
 
   initState(stateID: string): [Observable<APIState>, StreamActions] {
+    const operation = this.apiStateSpec[stateID];
+    if (!operation) {
+      throw new Error(`no operation for stateID: ${stateID}`);
+    }
     const params$ = new Subject<RequestParams>();
     const request$ = params$.pipe(
       // TODO: catch builder error
-      map((params) => this.specInterpreter.buildRequest(this.apiStateSpec[stateID]?.operationID, params)),
+      // todo what params should be passed to build?
+      map((params) => this.builder.build(operation.path, operation.method, params)),
     );
 
     const fullState$ = getResponseState$(request$).pipe(

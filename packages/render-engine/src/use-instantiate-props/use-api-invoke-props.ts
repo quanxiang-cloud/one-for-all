@@ -5,7 +5,7 @@ import { APIInvokeProperty, CTX, Instantiated, NodePropType, SchemaNode } from '
 
 type APICallProps = Record<string, (...args: any[]) => void>;
 
-export default function getAPIInvokeProps(node: SchemaNode<Instantiated>, ctx: CTX): APICallProps {
+export default function useAPIInvokeProps(node: SchemaNode<Instantiated>, ctx: CTX): APICallProps {
   return useMemo(() => {
     return Object.entries(node.props).filter((pair): pair is [string, APIInvokeProperty<Instantiated>] => {
       return pair[1].type === NodePropType.APIInvokeProperty;

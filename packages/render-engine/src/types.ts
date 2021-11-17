@@ -1,6 +1,5 @@
-import { OpenAPIV3 } from 'openapi-types';
 import { BehaviorSubject, Observable } from 'rxjs';
-import NodeInternalStates from './ctx/node-internal-states';
+import NodeStateHub from './ctx/node-state-hub';
 
 export type Serialized = 'Serialized';
 export type Instantiated = 'Instantiated';
@@ -10,14 +9,6 @@ export type RequestParams = Partial<{
   params: Record<string, any>;
   body: any;
 }> | undefined;
-
-export type RequestConfig = {
-  path: string;
-  method: OpenAPIV3.HttpMethods;
-  query?: Record<string, string>;
-  header?: Record<string, string>;
-  body?: any;
-}
 
 export type APIState = {
   params: RequestParams;
@@ -62,9 +53,9 @@ export type APIDerivedProperty<T> = BaseNodeProperty & {
   type: NodePropType.APIDerivedProperty;
   // in the previous implementation, this property is called: initialValue,
   // why changed to `fallback`?
-  // - please refer to API State Table, it's hard to modify the `data` in second state to initialValue
+  // - please refer to API State Table, it's hard to modify the `data` to initialValue in the second stage
   // - always defining a fallback value for API response is best practices,
-  //   no matter when before API result returned or encounter a API error.
+  //   no matter before API result returned or encounter a API error.
   fallback: any;
   stateID: string;
   // todo define different type adapter
@@ -155,7 +146,7 @@ export interface SharedStates {
 export type CTX = {
   apiStates: APIStates;
   sharedStates: SharedStates;
-  nodeInternalStates: NodeInternalStates;
+  nodeStates: NodeStateHub;
 }
 
 export type APIStateConvertor = (state: APIState) => any;
@@ -189,12 +180,10 @@ export type APIStateConvertFuncSpec = BaseFunctionSpec & {
 };
 
 export type SerializedAPIStateAdapter = APIStateTemplate | APIStateConvertFuncSpec;
-export type SerializedRawDataAdapter = ExpressionStatement | RawDataConvertorSpec;
-
-export type RawDataConvertor = (data: any) => any;
+export type SerializedRawStateAdapter = ExpressionStatement | RawDataConvertorSpec;
 
 export type APIStateAdapter<T> = T extends Serialized ? SerializedAPIStateAdapter : APIStateConvertor;
-export type RawStateAdapter<T> = T extends Serialized ? SerializedRawDataAdapter : RawDataConvertor;
+export type RawStateAdapter<T> = T extends Serialized ? SerializedRawStateAdapter : VersatileFunc;
 export type ParamsBuilder<T> = T extends Serialized ? ParamsBuilderFuncSpec : (...args: any[]) => RequestParams;
 export type APIInvokeCallBack<T> = T extends Serialized ? APIInvokeCallbackFuncSpec : (apiState: APIState) => void;
 
@@ -228,7 +217,8 @@ export type SchemaNode<T> = HTMLNode<T> | ReactComponentNode<T>;
 
 // map of stateID and operationID
 export type APIStateSpec = Record<string, {
-  operationID: string;
+  path: string;
+  method: string;
   [key: string]: any;
 }>;
 
