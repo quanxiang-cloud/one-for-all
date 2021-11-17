@@ -1,3 +1,1 @@
 extends: ../../.eslintrc.yaml
-parserOptions:
-  project: tsconfig.json

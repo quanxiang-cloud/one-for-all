@@ -27,6 +27,7 @@
     "@types/jest": "^26.0.24",
     "@types/lodash": "^4.14.172",
     "@types/systemjs": "^6.1.1",
+    "@typescript-eslint/parser": "^5.4.0",
     "esbuild": "^0.13.8",
     "eslint": "^7.32.0",
     "jest": "27.3.1",
