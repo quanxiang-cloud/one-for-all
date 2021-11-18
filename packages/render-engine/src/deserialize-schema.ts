@@ -87,7 +87,7 @@ function transformProps(props: NodeProperties<Serialized>, ctx: CTX): NodeProper
     //   ];
     // }
 
-    if (propDesc.type === 'constant_property') {
+    if (propDesc.type === NodePropType.ConstantProperty) {
       return [propName, propDesc];
     }
 
@@ -135,7 +135,7 @@ function transformProps(props: NodeProperties<Serialized>, ctx: CTX): NodeProper
       ];
     }
 
-    if (propDesc.type === 'api_invoke_property') {
+    if (propDesc.type === NodePropType.APIInvokeProperty) {
       return [propName, {
         ...propDesc,
         paramsBuilder: propDesc.paramsBuilder ? instantiateFuncSpec(propDesc.paramsBuilder, ctx) : undefined,

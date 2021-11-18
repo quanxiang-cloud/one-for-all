@@ -15,6 +15,7 @@ export type APIState = {
 export const enum NodePropType {
   ConstantProperty = 'constant_property',
   APIResultProperty = 'api_result_property',
+  APILoadingProperty = 'api_loading_property',
   // todo api loading property and api error property
   SharedStateProperty = 'shared_state_property',
   FunctionalProperty = 'functional_property',
@@ -27,6 +28,7 @@ export const enum NodePropType {
 export type NodeProperty<T> =
   ConstantProperty |
   APIResultProperty<T> |
+  APILoadingProperty |
   SharedStateProperty<T> |
   FunctionalProperty<T> |
   SharedStateMutationProperty<T> |
@@ -66,6 +68,11 @@ export type APIResultProperty<T> = BaseNodeProperty & {
   // adapter will never be called if api error or api response body is undefined
   // todo add test cases
   adapter?: APIResultAdapter<T>;
+}
+
+export type APILoadingProperty = BaseNodeProperty & {
+  type: NodePropType.APILoadingProperty;
+  stateID: string;
 }
 
 export type SharedStateProperty<T> = BaseNodeProperty & {

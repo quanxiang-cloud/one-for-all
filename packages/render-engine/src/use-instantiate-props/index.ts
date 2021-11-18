@@ -8,6 +8,7 @@ import {
   SchemaNode,
 } from '../types';
 import useAPIResultProps from './use-api-result-props';
+import useAPILoadingProps from './use-api-loading-props';
 import useAPIInvokeProps from './use-api-invoke-props';
 import useSharedStateProps from './use-shared-state-props';
 import useFuncProps from './use-func-props';
@@ -29,7 +30,8 @@ function useConstantProps(node: SchemaNode<Instantiated>): Record<string, any> {
 function useInstantiateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, any> {
   const constantProps = useConstantProps(node);
   const apiStateInvokeProps = useAPIInvokeProps(node, ctx);
-  const derivedProps = useAPIResultProps(node, ctx);
+  const apiResultProps = useAPIResultProps(node, ctx);
+  const apiLoadingProps = useAPILoadingProps(node, ctx);
   const sharedStateProps = useSharedStateProps(node, ctx);
   const sharedStateMutationProps = useSharedStateMutationProps(node, ctx);
   const internalHookProps = useInternalHookProps(node, ctx);
@@ -40,14 +42,15 @@ function useInstantiateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<s
     return Object.assign(
       constantProps,
       apiStateInvokeProps,
-      derivedProps,
+      apiResultProps,
+      apiLoadingProps,
       sharedStateProps,
       funcProps,
       sharedStateMutationProps,
       internalHookProps,
       nodeStateProps,
     );
-  }, [derivedProps, sharedStateProps, nodeStateProps]);
+  }, [apiResultProps, sharedStateProps, nodeStateProps, apiLoadingProps]);
 }
 
 export default useInstantiateProps;
