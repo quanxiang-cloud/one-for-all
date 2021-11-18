@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable } from 'rxjs';
+import type { BehaviorSubject } from 'rxjs';
 import type { RequestParams } from '@ofa/api-spec-adapter';
 
 import NodeStateHub from './ctx/node-state-hub';
@@ -129,7 +129,7 @@ export type RunParam = {
 export interface APIStates {
   runAction: (stateID: string, runParam?: RunParam) => void;
   refresh: (stateID: string) => void;
-  getState: (stateID: string) => Observable<APIState>;
+  getState: (stateID: string) => BehaviorSubject<APIState>;
   getAction: (stateID: string) => (runParam?: RunParam) => void;
 }
 

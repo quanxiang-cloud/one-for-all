@@ -1,5 +1,5 @@
-import { Observable, of, Subject } from 'rxjs';
-import { concatWith, map, skip, withLatestFrom, filter } from 'rxjs/operators';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { map, skip, filter } from 'rxjs/operators';
 import type { Adapter, RequestParams } from '@ofa/api-spec-adapter';
 
 import type { APIStates, APIState, APIStatesSpec, CTX, RunParam } from '../types';
@@ -21,15 +21,13 @@ function executeCallback(ctx: CTX, state: APIState, runParams?: RunParam): void 
     return;
   }
 
-  // runParams?.onSuccess?.({ ...state, ctx, });
-  runParams?.onSuccess?.call(ctx, { ...state, ctx });
+  runParams?.onSuccess?.call(ctx, { ...state });
 }
 
 export default class APIStateHub implements APIStates {
   adapter: Adapter;
-  // map of stateID and operationID
   apiStateSpec: APIStatesSpec;
-  statesCache: Record<string, [Observable<APIState>, StreamActions]> = {};
+  statesCache: Record<string, [BehaviorSubject<APIState>, StreamActions]> = {};
   ctx: CTX | null = null;
 
   constructor(adapter: Adapter, apiStateSpec: APIStatesSpec) {
@@ -41,7 +39,7 @@ export default class APIStateHub implements APIStates {
     this.ctx = ctx;
   }
 
-  getState(stateID: string): Observable<APIState> {
+  getState(stateID: string): BehaviorSubject<APIState> {
     const [state$] = this.getStream(stateID);
 
     // TODO: test error when run convertor
@@ -60,7 +58,7 @@ export default class APIStateHub implements APIStates {
     return run;
   }
 
-  getStream(stateID: string): [Observable<APIState>, StreamActions] {
+  getStream(stateID: string): [BehaviorSubject<APIState>, StreamActions] {
     if (!this.apiStateSpec[stateID]) {
       // TODO: log error message
     }
@@ -78,7 +76,7 @@ export default class APIStateHub implements APIStates {
     refresh();
   }
 
-  initState(stateID: string): [Observable<APIState>, StreamActions] {
+  initState(stateID: string): [BehaviorSubject<APIState>, StreamActions] {
     const operation = this.apiStateSpec[stateID];
     if (!operation) {
       throw new Error(`no operation for stateID: ${stateID}`);
@@ -91,16 +89,12 @@ export default class APIStateHub implements APIStates {
       filter(Boolean),
     );
 
-    const fullState$ = getResponseState$(request$).pipe(
-      // TODO: refine this
-      withLatestFrom(of(undefined).pipe(concatWith(params$))),
-      map(([state, params]) => ({ ...state, params })),
-    );
+    const apiState$ = getResponseState$(request$);
 
     let _latestRunParams: RunParam | undefined = undefined;
 
     // run callbacks after value resolved
-    fullState$.pipe(skip(1)).subscribe((state) => {
+    apiState$.pipe(skip(1)).subscribe((state) => {
       setTimeout(() => {
         // todo refactor this
         executeCallback(
@@ -123,6 +117,6 @@ export default class APIStateHub implements APIStates {
       },
     };
 
-    return [fullState$, streamActions];
+    return [apiState$, streamActions];
   }
 }
