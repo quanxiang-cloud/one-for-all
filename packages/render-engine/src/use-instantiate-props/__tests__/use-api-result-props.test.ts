@@ -16,12 +16,12 @@ const builder: Adapter = {
 
 describe('useAPIResultProps_resolve_expected_fallback', () => {
   const stateIDMap = {
-    some_api_state_has_not_be_fired: { apiID: 'findPetsByTags' },
+    some_api_state: { apiID: 'get:/api' },
   };
   const apiStateHub = new APIStateHub(builder, stateIDMap);
   dummyCTX.apiStates = apiStateHub;
 
-  test('resolve_fallback_when_api_state_data_is_undefined', () => {
+  test('when_it_is_the_initial_state', () => {
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
       key: 'some_key',
@@ -31,15 +31,32 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
         foo: {
           type: NodePropType.APIResultProperty,
           fallback: fallback,
-          stateID: 'some_api_state_has_not_be_fired',
+          stateID: 'some_api_state',
         },
       },
     };
 
     const { result, unmount } = renderHook(() => useAPIResultProps(node, dummyCTX));
     expect(result.current.foo).toMatchObject(fallback);
+
     unmount();
   });
+
+  // test('when_api_data_is_undefined', () => {
+
+  // })
+
+  // test('when_api_return_error', () => {
+
+  // })
+
+  // test('when_adapter_throw', () => {
+
+  // })
+
+  // test('when_adapter_return_undefined', () => {
+
+  // })
 
   test('resolve_fallback_when_adapter_throw', () => {
     // eslint-disable-next-line no-console
@@ -53,7 +70,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
         foo: {
           type: NodePropType.APIResultProperty,
           fallback: fallback,
-          stateID: 'some_api_state_has_not_be_fired',
+          stateID: 'some_api_state',
           adapter: () => {
             throw new Error('should_be_handled');
           },
@@ -89,7 +106,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
 
 test('expect_resolve_initial_value', () => {
   const stateIDMap = {
-    some_api_state_has_not_be_fired: { apiID: 'findPetsByTags' },
+    some_api_state: { apiID: 'findPetsByTags' },
   };
   const apiStateHub = new APIStateHub(builder, stateIDMap);
   dummyCTX.apiStates = apiStateHub;
@@ -104,13 +121,13 @@ test('expect_resolve_initial_value', () => {
       foo: {
         type: NodePropType.APIResultProperty,
         fallback: { foo: 123 },
-        stateID: 'some_api_state_has_not_be_fired',
+        stateID: 'some_api_state',
         adapter: convertorFn,
       },
       bar: {
         type: NodePropType.APIResultProperty,
         fallback: { bar: 456 },
-        stateID: 'some_api_state_has_not_be_fired',
+        stateID: 'some_api_state',
         adapter: convertorFn,
       },
     },

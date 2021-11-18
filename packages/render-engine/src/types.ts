@@ -52,9 +52,14 @@ export type APIResultProperty<T> = BaseNodeProperty & {
   // - please refer to API State Table, it's hard to modify the `data` to initialValue in the second stage
   // - always defining a fallback value for API response is best practices,
   //   no matter before API result returned or encounter a API error.
-  // fallback value passed to component, not api result
-  // is api error, adapter throw, adapter return undefined/null etc, fallback will be passed to component
-  // todo add test cases
+  // fallback is the latest NOT nullish value passed to node, it's NOT THE FALLBACK OF API RESPONSE
+  // fallback will be passed to node when:
+  // - api error
+  // - adapter throw
+  // - adapter return null/undefined
+  // fallback value assignment happens only when:
+  // - define schema
+  // - adapter return NOT nullish value
   fallback: any;
   stateID: string;
   // todo define different type adapter
