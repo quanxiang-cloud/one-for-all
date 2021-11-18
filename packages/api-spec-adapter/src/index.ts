@@ -1,5 +1,5 @@
-import SwaggerAdapter from './adapter-swagger';
+import SwaggerSpecAdapter from './adapter-swagger';
 
 export * from './types';
 
-export { SwaggerAdapter };
+export { SwaggerSpecAdapter };

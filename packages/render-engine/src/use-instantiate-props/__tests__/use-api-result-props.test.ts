@@ -1,6 +1,6 @@
 import mockXHR from 'xhr-mock';
 import { act, renderHook } from '@testing-library/react-hooks/pure';
-import type { Adapter } from '@ofa/api-spec-adapter';
+import type { APISpecAdapter } from '@ofa/api-spec-adapter';
 
 import useAPIResultProps from '../use-api-result-props';
 import APIStateHub from '../../ctx/api-state-hub';
@@ -10,7 +10,7 @@ import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
 
-const builder: Adapter = {
+const apiSpecAdapter: APISpecAdapter = {
   build: () => ({ url: '/api', method: 'get' }),
 };
 
@@ -20,7 +20,7 @@ const stateIDMap = {
 
 describe('useAPIResultProps_resolve_expected_fallback', () => {
   test('when_it_is_the_initial_state', () => {
-    const apiStateHub = new APIStateHub(builder, stateIDMap);
+    const apiStateHub = new APIStateHub(apiSpecAdapter, stateIDMap);
     dummyCTX.apiStates = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
@@ -43,7 +43,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
   });
 
   test('when_api_return_error', () => {
-    const apiStateHub = new APIStateHub(builder, stateIDMap);
+    const apiStateHub = new APIStateHub(apiSpecAdapter, stateIDMap);
     dummyCTX.apiStates = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
@@ -97,7 +97,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
   });
 
   test('when_adapter_throw', () => {
-    const apiStateHub = new APIStateHub(builder, stateIDMap);
+    const apiStateHub = new APIStateHub(apiSpecAdapter, stateIDMap);
     dummyCTX.apiStates = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
@@ -158,7 +158,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
   });
 
   test('when_adapter_return_undefined', () => {
-    const apiStateHub = new APIStateHub(builder, stateIDMap);
+    const apiStateHub = new APIStateHub(apiSpecAdapter, stateIDMap);
     dummyCTX.apiStates = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
@@ -193,7 +193,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
   });
 
   test('when_data_is_undefined', () => {
-    const apiStateHub = new APIStateHub(builder, stateIDMap);
+    const apiStateHub = new APIStateHub(apiSpecAdapter, stateIDMap);
     dummyCTX.apiStates = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
@@ -233,7 +233,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
 describe('useAPIResultProps_should_call_adapter_correctly', () => {
   test('do_not_call_on_initial_stage', () => {
     const adapter = jest.fn();
-    const apiStateHub = new APIStateHub(builder, stateIDMap);
+    const apiStateHub = new APIStateHub(apiSpecAdapter, stateIDMap);
     dummyCTX.apiStates = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
@@ -260,7 +260,7 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
 
   test('do_not_call_when_data_is_undefined', () => {
     const adapter = jest.fn();
-    const apiStateHub = new APIStateHub(builder, stateIDMap);
+    const apiStateHub = new APIStateHub(apiSpecAdapter, stateIDMap);
     dummyCTX.apiStates = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
@@ -295,7 +295,7 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
 
   test('do_call_when_data_is_not_nullish', () => {
     const adapter = jest.fn((v) => v);
-    const apiStateHub = new APIStateHub(builder, stateIDMap);
+    const apiStateHub = new APIStateHub(apiSpecAdapter, stateIDMap);
     dummyCTX.apiStates = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
@@ -329,7 +329,7 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
   });
 
   test('return_expected_value', () => {
-    const apiStateHub = new APIStateHub(builder, stateIDMap);
+    const apiStateHub = new APIStateHub(apiSpecAdapter, stateIDMap);
     dummyCTX.apiStates = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {

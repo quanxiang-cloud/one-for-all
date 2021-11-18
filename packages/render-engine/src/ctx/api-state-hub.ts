@@ -1,6 +1,6 @@
 import { BehaviorSubject, Subject } from 'rxjs';
 import { map, skip, filter, share } from 'rxjs/operators';
-import type { Adapter, RequestParams } from '@ofa/api-spec-adapter';
+import type { APISpecAdapter, RequestParams } from '@ofa/api-spec-adapter';
 
 import type { APIStates, APIState, APIStatesSpec, CTX, RunParam } from '../types';
 import getResponseState$ from './http/response';
@@ -25,14 +25,14 @@ function executeCallback(ctx: CTX, state: APIState, runParams?: RunParam): void 
 }
 
 export default class APIStateHub implements APIStates {
-  adapter: Adapter;
+  apiSpecAdapter: APISpecAdapter;
   apiStateSpec: APIStatesSpec;
   statesCache: Record<string, [BehaviorSubject<APIState>, StreamActions]> = {};
   ctx: CTX | null = null;
 
-  constructor(adapter: Adapter, apiStateSpec: APIStatesSpec) {
+  constructor(apiSpecAdapter: APISpecAdapter, apiStateSpec: APIStatesSpec) {
     this.apiStateSpec = apiStateSpec;
-    this.adapter = adapter;
+    this.apiSpecAdapter = apiSpecAdapter;
   }
 
   initContext(ctx: CTX): void {
@@ -75,7 +75,7 @@ export default class APIStateHub implements APIStates {
     const request$ = params$.pipe(
       // it is adapter's responsibility to handle build error
       // if a error occurred, build should return undefined
-      map((params) => this.adapter.build(operation.apiID, params)),
+      map((params) => this.apiSpecAdapter.build(operation.apiID, params)),
       filter(Boolean),
       share(),
     );

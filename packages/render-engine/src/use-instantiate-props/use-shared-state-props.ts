@@ -9,7 +9,7 @@ import {
   NodePropType,
   SchemaNode,
 } from '../types';
-import { convertResult } from './use-api-result-props';
+import convertResult from './convert-result';
 
 function useSharedStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, any> {
   const adapters: Record<string, VersatileFunc | undefined> = {};

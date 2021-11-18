@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { BehaviorSubject, combineLatest, distinctUntilKeyChanged, map, Observable, skip, tap } from 'rxjs';
-import { logger } from '@ofa/utils';
 
 import {
   APIResultProperty,
@@ -11,20 +10,7 @@ import {
   Instantiated,
   SchemaNode,
 } from '../types';
-
-type ConvertResultParams = { result: any; adapter?: APIResultConvertor; fallback: any; };
-export function convertResult({ result, adapter, fallback }: ConvertResultParams): any {
-  if (adapter && result !== undefined) {
-    try {
-      return adapter(result) ?? fallback;
-    } catch (error) {
-      logger.error('failed to run adapter:\n', adapter.toString(), '\n', error);
-      return fallback;
-    }
-  }
-
-  return result ?? fallback;
-}
+import convertResult from './convert-result';
 
 function useAPIResultProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, any> {
   const adapters: Record<string, APIResultConvertor | undefined> = {};

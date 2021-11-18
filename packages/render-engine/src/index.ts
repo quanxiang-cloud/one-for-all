@@ -1,4 +1,4 @@
-import type { Adapter } from '@ofa/api-spec-adapter';
+import type { APISpecAdapter } from '@ofa/api-spec-adapter';
 
 import renderSchema from './render';
 import deserializeSchema from './deserialize-schema';
@@ -12,7 +12,7 @@ export * from './types';
 type RenderSchemaParams = {
   schema: Schema;
   rootEle: Element;
-  apiSpecAdapter: Adapter;
+  apiSpecAdapter: APISpecAdapter;
 }
 
 function Render({ schema, rootEle, apiSpecAdapter }: RenderSchemaParams): CTX {

@@ -1,4 +1,4 @@
-export interface Adapter {
+export interface APISpecAdapter {
   build: (apiID: string, requestParam?: RequestParams) => AjaxConfig | undefined;
 }
 

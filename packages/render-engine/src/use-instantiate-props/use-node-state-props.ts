@@ -9,7 +9,7 @@ import {
   NodeStateProperty,
   SchemaNode,
 } from '../types';
-import { convertResult } from './use-api-result-props';
+import convertResult from './convert-result';
 
 function useNodeStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, any> {
   const adapters: Record<string, VersatileFunc | undefined> = {};
