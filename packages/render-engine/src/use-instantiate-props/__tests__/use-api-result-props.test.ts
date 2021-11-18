@@ -361,20 +361,3 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
     unmount();
   });
 });
-
-// 如果要使用 loading，应该是直接 state.loading 就可以了，
-// 如果要使用 error，应该是直接 state.error 就可以了，
-// 如果根据 loading 状态的不同返回不同的 组件 props value，那这个逻辑应该写在组件内部
-// test('resolve_fallback_when_api_error', () => {
-
-// })
-
-// describe('useAPIResultProps_resolve_expected_data_when_api_state_has_error', () => {
-//   test('return_fallback_when_previous_data_is_undefined', () => {
-
-//   });
-
-//   test('return_the_latest_non_undefined_data', () => {
-
-//   });
-// });
