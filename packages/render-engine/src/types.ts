@@ -1,5 +1,5 @@
 import { BehaviorSubject, Observable } from 'rxjs';
-import { RequestParams } from '@ofa/api-spec-adapter';
+import type { RequestParams } from '@ofa/api-spec-adapter';
 
 import NodeStateHub from './ctx/node-state-hub';
 

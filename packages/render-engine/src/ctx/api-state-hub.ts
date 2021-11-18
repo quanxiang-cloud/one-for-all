@@ -1,6 +1,6 @@
 import { Observable, of, Subject } from 'rxjs';
 import { concatWith, map, skip, withLatestFrom } from 'rxjs/operators';
-import { Adapter, RequestParams } from '@ofa/api-spec-adapter';
+import type { Adapter, RequestParams } from '@ofa/api-spec-adapter';
 
 import type { APIStates, APIState, APIStatesSpec, CTX, RunParam } from '../types';
 import getResponseState$ from './http/response';

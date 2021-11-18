@@ -1,5 +1,5 @@
 import mockXHR, { delay } from 'xhr-mock';
-import { Adapter } from '@ofa/api-spec-adapter';
+import type { Adapter } from '@ofa/api-spec-adapter';
 
 import APIStateHub from '../api-state-hub';
 import { initialState } from '../http/response';
@@ -98,13 +98,12 @@ test('should_resolve_value', (done) => {
   state$.subscribe(fn);
 
   run({
-    onSuccess: ({ data, error, loading, params }) => {
+    onSuccess: ({ data, error, loading }) => {
       // expect(ctx.apiStates).toEqual(apiStateHub);
       expect(fn).toBeCalledWith({
         data: data,
         error: error,
         loading: loading,
-        params: params,
       });
       expect(error).toBeUndefined();
       expect(data).toMatchObject(mockRes);
@@ -122,30 +121,30 @@ test('same_stateID_same_stream', () => {
   expect(sendRequest1).toEqual(sendRequest2);
 });
 
-test('param_match_input', (done) => {
-  mockXHR.get(/.*/, (req, res) => {
-    return res.status(200);
-  });
+// test('param_match_input', (done) => {
+//   mockXHR.get(/.*/, (req, res) => {
+//     return res.status(200);
+//   });
 
-  const apiStateHub = new APIStateHub(builder, apiStateSpec);
-  const [state$, { run }] = apiStateHub.getStream('stream_findPetsByTags');
-  const requestParams = { foo: 'bar' };
-  const requestBody = { baz: 'bzz' };
+//   const apiStateHub = new APIStateHub(builder, apiStateSpec);
+//   const [state$, { run }] = apiStateHub.getStream('stream_findPetsByTags');
+//   const requestParams = { foo: 'bar' };
+//   const requestBody = { baz: 'bzz' };
 
-  const fn = jest.fn();
+//   const fn = jest.fn();
 
-  state$.subscribe(({ params }) => {
-    fn(params?.params);
-  });
+//   state$.subscribe(({ params }) => {
+//     fn(params?.params);
+//   });
 
-  run({
-    params: { params: requestParams, body: requestBody },
-    onSuccess: () => {
-      expect(fn).toBeCalledWith(requestParams);
-      done();
-    },
-  });
-});
+//   run({
+//     params: { params: requestParams, body: requestBody },
+//     onSuccess: () => {
+//       expect(fn).toBeCalledWith(requestParams);
+//       done();
+//     },
+//   });
+// });
 
 test('on_success_should_be_called', (done) => {
   mockXHR.get(/.*/, (req, res) => {
