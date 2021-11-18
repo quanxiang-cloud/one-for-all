@@ -1,7 +1,7 @@
 import { logger } from '@ofa/utils';
-import { APIResultConvertor } from '../types';
+import { Adapter } from '../types';
 
-type ConvertResultParams = { result: any; adapter?: APIResultConvertor; fallback: any; };
+type ConvertResultParams = { result: any; adapter?: Adapter; fallback: any; };
 export default function convertResult({ result, adapter, fallback }: ConvertResultParams): any {
   if (adapter && result !== undefined) {
     try {

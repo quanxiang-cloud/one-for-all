@@ -16,7 +16,7 @@ export const enum NodePropType {
   ConstantProperty = 'constant_property',
   APIResultProperty = 'api_result_property',
   APILoadingProperty = 'api_loading_property',
-  // todo api loading property and api error property
+  // todo api error property
   SharedStateProperty = 'shared_state_property',
   FunctionalProperty = 'functional_property',
   SharedStateMutationProperty = 'shared_state_mutation_property',
@@ -70,6 +70,25 @@ export type APIResultProperty<T> = BaseNodeProperty & {
   adapter?: APIResultAdapter<T>;
 }
 
+type APIResultAdapter<T> = T extends Serialized ? SerializedAPIResultAdapter : Adapter;
+type SerializedAPIResultAdapter = APIResultTemplate | APIResultAdapterFuncSpec;
+
+export type APIResultTemplate = {
+  type: 'api_result_template';
+  // template for data, loading, params, error
+  // {{ result.foo }}
+  // {{ result.offset / (result.limit + result.offset) }}
+  // {{ result.list.map((item) => item.name)) }}
+  // {{ result.list.map((item) => `名称：${item.name}`)) }}
+  // {{ result.foo?.bar?.baz || 'someValue' }}
+  template: string;
+}
+
+export type APIResultAdapterFuncSpec = BaseFunctionSpec & {
+  type: 'api_result_convertor_func_spec';
+  args: 'result';
+};
+
 export type APILoadingProperty = BaseNodeProperty & {
   type: NodePropType.APILoadingProperty;
   stateID: string;
@@ -86,14 +105,14 @@ export type SharedStateProperty<T> = BaseNodeProperty & {
 
 export type FunctionalProperty<T> = BaseNodeProperty & {
   type: NodePropType.FunctionalProperty;
-  func: T extends Serialized ? BaseFunctionSpec : VersatileFunc;
+  func: T extends Serialized ? BaseFunctionSpec : Adapter;
 }
 
 // todo refactor this type property spec
 export type SharedStateMutationProperty<T> = {
   type: NodePropType.SharedStateMutationProperty;
   stateID: string;
-  adapter?: T extends Serialized ? RawFunctionSpec : VersatileFunc;
+  adapter?: T extends Serialized ? RawFunctionSpec : Adapter;
 }
 
 // todo refactor this type property spec
@@ -181,18 +200,7 @@ export type CTX = {
   nodeStates: NodeStateHub;
 }
 
-export type APIResultConvertor = (result: any) => any;
-
-export type APIStateTemplate = {
-  type: 'api_state_template';
-  // template for data, loading, params, error
-  // {{ data.foo }}
-  // {{ data.offset / (data.limit + data.offset) }}
-  // {{ data.list.map((item) => item.name)) }}
-  // {{ data.list.map((item) => `名称：${item.name}`)) }}
-  // {{ data.foo?.bar?.baz || 'someValue' }}
-  template: string;
-}
+export type Adapter = (v: any) => any;
 
 export type ExpressionStatement = {
   type: 'expression_statement';
@@ -205,17 +213,9 @@ export type ExpressionStatement = {
   expression: string;
 }
 
-// todo refactor this type property spec
-export type APIStateConvertFuncSpec = BaseFunctionSpec & {
-  type: 'api_state_convertor_func_spec';
-  args: 'result';
-};
-
-type SerializedAPIResultAdapter = APIStateTemplate | APIStateConvertFuncSpec;
 export type SerializedRawStateAdapter = ExpressionStatement | RawDataConvertorSpec;
 
-type APIResultAdapter<T> = T extends Serialized ? SerializedAPIResultAdapter : APIResultConvertor;
-type RawStateAdapter<T> = T extends Serialized ? SerializedRawStateAdapter : (state: any) => any;
+type RawStateAdapter<T> = T extends Serialized ? SerializedRawStateAdapter : Adapter;
 export type ParamsBuilder<T> = T extends Serialized ? ParamsBuilderFuncSpec : (...args: any[]) => RequestParams;
 export type APIInvokeCallBack<T> = T extends Serialized ? APIInvokeCallbackFuncSpec : (apiState: APIState) => void;
 

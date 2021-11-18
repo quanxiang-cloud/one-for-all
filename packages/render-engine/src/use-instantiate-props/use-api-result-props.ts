@@ -4,7 +4,7 @@ import { BehaviorSubject, combineLatest, distinctUntilKeyChanged, map, Observabl
 import {
   APIResultProperty,
   APIState,
-  APIResultConvertor,
+  Adapter,
   NodePropType,
   CTX,
   Instantiated,
@@ -13,7 +13,7 @@ import {
 import convertResult from './convert-result';
 
 function useAPIResultProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, any> {
-  const adapters: Record<string, APIResultConvertor | undefined> = {};
+  const adapters: Record<string, Adapter | undefined> = {};
   const states$: Record<string, BehaviorSubject<APIState>> = {};
   const initialFallbacks: Record<string, any> = {};
 

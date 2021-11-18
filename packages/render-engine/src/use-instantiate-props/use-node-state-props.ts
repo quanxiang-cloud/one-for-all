@@ -5,14 +5,14 @@ import {
   CTX,
   NodePropType,
   Instantiated,
-  VersatileFunc,
+  Adapter,
   NodeStateProperty,
   SchemaNode,
 } from '../types';
 import convertResult from './convert-result';
 
 function useNodeStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, any> {
-  const adapters: Record<string, VersatileFunc | undefined> = {};
+  const adapters: Record<string, Adapter | undefined> = {};
   const states$: Record<string, BehaviorSubject<any>> = {};
   const initialFallbacks: Record<string, any> = {};
 

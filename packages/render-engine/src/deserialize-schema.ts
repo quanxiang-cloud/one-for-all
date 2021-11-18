@@ -7,13 +7,13 @@ import {
   NodeProperties,
   Serialized,
   Instantiated,
-  APIStateConvertFuncSpec,
+  APIResultAdapterFuncSpec,
   ParamsBuilderFuncSpec,
   APIInvokeCallbackFuncSpec,
   NodePropType,
   RawFunctionSpec,
-  VersatileFunc,
-  APIStateTemplate,
+  Adapter,
+  APIResultTemplate,
   CTX,
   RawDataConvertorSpec,
   ExpressionStatement,
@@ -21,27 +21,27 @@ import {
 
 // todo refactor this type
 type FunctionSpecs =
-  APIStateConvertFuncSpec |
+  APIResultAdapterFuncSpec |
   ParamsBuilderFuncSpec |
   APIInvokeCallbackFuncSpec |
   RawDataConvertorSpec |
   RawFunctionSpec |
-  APIStateTemplate |
+  APIResultTemplate |
   ExpressionStatement;
 
 // todo move this to constant, and should be defined as a type
 const API_STATE_FUNC_ARGS = 'result';
 const LOCAL_STATE_FUNC_ARGS = 'data';
 
-function instantiateFuncSpec(spec: FunctionSpecs, ctx: CTX): VersatileFunc {
-  if (spec.type === 'api_state_template') {
+function instantiateFuncSpec(spec: FunctionSpecs, ctx: CTX): Adapter {
+  if (spec.type === 'api_result_template') {
     return new Function(
       API_STATE_FUNC_ARGS,
       `return ${spec.template}`,
     ).bind(ctx);
   }
 
-  if (spec.type === 'api_state_convertor_func_spec') {
+  if (spec.type === 'api_result_convertor_func_spec') {
     return new Function(API_STATE_FUNC_ARGS, spec.body).bind(ctx);
   }
 
