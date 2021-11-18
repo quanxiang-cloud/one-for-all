@@ -1,5 +1,5 @@
 import { Observable, of, Subject } from 'rxjs';
-import { concatWith, map, skip, withLatestFrom } from 'rxjs/operators';
+import { concatWith, map, skip, withLatestFrom, filter } from 'rxjs/operators';
 import type { Adapter, RequestParams } from '@ofa/api-spec-adapter';
 
 import type { APIStates, APIState, APIStatesSpec, CTX, RunParam } from '../types';
@@ -85,8 +85,10 @@ export default class APIStateHub implements APIStates {
     }
     const params$ = new Subject<RequestParams | undefined>();
     const request$ = params$.pipe(
-      // TODO: catch builder error
+      // it is adapter's responsibility to handle build error
+      // if a error occurred, build should return undefined
       map((params) => this.adapter.build(operation.apiID, params)),
+      filter(Boolean),
     );
 
     const fullState$ = getResponseState$(request$).pipe(
