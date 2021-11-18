@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { SchemaNode } from '../../..';
-import { APIInvokeProperty, APIDerivedProperty, Instantiated, CTX } from '../../../types';
+import { APIInvokeProperty, APIResultProperty, Instantiated, CTX } from '../../../types';
 import useInstantiateProps from '../../../use-instantiate-props';
 
 type Props = {
-  nodeProps: Record<string, APIInvokeProperty<Instantiated> | APIDerivedProperty<Instantiated>>;
+  nodeProps: Record<string, APIInvokeProperty<Instantiated> | APIResultProperty<Instantiated>>;
   ctx: CTX;
 }
 

@@ -14,7 +14,8 @@ export type APIState = {
 
 export const enum NodePropType {
   ConstantProperty = 'constant_property',
-  APIDerivedProperty = 'api_derived_property',
+  APIResultProperty = 'api_result_property',
+  // todo api loading property and api error property
   SharedStateProperty = 'shared_state_property',
   FunctionalProperty = 'functional_property',
   SharedStateMutationProperty = 'shared_state_mutation_property',
@@ -25,7 +26,7 @@ export const enum NodePropType {
 
 export type NodeProperty<T> =
   ConstantProperty |
-  APIDerivedProperty<T> |
+  APIResultProperty<T> |
   SharedStateProperty<T> |
   FunctionalProperty<T> |
   SharedStateMutationProperty<T> |
@@ -44,17 +45,22 @@ export type ConstantProperty = BaseNodeProperty & {
   value: any;
 }
 
-export type APIDerivedProperty<T> = BaseNodeProperty & {
-  type: NodePropType.APIDerivedProperty;
+export type APIResultProperty<T> = BaseNodeProperty & {
+  type: NodePropType.APIResultProperty;
   // in the previous implementation, this property is called: initialValue,
   // why changed to `fallback`?
   // - please refer to API State Table, it's hard to modify the `data` to initialValue in the second stage
   // - always defining a fallback value for API response is best practices,
   //   no matter before API result returned or encounter a API error.
+  // fallback value passed to component, not api result
+  // is api error, adapter throw, adapter return undefined/null etc, fallback will be passed to component
+  // todo add test cases
   fallback: any;
   stateID: string;
   // todo define different type adapter
-  adapter?: APIStateAdapter<T>;
+  // adapter will never be called if api error or api response body is undefined
+  // todo add test cases
+  adapter?: APIResultAdapter<T>;
 }
 
 export type SharedStateProperty<T> = BaseNodeProperty & {
@@ -111,7 +117,7 @@ export type ParamsBuilderFuncSpec = BaseFunctionSpec & {
 
 export type APIInvokeCallbackFuncSpec = BaseFunctionSpec & {
   type: 'api_invoke_call_func_spec';
-  args: '{ data, error, loading, params }';
+  args: 'result';
 }
 
 export type RawDataConvertorSpec = BaseFunctionSpec & {
@@ -137,7 +143,9 @@ export type RawDataConvertorSpec = BaseFunctionSpec & {
 //     }, forever);
 //   });
 //
-// - 为了解决这个问题，需要把副作用都放到一个堆栈里
+// - 为了解决这个问题，需要把副作用都放到一个堆栈里?
+// - 这样不好吧，比如用户多次点击一个按钮，成功后会有一个消息提示，那应该只提示一次吧
+// - 再考虑一下
 export type RunParam = {
   params?: RequestParams;
   onSuccess?: APIInvokeCallBack<Instantiated>;
@@ -161,7 +169,7 @@ export type CTX = {
   nodeStates: NodeStateHub;
 }
 
-export type APIStateConvertor = (state: APIState) => any;
+export type APIResultConvertor = (result: any) => any;
 
 export type APIStateTemplate = {
   type: 'api_state_template';
@@ -188,14 +196,14 @@ export type ExpressionStatement = {
 // todo refactor this type property spec
 export type APIStateConvertFuncSpec = BaseFunctionSpec & {
   type: 'api_state_convertor_func_spec';
-  args: '{ data, error, loading, params }';
+  args: 'result';
 };
 
-export type SerializedAPIStateAdapter = APIStateTemplate | APIStateConvertFuncSpec;
+type SerializedAPIResultAdapter = APIStateTemplate | APIStateConvertFuncSpec;
 export type SerializedRawStateAdapter = ExpressionStatement | RawDataConvertorSpec;
 
-export type APIStateAdapter<T> = T extends Serialized ? SerializedAPIStateAdapter : APIStateConvertor;
-export type RawStateAdapter<T> = T extends Serialized ? SerializedRawStateAdapter : VersatileFunc;
+type APIResultAdapter<T> = T extends Serialized ? SerializedAPIResultAdapter : APIResultConvertor;
+type RawStateAdapter<T> = T extends Serialized ? SerializedRawStateAdapter : VersatileFunc;
 export type ParamsBuilder<T> = T extends Serialized ? ParamsBuilderFuncSpec : (...args: any[]) => RequestParams;
 export type APIInvokeCallBack<T> = T extends Serialized ? APIInvokeCallbackFuncSpec : (apiState: APIState) => void;
 

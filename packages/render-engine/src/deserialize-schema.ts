@@ -30,7 +30,7 @@ type FunctionSpecs =
   ExpressionStatement;
 
 // todo move this to constant, and should be defined as a type
-const API_STATE_FUNC_ARGS = '{ data, error, loading, params }';
+const API_STATE_FUNC_ARGS = 'result';
 const LOCAL_STATE_FUNC_ARGS = 'data';
 
 function instantiateFuncSpec(spec: FunctionSpecs, ctx: CTX): VersatileFunc {
@@ -91,7 +91,7 @@ function transformProps(props: NodeProperties<Serialized>, ctx: CTX): NodeProper
       return [propName, propDesc];
     }
 
-    if (propDesc.type === 'api_derived_property') {
+    if (propDesc.type === 'api_result_property') {
       return [propName, {
         ...propDesc,
         adapter: propDesc.adapter ? instantiateFuncSpec(propDesc.adapter, ctx) : undefined,
