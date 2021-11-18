@@ -215,7 +215,7 @@ type SerializedAPIResultAdapter = APIStateTemplate | APIStateConvertFuncSpec;
 export type SerializedRawStateAdapter = ExpressionStatement | RawDataConvertorSpec;
 
 type APIResultAdapter<T> = T extends Serialized ? SerializedAPIResultAdapter : APIResultConvertor;
-type RawStateAdapter<T> = T extends Serialized ? SerializedRawStateAdapter : VersatileFunc;
+type RawStateAdapter<T> = T extends Serialized ? SerializedRawStateAdapter : (state: any) => any;
 export type ParamsBuilder<T> = T extends Serialized ? ParamsBuilderFuncSpec : (...args: any[]) => RequestParams;
 export type APIInvokeCallBack<T> = T extends Serialized ? APIInvokeCallbackFuncSpec : (apiState: APIState) => void;
 

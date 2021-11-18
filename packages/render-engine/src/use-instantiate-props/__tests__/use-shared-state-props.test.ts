@@ -195,7 +195,7 @@ test('useSharedStateProps_resolve_values_after_changed', () => {
   act(() => {
     sharedStates.getState$('the_only_pre_defined_value').next(undefined);
   });
-  expect(result.current.foo).toEqual('foo');
+  expect(result.current.foo).toEqual('some_value');
 
   unmount();
 });

@@ -13,7 +13,7 @@ import {
 } from '../types';
 
 type ConvertResultParams = { result: any; adapter?: APIResultConvertor; fallback: any; };
-function convertResult({ result, adapter, fallback }: ConvertResultParams): any {
+export function convertResult({ result, adapter, fallback }: ConvertResultParams): any {
   if (adapter && result !== undefined) {
     try {
       return adapter(result) ?? fallback;

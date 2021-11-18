@@ -157,7 +157,7 @@ test('useNodeStateProps_should_resolve_after_changed', () => {
   expect(result.current.anotherNodeState).toEqual('bar');
 
   act(() => hub.expose(nodeKey, undefined));
-  expect(result.current.anotherNodeState).toEqual(false);
+  expect(result.current.anotherNodeState).toEqual('bar');
 
   unmount();
 });
