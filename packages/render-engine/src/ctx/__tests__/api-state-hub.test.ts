@@ -6,7 +6,7 @@ import { initialState } from '../http/response';
 import SharedStatesHub from '../shared-states-hub';
 import { CTX } from '../../types';
 import NodeStateHub from '../node-state-hub';
-import { APIStateSpec } from '../..';
+import { APIStatesSpec } from '../..';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
@@ -15,8 +15,8 @@ const builder: Adapter = {
   build: () => ({ url: '', method: '' }),
 };
 
-const apiStateSpec: APIStateSpec = {
-  stream_findPetsByTags: { path: '', method: '' },
+const apiStateSpec: APIStatesSpec = {
+  stream_findPetsByTags: { apiID: '' },
 };
 
 test('resolve_initial_value_when_no_next_called', (done) => {

@@ -2,7 +2,7 @@ import { Observable, of, Subject } from 'rxjs';
 import { concatWith, map, skip, withLatestFrom } from 'rxjs/operators';
 import { Adapter } from '@ofa/api-spec-adapter';
 
-import type { APIStates, APIState, APIStateSpec, CTX, RequestParams, RunParam } from '../types';
+import type { APIStates, APIState, APIStatesSpec, CTX, RequestParams, RunParam } from '../types';
 import getResponseState$ from './http/response';
 
 type StreamActions = {
@@ -28,11 +28,11 @@ function executeCallback(ctx: CTX, state: APIState, runParams?: RunParam): void 
 export default class APIStateHub implements APIStates {
   adapter: Adapter;
   // map of stateID and operationID
-  apiStateSpec: APIStateSpec;
+  apiStateSpec: APIStatesSpec;
   statesCache: Record<string, [Observable<APIState>, StreamActions]> = {};
   ctx: CTX | null = null;
 
-  constructor(adapter: Adapter, apiStateSpec: APIStateSpec) {
+  constructor(adapter: Adapter, apiStateSpec: APIStatesSpec) {
     this.apiStateSpec = apiStateSpec;
     this.adapter = adapter;
   }

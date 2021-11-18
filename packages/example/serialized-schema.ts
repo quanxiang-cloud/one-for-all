@@ -2,11 +2,11 @@ import { NodePropType, Schema } from '@ofa/render-engine';
 
 const todoAppSchema: Schema = {
   apiStateSpec: {
-    新建待办: { operationID: 'createTodo' },
-    全部待办列表: { operationID: 'listTodos' },
-    更新待办: { operationID: 'updateTodo' },
-    todoStatus: { operationID: 'todoStatus' },
-    删除待办: { operationID: 'deleteTodo' },
+    新建待办: { apiID: 'createTodo' },
+    全部待办列表: { apiID: 'listTodos' },
+    更新待办: { apiID: 'updateTodo' },
+    todoStatus: { apiID: 'todoStatus' },
+    删除待办: { apiID: 'deleteTodo' },
   },
   sharedStatesSpec: {
     currentTodo: {

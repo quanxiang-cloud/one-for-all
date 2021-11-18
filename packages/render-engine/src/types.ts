@@ -216,17 +216,13 @@ interface ReactComponentNode<T> extends BaseNode<T> {
 export type SchemaNode<T> = HTMLNode<T> | ReactComponentNode<T>;
 
 // map of stateID and operationID
-export type APIStateSpec = Record<string, {
-  path: string;
-  method: string;
-  [key: string]: any;
-}>;
+export type APIStatesSpec = Record<string, { apiID: string; [key: string]: any; }>;
 
 export type SharedStatesSpec = Record<string, { initial: any; }>;
 
 export type Schema = {
   node: SchemaNode<Serialized>;
-  apiStateSpec: APIStateSpec;
+  apiStateSpec: APIStatesSpec;
   sharedStatesSpec: SharedStatesSpec;
 }
 

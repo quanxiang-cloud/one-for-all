@@ -3,8 +3,7 @@ import { fireEvent, render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import mockXHR from 'xhr-mock';
 
-import petStoreSpec from '../../ctx/spec-interpreter/__tests__/fixtures/petstore-spec';
-import { APIInvokeProperty, APIDerivedProperty, Instantiated, APIStateSpec, CTX, NodePropType } from '../../types';
+import { APIInvokeProperty, APIDerivedProperty, Instantiated, APIStatesSpec, CTX, NodePropType } from '../../types';
 import APIStateHub from '../../ctx/api-state-hub';
 import Link from '../../ctx/__tests__/fixtures/link';
 import SharedStatesHub from '../../ctx/shared-states-hub';
@@ -13,7 +12,7 @@ import NodeStateHub from '../../ctx/node-state-hub';
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
 
-const stateIDMap: APIStateSpec = { stream_findPetsByTags: { operationID: 'findPetsByTags' } };
+const stateIDMap: APIStatesSpec = { stream_findPetsByTags: { apiID: 'findPetsByTags' } };
 const apiStateHub = new APIStateHub(petStoreSpec, stateIDMap);
 const ctx: CTX = {
   apiStates: apiStateHub,
