@@ -120,6 +120,24 @@ export type RawDataConvertorSpec = BaseFunctionSpec & {
   args: 'data';
 }
 
+// 为什么这里采用 onSuccess and onError 这种 callback 的形式，而不是让 runAction 返回一个 promise 呢？
+// - 在使用渲染引擎来实现页面逻辑的场景中，所有的 view 都是平等的，任何一个 view 都可以调用 API
+// - 在 Pro Code 的场景中，view 有着明确的业务属性，就是说何时会调用 API 有着明确的逻辑
+// - 一般的 API 请求都是副作用的，平等的 API 请求权限意味着不可控的副作用
+// - 在 Pro Code 的场景中，为了避免不期望的副作用，需要引入状态标识和 request cancellation
+// - 在 Pro Code 的场景中，实现状态标识和 request cancellation 需要很多的脑细胞
+// - 为了简化，渲染引擎支持 API 请求自动 cancellation，当有新的 runAction 调用时，处在 pending 状态的 HTTP 请求会被 abort
+// - 这样实现的问题就是，runAction 的副作用不保证会被执行
+// - 所以如果 runAction return Promise 的话，那这个 Promise 可能永远处于 pending 的状态，例如下面的代码
+//
+//   new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       // resolve will never be called
+//       resolve();
+//     }, forever);
+//   });
+//
+// - 为了解决这个问题，需要把副作用都放到一个堆栈里
 export type RunParam = {
   params?: RequestParams;
   onSuccess?: APIInvokeCallBack<Instantiated>;
@@ -127,10 +145,9 @@ export type RunParam = {
 }
 
 export interface APIStates {
-  runAction: (stateID: string, runParam?: RunParam) => void;
-  refresh: (stateID: string) => void;
   getState: (stateID: string) => BehaviorSubject<APIState>;
-  getAction: (stateID: string) => (runParam?: RunParam) => void;
+  runAction: (stateID: string, runParam: RunParam) => void;
+  refresh: (stateID: string) => void;
 }
 
 export interface SharedStates {

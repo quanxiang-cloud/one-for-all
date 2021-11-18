@@ -1,12 +1,12 @@
 import { BehaviorSubject, Subject } from 'rxjs';
-import { map, skip, filter } from 'rxjs/operators';
+import { map, skip, filter, share } from 'rxjs/operators';
 import type { Adapter, RequestParams } from '@ofa/api-spec-adapter';
 
 import type { APIStates, APIState, APIStatesSpec, CTX, RunParam } from '../types';
 import getResponseState$ from './http/response';
 
 type StreamActions = {
-  run: (runParam?: RunParam) => void;
+  run: (runParam: RunParam) => void;
   refresh: () => void;
   // __complete: () => void;
 };
@@ -40,53 +40,44 @@ export default class APIStateHub implements APIStates {
   }
 
   getState(stateID: string): BehaviorSubject<APIState> {
-    const [state$] = this.getStream(stateID);
+    const [state$] = this.getCached(stateID);
 
-    // TODO: test error when run convertor
     return state$;
   }
 
-  runAction(stateID: string, runParam?: RunParam): void {
-    const action = this.getAction(stateID);
-    if (action) {
-      action(runParam);
-    }
-  }
+  runAction(stateID: string, runParam: RunParam): void {
+    const [, { run }] = this.getCached(stateID);
 
-  getAction(stateID: string): (runParam?: RunParam) => void {
-    const [, { run }] = this.getStream(stateID);
-    return run;
-  }
-
-  getStream(stateID: string): [BehaviorSubject<APIState>, StreamActions] {
-    if (!this.apiStateSpec[stateID]) {
-      // TODO: log error message
-    }
-
-    const key = `${stateID}:${this.apiStateSpec[stateID]}`;
-    if (!this.statesCache[key]) {
-      this.statesCache[key] = this.initState(stateID);
-    }
-
-    return this.statesCache[key];
+    run(runParam);
   }
 
   refresh(stateID: string): void {
-    const [, { refresh }] = this.getStream(stateID);
+    const [, { refresh }] = this.getCached(stateID);
+
     refresh();
   }
 
-  initState(stateID: string): [BehaviorSubject<APIState>, StreamActions] {
+  getCached(stateID: string): [BehaviorSubject<APIState>, StreamActions] {
+    if (!this.statesCache[stateID]) {
+      this.initState(stateID);
+    }
+
+    return this.statesCache[stateID];
+  }
+
+  initState(stateID: string): void {
     const operation = this.apiStateSpec[stateID];
     if (!operation) {
       throw new Error(`no operation for stateID: ${stateID}`);
     }
+
     const params$ = new Subject<RequestParams | undefined>();
     const request$ = params$.pipe(
       // it is adapter's responsibility to handle build error
       // if a error occurred, build should return undefined
       map((params) => this.adapter.build(operation.apiID, params)),
       filter(Boolean),
+      share(),
     );
 
     const apiState$ = getResponseState$(request$);
@@ -106,17 +97,21 @@ export default class APIStateHub implements APIStates {
     });
 
     const streamActions: StreamActions = {
-      run: (runParam?: RunParam) => {
+      run: (runParam: RunParam) => {
         _latestRunParams = runParam;
+
         params$.next(runParam?.params);
       },
       refresh: () => {
+        if (!_latestRunParams) {
+          return;
+        }
         // override onSuccess and onError to undefined
-        _latestRunParams = { params: _latestRunParams?.params };
+        _latestRunParams = { params: _latestRunParams.params };
         params$.next(_latestRunParams?.params);
       },
     };
 
-    return [apiState$, streamActions];
+    this.statesCache[stateID] = [apiState$, streamActions];
   }
 }

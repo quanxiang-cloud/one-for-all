@@ -1,7 +1,7 @@
 import mockXHR from 'xhr-mock';
 import { renderHook } from '@testing-library/react-hooks/pure';
+import type { Adapter } from '@ofa/api-spec-adapter';
 
-import petStoreSpec from '../../ctx/spec-interpreter/__tests__/fixtures/petstore-spec';
 import useAPIStateProps from '../use-api-state-props';
 import APIStateHub from '../../ctx/api-state-hub';
 import { SchemaNode, NodePropType, Instantiated } from '../../types';
@@ -10,11 +10,15 @@ import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
 
+const builder: Adapter = {
+  build: () => ({ url: '', method: '' }),
+};
+
 describe('useAPIStateProps_resolve_expected_fallback', () => {
   const stateIDMap = {
-    some_api_state_has_not_be_fired: { operationID: 'findPetsByTags' },
+    some_api_state_has_not_be_fired: { apiID: 'findPetsByTags' },
   };
-  const apiStateHub = new APIStateHub(petStoreSpec, stateIDMap);
+  const apiStateHub = new APIStateHub(builder, stateIDMap);
   dummyCTX.apiStates = apiStateHub;
 
   test('resolve_fallback_when_api_state_data_is_undefined', () => {
@@ -66,15 +70,15 @@ describe('useAPIStateProps_resolve_expected_fallback', () => {
   });
 });
 
-describe('useAPIStateProps_resolve_expected_data_when_api_state_has_error', () => {
-  test('return_fallback_when_previous_data_is_undefined', () => {
+// describe('useAPIStateProps_resolve_expected_data_when_api_state_has_error', () => {
+//   test('return_fallback_when_previous_data_is_undefined', () => {
 
-  });
+//   });
 
-  test('return_the_latest_non_undefined_data', () => {
+//   test('return_the_latest_non_undefined_data', () => {
 
-  });
-});
+//   });
+// });
 
 test('expect_resolve_initial_value', () => {
   const convertorFn = jest.fn();

@@ -11,10 +11,9 @@ export default function useAPIInvokeProps(node: SchemaNode<Instantiated>, ctx: C
       return pair[1].type === NodePropType.APIInvokeProperty;
     }).reduce<APICallProps>((acc, [propName, { stateID, paramsBuilder, onError, onSuccess }]) => {
       function handleAction(...args: any[]): void {
-        const run = ctx.apiStates.getAction(stateID);
         try {
           const requestParams = paramsBuilder?.(...args);
-          run({ params: requestParams, onError, onSuccess });
+          ctx.apiStates.runAction(stateID, { params: requestParams, onError, onSuccess });
         } catch (error) {
           logger.log('failed to run convertor or run action:', error);
         }
