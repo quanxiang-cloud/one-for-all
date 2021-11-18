@@ -1,17 +1,12 @@
 import { BehaviorSubject, Observable } from 'rxjs';
+import { RequestParams } from '@ofa/api-spec-adapter';
+
 import NodeStateHub from './ctx/node-state-hub';
 
 export type Serialized = 'Serialized';
 export type Instantiated = 'Instantiated';
 
-// the shape of RequestParams is too complex
-export type RequestParams = Partial<{
-  params: Record<string, any>;
-  body: any;
-}> | undefined;
-
 export type APIState = {
-  params: RequestParams;
   loading: boolean;
   data?: any;
   error?: Error;
@@ -215,7 +210,8 @@ interface ReactComponentNode<T> extends BaseNode<T> {
 
 export type SchemaNode<T> = HTMLNode<T> | ReactComponentNode<T>;
 
-// map of stateID and operationID
+// map of stateID and apiID
+// todo should also store builder info
 export type APIStatesSpec = Record<string, { apiID: string; [key: string]: any; }>;
 
 export type SharedStatesSpec = Record<string, { initial: any; }>;

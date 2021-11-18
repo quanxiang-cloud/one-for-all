@@ -10,7 +10,8 @@ export default class SwaggerAdapter implements Adapter {
     this.operationMap = indexOperation(spec);
   }
 
-  build(path: string, method: string, requestParam?: RequestParams): AjaxConfig {
+  build(apiID: string, requestParam?: RequestParams): AjaxConfig {
+    const [method, path] = apiID.split(':');
     const operation: Operation = this.operationMap[`${path}:${method}`];
 
     if (!operation) {

@@ -1,8 +1,8 @@
 import { Observable, of, Subject } from 'rxjs';
 import { concatWith, map, skip, withLatestFrom } from 'rxjs/operators';
-import { Adapter } from '@ofa/api-spec-adapter';
+import { Adapter, RequestParams } from '@ofa/api-spec-adapter';
 
-import type { APIStates, APIState, APIStatesSpec, CTX, RequestParams, RunParam } from '../types';
+import type { APIStates, APIState, APIStatesSpec, CTX, RunParam } from '../types';
 import getResponseState$ from './http/response';
 
 type StreamActions = {
@@ -83,11 +83,10 @@ export default class APIStateHub implements APIStates {
     if (!operation) {
       throw new Error(`no operation for stateID: ${stateID}`);
     }
-    const params$ = new Subject<RequestParams>();
+    const params$ = new Subject<RequestParams | undefined>();
     const request$ = params$.pipe(
       // TODO: catch builder error
-      // todo what params should be passed to build?
-      map((params) => this.adapter.build(operation.path, operation.method, params)),
+      map((params) => this.adapter.build(operation.apiID, params)),
     );
 
     const fullState$ = getResponseState$(request$).pipe(
