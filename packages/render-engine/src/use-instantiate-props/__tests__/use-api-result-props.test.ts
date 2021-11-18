@@ -2,7 +2,7 @@ import mockXHR from 'xhr-mock';
 import { renderHook } from '@testing-library/react-hooks/pure';
 import type { Adapter } from '@ofa/api-spec-adapter';
 
-import useAPIResultProps from '../use-api-state-props';
+import useAPIResultProps from '../use-api-result-props';
 import APIStateHub from '../../ctx/api-state-hub';
 import { SchemaNode, NodePropType, Instantiated } from '../../types';
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';

@@ -7,7 +7,7 @@ import {
   NodePropType,
   SchemaNode,
 } from '../types';
-import useAPIResultProps from './use-api-state-props';
+import useAPIResultProps from './use-api-result-props';
 import useAPIInvokeProps from './use-api-invoke-props';
 import useSharedStateProps from './use-shared-state-props';
 import useFuncProps from './use-func-props';
