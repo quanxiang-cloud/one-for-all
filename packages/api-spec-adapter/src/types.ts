@@ -1,5 +1,5 @@
 export interface Adapter {
-  build: (apiID: string, requestParam?: RequestParams) => AjaxConfig;
+  build: (apiID: string, requestParam?: RequestParams) => AjaxConfig | undefined;
 }
 
 enum HttpMethods {

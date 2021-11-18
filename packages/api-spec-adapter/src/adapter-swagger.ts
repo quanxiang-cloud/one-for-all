@@ -10,7 +10,7 @@ export default class SwaggerAdapter implements Adapter {
     this.operationMap = indexOperation(spec);
   }
 
-  build(apiID: string, requestParam?: RequestParams): AjaxConfig {
+  build(apiID: string, requestParam?: RequestParams): AjaxConfig | undefined {
     const [method, path] = apiID.split(':');
     const operation: Operation = this.operationMap[`${path}:${method}`];
 
@@ -21,7 +21,8 @@ export default class SwaggerAdapter implements Adapter {
     let url = path;
     const queryParams: Record<string, any> = {};
     const headers: Record<string, any> = {};
-
+    // todo return undefined and log error message
+    // when the params do not meet the api requirements
     operation.parameters?.forEach((p) => {
       if ('$ref' in p) {
         // TODO: support reference object

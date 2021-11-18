@@ -1,4 +1,4 @@
-import type { Spec } from 'swagger-schema-official';
+import type { Spec } from '../../swagger-schema-official';
 
 const schema: Spec = {
   swagger: '2.0',
