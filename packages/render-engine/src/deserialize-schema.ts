@@ -7,8 +7,6 @@ import {
   NodeProperties,
   Serialized,
   Instantiated,
-  ParamsBuilderFuncSpec,
-  APIInvokeCallbackFuncSpec,
   NodePropType,
   BaseFunctionSpec,
   StateConvertorFunc,
@@ -32,13 +30,7 @@ function instantiateConvertor(
   return noop;
 }
 
-// todo refactor this type
-type FunctionSpecs =
-  ParamsBuilderFuncSpec |
-  APIInvokeCallbackFuncSpec |
-  BaseFunctionSpec;
-
-function instantiateFuncSpec(spec: FunctionSpecs, ctx: CTX): VersatileFunc {
+function instantiateFuncSpec(spec: BaseFunctionSpec, ctx: CTX): VersatileFunc {
   return new Function(spec.args, spec.body).bind(ctx);
 }
 
