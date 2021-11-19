@@ -17,22 +17,22 @@ function useSharedStateMutationProps(node: SchemaNode<Instantiated>, ctx: CTX): 
     return Object.entries(node.props)
       .filter((pair): pair is [string, SharedStateMutationProperty<Instantiated>] => {
         return pair[1].type === NodePropType.SharedStateMutationProperty;
-      }).reduce<MutateProps>((acc, [key, { stateID, adapter }]) => {
-        const state$ = ctx.sharedStates.getState$(stateID);
-        acc[key] = (value: any) => {
-          if (typeof adapter !== 'function') {
-            state$.next(value);
+      }).reduce<MutateProps>((acc, [key, { stateID, convertor }]) => {
+        function mutation(state: any): void {
+          if (typeof convertor !== 'function') {
+            ctx.sharedStates.mutateState(stateID, state);
             return;
           }
 
           try {
-            const v = adapter(value);
-            state$.next(v);
+            const v = convertor(state);
+            ctx.sharedStates.mutateState(stateID, v);
           } catch (error) {
-            logger.error('failed to run adapter:\n', adapter.toString(), '\n', error);
+            logger.error('failed to run convertor:\n', convertor.toString(), '\n', error);
           }
-        };
+        }
 
+        acc[key] = mutation;
         return acc;
       }, {});
   }, []);

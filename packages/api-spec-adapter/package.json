@@ -3,10 +3,13 @@
   "version": "0.0.1",
   "description": "Construct HTTP Request based on API Spec and params",
   "license": "Apache-2.0",
+  "type": "module",
   "main": "lib/src/index.js",
   "module": "lib/src/index.js",
-  "type": "module",
   "types": "lib/src/index.d.ts",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "build": "tsc --build tsconfig.json",
     "bundle": "rm -rf dist & rollup -c rollup.config.js",

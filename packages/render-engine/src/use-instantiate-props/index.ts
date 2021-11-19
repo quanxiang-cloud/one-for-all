@@ -7,13 +7,13 @@ import {
   NodePropType,
   SchemaNode,
 } from '../types';
-import useAPIStateProps from './use-api-state-props';
+import useAPIResultProps from './use-api-result-props';
+import useAPILoadingProps from './use-api-loading-props';
 import useAPIInvokeProps from './use-api-invoke-props';
 import useSharedStateProps from './use-shared-state-props';
 import useFuncProps from './use-func-props';
 import useSharedStateMutationProps from './use-shared-state-mutation';
 import useInternalHookProps from './use-internal-hook-props';
-import useNodeStateProps from './use-node-state-props';
 
 function useConstantProps(node: SchemaNode<Instantiated>): Record<string, any> {
   return useMemo(() => {
@@ -29,25 +29,25 @@ function useConstantProps(node: SchemaNode<Instantiated>): Record<string, any> {
 function useInstantiateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, any> {
   const constantProps = useConstantProps(node);
   const apiStateInvokeProps = useAPIInvokeProps(node, ctx);
-  const derivedProps = useAPIStateProps(node, ctx);
+  const apiResultProps = useAPIResultProps(node, ctx);
+  const apiLoadingProps = useAPILoadingProps(node, ctx);
   const sharedStateProps = useSharedStateProps(node, ctx);
   const sharedStateMutationProps = useSharedStateMutationProps(node, ctx);
   const internalHookProps = useInternalHookProps(node, ctx);
-  const nodeStateProps = useNodeStateProps(node, ctx);
   const funcProps = useFuncProps(node);
 
   return useMemo(() => {
     return Object.assign(
       constantProps,
       apiStateInvokeProps,
-      derivedProps,
+      apiResultProps,
+      apiLoadingProps,
       sharedStateProps,
       funcProps,
       sharedStateMutationProps,
       internalHookProps,
-      nodeStateProps,
     );
-  }, [derivedProps, sharedStateProps, nodeStateProps]);
+  }, [apiResultProps, sharedStateProps, apiLoadingProps]);
 }
 
 export default useInstantiateProps;

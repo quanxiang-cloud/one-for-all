@@ -5,7 +5,9 @@ Object {
   "body": Object {
     "foo": "bar",
   },
-  "method": "put",
+  "headers": Object {},
+  "method": "post",
+  "queryParams": Object {},
   "url": "/pet",
 }
 `;
@@ -15,7 +17,9 @@ Object {
   "body": Object {
     "foo": "bar",
   },
-  "method": "post",
+  "headers": Object {},
+  "method": "put",
+  "queryParams": Object {},
   "url": "/pet",
 }
 `;
@@ -23,7 +27,15 @@ Object {
 exports[`expect_specInterpreter_to_match_snapshots 3`] = `
 Object {
   "body": undefined,
+  "headers": Object {},
   "method": "get",
+  "queryParams": Object {
+    "status": Array [
+      "available",
+      "pending",
+      "sold",
+    ],
+  },
   "url": "/pet/findByStatus",
 }
 `;
@@ -31,7 +43,15 @@ Object {
 exports[`expect_specInterpreter_to_match_snapshots 4`] = `
 Object {
   "body": undefined,
+  "headers": Object {},
   "method": "get",
+  "queryParams": Object {
+    "tags": Array [
+      "tag1",
+      "tag2",
+      "tag3",
+    ],
+  },
   "url": "/pet/findByTags",
 }
 `;
@@ -39,47 +59,64 @@ Object {
 exports[`expect_specInterpreter_to_match_snapshots 5`] = `
 Object {
   "body": undefined,
+  "headers": Object {},
   "method": "get",
-  "url": "/pet/foobar",
+  "queryParams": Object {},
+  "url": "/pet/some_pet_id",
 }
 `;
 
 exports[`expect_specInterpreter_to_match_snapshots 6`] = `
 Object {
-  "body": undefined,
+  "body": Object {
+    "name": "foo",
+    "status": "alive",
+  },
+  "headers": Object {},
   "method": "post",
-  "url": "/pet/foobar",
+  "queryParams": Object {},
+  "url": "/pet/some_pet_id",
 }
 `;
 
 exports[`expect_specInterpreter_to_match_snapshots 7`] = `
 Object {
   "body": undefined,
+  "headers": Object {},
   "method": "delete",
-  "url": "/pet/foobar",
+  "queryParams": Object {},
+  "url": "/pet/some_pet_id",
 }
 `;
 
 exports[`expect_specInterpreter_to_match_snapshots 8`] = `
 Object {
   "body": undefined,
+  "headers": Object {},
   "method": "post",
-  "url": "/pet/foobar/uploadImage",
+  "queryParams": Object {},
+  "url": "/pet/some_pet_id/uploadImage",
 }
 `;
 
 exports[`expect_specInterpreter_to_match_snapshots 9`] = `
 Object {
   "body": undefined,
+  "headers": Object {},
   "method": "get",
+  "queryParams": Object {},
   "url": "/store/inventory",
 }
 `;
 
 exports[`expect_specInterpreter_to_match_snapshots 10`] = `
 Object {
-  "body": undefined,
+  "body": Object {
+    "foo": "bar",
+  },
+  "headers": Object {},
   "method": "post",
+  "queryParams": Object {},
   "url": "/store/order",
 }
 `;
@@ -87,23 +124,29 @@ Object {
 exports[`expect_specInterpreter_to_match_snapshots 11`] = `
 Object {
   "body": undefined,
+  "headers": Object {},
   "method": "get",
-  "url": "/store/order/foobar",
+  "queryParams": Object {},
+  "url": "/store/order/{orderId}",
 }
 `;
 
 exports[`expect_specInterpreter_to_match_snapshots 12`] = `
 Object {
   "body": undefined,
+  "headers": Object {},
   "method": "delete",
-  "url": "/store/order/foobar",
+  "queryParams": Object {},
+  "url": "/store/order/{orderId}",
 }
 `;
 
 exports[`expect_specInterpreter_to_match_snapshots 13`] = `
 Object {
   "body": undefined,
+  "headers": Object {},
   "method": "post",
+  "queryParams": Object {},
   "url": "/user",
 }
 `;
@@ -111,47 +154,49 @@ Object {
 exports[`expect_specInterpreter_to_match_snapshots 14`] = `
 Object {
   "body": undefined,
+  "headers": Object {},
   "method": "post",
-  "url": "/user/createWithList",
+  "queryParams": Object {},
+  "url": "/user/createWithArray",
 }
 `;
 
 exports[`expect_specInterpreter_to_match_snapshots 15`] = `
 Object {
   "body": undefined,
-  "method": "get",
-  "url": "/user/login",
+  "headers": Object {},
+  "method": "post",
+  "queryParams": Object {},
+  "url": "/user/createWithList",
 }
 `;
 
 exports[`expect_specInterpreter_to_match_snapshots 16`] = `
 Object {
   "body": undefined,
+  "headers": Object {},
   "method": "get",
-  "url": "/user/logout",
+  "queryParams": Object {},
+  "url": "/user/login",
 }
 `;
 
 exports[`expect_specInterpreter_to_match_snapshots 17`] = `
 Object {
   "body": undefined,
+  "headers": Object {},
   "method": "get",
-  "url": "/user/foobar",
+  "queryParams": Object {},
+  "url": "/user/logout",
 }
 `;
 
 exports[`expect_specInterpreter_to_match_snapshots 18`] = `
 Object {
   "body": undefined,
-  "method": "put",
-  "url": "/user/foobar",
-}
-`;
-
-exports[`expect_specInterpreter_to_match_snapshots 19`] = `
-Object {
-  "body": undefined,
-  "method": "delete",
-  "url": "/user/foobar",
+  "headers": Object {},
+  "method": "get",
+  "queryParams": Object {},
+  "url": "/user/{username}",
 }
 `;

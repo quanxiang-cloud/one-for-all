@@ -1,218 +1,111 @@
-import mockXHR, { delay } from 'xhr-mock';
-import { Adapter } from '@ofa/api-spec-adapter';
+import mockXHR from 'xhr-mock';
+import type { APISpecAdapter, AjaxConfig } from '@ofa/api-spec-adapter';
 
-import APIStateHub from '../api-state-hub';
+import APIStatesHub from '../api-states-hub';
 import { initialState } from '../http/response';
-import SharedStatesHub from '../shared-states-hub';
-import { CTX } from '../../types';
-import NodeStateHub from '../node-state-hub';
-import { APIStateSpec } from '../..';
+import { APIStatesSpec } from '../..';
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
 
-const builder: Adapter = {
-  build: () => ({ url: '', method: '' }),
+const apiSpecAdapter: APISpecAdapter = {
+  build: () => ({ url: '/api', method: 'get' }),
 };
 
-const apiStateSpec: APIStateSpec = {
-  stream_findPetsByTags: { path: '', method: '' },
+const apiStateSpec: APIStatesSpec = {
+  findPetsByTags: { apiID: 'get:/api' },
 };
 
-test('resolve_initial_value_when_no_next_called', (done) => {
-  const apiStateHub = new APIStateHub(builder, apiStateSpec);
-  const [state$] = apiStateHub.getStream('stream_findPetsByTags');
-  state$.subscribe((result) => {
-    expect(result).toMatchObject(initialState);
-    done();
-  });
+test('APIStates_getCached_should_throw_if_stateID_has_not_corresponding_api', () => {
+  const apiStates = new APIStatesHub(apiSpecAdapter, apiStateSpec);
+  expect(() => apiStates.getCached('some_state_not_exist')).toThrow();
 });
 
-test('call_next_times', async () => {
-  const mockRes = { data: { id: 'abc-123' } };
-  mockXHR.get(/.*/, delay((req, res) => {
-    return res.status(200).body(JSON.stringify(mockRes));
-  }, 100));
-
-  const apiStateHub = new APIStateHub(builder, apiStateSpec);
-  const [state$, { run }] = apiStateHub.getStream('stream_findPetsByTags');
-
-  const mockFn = jest.fn();
-  state$.subscribe(mockFn);
-
-  await new Promise((r) => setTimeout(() => {
-    r(true);
-    run({ params: undefined });
-  }, 500));
-
-  await new Promise((r) => setTimeout(() => {
-    r(true);
-    run({ params: undefined });
-  }, 500));
-
-  await new Promise((r) => setTimeout(r, 500));
-
-  expect(mockFn).toBeCalledTimes(5);
+test('APIStates_getState_should_return_behaviorSubject_with_expected_initial_state', () => {
+  const apiStates = new APIStatesHub(apiSpecAdapter, apiStateSpec);
+  const state$ = apiStates.getState('findPetsByTags');
+  expect(state$.getValue()).toEqual(initialState);
 });
 
-test('only_resolve_the_last_value', async () => {
-  const mockRes = { data: { id: 'abc-123' } };
-  mockXHR.get(/.*/, delay((req, res) => {
-    return res.status(200).body(JSON.stringify(mockRes));
-  }, 100));
+test('APIStates_getState_should_return_the_same_behaviorSubject', () => {
+  const apiStates = new APIStatesHub(apiSpecAdapter, apiStateSpec);
+  const state$1 = apiStates.getState('findPetsByTags');
+  const state$2 = apiStates.getState('findPetsByTags');
 
-  const apiStateHub = new APIStateHub(builder, apiStateSpec);
-  const [state$, { run }] = apiStateHub.getStream('stream_findPetsByTags');
-
-  const mockFn = jest.fn();
-  state$.subscribe(mockFn);
-
-  run();
-  run();
-  run();
-  run();
-
-  await new Promise((r) => setTimeout(r, 500));
-
-  expect(mockFn).toBeCalledTimes(3);
+  expect(Object.is(state$1, state$2)).toBe(true);
 });
 
-test('should_resolve_value', (done) => {
+test('APIStates_call_refresh_should_have_no_effect_if_api_has_not_been_called_ever', () => {
+  const mockBuild = jest.fn();
+  const adapter = { build: mockBuild };
+  const apiStates = new APIStatesHub(adapter, apiStateSpec);
+  const state$ = apiStates.getState('findPetsByTags');
+
+  const callback = jest.fn();
+  state$.subscribe(callback);
+
+  apiStates.refresh('findPetsByTags');
+
+  expect(callback).toBeCalledTimes(1);
+  expect(mockBuild).toBeCalledTimes(0);
+});
+
+test('APIStates_runAction_should_call_adapter_build_method', (done) => {
   const mockRes = { data: { id: 'abc-123' } };
   mockXHR.get(/.*/, (req, res) => {
     return res.status(200).body(JSON.stringify(mockRes));
   });
 
-  const apiStateHub = new APIStateHub(builder, apiStateSpec);
-  const ctx: CTX = {
-    apiStates: apiStateHub,
-    sharedStates: new SharedStatesHub({}),
-    nodeStates: new NodeStateHub(),
+  const adapter = {
+    build: jest.fn<AjaxConfig, any>(() => {
+      return { method: 'get', url: 'api' };
+    }),
   };
-  // todo this must be call before using apiStateHub, this is not a good design
-  apiStateHub.initContext(ctx);
+  const apiStates = new APIStatesHub(adapter, apiStateSpec);
+  const requestParams = { params: { foo: 'bar' }, body: 'abc' };
 
-  const [state$, { run }] = apiStateHub.getStream('stream_findPetsByTags');
-
-  const fn = jest.fn();
-  state$.subscribe(fn);
-
-  run({
-    onSuccess: ({ data, error, loading, params }) => {
-      // expect(ctx.apiStates).toEqual(apiStateHub);
-      expect(fn).toBeCalledWith({
-        data: data,
-        error: error,
-        loading: loading,
-        params: params,
-      });
-      expect(error).toBeUndefined();
-      expect(data).toMatchObject(mockRes);
+  function onSuccess(): void {
+    try {
+      expect(adapter.build).toBeCalledTimes(1);
+      expect(adapter.build).toBeCalledWith('get:/api', requestParams);
       done();
-    },
+    } catch (error) {
+      done(error);
+    }
+  }
+
+  apiStates.runAction('findPetsByTags', {
+    onSuccess: onSuccess,
+    params: requestParams,
   });
 });
 
-test('same_stateID_same_stream', () => {
-  const apiStateHub = new APIStateHub(builder, apiStateSpec);
-  const [state$1, sendRequest1] = apiStateHub.getStream('stream_findPetsByTags');
-  const [state$2, sendRequest2] = apiStateHub.getStream('stream_findPetsByTags');
-
-  expect(state$1).toEqual(state$2);
-  expect(sendRequest1).toEqual(sendRequest2);
-});
-
-test('param_match_input', (done) => {
+test('APIStates_runAction_called_should_resolve_values', (done) => {
+  const mockRes = { data: { id: 'abc-123' } };
   mockXHR.get(/.*/, (req, res) => {
-    return res.status(200);
+    return res.status(200).body(JSON.stringify(mockRes));
   });
 
-  const apiStateHub = new APIStateHub(builder, apiStateSpec);
-  const [state$, { run }] = apiStateHub.getStream('stream_findPetsByTags');
-  const requestParams = { foo: 'bar' };
-  const requestBody = { baz: 'bzz' };
+  const callback = jest.fn();
+  const apiStates = new APIStatesHub(apiSpecAdapter, apiStateSpec);
+  const state$ = apiStates.getState('findPetsByTags');
+  const requestParams = { params: { foo: 'bar' }, body: 'abc' };
 
-  const fn = jest.fn();
+  state$.subscribe(callback);
 
-  state$.subscribe(({ params }) => {
-    fn(params?.params);
-  });
-
-  run({
-    params: { params: requestParams, body: requestBody },
-    onSuccess: () => {
-      expect(fn).toBeCalledWith(requestParams);
+  function onSuccess(): void {
+    try {
+      expect(callback).toBeCalledTimes(3);
       done();
-    },
+    } catch (error) {
+      done(error);
+    }
+  }
+
+  apiStates.runAction('findPetsByTags', {
+    onSuccess: onSuccess,
+    params: requestParams,
   });
 });
 
-test('on_success_should_be_called', (done) => {
-  mockXHR.get(/.*/, (req, res) => {
-    return res.status(200);
-  });
-
-  const apiStateHub = new APIStateHub(builder, apiStateSpec);
-  const [, { run }] = apiStateHub.getStream('stream_findPetsByTags');
-  const requestParams = { foo: 'bar' };
-  const requestBody = { baz: 'bzz' };
-
-  const onSuccessFn = jest.fn();
-
-  run({
-    params: { params: requestParams, body: requestBody },
-    onSuccess: onSuccessFn,
-  });
-  run({
-    params: { params: requestParams, body: requestBody },
-    onSuccess: onSuccessFn,
-  });
-  run({
-    params: { params: requestParams, body: requestBody },
-    onSuccess: onSuccessFn,
-  });
-  run({
-    params: { params: requestParams, body: requestBody },
-    onSuccess: (state) => {
-      onSuccessFn(state);
-      expect(onSuccessFn).toBeCalledTimes(1);
-      expect(onSuccessFn).toBeCalledWith(state);
-      done();
-    },
-  });
-});
-
-test('on_error_should_be_called', (done) => {
-  mockXHR.get(/.*/, (req, res) => {
-    return res.status(400);
-  });
-
-  const apiStateHub = new APIStateHub(builder, apiStateSpec);
-  const [, { run }] = apiStateHub.getStream('stream_findPetsByTags');
-  const requestParams = { foo: 'bar' };
-  const requestBody = { baz: 'bzz' };
-
-  const onErrorFn = jest.fn();
-
-  run({
-    params: { params: requestParams, body: requestBody },
-    onError: onErrorFn,
-  });
-  run({
-    params: { params: requestParams, body: requestBody },
-    onError: onErrorFn,
-  });
-  run({
-    params: { params: requestParams, body: requestBody },
-    onError: onErrorFn,
-  });
-  run({
-    params: { params: requestParams, body: requestBody },
-    onError: (state) => {
-      onErrorFn(state);
-      expect(onErrorFn).toBeCalledTimes(1);
-      expect(onErrorFn).toBeCalledWith(state);
-      done();
-    },
-  });
-});
+// todo test cases of success and error callbacks
