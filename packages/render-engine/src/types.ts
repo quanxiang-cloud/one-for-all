@@ -1,8 +1,6 @@
 import type { BehaviorSubject } from 'rxjs';
 import type { RequestParams } from '@ofa/api-spec-adapter';
 
-import NodeStateHub from './ctx/node-state-hub';
-
 export type Serialized = 'Serialized';
 export type Instantiated = 'Instantiated';
 
@@ -187,13 +185,15 @@ export interface APIStates {
 
 export interface SharedStates {
   getState$: (stateID: string) => BehaviorSubject<any>;
+  getNodeState$: (nodeKey: string) => BehaviorSubject<any>;
+  exposeNodeState: (nodeKey: string, state: any) => void;
+  retrieveNodeState: (nodeKey: string) => any;
   initContext: (ctx: CTX) => void;
 }
 
 export type CTX = {
   apiStates: APIStates;
   sharedStates: SharedStates;
-  nodeStates: NodeStateHub;
 }
 
 export type VersatileFunc = (...args: any) => any;

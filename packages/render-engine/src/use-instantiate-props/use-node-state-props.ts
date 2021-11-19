@@ -19,7 +19,7 @@ function useNodeStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<str
   Object.entries(node.props).filter((pair): pair is [string, NodeStateProperty<Instantiated>] => {
     return pair[1].type === NodePropType.NodeStateProperty;
   }).forEach(([key, propSpec]) => {
-    states$[key] = ctx.nodeStates.getState$(propSpec.nodeKey);
+    states$[key] = ctx.sharedStates.getNodeState$(propSpec.nodeKey);
     adapters[key] = propSpec.convertor;
     initialFallbacks[key] = propSpec.fallback;
   });

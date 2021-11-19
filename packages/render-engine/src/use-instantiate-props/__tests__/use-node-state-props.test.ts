@@ -2,17 +2,17 @@ import { noop } from 'lodash';
 import { act, renderHook } from '@testing-library/react-hooks/pure';
 
 import { NodePropType, Instantiated, SchemaNode } from '../../types';
-import NodeStateHub from '../../ctx/node-state-hub';
+import SharedStateHub from '../../ctx/shared-states-hub';
 import useNodeStateProps from '../use-node-state-props';
 
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 
 describe('useNodeStateProps_resolve_expected_value', () => {
-  const hub = new NodeStateHub();
-  dummyCTX.nodeStates = hub;
+  const hub = new SharedStateHub({});
+  dummyCTX.sharedStates = hub;
   const nodeKey = 'node_id';
   const someNodeInternalState = { foo: 'bar' };
-  hub.expose(nodeKey, someNodeInternalState);
+  hub.exposeNodeState(nodeKey, someNodeInternalState);
 
   test('resolve_fallback_value_when_node_state_is_undefined', () => {
     const node: SchemaNode<Instantiated> = {
@@ -130,8 +130,8 @@ describe('useNodeStateProps_resolve_expected_value', () => {
 });
 
 test('useNodeStateProps_should_resolve_after_changed', () => {
-  const hub = new NodeStateHub();
-  dummyCTX.nodeStates = hub;
+  const hub = new SharedStateHub({});
+  dummyCTX.sharedStates = hub;
   const nodeKey = 'node_id';
   const node: SchemaNode<Instantiated> = {
     key: 'foo',
@@ -150,13 +150,13 @@ test('useNodeStateProps_should_resolve_after_changed', () => {
 
   expect(result.current.anotherNodeState).toEqual(false);
 
-  act(() => hub.expose(nodeKey, 'foo'));
+  act(() => hub.exposeNodeState(nodeKey, 'foo'));
   expect(result.current.anotherNodeState).toEqual('foo');
 
-  act(() => hub.expose(nodeKey, 'bar'));
+  act(() => hub.exposeNodeState(nodeKey, 'bar'));
   expect(result.current.anotherNodeState).toEqual('bar');
 
-  act(() => hub.expose(nodeKey, undefined));
+  act(() => hub.exposeNodeState(nodeKey, undefined));
   expect(result.current.anotherNodeState).toEqual('bar');
 
   unmount();
