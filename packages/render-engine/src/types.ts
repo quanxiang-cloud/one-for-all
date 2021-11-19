@@ -187,6 +187,7 @@ export interface SharedStates {
   exposeNodeState: (nodeKey: string, state: any) => void;
   retrieveNodeState: (nodeKey: string) => any;
   initContext: (ctx: CTX) => void;
+  mutateState: (stateID: string, state: any) => void;
 }
 
 export type CTX = {

@@ -1,3 +1,4 @@
+import { logger } from '@ofa/utils';
 import { BehaviorSubject } from 'rxjs';
 
 import {
@@ -24,6 +25,15 @@ export default class SharedStateHub implements SharedStates {
       this.cache[stateID] = new BehaviorSubject(this.spec[stateID]?.initial);
     }
     return this.cache[stateID];
+  }
+
+  mutateState(stateID: string, state: any): void {
+    if (stateID.startsWith('$')) {
+      logger.warn('shared stateID can not starts with $, this action will be ignored');
+      return;
+    }
+
+    this.getState$(stateID).next(state);
   }
 
   getNodeState$(nodeKey: string): BehaviorSubject<any> {
