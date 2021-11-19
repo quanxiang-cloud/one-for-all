@@ -15,7 +15,7 @@ export function indexOperation(spec: Spec): Record<string, Operation> {
         continue;
       }
 
-      operationMap[`${pathName}:${method}`] = operationObject;
+      operationMap[`${method}:${pathName}`] = operationObject;
     }
   }
 
