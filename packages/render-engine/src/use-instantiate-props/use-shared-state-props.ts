@@ -41,7 +41,6 @@ function useSharedStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<s
   useEffect(() => {
     const results$ = Object.entries(states$).reduce<Record<string, Observable<any>>>((acc, [key, state$]) => {
       acc[key] = state$.pipe(
-        skip(1),
         distinctUntilChanged(),
         map((result) => {
           return convertResult({
@@ -56,7 +55,7 @@ function useSharedStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<s
       return acc;
     }, {});
 
-    const subscription = combineLatest(results$).subscribe(setState);
+    const subscription = combineLatest(results$).pipe(skip(1)).subscribe(setState);
 
     return () => subscription.unsubscribe();
   }, []);

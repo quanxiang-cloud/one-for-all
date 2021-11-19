@@ -42,7 +42,6 @@ function useAPIResultProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<str
   useEffect(() => {
     const results$ = Object.entries(states$).reduce<Record<string, Observable<any>>>((acc, [key, state$]) => {
       acc[key] = state$.pipe(
-        skip(1),
         distinctUntilKeyChanged('data'),
         map(({ data }) => {
           return convertResult({
@@ -57,7 +56,7 @@ function useAPIResultProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<str
       return acc;
     }, {});
 
-    const subscription = combineLatest(results$).subscribe(setState);
+    const subscription = combineLatest(results$).pipe(skip(1)).subscribe(setState);
 
     return () => subscription.unsubscribe();
   }, []);
