@@ -56,31 +56,15 @@ function transformProps(props: NodeProperties<Serialized>, ctx: CTX): NodeProper
       return [propName, propDesc];
     }
 
-    if (propDesc.type === NodePropType.APIResultProperty) {
-      return [propName, {
-        ...propDesc,
-        convertor: propDesc.convertor ? instantiateConvertor(propDesc.convertor, ctx) : undefined,
-      }];
-    }
-
-    if (propDesc.type === NodePropType.SharedStateProperty) {
+    if (
+      propDesc.type === NodePropType.SharedStateProperty ||
+      propDesc.type === NodePropType.APIResultProperty ||
+      propDesc.type === NodePropType.NodeStateProperty
+    ) {
       return [
         propName,
         {
           ...propDesc,
-          convertor: propDesc.convertor ? instantiateConvertor(propDesc.convertor, ctx) : undefined,
-        },
-      ];
-    }
-
-    if (propDesc.type === NodePropType.NodeStateProperty) {
-      return [
-        propName,
-        {
-          ...propDesc,
-          type: propDesc.type,
-          nodeKey: propDesc.nodeKey,
-          fallback: propDesc.fallback,
           convertor: propDesc.convertor ? instantiateConvertor(propDesc.convertor, ctx) : undefined,
         },
       ];
