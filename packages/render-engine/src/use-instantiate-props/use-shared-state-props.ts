@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Observable, skip, tap } from 'rxjs';
+import { NodeStateProperty } from '..';
 
 import {
   CTX,
@@ -11,16 +12,25 @@ import {
 } from '../types';
 import convertState from './convert-state';
 
+type Pair = [string, SharedStateProperty<Instantiated> | NodeStateProperty<Instantiated>];
+
 function useSharedStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, any> {
   const adapters: Record<string, VersatileFunc | undefined> = {};
   const states$: Record<string, BehaviorSubject<any>> = {};
   const initialFallbacks: Record<string, any> = {};
 
-  Object.entries(node.props).filter((pair): pair is [string, SharedStateProperty<Instantiated>] => {
-    return pair[1].type === NodePropType.SharedStateProperty;
+  Object.entries(node.props).filter((pair): pair is Pair => {
+    return pair[1].type === NodePropType.SharedStateProperty ||
+      pair[1].type === NodePropType.NodeStateProperty;
   }).forEach(([key, propSpec]) => {
-    states$[key] = ctx.sharedStates.getState$(propSpec.stateID);
-    adapters[key] = propSpec.convertor;
+    if (propSpec.type === NodePropType.SharedStateProperty) {
+      states$[key] = ctx.sharedStates.getState$(propSpec.stateID);
+      adapters[key] = propSpec.convertor;
+    } else {
+      states$[key] = ctx.sharedStates.getNodeState$(propSpec.nodeKey);
+      adapters[key] = propSpec.convertor;
+    }
+
     initialFallbacks[key] = propSpec.fallback;
   });
 

@@ -3,7 +3,7 @@ import { act, renderHook } from '@testing-library/react-hooks/pure';
 
 import { NodePropType, Instantiated, SchemaNode } from '../../types';
 import SharedStateHub from '../../ctx/shared-states-hub';
-import useNodeStateProps from '../use-node-state-props';
+import useSharedStateProps from '../use-shared-state-props';
 
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 
@@ -28,7 +28,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
       },
     };
 
-    const { result, unmount } = renderHook(() => useNodeStateProps(node, dummyCTX));
+    const { result, unmount } = renderHook(() => useSharedStateProps(node, dummyCTX));
     expect(result.current.anotherNodeState).toEqual('123');
 
     unmount();
@@ -48,7 +48,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
       },
     };
 
-    const { result, unmount } = renderHook(() => useNodeStateProps(node, dummyCTX));
+    const { result, unmount } = renderHook(() => useSharedStateProps(node, dummyCTX));
     expect(result.current.anotherNodeState).toEqual(someNodeInternalState);
 
     unmount();
@@ -73,7 +73,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
       },
     };
 
-    const { result, unmount } = renderHook(() => useNodeStateProps(node, dummyCTX));
+    const { result, unmount } = renderHook(() => useSharedStateProps(node, dummyCTX));
     expect(result.current.anotherNodeState).toEqual(false);
     // eslint-disable-next-line no-console
     expect(console.error).toBeCalled();
@@ -98,7 +98,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
       },
     };
 
-    const { result, unmount } = renderHook(() => useNodeStateProps(node, dummyCTX));
+    const { result, unmount } = renderHook(() => useSharedStateProps(node, dummyCTX));
     expect(result.current.anotherNodeState).toEqual(false);
     // eslint-disable-next-line no-console
     expect(console.error).not.toBeCalled();
@@ -121,7 +121,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
       },
     };
 
-    const { result, unmount } = renderHook(() => useNodeStateProps(node, dummyCTX));
+    const { result, unmount } = renderHook(() => useSharedStateProps(node, dummyCTX));
 
     expect(result.current.anotherNodeState).toEqual('bar');
 
@@ -146,7 +146,7 @@ test('useNodeStateProps_should_resolve_after_changed', () => {
     },
   };
 
-  const { result, unmount } = renderHook(() => useNodeStateProps(node, dummyCTX));
+  const { result, unmount } = renderHook(() => useSharedStateProps(node, dummyCTX));
 
   expect(result.current.anotherNodeState).toEqual(false);
 

@@ -28,9 +28,9 @@ export type NodeProperty<T> =
   APIResultProperty<T> |
   APILoadingProperty |
   SharedStateProperty<T> |
+  NodeStateProperty<T> |
   FunctionalProperty<T> |
   SharedStateMutationProperty<T> |
-  NodeStateProperty<T> |
   APIInvokeProperty<T>;
   // Array<APIInvokeProperty<T>>;
 
@@ -95,11 +95,16 @@ export type APILoadingProperty = BaseNodeProperty & {
 
 export type SharedStateProperty<T> = BaseNodeProperty & {
   type: NodePropType.SharedStateProperty;
-  // this is not a good design
   stateID: string;
-  // todo define different type adapter
-  convertor?: StateConvertor<T>;
   fallback: any;
+  convertor?: StateConvertor<T>;
+}
+
+export type NodeStateProperty<T> = BaseNodeProperty & {
+  type: NodePropType.NodeStateProperty;
+  nodeKey: string;
+  fallback: any;
+  convertor?: StateConvertor<T>;
 }
 
 export type FunctionalProperty<T> = BaseNodeProperty & {
@@ -136,13 +141,6 @@ export type ParamsBuilder<T> = T extends Serialized ?
 
 export type ParamsBuilderFuncSpec = BaseFunctionSpec & {
   type: 'param_builder_func_spec';
-}
-
-export type NodeStateProperty<T> = BaseNodeProperty & {
-  type: NodePropType.NodeStateProperty;
-  nodeKey: string;
-  fallback: any;
-  convertor?: StateConvertor<T>;
 }
 
 export type BaseFunctionSpec = {
