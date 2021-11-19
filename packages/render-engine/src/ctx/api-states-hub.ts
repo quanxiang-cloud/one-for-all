@@ -85,7 +85,18 @@ export default class APIStatesHub implements APIStates {
     let _latestRunParams: RunParam | undefined = undefined;
 
     // run callbacks after value resolved
-    apiState$.pipe(skip(1)).subscribe((state) => {
+    apiState$.pipe(
+      skip(1),
+      map<APIState, APIState>((apiState) => {
+        if (!this.apiSpecAdapter.responseAdapter) {
+          return apiState;
+        }
+
+        const transformed = this.apiSpecAdapter.responseAdapter(apiState);
+
+        return { ...transformed, loading: apiState.loading };
+      }),
+    ).subscribe((state) => {
       setTimeout(() => {
         // todo refactor this
         executeCallback(

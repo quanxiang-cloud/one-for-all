@@ -1,5 +1,6 @@
 export interface APISpecAdapter {
   build: (apiID: string, requestParam?: RequestParams) => AjaxConfig | undefined;
+  responseAdapter?: (res: { data?: any; error?: Error }) => { data: any; error?: Error };
 }
 
 enum HttpMethods {

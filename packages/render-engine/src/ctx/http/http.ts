@@ -1,16 +1,17 @@
 import { catchError, map, Observable, of, share, switchMap } from 'rxjs';
-import { ajax, AjaxConfig } from 'rxjs/ajax';
+import { ajax, AjaxConfig, AjaxResponse } from 'rxjs/ajax';
 
-type Response$ = Observable<{ data: any; error: any; }>;
+import type { APIState } from '../../types';
 
-function sendRequest(ajaxRequest: AjaxConfig): Observable<{ data: unknown; error: any; }> {
+type Response = Omit<APIState, 'loading'>;
+type Response$ = Observable<Response>;
+
+// todo support retry and timeout
+function sendRequest(ajaxRequest: AjaxConfig): Response$ {
   return ajax(ajaxRequest).pipe(
-    map(({ response }) => ({ data: response, error: undefined })),
+    map<AjaxResponse<any>, Response>(({ response }) => ({ data: response, error: undefined })),
     catchError((error) => {
-      // TODO:
-      // - need better log message
-      // - return an readable error object
-      return of({ error: error, data: undefined });
+      return of({ error: error, data: error.response });
     }),
   );
 }
