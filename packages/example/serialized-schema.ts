@@ -204,11 +204,11 @@ const todoAppSchema: Schema = {
             stateID: '全部待办列表',
             fallback: [],
             adapter: {
-              type: 'api_result_template',
+              type: 'state_convert_expression',
               template: 'data',
             },
             // adapter: {
-            //   type: 'api_result_convertor_func_spec',
+            //   type: 'state_convertor_func_spec',
             //   args: 'result',
             //   body: `
             //     return data || [];
@@ -273,7 +273,7 @@ const todoAppSchema: Schema = {
             stateID: 'todoStatus',
             fallback: 0,
             adapter: {
-              type: 'api_result_convertor_func_spec',
+              type: 'state_convertor_func_spec',
               args: 'result',
               body: `
                 return data?.all || 0;
@@ -288,7 +288,7 @@ const todoAppSchema: Schema = {
             //   return data?.working || 0;
             // },
             adapter: {
-              type: 'api_result_convertor_func_spec',
+              type: 'state_convertor_func_spec',
               args: 'result',
               body: `
                 return data?.working || 0;
@@ -300,7 +300,7 @@ const todoAppSchema: Schema = {
             stateID: 'todoStatus',
             fallback: 0,
             adapter: {
-              type: 'api_result_convertor_func_spec',
+              type: 'state_convertor_func_spec',
               args: 'result',
               body: `
                 return data?.done || 0;

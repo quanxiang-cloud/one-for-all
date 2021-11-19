@@ -70,7 +70,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
 
     // expect return fallback defined in schema
     expect(result.current.foo).toBe(fallback);
-    expect(result.all.length).toBe(2);
+    expect(result.all.length).toBe(1);
 
     // expect return latest not-nullish fallback
     act(() => {
@@ -90,8 +90,8 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
     // expect return fallback defined in schema
     expect(result.current.foo).toBe('some_new_data');
     // the last call of next will not resolve new result
-    // so result.all.length is 3
-    expect(result.all.length).toBe(3);
+    // so result.all.length is 2
+    expect(result.all.length).toBe(2);
 
     unmount();
   });
@@ -109,7 +109,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
           type: NodePropType.APIResultProperty,
           fallback: fallback,
           stateID: 'some_api_state',
-          adapter: (shouldThrow: boolean) => {
+          convertor: (shouldThrow: boolean) => {
             if (shouldThrow) {
               throw new Error('should be handled');
             }
@@ -170,7 +170,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
           type: NodePropType.APIResultProperty,
           fallback: fallback,
           stateID: 'some_api_state',
-          adapter: () => {
+          convertor: () => {
             return;
           },
         },
@@ -245,7 +245,7 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
           type: NodePropType.APIResultProperty,
           fallback: fallback,
           stateID: 'some_api_state',
-          adapter: adapter,
+          convertor: adapter,
         },
       },
     };
@@ -272,7 +272,7 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
           type: NodePropType.APIResultProperty,
           fallback: fallback,
           stateID: 'some_api_state',
-          adapter: adapter,
+          convertor: adapter,
         },
       },
     };
@@ -307,7 +307,7 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
           type: NodePropType.APIResultProperty,
           fallback: fallback,
           stateID: 'some_api_state',
-          adapter: adapter,
+          convertor: adapter,
         },
       },
     };
@@ -341,7 +341,7 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
           type: NodePropType.APIResultProperty,
           fallback: fallback,
           stateID: 'some_api_state',
-          adapter: (v) => v * 2,
+          convertor: (v) => v * 2,
         },
       },
     };

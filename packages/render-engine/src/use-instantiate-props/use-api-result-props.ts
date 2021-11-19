@@ -4,22 +4,22 @@ import { BehaviorSubject, combineLatest, distinctUntilKeyChanged, map, Observabl
 import {
   APIResultProperty,
   APIState,
-  Adapter,
+  StateConvertorFunc,
   NodePropType,
   CTX,
   Instantiated,
   SchemaNode,
 } from '../types';
-import convertResult from './convert-result';
+import convertState from './convert-state';
 
 function useAPIResultProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, any> {
-  const adapters: Record<string, Adapter | undefined> = {};
+  const adapters: Record<string, StateConvertorFunc | undefined> = {};
   const states$: Record<string, BehaviorSubject<APIState>> = {};
   const initialFallbacks: Record<string, any> = {};
 
   Object.entries(node.props).filter((pair): pair is [string, APIResultProperty<Instantiated>] => {
     return pair[1].type === NodePropType.APIResultProperty;
-  }).forEach(([propName, { fallback, adapter, stateID }]) => {
+  }).forEach(([propName, { fallback, convertor: adapter, stateID }]) => {
     initialFallbacks[propName] = fallback;
     adapters[propName] = adapter;
     states$[propName] = ctx.apiStates.getState(stateID);
@@ -29,9 +29,9 @@ function useAPIResultProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<str
 
   const [state, setState] = useState<Record<string, any>>(() => {
     return Object.entries(states$).reduce<Record<string, any>>((acc, [key, state$]) => {
-      acc[key] = convertResult({
-        result: state$.getValue().data,
-        adapter: adapters[key],
+      acc[key] = convertState({
+        state: state$.getValue().data,
+        convertor: adapters[key],
         fallback: fallbacksRef.current[key],
       });
 
@@ -44,9 +44,9 @@ function useAPIResultProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<str
       acc[key] = state$.pipe(
         distinctUntilKeyChanged('data'),
         map(({ data }) => {
-          return convertResult({
-            result: data,
-            adapter: adapters[key],
+          return convertState({
+            state: data,
+            convertor: adapters[key],
             fallback: fallbacksRef.current[key],
           });
         }),

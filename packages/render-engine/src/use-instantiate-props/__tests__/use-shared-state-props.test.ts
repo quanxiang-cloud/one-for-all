@@ -65,7 +65,7 @@ describe('useSharedStateProps_resolve_expected_value', () => {
           type: NodePropType.SharedStateProperty,
           stateID: 'the_only_pre_defined_value',
           fallback: 'foo',
-          adapter: () => {
+          convertor: () => {
             throw new Error('should be handled');
           },
         },
@@ -93,7 +93,7 @@ describe('useSharedStateProps_resolve_expected_value', () => {
           type: NodePropType.SharedStateProperty,
           stateID: 'the_only_pre_defined_value',
           fallback: 'foo',
-          adapter: noop,
+          convertor: noop,
         },
       },
     };
@@ -117,7 +117,7 @@ describe('useSharedStateProps_resolve_expected_value', () => {
           type: NodePropType.SharedStateProperty,
           stateID: 'the_only_pre_defined_value',
           fallback: 'foo',
-          adapter: () => 'bar',
+          convertor: () => 'bar',
         },
       },
     };
@@ -146,14 +146,15 @@ describe('useSharedStateProps_call_adapter_correctly', () => {
         type: NodePropType.SharedStateProperty,
         stateID: 'the_only_pre_defined_value',
         fallback: 'foo',
-        adapter: adapterMock,
+        convertor: adapterMock,
       },
     },
   };
 
-  const { unmount } = renderHook(() => useSharedStateProps(node, dummyCTX));
+  const { unmount, result } = renderHook(() => useSharedStateProps(node, dummyCTX));
 
-  expect(adapterMock).toBeCalledTimes(1);
+  expect(result.all.length).toBe(1);
+  expect(adapterMock).toBeCalledTimes(2);
   expect(adapterMock).toBeCalledWith('the_only_pre_defined_value');
 
   unmount();

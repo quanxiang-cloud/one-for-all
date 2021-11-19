@@ -58,7 +58,7 @@ test('useSharedStateMutationProps_should_not_mutate_state_when_adapter_throw', (
       onChange: {
         type: NodePropType.SharedStateMutationProperty,
         stateID: 'some_value',
-        adapter: () => {
+        convertor: () => {
           throw new Error('should be handled');
         },
       },
@@ -93,7 +93,7 @@ test('useSharedStateMutationProps_should_resolve_adapter_returned', () => {
       onChange: {
         type: NodePropType.SharedStateMutationProperty,
         stateID: 'some_value',
-        adapter: () => 'another_value',
+        convertor: () => 'another_value',
       },
     },
   };
@@ -125,7 +125,7 @@ test('useSharedStateMutationProps_should_call_adapter_correctly', () => {
       onChange: {
         type: NodePropType.SharedStateMutationProperty,
         stateID: 'some_value',
-        adapter: adapterMock,
+        convertor: adapterMock,
       },
     },
   };

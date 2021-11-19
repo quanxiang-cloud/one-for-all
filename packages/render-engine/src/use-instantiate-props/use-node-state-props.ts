@@ -5,14 +5,14 @@ import {
   CTX,
   NodePropType,
   Instantiated,
-  Adapter,
+  StateConvertorFunc,
   NodeStateProperty,
   SchemaNode,
 } from '../types';
-import convertResult from './convert-result';
+import convertState from './convert-state';
 
 function useNodeStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, any> {
-  const adapters: Record<string, Adapter | undefined> = {};
+  const adapters: Record<string, StateConvertorFunc | undefined> = {};
   const states$: Record<string, BehaviorSubject<any>> = {};
   const initialFallbacks: Record<string, any> = {};
 
@@ -20,7 +20,7 @@ function useNodeStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<str
     return pair[1].type === NodePropType.NodeStateProperty;
   }).forEach(([key, propSpec]) => {
     states$[key] = ctx.nodeStates.getState$(propSpec.nodeKey);
-    adapters[key] = propSpec.adapter;
+    adapters[key] = propSpec.convertor;
     initialFallbacks[key] = propSpec.fallback;
   });
 
@@ -28,9 +28,9 @@ function useNodeStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<str
 
   const [state, setState] = useState(() => {
     return Object.entries(states$).reduce<Record<string, any>>((acc, [key, state$]) => {
-      acc[key] = convertResult({
-        result: state$.getValue(),
-        adapter: adapters[key],
+      acc[key] = convertState({
+        state: state$.getValue(),
+        convertor: adapters[key],
         fallback: fallbacksRef.current[key],
       });
 
@@ -43,9 +43,9 @@ function useNodeStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<str
       acc[key] = state$.pipe(
         distinctUntilChanged(),
         map((result) => {
-          return convertResult({
-            result: result,
-            adapter: adapters[key],
+          return convertState({
+            state: result,
+            convertor: adapters[key],
             fallback: fallbacksRef.current[key],
           });
         }),

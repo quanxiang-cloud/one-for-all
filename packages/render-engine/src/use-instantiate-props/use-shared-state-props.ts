@@ -9,7 +9,7 @@ import {
   NodePropType,
   SchemaNode,
 } from '../types';
-import convertResult from './convert-result';
+import convertState from './convert-state';
 
 function useSharedStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, any> {
   const adapters: Record<string, VersatileFunc | undefined> = {};
@@ -20,7 +20,7 @@ function useSharedStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<s
     return pair[1].type === NodePropType.SharedStateProperty;
   }).forEach(([key, propSpec]) => {
     states$[key] = ctx.sharedStates.getState$(propSpec.stateID);
-    adapters[key] = propSpec.adapter;
+    adapters[key] = propSpec.convertor;
     initialFallbacks[key] = propSpec.fallback;
   });
 
@@ -28,9 +28,9 @@ function useSharedStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<s
 
   const [state, setState] = useState(() => {
     return Object.entries(states$).reduce<Record<string, any>>((acc, [key, state$]) => {
-      acc[key] = convertResult({
-        result: state$.getValue(),
-        adapter: adapters[key],
+      acc[key] = convertState({
+        state: state$.getValue(),
+        convertor: adapters[key],
         fallback: fallbacksRef.current[key],
       });
 
@@ -43,9 +43,9 @@ function useSharedStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<s
       acc[key] = state$.pipe(
         distinctUntilChanged(),
         map((result) => {
-          return convertResult({
-            result: result,
-            adapter: adapters[key],
+          return convertState({
+            state: result,
+            convertor: adapters[key],
             fallback: fallbacksRef.current[key],
           });
         }),

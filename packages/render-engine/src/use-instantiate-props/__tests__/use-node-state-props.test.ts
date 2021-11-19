@@ -66,7 +66,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
           type: NodePropType.NodeStateProperty,
           nodeKey: nodeKey,
           fallback: false,
-          adapter: () => {
+          convertor: () => {
             throw new Error('should be handled');
           },
         },
@@ -93,7 +93,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
           type: NodePropType.NodeStateProperty,
           nodeKey: nodeKey,
           fallback: false,
-          adapter: noop,
+          convertor: noop,
         },
       },
     };
@@ -116,7 +116,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
           type: NodePropType.NodeStateProperty,
           nodeKey: nodeKey,
           fallback: false,
-          adapter: () => 'bar',
+          convertor: () => 'bar',
         },
       },
     };

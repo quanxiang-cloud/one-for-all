@@ -17,11 +17,11 @@ function executeCallback(ctx: CTX, state: APIState, runParams?: RunParam): void 
   }
 
   if (state.error) {
-    runParams?.onError?.call(ctx, { ...state });
+    runParams?.onError?.call(ctx);
     return;
   }
 
-  runParams?.onSuccess?.call(ctx, { ...state });
+  runParams?.onSuccess?.call(ctx);
 }
 
 export default class APIStateHub implements APIStates {

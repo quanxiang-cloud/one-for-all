@@ -17,7 +17,7 @@ function useSharedStateMutationProps(node: SchemaNode<Instantiated>, ctx: CTX): 
     return Object.entries(node.props)
       .filter((pair): pair is [string, SharedStateMutationProperty<Instantiated>] => {
         return pair[1].type === NodePropType.SharedStateMutationProperty;
-      }).reduce<MutateProps>((acc, [key, { stateID, adapter }]) => {
+      }).reduce<MutateProps>((acc, [key, { stateID, convertor: adapter }]) => {
         const state$ = ctx.sharedStates.getState$(stateID);
         acc[key] = (value: any) => {
           if (typeof adapter !== 'function') {

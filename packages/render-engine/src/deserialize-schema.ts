@@ -7,66 +7,39 @@ import {
   NodeProperties,
   Serialized,
   Instantiated,
-  APIResultAdapterFuncSpec,
   ParamsBuilderFuncSpec,
   APIInvokeCallbackFuncSpec,
   NodePropType,
-  RawFunctionSpec,
-  Adapter,
-  APIResultTemplate,
+  BaseFunctionSpec,
+  StateConvertorFunc,
   CTX,
-  RawDataConvertorSpec,
-  ExpressionStatement,
+  SerializedStateConvertor,
 } from './types';
+import { VersatileFunc } from '.';
 
-// todo refactor this type
-type FunctionSpecs =
-  APIResultAdapterFuncSpec |
-  ParamsBuilderFuncSpec |
-  APIInvokeCallbackFuncSpec |
-  RawDataConvertorSpec |
-  RawFunctionSpec |
-  APIResultTemplate |
-  ExpressionStatement;
-
-// todo move this to constant, and should be defined as a type
-const API_STATE_FUNC_ARGS = 'result';
-const LOCAL_STATE_FUNC_ARGS = 'data';
-
-function instantiateFuncSpec(spec: FunctionSpecs, ctx: CTX): Adapter {
-  if (spec.type === 'api_result_template') {
-    return new Function(
-      API_STATE_FUNC_ARGS,
-      `return ${spec.template}`,
-    ).bind(ctx);
+function instantiateConvertor(
+  serializedStateConvertor: SerializedStateConvertor,
+  ctx: CTX,
+): StateConvertorFunc {
+  if (serializedStateConvertor.type === 'state_convert_expression') {
+    return new Function('state', `return ${serializedStateConvertor.expression}`).bind(ctx);
   }
 
-  if (spec.type === 'api_result_convertor_func_spec') {
-    return new Function(API_STATE_FUNC_ARGS, spec.body).bind(ctx);
-  }
-
-  if (spec.type === 'param_builder_func_spec') {
-    return new Function(spec.args, spec.body).bind(ctx);
-  }
-
-  if (spec.type === 'api_invoke_call_func_spec') {
-    return new Function(API_STATE_FUNC_ARGS, spec.body).bind(ctx);
-  }
-
-  if (spec.type === 'raw') {
-    // args should be single parameter?
-    return new Function(spec.args, spec.body).bind(ctx);
-  }
-
-  if (spec.type === 'raw_data_convert_func_spec') {
-    return new Function(LOCAL_STATE_FUNC_ARGS, spec.body).bind(ctx);
-  }
-
-  if (spec.type === 'expression_statement') {
-    return new Function(LOCAL_STATE_FUNC_ARGS, `return ${spec.expression}`).bind(ctx);
+  if (serializedStateConvertor.type === 'state_convertor_func_spec') {
+    return new Function('state', serializedStateConvertor.body).bind(ctx);
   }
 
   return noop;
+}
+
+// todo refactor this type
+type FunctionSpecs =
+  ParamsBuilderFuncSpec |
+  APIInvokeCallbackFuncSpec |
+  BaseFunctionSpec;
+
+function instantiateFuncSpec(spec: FunctionSpecs, ctx: CTX): VersatileFunc {
+  return new Function(spec.args, spec.body).bind(ctx);
 }
 
 function transformProps(props: NodeProperties<Serialized>, ctx: CTX): NodeProperties<Instantiated> {
@@ -91,10 +64,10 @@ function transformProps(props: NodeProperties<Serialized>, ctx: CTX): NodeProper
       return [propName, propDesc];
     }
 
-    if (propDesc.type === 'api_result_property') {
+    if (propDesc.type === NodePropType.APIResultProperty) {
       return [propName, {
         ...propDesc,
-        adapter: propDesc.adapter ? instantiateFuncSpec(propDesc.adapter, ctx) : undefined,
+        convertor: propDesc.convertor ? instantiateConvertor(propDesc.convertor, ctx) : undefined,
       }];
     }
 
@@ -103,21 +76,7 @@ function transformProps(props: NodeProperties<Serialized>, ctx: CTX): NodeProper
         propName,
         {
           ...propDesc,
-          adapter: propDesc.adapter ? instantiateFuncSpec(propDesc.adapter, ctx) : undefined,
-        },
-      ];
-    }
-
-    if (propDesc.type === NodePropType.FunctionalProperty) {
-      return [
-        propName,
-        {
-          type: NodePropType.FunctionalProperty,
-          func: instantiateFuncSpec({
-            type: 'raw',
-            args: propDesc.func.args,
-            body: propDesc.func.body,
-          }, ctx),
+          convertor: propDesc.convertor ? instantiateConvertor(propDesc.convertor, ctx) : undefined,
         },
       ];
     }
@@ -130,7 +89,7 @@ function transformProps(props: NodeProperties<Serialized>, ctx: CTX): NodeProper
           type: propDesc.type,
           nodeKey: propDesc.nodeKey,
           fallback: propDesc.fallback,
-          adapter: instantiateFuncSpec(propDesc.adapter || { type: 'raw', args: 'v', body: 'return v' }, ctx),
+          convertor: propDesc.convertor ? instantiateConvertor(propDesc.convertor, ctx) : undefined,
         },
       ];
     }
@@ -150,10 +109,25 @@ function transformProps(props: NodeProperties<Serialized>, ctx: CTX): NodeProper
         {
           type: propDesc.type,
           stateID: propDesc.stateID,
-          adapter: instantiateFuncSpec(propDesc.adapter || { type: 'raw', args: 'v', body: 'return v' }, ctx),
+          convertor: propDesc.convertor ? instantiateFuncSpec(propDesc.convertor, ctx) : undefined,
         },
       ];
     }
+
+    // todo do we really need provide this type property?
+    // if (propDesc.type === NodePropType.FunctionalProperty) {
+    //   return [
+    //     propName,
+    //     {
+    //       type: NodePropType.FunctionalProperty,
+    //       func: instantiateConvertor({
+    //         type: 'raw',
+    //         args: propDesc.func.args,
+    //         body: propDesc.func.body,
+    //       }, ctx),
+    //     },
+    //   ];
+    // }
 
     logger.warn('unsupported property:', propDesc);
 

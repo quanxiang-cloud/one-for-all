@@ -67,25 +67,26 @@ export type APIResultProperty<T> = BaseNodeProperty & {
   // todo define different type adapter
   // adapter will never be called if api error or api response body is undefined
   // todo add test cases
-  adapter?: APIResultAdapter<T>;
+  convertor?: StateConvertor<T>;
 }
 
-type APIResultAdapter<T> = T extends Serialized ? SerializedAPIResultAdapter : Adapter;
-type SerializedAPIResultAdapter = APIResultTemplate | APIResultAdapterFuncSpec;
+export type StateConvertor<T> = T extends Serialized ? SerializedStateConvertor : StateConvertorFunc;
+export type SerializedStateConvertor = StateConvertExpression | StateConvertorFuncSpec;
+export type StateConvertorFunc = (v: any) => any;
 
-export type APIResultTemplate = {
-  type: 'api_result_template';
-  // template for data, loading, params, error
-  // {{ result.foo }}
-  // {{ result.offset / (result.limit + result.offset) }}
-  // {{ result.list.map((item) => item.name)) }}
-  // {{ result.list.map((item) => `名称：${item.name}`)) }}
-  // {{ result.foo?.bar?.baz || 'someValue' }}
-  template: string;
+type StateConvertExpression = {
+  type: 'state_convert_expression';
+  // expression for data, loading, params, error
+  // state.foo
+  // state.offset / (state.limit + state.offset)
+  // state.list.map((item) => item.name))
+  // state.list.map((item) => `名称：${item.name}`))
+  // state.foo?.bar?.baz || 'someValue'
+  expression: string;
 }
 
-export type APIResultAdapterFuncSpec = BaseFunctionSpec & {
-  type: 'api_result_convertor_func_spec';
+export type StateConvertorFuncSpec = BaseFunctionSpec & {
+  type: 'state_convertor_func_spec';
   args: 'result';
 };
 
@@ -99,20 +100,20 @@ export type SharedStateProperty<T> = BaseNodeProperty & {
   // this is not a good design
   stateID: string;
   // todo define different type adapter
-  adapter?: RawStateAdapter<T>;
+  convertor?: StateConvertor<T>;
   fallback: any;
 }
 
 export type FunctionalProperty<T> = BaseNodeProperty & {
   type: NodePropType.FunctionalProperty;
-  func: T extends Serialized ? BaseFunctionSpec : Adapter;
+  func: T extends Serialized ? BaseFunctionSpec : StateConvertorFunc;
 }
 
 // todo refactor this type property spec
 export type SharedStateMutationProperty<T> = {
   type: NodePropType.SharedStateMutationProperty;
   stateID: string;
-  adapter?: T extends Serialized ? RawFunctionSpec : Adapter;
+  convertor?: T extends Serialized ? BaseFunctionSpec : VersatileFunc;
 }
 
 // todo refactor this type property spec
@@ -125,36 +126,31 @@ export type APIInvokeProperty<T> = {
   onError?: APIInvokeCallBack<T>;
 }
 
-export type NodeStateProperty<T> = BaseNodeProperty & {
-  type: NodePropType.NodeStateProperty;
-  nodeKey: string;
-  fallback: any;
-  adapter?: RawStateAdapter<T>;
+export type APIInvokeCallBack<T> = T extends Serialized ? APIInvokeCallbackFuncSpec : () => void;
+
+export type APIInvokeCallbackFuncSpec = BaseFunctionSpec & {
+  type: 'api_invoke_call_func_spec';
+  args: '';
 }
 
-type BaseFunctionSpec = {
-  type: string;
-  args: string;
-  body: string;
-}
-
-export type RawFunctionSpec = BaseFunctionSpec & {
-  type: 'raw';
-}
+export type ParamsBuilder<T> = T extends Serialized ?
+  ParamsBuilderFuncSpec : (...args: any[]) => RequestParams;
 
 export type ParamsBuilderFuncSpec = BaseFunctionSpec & {
   type: 'param_builder_func_spec';
 }
 
-export type APIInvokeCallbackFuncSpec = BaseFunctionSpec & {
-  type: 'api_invoke_call_func_spec';
-  args: 'result';
+export type NodeStateProperty<T> = BaseNodeProperty & {
+  type: NodePropType.NodeStateProperty;
+  nodeKey: string;
+  fallback: any;
+  convertor?: StateConvertor<T>;
 }
 
-export type RawDataConvertorSpec = BaseFunctionSpec & {
-  type: 'raw_data_convert_func_spec';
-  // `data` is unacceptable!
-  args: 'data';
+export type BaseFunctionSpec = {
+  type: string;
+  args: string;
+  body: string;
 }
 
 // 为什么这里采用 onSuccess and onError 这种 callback 的形式，而不是让 runAction 返回一个 promise 呢？
@@ -199,25 +195,6 @@ export type CTX = {
   sharedStates: SharedStates;
   nodeStates: NodeStateHub;
 }
-
-export type Adapter = (v: any) => any;
-
-export type ExpressionStatement = {
-  type: 'expression_statement';
-  // template for data
-  // {{ data.foo }}
-  // {{ data.offset / (data.limit + data.offset) }}
-  // {{ data.list.map((item) => item.name)) }}
-  // {{ data.list.map((item) => `名称：${item.name}`)) }}
-  // {{ data.foo?.bar?.baz || 'someValue' }}
-  expression: string;
-}
-
-export type SerializedRawStateAdapter = ExpressionStatement | RawDataConvertorSpec;
-
-type RawStateAdapter<T> = T extends Serialized ? SerializedRawStateAdapter : Adapter;
-export type ParamsBuilder<T> = T extends Serialized ? ParamsBuilderFuncSpec : (...args: any[]) => RequestParams;
-export type APIInvokeCallBack<T> = T extends Serialized ? APIInvokeCallbackFuncSpec : (apiState: APIState) => void;
 
 export type VersatileFunc = (...args: any) => any;
 
