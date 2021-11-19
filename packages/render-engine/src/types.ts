@@ -85,7 +85,7 @@ type StateConvertExpression = {
 
 export type StateConvertorFuncSpec = BaseFunctionSpec & {
   type: 'state_convertor_func_spec';
-  args: 'result';
+  args: 'state';
 };
 
 export type APILoadingProperty = BaseNodeProperty & {
