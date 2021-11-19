@@ -56,7 +56,9 @@ function useAPIResultProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<str
       return acc;
     }, {});
 
-    const subscription = combineLatest(results$).pipe(skip(1)).subscribe(setState);
+    const subscription = combineLatest(results$).pipe(
+      skip(1),
+    ).subscribe(setState);
 
     return () => subscription.unsubscribe();
   }, []);

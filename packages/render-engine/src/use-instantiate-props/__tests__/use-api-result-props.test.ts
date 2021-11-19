@@ -16,6 +16,7 @@ const apiSpecAdapter: APISpecAdapter = {
 
 const stateIDMap = {
   some_api_state: { apiID: 'get:/api' },
+  another_api_state: { apiID: 'get:/api' },
 };
 
 describe('useAPIResultProps_resolve_expected_fallback', () => {
@@ -360,4 +361,51 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
 
     unmount();
   });
+});
+
+test('useAPIResultProps_resolve_expected_value', () => {
+  const apiStateHub = new APIStateHub(apiSpecAdapter, stateIDMap);
+  dummyCTX.apiStates = apiStateHub;
+
+  const node: SchemaNode<Instantiated> = {
+    key: 'some_key',
+    type: 'html-element',
+    name: 'div',
+    props: {
+      foo: {
+        type: NodePropType.APIResultProperty,
+        fallback: { foo: 'bar' },
+        stateID: 'some_api_state',
+      },
+      bar: {
+        type: NodePropType.APIResultProperty,
+        fallback: { bar: 'baz' },
+        stateID: 'another_api_state',
+      },
+    },
+  };
+
+  const { result, unmount } = renderHook(() => useAPIResultProps(node, dummyCTX));
+
+  act(() => {
+    apiStateHub.getState('some_api_state').next({
+      data: 'some_api_state',
+      error: undefined,
+      loading: false,
+    });
+  });
+
+  act(() => {
+    apiStateHub.getState('another_api_state').next({
+      data: 'another_api_state',
+      error: undefined,
+      loading: false,
+    });
+  });
+
+  expect(result.current.foo).toEqual('some_api_state');
+  expect(result.current.bar).toEqual('another_api_state');
+  expect(result.all.length).toBe(3);
+
+  unmount();
 });
