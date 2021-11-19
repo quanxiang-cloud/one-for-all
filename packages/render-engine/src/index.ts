@@ -3,7 +3,7 @@ import type { APISpecAdapter } from '@ofa/api-spec-adapter';
 import renderSchema from './render';
 import deserializeSchema from './deserialize-schema';
 import type { CTX, Schema } from './types';
-import APIStateHub from './ctx/api-state-hub';
+import APIStatesHub from './ctx/api-states-hub';
 import SharedStateHub from './ctx/shared-states-hub';
 
 export * from './types';
@@ -15,7 +15,7 @@ type RenderSchemaParams = {
 }
 
 function Render({ schema, rootEle, apiSpecAdapter }: RenderSchemaParams): CTX {
-  const apiStateHub = new APIStateHub(apiSpecAdapter, schema.apiStateSpec);
+  const apiStateHub = new APIStatesHub(apiSpecAdapter, schema.apiStateSpec);
   const sharedStatesHub = new SharedStateHub(schema.sharedStatesSpec);
 
   const ctx: CTX = {

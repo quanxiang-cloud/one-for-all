@@ -24,7 +24,7 @@ function executeCallback(ctx: CTX, state: APIState, runParams?: RunParam): void 
   runParams?.onSuccess?.call(ctx);
 }
 
-export default class APIStateHub implements APIStates {
+export default class APIStatesHub implements APIStates {
   apiSpecAdapter: APISpecAdapter;
   apiStateSpec: APIStatesSpec;
   statesCache: Record<string, [BehaviorSubject<APIState>, StreamActions]> = {};

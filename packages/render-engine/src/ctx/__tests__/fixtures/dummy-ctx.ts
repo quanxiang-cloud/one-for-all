@@ -1,9 +1,9 @@
 import { CTX } from '../../..';
-import APIStateHub from '../../api-state-hub';
+import APIStatesHub from '../../api-states-hub';
 import SharedStatesHub from '../../shared-states-hub';
 
 const ctx: CTX = {
-  apiStates: new APIStateHub({ build: () => ({ url: '', method: '' }) }, {}),
+  apiStates: new APIStatesHub({ build: () => ({ url: '', method: '' }) }, {}),
   sharedStates: new SharedStatesHub({}),
 };
 
