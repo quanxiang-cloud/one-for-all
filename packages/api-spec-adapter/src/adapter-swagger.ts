@@ -1,13 +1,15 @@
 import type { Spec, Operation } from './swagger-schema-official';
 
 import type { APISpecAdapter, AjaxConfig, RequestParams } from './types';
-import { indexOperation } from './utils';
+import { indexOperation, join } from './utils';
 
 export default class SwaggerSpecAdapter implements APISpecAdapter {
+  spec: Spec;
   operationMap: Record<string, Operation>;
 
   constructor(spec: Spec) {
     this.operationMap = indexOperation(spec);
+    this.spec = spec;
   }
 
   build(apiID: string, requestParam?: RequestParams): AjaxConfig | undefined {
@@ -18,7 +20,7 @@ export default class SwaggerSpecAdapter implements APISpecAdapter {
       throw new Error(`can not find operation for path: ${path}, method: ${method}`);
     }
 
-    let url = path;
+    let url = join(this.spec.basePath || '', path);
     const queryParams: Record<string, any> = {};
     const headers: Record<string, any> = {};
     // todo return undefined and log error message
