@@ -16,11 +16,12 @@ export const enum NodePropType {
   APILoadingProperty = 'api_loading_property',
   // todo api error property
   SharedStateProperty = 'shared_state_property',
-  FunctionalProperty = 'functional_property',
-  SharedStateMutationProperty = 'shared_state_mutation_property',
   NodeStateProperty = 'node_state_property',
 
   APIInvokeProperty = 'api_invoke_property',
+  SharedStateMutationProperty = 'shared_state_mutation_property',
+
+  FunctionalProperty = 'functional_property',
 }
 
 export type NodeProperty<T> =

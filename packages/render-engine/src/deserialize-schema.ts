@@ -52,13 +52,16 @@ function transformProps(props: NodeProperties<Serialized>, ctx: CTX): NodeProper
     //   ];
     // }
 
-    if (propDesc.type === NodePropType.ConstantProperty) {
+    if (
+      propDesc.type === NodePropType.ConstantProperty ||
+      propDesc.type === NodePropType.APILoadingProperty
+    ) {
       return [propName, propDesc];
     }
 
     if (
-      propDesc.type === NodePropType.SharedStateProperty ||
       propDesc.type === NodePropType.APIResultProperty ||
+      propDesc.type === NodePropType.SharedStateProperty ||
       propDesc.type === NodePropType.NodeStateProperty
     ) {
       return [
