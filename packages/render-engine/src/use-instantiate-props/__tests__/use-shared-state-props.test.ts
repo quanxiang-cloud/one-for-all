@@ -200,3 +200,45 @@ test('useSharedStateProps_resolve_values_after_changed', () => {
 
   unmount();
 });
+
+test('useSharedStateProps_resolve_expected_value', () => {
+  const sharedStates = new SharedStatesHub({
+    state_foo: { initial: 'state_foo' },
+    state_bar: { initial: 'state_bar' },
+  });
+  dummyCTX.sharedStates = sharedStates;
+
+  const node: SchemaNode<Instantiated> = {
+    key: 'foo',
+    type: 'html-element',
+    name: 'div',
+    props: {
+      foo: {
+        type: NodePropType.SharedStateProperty,
+        stateID: 'state_foo',
+        fallback: 'foo',
+      },
+      bar: {
+        type: NodePropType.SharedStateProperty,
+        stateID: 'state_bar',
+        fallback: 'bar',
+      },
+    },
+  };
+
+  const { result, unmount } = renderHook(() => useSharedStateProps(node, dummyCTX));
+
+  act(() => {
+    sharedStates.getState$('state_foo').next('next_state_foo');
+  });
+
+  act(() => {
+    sharedStates.getState$('state_bar').next('next_state_bar');
+  });
+
+  expect(result.current.foo).toEqual('next_state_foo');
+  expect(result.current.bar).toEqual('next_state_bar');
+  expect(result.all.length).toBe(3);
+
+  unmount();
+});

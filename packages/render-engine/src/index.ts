@@ -2,7 +2,7 @@ import type { APISpecAdapter } from '@ofa/api-spec-adapter';
 
 import renderSchema from './render';
 import deserializeSchema from './deserialize-schema';
-import { CTX, Schema } from './types';
+import type { CTX, Schema } from './types';
 import APIStateHub from './ctx/api-state-hub';
 import SharedStateHub from './ctx/shared-states-hub';
 
