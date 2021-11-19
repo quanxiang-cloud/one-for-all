@@ -42,6 +42,7 @@ function useSharedStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<s
         state: state$.getValue(),
         convertor: adapters[key],
         fallback: fallbacksRef.current[key],
+        propName: key,
       });
 
       return acc;
@@ -57,6 +58,7 @@ function useSharedStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<s
             state: result,
             convertor: adapters[key],
             fallback: fallbacksRef.current[key],
+            propName: key,
           });
         }),
         tap((result) => fallbacksRef.current[key] = result),

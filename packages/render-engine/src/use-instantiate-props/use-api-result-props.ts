@@ -33,6 +33,7 @@ function useAPIResultProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<str
         state: state$.getValue().data,
         convertor: adapters[key],
         fallback: fallbacksRef.current[key],
+        propName: key,
       });
 
       return acc;
@@ -48,6 +49,7 @@ function useAPIResultProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<str
             state: data,
             convertor: adapters[key],
             fallback: fallbacksRef.current[key],
+            propName: key,
           });
         }),
         tap((result) => fallbacksRef.current[key] = result),

@@ -35,7 +35,7 @@ const todoAppSchema: Schema = {
       {
         key: 'todo-input-form',
         type: 'html-element',
-        name: 'form',
+        name: 'div',
         props: {
           id: { type: NodePropType.ConstantProperty, value: 'todo-input-form' },
           style: {
@@ -203,15 +203,8 @@ const todoAppSchema: Schema = {
             fallback: [],
             convertor: {
               type: 'state_convert_expression',
-              expression: 'data',
+              expression: 'state',
             },
-            // convertor: {
-            //   type: 'state_convertor_func_spec',
-            //   args: '',
-            //   body: `
-            //     return data || [];
-            //   `,
-            // },
           },
           toggleTodo: {
             type: NodePropType.APIInvokeProperty,
