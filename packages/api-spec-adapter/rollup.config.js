@@ -11,7 +11,7 @@ export default {
   input: 'src/index.ts',
   output: getOutput(packageName),
 
-  external: ['rxjs', '@ofa/utils', /rxjs\/.*/],
+  external: ['rxjs', /@ofa\/.*/, /rxjs\/.*/],
 
   plugins: [
     typescriptPaths(),

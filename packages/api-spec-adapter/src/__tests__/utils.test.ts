@@ -2,6 +2,14 @@ import { join } from '../utils';
 
 const cases: Array<{ segments: string[]; result: string; }> = [
   {
+    segments: ['', 'abc'],
+    result: '/abc',
+  },
+  {
+    segments: ['', 'abc', '', 'def'],
+    result: '/abc/def',
+  },
+  {
     segments: ['abc', 'def'],
     result: '/abc/def',
   },

@@ -7,7 +7,15 @@ export default function convertState({ state, convertor, fallback }: ConvertResu
     try {
       return convertor(state) ?? fallback;
     } catch (error) {
-      logger.error('failed to run convertor:\n', convertor.toString(), '\n', error);
+      logger.error(
+        'an error occured while calling state convertor:\n',
+        convertor.toString(),
+        '\n',
+        'So return fallback instead, fallback:', fallback,
+        '\n',
+        '\n',
+        error,
+      );
       return fallback;
     }
   }

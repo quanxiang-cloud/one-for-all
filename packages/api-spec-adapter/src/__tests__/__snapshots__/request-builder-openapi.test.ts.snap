@@ -8,7 +8,7 @@ Object {
   "headers": Object {},
   "method": "post",
   "queryParams": Object {},
-  "url": "/pet",
+  "url": "/v2/pet",
 }
 `;
 
@@ -20,7 +20,7 @@ Object {
   "headers": Object {},
   "method": "put",
   "queryParams": Object {},
-  "url": "/pet",
+  "url": "/v2/pet",
 }
 `;
 
@@ -36,7 +36,7 @@ Object {
       "sold",
     ],
   },
-  "url": "/pet/findByStatus",
+  "url": "/v2/pet/findByStatus",
 }
 `;
 
@@ -52,7 +52,7 @@ Object {
       "tag3",
     ],
   },
-  "url": "/pet/findByTags",
+  "url": "/v2/pet/findByTags",
 }
 `;
 
@@ -62,7 +62,7 @@ Object {
   "headers": Object {},
   "method": "get",
   "queryParams": Object {},
-  "url": "/pet/some_pet_id",
+  "url": "/v2/pet/some_pet_id",
 }
 `;
 
@@ -75,7 +75,7 @@ Object {
   "headers": Object {},
   "method": "post",
   "queryParams": Object {},
-  "url": "/pet/some_pet_id",
+  "url": "/v2/pet/some_pet_id",
 }
 `;
 
@@ -85,7 +85,7 @@ Object {
   "headers": Object {},
   "method": "delete",
   "queryParams": Object {},
-  "url": "/pet/some_pet_id",
+  "url": "/v2/pet/some_pet_id",
 }
 `;
 
@@ -95,7 +95,7 @@ Object {
   "headers": Object {},
   "method": "post",
   "queryParams": Object {},
-  "url": "/pet/some_pet_id/uploadImage",
+  "url": "/v2/pet/some_pet_id/uploadImage",
 }
 `;
 
@@ -105,7 +105,7 @@ Object {
   "headers": Object {},
   "method": "get",
   "queryParams": Object {},
-  "url": "/store/inventory",
+  "url": "/v2/store/inventory",
 }
 `;
 
@@ -117,7 +117,7 @@ Object {
   "headers": Object {},
   "method": "post",
   "queryParams": Object {},
-  "url": "/store/order",
+  "url": "/v2/store/order",
 }
 `;
 
@@ -127,7 +127,7 @@ Object {
   "headers": Object {},
   "method": "get",
   "queryParams": Object {},
-  "url": "/store/order/{orderId}",
+  "url": "/v2/store/order/{orderId}",
 }
 `;
 
@@ -137,7 +137,7 @@ Object {
   "headers": Object {},
   "method": "delete",
   "queryParams": Object {},
-  "url": "/store/order/{orderId}",
+  "url": "/v2/store/order/{orderId}",
 }
 `;
 
@@ -147,7 +147,7 @@ Object {
   "headers": Object {},
   "method": "post",
   "queryParams": Object {},
-  "url": "/user",
+  "url": "/v2/user",
 }
 `;
 
@@ -157,7 +157,7 @@ Object {
   "headers": Object {},
   "method": "post",
   "queryParams": Object {},
-  "url": "/user/createWithArray",
+  "url": "/v2/user/createWithArray",
 }
 `;
 
@@ -167,7 +167,7 @@ Object {
   "headers": Object {},
   "method": "post",
   "queryParams": Object {},
-  "url": "/user/createWithList",
+  "url": "/v2/user/createWithList",
 }
 `;
 
@@ -177,7 +177,7 @@ Object {
   "headers": Object {},
   "method": "get",
   "queryParams": Object {},
-  "url": "/user/login",
+  "url": "/v2/user/login",
 }
 `;
 
@@ -187,7 +187,7 @@ Object {
   "headers": Object {},
   "method": "get",
   "queryParams": Object {},
-  "url": "/user/logout",
+  "url": "/v2/user/logout",
 }
 `;
 
@@ -197,6 +197,6 @@ Object {
   "headers": Object {},
   "method": "get",
   "queryParams": Object {},
-  "url": "/user/{username}",
+  "url": "/v2/user/{username}",
 }
 `;

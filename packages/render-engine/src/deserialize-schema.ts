@@ -20,11 +20,27 @@ function instantiateConvertor(
   ctx: CTX,
 ): StateConvertorFunc {
   if (serializedStateConvertor.type === 'state_convert_expression') {
-    return new Function('state', `return ${serializedStateConvertor.expression}`).bind(ctx);
+    const fn = new Function('state', `return ${serializedStateConvertor.expression}`).bind(ctx);
+    fn.toString = () => [
+      '',
+      'function wrappedStateConvertor(state) {',
+      `\treturn ${serializedStateConvertor.expression}`,
+      '}',
+    ].join('\n');
+
+    return fn;
   }
 
   if (serializedStateConvertor.type === 'state_convertor_func_spec') {
-    return new Function('state', serializedStateConvertor.body).bind(ctx);
+    const fn = new Function('state', serializedStateConvertor.body).bind(ctx);
+    fn.toString = () => [
+      '',
+      'function wrappedStateConvertor(state) {',
+      `\t${serializedStateConvertor.body}`,
+      '}',
+      '',
+    ].join('\n');
+    return fn;
   }
 
   return noop;

@@ -14,10 +14,10 @@ export default class SwaggerSpecAdapter implements APISpecAdapter {
 
   build(apiID: string, requestParam?: RequestParams): AjaxConfig | undefined {
     const [method, path] = apiID.split(':');
-    const operation: Operation = this.operationMap[`${method}:${path}`];
+    const operation: Operation = this.operationMap[apiID];
 
     if (!operation) {
-      throw new Error(`can not find operation for path: ${path}, method: ${method}`);
+      throw new Error(`can not find operation for path: ${path}, method: ${method}.`);
     }
 
     let url = join(this.spec.basePath || '', path);

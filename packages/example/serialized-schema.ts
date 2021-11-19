@@ -2,11 +2,11 @@ import { NodePropType, Schema } from '@ofa/render-engine';
 
 const todoAppSchema: Schema = {
   apiStateSpec: {
-    新建待办: { apiID: 'createTodo' },
-    全部待办列表: { apiID: 'listTodos' },
-    更新待办: { apiID: 'updateTodo' },
-    todoStatus: { apiID: 'todoStatus' },
-    删除待办: { apiID: 'deleteTodo' },
+    新建待办: { apiID: 'post:/todos' },
+    全部待办列表: { apiID: 'get:/todos' },
+    更新待办: { apiID: 'put:/todos/{todoId}' },
+    todoStatus: { apiID: 'get:/todo_status' },
+    删除待办: { apiID: 'delete:/todos/{todoId}' },
   },
   sharedStatesSpec: {
     currentTodo: {
@@ -50,8 +50,8 @@ const todoAppSchema: Schema = {
             func: {
               type: 'raw',
               args: 'e',
-              body: 'e.preventDefault();e.stopPropagation()'
-            }
+              body: 'e.preventDefault();e.stopPropagation()',
+            },
           },
           // onSubmit: {
           //   type: NodePropType.APIInvokeProperty,
@@ -70,7 +70,7 @@ const todoAppSchema: Schema = {
           //   },
           //   onError: {
           //     type: 'api_invoke_call_func_spec',
-          //     args: 'result',
+          //     args: '',
           //     body: `
           //       // todo show error message, error message should be store in localState
           //       console.log(error.response);
@@ -78,7 +78,7 @@ const todoAppSchema: Schema = {
           //   },
           //   onSuccess: {
           //     type: 'api_invoke_call_func_spec',
-          //     args: 'result',
+          //     args: '',
           //     body: `
           //       // contexts.store.call refresh again
           //       // reset form
@@ -104,16 +104,14 @@ const todoAppSchema: Schema = {
                 paramsBuilder: {
                   type: 'param_builder_func_spec',
                   args: 'value',
-                  body: `return { body: { title: value } }`,
+                  body: 'return { body: { title: value } }',
                 },
                 onSuccess: {
-                type: 'api_invoke_call_func_spec',
-                args: 'result',
-                body: `
-                  this.apiStates.refresh('全部待办列表');
-                `,
+                  type: 'api_invoke_call_func_spec',
+                  args: '',
+                  body: 'this.apiStates.refresh("全部待办列表")',
+                },
               },
-              }
             },
           },
           {
@@ -140,12 +138,12 @@ const todoAppSchema: Schema = {
               onChange: {
                 type: NodePropType.SharedStateMutationProperty,
                 stateID: 'input_value',
-                adapter: {
+                convertor: {
                   type: 'raw',
                   args: 'e',
-                  body: `return e.target.value;`,
-                }
-              }
+                  body: 'return e.target.value;',
+                },
+              },
               // onChange: {
               //   type: NodePropType.FunctionalProperty,
               //   func: {
@@ -184,9 +182,9 @@ const todoAppSchema: Schema = {
             nodeKey: 'fancy-input',
             // todo replace by $ele-input-xhfsf-todo-input.value
             fallback: 'abv dev',
-            adapter: {
-              type: 'expression_statement',
-              expression: '`you have input ${data.split(\' \').length} words`',
+            convertor: {
+              type: 'state_convert_expression',
+              expression: '`you have input ${state.split(\' \').length} words`',
             },
           },
         },
@@ -203,13 +201,13 @@ const todoAppSchema: Schema = {
             type: NodePropType.APIResultProperty,
             stateID: '全部待办列表',
             fallback: [],
-            adapter: {
+            convertor: {
               type: 'state_convert_expression',
-              template: 'data',
+              expression: 'data',
             },
-            // adapter: {
+            // convertor: {
             //   type: 'state_convertor_func_spec',
-            //   args: 'result',
+            //   args: '',
             //   body: `
             //     return data || [];
             //   `,
@@ -228,7 +226,7 @@ const todoAppSchema: Schema = {
             },
             onSuccess: {
               type: 'api_invoke_call_func_spec',
-              args: 'result',
+              args: '',
               body: `
                 // 提供一个 refresh event？
                 this.apiStates.runAction('全部待办列表');
@@ -252,7 +250,7 @@ const todoAppSchema: Schema = {
             },
             onSuccess: {
               type: 'api_invoke_call_func_spec',
-              args: 'result',
+              args: '',
               body: `
                 this.apiStates.runAction('全部待办列表');
                 this.apiStates.runAction('todoStatus');
@@ -272,11 +270,11 @@ const todoAppSchema: Schema = {
             type: NodePropType.APIResultProperty,
             stateID: 'todoStatus',
             fallback: 0,
-            adapter: {
+            convertor: {
               type: 'state_convertor_func_spec',
-              args: 'result',
+              args: 'state',
               body: `
-                return data?.all || 0;
+                return state?.all || 0;
               `,
             },
           },
@@ -287,11 +285,11 @@ const todoAppSchema: Schema = {
             // convertor: (apiState: APIState): number => {
             //   return data?.working || 0;
             // },
-            adapter: {
+            convertor: {
               type: 'state_convertor_func_spec',
-              args: 'result',
+              args: 'state',
               body: `
-                return data?.working || 0;
+                return state?.working || 0;
               `,
             },
           },
@@ -299,11 +297,11 @@ const todoAppSchema: Schema = {
             type: NodePropType.APIResultProperty,
             stateID: 'todoStatus',
             fallback: 0,
-            adapter: {
+            convertor: {
               type: 'state_convertor_func_spec',
-              args: 'result',
+              args: 'state',
               body: `
-                return data?.done || 0;
+                return state?.done || 0;
               `,
             },
           },

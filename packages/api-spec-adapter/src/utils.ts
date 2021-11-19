@@ -28,7 +28,13 @@ export function join(...segments: string[]): string {
   const parts = segments.reduce<string[]>((parts, segment) => {
     // Remove leading slashes from non-first part.
     // Remove trailing slashes.
-    return parts.concat(segment.replace(/^\//, '').replace(/\/$/, '').split('/'));
+    const fragment = segment.replace(/^\//, '').replace(/\/$/, '');
+    if (!fragment) {
+      return parts;
+    }
+
+    const fragments = fragment.split('/');
+    return parts.concat(fragments);
   }, []);
 
   const resultParts = [];
