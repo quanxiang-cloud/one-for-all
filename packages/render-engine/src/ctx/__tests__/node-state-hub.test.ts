@@ -1,4 +1,4 @@
-import NodeStateHub from '../shared-states-hub';
+import NodeStateHub from '../states-hub-shared';
 
 test('node_state_should_return_undefined', () => {
   const hub = new NodeStateHub({});

@@ -17,14 +17,14 @@ import http from './http';
     | 5   |  false  | undefined |    xxx    |     │
     | 6   |  true   | undefined |    xxx    |─────┘
 */
-export const initialState: APIState = { data: undefined, error: undefined, loading: false };
+export const initialState: APIState = { result: undefined, error: undefined, loading: false };
 
 function getResponseState$(request$: Observable<AjaxConfig>): BehaviorSubject<APIState> {
   const state$ = new BehaviorSubject<APIState>(initialState);
   const response$ = http(request$);
 
   response$.pipe(
-    map(({ data, error }) => ({ data, error, loading: false })),
+    map(({ result, error }) => ({ result, error, loading: false })),
   ).subscribe(state$);
 
   request$.pipe(

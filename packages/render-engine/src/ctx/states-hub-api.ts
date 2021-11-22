@@ -1,14 +1,13 @@
 import { BehaviorSubject, Subject } from 'rxjs';
 import { map, skip, filter, share } from 'rxjs/operators';
-import type { APISpecAdapter, RequestParams } from '@ofa/api-spec-adapter';
+import type { APISpecAdapter, FetchParams } from '@ofa/api-spec-adapter';
 
-import type { APIStates, APIState, APIStatesSpec, CTX, RunParam } from '../types';
+import type { StatesHubAPI, APIState, APIStatesSpec, CTX, RunParam, APIFetch, APIFetchCallback } from '../types';
 import getResponseState$ from './http/response';
 
 type StreamActions = {
   run: (runParam: RunParam) => void;
   refresh: () => void;
-  // __complete: () => void;
 };
 
 function executeCallback(ctx: CTX, state: APIState, runParams?: RunParam): void {
@@ -16,15 +15,10 @@ function executeCallback(ctx: CTX, state: APIState, runParams?: RunParam): void 
     return;
   }
 
-  if (state.error) {
-    runParams?.onError?.call(ctx);
-    return;
-  }
-
-  runParams?.onSuccess?.call(ctx);
+  runParams?.callback?.(state);
 }
 
-export default class APIStatesHub implements APIStates {
+export default class APIStatesHub implements StatesHubAPI {
   apiSpecAdapter: APISpecAdapter;
   apiStateSpec: APIStatesSpec;
   statesCache: Record<string, [BehaviorSubject<APIState>, StreamActions]> = {};
@@ -39,7 +33,7 @@ export default class APIStatesHub implements APIStates {
     this.ctx = ctx;
   }
 
-  getState(stateID: string): BehaviorSubject<APIState> {
+  getState$(stateID: string): BehaviorSubject<APIState> {
     const [state$] = this.getCached(stateID);
 
     return state$;
@@ -57,6 +51,13 @@ export default class APIStatesHub implements APIStates {
     refresh();
   }
 
+  getFetch(stateID: string): APIFetch {
+    return (fetchParams: FetchParams, callback?: APIFetchCallback): void => {
+      // todo implement callback
+      this.runAction(stateID, { params: fetchParams, callback });
+    };
+  }
+
   getCached(stateID: string): [BehaviorSubject<APIState>, StreamActions] {
     if (!this.statesCache[stateID]) {
       this.initState(stateID);
@@ -71,7 +72,7 @@ export default class APIStatesHub implements APIStates {
       throw new Error(`no operation for stateID: ${stateID}`);
     }
 
-    const params$ = new Subject<RequestParams | undefined>();
+    const params$ = new Subject<FetchParams | undefined>();
     const request$ = params$.pipe(
       // it is adapter's responsibility to handle build error
       // if a error occurred, build should return undefined

@@ -2,9 +2,11 @@ import type { APISpecAdapter } from '@ofa/api-spec-adapter';
 
 import renderSchema from './render';
 import deserializeSchema from './deserialize-schema';
+import APIStatesHub from './ctx/states-hub-api';
+import SharedStateHub from './ctx/states-hub-shared';
+import getAPIStates from './ctx/api-states';
+import getSharedStates from './ctx/shared-states';
 import type { CTX, Schema } from './types';
-import APIStatesHub from './ctx/api-states-hub';
-import SharedStateHub from './ctx/shared-states-hub';
 
 export * from './types';
 
@@ -15,16 +17,20 @@ type RenderSchemaParams = {
 }
 
 function Render({ schema, rootEle, apiSpecAdapter }: RenderSchemaParams): CTX {
-  const apiStateHub = new APIStatesHub(apiSpecAdapter, schema.apiStateSpec);
-  const sharedStatesHub = new SharedStateHub(schema.sharedStatesSpec);
+  const statesHubAPI = new APIStatesHub(apiSpecAdapter, schema.apiStateSpec);
+  const statesHubShared = new SharedStateHub(schema.sharedStatesSpec);
 
   const ctx: CTX = {
-    apiStates: apiStateHub,
-    sharedStates: sharedStatesHub,
+    // todo remove statesHubAPI and statesHubShared
+    statesHubAPI: statesHubAPI,
+    statesHubShared: statesHubShared,
+
+    apiStates: getAPIStates(statesHubAPI),
+    states: getSharedStates(statesHubShared),
   };
 
-  apiStateHub.initContext(ctx);
-  sharedStatesHub.initContext(ctx);
+  statesHubAPI.initContext(ctx);
+  statesHubShared.initContext(ctx);
 
   const instantiatedNode = deserializeSchema({ node: schema.node, ctx });
   if (!instantiatedNode) {

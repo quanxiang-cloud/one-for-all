@@ -22,9 +22,9 @@ function wait(timeSecond: number): Promise<boolean> {
 test('response_return_initial_state', (done) => {
   const response$ = getResponseState$(new Observable<AjaxConfig>());
 
-  response$.subscribe(({ data, loading, error }) => {
+  response$.subscribe(({ result, loading, error }) => {
     try {
-      expect(data).toBeUndefined();
+      expect(result).toBeUndefined();
       expect(error).toBeUndefined();
       expect(loading).toBe(false);
       done();
@@ -69,8 +69,8 @@ describe('response_state_table', () => {
     const dataList: Array<any> = [];
     const errorList: Array<any> = [];
 
-    response$.subscribe(({ data, error }) => {
-      dataList.push(data);
+    response$.subscribe(({ result, error }) => {
+      dataList.push(result);
       errorList.push(error);
     });
 

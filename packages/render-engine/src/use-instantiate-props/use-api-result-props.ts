@@ -22,7 +22,7 @@ function useAPIResultProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<str
   }).forEach(([propName, { fallback, convertor: adapter, stateID }]) => {
     initialFallbacks[propName] = fallback;
     adapters[propName] = adapter;
-    states$[propName] = ctx.apiStates.getState(stateID);
+    states$[propName] = ctx.statesHubAPI.getState$(stateID);
   });
 
   const fallbacksRef = useRef<Record<string, any>>(initialFallbacks);
@@ -30,7 +30,7 @@ function useAPIResultProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<str
   const [state, setState] = useState<Record<string, any>>(() => {
     return Object.entries(states$).reduce<Record<string, any>>((acc, [key, state$]) => {
       acc[key] = convertState({
-        state: state$.getValue().data,
+        state: state$.getValue().result,
         convertor: adapters[key],
         fallback: fallbacksRef.current[key],
         propName: key,
@@ -43,10 +43,10 @@ function useAPIResultProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<str
   useEffect(() => {
     const results$ = Object.entries(states$).reduce<Record<string, Observable<any>>>((acc, [key, state$]) => {
       acc[key] = state$.pipe(
-        distinctUntilKeyChanged('data'),
-        map(({ data }) => {
+        distinctUntilKeyChanged('result'),
+        map(({ result }) => {
           return convertState({
-            state: data,
+            state: result,
             convertor: adapters[key],
             fallback: fallbacksRef.current[key],
             propName: key,

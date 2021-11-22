@@ -1,12 +1,12 @@
 import type { BehaviorSubject } from 'rxjs';
-import type { RequestParams } from '@ofa/api-spec-adapter';
+import type { FetchParams } from '@ofa/api-spec-adapter';
 
 export type Serialized = 'Serialized';
 export type Instantiated = 'Instantiated';
 
 export type APIState = {
   loading: boolean;
-  data?: any;
+  result?: any;
   error?: Error;
 };
 
@@ -110,7 +110,7 @@ export type NodeStateProperty<T> = BaseNodeProperty & {
 
 export type FunctionalProperty<T> = BaseNodeProperty & {
   type: NodePropType.FunctionalProperty;
-  func: T extends Serialized ? BaseFunctionSpec : StateConvertorFunc;
+  func: T extends Serialized ? BaseFunctionSpec : VersatileFunc;
 }
 
 // todo refactor this type property spec
@@ -126,19 +126,11 @@ export type APIInvokeProperty<T> = {
   stateID: string;
   // the required return type is too complex
   paramsBuilder?: ParamsBuilder<T>;
-  onSuccess?: APIInvokeCallBack<T>;
-  onError?: APIInvokeCallBack<T>;
-}
-
-export type APIInvokeCallBack<T> = T extends Serialized ? APIInvokeCallbackFuncSpec : () => void;
-
-export type APIInvokeCallbackFuncSpec = BaseFunctionSpec & {
-  type: 'api_invoke_call_func_spec';
-  args: '';
+  callback?: T extends Serialized ? APIFetchCallbackSpec : APIFetchCallback;
 }
 
 export type ParamsBuilder<T> = T extends Serialized ?
-  ParamsBuilderFuncSpec : (...args: any[]) => RequestParams;
+  ParamsBuilderFuncSpec : (...args: any[]) => FetchParams;
 
 export type ParamsBuilderFuncSpec = BaseFunctionSpec & {
   type: 'param_builder_func_spec';
@@ -150,7 +142,7 @@ export type BaseFunctionSpec = {
   body: string;
 }
 
-// 为什么这里采用 onSuccess and onError 这种 callback 的形式，而不是让 runAction 返回一个 promise 呢？
+// 为什么这里采用 callback 的形式，而不是让 runAction 返回一个 promise 呢？
 // - 在使用渲染引擎来实现页面逻辑的场景中，所有的 view 都是平等的，任何一个 view 都可以调用 API
 // - 在 Pro Code 的场景中，view 有着明确的业务属性，就是说何时会调用 API 有着明确的逻辑
 // - 一般的 API 请求都是副作用的，平等的 API 请求权限意味着不可控的副作用
@@ -171,19 +163,27 @@ export type BaseFunctionSpec = {
 // - 这样不好吧，比如用户多次点击一个按钮，成功后会有一个消息提示，那应该只提示一次吧
 // - 再考虑一下
 export type RunParam = {
-  params?: RequestParams;
-  onSuccess?: APIInvokeCallBack<Instantiated>;
-  onError?: APIInvokeCallBack<Instantiated>;
+  params?: FetchParams;
+  callback?: (state: Omit<APIState, 'loading'>) => void;
 }
 
-export interface APIStates {
-  getState: (stateID: string) => BehaviorSubject<APIState>;
+export interface StatesHubAPI {
+  getState$: (stateID: string) => BehaviorSubject<APIState>;
   runAction: (stateID: string, runParam: RunParam) => void;
   refresh: (stateID: string) => void;
 }
 
-export interface SharedStates {
+export type APIFetchCallbackSpec = BaseFunctionSpec & {
+  type: 'api_fetch_callback';
+  args: '{ result, error }',
+}
+
+export type APIFetchCallback = (state: Omit<APIState, 'loading'>) => void;
+export type APIFetch = (params: FetchParams, callback?: APIFetchCallback) => void;
+
+export interface StatesHubShared {
   getState$: (stateID: string) => BehaviorSubject<any>;
+  getState: (stateID: string) => any;
   getNodeState$: (nodeKey: string) => BehaviorSubject<any>;
   exposeNodeState: (nodeKey: string, state: any) => void;
   retrieveNodeState: (nodeKey: string) => any;
@@ -191,9 +191,16 @@ export interface SharedStates {
   mutateState: (stateID: string, state: any) => void;
 }
 
+export type APIStateWithFetch = APIState & {
+  fetch: APIFetch;
+  refresh: () => void;
+}
+
 export type CTX = {
-  apiStates: APIStates;
-  sharedStates: SharedStates;
+  statesHubAPI: StatesHubAPI;
+  statesHubShared: StatesHubShared;
+  apiStates: Readonly<Record<string, APIStateWithFetch>>;
+  states: Readonly<Record<string, any>>;
 }
 
 export type VersatileFunc = (...args: any) => any;

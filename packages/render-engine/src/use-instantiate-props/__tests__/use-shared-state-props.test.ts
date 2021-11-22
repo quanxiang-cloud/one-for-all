@@ -3,14 +3,14 @@ import { renderHook, act } from '@testing-library/react-hooks/pure';
 
 import { NodePropType, Instantiated, SchemaNode } from '../../types';
 import useSharedStateProps from '../use-shared-state-props';
-import SharedStatesHub from '../../ctx/shared-states-hub';
+import SharedStatesHub from '../../ctx/states-hub-shared';
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 
 describe('useSharedStateProps_resolve_expected_value', () => {
   const sharedStates = new SharedStatesHub({
     the_only_pre_defined_value: { initial: 'the_only_pre_defined_value' },
   });
-  dummyCTX.sharedStates = sharedStates;
+  dummyCTX.statesHubShared = sharedStates;
 
   test('resolve_fallback_when_state_is_undefined', () => {
     const node: SchemaNode<Instantiated> = {
@@ -134,7 +134,7 @@ describe('useSharedStateProps_call_adapter_correctly', () => {
   const sharedStates = new SharedStatesHub({
     the_only_pre_defined_value: { initial: 'the_only_pre_defined_value' },
   });
-  dummyCTX.sharedStates = sharedStates;
+  dummyCTX.statesHubShared = sharedStates;
   const adapterMock = jest.fn();
 
   const node: SchemaNode<Instantiated> = {
@@ -164,7 +164,7 @@ test('useSharedStateProps_resolve_values_after_changed', () => {
   const sharedStates = new SharedStatesHub({
     the_only_pre_defined_value: { initial: 'the_only_pre_defined_value' },
   });
-  dummyCTX.sharedStates = sharedStates;
+  dummyCTX.statesHubShared = sharedStates;
 
   const node: SchemaNode<Instantiated> = {
     key: 'foo',
@@ -206,7 +206,7 @@ test('useSharedStateProps_resolve_expected_value', () => {
     state_foo: { initial: 'state_foo' },
     state_bar: { initial: 'state_bar' },
   });
-  dummyCTX.sharedStates = sharedStates;
+  dummyCTX.statesHubShared = sharedStates;
 
   const node: SchemaNode<Instantiated> = {
     key: 'foo',

@@ -18,9 +18,12 @@ import { VersatileFunc } from '.';
 function instantiateConvertor(
   serializedStateConvertor: SerializedStateConvertor,
   ctx: CTX,
-): StateConvertorFunc {
+): StateConvertorFunc | undefined {
+  // todo handle new function error
+  const publicCtx = { apiStates: ctx.apiStates, states: ctx.states };
+
   if (serializedStateConvertor.type === 'state_convert_expression') {
-    const fn = new Function('state', `return ${serializedStateConvertor.expression}`).bind(ctx);
+    const fn = new Function('state', `return ${serializedStateConvertor.expression}`).bind(publicCtx);
     fn.toString = () => [
       '',
       'function wrappedStateConvertor(state) {',
@@ -32,7 +35,7 @@ function instantiateConvertor(
   }
 
   if (serializedStateConvertor.type === 'state_convertor_func_spec') {
-    const fn = new Function('state', serializedStateConvertor.body).bind(ctx);
+    const fn = new Function('state', serializedStateConvertor.body).bind(publicCtx);
     fn.toString = () => [
       '',
       'function wrappedStateConvertor(state) {',
@@ -46,8 +49,32 @@ function instantiateConvertor(
   return noop;
 }
 
-function instantiateFuncSpec(spec: BaseFunctionSpec, ctx: CTX): VersatileFunc {
-  return new Function(spec.args, spec.body).bind(ctx);
+function instantiateFuncSpec(spec: BaseFunctionSpec, ctx: CTX): VersatileFunc | undefined {
+  const publicCtx = { apiStates: ctx.apiStates, states: ctx.states };
+  try {
+    const fn = new Function(spec.args, spec.body).bind(publicCtx);
+    fn.toString = () => [
+      '',
+      `function wrappedFunc(${spec.args}) {`,
+      `\t${spec.body}`,
+      '}',
+      '',
+    ].join('\n');
+    return fn;
+  } catch (error) {
+    logger.error(
+      'failed to instantiate function of following spec:',
+      '\n',
+      'spec.args:',
+      spec.args,
+      '\n',
+      'spec.body:',
+      '\n',
+      spec.body,
+      '\n',
+      error,
+    );
+  }
 }
 
 function transformProps(props: NodeProperties<Serialized>, ctx: CTX): NodeProperties<Instantiated> {
@@ -93,8 +120,7 @@ function transformProps(props: NodeProperties<Serialized>, ctx: CTX): NodeProper
       return [propName, {
         ...propDesc,
         paramsBuilder: propDesc.paramsBuilder ? instantiateFuncSpec(propDesc.paramsBuilder, ctx) : undefined,
-        onSuccess: propDesc.onSuccess ? instantiateFuncSpec(propDesc.onSuccess, ctx) : undefined,
-        onError: propDesc.onError ? instantiateFuncSpec(propDesc.onError, ctx) : undefined,
+        callback: propDesc.callback ? instantiateFuncSpec(propDesc.callback, ctx) : undefined,
       }];
     }
 
@@ -109,20 +135,21 @@ function transformProps(props: NodeProperties<Serialized>, ctx: CTX): NodeProper
       ];
     }
 
-    // todo do we really need provide this type property?
-    // if (propDesc.type === NodePropType.FunctionalProperty) {
-    //   return [
-    //     propName,
-    //     {
-    //       type: NodePropType.FunctionalProperty,
-    //       func: instantiateConvertor({
-    //         type: 'raw',
-    //         args: propDesc.func.args,
-    //         body: propDesc.func.body,
-    //       }, ctx),
-    //     },
-    //   ];
-    // }
+    if (propDesc.type === NodePropType.FunctionalProperty) {
+      const func = instantiateFuncSpec(propDesc.func, ctx);
+      if (!func) {
+        // todo log error message
+        return null;
+      }
+
+      return [
+        propName,
+        {
+          type: NodePropType.FunctionalProperty,
+          func: func,
+        },
+      ];
+    }
 
     logger.warn('unsupported property:', propDesc);
 

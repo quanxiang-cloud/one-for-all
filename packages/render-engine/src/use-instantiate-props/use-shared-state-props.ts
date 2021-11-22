@@ -24,10 +24,10 @@ function useSharedStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<s
       pair[1].type === NodePropType.NodeStateProperty;
   }).forEach(([key, propSpec]) => {
     if (propSpec.type === NodePropType.SharedStateProperty) {
-      states$[key] = ctx.sharedStates.getState$(propSpec.stateID);
+      states$[key] = ctx.statesHubShared.getState$(propSpec.stateID);
       adapters[key] = propSpec.convertor;
     } else {
-      states$[key] = ctx.sharedStates.getNodeState$(propSpec.nodeKey);
+      states$[key] = ctx.statesHubShared.getNodeState$(propSpec.nodeKey);
       adapters[key] = propSpec.convertor;
     }
 

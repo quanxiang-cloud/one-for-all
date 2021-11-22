@@ -20,13 +20,13 @@ function useSharedStateMutationProps(node: SchemaNode<Instantiated>, ctx: CTX): 
       }).reduce<MutateProps>((acc, [key, { stateID, convertor }]) => {
         function mutation(state: any): void {
           if (typeof convertor !== 'function') {
-            ctx.sharedStates.mutateState(stateID, state);
+            ctx.statesHubShared.mutateState(stateID, state);
             return;
           }
 
           try {
             const v = convertor(state);
-            ctx.sharedStates.mutateState(stateID, v);
+            ctx.statesHubShared.mutateState(stateID, v);
           } catch (error) {
             logger.error('failed to run convertor:\n', convertor.toString(), '\n', error);
           }

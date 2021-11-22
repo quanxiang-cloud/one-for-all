@@ -16,7 +16,7 @@ function useAPILoadingProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<st
   Object.entries(node.props).filter((pair): pair is [string, APILoadingProperty] => {
     return pair[1].type === NodePropType.APILoadingProperty;
   }).forEach(([propName, { stateID }]) => {
-    states$[propName] = ctx.apiStates.getState(stateID);
+    states$[propName] = ctx.statesHubAPI.getState$(stateID);
   });
 
   const [state, setState] = useState<Record<string, any>>(() => {

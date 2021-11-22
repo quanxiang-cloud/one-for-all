@@ -1,6 +1,6 @@
 import type { Spec, Operation } from './swagger-schema-official';
 
-import type { APISpecAdapter, AjaxConfig, RequestParams } from './types';
+import type { APISpecAdapter, AjaxConfig, FetchParams } from './types';
 import { indexOperation, join } from './utils';
 
 export default class SwaggerSpecAdapter implements APISpecAdapter {
@@ -12,7 +12,7 @@ export default class SwaggerSpecAdapter implements APISpecAdapter {
     this.spec = spec;
   }
 
-  build(apiID: string, requestParam?: RequestParams): AjaxConfig | undefined {
+  build(apiID: string, fetchParams?: FetchParams): AjaxConfig | undefined {
     const [method, path] = apiID.split(':');
     const operation: Operation = this.operationMap[apiID];
 
@@ -31,27 +31,27 @@ export default class SwaggerSpecAdapter implements APISpecAdapter {
         return;
       }
 
-      if (p.in === 'path' && requestParam?.params?.[p.name]) {
-        // if (p.required && requestParam?.params?.[p.name] === undefined) {
+      if (p.in === 'path' && fetchParams?.params?.[p.name]) {
+        // if (p.required && fetchParams?.params?.[p.name] === undefined) {
         //   throw new Error(`parameter '${p.name}' required in path for ${operationID}`);
         // }
 
-        url = url.replace(`{${p.name}}`, requestParam.params[p.name]);
+        url = url.replace(`{${p.name}}`, fetchParams.params[p.name]);
       }
 
-      if (p.in === 'query' && requestParam?.params?.[p.name] !== undefined) {
-        // if (p.required && requestParam?.params?.[p.name] === undefined) {
+      if (p.in === 'query' && fetchParams?.params?.[p.name] !== undefined) {
+        // if (p.required && fetchParams?.params?.[p.name] === undefined) {
         //   throw new Error(`parameter '${p.name}' required in query for ${operationID}`);
         // }
 
-        queryParams[p.name] = requestParam.params[p.name];
+        queryParams[p.name] = fetchParams.params[p.name];
       }
 
-      if (p.in === 'header' && requestParam?.params?.[p.name] !== undefined) {
-        headers[p.name] = requestParam.params[p.name];
+      if (p.in === 'header' && fetchParams?.params?.[p.name] !== undefined) {
+        headers[p.name] = fetchParams.params[p.name];
       }
     });
 
-    return { method, url, queryParams, headers, body: requestParam?.body };
+    return { method, url, queryParams, headers, body: fetchParams?.body };
   }
 }
