@@ -12,11 +12,15 @@ export * from './types';
 
 type RenderSchemaParams = {
   schema: Schema;
-  rootEle: Element;
+  renderRoot: Element;
   apiSpecAdapter: APISpecAdapter;
 }
 
-function Render({ schema, rootEle, apiSpecAdapter }: RenderSchemaParams): CTX {
+export type RenderEngineInstance = {
+  ctx: CTX;
+}
+
+function Render({ schema, renderRoot, apiSpecAdapter }: RenderSchemaParams): RenderEngineInstance {
   const statesHubAPI = new APIStatesHub(apiSpecAdapter, schema.apiStateSpec);
   const statesHubShared = new SharedStateHub(schema.sharedStatesSpec);
 
@@ -35,11 +39,11 @@ function Render({ schema, rootEle, apiSpecAdapter }: RenderSchemaParams): CTX {
   const instantiatedNode = deserializeSchema({ node: schema.node, ctx });
   if (!instantiatedNode) {
     // TODO: paint error
-    return ctx;
+    return { ctx };
   }
 
-  renderSchema({ node: instantiatedNode, ctx, rootEle });
-  return ctx;
+  renderSchema({ node: instantiatedNode, ctx, renderRoot });
+  return { ctx };
 }
 
 export default Render;

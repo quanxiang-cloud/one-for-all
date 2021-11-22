@@ -91,15 +91,15 @@ function renderNode({ node, ctx }: RenderNodeProps): React.ReactElement | null {
 
 type RenderSchemaParams = {
   node: InstantiatedNode;
-  rootEle: Element;
+  renderRoot: Element;
   ctx: CTX;
 }
 
-function renderSchema({ node, rootEle, ctx }: RenderSchemaParams): void {
+function renderSchema({ node, renderRoot, ctx }: RenderSchemaParams): void {
   // register('@basicComponents', getBasicComponentsOptions());
   // register('@advancesComponents', getAdvancedComponentsOptions());
 
-  ReactDOM.render(React.createElement(renderNode, { node, ctx }), rootEle);
+  ReactDOM.render(React.createElement(renderNode, { node, ctx }), renderRoot);
 }
 
 export default renderSchema;
