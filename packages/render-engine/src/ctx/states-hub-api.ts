@@ -10,12 +10,12 @@ type StreamActions = {
   refresh: () => void;
 };
 
-function executeCallback(ctx: CTX, state: APIState, runParams?: RunParam): void {
+function executeCallback(ctx: CTX, state: APIState, callback: APIFetchCallback): void {
   if (state.loading) {
     return;
   }
 
-  runParams?.callback?.(state);
+  callback(state);
 }
 
 export default class APIStatesHub implements StatesHubAPI {
@@ -98,14 +98,18 @@ export default class APIStatesHub implements StatesHubAPI {
         return { ...transformed, loading: apiState.loading };
       }),
     ).subscribe((state) => {
-      setTimeout(() => {
-        // todo refactor this
-        executeCallback(
-          this.ctx as CTX,
-          state,
-          _latestRunParams,
-        );
-      }, 10);
+      // todo refactor this
+      if (_latestRunParams?.callback) {
+        const callback = _latestRunParams.callback;
+        setTimeout(() => {
+          // todo refactor this
+          executeCallback(
+            this.ctx as CTX,
+            state,
+            callback,
+          );
+        }, 10);
+      }
     });
 
     const streamActions: StreamActions = {

@@ -164,7 +164,7 @@ export type BaseFunctionSpec = {
 // - 再考虑一下
 export type RunParam = {
   params?: FetchParams;
-  callback?: (state: Omit<APIState, 'loading'>) => void;
+  callback?: APIFetchCallback;
 }
 
 export interface StatesHubAPI {
