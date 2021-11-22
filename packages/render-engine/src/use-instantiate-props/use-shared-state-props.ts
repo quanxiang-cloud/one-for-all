@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Observable, skip, tap } from 'rxjs';
-import { NodeStateProperty } from '..';
 
 import {
   CTX,
   Instantiated,
   VersatileFunc,
   SharedStateProperty,
+  NodeStateProperty,
   NodePropType,
   SchemaNode,
 } from '../types';

@@ -286,9 +286,6 @@ const todoAppSchema: Schema = {
             type: NodePropType.APIResultProperty,
             stateID: 'todoStatus',
             fallback: 0,
-            // convertor: (apiState: APIState): number => {
-            //   return data?.working || 0;
-            // },
             convertor: {
               type: 'state_convertor_func_spec',
               args: 'state',
