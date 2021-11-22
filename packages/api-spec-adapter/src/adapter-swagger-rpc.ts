@@ -1,9 +1,9 @@
-import { AjaxConfig, RequestParams, Res } from '.';
+import { AjaxConfig, FetchParams, Res } from '.';
 import SwaggerSpecAdapter from './adapter-swagger';
 
 export default class SwaggerRPCSpecAdapter extends SwaggerSpecAdapter {
-  build(apiID: string, requestParam?: RequestParams): AjaxConfig | undefined {
-    const ajaxConfig = SwaggerSpecAdapter.prototype.build.call(this, apiID, requestParam);
+  build(apiID: string, fetchParams?: FetchParams): AjaxConfig | undefined {
+    const ajaxConfig = SwaggerSpecAdapter.prototype.build.call(this, apiID, fetchParams);
 
     if (ajaxConfig) {
       ajaxConfig.headers = { ...ajaxConfig.headers, 'x-proxy': 'API' };

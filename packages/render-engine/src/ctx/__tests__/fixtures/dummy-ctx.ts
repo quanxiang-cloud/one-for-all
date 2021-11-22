@@ -1,10 +1,13 @@
 import { CTX } from '../../..';
-import APIStatesHub from '../../api-states-hub';
-import SharedStatesHub from '../../shared-states-hub';
+import APIStatesHub from '../../states-hub-api';
+import SharedStatesHub from '../../states-hub-shared';
 
 const ctx: CTX = {
-  apiStates: new APIStatesHub({ build: () => ({ url: '', method: '' }) }, {}),
-  sharedStates: new SharedStatesHub({}),
+  statesHubAPI: new APIStatesHub({ build: () => ({ url: '', method: '' }) }, {}),
+  statesHubShared: new SharedStatesHub({}),
+
+  apiStates: {},
+  states: {},
 };
 
 export default ctx;

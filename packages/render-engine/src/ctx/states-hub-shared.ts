@@ -3,11 +3,11 @@ import { BehaviorSubject } from 'rxjs';
 
 import {
   CTX,
-  SharedStates,
+  StatesHubShared,
   SharedStatesSpec,
 } from '../types';
 
-export default class SharedStateHub implements SharedStates {
+export default class SharedStateHub implements StatesHubShared {
   cache: Record<string, BehaviorSubject<any>> = {};
   ctx: CTX | null = null;
   spec: SharedStatesSpec;
@@ -20,11 +20,22 @@ export default class SharedStateHub implements SharedStates {
     this.ctx = ctx;
   }
 
-  getState$(stateID: string): BehaviorSubject<any> {
-    if (!this.cache[stateID]) {
-      this.cache[stateID] = new BehaviorSubject(this.spec[stateID]?.initial);
+  createState$IfNotExist(stateID: string, initialValue: any): void {
+    if (this.cache[stateID]) {
+      return;
     }
+
+    this.cache[stateID] = new BehaviorSubject(initialValue);
+  }
+
+  getState$(stateID: string): BehaviorSubject<any> {
+    this.createState$IfNotExist(stateID, this.spec[stateID]?.initial);
+
     return this.cache[stateID];
+  }
+
+  getState(stateID: string): any {
+    return this.getState$(stateID)?.getValue();
   }
 
   mutateState(stateID: string, state: any): void {
@@ -41,13 +52,15 @@ export default class SharedStateHub implements SharedStates {
     return this.getState$(stateID);
   }
 
+  getNodeState(nodeKey: string): any {
+    const stateID = `$${nodeKey}`;
+    return this.getState$(stateID).getValue();
+  }
+
   exposeNodeState(nodeKey: string, state: any): void {
     const stateID = `$${nodeKey}`;
 
-    if (!this.cache[stateID]) {
-      this.cache[stateID] = new BehaviorSubject(state);
-      return;
-    }
+    this.createState$IfNotExist(stateID, state);
 
     this.cache[stateID].next(state);
   }

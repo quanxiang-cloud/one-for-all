@@ -1,47 +1,47 @@
 import spec from './fixtures/petstore-spec';
 import SwaggerSpecAdapter from '../adapter-swagger';
-import { RequestParams } from '../types';
+import { FetchParams } from '../types';
 
-const actions: Array<{ path: string; method: string; requestParams?: RequestParams; }> = [
+const actions: Array<{ path: string; method: string; fetchParams?: FetchParams; }> = [
   {
     path: '/pet',
     method: 'post',
-    requestParams: { body: { foo: 'bar' } },
+    fetchParams: { body: { foo: 'bar' } },
   },
   {
     path: '/pet',
     method: 'put',
-    requestParams: { body: { foo: 'bar' } },
+    fetchParams: { body: { foo: 'bar' } },
   },
   {
     path: '/pet/findByStatus',
     method: 'get',
-    requestParams: { params: { status: ['available', 'pending', 'sold'] } },
+    fetchParams: { params: { status: ['available', 'pending', 'sold'] } },
   },
   {
     path: '/pet/findByTags',
     method: 'get',
-    requestParams: { params: { tags: ['tag1', 'tag2', 'tag3'] } },
+    fetchParams: { params: { tags: ['tag1', 'tag2', 'tag3'] } },
   },
   {
     path: '/pet/{petId}',
     method: 'get',
-    requestParams: { params: { petId: 'some_pet_id' } },
+    fetchParams: { params: { petId: 'some_pet_id' } },
   },
   {
     path: '/pet/{petId}',
     method: 'post',
-    requestParams: { params: { petId: 'some_pet_id' }, body: { name: 'foo', status: 'alive' } },
+    fetchParams: { params: { petId: 'some_pet_id' }, body: { name: 'foo', status: 'alive' } },
   },
   {
     path: '/pet/{petId}',
     method: 'delete',
-    requestParams: { params: { petId: 'some_pet_id' } },
+    fetchParams: { params: { petId: 'some_pet_id' } },
   },
   {
     path: '/pet/{petId}/uploadImage',
     method: 'post',
-    requestParams: { params: { petId: 'some_pet_id' } },
+    fetchParams: { params: { petId: 'some_pet_id' } },
   },
   {
     path: '/store/inventory',
@@ -50,7 +50,7 @@ const actions: Array<{ path: string; method: string; requestParams?: RequestPara
   {
     path: '/store/order',
     method: 'post',
-    requestParams: { body: { foo: 'bar' } },
+    fetchParams: { body: { foo: 'bar' } },
   },
   {
     path: '/store/order/{orderId}',
@@ -88,7 +88,7 @@ const actions: Array<{ path: string; method: string; requestParams?: RequestPara
 
 test('expect_specInterpreter_to_match_snapshots', () => {
   const builder = new SwaggerSpecAdapter(spec);
-  actions.forEach(({ path, method, requestParams }) => {
-    expect(builder.build(`${method}:${path}`, requestParams)).toMatchSnapshot();
+  actions.forEach(({ path, method, fetchParams }) => {
+    expect(builder.build(`${method}:${path}`, fetchParams)).toMatchSnapshot();
   });
 });

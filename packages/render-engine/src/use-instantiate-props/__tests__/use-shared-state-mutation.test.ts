@@ -2,14 +2,14 @@ import { renderHook, act } from '@testing-library/react-hooks/pure';
 
 import { NodePropType, Instantiated, SchemaNode } from '../../types';
 
-import SharedStatesHub from '../../ctx/shared-states-hub';
+import SharedStatesHub from '../../ctx/states-hub-shared';
 import useSharedStateMutationProps from '../use-shared-state-mutation';
 
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 
 test('useSharedStateMutationProps_resolve_raw_data_when_adapter_is_undefined', () => {
   const sharedStates = new SharedStatesHub({});
-  dummyCTX.sharedStates = sharedStates;
+  dummyCTX.statesHubShared = sharedStates;
 
   const node: SchemaNode<Instantiated> = {
     key: 'some_key',
@@ -47,7 +47,7 @@ test('useSharedStateMutationProps_should_not_mutate_state_when_adapter_throw', (
   const sharedStates = new SharedStatesHub({
     some_value: { initial: 'some_value' },
   });
-  dummyCTX.sharedStates = sharedStates;
+  dummyCTX.statesHubShared = sharedStates;
   // eslint-disable-next-line no-console
   console.error = jest.fn();
   const node: SchemaNode<Instantiated> = {
@@ -82,7 +82,7 @@ test('useSharedStateMutationProps_should_resolve_adapter_returned', () => {
   const sharedStates = new SharedStatesHub({
     some_value: { initial: 'some_value' },
   });
-  dummyCTX.sharedStates = sharedStates;
+  dummyCTX.statesHubShared = sharedStates;
   // eslint-disable-next-line no-console
   console.error = jest.fn();
   const node: SchemaNode<Instantiated> = {
@@ -115,7 +115,7 @@ test('useSharedStateMutationProps_should_call_adapter_correctly', () => {
   const sharedStates = new SharedStatesHub({
     some_value: { initial: 'some_value' },
   });
-  dummyCTX.sharedStates = sharedStates;
+  dummyCTX.statesHubShared = sharedStates;
   const adapterMock = jest.fn(() => 'another_value');
   const node: SchemaNode<Instantiated> = {
     key: 'some_key',
