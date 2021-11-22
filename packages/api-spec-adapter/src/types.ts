@@ -2,7 +2,7 @@ export type Res = { data?: any; error?: Error };
 
 export interface APISpecAdapter {
   build: (apiID: string, fetchParams?: FetchParams) => AjaxConfig | undefined;
-  responseAdapter?: (res: Res) => { data: any; error?: Error };
+  responseAdapter?: (res: Res) => Res;
 }
 
 enum HttpMethods {

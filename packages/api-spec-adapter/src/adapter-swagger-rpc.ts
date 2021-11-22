@@ -12,7 +12,7 @@ export default class SwaggerRPCSpecAdapter extends SwaggerSpecAdapter {
     return ajaxConfig;
   }
 
-  responseAdapter = ({ data, error }: Res): { data: any; error?: Error } => {
+  responseAdapter = ({ data, error }: Res): Res => {
     if (error || !data) {
       return { data, error };
     }
