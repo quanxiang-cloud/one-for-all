@@ -42,6 +42,7 @@ const todoAppSchema: Schema = {
             value: {
               display: 'flex',
               justifyContent: 'space-between',
+              marginBottom: '20px',
             },
           },
         },
@@ -67,13 +68,23 @@ const todoAppSchema: Schema = {
                   outline: 'none',
                 },
               },
+              // onChange: {
+              //   type: NodePropType.SharedStateMutationProperty,
+              //   stateID: 'input_value',
+              //   convertor: {
+              //     type: 'raw',
+              //     args: 'e',
+              //     body: 'return e.target.value;',
+              //   },
+              // },
               onChange: {
-                type: NodePropType.SharedStateMutationProperty,
-                stateID: 'input_value',
-                convertor: {
+                type: NodePropType.FunctionalProperty,
+                func: {
                   type: 'raw',
                   args: 'e',
-                  body: 'return e.target.value;',
+                  body: `
+                    this.states.input_value = e.target.value;
+                  `,
                 },
               },
             },
@@ -89,7 +100,7 @@ const todoAppSchema: Schema = {
               },
               style: {
                 type: NodePropType.ConstantProperty,
-                value: { width: '80px', textAlign: 'center', textTransform: 'capitalize' },
+                value: { width: '180px', textAlign: 'center', textTransform: 'capitalize' },
               },
               onClick: {
                 type: NodePropType.FunctionalProperty,
@@ -161,7 +172,7 @@ const todoAppSchema: Schema = {
               },
               style: {
                 type: NodePropType.ConstantProperty,
-                value: { width: '80px', textAlign: 'center', textTransform: 'capitalize' },
+                value: { width: '180px', textAlign: 'center', textTransform: 'capitalize' },
               },
               onClick: {
                 type: NodePropType.FunctionalProperty,
