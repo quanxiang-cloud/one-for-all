@@ -200,7 +200,7 @@ export type CTX = {
   statesHubAPI: StatesHubAPI;
   statesHubShared: StatesHubShared;
   apiStates: Readonly<Record<string, APIStateWithFetch>>;
-  states: Readonly<Record<string, any>>;
+  states: Record<string, any>;
 }
 
 export type VersatileFunc = (...args: any) => any;
