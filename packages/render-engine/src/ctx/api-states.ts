@@ -1,7 +1,7 @@
 import { APIStateWithFetch, APIState } from '../types';
 import APIStatesHub from './states-hub-api';
 
-function getAPIStates(statesHubAPI: APIStatesHub): Readonly<Record<string, APIStateWithFetch>> {
+function getAPIStates(statesHubAPI: APIStatesHub): Record<string, APIStateWithFetch> {
   const handler: ProxyHandler<Readonly<Record<string, APIState>>> = {
     get: (target: Readonly<Record<string, APIState>>, p: string): APIStateWithFetch => {
       const apiState = statesHubAPI.getState$(p).getValue();
@@ -13,7 +13,7 @@ function getAPIStates(statesHubAPI: APIStatesHub): Readonly<Record<string, APISt
     },
   };
 
-  return new Proxy<Readonly<Record<string, APIStateWithFetch>>>({}, handler);
+  return new Proxy<Record<string, APIStateWithFetch>>({}, handler);
 }
 
 export default getAPIStates;

@@ -25,7 +25,6 @@ function Render({ schema, renderRoot, apiSpecAdapter }: RenderSchemaParams): Ren
   const statesHubShared = new SharedStateHub(schema.sharedStatesSpec);
 
   const ctx: CTX = {
-    // todo remove statesHubAPI and statesHubShared
     statesHubAPI: statesHubAPI,
     statesHubShared: statesHubShared,
 

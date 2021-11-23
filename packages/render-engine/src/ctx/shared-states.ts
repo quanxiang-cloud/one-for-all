@@ -1,7 +1,7 @@
 import { logger } from '@ofa/utils';
 import SharedStateHub from './states-hub-shared';
 
-function getSharedStates(statesHubShared: SharedStateHub): Readonly<Record<string, any>> {
+function getSharedStates(statesHubShared: SharedStateHub): Record<string, any> {
   const handler: ProxyHandler<Readonly<Record<string, any>>> = {
     get: (target: ProxyHandler<Readonly<Record<string, any>>>, p: string): any => {
       return statesHubShared.getState(p);
@@ -19,7 +19,7 @@ function getSharedStates(statesHubShared: SharedStateHub): Readonly<Record<strin
     },
   };
 
-  return new Proxy<Readonly<Record<string, any>>>({}, handler);
+  return new Proxy<Record<string, any>>({}, handler);
 }
 
 export default getSharedStates;
