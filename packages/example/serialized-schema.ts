@@ -99,7 +99,6 @@ const todoAppSchema: Schema = {
                   body: `
                     const inputValue = this.states.input_value;
 
-                    // todo change this to this.apiState.stateID.fetch(xxx)
                     this.apiStates['新建待办'].fetch(
                       { body: { title: inputValue } },
                       () => this.apiStates['全部待办列表'].refresh(),
