@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Observable, skip, tap } from 'rxjs';
+import { StateConvertorFunc } from '..';
 
 import {
   CTX,
   Instantiated,
-  VersatileFunc,
   SharedStateProperty,
   NodeStateProperty,
   NodePropType,
@@ -15,7 +15,7 @@ import convertState from './convert-state';
 type Pair = [string, SharedStateProperty<Instantiated> | NodeStateProperty<Instantiated>];
 
 function useSharedStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, any> {
-  const adapters: Record<string, VersatileFunc | undefined> = {};
+  const convertors: Record<string, StateConvertorFunc | undefined> = {};
   const states$: Record<string, BehaviorSubject<any>> = {};
   const initialFallbacks: Record<string, any> = {};
 
@@ -25,10 +25,10 @@ function useSharedStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<s
   }).forEach(([key, propSpec]) => {
     if (propSpec.type === NodePropType.SharedStateProperty) {
       states$[key] = ctx.statesHubShared.getState$(propSpec.stateID);
-      adapters[key] = propSpec.convertor;
+      convertors[key] = propSpec.convertor;
     } else {
       states$[key] = ctx.statesHubShared.getNodeState$(propSpec.nodeKey);
-      adapters[key] = propSpec.convertor;
+      convertors[key] = propSpec.convertor;
     }
 
     initialFallbacks[key] = propSpec.fallback;
@@ -40,7 +40,7 @@ function useSharedStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<s
     return Object.entries(states$).reduce<Record<string, any>>((acc, [key, state$]) => {
       acc[key] = convertState({
         state: state$.getValue(),
-        convertor: adapters[key],
+        convertor: convertors[key],
         fallback: fallbacksRef.current[key],
         propName: key,
       });
@@ -56,7 +56,7 @@ function useSharedStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<s
         map((result) => {
           return convertState({
             state: result,
-            convertor: adapters[key],
+            convertor: convertors[key],
             fallback: fallbacksRef.current[key],
             propName: key,
           });
