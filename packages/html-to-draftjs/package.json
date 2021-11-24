@@ -2,7 +2,7 @@
   "name": "@ofa/html-to-draftjs",
   "version": "1.14.7",
   "main": "index.js",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "scripts": {
     "bundle": "rm -rf dist & rollup -c"
   },

@@ -2,7 +2,7 @@
   "name": "@ofa/jszip",
   "version": "3.7.1",
   "main": "index.js",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "scripts": {
     "bundle": "rm -rf dist & rollup -c"
   },
