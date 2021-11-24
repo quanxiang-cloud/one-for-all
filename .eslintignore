@@ -1,12 +1,7 @@
 dist
+lib
 node_modules
 gulpfile.js
-webpack.*.js
 scripts/*
-tailwind.config.js
-clients/components/table/react-table-config.d.ts
-clients/types/lego-ui.d.ts
 cypress
-.eslintrc.js
-rollup.config.js
 jest.*.js

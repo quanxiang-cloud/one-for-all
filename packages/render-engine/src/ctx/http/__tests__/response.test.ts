@@ -66,8 +66,8 @@ describe('response_state_table', () => {
 
     const request$ = new Subject<AjaxConfig>();
     const response$ = getResponseState$(request$);
-    const dataList: Array<any> = [];
-    const errorList: Array<any> = [];
+    const dataList: Array<unknown> = [];
+    const errorList: Array<unknown> = [];
 
     response$.subscribe(({ result, error }) => {
       dataList.push(result);

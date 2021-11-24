@@ -10,9 +10,9 @@ export type RegistryOptions = {
   injectDependencies?: () => Promise<boolean>;
 }
 
-function defaultImporter(systemModule: System.Module) {
-  return systemModule.default;
-}
+// function defaultImporter(systemModule: System.Module): unknown {
+//   return systemModule.default;
+// }
 
 const repository: Record<string, RegistryOptions> = {};
 

@@ -19,10 +19,9 @@ parserOptions:
   ecmaVersion: 12
   sourceType: module
 rules:
-  '@typescript-eslint/ban-ts-comment': warn
   '@typescript-eslint/camelcase': 'off'
   '@typescript-eslint/explicit-function-return-type':
-    - warn
+    - error
     - allowExpressions: true
       allowTypedFunctionExpressions: true
       allowHigherOrderFunctions: true
@@ -35,11 +34,11 @@ rules:
       allowedNames: []
       allowHigherOrderFunctions: true
       allowTypedFunctionExpressions: true
-  '@typescript-eslint/no-explicit-any': 'off'
+  '@typescript-eslint/no-explicit-any': 'warn'
   '@typescript-eslint/no-invalid-this':
     - error
   '@typescript-eslint/no-unused-vars':
-    - warn
+    - error
     - varsIgnorePattern: _
   camelcase: 'off'
   arrow-parens:
@@ -91,41 +90,6 @@ rules:
       logical: parens
       prop: parens
       return: parens
-  react/sort-comp:
-    - warn
-    - groups:
-        lifecycle:
-          - statics
-          - displayName
-          - propTypes
-          - contextTypes
-          - childContextTypes
-          - mixins
-          - defaultProps
-          - constructor
-          - getDefaultProps
-          - state
-          - getInitialState
-          - getChildContext
-          - getDerivedStateFromProps
-          - componentWillMount
-          - UNSAFE_componentWillMount
-          - componentDidMount
-          - componentWillReceiveProps
-          - UNSAFE_componentWillReceiveProps
-          - shouldComponentUpdate
-          - componentWillUpdate
-          - UNSAFE_componentWillUpdate
-          - getSnapshotBeforeUpdate
-          - componentDidUpdate
-          - componentDidCatch
-          - componentWillUnmount
-      order:
-        - static-methods
-        - instance-variables
-        - lifecycle
-        - everything-else
-        - render
   require-jsdoc: 'off'
   semi:
     - error
@@ -135,7 +99,7 @@ rules:
     - int32Hint: false
   unused-imports/no-unused-imports: error
   unused-imports/no-unused-vars:
-    - warn
+    - error
     - args: after-used
       argsIgnorePattern: ^_
       vars: all

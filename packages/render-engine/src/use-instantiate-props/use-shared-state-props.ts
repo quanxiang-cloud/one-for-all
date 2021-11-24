@@ -14,10 +14,10 @@ import convertState from './convert-state';
 
 type Pair = [string, SharedStateProperty<Instantiated> | NodeStateProperty<Instantiated>];
 
-function useSharedStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, any> {
+function useSharedStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, unknown> {
   const convertors: Record<string, StateConvertorFunc | undefined> = {};
-  const states$: Record<string, BehaviorSubject<any>> = {};
-  const initialFallbacks: Record<string, any> = {};
+  const states$: Record<string, BehaviorSubject<unknown>> = {};
+  const initialFallbacks: Record<string, unknown> = {};
 
   Object.entries(node.props).filter((pair): pair is Pair => {
     return pair[1].type === NodePropType.SharedStateProperty ||
@@ -34,10 +34,10 @@ function useSharedStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<s
     initialFallbacks[key] = propSpec.fallback;
   });
 
-  const fallbacksRef = useRef<Record<string, any>>(initialFallbacks);
+  const fallbacksRef = useRef<Record<string, unknown>>(initialFallbacks);
 
   const [state, setState] = useState(() => {
-    return Object.entries(states$).reduce<Record<string, any>>((acc, [key, state$]) => {
+    return Object.entries(states$).reduce<Record<string, unknown>>((acc, [key, state$]) => {
       acc[key] = convertState({
         state: state$.getValue(),
         convertor: convertors[key],
@@ -50,22 +50,23 @@ function useSharedStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<s
   });
 
   useEffect(() => {
-    const results$ = Object.entries(states$).reduce<Record<string, Observable<any>>>((acc, [key, state$]) => {
-      acc[key] = state$.pipe(
-        distinctUntilChanged(),
-        map((result) => {
-          return convertState({
-            state: result,
-            convertor: convertors[key],
-            fallback: fallbacksRef.current[key],
-            propName: key,
-          });
-        }),
-        tap((result) => fallbacksRef.current[key] = result),
-      );
+    const results$ = Object.entries(states$)
+      .reduce<Record<string, Observable<unknown>>>((acc, [key, state$]) => {
+        acc[key] = state$.pipe(
+          distinctUntilChanged(),
+          map((result) => {
+            return convertState({
+              state: result,
+              convertor: convertors[key],
+              fallback: fallbacksRef.current[key],
+              propName: key,
+            });
+          }),
+          tap((result) => fallbacksRef.current[key] = result),
+        );
 
-      return acc;
-    }, {});
+        return acc;
+      }, {});
 
     const subscription = combineLatest(results$).pipe(skip(1)).subscribe(setState);
 

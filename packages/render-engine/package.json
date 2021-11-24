@@ -2,16 +2,17 @@
   "name": "@ofa/render-engine",
   "version": "0.0.10",
   "license": "Apache-2.0",
+  "type": "module",
   "main": "dist/index.js",
   "module": "lib",
-  "type": "module",
   "types": "lib/src/index.d.ts",
   "scripts": {
     "build": "tsc --build tsconfig.json",
     "bundle": "rm -rf dist & rollup -c rollup.config.js",
+    "lint": "eslint src/**/*.ts --fix",
     "test": "jest",
-    "updateSnapshot": "jest --updateSnapshot",
-    "test:coverage": "jest --collectCoverage"
+    "test:coverage": "jest --collectCoverage",
+    "updateSnapshot": "jest --updateSnapshot"
   },
   "dependencies": {
     "react": "^17.0.2",

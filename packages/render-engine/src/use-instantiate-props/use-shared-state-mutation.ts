@@ -10,7 +10,7 @@ import {
   SchemaNode,
 } from '../types';
 
-type MutateProps = Record<string, (value: any) => void>;
+type MutateProps = Record<string, (value: unknown) => void>;
 
 function useSharedStateMutationProps(node: SchemaNode<Instantiated>, ctx: CTX): MutateProps {
   return useMemo(() => {
@@ -18,7 +18,7 @@ function useSharedStateMutationProps(node: SchemaNode<Instantiated>, ctx: CTX): 
       .filter((pair): pair is [string, SharedStateMutationProperty<Instantiated>] => {
         return pair[1].type === NodePropType.SharedStateMutationProperty;
       }).reduce<MutateProps>((acc, [key, { stateID, convertor }]) => {
-        function mutation(state: any): void {
+        function mutation(state: unknown): void {
           if (typeof convertor !== 'function') {
             ctx.statesHubShared.mutateState(stateID, state);
             return;

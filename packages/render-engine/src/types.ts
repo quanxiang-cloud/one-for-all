@@ -6,7 +6,7 @@ export type Instantiated = 'Instantiated';
 
 export type APIState = {
   loading: boolean;
-  result?: any;
+  result?: unknown;
   error?: Error;
 };
 
@@ -43,7 +43,7 @@ type BaseNodeProperty = {
 
 export type ConstantProperty = BaseNodeProperty & {
   type: NodePropType.ConstantProperty;
-  value: any;
+  value: unknown;
 }
 
 export type APIResultProperty<T> = BaseNodeProperty & {
@@ -61,7 +61,7 @@ export type APIResultProperty<T> = BaseNodeProperty & {
   // fallback value assignment happens only when:
   // - define schema
   // - adapter return NOT nullish value
-  fallback: any;
+  fallback: unknown;
   stateID: string;
   // todo define different type adapter
   // adapter will never be called if api error or api response body is undefined
@@ -71,7 +71,7 @@ export type APIResultProperty<T> = BaseNodeProperty & {
 
 export type StateConvertor<T> = T extends Serialized ? SerializedStateConvertor : StateConvertorFunc;
 export type SerializedStateConvertor = StateConvertExpression | StateConvertorFuncSpec;
-export type StateConvertorFunc = (v: any) => any;
+export type StateConvertorFunc = (v: unknown) => unknown;
 
 type StateConvertExpression = {
   type: 'state_convert_expression';
@@ -97,14 +97,14 @@ export type APILoadingProperty = BaseNodeProperty & {
 export type SharedStateProperty<T> = BaseNodeProperty & {
   type: NodePropType.SharedStateProperty;
   stateID: string;
-  fallback: any;
+  fallback: unknown;
   convertor?: StateConvertor<T>;
 }
 
 export type NodeStateProperty<T> = BaseNodeProperty & {
   type: NodePropType.NodeStateProperty;
   nodeKey: string;
-  fallback: any;
+  fallback: unknown;
   convertor?: StateConvertor<T>;
 }
 
@@ -130,7 +130,7 @@ export type APIInvokeProperty<T> = {
 }
 
 export type ParamsBuilder<T> = T extends Serialized ?
-  ParamsBuilderFuncSpec : (...args: any[]) => FetchParams;
+  ParamsBuilderFuncSpec : (...args: unknown[]) => FetchParams;
 
 export type ParamsBuilderFuncSpec = BaseFunctionSpec & {
   type: 'param_builder_func_spec';
@@ -182,13 +182,13 @@ export type APIFetchCallback = (state: Omit<APIState, 'loading'>) => void;
 export type APIFetch = (params: FetchParams, callback?: APIFetchCallback) => void;
 
 export interface StatesHubShared {
-  getState$: (stateID: string) => BehaviorSubject<any>;
-  getState: (stateID: string) => any;
-  getNodeState$: (nodeKey: string) => BehaviorSubject<any>;
-  exposeNodeState: (nodeKey: string, state: any) => void;
-  retrieveNodeState: (nodeKey: string) => any;
+  getState$: (stateID: string) => BehaviorSubject<unknown>;
+  getState: (stateID: string) => unknown;
+  getNodeState$: (nodeKey: string) => BehaviorSubject<unknown>;
+  exposeNodeState: (nodeKey: string, state: unknown) => void;
+  retrieveNodeState: (nodeKey: string) => unknown;
   initContext: (ctx: CTX) => void;
-  mutateState: (stateID: string, state: any) => void;
+  mutateState: (stateID: string, state: unknown) => void;
 }
 
 export type APIStateWithFetch = APIState & {
@@ -200,10 +200,10 @@ export type CTX = {
   statesHubAPI: StatesHubAPI;
   statesHubShared: StatesHubShared;
   apiStates: Readonly<Record<string, APIStateWithFetch>>;
-  states: Record<string, any>;
+  states: Record<string, unknown>;
 }
 
-export type VersatileFunc = (...args: any) => any;
+export type VersatileFunc = (...args: unknown[]) => unknown;
 
 interface BaseNode<T> {
   key: string;
@@ -233,9 +233,9 @@ export type SchemaNode<T> = HTMLNode<T> | ReactComponentNode<T>;
 
 // map of stateID and apiID
 // todo should also store builder info
-export type APIStatesSpec = Record<string, { apiID: string; [key: string]: any; }>;
+export type APIStatesSpec = Record<string, { apiID: string; [key: string]: unknown; }>;
 
-export type SharedStatesSpec = Record<string, { initial: any; }>;
+export type SharedStatesSpec = Record<string, { initial: unknown; }>;
 
 export type Schema = {
   node: SchemaNode<Serialized>;
@@ -245,8 +245,8 @@ export type Schema = {
 
 export type InstantiatedNode = SchemaNode<Instantiated>;
 
-interface Document {
-  adoptedStyleSheets: any[];
-}
+// interface Document {
+//   adoptedStyleSheets: unknown[];
+// }
 
-export type DynamicComponent = React.FC<any> | React.ComponentClass<any>;
+export type DynamicComponent = React.FC<unknown> | React.ComponentClass<unknown>;

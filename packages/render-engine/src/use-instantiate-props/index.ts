@@ -14,7 +14,7 @@ import useFuncProps from './use-func-props';
 import useSharedStateMutationProps from './use-shared-state-mutation';
 import useInternalHookProps from './use-internal-hook-props';
 
-function useInstantiateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, any> {
+function useInstantiateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, unknown> {
   const constantProps = useConstantProps(node);
   const apiResultProps = useAPIResultProps(node, ctx);
   const apiLoadingProps = useAPILoadingProps(node, ctx);

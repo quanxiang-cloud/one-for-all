@@ -2,7 +2,9 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { map, skip, filter, share } from 'rxjs/operators';
 import type { APISpecAdapter, FetchParams } from '@ofa/api-spec-adapter';
 
-import type { StatesHubAPI, APIState, APIStatesSpec, CTX, RunParam, APIFetch, APIFetchCallback } from '../types';
+import type {
+  StatesHubAPI, APIState, APIStatesSpec, CTX, RunParam, APIFetch, APIFetchCallback,
+} from '../types';
 import getResponseState$ from './http/response';
 
 type StreamActions = {

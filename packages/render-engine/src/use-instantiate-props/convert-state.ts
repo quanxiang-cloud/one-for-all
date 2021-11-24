@@ -2,13 +2,13 @@ import { logger } from '@ofa/utils';
 import { StateConvertorFunc } from '../types';
 
 type ConvertResultParams = {
-  state: any;
+  state: unknown;
   convertor?: StateConvertorFunc;
-  fallback: any;
+  fallback: unknown;
   propName: string;
 };
 
-export default function convertState({ state, convertor, fallback, propName }: ConvertResultParams): any {
+export default function convertState({ state, convertor, fallback, propName }: ConvertResultParams): unknown {
   if (convertor && state !== undefined) {
     try {
       return convertor(state) ?? fallback;

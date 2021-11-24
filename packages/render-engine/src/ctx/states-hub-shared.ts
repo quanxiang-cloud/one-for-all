@@ -8,7 +8,7 @@ import {
 } from '../types';
 
 export default class SharedStateHub implements StatesHubShared {
-  cache: Record<string, BehaviorSubject<any>> = {};
+  cache: Record<string, BehaviorSubject<unknown>> = {};
   ctx: CTX | null = null;
   spec: SharedStatesSpec;
 
@@ -20,7 +20,7 @@ export default class SharedStateHub implements StatesHubShared {
     this.ctx = ctx;
   }
 
-  createState$IfNotExist(stateID: string, initialValue: any): void {
+  createState$IfNotExist(stateID: string, initialValue: unknown): void {
     if (this.cache[stateID]) {
       return;
     }
@@ -28,17 +28,17 @@ export default class SharedStateHub implements StatesHubShared {
     this.cache[stateID] = new BehaviorSubject(initialValue);
   }
 
-  getState$(stateID: string): BehaviorSubject<any> {
+  getState$(stateID: string): BehaviorSubject<unknown> {
     this.createState$IfNotExist(stateID, this.spec[stateID]?.initial);
 
     return this.cache[stateID];
   }
 
-  getState(stateID: string): any {
+  getState(stateID: string): unknown {
     return this.getState$(stateID)?.getValue();
   }
 
-  mutateState(stateID: string, state: any): void {
+  mutateState(stateID: string, state: unknown): void {
     if (stateID.startsWith('$')) {
       logger.warn('shared stateID can not starts with $, this action will be ignored');
       return;
@@ -47,17 +47,17 @@ export default class SharedStateHub implements StatesHubShared {
     this.getState$(stateID).next(state);
   }
 
-  getNodeState$(nodeKey: string): BehaviorSubject<any> {
+  getNodeState$(nodeKey: string): BehaviorSubject<unknown> {
     const stateID = `$${nodeKey}`;
     return this.getState$(stateID);
   }
 
-  getNodeState(nodeKey: string): any {
+  getNodeState(nodeKey: string): unknown {
     const stateID = `$${nodeKey}`;
     return this.getState$(stateID).getValue();
   }
 
-  exposeNodeState(nodeKey: string, state: any): void {
+  exposeNodeState(nodeKey: string, state: unknown): void {
     const stateID = `$${nodeKey}`;
 
     this.createState$IfNotExist(stateID, state);
@@ -65,7 +65,7 @@ export default class SharedStateHub implements StatesHubShared {
     this.cache[stateID].next(state);
   }
 
-  retrieveNodeState(nodeKey: string): any {
+  retrieveNodeState(nodeKey: string): unknown {
     const stateID = `$${nodeKey}`;
 
     if (!this.cache[stateID]) {
