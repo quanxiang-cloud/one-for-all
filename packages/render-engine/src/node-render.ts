@@ -16,9 +16,8 @@ function useNodeComponent(
     if (isRawHTMLElement) {
       return;
     }
-
     // todo refactor this
-    const packageNameVersion = `${node.packageName}@node.packageVersion`;
+    const packageNameVersion = `${node.packageName}@${node.packageVersion}`;
     if (repository?.[packageNameVersion]?.[node.exportName || 'default']) {
       setComponent(() => repository?.[packageNameVersion]?.[node.exportName || 'default']);
       return;
