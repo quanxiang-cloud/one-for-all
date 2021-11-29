@@ -3205,11 +3205,6 @@ hex-color-regex@^1.1.0:
   resolved "https://registry.npm.taobao.org/hex-color-regex/download/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
   integrity sha1-TAb8y0YC/iYCs8k9+C1+fb8aio4=
 
-highlight.js@^10.5.0:
-  version "10.7.3"
-  resolved "https://registry.npmmirror.com/highlight.js/download/highlight.js-10.7.3.tgz#697272e3991356e40c3cac566a74eef681756531"
-  integrity sha1-aXJy45kTVuQMPKxWanTu9oF1ZTE=
-
 hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.2:
   version "3.3.2"
   resolved "https://registry.npm.taobao.org/hoist-non-react-statics/download/hoist-non-react-statics-3.3.2.tgz?cache=0&sync_timestamp=1579737660183&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fhoist-non-react-statics%2Fdownload%2Fhoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
@@ -5373,13 +5368,6 @@ react-flow-renderer@^9.6.9:
     react-draggable "^4.4.4"
     react-redux "^7.2.6"
     redux "^4.1.2"
-
-react-highlight@^0.14.0:
-  version "0.14.0"
-  resolved "https://registry.nlark.com/react-highlight/download/react-highlight-0.14.0.tgz#5aefa5518baa580f96b68d48129d7a5d2dc0c9ef"
-  integrity sha1-Wu+lUYuqWA+Wto1IEp16XS3Aye8=
-  dependencies:
-    highlight.js "^10.5.0"
 
 react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
