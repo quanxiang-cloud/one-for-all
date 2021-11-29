@@ -203,7 +203,7 @@ export type CTX = {
   states: Record<string, unknown>;
 }
 
-export type VersatileFunc = (...args: unknown[]) => unknown;
+export type VersatileFunc<T = unknown> = (...args: unknown[]) => T;
 
 interface BaseNode<T> {
   key: string;

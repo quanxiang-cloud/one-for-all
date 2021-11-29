@@ -12,8 +12,8 @@ import {
   StateConvertorFunc,
   CTX,
   SerializedStateConvertor,
+  VersatileFunc,
 } from './types';
-import { VersatileFunc } from '.';
 
 function instantiateConvertor(
   serializedStateConvertor: SerializedStateConvertor,
@@ -49,7 +49,7 @@ function instantiateConvertor(
   return noop;
 }
 
-function instantiateFuncSpec(spec: BaseFunctionSpec, ctx: CTX): VersatileFunc | undefined {
+function instantiateFuncSpec<T = unknown>(spec: BaseFunctionSpec, ctx: CTX): VersatileFunc<T> | undefined {
   const publicCtx = { apiStates: ctx.apiStates, states: ctx.states };
   try {
     const fn = new Function(spec.args, spec.body).bind(publicCtx);
