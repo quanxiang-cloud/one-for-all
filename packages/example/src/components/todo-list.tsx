@@ -13,11 +13,13 @@ type Props = {
   __exposeState: (state: any) => void;
 }
 
-export default function TodoList({ todos, toggleTodo, onFetchTodos, onDeleteTodo, __exposeState }: Props): JSX.Element {
+export default function TodoList(
+  { todos, toggleTodo, onFetchTodos, onDeleteTodo, __exposeState }: Props,
+): JSX.Element {
   useEffect(() => onFetchTodos(), []);
 
   useEffect(() => {
-    __exposeState(todos)
+    __exposeState(todos);
   }, [todos]);
 
   return (
