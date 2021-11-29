@@ -26,7 +26,15 @@ export function register(nameSpace: string, options: RegistryOptions): void {
 //   return `/packages/${componentName}/dist/index.js`;
 // }
 
-export function importComponent(packageName: string, exportName: string, version?: string): Promise<DynamicComponent> {
+type ImportComponentParams = {
+  packageName: string;
+  version: string;
+  exportName?: string;
+}
+
+export function importComponent(
+  { packageName, exportName }: ImportComponentParams,
+): Promise<DynamicComponent> {
   return System.import(packageName).then((systemModule) => {
     return systemModule[exportName || 'default'];
   });

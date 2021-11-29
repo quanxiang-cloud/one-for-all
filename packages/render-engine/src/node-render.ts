@@ -47,7 +47,11 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
       return;
     }
 
-    importComponent(node.packageName, node.exportName, node.packageVersion).then((comp) => {
+    importComponent({
+      packageName: node.packageName,
+      version: node.packageVersion,
+      exportName: node.exportName,
+    }).then((comp) => {
       if (!comp) {
         logger.error(
           `got empty component for package: ${node.packageName},`,
