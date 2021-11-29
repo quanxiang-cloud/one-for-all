@@ -1,5 +1,5 @@
 import type { BehaviorSubject } from 'rxjs';
-import type { FetchParams } from '@ofa/api-spec-adapter';
+import type { FetchParams, APISpecAdapter } from '@ofa/api-spec-adapter';
 
 export type Serialized = 'Serialized';
 export type Instantiated = 'Instantiated';
@@ -201,6 +201,7 @@ export type CTX = {
   statesHubShared: StatesHubShared;
   apiStates: Readonly<Record<string, APIStateWithFetch>>;
   states: Record<string, unknown>;
+  repository?: Repository;
 }
 
 export type VersatileFunc<T = unknown> = (...args: unknown[]) => T;
@@ -250,3 +251,12 @@ export type InstantiatedNode = SchemaNode<Instantiated>;
 // }
 
 export type DynamicComponent = React.FC<unknown> | React.ComponentClass<unknown>;
+
+type PackageNameVersion = string;
+export type Repository = Record<PackageNameVersion, Record<string, DynamicComponent>>;
+
+export type InitProps = {
+  schema: Schema;
+  apiSpecAdapter: APISpecAdapter;
+  repository?: Repository;
+}

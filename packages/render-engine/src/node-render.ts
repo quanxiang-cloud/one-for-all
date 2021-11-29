@@ -3,14 +3,24 @@ import { logger } from '@ofa/utils';
 
 import useInstantiateProps from './use-instantiate-props';
 import { importComponent } from './repository';
-import type { CTX, DynamicComponent, InstantiatedNode } from './types';
+import type { CTX, DynamicComponent, InstantiatedNode, Repository } from './types';
 
-function useNodeComponent(node: InstantiatedNode): DynamicComponent | string | undefined {
+function useNodeComponent(
+  node: InstantiatedNode,
+  repository?: Repository,
+): DynamicComponent | string | undefined {
   const isRawHTMLElement = node.type === 'html-element';
   const [lazyLoadedComponent, setComponent] = useState<DynamicComponent | undefined>();
 
   useEffect(() => {
     if (isRawHTMLElement) {
+      return;
+    }
+
+    // todo refactor this
+    const packageNameVersion = `${node.packageName}@node.packageVersion`;
+    if (repository?.[packageNameVersion]?.[node.exportName || 'default']) {
+      setComponent(() => repository?.[packageNameVersion]?.[node.exportName || 'default']);
       return;
     }
 
@@ -62,7 +72,7 @@ type Props = {
 
 function NodeRender({ node, ctx }: Props): React.ReactElement | null {
   const props = useInstantiateProps(node, ctx);
-  const nodeComponent = useNodeComponent(node);
+  const nodeComponent = useNodeComponent(node, ctx.repository);
 
   if (!nodeComponent) {
     return null;
