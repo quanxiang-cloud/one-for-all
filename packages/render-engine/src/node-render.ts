@@ -1,8 +1,42 @@
+import React, { useEffect, useState } from 'react';
 import { logger } from '@ofa/utils';
-import React, { useEffect } from 'react';
-import { CTX, DynamicComponent, InstantiatedNode } from '.';
-import { importComponent } from './repository';
+
 import useInstantiateProps from './use-instantiate-props';
+import { importComponent } from './repository';
+import type { CTX, DynamicComponent, InstantiatedNode } from './types';
+
+function useNodeComponent(node: InstantiatedNode): DynamicComponent | string | undefined {
+  const isRawHTMLElement = node.type === 'html-element';
+  const [lazyLoadedComponent, setComponent] = useState<DynamicComponent | undefined>();
+
+  useEffect(() => {
+    if (isRawHTMLElement) {
+      return;
+    }
+
+    importComponent({
+      packageName: node.packageName,
+      version: node.packageVersion,
+      exportName: node.exportName,
+    }).then((comp) => {
+      if (!comp) {
+        logger.error(
+          `got empty component for package: ${node.packageName},`,
+          `exportName: ${node.exportName}, version: ${node.packageVersion}`,
+        );
+        return;
+      }
+
+      setComponent(() => comp);
+    });
+  }, []);
+
+  if (isRawHTMLElement) {
+    return node.name;
+  }
+
+  return lazyLoadedComponent;
+}
 
 type ChildrenRenderProps = {
   nodes: InstantiatedNode[];
@@ -27,53 +61,20 @@ type Props = {
 }
 
 function NodeRender({ node, ctx }: Props): React.ReactElement | null {
-  const [loaded, setLoaded] = React.useState(false);
-  const asyncModule = React.useRef<DynamicComponent | string>();
   const props = useInstantiateProps(node, ctx);
+  const nodeComponent = useNodeComponent(node);
 
-  // implement didMountHook and willUnmount here
-  // useEffect(() => {
-  //   if (loaded) {
-  //     setTimeout(() => node.didMount?.call(ctx), 0);
-  //   }
-
-  //   return () => node.willUnmount?.call(ctx);
-  // }, [loaded]);
-
-  useEffect(() => {
-    if (node.type === 'html-element') {
-      asyncModule.current = node.name;
-      setLoaded(true);
-      return;
-    }
-
-    importComponent({
-      packageName: node.packageName,
-      version: node.packageVersion,
-      exportName: node.exportName,
-    }).then((comp) => {
-      if (!comp) {
-        logger.error(
-          `got empty component for package: ${node.packageName},`,
-          `exportName: ${node.exportName}, version: ${node.packageVersion}`,
-        );
-      }
-      asyncModule.current = comp;
-      setLoaded(true);
-    });
-  }, []);
-
-  if (!loaded || !asyncModule.current) {
+  if (!nodeComponent) {
     return null;
   }
 
   if (!node.children || !node.children.length) {
-    return (React.createElement(asyncModule.current, props));
+    return (React.createElement(nodeComponent, props));
   }
 
   return (
     React.createElement(
-      asyncModule.current,
+      nodeComponent,
       props,
       React.createElement(ChildrenRender, { nodes: node.children || [], ctx }),
     )
