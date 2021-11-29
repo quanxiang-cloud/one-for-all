@@ -249,7 +249,7 @@ export type InstantiatedNode = SchemaNode<Instantiated>;
 // interface Document {
 //   adoptedStyleSheets: unknown[];
 // }
-
+// todo fixme
 export type DynamicComponent = React.FC<any> | React.ComponentClass<unknown>;
 
 type PackageNameVersion = string;
