@@ -250,7 +250,7 @@ export type InstantiatedNode = SchemaNode<Instantiated>;
 //   adoptedStyleSheets: unknown[];
 // }
 
-export type DynamicComponent = React.FC<unknown> | React.ComponentClass<unknown>;
+export type DynamicComponent = React.FC<any> | React.ComponentClass<unknown>;
 
 type PackageNameVersion = string;
 export type Repository = Record<PackageNameVersion, Record<string, DynamicComponent>>;
