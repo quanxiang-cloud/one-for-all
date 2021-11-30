@@ -1,22 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { logger } from '@ofa/utils';
 
-import useInstantiateProps from './use-instantiate-props';
-import { importComponent } from './repository';
-import type { CTX, DynamicComponent, InstantiatedNode, Repository } from './types';
+import useInstantiateProps from '../use-instantiate-props';
+import { importComponent } from '../repository';
+import { ChildrenRender } from './index';
+import type { CTX, DynamicComponent, Repository, Instantiated, ReactComponentNode } from '../types';
 
 function useNodeComponent(
-  node: InstantiatedNode,
+  node: ReactComponentNode<Instantiated>,
   repository?: Repository,
-): DynamicComponent | string | undefined {
-  const isRawHTMLElement = node.type === 'html-element';
+): DynamicComponent | undefined {
   const [lazyLoadedComponent, setComponent] = useState<DynamicComponent | undefined>();
 
   useEffect(() => {
-    if (isRawHTMLElement) {
-      return;
-    }
-    // todo refactor this
     const packageNameVersion = `${node.packageName}@${node.packageVersion}`;
     if (repository?.[packageNameVersion]?.[node.exportName || 'default']) {
       setComponent(() => repository?.[packageNameVersion]?.[node.exportName || 'default']);
@@ -40,36 +36,15 @@ function useNodeComponent(
     });
   }, []);
 
-  if (isRawHTMLElement) {
-    return node.name;
-  }
-
   return lazyLoadedComponent;
 }
 
-type ChildrenRenderProps = {
-  nodes: InstantiatedNode[];
-  ctx: CTX;
-}
-
-function ChildrenRender({ nodes, ctx }: ChildrenRenderProps): React.FunctionComponentElement<any> | null {
-  if (!nodes.length) {
-    return null;
-  }
-
-  return React.createElement(
-    React.Fragment,
-    null,
-    nodes.map((node) => React.createElement(NodeRender, { key: node.key, node: node, ctx })),
-  );
-}
-
 type Props = {
-  node: InstantiatedNode;
+  node: ReactComponentNode<Instantiated>;
   ctx: CTX;
 }
 
-function NodeRender({ node, ctx }: Props): React.ReactElement | null {
+function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | null {
   const props = useInstantiateProps(node, ctx);
   const nodeComponent = useNodeComponent(node, ctx.repository);
 
@@ -78,7 +53,7 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
   }
 
   if (!node.children || !node.children.length) {
-    return (React.createElement(nodeComponent, props));
+    return React.createElement(nodeComponent, props);
   }
 
   return (
@@ -90,4 +65,4 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
   );
 }
 
-export default NodeRender;
+export default ReactComponentNodeRender;
