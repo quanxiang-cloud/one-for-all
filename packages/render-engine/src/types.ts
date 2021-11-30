@@ -206,31 +206,60 @@ export type CTX = {
 
 export type VersatileFunc<T = unknown> = (...args: unknown[]) => T;
 
-interface BaseNode<T> {
-  key: string;
-  type: 'html-element' | 'react-component';
-  props: NodeProperties<T>;
-  supportStateExposure?: boolean;
-  children?: BaseNode<T>[];
+export const enum NodeType {
+  HTMLNode = 'html-element',
+  ReactComponentNode = 'react-component',
+  LoopContainerNode = 'loop-container',
 }
 
-interface HTMLNode<T> extends BaseNode<T> {
-  type: 'html-element';
+interface BaseNode<T extends Serialized | Instantiated> {
+  key: string;
+  type: NodeType;
+  props: NodeProperties<T>;
+}
+
+export interface HTMLNode<T extends Serialized | Instantiated> extends BaseNode<T> {
+  type: NodeType.HTMLNode;
   name: string;
   children?: Array<SchemaNode<T>>;
 }
 
-interface ReactComponentNode<T> extends BaseNode<T> {
-  type: 'react-component';
+export interface ReactComponentNode<T extends Serialized | Instantiated> extends BaseNode<T> {
+  type: NodeType.ReactComponentNode;
   packageName: string;
   packageVersion: string;
   exportName: 'default' | string;
+  supportStateExposure?: boolean;
   // not recommend, should avoid
-  // subModule?: string;
   children?: Array<SchemaNode<T>>;
 }
 
-export type SchemaNode<T> = HTMLNode<T> | ReactComponentNode<T>;
+export type IterableState<T extends Serialized | Instantiated> =
+  APIResultProperty<T> |
+  SharedStateProperty<T> |
+  NodeStateProperty<T> |
+  ConstantProperty;
+
+export type LoopContainerNodeProps<T extends Serialized | Instantiated> = {
+  // todo support style and layout props
+  iterableState: IterableState<T>;
+  loopKey: ConstantProperty;
+  node: {
+    type: NodePropType.ConstantProperty;
+    value: SchemaNode<T>;
+  };
+  toProps: FunctionalProperty<T>;
+}
+
+export interface LoopContainerNode<T extends Serialized | Instantiated> extends BaseNode<T> {
+  type: NodeType.LoopContainerNode;
+  props: LoopContainerNodeProps<T>;
+}
+
+export type SchemaNode<T extends Serialized | Instantiated> =
+  HTMLNode<T> |
+  ReactComponentNode<T> |
+  LoopContainerNode<T>;
 
 // map of stateID and apiID
 // todo should also store builder info
