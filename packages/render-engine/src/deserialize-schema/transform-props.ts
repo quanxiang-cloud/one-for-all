@@ -1,83 +1,51 @@
-import { noop } from 'rxjs';
 import { logger } from '@ofa/utils';
 
 import {
   NodeProperty,
-  SchemaNode,
   NodeProperties,
   Serialized,
   Instantiated,
   NodePropType,
-  BaseFunctionSpec,
-  StateConvertorFunc,
+  IterableState,
+  FunctionalProperty,
+  LoopContainerNodeProps,
   CTX,
-  SerializedStateConvertor,
-  VersatileFunc,
-} from './types';
+} from '../types';
+import deserializeSchema from './index';
+import { instantiateConvertor, instantiateFuncSpec } from './utils';
 
-function instantiateConvertor(
-  serializedStateConvertor: SerializedStateConvertor,
+export function transformLoopNodeProps(
+  props: LoopContainerNodeProps<Serialized>,
   ctx: CTX,
-): StateConvertorFunc | undefined {
-  // todo handle new function error
-  const publicCtx = { apiStates: ctx.apiStates, states: ctx.states };
+): LoopContainerNodeProps<Instantiated> {
+  const {
+    instantiatedIterableState,
+    instantiatedToProps,
+  } = transformProps({
+    instantiatedIterableState: props.iterableState,
+    instantiatedToProps: props.toProps,
+  }, ctx);
 
-  if (serializedStateConvertor.type === 'state_convert_expression') {
-    const fn = new Function('state', `return ${serializedStateConvertor.expression}`).bind(publicCtx);
-    fn.toString = () => [
-      '',
-      'function wrappedStateConvertor(state) {',
-      `\treturn ${serializedStateConvertor.expression}`,
-      '}',
-    ].join('\n');
-
-    return fn;
+  const instantiatedNode = deserializeSchema(props.node.value, ctx);
+  // todo refactor this
+  if (!instantiatedNode) {
+    throw new Error('failed to deserialize loop node schema');
   }
 
-  if (serializedStateConvertor.type === 'state_convertor_func_spec') {
-    const fn = new Function('state', serializedStateConvertor.body).bind(publicCtx);
-    fn.toString = () => [
-      '',
-      'function wrappedStateConvertor(state) {',
-      `\t${serializedStateConvertor.body}`,
-      '}',
-      '',
-    ].join('\n');
-    return fn;
-  }
-
-  return noop;
+  return {
+    iterableState: instantiatedIterableState as IterableState<Instantiated>,
+    loopKey: props.loopKey,
+    node: {
+      type: NodePropType.ConstantProperty,
+      // todo fixme
+      value: instantiatedNode,
+    },
+    // todo fixme
+    toProps: instantiatedToProps as FunctionalProperty<Instantiated>,
+  };
 }
 
-function instantiateFuncSpec<T = unknown>(spec: BaseFunctionSpec, ctx: CTX): VersatileFunc<T> | undefined {
-  const publicCtx = { apiStates: ctx.apiStates, states: ctx.states };
-  try {
-    const fn = new Function(spec.args, spec.body).bind(publicCtx);
-    fn.toString = () => [
-      '',
-      `function wrappedFunc(${spec.args}) {`,
-      `\t${spec.body}`,
-      '}',
-      '',
-    ].join('\n');
-    return fn;
-  } catch (error) {
-    logger.error(
-      'failed to instantiate function of following spec:',
-      '\n',
-      'spec.args:',
-      spec.args,
-      '\n',
-      'spec.body:',
-      '\n',
-      spec.body,
-      '\n',
-      error,
-    );
-  }
-}
-
-function transformProps(props: NodeProperties<Serialized>, ctx: CTX): NodeProperties<Instantiated> {
+export function transformProps(props: NodeProperties<Serialized>, ctx: CTX): NodeProperties<Instantiated> {
   return Object.entries(props).map<[string, NodeProperty<Instantiated>] | null>(([propName, propDesc]) => {
     // instantiate Array<APIInvokeProperty<T>>
     // if (Array.isArray(propDesc)) {
@@ -160,28 +128,4 @@ function transformProps(props: NodeProperties<Serialized>, ctx: CTX): NodeProper
     acc[propName] = propDesc;
     return acc;
   }, {});
-}
-
-function transformNode(node: SchemaNode<Serialized>, ctx: CTX): SchemaNode<Instantiated> {
-  const children = (node.children || []).map((n) => transformNode(n, ctx));
-
-  return {
-    ...node,
-    children,
-    props: transformProps(node.props || {}, ctx),
-  };
-}
-
-type DeserializeSchema = {
-  node: SchemaNode<Serialized>;
-  ctx: CTX;
-}
-
-export default function deserializeSchema({ node, ctx }: DeserializeSchema): SchemaNode<Instantiated> | null {
-  try {
-    return transformNode(node, ctx);
-  } catch (error) {
-    logger.error(error);
-    return null;
-  }
 }

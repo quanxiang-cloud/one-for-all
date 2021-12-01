@@ -7,7 +7,7 @@ type InternalHookProps = Record<string, VersatileFunc | undefined>;
 // todo give this hook a better name
 function useInternalHookProps(node: SchemaNode<Instantiated>, ctx: CTX): InternalHookProps {
   return useMemo(() => {
-    if (node.supportStateExposure) {
+    if ('supportStateExposure' in node && node.supportStateExposure) {
       return {
         __exposeState: (state: unknown): void => {
           ctx.statesHubShared.exposeNodeState(node.key, state);
