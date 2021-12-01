@@ -4,7 +4,7 @@ import type { APISpecAdapter } from '@ofa/api-spec-adapter';
 
 import useAPIResultProps from '../use-api-result-props';
 import APIStatesHub from '../../ctx/states-hub-api';
-import { SchemaNode, NodePropType, Instantiated } from '../../types';
+import { SchemaNode, NodePropType, Instantiated, NodeType } from '../../types';
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 
 beforeEach(() => mockXHR.setup());
@@ -26,7 +26,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
       key: 'some_key',
-      type: 'html-element',
+      type: NodeType.HTMLNode,
       name: 'div',
       props: {
         foo: {
@@ -49,7 +49,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
       key: 'some_key',
-      type: 'html-element',
+      type: NodeType.HTMLNode,
       name: 'div',
       props: {
         foo: {
@@ -103,14 +103,14 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
       key: 'some_key',
-      type: 'html-element',
+      type: NodeType.HTMLNode,
       name: 'div',
       props: {
         foo: {
           type: NodePropType.APIResultProperty,
           fallback: fallback,
           stateID: 'some_api_state',
-          convertor: (shouldThrow: boolean) => {
+          convertor: (shouldThrow: unknown): unknown => {
             if (shouldThrow) {
               throw new Error('should be handled');
             }
@@ -164,7 +164,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
       key: 'some_key',
-      type: 'html-element',
+      type: NodeType.HTMLNode,
       name: 'div',
       props: {
         foo: {
@@ -199,7 +199,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
       key: 'some_key',
-      type: 'html-element',
+      type: NodeType.HTMLNode,
       name: 'div',
       props: {
         foo: {
@@ -239,7 +239,7 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
       key: 'some_key',
-      type: 'html-element',
+      type: NodeType.HTMLNode,
       name: 'div',
       props: {
         foo: {
@@ -266,7 +266,7 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
       key: 'some_key',
-      type: 'html-element',
+      type: NodeType.HTMLNode,
       name: 'div',
       props: {
         foo: {
@@ -301,7 +301,7 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
       key: 'some_key',
-      type: 'html-element',
+      type: NodeType.HTMLNode,
       name: 'div',
       props: {
         foo: {
@@ -335,7 +335,7 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
       key: 'some_key',
-      type: 'html-element',
+      type: NodeType.HTMLNode,
       name: 'div',
       props: {
         foo: {
@@ -369,7 +369,7 @@ test('useAPIResultProps_resolve_expected_value', () => {
 
   const node: SchemaNode<Instantiated> = {
     key: 'some_key',
-    type: 'html-element',
+    type: NodeType.HTMLNode,
     name: 'div',
     props: {
       foo: {

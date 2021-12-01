@@ -1,4 +1,4 @@
-import { NodePropType, Schema } from '@ofa/render-engine';
+import { NodePropType, NodeType, Schema } from '@ofa/render-engine';
 
 const todoAppSchema: Schema = {
   apiStateSpec: {
@@ -15,7 +15,7 @@ const todoAppSchema: Schema = {
   },
   node: {
     key: 'container',
-    type: 'html-element',
+    type: NodeType.HTMLNode,
     name: 'div',
     props: {
       id: { type: NodePropType.ConstantProperty, value: 'container' },
@@ -34,7 +34,7 @@ const todoAppSchema: Schema = {
     children: [
       {
         key: 'todo-input-html-element',
-        type: 'html-element',
+        type: NodeType.HTMLNode,
         name: 'div',
         props: {
           style: {
@@ -49,7 +49,7 @@ const todoAppSchema: Schema = {
         children: [
           {
             key: 'todo-input',
-            type: 'html-element',
+            type: NodeType.HTMLNode,
             name: 'input',
             props: {
               type: { type: NodePropType.ConstantProperty, value: 'input' },
@@ -91,7 +91,7 @@ const todoAppSchema: Schema = {
           },
           {
             key: 'add-todo-btn',
-            type: 'html-element',
+            type: NodeType.HTMLNode,
             name: 'button',
             props: {
               children: {
@@ -123,7 +123,7 @@ const todoAppSchema: Schema = {
       },
       {
         key: 'todo-input-form',
-        type: 'html-element',
+        type: NodeType.HTMLNode,
         name: 'div',
         props: {
           id: { type: NodePropType.ConstantProperty, value: 'todo-input-form' },
@@ -138,7 +138,7 @@ const todoAppSchema: Schema = {
         children: [
           {
             key: 'fancy-input',
-            type: 'react-component',
+            type: NodeType.ReactComponentNode,
             packageName: 'todo-app',
             exportName: 'TodoInput',
             packageVersion: 'whatever',
@@ -162,7 +162,7 @@ const todoAppSchema: Schema = {
           },
           {
             key: 'add-todo-btn',
-            type: 'html-element',
+            type: NodeType.HTMLNode,
             name: 'button',
             props: {
               type: { type: NodePropType.ConstantProperty, value: 'submit' },
@@ -194,7 +194,7 @@ const todoAppSchema: Schema = {
       },
       {
         key: 'word_count',
-        type: 'html-element',
+        type: NodeType.HTMLNode,
         name: 'p',
         props: {
           children: {
@@ -212,7 +212,7 @@ const todoAppSchema: Schema = {
       },
       {
         key: 'todo-list',
-        type: 'react-component',
+        type: NodeType.ReactComponentNode,
         packageName: 'todo-app',
         exportName: 'TodoList',
         packageVersion: 'whatever',
@@ -275,7 +275,7 @@ const todoAppSchema: Schema = {
       },
       {
         key: 'todo-filter',
-        type: 'react-component',
+        type: NodeType.ReactComponentNode,
         packageName: 'todo-app',
         exportName: 'TodoFilter',
         packageVersion: 'whatever',

@@ -71,7 +71,7 @@ export type APIResultProperty<T> = BaseNodeProperty & {
 
 export type StateConvertor<T> = T extends Serialized ? SerializedStateConvertor : StateConvertorFunc;
 export type SerializedStateConvertor = StateConvertExpression | StateConvertorFuncSpec;
-export type StateConvertorFunc = (v: unknown) => unknown;
+export type StateConvertorFunc = (v: any) => any;
 
 type StateConvertExpression = {
   type: 'state_convert_expression';

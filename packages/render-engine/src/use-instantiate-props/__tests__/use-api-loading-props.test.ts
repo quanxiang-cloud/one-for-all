@@ -3,7 +3,7 @@ import type { APISpecAdapter } from '@ofa/api-spec-adapter';
 
 import useAPILoadingProps from '../use-api-loading-props';
 import APIStatesHub from '../../ctx/states-hub-api';
-import { SchemaNode, NodePropType, Instantiated } from '../../types';
+import { SchemaNode, NodePropType, Instantiated, NodeType } from '../../types';
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 
 const apiSpecAdapter: APISpecAdapter = {
@@ -20,7 +20,7 @@ test('useAPILoadingProps_resolve_expected_values', () => {
 
   const node: SchemaNode<Instantiated> = {
     key: 'some_key',
-    type: 'html-element',
+    type: NodeType.HTMLNode,
     name: 'div',
     props: {
       loading: {

@@ -11,7 +11,7 @@ type Props = {
 export default function Link({ nodeProps, ctx }: Props): JSX.Element {
   const node: SchemaNode<Instantiated> = {
     key: 'link',
-    type: 'html-element',
+    type: NodeType.HTMLNode,
     props: nodeProps,
     name: 'div',
   };

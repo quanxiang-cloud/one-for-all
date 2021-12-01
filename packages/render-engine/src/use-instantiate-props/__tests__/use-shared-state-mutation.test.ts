@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react-hooks/pure';
 
-import { NodePropType, Instantiated, SchemaNode } from '../../types';
+import { NodePropType, Instantiated, SchemaNode, NodeType } from '../../types';
 
 import SharedStatesHub from '../../ctx/states-hub-shared';
 import useSharedStateMutationProps from '../use-shared-state-mutation';
@@ -13,7 +13,7 @@ test('useSharedStateMutationProps_resolve_raw_data_when_adapter_is_undefined', (
 
   const node: SchemaNode<Instantiated> = {
     key: 'some_key',
-    type: 'html-element',
+    type: NodeType.HTMLNode,
     name: 'div',
     props: {
       onChange: {
@@ -52,7 +52,7 @@ test('useSharedStateMutationProps_should_not_mutate_state_when_adapter_throw', (
   console.error = jest.fn();
   const node: SchemaNode<Instantiated> = {
     key: 'some_key',
-    type: 'html-element',
+    type: NodeType.HTMLNode,
     name: 'div',
     props: {
       onChange: {
@@ -87,7 +87,7 @@ test('useSharedStateMutationProps_should_resolve_adapter_returned', () => {
   console.error = jest.fn();
   const node: SchemaNode<Instantiated> = {
     key: 'some_key',
-    type: 'html-element',
+    type: NodeType.HTMLNode,
     name: 'div',
     props: {
       onChange: {
@@ -119,7 +119,7 @@ test('useSharedStateMutationProps_should_call_adapter_correctly', () => {
   const adapterMock = jest.fn(() => 'another_value');
   const node: SchemaNode<Instantiated> = {
     key: 'some_key',
-    type: 'html-element',
+    type: NodeType.HTMLNode,
     name: 'div',
     props: {
       onChange: {

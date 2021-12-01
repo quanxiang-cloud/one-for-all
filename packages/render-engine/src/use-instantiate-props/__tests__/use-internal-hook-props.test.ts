@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks/pure';
 
-import { Instantiated, SchemaNode } from '../../types';
+import { Instantiated, SchemaNode, NodeType } from '../../types';
 import SharedStateHub from '../../ctx/states-hub-shared';
 import useInternalHooks from '../use-internal-hook-props';
 
@@ -13,10 +13,12 @@ test('useInternalHooks_resolve_expected_value', () => {
   const someNodeInternalState = { foo: 'bar' };
   const node: SchemaNode<Instantiated> = {
     key: nodeID,
-    type: 'html-element',
-    name: 'div',
-    props: {},
+    type: NodeType.ReactComponentNode,
+    packageName: 'whatever',
+    packageVersion: 'whatever',
+    exportName: '',
     supportStateExposure: true,
+    props: {},
   };
 
   const { result, unmount } = renderHook(() => useInternalHooks(node, dummyCTX));

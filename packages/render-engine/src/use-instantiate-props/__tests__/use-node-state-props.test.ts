@@ -1,7 +1,7 @@
 import { noop } from 'lodash';
 import { act, renderHook } from '@testing-library/react-hooks/pure';
 
-import { NodePropType, Instantiated, SchemaNode } from '../../types';
+import { NodePropType, Instantiated, SchemaNode, NodeType } from '../../types';
 import SharedStateHub from '../../ctx/states-hub-shared';
 import useSharedStateProps from '../use-shared-state-props';
 
@@ -17,7 +17,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
   test('resolve_fallback_value_when_node_state_is_undefined', () => {
     const node: SchemaNode<Instantiated> = {
       key: 'foo',
-      type: 'html-element',
+      type: NodeType.HTMLNode,
       name: 'div',
       props: {
         anotherNodeState: {
@@ -37,7 +37,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
   test('resolve_untouched_node_state_when_no_adapter', () => {
     const node: SchemaNode<Instantiated> = {
       key: 'foo',
-      type: 'html-element',
+      type: NodeType.HTMLNode,
       name: 'div',
       props: {
         anotherNodeState: {
@@ -59,7 +59,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
     console.error = jest.fn();
     const node: SchemaNode<Instantiated> = {
       key: 'foo',
-      type: 'html-element',
+      type: NodeType.HTMLNode,
       name: 'div',
       props: {
         anotherNodeState: {
@@ -86,7 +86,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
     console.error = jest.fn();
     const node: SchemaNode<Instantiated> = {
       key: 'foo',
-      type: 'html-element',
+      type: NodeType.HTMLNode,
       name: 'div',
       props: {
         anotherNodeState: {
@@ -109,7 +109,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
   test('resolve_converted_value', () => {
     const node: SchemaNode<Instantiated> = {
       key: 'foo',
-      type: 'html-element',
+      type: NodeType.HTMLNode,
       name: 'div',
       props: {
         anotherNodeState: {
@@ -135,7 +135,7 @@ test('useNodeStateProps_should_resolve_after_changed', () => {
   const nodeKey = 'node_id';
   const node: SchemaNode<Instantiated> = {
     key: 'foo',
-    type: 'html-element',
+    type: NodeType.HTMLNode,
     name: 'div',
     props: {
       anotherNodeState: {

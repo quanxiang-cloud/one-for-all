@@ -1,7 +1,7 @@
 import { noop } from 'lodash';
 import { renderHook, act } from '@testing-library/react-hooks/pure';
 
-import { NodePropType, Instantiated, SchemaNode } from '../../types';
+import { NodePropType, Instantiated, SchemaNode, NodeType } from '../../types';
 import useSharedStateProps from '../use-shared-state-props';
 import SharedStatesHub from '../../ctx/states-hub-shared';
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
@@ -15,7 +15,7 @@ describe('useSharedStateProps_resolve_expected_value', () => {
   test('resolve_fallback_when_state_is_undefined', () => {
     const node: SchemaNode<Instantiated> = {
       key: 'foo',
-      type: 'html-element',
+      type: NodeType.HTMLNode,
       name: 'div',
       props: {
         foo: {
@@ -35,7 +35,7 @@ describe('useSharedStateProps_resolve_expected_value', () => {
   test('resolve_current_value', () => {
     const node: SchemaNode<Instantiated> = {
       key: 'foo',
-      type: 'html-element',
+      type: NodeType.HTMLNode,
       name: 'div',
       props: {
         foo: {
@@ -58,7 +58,7 @@ describe('useSharedStateProps_resolve_expected_value', () => {
     console.error = jest.fn();
     const node: SchemaNode<Instantiated> = {
       key: 'foo',
-      type: 'html-element',
+      type: NodeType.HTMLNode,
       name: 'div',
       props: {
         foo: {
@@ -86,7 +86,7 @@ describe('useSharedStateProps_resolve_expected_value', () => {
     console.error = jest.fn();
     const node: SchemaNode<Instantiated> = {
       key: 'foo',
-      type: 'html-element',
+      type: NodeType.HTMLNode,
       name: 'div',
       props: {
         foo: {
@@ -110,7 +110,7 @@ describe('useSharedStateProps_resolve_expected_value', () => {
   test('resolve_converted_value', () => {
     const node: SchemaNode<Instantiated> = {
       key: 'foo',
-      type: 'html-element',
+      type: NodeType.HTMLNode,
       name: 'div',
       props: {
         foo: {
@@ -139,7 +139,7 @@ describe('useSharedStateProps_call_adapter_correctly', () => {
 
   const node: SchemaNode<Instantiated> = {
     key: 'foo',
-    type: 'html-element',
+    type: NodeType.HTMLNode,
     name: 'div',
     props: {
       foo: {
@@ -168,7 +168,7 @@ test('useSharedStateProps_resolve_values_after_changed', () => {
 
   const node: SchemaNode<Instantiated> = {
     key: 'foo',
-    type: 'html-element',
+    type: NodeType.HTMLNode,
     name: 'div',
     props: {
       foo: {
@@ -210,7 +210,7 @@ test('useSharedStateProps_resolve_expected_value', () => {
 
   const node: SchemaNode<Instantiated> = {
     key: 'foo',
-    type: 'html-element',
+    type: NodeType.HTMLNode,
     name: 'div',
     props: {
       foo: {
