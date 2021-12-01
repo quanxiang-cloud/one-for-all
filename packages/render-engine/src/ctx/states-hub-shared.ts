@@ -1,3 +1,4 @@
+import React from 'react';
 import { logger } from '@ofa/utils';
 import { BehaviorSubject } from 'rxjs';
 
@@ -57,7 +58,7 @@ export default class SharedStateHub implements StatesHubShared {
     return this.getState$(stateID).getValue();
   }
 
-  exposeNodeState(nodeKey: string, state: unknown): void {
+  exposeNodeState(nodeKey: React.Key, state: unknown): void {
     const stateID = `$${nodeKey}`;
 
     this.createState$IfNotExist(stateID, state);

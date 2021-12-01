@@ -1,5 +1,5 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { render } from '@testing-library/react';
 
 import LoopContainer, { Props } from '../loop-container';
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
@@ -25,11 +25,9 @@ test('LoopContainer_resolve_empty_value', () => {
     },
   };
 
-  const component = renderer.create(
-    React.createElement(LoopContainer, props),
-  );
+  const { container } = render((<LoopContainer {...props} />));
 
-  expect(component.toJSON()).toMatchSnapshot();
+  expect(container).toMatchSnapshot();
 });
 
 test('LoopContainer_resolve_items', () => {
@@ -62,7 +60,7 @@ test('LoopContainer_resolve_items', () => {
     },
   };
 
-  const component = renderer.create((<LoopContainer {...props} />));
+  const { container } = render((<LoopContainer {...props} />));
 
-  expect(component.toJSON()).toMatchSnapshot();
+  expect(container).toMatchSnapshot();
 });

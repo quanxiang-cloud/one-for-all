@@ -1,3 +1,4 @@
+import React from 'react';
 import type { BehaviorSubject } from 'rxjs';
 import type { FetchParams, APISpecAdapter } from '@ofa/api-spec-adapter';
 
@@ -185,7 +186,7 @@ export interface StatesHubShared {
   getState$: (stateID: string) => BehaviorSubject<unknown>;
   getState: (stateID: string) => unknown;
   getNodeState$: (nodeKey: string) => BehaviorSubject<unknown>;
-  exposeNodeState: (nodeKey: string, state: unknown) => void;
+  exposeNodeState: (nodeKey: React.Key, state: unknown) => void;
   retrieveNodeState: (nodeKey: string) => unknown;
   initContext: (ctx: CTX) => void;
   mutateState: (stateID: string, state: unknown) => void;
@@ -213,7 +214,7 @@ export const enum NodeType {
 }
 
 interface BaseNode<T extends Serialized | Instantiated> {
-  key: string;
+  key: React.Key;
   type: NodeType;
   props: NodeProperties<T>;
 }
