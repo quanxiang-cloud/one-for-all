@@ -16,7 +16,7 @@ export default class RenderEngine {
   }
 
   render(renderRoot: Element): void {
-    const instantiatedNode = deserializeSchema({ node: this.schema.node, ctx: this.ctx });
+    const instantiatedNode = deserializeSchema(this.schema.node, this.ctx);
     if (!instantiatedNode) {
       // TODO: paint error
       // return { ctx };

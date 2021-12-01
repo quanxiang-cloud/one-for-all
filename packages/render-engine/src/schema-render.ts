@@ -9,7 +9,7 @@ import type { InitProps } from './types';
 function SchemaRender({ schema, apiSpecAdapter, repository }: InitProps): React.ReactElement | null {
   const ctx = initCTX({ schema, apiSpecAdapter, repository });
 
-  const instantiatedNode = deserializeSchema({ node: schema.node, ctx });
+  const instantiatedNode = deserializeSchema(schema.node, ctx);
   if (!instantiatedNode) {
     // TODO: paint error
     return null;
