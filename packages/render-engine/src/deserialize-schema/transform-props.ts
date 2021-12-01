@@ -8,40 +8,36 @@ import {
   NodePropType,
   IterableState,
   FunctionalProperty,
-  LoopContainerNodeProps,
   CTX,
+  LoopContainerNode,
 } from '../types';
 import deserializeSchema from './index';
 import { instantiateConvertor, instantiateFuncSpec } from './utils';
 
-export function transformLoopNodeProps(
-  props: LoopContainerNodeProps<Serialized>,
+export function transformLoopNode(
+  node: LoopContainerNode<Serialized>,
   ctx: CTX,
-): LoopContainerNodeProps<Instantiated> {
-  const {
-    instantiatedIterableState,
-    instantiatedToProps,
-  } = transformProps({
-    instantiatedIterableState: props.iterableState,
-    instantiatedToProps: props.toProps,
+): LoopContainerNode<Instantiated> {
+  const { iterableState, toProps } = transformProps({
+    iterableState: node.iterableState,
+    toProps: node.toProps,
   }, ctx);
 
-  const instantiatedNode = deserializeSchema(props.node.value, ctx);
-  // todo refactor this
+  const instantiatedNode = deserializeSchema(node.node, ctx);
   if (!instantiatedNode) {
     throw new Error('failed to deserialize loop node schema');
   }
 
   return {
-    iterableState: instantiatedIterableState as IterableState<Instantiated>,
-    loopKey: props.loopKey,
-    node: {
-      type: NodePropType.ConstantProperty,
-      // todo fixme
-      value: instantiatedNode,
-    },
+    key: node.key,
+    type: node.type,
+    props: transformProps(node.props, ctx),
     // todo fixme
-    toProps: instantiatedToProps as FunctionalProperty<Instantiated>,
+    iterableState: iterableState as IterableState<Instantiated>,
+    // todo fixme
+    toProps: toProps as FunctionalProperty<Instantiated>,
+    loopKey: node.loopKey,
+    node: instantiatedNode,
   };
 }
 

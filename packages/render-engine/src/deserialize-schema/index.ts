@@ -8,14 +8,11 @@ import {
   NodeType,
 } from '../types';
 
-import { transformLoopNodeProps, transformProps } from './transform-props';
+import { transformLoopNode, transformProps } from './transform-props';
 
 function transformNode(node: SchemaNode<Serialized>, ctx: CTX): SchemaNode<Instantiated> {
   if (node.type === NodeType.LoopContainerNode) {
-    return {
-      ...node,
-      props: transformLoopNodeProps(node.props, ctx),
-    };
+    return transformLoopNode(node, ctx);
   }
 
   const children = (node.children || []).map((n) => transformNode(n, ctx));

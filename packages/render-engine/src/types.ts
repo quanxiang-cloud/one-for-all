@@ -240,20 +240,13 @@ export type IterableState<T extends Serialized | Instantiated> =
   NodeStateProperty<T> |
   ConstantProperty;
 
-export type LoopContainerNodeProps<T extends Serialized | Instantiated> = {
-  // todo support style and layout props
-  iterableState: IterableState<T>;
-  loopKey: ConstantProperty;
-  node: {
-    type: NodePropType.ConstantProperty;
-    value: SchemaNode<T>;
-  };
-  toProps: FunctionalProperty<T>;
-}
-
 export interface LoopContainerNode<T extends Serialized | Instantiated> extends BaseNode<T> {
   type: NodeType.LoopContainerNode;
-  props: LoopContainerNodeProps<T>;
+  // props: LoopContainerNodeProps<T>;
+  iterableState: IterableState<T>;
+  loopKey: ConstantProperty;
+  node: SchemaNode<T>;
+  toProps: FunctionalProperty<T>;
 }
 
 export type SchemaNode<T extends Serialized | Instantiated> =
