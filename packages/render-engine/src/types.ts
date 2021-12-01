@@ -244,7 +244,7 @@ export interface LoopContainerNode<T extends Serialized | Instantiated> extends 
   type: NodeType.LoopContainerNode;
   // props: LoopContainerNodeProps<T>;
   iterableState: IterableState<T>;
-  loopKey: ConstantProperty;
+  loopKey: string;
   node: SchemaNode<T>;
   toProps: FunctionalProperty<T>;
 }
