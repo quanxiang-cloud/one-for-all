@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoopContainer_resolve_empty_value 1`] = `<div />`;
+
+exports[`LoopContainer_resolve_items 1`] = `
+<div>
+  <div
+    id="abc"
+  />
+  <div
+    id="def"
+  />
+</div>
+`;
