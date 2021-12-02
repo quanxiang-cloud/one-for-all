@@ -48,7 +48,7 @@ type Props = {
 function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | null {
   const props = useInstantiateProps(node, ctx);
   const nodeComponent = useNodeComponent(node, ctx.repository);
-  useLifecycleHook(node);
+  useLifecycleHook(node.lifecycleHooks || {});
 
   if (!nodeComponent) {
     return null;

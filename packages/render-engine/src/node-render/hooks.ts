@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 
-import type { BaseNode, Instantiated } from '../types';
+import type { LifecycleHooks, Instantiated } from '../types';
 
-export function useLifecycleHook(node: BaseNode<Instantiated>): void {
+export function useLifecycleHook({ didMount, willUnmount }: LifecycleHooks<Instantiated>): void {
   useEffect(() => {
-    if (node.lifecycleHooks?.didMount) {
-      node.lifecycleHooks.didMount();
+    if (didMount) {
+      didMount();
     }
 
     return () => {
-      node.lifecycleHooks?.willUnmount?.();
+      willUnmount?.();
     };
   });
 }

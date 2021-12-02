@@ -12,7 +12,7 @@ type Props = {
 
 function HTMLNodeRender({ node, ctx }: Props): React.ReactElement {
   const props = useInstantiateProps(node, ctx);
-  useLifecycleHook(node);
+  useLifecycleHook(node.lifecycleHooks || {});
 
   if (!node.children || !node.children.length) {
     return React.createElement(node.name, props);

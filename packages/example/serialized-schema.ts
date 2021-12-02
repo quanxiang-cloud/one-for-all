@@ -75,15 +75,6 @@ const todoAppSchema: Schema = {
                   outline: 'none',
                 },
               },
-              // onChange: {
-              //   type: NodePropType.SharedStateMutationProperty,
-              //   stateID: 'input_value',
-              //   convertor: {
-              //     type: 'raw',
-              //     args: 'e',
-              //     body: 'return e.target.value;',
-              //   },
-              // },
               onChange: {
                 type: NodePropType.FunctionalProperty,
                 func: {
@@ -308,69 +299,6 @@ const todoAppSchema: Schema = {
           },
         },
       },
-      // {
-      //   key: 'todo-list',
-      //   type: NodeType.ReactComponentNode,
-      //   packageName: 'todo-app',
-      //   exportName: 'TodoList',
-      //   packageVersion: 'whatever',
-      //   supportStateExposure: true,
-      //   props: {
-      //     todos: {
-      //       type: NodePropType.APIResultProperty,
-      //       stateID: '全部待办列表',
-      //       fallback: [],
-      //       convertor: {
-      //         type: 'state_convert_expression',
-      //         expression: 'state',
-      //       },
-      //     },
-      //     toggleTodo: {
-      //       type: NodePropType.APIInvokeProperty,
-      //       stateID: '更新待办',
-      //       // template: ${data.foo}
-      //       paramsBuilder: {
-      //         type: 'param_builder_func_spec',
-      //         args: 'todo',
-      //         body: `
-      //           return { params: { todoId: todo.id }, body: todo };
-      //         `,
-      //       },
-      //       callback: {
-      //         type: 'api_fetch_callback',
-      //         args: '{ result, error }',
-      //         body: `
-      //           // 提供一个 refresh event？
-      //           this.apiStates['全部待办列表'].refresh();
-      //           this.apiStates.todoStatus.refresh();
-      //         `,
-      //       },
-      //     },
-      //     onFetchTodos: {
-      //       type: NodePropType.APIInvokeProperty,
-      //       stateID: '全部待办列表',
-      //     },
-      //     onDeleteTodo: {
-      //       type: NodePropType.APIInvokeProperty,
-      //       stateID: '删除待办',
-      //       paramsBuilder: {
-      //         type: 'param_builder_func_spec',
-      //         args: 'todoID',
-      //         body: `
-      //           return { params: { todoId: todoID } };
-      //         `,
-      //       },
-      //       callback: {
-      //         type: 'api_fetch_callback',
-      //         args: '{ result, error }',
-      //         body: `
-      //           this.apiStates['全部待办列表'].refresh();
-      //           this.apiStates.todoStatus.refresh();
-      //         `,
-      //       },
-      //     },
-      //   },
-      // },
       {
         id: 'todo-filter',
         type: NodeType.ReactComponentNode,

@@ -10,7 +10,7 @@ type Props = {
 }
 
 function LoopNodeRender({ node, ctx }: Props): React.ReactElement {
-  useLifecycleHook(node);
+  useLifecycleHook(node.lifecycleHooks || {});
 
   return React.createElement(LoopContainer, {
     iterableState: node.iterableState,
