@@ -3,6 +3,7 @@ import React from 'react';
 import useInstantiateProps from '../use-instantiate-props';
 import type { CTX, HTMLNode, Instantiated } from '../types';
 import { ChildrenRender } from './index';
+import { useLifecycleHook } from './hooks';
 
 type Props = {
   node: HTMLNode<Instantiated>;
@@ -11,6 +12,7 @@ type Props = {
 
 function HTMLNodeRender({ node, ctx }: Props): React.ReactElement {
   const props = useInstantiateProps(node, ctx);
+  useLifecycleHook(node);
 
   if (!node.children || !node.children.length) {
     return React.createElement(node.name, props);

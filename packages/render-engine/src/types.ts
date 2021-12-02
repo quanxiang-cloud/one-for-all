@@ -137,6 +137,11 @@ export type ParamsBuilderFuncSpec = BaseFunctionSpec & {
   type: 'param_builder_func_spec';
 }
 
+export type LifecycleHookFuncSpec = BaseFunctionSpec & {
+  type: 'lifecycle_hook_func_spec';
+  args: '';
+}
+
 export type BaseFunctionSpec = {
   type: string;
   args: string;
@@ -207,16 +212,22 @@ export type CTX = {
 
 export type VersatileFunc<T = unknown> = (...args: unknown[]) => T;
 
+export type LifecycleHooks<T extends Serialized | Instantiated> = Partial<{
+  didMount: T extends Serialized ? LifecycleHookFuncSpec : VersatileFunc;
+  willUnmount: T extends Serialized ? LifecycleHookFuncSpec : VersatileFunc;
+}>;
+
 export const enum NodeType {
   HTMLNode = 'html-element',
   ReactComponentNode = 'react-component',
   LoopContainerNode = 'loop-container',
 }
 
-interface BaseNode<T extends Serialized | Instantiated> {
+export interface BaseNode<T extends Serialized | Instantiated> {
   id: React.Key;
   type: NodeType;
   props?: NodeProperties<T>;
+  lifecycleHooks?: LifecycleHooks<T>;
 }
 
 export interface HTMLNode<T extends Serialized | Instantiated> extends BaseNode<T> {

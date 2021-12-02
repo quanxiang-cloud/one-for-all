@@ -9,6 +9,7 @@ import {
 } from '../types';
 
 import { transformLoopNode, transformProps } from './transform-props';
+import { instantiateLifecycleHook } from './utils';
 
 function transformNode(node: SchemaNode<Serialized>, ctx: CTX): SchemaNode<Instantiated> {
   if (node.type === NodeType.LoopContainerNode) {
@@ -19,6 +20,7 @@ function transformNode(node: SchemaNode<Serialized>, ctx: CTX): SchemaNode<Insta
 
   return {
     ...node,
+    lifecycleHooks: node.lifecycleHooks ? instantiateLifecycleHook(node.lifecycleHooks, ctx) : undefined,
     children,
     props: transformProps(node.props || {}, ctx),
   };

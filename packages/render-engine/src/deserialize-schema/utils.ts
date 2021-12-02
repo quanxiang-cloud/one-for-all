@@ -7,6 +7,9 @@ import {
   CTX,
   SerializedStateConvertor,
   VersatileFunc,
+  Instantiated,
+  LifecycleHooks,
+  Serialized,
 } from '../types';
 
 export function instantiateConvertor(
@@ -41,6 +44,16 @@ export function instantiateConvertor(
   }
 
   return noop;
+}
+
+export function instantiateLifecycleHook(
+  { didMount, willUnmount }: LifecycleHooks<Serialized>,
+  ctx: CTX,
+): LifecycleHooks<Instantiated> {
+  return {
+    didMount: didMount ? instantiateFuncSpec(didMount, ctx) : undefined,
+    willUnmount: willUnmount ? instantiateFuncSpec(willUnmount, ctx) : undefined,
+  };
 }
 
 export function instantiateFuncSpec<T = unknown>(

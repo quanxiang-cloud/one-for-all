@@ -5,6 +5,7 @@ import useInstantiateProps from '../use-instantiate-props';
 import { importComponent } from '../repository';
 import { ChildrenRender } from './index';
 import type { CTX, DynamicComponent, Repository, Instantiated, ReactComponentNode } from '../types';
+import { useLifecycleHook } from './hooks';
 
 function useNodeComponent(
   node: ReactComponentNode<Instantiated>,
@@ -47,6 +48,7 @@ type Props = {
 function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | null {
   const props = useInstantiateProps(node, ctx);
   const nodeComponent = useNodeComponent(node, ctx.repository);
+  useLifecycleHook(node);
 
   if (!nodeComponent) {
     return null;

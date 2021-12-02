@@ -17,6 +17,13 @@ const todoAppSchema: Schema = {
     id: 'container',
     type: NodeType.HTMLNode,
     name: 'div',
+    lifecycleHooks: {
+      didMount: {
+        type: 'lifecycle_hook_func_spec',
+        args: '',
+        body: 'this.apiStates[\'全部待办列表\'].fetch();',
+      },
+    },
     props: {
       id: { type: NodePropType.ConstantProperty, value: 'container' },
       style: {
