@@ -15,7 +15,6 @@ function LoopNodeRender({ node, ctx }: Props): React.ReactElement {
     node: node.node,
     // todo handle error
     toProps: (v: unknown) => node.toProps.func(v) as Record<string, unknown>,
-    containerProps: node.props,
     ctx,
   });
 }

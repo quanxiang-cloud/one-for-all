@@ -31,7 +31,7 @@ export function transformLoopNode(
   return {
     key: node.key,
     type: node.type,
-    props: transformProps(node.props, ctx),
+    props: node.props ? transformProps(node.props, ctx) : {},
     // todo fixme
     iterableState: iterableState as IterableState<Instantiated>,
     // todo fixme

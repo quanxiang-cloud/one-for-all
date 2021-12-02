@@ -54,7 +54,7 @@ function getAppropriateKey(item: unknown, loopKey: string, index: number): strin
 type UseMergedPropsListParams = {
   iterableState: IterableState<Instantiated>;
   toProps: (item: unknown) => Record<string, unknown>;
-  otherProps: NodeProperties<Instantiated>;
+  otherProps?: NodeProperties<Instantiated>;
   ctx: CTX;
   loopKey: string;
 }
@@ -88,12 +88,9 @@ export type Props = {
   toProps: (item: unknown) => Record<string, unknown>;
   node: SchemaNode<Instantiated>;
   ctx: CTX;
-  containerProps?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 }
 
-function LoopContainer(
-  { iterableState, loopKey, node, ctx, toProps, containerProps }: Props,
-): React.ReactElement {
+function LoopContainer({ iterableState, loopKey, node, ctx, toProps }: Props): React.ReactElement {
   const mergedPropsList = useMergedPropsList({
     iterableState,
     toProps,
@@ -103,8 +100,8 @@ function LoopContainer(
   });
 
   return React.createElement(
-    'div',
-    containerProps,
+    React.Fragment,
+    null,
     mergedPropsList.map(([props, key]): React.ReactElement => {
       const newNode = Object.assign({}, node, { props });
 
