@@ -10,7 +10,7 @@ type Props = {
 
 export default function Link({ nodeProps, ctx }: Props): JSX.Element {
   const node: SchemaNode<Instantiated> = {
-    key: 'link',
+    id: 'link',
     type: NodeType.HTMLNode,
     props: nodeProps,
     name: 'div',

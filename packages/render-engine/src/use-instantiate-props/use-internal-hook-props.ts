@@ -10,7 +10,7 @@ function useInternalHookProps(node: SchemaNode<Instantiated>, ctx: CTX): Interna
     if ('supportStateExposure' in node && node.supportStateExposure) {
       return {
         __exposeState: (state: unknown): void => {
-          ctx.statesHubShared.exposeNodeState(node.key, state);
+          ctx.statesHubShared.exposeNodeState(node.id, state);
         },
       };
     }

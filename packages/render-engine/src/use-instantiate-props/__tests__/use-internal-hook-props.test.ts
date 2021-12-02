@@ -12,7 +12,7 @@ test('useInternalHooks_resolve_expected_value', () => {
   const nodeID = 'node_id';
   const someNodeInternalState = { foo: 'bar' };
   const node: SchemaNode<Instantiated> = {
-    key: nodeID,
+    id: nodeID,
     type: NodeType.ReactComponentNode,
     packageName: 'whatever',
     packageVersion: 'whatever',

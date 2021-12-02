@@ -21,7 +21,7 @@ export function ChildrenRender(
   return React.createElement(
     React.Fragment,
     null,
-    nodes.map((node) => React.createElement(NodeRender, { key: node.key, node: node, ctx })),
+    nodes.map((node) => React.createElement(NodeRender, { key: node.id, node: node, ctx })),
   );
 }
 

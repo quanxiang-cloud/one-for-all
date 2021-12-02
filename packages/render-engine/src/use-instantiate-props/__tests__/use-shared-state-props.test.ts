@@ -14,7 +14,7 @@ describe('useSharedStateProps_resolve_expected_value', () => {
 
   test('resolve_fallback_when_state_is_undefined', () => {
     const node: SchemaNode<Instantiated> = {
-      key: 'foo',
+      id: 'foo',
       type: NodeType.HTMLNode,
       name: 'div',
       props: {
@@ -34,7 +34,7 @@ describe('useSharedStateProps_resolve_expected_value', () => {
 
   test('resolve_current_value', () => {
     const node: SchemaNode<Instantiated> = {
-      key: 'foo',
+      id: 'foo',
       type: NodeType.HTMLNode,
       name: 'div',
       props: {
@@ -57,7 +57,7 @@ describe('useSharedStateProps_resolve_expected_value', () => {
     // eslint-disable-next-line no-console
     console.error = jest.fn();
     const node: SchemaNode<Instantiated> = {
-      key: 'foo',
+      id: 'foo',
       type: NodeType.HTMLNode,
       name: 'div',
       props: {
@@ -85,7 +85,7 @@ describe('useSharedStateProps_resolve_expected_value', () => {
     // eslint-disable-next-line no-console
     console.error = jest.fn();
     const node: SchemaNode<Instantiated> = {
-      key: 'foo',
+      id: 'foo',
       type: NodeType.HTMLNode,
       name: 'div',
       props: {
@@ -109,7 +109,7 @@ describe('useSharedStateProps_resolve_expected_value', () => {
 
   test('resolve_converted_value', () => {
     const node: SchemaNode<Instantiated> = {
-      key: 'foo',
+      id: 'foo',
       type: NodeType.HTMLNode,
       name: 'div',
       props: {
@@ -138,7 +138,7 @@ describe('useSharedStateProps_call_adapter_correctly', () => {
   const adapterMock = jest.fn();
 
   const node: SchemaNode<Instantiated> = {
-    key: 'foo',
+    id: 'foo',
     type: NodeType.HTMLNode,
     name: 'div',
     props: {
@@ -167,7 +167,7 @@ test('useSharedStateProps_resolve_values_after_changed', () => {
   dummyCTX.statesHubShared = sharedStates;
 
   const node: SchemaNode<Instantiated> = {
-    key: 'foo',
+    id: 'foo',
     type: NodeType.HTMLNode,
     name: 'div',
     props: {
@@ -209,7 +209,7 @@ test('useSharedStateProps_resolve_expected_value', () => {
   dummyCTX.statesHubShared = sharedStates;
 
   const node: SchemaNode<Instantiated> = {
-    key: 'foo',
+    id: 'foo',
     type: NodeType.HTMLNode,
     name: 'div',
     props: {

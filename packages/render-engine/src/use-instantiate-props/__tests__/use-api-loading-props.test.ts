@@ -19,7 +19,7 @@ test('useAPILoadingProps_resolve_expected_values', () => {
   dummyCTX.statesHubAPI = apiStateHub;
 
   const node: SchemaNode<Instantiated> = {
-    key: 'some_key',
+    id: 'some_key',
     type: NodeType.HTMLNode,
     name: 'div',
     props: {

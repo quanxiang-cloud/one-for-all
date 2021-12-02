@@ -19,7 +19,7 @@ test('LoopContainer_resolve_empty_value', () => {
     toProps: (item) => ({ children: item }),
     node: {
       type: NodeType.HTMLNode,
-      key: 'loop-item',
+      id: 'loop-item',
       name: 'div',
       props: {},
     },
@@ -33,7 +33,7 @@ test('LoopContainer_resolve_empty_value', () => {
 // todo test case about primary value iteration
 test('LoopContainer_resolve_items', () => {
   const schema: Schema = {
-    node: { key: 'some_node', type: NodeType.HTMLNode, name: 'div', props: {} },
+    node: { id: 'some_node', type: NodeType.HTMLNode, name: 'div', props: {} },
     apiStateSpec: {},
     sharedStatesSpec: {},
   };
@@ -55,7 +55,7 @@ test('LoopContainer_resolve_items', () => {
     toProps: (item: any) => ({ id: item.id }),
     node: {
       type: NodeType.HTMLNode,
-      key: 'loop-item',
+      id: 'loop-item',
       name: 'div',
       props: {},
     },

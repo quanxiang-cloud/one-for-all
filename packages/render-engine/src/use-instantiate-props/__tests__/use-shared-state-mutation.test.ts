@@ -12,7 +12,7 @@ test('useSharedStateMutationProps_resolve_raw_data_when_adapter_is_undefined', (
   dummyCTX.statesHubShared = sharedStates;
 
   const node: SchemaNode<Instantiated> = {
-    key: 'some_key',
+    id: 'some_key',
     type: NodeType.HTMLNode,
     name: 'div',
     props: {
@@ -51,7 +51,7 @@ test('useSharedStateMutationProps_should_not_mutate_state_when_adapter_throw', (
   // eslint-disable-next-line no-console
   console.error = jest.fn();
   const node: SchemaNode<Instantiated> = {
-    key: 'some_key',
+    id: 'some_key',
     type: NodeType.HTMLNode,
     name: 'div',
     props: {
@@ -86,7 +86,7 @@ test('useSharedStateMutationProps_should_resolve_adapter_returned', () => {
   // eslint-disable-next-line no-console
   console.error = jest.fn();
   const node: SchemaNode<Instantiated> = {
-    key: 'some_key',
+    id: 'some_key',
     type: NodeType.HTMLNode,
     name: 'div',
     props: {
@@ -118,7 +118,7 @@ test('useSharedStateMutationProps_should_call_adapter_correctly', () => {
   dummyCTX.statesHubShared = sharedStates;
   const adapterMock = jest.fn(() => 'another_value');
   const node: SchemaNode<Instantiated> = {
-    key: 'some_key',
+    id: 'some_key',
     type: NodeType.HTMLNode,
     name: 'div',
     props: {

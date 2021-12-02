@@ -16,7 +16,7 @@ import { logger } from '@ofa/utils';
 function useIterable(iterableState: IterableState<Instantiated>, ctx: CTX): Array<unknown> {
   const dummyNode: SchemaNode<Instantiated> = {
     type: NodeType.HTMLNode,
-    key: 'dummyLoopContainer',
+    id: 'dummyLoopContainer',
     name: 'div',
     props: {
       iterable: iterableState,

@@ -214,7 +214,7 @@ export const enum NodeType {
 }
 
 interface BaseNode<T extends Serialized | Instantiated> {
-  key: React.Key;
+  id: React.Key;
   type: NodeType;
   props?: NodeProperties<T>;
 }

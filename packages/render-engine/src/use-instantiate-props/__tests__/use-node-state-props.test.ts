@@ -16,7 +16,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
 
   test('resolve_fallback_value_when_node_state_is_undefined', () => {
     const node: SchemaNode<Instantiated> = {
-      key: 'foo',
+      id: 'foo',
       type: NodeType.HTMLNode,
       name: 'div',
       props: {
@@ -36,7 +36,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
 
   test('resolve_untouched_node_state_when_no_adapter', () => {
     const node: SchemaNode<Instantiated> = {
-      key: 'foo',
+      id: 'foo',
       type: NodeType.HTMLNode,
       name: 'div',
       props: {
@@ -58,7 +58,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
     // eslint-disable-next-line no-console
     console.error = jest.fn();
     const node: SchemaNode<Instantiated> = {
-      key: 'foo',
+      id: 'foo',
       type: NodeType.HTMLNode,
       name: 'div',
       props: {
@@ -85,7 +85,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
     // eslint-disable-next-line no-console
     console.error = jest.fn();
     const node: SchemaNode<Instantiated> = {
-      key: 'foo',
+      id: 'foo',
       type: NodeType.HTMLNode,
       name: 'div',
       props: {
@@ -108,7 +108,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
 
   test('resolve_converted_value', () => {
     const node: SchemaNode<Instantiated> = {
-      key: 'foo',
+      id: 'foo',
       type: NodeType.HTMLNode,
       name: 'div',
       props: {
@@ -134,7 +134,7 @@ test('useNodeStateProps_should_resolve_after_changed', () => {
   dummyCTX.statesHubShared = hub;
   const nodeKey = 'node_id';
   const node: SchemaNode<Instantiated> = {
-    key: 'foo',
+    id: 'foo',
     type: NodeType.HTMLNode,
     name: 'div',
     props: {

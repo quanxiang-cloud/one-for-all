@@ -25,7 +25,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
-      key: 'some_key',
+      id: 'some_key',
       type: NodeType.HTMLNode,
       name: 'div',
       props: {
@@ -48,7 +48,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
-      key: 'some_key',
+      id: 'some_key',
       type: NodeType.HTMLNode,
       name: 'div',
       props: {
@@ -102,7 +102,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
-      key: 'some_key',
+      id: 'some_key',
       type: NodeType.HTMLNode,
       name: 'div',
       props: {
@@ -163,7 +163,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
-      key: 'some_key',
+      id: 'some_key',
       type: NodeType.HTMLNode,
       name: 'div',
       props: {
@@ -198,7 +198,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
-      key: 'some_key',
+      id: 'some_key',
       type: NodeType.HTMLNode,
       name: 'div',
       props: {
@@ -238,7 +238,7 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
-      key: 'some_key',
+      id: 'some_key',
       type: NodeType.HTMLNode,
       name: 'div',
       props: {
@@ -265,7 +265,7 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
-      key: 'some_key',
+      id: 'some_key',
       type: NodeType.HTMLNode,
       name: 'div',
       props: {
@@ -300,7 +300,7 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
-      key: 'some_key',
+      id: 'some_key',
       type: NodeType.HTMLNode,
       name: 'div',
       props: {
@@ -334,7 +334,7 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
-      key: 'some_key',
+      id: 'some_key',
       type: NodeType.HTMLNode,
       name: 'div',
       props: {
@@ -368,7 +368,7 @@ test('useAPIResultProps_resolve_expected_value', () => {
   dummyCTX.statesHubAPI = apiStateHub;
 
   const node: SchemaNode<Instantiated> = {
-    key: 'some_key',
+    id: 'some_key',
     type: NodeType.HTMLNode,
     name: 'div',
     props: {

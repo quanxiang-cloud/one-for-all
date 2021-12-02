@@ -14,7 +14,7 @@ const todoAppSchema: Schema = {
     },
   },
   node: {
-    key: 'container',
+    id: 'container',
     type: NodeType.HTMLNode,
     name: 'div',
     props: {
@@ -33,7 +33,7 @@ const todoAppSchema: Schema = {
     },
     children: [
       {
-        key: 'todo-input-html-element',
+        id: 'todo-input-html-element',
         type: NodeType.HTMLNode,
         name: 'div',
         props: {
@@ -48,7 +48,7 @@ const todoAppSchema: Schema = {
         },
         children: [
           {
-            key: 'todo-input',
+            id: 'todo-input',
             type: NodeType.HTMLNode,
             name: 'input',
             props: {
@@ -90,7 +90,7 @@ const todoAppSchema: Schema = {
             },
           },
           {
-            key: 'add-todo-btn',
+            id: 'add-todo-btn',
             type: NodeType.HTMLNode,
             name: 'button',
             props: {
@@ -122,7 +122,7 @@ const todoAppSchema: Schema = {
         ],
       },
       {
-        key: 'todo-input-form',
+        id: 'todo-input-form',
         type: NodeType.HTMLNode,
         name: 'div',
         props: {
@@ -137,7 +137,7 @@ const todoAppSchema: Schema = {
         },
         children: [
           {
-            key: 'fancy-input',
+            id: 'fancy-input',
             type: NodeType.ReactComponentNode,
             packageName: 'todo-app',
             exportName: 'TodoInput',
@@ -161,7 +161,7 @@ const todoAppSchema: Schema = {
             },
           },
           {
-            key: 'add-todo-btn',
+            id: 'add-todo-btn',
             type: NodeType.HTMLNode,
             name: 'button',
             props: {
@@ -193,7 +193,7 @@ const todoAppSchema: Schema = {
         ],
       },
       {
-        key: 'word_count',
+        id: 'word_count',
         type: NodeType.HTMLNode,
         name: 'p',
         props: {
@@ -211,7 +211,7 @@ const todoAppSchema: Schema = {
         },
       },
       {
-        key: 'refresh-todos',
+        id: 'refresh-todos',
         type: NodeType.HTMLNode,
         name: 'button',
         props: {
@@ -230,7 +230,7 @@ const todoAppSchema: Schema = {
         },
       },
       {
-        key: 'todo-list-loop',
+        id: 'todo-list-loop',
         type: NodeType.LoopContainerNode,
         props: {},
         loopKey: 'id',
@@ -253,7 +253,7 @@ const todoAppSchema: Schema = {
         },
         node: {
           type: NodeType.ReactComponentNode,
-          key: 'todo-item',
+          id: 'todo-item',
           packageName: 'todo-app',
           packageVersion: 'whatever',
           exportName: 'TodoItem',
@@ -365,7 +365,7 @@ const todoAppSchema: Schema = {
       //   },
       // },
       {
-        key: 'todo-filter',
+        id: 'todo-filter',
         type: NodeType.ReactComponentNode,
         packageName: 'todo-app',
         exportName: 'TodoFilter',

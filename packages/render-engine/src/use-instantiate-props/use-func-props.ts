@@ -17,7 +17,7 @@ export default function useFuncProps(node: SchemaNode<Instantiated>): Record<str
           func(...args);
         } catch (error) {
           logger.error(
-            `an error occurred while run node '${node.key}' functional property:`,
+            `an error occurred while run node '${node.id}' functional property:`,
             key,
             'with the following arguments:',
             '\n',

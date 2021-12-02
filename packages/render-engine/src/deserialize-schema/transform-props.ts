@@ -29,7 +29,7 @@ export function transformLoopNode(
   }
 
   return {
-    key: node.key,
+    id: node.id,
     type: node.type,
     props: node.props ? transformProps(node.props, ctx) : {},
     // todo fixme
