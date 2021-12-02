@@ -11,5 +11,5 @@ export function useLifecycleHook({ didMount, willUnmount }: LifecycleHooks<Insta
     return () => {
       willUnmount?.();
     };
-  });
+  }, []);
 }
