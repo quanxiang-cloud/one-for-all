@@ -8,8 +8,9 @@
   "types": "lib/src/index.d.ts",
   "scripts": {
     "build": "tsc --build tsconfig.json",
-    "bundle": "rm -rf dist & rollup -c rollup.config.js",
+    "bundle": "yarn run build & rm -rf dist & rollup -c rollup.config.js",
     "lint": "eslint src/**/*.ts --fix",
+    "prepack": "yarn run build",
     "test": "jest",
     "test:coverage": "jest --collectCoverage",
     "updateSnapshot": "jest --updateSnapshot"
