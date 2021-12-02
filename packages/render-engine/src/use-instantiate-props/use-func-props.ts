@@ -5,6 +5,10 @@ import { NodePropType, SchemaNode, FunctionalProperty, Instantiated, VersatileFu
 
 export default function useFuncProps(node: SchemaNode<Instantiated>): Record<string, VersatileFunc> {
   return useMemo(() => {
+    if (!node.props) {
+      return {};
+    }
+
     return Object.entries(node.props).filter((pair): pair is [string, FunctionalProperty<Instantiated>] => {
       return pair[1].type === NodePropType.FunctionalProperty;
     }).reduce<Record<string, VersatileFunc>>((acc, [key, { func }]) => {

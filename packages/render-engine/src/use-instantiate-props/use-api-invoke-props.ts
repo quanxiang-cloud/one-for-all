@@ -7,6 +7,10 @@ type APICallProps = Record<string, (...args: unknown[]) => void>;
 
 export default function useAPIInvokeProps(node: SchemaNode<Instantiated>, ctx: CTX): APICallProps {
   return useMemo(() => {
+    if (!node.props) {
+      return {};
+    }
+
     return Object.entries(node.props).filter((pair): pair is [string, APIInvokeProperty<Instantiated>] => {
       return pair[1].type === NodePropType.APIInvokeProperty;
     }).reduce<APICallProps>((acc, [propName, { stateID, paramsBuilder, callback }]) => {

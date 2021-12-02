@@ -17,7 +17,7 @@ function useAPIResultProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<str
   const states$: Record<string, BehaviorSubject<APIState>> = {};
   const initialFallbacks: Record<string, unknown> = {};
 
-  Object.entries(node.props).filter((pair): pair is [string, APIResultProperty<Instantiated>] => {
+  Object.entries(node.props || {}).filter((pair): pair is [string, APIResultProperty<Instantiated>] => {
     return pair[1].type === NodePropType.APIResultProperty;
   }).forEach(([propName, { fallback, convertor: adapter, stateID }]) => {
     initialFallbacks[propName] = fallback;

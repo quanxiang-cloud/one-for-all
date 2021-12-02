@@ -19,7 +19,7 @@ function useSharedStateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<s
   const states$: Record<string, BehaviorSubject<unknown>> = {};
   const initialFallbacks: Record<string, unknown> = {};
 
-  Object.entries(node.props).filter((pair): pair is Pair => {
+  Object.entries(node.props || {}).filter((pair): pair is Pair => {
     return pair[1].type === NodePropType.SharedStateProperty ||
       pair[1].type === NodePropType.NodeStateProperty;
   }).forEach(([key, propSpec]) => {

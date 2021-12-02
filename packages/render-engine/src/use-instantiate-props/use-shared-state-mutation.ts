@@ -14,6 +14,10 @@ type MutateProps = Record<string, (value: unknown) => void>;
 
 function useSharedStateMutationProps(node: SchemaNode<Instantiated>, ctx: CTX): MutateProps {
   return useMemo(() => {
+    if (!node.props) {
+      return {};
+    }
+
     return Object.entries(node.props)
       .filter((pair): pair is [string, SharedStateMutationProperty<Instantiated>] => {
         return pair[1].type === NodePropType.SharedStateMutationProperty;
