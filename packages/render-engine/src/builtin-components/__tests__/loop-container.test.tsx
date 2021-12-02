@@ -30,6 +30,7 @@ test('LoopContainer_resolve_empty_value', () => {
   expect(container).toMatchSnapshot();
 });
 
+// todo test case about primary value iteration
 test('LoopContainer_resolve_items', () => {
   const schema: Schema = {
     node: { key: 'some_node', type: NodeType.HTMLNode, name: 'div', props: {} },

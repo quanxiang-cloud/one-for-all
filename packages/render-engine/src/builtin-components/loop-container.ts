@@ -51,15 +51,18 @@ function getAppropriateKey(item: unknown, loopKey: string, index: number): strin
   return index;
 }
 
-type UseComputedPropsListParams = {
+type UseMergedPropsListParams = {
   iterableState: IterableState<Instantiated>;
   toProps: (item: unknown) => Record<string, unknown>;
   otherProps: NodeProperties<Instantiated>;
   ctx: CTX;
   loopKey: string;
 }
-function useComputedPropsList(
-  { iterableState, toProps, otherProps, ctx, loopKey }: UseComputedPropsListParams,
+
+// useMergedPropsList return a list of `props` and `key` which could be used for iteration,
+// each `props` merged iterableState and otherProps
+function useMergedPropsList(
+  { iterableState, toProps, otherProps, ctx, loopKey }: UseMergedPropsListParams,
 ): Array<[NodeProperties<Instantiated>, React.Key]> {
   const iterable = useIterable(iterableState, ctx);
 
@@ -85,10 +88,13 @@ export type Props = {
   toProps: (item: unknown) => Record<string, unknown>;
   node: SchemaNode<Instantiated>;
   ctx: CTX;
+  containerProps?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>;
 }
 
-function LoopContainer({ iterableState, loopKey, node, ctx, toProps }: Props): React.ReactElement {
-  const computedPropsList = useComputedPropsList({
+function LoopContainer(
+  { iterableState, loopKey, node, ctx, toProps, containerProps }: Props,
+): React.ReactElement {
+  const mergedPropsList = useMergedPropsList({
     iterableState,
     toProps,
     ctx,
@@ -97,17 +103,12 @@ function LoopContainer({ iterableState, loopKey, node, ctx, toProps }: Props): R
   });
 
   return React.createElement(
-    // use div or span?, should be configurable
     'div',
-    // todo layout props
-    null,
-    computedPropsList.map(([props, key]): React.ReactElement => {
+    containerProps,
+    mergedPropsList.map(([props, key]): React.ReactElement => {
       const newNode = Object.assign({}, node, { props });
 
-      return React.createElement(
-        NodeRender,
-        { key, node: newNode, ctx },
-      );
+      return React.createElement(NodeRender, { key, node: newNode, ctx });
     }),
   );
 }

@@ -11,11 +11,11 @@ type Props = {
 function LoopNodeRender({ node, ctx }: Props): React.ReactElement {
   return React.createElement(LoopContainer, {
     iterableState: node.iterableState,
-    // todo fixme
     loopKey: node.loopKey,
     node: node.node,
     // todo handle error
     toProps: (v: unknown) => node.toProps.func(v) as Record<string, unknown>,
+    containerProps: node.props,
     ctx,
   });
 }
