@@ -1,5 +1,4 @@
 import { noop } from 'rxjs';
-import { logger } from '@ofa/utils';
 
 import {
   BaseFunctionSpec,
@@ -59,7 +58,7 @@ export function instantiateLifecycleHook(
 export function instantiateFuncSpec<T = unknown>(
   spec: BaseFunctionSpec,
   ctx: CTX,
-): VersatileFunc<T> | undefined {
+): VersatileFunc<T> {
   const publicCtx = { apiStates: ctx.apiStates, states: ctx.states };
   try {
     const fn = new Function(spec.args, spec.body).bind(publicCtx);
@@ -72,17 +71,19 @@ export function instantiateFuncSpec<T = unknown>(
     ].join('\n');
     return fn;
   } catch (error) {
-    logger.error(
-      'failed to instantiate function of following spec:',
-      '\n',
-      'spec.args:',
-      spec.args,
-      '\n',
-      'spec.body:',
-      '\n',
-      spec.body,
-      '\n',
-      error,
+    throw new Error(
+      [
+        'failed to instantiate function of following spec:',
+        '\n',
+        'spec.args:',
+        spec.args,
+        '\n',
+        'spec.body:',
+        '\n',
+        spec.body,
+        '\n',
+        error,
+      ].join(''),
     );
   }
 }

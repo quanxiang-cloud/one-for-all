@@ -242,12 +242,9 @@ const todoAppSchema: Schema = {
           },
         },
         toProps: {
-          type: NodePropType.FunctionalProperty,
-          func: {
-            type: 'raw',
-            args: 'todo',
-            body: 'return { todo };',
-          },
+          type: 'to_props_function_spec',
+          args: 'todo',
+          body: 'return { todo };',
         },
         node: {
           type: NodeType.ReactComponentNode,

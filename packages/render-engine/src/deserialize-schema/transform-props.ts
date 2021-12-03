@@ -7,7 +7,6 @@ import {
   Instantiated,
   NodePropType,
   IterableState,
-  FunctionalProperty,
   CTX,
   LoopContainerNode,
 } from '../types';
@@ -18,11 +17,8 @@ export function transformLoopNode(
   node: LoopContainerNode<Serialized>,
   ctx: CTX,
 ): LoopContainerNode<Instantiated> {
-  const { iterableState, toProps } = transformProps({
-    iterableState: node.iterableState,
-    toProps: node.toProps,
-  }, ctx);
-
+  const { iterableState } = transformProps({ iterableState: node.iterableState }, ctx);
+  const instantiatedToProps = instantiateFuncSpec<Record<string, unknown>>(node.toProps, ctx);
   const instantiatedNode = deserializeSchema(node.node, ctx);
   if (!instantiatedNode) {
     throw new Error('failed to deserialize loop node schema');
@@ -34,8 +30,7 @@ export function transformLoopNode(
     props: node.props ? transformProps(node.props, ctx) : {},
     // todo fixme
     iterableState: iterableState as IterableState<Instantiated>,
-    // todo fixme
-    toProps: toProps as FunctionalProperty<Instantiated>,
+    toProps: instantiatedToProps,
     loopKey: node.loopKey,
     node: instantiatedNode,
   };

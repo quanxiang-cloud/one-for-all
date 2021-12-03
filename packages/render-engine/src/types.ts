@@ -90,6 +90,14 @@ export type StateConvertorFuncSpec = BaseFunctionSpec & {
   args: 'state';
 };
 
+// toProps function should return Record<string, unknown>;
+export type ToPropsFuncSpec = BaseFunctionSpec & {
+  type: 'to_props_function_spec',
+};
+export type ToProps<T> = T extends Serialized ?
+  ToPropsFuncSpec :
+  (...args: unknown[]) => Record<string, unknown>;
+
 export type APILoadingProperty = BaseNodeProperty & {
   type: NodePropType.APILoadingProperty;
   stateID: string;
@@ -258,7 +266,7 @@ export interface LoopContainerNode<T extends Serialized | Instantiated> extends 
   iterableState: IterableState<T>;
   loopKey: string;
   node: SchemaNode<T>;
-  toProps: FunctionalProperty<T>;
+  toProps: ToProps<T>;
 }
 
 export type SchemaNode<T extends Serialized | Instantiated> =
