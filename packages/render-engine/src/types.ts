@@ -23,9 +23,20 @@ export const enum NodePropType {
   SharedStateMutationProperty = 'shared_state_mutation_property',
 
   FunctionalProperty = 'functional_property',
+
+  // <ParentComponent
+  //   render={<SomeComponent />}
+  // />
+  // <ParentComponent
+  //   render={(someData): JSX.Element => (<SomeComponent data={someData} />)}
+  // />
+  // <ParentComponent
+  //   render={(someData, someIgnoredValue): JSX.Element => (<SomeComponent data={someData} otherProp={otherProp} />)}
+  // />
+  RenderProperty = 'render_property',
 }
 
-export type NodeProperty<T> =
+export type NodeProperty<T extends Serialized | Instantiated> =
   ConstantProperty |
   APIResultProperty<T> |
   APILoadingProperty |
@@ -33,10 +44,11 @@ export type NodeProperty<T> =
   NodeStateProperty<T> |
   FunctionalProperty<T> |
   SharedStateMutationProperty<T> |
-  APIInvokeProperty<T>;
+  APIInvokeProperty<T> |
+  RenderProperty<T>;
   // Array<APIInvokeProperty<T>>;
 
-export type NodeProperties<T> = Record<string, NodeProperty<T>>;
+export type NodeProperties<T extends Serialized | Instantiated> = Record<string, NodeProperty<T>>;
 
 type BaseNodeProperty = {
   type: NodePropType;
@@ -136,6 +148,12 @@ export type APIInvokeProperty<T> = {
   // the required return type is too complex
   paramsBuilder?: ParamsBuilder<T>;
   callback?: T extends Serialized ? APIFetchCallbackSpec : APIFetchCallback;
+}
+
+export type RenderProperty<T extends Serialized | Instantiated> = BaseNodeProperty & {
+  type: NodePropType.RenderProperty;
+  toProps?: ToProps<T>;
+  node: SchemaNode<T>;
 }
 
 export type ParamsBuilder<T> = T extends Serialized ?

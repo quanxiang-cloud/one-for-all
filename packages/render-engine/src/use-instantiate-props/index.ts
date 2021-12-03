@@ -13,6 +13,7 @@ import useSharedStateProps from './use-shared-state-props';
 import useFuncProps from './use-func-props';
 import useSharedStateMutationProps from './use-shared-state-mutation';
 import useInternalHookProps from './use-internal-hook-props';
+import useRenderProps from './use-render-props';
 
 function useInstantiateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, unknown> {
   const constantProps = useConstantProps(node);
@@ -24,6 +25,7 @@ function useInstantiateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<s
 
   const sharedStateMutationProps = useSharedStateMutationProps(node, ctx);
   const apiStateInvokeProps = useAPIInvokeProps(node, ctx);
+  const renderProps = useRenderProps(node, ctx);
 
   return useMemo(() => {
     return Object.assign(
@@ -35,6 +37,7 @@ function useInstantiateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<s
       funcProps,
       sharedStateMutationProps,
       internalHookProps,
+      renderProps,
     );
   }, [apiResultProps, sharedStateProps, apiLoadingProps]);
 }

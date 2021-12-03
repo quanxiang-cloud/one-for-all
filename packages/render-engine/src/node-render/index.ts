@@ -1,4 +1,5 @@
 import React from 'react';
+import { logger } from '@ofa/utils';
 
 import HTMLNodeRender from './html-node-render';
 import LoopNodeRender from './loop-node-render';
@@ -39,7 +40,12 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
     return React.createElement(HTMLNodeRender, { node, ctx });
   }
 
-  return React.createElement(ReactComponentNodeRender, { node, ctx });
+  if (node.type === NodeType.ReactComponentNode) {
+    return React.createElement(ReactComponentNodeRender, { node, ctx });
+  }
+
+  logger.error('Unrecognized node type of node:', node);
+  return null;
 }
 
 export default NodeRender;
