@@ -1,7 +1,5 @@
 dist
 lib
 node_modules
-gulpfile.js
 scripts/*
-cypress
 jest.*.js
