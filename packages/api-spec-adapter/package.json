@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "build": "tsc --build tsconfig.json",
-    "bundle": "rm -rf dist & rollup -c rollup.config.js",
+    "bundle": "rm -rf dist & yarn run build & rollup -c rollup.config.js",
     "test": "jest",
     "test:coverage": "jest --collectCoverage",
     "updateSnapshot": "jest --updateSnapshot"
