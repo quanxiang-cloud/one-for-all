@@ -24,8 +24,9 @@
       "imports": {
         "todo-app": "/dist/todo.js",
         "@ofa/render-engine": "/pkg/render-engine/dist/@ofa/render-engine@latest/index.js",
-        "@ofa/api-spec-adapter": "/pkg/api-spec-adapter/dist/@ofa/api-spec-adapter@0.0.1/index.js",
-        "@ofa/utils": "/pkg/utils/dist/@ofa/utils@0.0.1/index.js"
+        "@ofa/api-spec-adapter": "/pkg/api-spec-adapter/dist/@ofa/api-spec-adapter@0.0.1@latest/index.js",
+        "@ofa/utils": "/pkg/utils/dist/@ofa/utils@0.0.1@latest/index.js",
+        "@ofa/ui": "/pkg/ui/dist/@ofa/ui@latest/index.js"
       }
     }
   </script>
@@ -44,6 +45,11 @@
         // append .js file extension if url is missing a file extension
         return endsWithFileExtension.test(url) ? url : url + ".js";
       };
+
+      // fixme: react throw process not defined
+      if(!window.process){
+        window.process={env: {NODE_ENV: 'development'}}
+      }
     })();
   </script>
 </head>
