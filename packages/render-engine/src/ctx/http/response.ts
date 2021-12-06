@@ -1,3 +1,4 @@
+import { APISpecAdapter } from '@ofa/api-spec-adapter';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { AjaxConfig } from 'rxjs/ajax';
 import { map, filter } from 'rxjs/operators';
@@ -19,12 +20,24 @@ import http from './http';
 */
 export const initialState: APIState = { result: undefined, error: undefined, loading: false };
 
-function getResponseState$(request$: Observable<AjaxConfig>): BehaviorSubject<APIState> {
+function getResponseState$(
+  request$: Observable<AjaxConfig>,
+  adapter: APISpecAdapter,
+): BehaviorSubject<APIState> {
   const state$ = new BehaviorSubject<APIState>(initialState);
   const response$ = http(request$);
 
   response$.pipe(
     map(({ result, error }) => ({ result, error, loading: false })),
+    map<APIState, APIState>((apiState) => {
+      if (!adapter.responseAdapter) {
+        return apiState;
+      }
+
+      const transformed = adapter.responseAdapter(apiState);
+
+      return { ...transformed, loading: apiState.loading };
+    }),
   ).subscribe(state$);
 
   request$.pipe(
