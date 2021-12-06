@@ -1,6 +1,5 @@
 .btn {
   flex-shrink: 0;
-
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -116,10 +115,6 @@
 .header-nav-btn-icon {
   @apply fill-current text-gray-600;
 }
-
-//.header-nav-btn-text {
-//  @apply text-button;
-//}
 
 .header-nav-btn-icon-wrapper {
   @apply w-20 h-20 mr-4 flex items-center;

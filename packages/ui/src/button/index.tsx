@@ -1,7 +1,7 @@
 import React, { forwardRef, Ref } from 'react';
 import cs from 'classnames';
 
-import Icon from '@c/icon';
+import Icon from '../icon';
 
 interface Props
   extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>,

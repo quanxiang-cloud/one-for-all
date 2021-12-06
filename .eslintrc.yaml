@@ -11,7 +11,6 @@ plugins:
 env:
   browser: true
   es2021: true
-  node: true
 globals:
   window: true
 parserOptions:
@@ -39,10 +38,8 @@ rules:
   '@typescript-eslint/no-invalid-this':
     - error
   '@typescript-eslint/no-unused-vars':
-    - warn
+    - error
     - varsIgnorePattern: _
-  '@typescript-eslint/no-var-requires':
-    - off
   camelcase: 'off'
   arrow-parens:
     - error

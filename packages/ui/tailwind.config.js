@@ -1,7 +1,7 @@
-const colors = require('./config/colors');
+const colors = require('./colors');
 
 module.exports = {
-  // mode: 'jit',
+  mode: 'jit',
   purge: [
     './src/**/*.ts',
     './src/**/*.tsx',

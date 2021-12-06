@@ -1,6 +1,6 @@
 import React, { DetailedHTMLProps, HTMLAttributes, useRef, cloneElement } from 'react';
 
-import Popper from '@c/popper';
+import Popper from '../popper';
 
 import Tip from './tip';
 

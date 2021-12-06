@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import cs from 'classnames';
 
-import Icon from '@c/icon';
+import Icon from '../icon';
 
 import './panel.scss';
 

@@ -3,8 +3,8 @@ import { createPortal } from 'react-dom';
 import styled, { createGlobalStyle, keyframes, css } from 'styled-components';
 import cs from 'classnames';
 
-import Icon from '@c/icon';
-import Button from '@c/button';
+import Icon from '../icon';
+import Button from '../button';
 
 import creatModal from './dialog-modal';
 

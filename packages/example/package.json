@@ -14,8 +14,7 @@
     "express": "^4.17.1",
     "lodash": "^4.17.20",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "@ofa/ui": "*"
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^20.0.0",
