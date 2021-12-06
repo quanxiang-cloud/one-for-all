@@ -1,0 +1,73 @@
+.svg-icon {
+  @apply align-middle;
+  display: inline-block;
+  color: currentColor;
+  fill: currentColor;
+}
+
+.svg-icon--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.svg-icon--changeable {
+  &:hover,
+  &:active {
+    color: var(--icon-coloured-color);
+    fill: var(--icon-coloured-fill);
+  }
+}
+
+.svg-icon--clickable {
+  cursor: pointer;
+}
+
+.svg-icon--blue {
+  color: var(--blue-600);
+  fill: var(--blue-400);
+}
+
+.svg-icon--red {
+  color: var(--red-600);
+  fill: var(--red-400);
+}
+
+.svg-icon--green {
+  color: var(--green-600);
+  fill: var(--green-400);
+}
+
+.svg-icon--yellow {
+  color: var(--yellow-600);
+  fill: var(--yellow-400);
+}
+
+.svg-icon--gray {
+  color: var(--gray-600);
+  fill: var(--gray-400);
+}
+
+.svg-icon--pink {
+  color: var(--pink-600);
+  fill: var(--pink-400);
+}
+
+.svg-icon--rose {
+  color: var(--rose-600);
+  fill: var(--rose-400);
+}
+
+.svg-icon--orange {
+  color: var(--orange-600);
+  fill: var(--orange-400);
+}
+
+.svg-icon--white {
+  color: var(--icon-light-color);
+  fill: var(--icon-light-fill);
+}
+
+.svg-icon--primary {
+  color: var(--primary-600);
+  fill: var(--primary-400);
+}

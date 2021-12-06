@@ -1,0 +1,23 @@
+:root {
+  --scrollbar-color: #babac0;
+  --scrollbar-size: 5px;
+}
+
+::-webkit-scrollbar {
+  width: var(--scrollbar-size);
+  height: var(--scrollbar-size);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: var(--scrollbar-size);
+  background-color: var(--scrollbar-color);
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-color);
+}

@@ -1,0 +1,223 @@
+.btn {
+  flex-shrink: 0;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 16px;
+  padding-right: 16px;
+  line-height: 30px;
+
+  font-weight: 400;
+  font-size: 14px;
+
+  border-radius: 8px 2px 8px 8px;
+  border: 1px solid var(--gray-700);
+  background-color: white;
+
+  cursor: pointer;
+  user-select: none;
+}
+
+.btn--disabled {
+  cursor: not-allowed;
+}
+
+.btn {
+  font-weight: 500;
+  color: var(--gray-600);
+  transition: all 0.3s linear;
+}
+
+.btn:hover:not(.btn--forbidden) {
+  color: var(--gray-900);
+  border-color: var(--gray-800);
+}
+
+.btn:hover:active {
+  color: white;
+  background-color: var(--gray-900);
+}
+
+.btn:not(.icon-btn) .icon {
+  margin-right: 8px;
+}
+
+.btn--primary {
+  color: white;
+  background-color: var(--gray-700);
+}
+
+.btn--loading {
+  min-height: 28px;
+}
+
+.btn--primary:hover:not(.btn--forbidden) {
+  color: white;
+  background-color: var(--gray-600);
+}
+
+.btn--primary:hover:active {
+  background-color: var(--gray-800);
+}
+
+.btn--forbidden {
+  cursor: not-allowed;
+}
+
+.icon-btn {
+  padding-left: 0;
+  padding-right: 0;
+  border: 1px solid var(--gray-600);
+}
+
+.button-bg-light {
+  border-color: var(--gray-700);
+  background-color: var(--gray-700);
+}
+
+.button-bg-light:hover:not(.btn--forbidden) {
+  border-color: var(--gray-600);
+  background-color: var(--gray-600);
+}
+
+.button-bg-light:active:not(.btn--forbidden) {
+  border-color: var(--gray-800);
+  background-color: var(--gray-800);
+}
+
+.button-bg-dark {
+  border-color: var(--gray-600);
+  background-color: #FFF;
+}
+
+.button-bg-dark svg {
+  color: var(--gray-600);
+}
+
+.button-bg-dark:hover:not(.btn--forbidden) {
+  border-color: var(--gray-800);
+  background-color: #FFF;
+}
+
+.button-bg-dark:hover:not(.btn--forbidden) svg {
+  color: var(--gray-800);
+}
+
+.button-bg-dark:active:not(.btn--forbidden) {
+  border-color: var(--gray-800);
+  background-color: var(--gray-800);
+}
+
+.button-bg-dark:active:not(.btn--forbidden) svg {
+  color: #FFF;
+}
+
+.header-nav-btn-icon {
+  @apply fill-current text-gray-600;
+}
+
+//.header-nav-btn-text {
+//  @apply text-button;
+//}
+
+.header-nav-btn-icon-wrapper {
+  @apply w-20 h-20 mr-4 flex items-center;
+}
+
+.btn--danger {
+  color: #ddd;
+  background-color: var(--red-500);
+  border-color: transparent;
+}
+
+.btn--danger:not(.btn--forbidden):is(:hover, :focus) {
+  color: #fff;
+  border-color: transparent;
+}
+
+.btn-badge {
+  border-radius: 8px 8px 8px 2px;
+  padding: 6px;
+  border: none;
+  height: 20px;
+}
+
+@layer components {
+  .button-border-radius {
+    @apply rounded-tl-8 rounded-tr-2 rounded-br-8 rounded-bl-8;
+  }
+
+  .button-reverse-border-radius {
+    @apply rounded-tl-8 rounded-tr-8 rounded-br-8 rounded-bl-2;
+  }
+
+  .light-button {
+    @apply bg-white;
+  }
+
+  .opacity-button {
+    @apply cursor-pointer flex justify-between items-center button-border-radius rounded-tr-none px-16 py-5 border-1.5 border-solid border-gray-600;
+  }
+
+  /* todo remove this */
+  .header-nav-btn {
+    @apply flex justify-between items-center transition-all hover:bg-gray-100 button-reverse-border-radius cursor-pointer;
+  }
+
+  .global-header-nav {
+    @apply h-32 flex font-semibold justify-between items-center px-8 text-gray-400 corner-8-8-8-2 cursor-pointer hover:text-gray-600 hover:bg-gray-100;
+  }
+
+  .global-header-nav:not(:last-child) {
+    margin-right: 20px;
+  }
+
+  .global-header-nav:hover .svg-icon, .global-header-nav--active .svg-icon {
+    @apply text-gray-600;
+  }
+
+  .global-header-nav--active {
+    @apply text-gray-900 font-semibold;
+  }
+}
+
+.text-btn {
+  cursor: pointer;
+  color: var(--blue-600);
+}
+
+.delete-text-btn {
+  cursor: pointer;
+  color: var(--red-600);
+}
+
+.text-btn:hover {
+  color: var(--blue-800);
+}
+
+.delete-text-btn {
+  cursor: pointer;
+  color: var(--red-600);
+}
+
+.delete-text-btn:hover {
+  color: var(--red-800);
+}
+
+.icon-text-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 8px;
+  cursor: pointer;
+  color: var(--gray-600);
+}
+
+.icon-text-btn svg {
+  margin-right: 4px;
+  color: inherit;
+}
+
+.icon-text-btn:hover {
+  color: var(--blue-600);
+}
