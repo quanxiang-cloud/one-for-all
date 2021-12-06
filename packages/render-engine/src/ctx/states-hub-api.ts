@@ -1,5 +1,5 @@
 import { BehaviorSubject, Subject } from 'rxjs';
-import { map, skip, filter, share } from 'rxjs/operators';
+import { map, filter, share, skip } from 'rxjs/operators';
 import type { APISpecAdapter, FetchParams } from '@ofa/api-spec-adapter';
 
 import type {
@@ -83,21 +83,14 @@ export default class APIStatesHub implements StatesHubAPI {
       share(),
     );
 
-    const apiState$ = getResponseState$(request$);
-
     let _latestRunParams: RunParam | undefined = undefined;
+    const apiState$ = getResponseState$(request$, this.apiSpecAdapter);
 
     // run callbacks after value resolved
     apiState$.pipe(
       skip(1),
-      map<APIState, APIState>((apiState) => {
-        if (!this.apiSpecAdapter.responseAdapter) {
-          return apiState;
-        }
-
-        const transformed = this.apiSpecAdapter.responseAdapter(apiState);
-
-        return { ...transformed, loading: apiState.loading };
+      filter(({ loading }) => {
+        return !loading;
       }),
     ).subscribe((state) => {
       // todo refactor this

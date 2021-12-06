@@ -5,11 +5,9 @@ import typescriptPaths from '../../scripts/rollup-plugin-typescript-paths';
 import getOutput from '../../scripts/get-common-output';
 import packageJSON from './package.json';
 
-const packageName = `${packageJSON.name}@${packageJSON.version}`;
-
 export default {
   input: 'src/index.ts',
-  output: getOutput(packageName),
+  output: getOutput(packageJSON.name, packageJSON.version),
 
   external: ['rxjs', /@ofa\/.*/, /rxjs\/.*/],
 

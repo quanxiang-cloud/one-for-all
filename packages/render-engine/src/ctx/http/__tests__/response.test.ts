@@ -1,5 +1,6 @@
 import mockXHR, { sequence } from 'xhr-mock';
 import { Observable, Subject } from 'rxjs';
+import { APISpecAdapter } from '@ofa/api-spec-adapter';
 
 // import petStoreSpec from '../../spec-interpreter/__tests__/fixtures/petstore-spec';
 // import SpecInterpreter from '../../spec-interpreter';
@@ -7,6 +8,10 @@ import getResponseState$ from '../response';
 import { AjaxConfig } from 'rxjs/ajax';
 
 // const specInterpreter = new SpecInterpreter(petStoreSpec);
+
+const apiSpecAdapter: APISpecAdapter = {
+  build: () => ({ url: '/api', method: 'get' }),
+};
 
 beforeEach(() => mockXHR.setup());
 afterEach(() => mockXHR.teardown());
@@ -20,7 +25,7 @@ function wait(timeSecond: number): Promise<boolean> {
 }
 
 test('response_return_initial_state', (done) => {
-  const response$ = getResponseState$(new Observable<AjaxConfig>());
+  const response$ = getResponseState$(new Observable<AjaxConfig>(), apiSpecAdapter);
 
   response$.subscribe(({ result, loading, error }) => {
     try {
@@ -42,7 +47,7 @@ describe('response_state_table', () => {
     });
 
     const request$ = new Subject<AjaxConfig>();
-    const response$ = getResponseState$(request$);
+    const response$ = getResponseState$(request$, apiSpecAdapter);
     const loadings: Array<boolean> = [];
 
     response$.subscribe(({ loading }) => loadings.push(loading));
@@ -65,7 +70,7 @@ describe('response_state_table', () => {
     ]));
 
     const request$ = new Subject<AjaxConfig>();
-    const response$ = getResponseState$(request$);
+    const response$ = getResponseState$(request$, apiSpecAdapter);
     const dataList: Array<unknown> = [];
     const errorList: Array<unknown> = [];
 
