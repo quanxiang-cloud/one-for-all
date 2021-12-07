@@ -27,7 +27,12 @@ function useIterable(iterableState: IterableState<Instantiated>, ctx: CTX): Arra
 
   if (!Array.isArray(iterable)) {
     // todo better error tips
-    logger.error('state is not iterable');
+    logger.error(
+      'state is not iterable.',
+      'LoopContainer node [node_id] require a array type state,',
+      'please check the follow property spec:\n',
+      iterableState,
+    );
     return [];
   }
 
