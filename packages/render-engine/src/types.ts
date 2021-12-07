@@ -306,7 +306,8 @@ export type Schema = {
 
 export type InstantiatedNode = SchemaNode<Instantiated>;
 
-export type DynamicComponent = React.FC<Record<string, unknown>> | React.ComponentClass<unknown>;
+// todo fixme
+export type DynamicComponent = React.FC<any> | React.ComponentClass<unknown>;
 
 type PackageNameVersion = string;
 export type Repository = Record<PackageNameVersion, Record<string, DynamicComponent>>;
