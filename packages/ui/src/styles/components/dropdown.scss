@@ -16,6 +16,7 @@
   .dropdown-trigger {
     min-width: 90px;
     max-width: 500px;
-    @apply flex items-center justify-between h-32 px-16 border corner-2-8-8-8 bg-white cursor-pointer select-none;
+    //@apply flex items-center justify-between h-32 px-16 border corner-2-8-8-8 bg-white cursor-pointer select-none;
+    @apply flex items-center justify-between h-32 px-16 border bg-white cursor-pointer select-none;
   }
 }

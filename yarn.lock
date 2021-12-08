@@ -5225,6 +5225,23 @@ mkdirp@~0.5.1:
   dependencies:
     minimist "^1.2.5"
 
+mobx-react-lite@^3.2.0:
+  version "3.2.2"
+  resolved "https://registry.npmmirror.com/mobx-react-lite/download/mobx-react-lite-3.2.2.tgz#cee5f09e6b0e4d2705d87276baf1de74d997fa33"
+  integrity sha1-zuXwnmsOTScF2HJ2uvHedNmX+jM=
+
+mobx-react@^7.2.1:
+  version "7.2.1"
+  resolved "https://registry.npmmirror.com/mobx-react/download/mobx-react-7.2.1.tgz#e9d4c04dc63d05e1139ce773f5fee7a5b4cb7c78"
+  integrity sha1-6dTATcY9BeETnOdz9f7npbTLfHg=
+  dependencies:
+    mobx-react-lite "^3.2.0"
+
+mobx@^6.3.8:
+  version "6.3.8"
+  resolved "https://registry.npmmirror.com/mobx/download/mobx-6.3.8.tgz#a4654b1b69c683237f2444cf0af39a621d4611af"
+  integrity sha512-RfG2y766P1o9u9xrQht/HBXEoUPIr4B3Gjri3reLW/TuHm3I/3TfBBS0OaeMbw19RIF0AymqjDNlJgakN4ZK7g==
+
 modern-normalize@^1.1.0:
   version "1.1.0"
   resolved "https://registry.nlark.com/modern-normalize/download/modern-normalize-1.1.0.tgz?cache=0&sync_timestamp=1619951149003&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fmodern-normalize%2Fdownload%2Fmodern-normalize-1.1.0.tgz#da8e80140d9221426bd4f725c6e11283d34f90b7"
@@ -6597,6 +6614,13 @@ react-beautiful-dnd@^13.1.0:
     redux "^4.0.4"
     use-memo-one "^1.1.1"
 
+react-dnd-html5-backend@^14.0.2:
+  version "14.0.2"
+  resolved "https://registry.npmmirror.com/react-dnd-html5-backend/download/react-dnd-html5-backend-14.0.2.tgz#25019388f6abdeeda3a6fea835dff155abb2085c"
+  integrity sha1-JQGTiPar3u2jpv6oNd/xVauyCFw=
+  dependencies:
+    dnd-core "14.0.1"
+
 react-dnd@^14.0.4:
   version "14.0.4"
   resolved "https://registry.npmmirror.com/react-dnd/download/react-dnd-14.0.4.tgz#ffb4ea0e2a3a5532f9c6294d565742008a52b8b0"
@@ -6662,6 +6686,11 @@ react-flow-renderer@^9.6.9:
     react-draggable "^4.4.4"
     react-redux "^7.2.6"
     redux "^4.1.2"
+
+react-hook-form@^7.20.4:
+  version "7.21.0"
+  resolved "https://registry.npmmirror.com/react-hook-form/download/react-hook-form-7.21.0.tgz#f6f0311295b83ca768873ca9f2a787ff1525f591"
+  integrity sha512-aekCf+dedYFIg+7nCK2acMvZ+s6Ohw2I7UNQ+zNIadBl1SoXow2Tl6c3F49xF8GFCdn5jeK43JHH26rmtdRyLQ==
 
 react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"

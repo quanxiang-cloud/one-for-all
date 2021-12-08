@@ -1,0 +1,46 @@
+{
+  "name": "@ofa/page-engine",
+  "version": "0.1.0",
+  "description": "A qxp page engine",
+  "main": "dist/index.js",
+  "module": "lib",
+  "types": "lib/src/index.d.ts",
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "scripts": {
+    "test": "jest",
+    "clean": "rm -rf dist lib",
+    "prebundle": "yarn run clean && yarn run build",
+    "build": "tsc --build tsconfig.json",
+    "bundle": "rollup -c",
+    "lint": "eslint src/**/*.ts --fix"
+  },
+  "author": "sunnyw <sunnywang@yunify.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "@types/classnames": "^2.3.1",
+    "rollup": "^2.60.2",
+    "rollup-plugin-esbuild": "^4.6.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-styles": "^3.14.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "sass": "^1.44.0"
+  },
+  "peerDependencies": {
+    "classnames": "^2.3.1",
+    "lodash": "^4.17.21",
+    "react": "^17.0.2"
+  },
+  "dependencies": {
+    "mobx": "^6.3.8",
+    "mobx-react": "^7.2.1",
+    "nanoid": "^3.1.30",
+    "react-dnd": "^14.0.4",
+    "react-dnd-html5-backend": "^14.0.2",
+    "react-hook-form": "^7.20.4"
+  }
+}

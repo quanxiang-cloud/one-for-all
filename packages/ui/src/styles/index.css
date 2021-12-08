@@ -15,7 +15,7 @@
 
 @import './components/btn.scss';
 @import "./components/icon.scss";
-/*@import "./components/dropdown.scss";*/
+@import "./components/dropdown.scss";
 
 
 html {

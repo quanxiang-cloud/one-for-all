@@ -8,6 +8,8 @@ import Tooltip from './tooltip';
 import toast from './toast';
 import Modal from './modal';
 import Tab from './tab';
+import Select from './select';
+import Tag from './tag';
 
 export {
   Icon,
@@ -18,4 +20,6 @@ export {
   toast,
   Modal,
   Tab,
+  Select,
+  Tag,
 };
