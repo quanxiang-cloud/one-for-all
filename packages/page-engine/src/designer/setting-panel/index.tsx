@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { observer } from 'mobx-react';
 
 import { Tab } from '@ofa/ui';
-import ctx from '@page-engine/ctx';
+import ctx from '../../ctx';
 
 import StylePanel from './style-panel';
 import EventPanel from './event-panel';

@@ -3,7 +3,7 @@ import cs from 'classnames';
 import { observer } from 'mobx-react';
 
 import { Panel } from '@ofa/ui';
-import ctx from '@page-engine/ctx';
+import ctx from '../../ctx';
 
 import Group from './group';
 import { groups, panelTitle } from './config';

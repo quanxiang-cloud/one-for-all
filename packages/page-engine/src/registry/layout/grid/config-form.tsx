@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 // import { useForm, Controller } from 'react-hook-form';
 import { defaults } from 'lodash';
 
-import ctx from '@page-engine/ctx';
 import { Select } from '@ofa/ui';
+import ctx from '../../../ctx';
 
 import type { Props } from './grid';
 

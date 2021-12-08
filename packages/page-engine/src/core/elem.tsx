@@ -4,7 +4,7 @@ import { useDrag, useDrop, DragPreviewImage } from 'react-dnd';
 import { observer } from 'mobx-react';
 
 import { Icon, Tooltip } from '@ofa/ui';
-import ctx from '@page-engine/ctx';
+import ctx from '../ctx';
 import { encode } from '../utils/base64';
 import { elemId } from '../utils';
 

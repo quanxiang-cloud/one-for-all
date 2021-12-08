@@ -78,5 +78,31 @@ export default [
       //   production: true
       // }),
     ]
+  },
+
+  // build for page engine
+  {
+    input: 'src/page-engine/index.tsx',
+    output: {
+      file: 'dist/page-engine/index.js',
+      format: 'system'
+    },
+
+    external: ['react', 'react-dom', /@ofa\/.*/],
+
+    plugins: [
+      commonjs(),
+      styles({ modules: false }),
+      nodeResolve({
+        browser: true,
+        mainFields: ['main'],
+      }),
+      typescriptPaths(),
+      sucrase({
+        exclude: ['node_modules/**'],
+        transforms: ['typescript', 'jsx'],
+        production: true
+      }),
+    ]
   }
 ];

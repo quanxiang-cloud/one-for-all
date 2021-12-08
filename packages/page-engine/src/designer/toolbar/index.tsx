@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import cs from 'classnames';
 
 import { Icon, Button, Modal } from '@ofa/ui';
-import ctx from '@page-engine/ctx';
+import ctx from '../../ctx';
 
 import styles from './index.m.scss';
 

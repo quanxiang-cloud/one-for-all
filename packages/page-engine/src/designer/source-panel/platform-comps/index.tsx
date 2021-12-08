@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { observer } from 'mobx-react';
 import { get } from 'lodash';
 
-import ctx from '@page-engine/ctx';
+import ctx from '../../../ctx';
 import SourceElem from './source-elem';
 
 import styles from './index.m.scss';

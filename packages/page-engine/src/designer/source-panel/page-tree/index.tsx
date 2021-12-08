@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { observer } from 'mobx-react';
 
-import ctx from '@page-engine/ctx';
+import ctx from '../../../ctx';
 
 interface Props {
   className?: string;
