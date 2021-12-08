@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HTMLNodeRender_match_snapshots 1`] = `
+<div>
+  <div
+    class="foo bar"
+    id="some_id"
+  >
+    <span>
+      <span />
+    </span>
+    <span>
+      <span />
+    </span>
+  </div>
+</div>
+`;
+
+exports[`HTMLNodeRender_should_handle_empty_html_tag 1`] = `<div />`;

@@ -1,8 +1,11 @@
 export type Res = { result?: any; error?: Error };
 
+export type RequestBuilder = (apiID: string, fetchParams?: FetchParams) => AjaxConfig | undefined;
+export type ResponseAdapter = (res: { body?: any; error?: Error }) => Res;
+
 export interface APISpecAdapter {
-  build: (apiID: string, fetchParams?: FetchParams) => AjaxConfig | undefined;
-  responseAdapter?: (res: Res) => Res;
+  build: RequestBuilder;
+  responseAdapter?: ResponseAdapter;
 }
 
 enum HttpMethods {

@@ -30,6 +30,45 @@ test('LoopContainer_resolve_empty_value', () => {
   expect(container).toMatchSnapshot();
 });
 
+test('LoopContainer_should_log_error_when_iterableState_is_not_iterable', () => {
+  const schema: Schema = {
+    node: { id: 'some_node', type: NodeType.HTMLNode, name: 'div', props: {} },
+    apiStateSpec: {},
+    sharedStatesSpec: {},
+  };
+  const apiSpecAdapter: APISpecAdapter = {
+    build: () => ({ url: '/api', method: 'get' }),
+  };
+
+  const ctx = initCTX({ schema, apiSpecAdapter });
+  ctx.statesHubShared.mutateState('not_arr', { id: 'abc' });
+
+  const props: Props = {
+    ctx: ctx,
+    iterableState: {
+      type: NodePropType.SharedStateProperty,
+      stateID: 'not_arr',
+      fallback: [],
+    },
+    loopKey: 'id',
+    toProps: (item: any) => ({ id: item.id }),
+    node: {
+      type: NodeType.HTMLNode,
+      id: 'loop-item',
+      name: 'div',
+      props: {},
+    },
+  };
+
+  // eslint-disable-next-line no-console
+  console.error = jest.fn();
+
+  render((<LoopContainer {...props} />));
+
+  // eslint-disable-next-line no-console
+  expect(console.error).toBeCalled();
+});
+
 // todo test case about primary value iteration
 test('LoopContainer_resolve_items', () => {
   const schema: Schema = {

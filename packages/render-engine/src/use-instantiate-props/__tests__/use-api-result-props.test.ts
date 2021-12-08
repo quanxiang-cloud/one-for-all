@@ -1,4 +1,3 @@
-import mockXHR from 'xhr-mock';
 import { act, renderHook } from '@testing-library/react-hooks/pure';
 import type { APISpecAdapter } from '@ofa/api-spec-adapter';
 
@@ -6,9 +5,6 @@ import useAPIResultProps from '../use-api-result-props';
 import APIStatesHub from '../../ctx/states-hub-api';
 import { SchemaNode, NodePropType, Instantiated, NodeType } from '../../types';
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
-
-beforeEach(() => mockXHR.setup());
-afterEach(() => mockXHR.teardown());
 
 const apiSpecAdapter: APISpecAdapter = {
   build: () => ({ url: '/api', method: 'get' }),

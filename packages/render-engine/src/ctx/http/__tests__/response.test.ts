@@ -25,7 +25,7 @@ function wait(timeSecond: number): Promise<boolean> {
 }
 
 test('response_return_initial_state', (done) => {
-  const response$ = getResponseState$(new Observable<AjaxConfig>(), apiSpecAdapter);
+  const response$ = getResponseState$(new Observable<AjaxConfig>(), apiSpecAdapter.responseAdapter);
 
   response$.subscribe(({ result, loading, error }) => {
     try {
@@ -47,7 +47,7 @@ describe('response_state_table', () => {
     });
 
     const request$ = new Subject<AjaxConfig>();
-    const response$ = getResponseState$(request$, apiSpecAdapter);
+    const response$ = getResponseState$(request$, apiSpecAdapter.responseAdapter);
     const loadings: Array<boolean> = [];
 
     response$.subscribe(({ loading }) => loadings.push(loading));
@@ -70,7 +70,7 @@ describe('response_state_table', () => {
     ]));
 
     const request$ = new Subject<AjaxConfig>();
-    const response$ = getResponseState$(request$, apiSpecAdapter);
+    const response$ = getResponseState$(request$, apiSpecAdapter.responseAdapter);
     const dataList: Array<unknown> = [];
     const errorList: Array<unknown> = [];
 

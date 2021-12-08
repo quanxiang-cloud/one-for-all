@@ -16,7 +16,6 @@ function LoopNodeRender({ node, ctx }: Props): React.ReactElement {
     iterableState: node.iterableState,
     loopKey: node.loopKey,
     node: node.node,
-    // todo handle error
     toProps: (v: unknown) => node.toProps(v),
     ctx,
   });
