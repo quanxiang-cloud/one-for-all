@@ -11,3 +11,4 @@ yarn-error.log
 tmp
 packages/**/lib
 gzip
+packages/*/coverage

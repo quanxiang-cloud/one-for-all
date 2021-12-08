@@ -1,0 +1,202 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`expect_specInterpreter_to_match_snapshots 1`] = `
+Object {
+  "body": Object {
+    "foo": "bar",
+  },
+  "headers": Object {},
+  "method": "post",
+  "queryParams": Object {},
+  "url": "/v2/pet",
+}
+`;
+
+exports[`expect_specInterpreter_to_match_snapshots 2`] = `
+Object {
+  "body": Object {
+    "foo": "bar",
+  },
+  "headers": Object {},
+  "method": "put",
+  "queryParams": Object {},
+  "url": "/v2/pet",
+}
+`;
+
+exports[`expect_specInterpreter_to_match_snapshots 3`] = `
+Object {
+  "body": undefined,
+  "headers": Object {},
+  "method": "get",
+  "queryParams": Object {
+    "status": Array [
+      "available",
+      "pending",
+      "sold",
+    ],
+  },
+  "url": "/v2/pet/findByStatus",
+}
+`;
+
+exports[`expect_specInterpreter_to_match_snapshots 4`] = `
+Object {
+  "body": undefined,
+  "headers": Object {},
+  "method": "get",
+  "queryParams": Object {
+    "tags": Array [
+      "tag1",
+      "tag2",
+      "tag3",
+    ],
+  },
+  "url": "/v2/pet/findByTags",
+}
+`;
+
+exports[`expect_specInterpreter_to_match_snapshots 5`] = `
+Object {
+  "body": undefined,
+  "headers": Object {},
+  "method": "get",
+  "queryParams": Object {},
+  "url": "/v2/pet/some_pet_id",
+}
+`;
+
+exports[`expect_specInterpreter_to_match_snapshots 6`] = `
+Object {
+  "body": Object {
+    "name": "foo",
+    "status": "alive",
+  },
+  "headers": Object {},
+  "method": "post",
+  "queryParams": Object {},
+  "url": "/v2/pet/some_pet_id",
+}
+`;
+
+exports[`expect_specInterpreter_to_match_snapshots 7`] = `
+Object {
+  "body": undefined,
+  "headers": Object {},
+  "method": "delete",
+  "queryParams": Object {},
+  "url": "/v2/pet/some_pet_id",
+}
+`;
+
+exports[`expect_specInterpreter_to_match_snapshots 8`] = `
+Object {
+  "body": undefined,
+  "headers": Object {},
+  "method": "post",
+  "queryParams": Object {},
+  "url": "/v2/pet/some_pet_id/uploadImage",
+}
+`;
+
+exports[`expect_specInterpreter_to_match_snapshots 9`] = `
+Object {
+  "body": undefined,
+  "headers": Object {},
+  "method": "get",
+  "queryParams": Object {},
+  "url": "/v2/store/inventory",
+}
+`;
+
+exports[`expect_specInterpreter_to_match_snapshots 10`] = `
+Object {
+  "body": Object {
+    "foo": "bar",
+  },
+  "headers": Object {},
+  "method": "post",
+  "queryParams": Object {},
+  "url": "/v2/store/order",
+}
+`;
+
+exports[`expect_specInterpreter_to_match_snapshots 11`] = `
+Object {
+  "body": undefined,
+  "headers": Object {},
+  "method": "get",
+  "queryParams": Object {},
+  "url": "/v2/store/order/{orderId}",
+}
+`;
+
+exports[`expect_specInterpreter_to_match_snapshots 12`] = `
+Object {
+  "body": undefined,
+  "headers": Object {},
+  "method": "delete",
+  "queryParams": Object {},
+  "url": "/v2/store/order/{orderId}",
+}
+`;
+
+exports[`expect_specInterpreter_to_match_snapshots 13`] = `
+Object {
+  "body": undefined,
+  "headers": Object {},
+  "method": "post",
+  "queryParams": Object {},
+  "url": "/v2/user",
+}
+`;
+
+exports[`expect_specInterpreter_to_match_snapshots 14`] = `
+Object {
+  "body": undefined,
+  "headers": Object {},
+  "method": "post",
+  "queryParams": Object {},
+  "url": "/v2/user/createWithArray",
+}
+`;
+
+exports[`expect_specInterpreter_to_match_snapshots 15`] = `
+Object {
+  "body": undefined,
+  "headers": Object {},
+  "method": "post",
+  "queryParams": Object {},
+  "url": "/v2/user/createWithList",
+}
+`;
+
+exports[`expect_specInterpreter_to_match_snapshots 16`] = `
+Object {
+  "body": undefined,
+  "headers": Object {},
+  "method": "get",
+  "queryParams": Object {},
+  "url": "/v2/user/login",
+}
+`;
+
+exports[`expect_specInterpreter_to_match_snapshots 17`] = `
+Object {
+  "body": undefined,
+  "headers": Object {},
+  "method": "get",
+  "queryParams": Object {},
+  "url": "/v2/user/logout",
+}
+`;
+
+exports[`expect_specInterpreter_to_match_snapshots 18`] = `
+Object {
+  "body": undefined,
+  "headers": Object {},
+  "method": "get",
+  "queryParams": Object {},
+  "url": "/v2/user/{username}",
+}
+`;

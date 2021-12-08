@@ -14,7 +14,7 @@ export default [
       format: 'system'
     },
 
-    external: ['react', 'react-dom'],
+    external: ['react', 'react-dom', /@ofa\/.*/],
 
     plugins: [
       commonjs(),
@@ -38,7 +38,7 @@ export default [
       format: 'system'
     },
 
-    external: ['react', 'react-dom'],
+    external: ['react', 'react-dom', /@ofa\/.*/],
 
     plugins: [
       commonjs(),

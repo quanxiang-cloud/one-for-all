@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useRenderProps_simplest_case 1`] = `
+<div>
+  <div
+    id="custom-render"
+  >
+    <div
+      class="foobar"
+    />
+  </div>
+</div>
+`;

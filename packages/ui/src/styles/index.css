@@ -1,0 +1,32 @@
+@import "./reset.css";
+
+@import "./variables/colors.css";
+@import "./variables/global.css";
+
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@import "./layout.css";
+@import "./typography.css";
+@import "./border.css";
+@import "./animation.css";
+@import "./scrollbar.css";
+
+@import './components/btn.scss';
+@import "./components/icon.scss";
+/*@import "./components/dropdown.scss";*/
+
+
+html {
+  background-color: #fff;
+}
+
+.beauty-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.beauty-scroll::-webkit-scrollbar-thumb {
+  border-radius: 12px;
+  background: rgba(71, 85, 105, 0.45);
+}

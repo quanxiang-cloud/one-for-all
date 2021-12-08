@@ -1,239 +1,318 @@
-import { OpenAPIV3 } from 'openapi-types';
-import { BehaviorSubject, Observable } from 'rxjs';
+import React from 'react';
+import type { BehaviorSubject } from 'rxjs';
+import type { FetchParams, APISpecAdapter } from '@ofa/api-spec-adapter';
 
 export type Serialized = 'Serialized';
 export type Instantiated = 'Instantiated';
 
-// the shape of RequestParams is too complex
-export type RequestParams = Partial<{
-  params: Record<string, any>;
-  body: any;
-}> | undefined;
-
-export type RequestConfig = {
-  path: string;
-  method: OpenAPIV3.HttpMethods;
-  query?: Record<string, string>;
-  header?: Record<string, string>;
-  body?: any;
-}
-
 export type APIState = {
-  params: RequestParams;
   loading: boolean;
-  data?: any;
+  result?: unknown;
   error?: Error;
 };
 
-export type LocalState = {
-  data?: any;
-}
-
-export const enum ComponentPropType {
+export const enum NodePropType {
   ConstantProperty = 'constant_property',
-  APIDerivedProperty = 'api_derived_property',
-  LocalStateProperty = 'local_state_property',
+  APIResultProperty = 'api_result_property',
+  APILoadingProperty = 'api_loading_property',
+  // todo api error property
+  SharedStateProperty = 'shared_state_property',
+  NodeStateProperty = 'node_state_property',
+
+  APIInvokeProperty = 'api_invoke_property',
+  SharedStateMutationProperty = 'shared_state_mutation_property',
+
   FunctionalProperty = 'functional_property',
 
-  SetLocalStateProperty = 'set_local_state_property',
-  APIInvokeProperty = 'api_invoke_property',
+  // <ParentComponent
+  //   render={<SomeComponent />}
+  // />
+  // <ParentComponent
+  //   render={(someData): JSX.Element => (<SomeComponent data={someData} />)}
+  // />
+  // <ParentComponent
+  //   render={(someData, someIgnoredValue): JSX.Element => (<SomeComponent data={someData} otherProp={otherProp} />)}
+  // />
+  RenderProperty = 'render_property',
 }
 
-export type NodeProperty<T> =
+export type NodeProperty<T extends Serialized | Instantiated> =
   ConstantProperty |
-  APIDerivedProperty<T> |
-  LocalStateProperty<T> |
+  APIResultProperty<T> |
+  APILoadingProperty |
+  SharedStateProperty<T> |
+  NodeStateProperty<T> |
   FunctionalProperty<T> |
-  SetLocalStateProperty<T> |
+  SharedStateMutationProperty<T> |
   APIInvokeProperty<T> |
-  Array<APIInvokeProperty<T>>;
+  RenderProperty<T>;
+  // Array<APIInvokeProperty<T>>;
 
-export type NodeProperties<T> = Record<string, NodeProperty<T>>;
+export type NodeProperties<T extends Serialized | Instantiated> = Record<string, NodeProperty<T>>;
 
-type BaseComponentProperty = {
-  type: ComponentPropType;
+type BaseNodeProperty = {
+  type: NodePropType;
 }
 
-export type ConstantProperty = BaseComponentProperty & {
-  type: ComponentPropType.ConstantProperty;
-  value: any;
+export type ConstantProperty = BaseNodeProperty & {
+  type: NodePropType.ConstantProperty;
+  value: unknown;
 }
 
-export type APIDerivedProperty<T> = BaseComponentProperty & {
-  type: ComponentPropType.APIDerivedProperty;
+export type APIResultProperty<T> = BaseNodeProperty & {
+  type: NodePropType.APIResultProperty;
   // in the previous implementation, this property is called: initialValue,
   // why changed to `fallback`?
-  // - please refer to API State Table, it's hard to modify the `data` in second state to initialValue
+  // - please refer to API State Table, it's hard to modify the `data` to initialValue in the second stage
   // - always defining a fallback value for API response is best practices,
-  //   no matter when before API result returned or encounter a API error.
-  fallback: any;
+  //   no matter before API result returned or encounter a API error.
+  // fallback is the latest NOT nullish value passed to node, it's NOT THE FALLBACK OF API RESPONSE
+  // fallback will be passed to node when:
+  // - api error
+  // - adapter throw
+  // - adapter return null/undefined
+  // fallback value assignment happens only when:
+  // - define schema
+  // - adapter return NOT nullish value
+  fallback: unknown;
   stateID: string;
   // todo define different type adapter
-  adapter?: APIStateAdapter<T>;
+  // adapter will never be called if api error or api response body is undefined
+  // todo add test cases
+  convertor?: StateConvertor<T>;
 }
 
-export type LocalStateProperty<T> = BaseComponentProperty & {
-  type: ComponentPropType.LocalStateProperty;
-  // this is not a good design
+export type StateConvertor<T> = T extends Serialized ? SerializedStateConvertor : StateConvertorFunc;
+export type SerializedStateConvertor = StateConvertExpression | StateConvertorFuncSpec;
+export type StateConvertorFunc = (v: any) => any;
+
+type StateConvertExpression = {
+  type: 'state_convert_expression';
+  // expression for data, loading, params, error
+  // state.foo
+  // state.offset / (state.limit + state.offset)
+  // state.list.map((item) => item.name))
+  // state.list.map((item) => `名称：${item.name}`))
+  // state.foo?.bar?.baz || 'someValue'
+  expression: string;
+}
+
+export type StateConvertorFuncSpec = BaseFunctionSpec & {
+  type: 'state_convertor_func_spec';
+  args: 'state';
+};
+
+// toProps function should return Record<string, unknown>;
+export type ToPropsFuncSpec = BaseFunctionSpec & {
+  type: 'to_props_function_spec',
+};
+export type ToProps<T> = T extends Serialized ?
+  ToPropsFuncSpec :
+  (...args: unknown[]) => Record<string, unknown>;
+
+export type APILoadingProperty = BaseNodeProperty & {
+  type: NodePropType.APILoadingProperty;
   stateID: string;
-  // todo define different type adapter
-  adapter?: LocalStateConvertor<T>;
 }
 
-export type FunctionalProperty<T> = BaseComponentProperty & {
-  type: ComponentPropType.FunctionalProperty;
+export type SharedStateProperty<T> = BaseNodeProperty & {
+  type: NodePropType.SharedStateProperty;
+  stateID: string;
+  fallback: unknown;
+  convertor?: StateConvertor<T>;
+}
+
+export type NodeStateProperty<T> = BaseNodeProperty & {
+  type: NodePropType.NodeStateProperty;
+  nodeKey: string;
+  fallback: unknown;
+  convertor?: StateConvertor<T>;
+}
+
+export type FunctionalProperty<T> = BaseNodeProperty & {
+  type: NodePropType.FunctionalProperty;
   func: T extends Serialized ? BaseFunctionSpec : VersatileFunc;
 }
 
 // todo refactor this type property spec
-export type SetLocalStateProperty<T> = {
-  type: ComponentPropType.SetLocalStateProperty;
+export type SharedStateMutationProperty<T> = {
+  type: NodePropType.SharedStateMutationProperty;
   stateID: string;
-  callbacks?: Array<() => void>;
+  convertor?: T extends Serialized ? BaseFunctionSpec : VersatileFunc;
 }
 
 // todo refactor this type property spec
 export type APIInvokeProperty<T> = {
-  type: ComponentPropType.APIInvokeProperty;
+  type: NodePropType.APIInvokeProperty;
   stateID: string;
   // the required return type is too complex
   paramsBuilder?: ParamsBuilder<T>;
-  onSuccess?: APIInvokeCallBack<T>;
-  onError?: APIInvokeCallBack<T>;
+  callback?: T extends Serialized ? APIFetchCallbackSpec : APIFetchCallback;
 }
 
-type BaseFunctionSpec = {
-  type: string;
-  args: string;
-  body: string;
+export type RenderProperty<T extends Serialized | Instantiated> = BaseNodeProperty & {
+  type: NodePropType.RenderProperty;
+  toProps?: ToProps<T>;
+  node: SchemaNode<T>;
 }
 
-export type RawFunctionSpec = BaseFunctionSpec & {
-  type: 'raw';
-}
+export type ParamsBuilder<T> = T extends Serialized ?
+  ParamsBuilderFuncSpec : (...args: unknown[]) => FetchParams;
 
 export type ParamsBuilderFuncSpec = BaseFunctionSpec & {
   type: 'param_builder_func_spec';
 }
 
-export type APIInvokeCallbackFuncSpec = BaseFunctionSpec & {
-  type: 'api_invoke_call_func_spec';
-  args: '{ data, error, loading, params }';
+export type LifecycleHookFuncSpec = BaseFunctionSpec & {
+  type: 'lifecycle_hook_func_spec';
+  args: '';
 }
 
-export type LocalStateConvertFuncSpec = BaseFunctionSpec & {
-  type: 'local_state_convert_func_spec';
-  // `data` is unacceptable!
-  args: '{ data }';
+export type BaseFunctionSpec = {
+  type: string;
+  args: string;
+  body: string;
 }
 
+// 为什么这里采用 callback 的形式，而不是让 runAction 返回一个 promise 呢？
+// - 在使用渲染引擎来实现页面逻辑的场景中，所有的 view 都是平等的，任何一个 view 都可以调用 API
+// - 在 Pro Code 的场景中，view 有着明确的业务属性，就是说何时会调用 API 有着明确的逻辑
+// - 一般的 API 请求都是副作用的，平等的 API 请求权限意味着不可控的副作用
+// - 在 Pro Code 的场景中，为了避免不期望的副作用，需要引入状态标识和 request cancellation
+// - 在 Pro Code 的场景中，实现状态标识和 request cancellation 需要很多的脑细胞
+// - 为了简化，渲染引擎支持 API 请求自动 cancellation，当有新的 runAction 调用时，处在 pending 状态的 HTTP 请求会被 abort
+// - 这样实现的问题就是，runAction 的副作用不保证会被执行
+// - 所以如果 runAction return Promise 的话，那这个 Promise 可能永远处于 pending 的状态，例如下面的代码
+//
+//   new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       // resolve will never be called
+//       resolve();
+//     }, forever);
+//   });
+//
+// - 为了解决这个问题，需要把副作用都放到一个堆栈里?
+// - 这样不好吧，比如用户多次点击一个按钮，成功后会有一个消息提示，那应该只提示一次吧
+// - 再考虑一下
 export type RunParam = {
-  params?: RequestParams;
-  onSuccess?: APIInvokeCallBack<Instantiated>;
-  onError?: APIInvokeCallBack<Instantiated>;
+  params?: FetchParams;
+  callback?: APIFetchCallback;
 }
 
-export interface APIStateContext {
-  runAction: (stateID: string, runParam?: RunParam) => void;
+export interface StatesHubAPI {
+  getState$: (stateID: string) => BehaviorSubject<APIState>;
+  runAction: (stateID: string, runParam: RunParam) => void;
   refresh: (stateID: string) => void;
-  getState: (stateID: string) => Observable<APIState>;
-  getAction: (stateID: string) => (runParam?: RunParam) => void;
 }
 
-export interface LocalStateContext {
-  getState$: (stateID: string) => BehaviorSubject<any>;
+export type APIFetchCallbackSpec = BaseFunctionSpec & {
+  type: 'api_fetch_callback';
+  args: '{ result, error }',
+}
+
+export type APIFetchCallback = (state: Omit<APIState, 'loading'>) => void;
+export type APIFetch = (params: FetchParams, callback?: APIFetchCallback) => void;
+
+export interface StatesHubShared {
+  getState$: (stateID: string) => BehaviorSubject<unknown>;
+  getState: (stateID: string) => unknown;
+  getNodeState$: (nodeKey: string) => BehaviorSubject<unknown>;
+  exposeNodeState: (nodeKey: React.Key, state: unknown) => void;
+  retrieveNodeState: (nodeKey: string) => unknown;
+  initContext: (ctx: CTX) => void;
+  mutateState: (stateID: string, state: unknown) => void;
+}
+
+export type APIStateWithFetch = APIState & {
+  fetch: APIFetch;
+  refresh: () => void;
 }
 
 export type CTX = {
-  apiStateContext: APIStateContext;
-  localStateContext: LocalStateContext;
+  statesHubAPI: StatesHubAPI;
+  statesHubShared: StatesHubShared;
+  apiStates: Readonly<Record<string, APIStateWithFetch>>;
+  states: Record<string, unknown>;
+  repository?: Repository;
 }
 
-export type APIStateConvertor = (apiState: APIState) => any;
+export type VersatileFunc<T = unknown> = (...args: unknown[]) => T;
 
-export type APIStateTemplate = {
-  type: 'api_state_template';
-  // template for data, loading, params, error
-  // {{ data.foo }}
-  // {{ data.offset / (data.limit + data.offset) }}
-  // {{ data.list.map((item) => item.name)) }}
-  // {{ data.list.map((item) => `名称：${item.name}`)) }}
-  // {{ data.foo?.bar?.baz || 'someValue' }}
-  template: string;
+export type LifecycleHooks<T extends Serialized | Instantiated> = Partial<{
+  didMount: T extends Serialized ? LifecycleHookFuncSpec : VersatileFunc;
+  willUnmount: T extends Serialized ? LifecycleHookFuncSpec : VersatileFunc;
+}>;
+
+export const enum NodeType {
+  HTMLNode = 'html-element',
+  ReactComponentNode = 'react-component',
+  LoopContainerNode = 'loop-container',
 }
 
-export type LocalStateTemplate = {
-  type: 'local_state_template';
-  // template for data
-  // {{ data.foo }}
-  // {{ data.offset / (data.limit + data.offset) }}
-  // {{ data.list.map((item) => item.name)) }}
-  // {{ data.list.map((item) => `名称：${item.name}`)) }}
-  // {{ data.foo?.bar?.baz || 'someValue' }}
-  template: string;
-}
-
-// todo refactor this type property spec
-export type APIStateConvertFuncSpec = BaseFunctionSpec & {
-  type: 'api_state_convertor_func_spec';
-  args: '{ data, error, loading, params }';
-};
-
-export type SerializedAPIStateAdapter = APIStateTemplate | APIStateConvertFuncSpec;
-export type SerializedLocalStateAdapter = LocalStateTemplate | LocalStateConvertFuncSpec;
-
-export type LocalStateConvertFunc = (data: any) => any;
-
-export type APIStateAdapter<T> = T extends Serialized ? SerializedAPIStateAdapter : APIStateConvertor;
-export type LocalStateConvertor<T> = T extends Serialized ? SerializedLocalStateAdapter : LocalStateConvertFunc;
-export type ParamsBuilder<T> = T extends Serialized ? ParamsBuilderFuncSpec : (...args: any[]) => RequestParams;
-export type APIInvokeCallBack<T> = T extends Serialized ? APIInvokeCallbackFuncSpec : (apiState: APIState) => void;
-
-export type VersatileFunc = (...args: any) => any;
-
-interface BaseNode<T> {
-  key: string;
-  type: 'html-element' | 'react-component';
+export interface BaseNode<T extends Serialized | Instantiated> {
+  id: React.Key;
+  type: NodeType;
   props?: NodeProperties<T>;
-  children?: BaseNode<T>[];
+  lifecycleHooks?: LifecycleHooks<T>;
 }
 
-interface HTMLNode<T> extends BaseNode<T> {
-  type: 'html-element';
+export interface HTMLNode<T extends Serialized | Instantiated> extends BaseNode<T> {
+  type: NodeType.HTMLNode;
   name: string;
   children?: Array<SchemaNode<T>>;
 }
 
-interface ReactComponentNode<T> extends BaseNode<T> {
-  type: 'react-component';
+export interface ReactComponentNode<T extends Serialized | Instantiated> extends BaseNode<T> {
+  type: NodeType.ReactComponentNode;
   packageName: string;
   packageVersion: string;
   exportName: 'default' | string;
+  supportStateExposure?: boolean;
   // not recommend, should avoid
-  // subModule?: string;
   children?: Array<SchemaNode<T>>;
 }
 
-export type SchemaNode<T> = HTMLNode<T> | ReactComponentNode<T>;
+export type IterableState<T extends Serialized | Instantiated> =
+  APIResultProperty<T> |
+  SharedStateProperty<T> |
+  NodeStateProperty<T> |
+  ConstantProperty;
 
-// map of stateID and operationID
-export type APIStateSpec = Record<string, {
-  operationID: string;
-  [key: string]: any;
-}>;
+export interface LoopContainerNode<T extends Serialized | Instantiated> extends BaseNode<T> {
+  type: NodeType.LoopContainerNode;
+  // props: LoopContainerNodeProps<T>;
+  iterableState: IterableState<T>;
+  loopKey: string;
+  node: SchemaNode<T>;
+  toProps: ToProps<T>;
+}
 
-export type LocalStateSpec = Record<string, { initial: any; }>;
+export type SchemaNode<T extends Serialized | Instantiated> =
+  HTMLNode<T> |
+  ReactComponentNode<T> |
+  LoopContainerNode<T>;
+
+// map of stateID and apiID
+// todo should also store builder info
+export type APIStatesSpec = Record<string, { apiID: string; [key: string]: unknown; }>;
+
+export type SharedStatesSpec = Record<string, { initial: unknown; }>;
 
 export type Schema = {
   node: SchemaNode<Serialized>;
-  apiStateSpec: APIStateSpec;
-  localStateSpec: LocalStateSpec;
+  apiStateSpec: APIStatesSpec;
+  sharedStatesSpec: SharedStatesSpec;
 }
 
 export type InstantiatedNode = SchemaNode<Instantiated>;
 
-interface Document {
-  adoptedStyleSheets: any[];
-}
+export type DynamicComponent = React.FC<Record<string, unknown>> | React.ComponentClass<unknown>;
 
-export type DynamicComponent = React.FC<any> | React.ComponentClass<any>;
+type PackageNameVersion = string;
+export type Repository = Record<PackageNameVersion, Record<string, DynamicComponent>>;
+
+export type InitProps = {
+  schema: Schema;
+  apiSpecAdapter: APISpecAdapter;
+  repository?: Repository;
+}

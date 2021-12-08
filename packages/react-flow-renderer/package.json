@@ -2,8 +2,7 @@
   "name": "@ofa/react-flow-renderer",
   "version": "9.6.9",
   "main": "index.js",
-  "license": "Apache-2.0",
-  "private": false,
+  "license": "MIT",
   "scripts": {
     "bundle": "rm -rf dist & rollup -c"
   },

@@ -1,26 +1,33 @@
-import { ComponentPropType, Schema } from '@ofa/render-engine';
+import { NodePropType, NodeType, Schema } from '@ofa/render-engine';
 
 const todoAppSchema: Schema = {
   apiStateSpec: {
-    createTodo: { operationID: 'createTodo' },
-    listTodos: { operationID: 'listTodos' },
-    updateTodo: { operationID: 'updateTodo' },
-    todoStatus: { operationID: 'todoStatus' },
-    deleteTodo: { operationID: 'deleteTodo' },
+    新建待办: { apiID: 'post:/todos' },
+    全部待办列表: { apiID: 'get:/todos' },
+    更新待办: { apiID: 'put:/todos/{todoId}' },
+    todoStatus: { apiID: 'get:/todo_status' },
+    删除待办: { apiID: 'delete:/todos/{todoId}' },
   },
-  localStateSpec: {
+  sharedStatesSpec: {
     currentTodo: {
       initial: '',
     },
   },
   node: {
-    key: 'container',
-    type: 'html-element',
+    id: 'container',
+    type: NodeType.HTMLNode,
     name: 'div',
+    lifecycleHooks: {
+      didMount: {
+        type: 'lifecycle_hook_func_spec',
+        args: '',
+        body: 'this.apiStates[\'全部待办列表\'].fetch();',
+      },
+    },
     props: {
-      id: { type: ComponentPropType.ConstantProperty, value: 'container' },
+      id: { type: NodePropType.ConstantProperty, value: 'container' },
       style: {
-        type: ComponentPropType.ConstantProperty,
+        type: NodePropType.ConstantProperty,
         value: {
           width: '500px',
           margin: 'auto',
@@ -33,66 +40,31 @@ const todoAppSchema: Schema = {
     },
     children: [
       {
-        key: 'todo-input-form',
-        type: 'html-element',
-        name: 'form',
+        id: 'todo-input-html-element',
+        type: NodeType.HTMLNode,
+        name: 'div',
         props: {
-          id: { type: ComponentPropType.ConstantProperty, value: 'todo-input-form' },
           style: {
-            type: ComponentPropType.ConstantProperty,
+            type: NodePropType.ConstantProperty,
             value: {
               display: 'flex',
               justifyContent: 'space-between',
-            },
-          },
-          onSubmit: {
-            type: ComponentPropType.APIInvokeProperty,
-            stateID: 'createTodo',
-            paramsBuilder: {
-              type: 'param_builder_func_spec',
-              args: 'e',
-              body: `e.preventDefault();
-                e.stopPropagation();
-
-                const formData = new FormData(e.target);
-                const body = { title: formData.get('title') };
-
-                return { body };
-              `,
-            },
-            onError: {
-              type: 'api_invoke_call_func_spec',
-              args: '{ data, error, loading, params }',
-              body: `
-                // todo show error message, error message should be store in localState
-                console.log(error.response);
-              `,
-            },
-            onSuccess: {
-              type: 'api_invoke_call_func_spec',
-              args: '{ data, error, loading, params }',
-              body: `
-                // contexts.store.call refresh again
-                // reset form
-                const form = document.getElementById('todo-input-form');
-                form?.reset?.();
-                this.apiStateContext.runAction('listTodos');
-              `,
+              marginBottom: '20px',
             },
           },
         },
         children: [
           {
-            key: 'todo-input',
-            type: 'html-element',
+            id: 'todo-input',
+            type: NodeType.HTMLNode,
             name: 'input',
             props: {
-              type: { type: ComponentPropType.ConstantProperty, value: 'input' },
-              name: { type: ComponentPropType.ConstantProperty, value: 'title' },
-              placeholder: { type: ComponentPropType.ConstantProperty, value: 'What do you want to do?' },
-              autoComplete: { type: ComponentPropType.ConstantProperty, value: 'off' },
+              type: { type: NodePropType.ConstantProperty, value: 'input' },
+              name: { type: NodePropType.ConstantProperty, value: 'title' },
+              placeholder: { type: NodePropType.ConstantProperty, value: 'What do you want to do?' },
+              autoComplete: { type: NodePropType.ConstantProperty, value: 'off' },
               style: {
-                type: ComponentPropType.ConstantProperty,
+                type: NodePropType.ConstantProperty,
                 value: {
                   width: '200px',
                   padding: '16px',
@@ -104,162 +76,272 @@ const todoAppSchema: Schema = {
                 },
               },
               onChange: {
-                type: ComponentPropType.FunctionalProperty,
+                type: NodePropType.FunctionalProperty,
                 func: {
                   type: 'raw',
                   args: 'e',
                   body: `
-                    this.localStateContext.getState$('todo_title').next(e.target.value);
+                    this.states.input_value = e.target.value;
                   `,
                 },
               },
             },
           },
           {
-            key: 'add-todo-btn',
-            type: 'html-element',
+            id: 'add-todo-btn',
+            type: NodeType.HTMLNode,
             name: 'button',
             props: {
-              type: { type: ComponentPropType.ConstantProperty, value: 'submit' },
-              children: { type: ComponentPropType.ConstantProperty, value: 'add todo' },
-              style: {
-                type: ComponentPropType.ConstantProperty,
-                value: { width: '80px', textAlign: 'center', textTransform: 'capitalize' },
-              },
-            },
-          },
-          {
-            key: 'shadow_input',
-            type: 'html-element',
-            name: 'p',
-            props: {
               children: {
-                type: ComponentPropType.LocalStateProperty,
-                stateID: 'todo_title',
+                type: NodePropType.ConstantProperty,
+                value: 'New Todo By Using sharedState',
+              },
+              style: {
+                type: NodePropType.ConstantProperty,
+                value: { width: '180px', textAlign: 'center', textTransform: 'capitalize' },
+              },
+              onClick: {
+                type: NodePropType.FunctionalProperty,
+                func: {
+                  type: 'raw',
+                  args: '',
+                  body: `
+                    const inputValue = this.states.input_value;
+
+                    this.apiStates['新建待办'].fetch(
+                      { body: { title: inputValue } },
+                      () => this.apiStates['全部待办列表'].refresh(),
+                    );
+                  `,
+                },
               },
             },
           },
         ],
       },
       {
-        key: 'todo-list',
-        type: 'react-component',
-        packageName: 'todo-app',
-        exportName: 'TodoList',
-        packageVersion: 'whatever',
+        id: 'todo-input-form',
+        type: NodeType.HTMLNode,
+        name: 'div',
         props: {
-          todos: {
-            type: ComponentPropType.APIDerivedProperty,
-            stateID: 'listTodos',
-            fallback: [],
-            adapter: {
-              type: 'api_state_template',
-              template: 'data',
-            },
-            // adapter: {
-            //   type: 'api_state_convertor_func_spec',
-            //   args: '{ data, error, loading, params }',
-            //   body: `
-            //     return data || [];
-            //   `,
-            // },
-          },
-          toggleTodo: {
-            type: ComponentPropType.APIInvokeProperty,
-            stateID: 'updateTodo',
-            // template: ${data.foo}
-            paramsBuilder: {
-              type: 'param_builder_func_spec',
-              args: 'todo',
-              body: `
-                return { params: { todoId: todo.id }, body: todo };
-              `,
-            },
-            onSuccess: {
-              type: 'api_invoke_call_func_spec',
-              args: '{ data, error, loading, params }',
-              body: `
-                // 提供一个 refresh event？
-                this.apiStateContext.runAction('listTodos');
-                this.apiStateContext.runAction('todoStatus');
-              `,
+          id: { type: NodePropType.ConstantProperty, value: 'todo-input-form' },
+          style: {
+            type: NodePropType.ConstantProperty,
+            value: {
+              display: 'flex',
+              justifyContent: 'space-between',
             },
           },
-          onFetchTodos: {
-            type: ComponentPropType.APIInvokeProperty,
-            stateID: 'listTodos',
-            // convertor: () => undefined,
-          },
-          onDeleteTodo: {
-            type: ComponentPropType.APIInvokeProperty,
-            stateID: 'deleteTodo',
-            paramsBuilder: {
-              type: 'param_builder_func_spec',
-              args: 'todoID',
-              body: `
-                return { params: { todoId: todoID } };
-              `,
+        },
+        children: [
+          {
+            id: 'fancy-input',
+            type: NodeType.ReactComponentNode,
+            packageName: 'todo-app',
+            exportName: 'TodoInput',
+            packageVersion: 'whatever',
+            supportStateExposure: true,
+            props: {
+              onEnter: {
+                type: NodePropType.APIInvokeProperty,
+                stateID: '新建待办',
+                paramsBuilder: {
+                  type: 'param_builder_func_spec',
+                  args: 'value',
+                  body: 'return { body: { title: value } }',
+                },
+                callback: {
+                  type: 'api_fetch_callback',
+                  args: '{ result, error }',
+                  body: 'this.apiStates["全部待办列表"].refresh()',
+                },
+              },
             },
-            onSuccess: {
-              type: 'api_invoke_call_func_spec',
-              args: '{ data, error, loading, params }',
-              body: `
-                this.apiStateContext.runAction('listTodos');
-                this.apiStateContext.runAction('todoStatus');
-              `,
+          },
+          {
+            id: 'add-todo-btn',
+            type: NodeType.HTMLNode,
+            name: 'button',
+            props: {
+              type: { type: NodePropType.ConstantProperty, value: 'submit' },
+              children: {
+                type: NodePropType.ConstantProperty,
+                value: 'New Todo by using NodeState',
+              },
+              style: {
+                type: NodePropType.ConstantProperty,
+                value: { width: '180px', textAlign: 'center', textTransform: 'capitalize' },
+              },
+              onClick: {
+                type: NodePropType.FunctionalProperty,
+                func: {
+                  type: 'raw',
+                  args: '',
+                  body: `
+                    const inputValue = this.states['$fancy-input'];
+                    this.apiStates['新建待办'].fetch(
+                      { body: { title: inputValue } },
+                      () => this.apiStates['全部待办列表'].refresh(),
+                    );
+                  `,
+                },
+              },
+            },
+          },
+        ],
+      },
+      {
+        id: 'word_count',
+        type: NodeType.HTMLNode,
+        name: 'p',
+        props: {
+          children: {
+            // fancy-input
+            type: NodePropType.NodeStateProperty,
+            nodeKey: 'fancy-input',
+            // todo replace by $ele-input-xhfsf-todo-input.value
+            fallback: 'abv dev',
+            convertor: {
+              type: 'state_convert_expression',
+              expression: '`you have input ${state.split(\' \').length} words`',
             },
           },
         },
       },
       {
-        key: 'todo-filter',
-        type: 'react-component',
+        id: 'refresh-todos',
+        type: NodeType.HTMLNode,
+        name: 'button',
+        props: {
+          children: {
+            type: NodePropType.ConstantProperty,
+            value: 'refresh',
+          },
+          onClick: {
+            type: NodePropType.FunctionalProperty,
+            func: {
+              type: 'raw',
+              args: '',
+              body: 'this.apiStates[\'全部待办列表\'].fetch();',
+            },
+          },
+        },
+      },
+      {
+        id: 'todo-list-loop',
+        type: NodeType.LoopContainerNode,
+        props: {},
+        loopKey: 'id',
+        iterableState: {
+          type: NodePropType.APIResultProperty,
+          stateID: '全部待办列表',
+          fallback: [],
+          convertor: {
+            type: 'state_convert_expression',
+            expression: 'state',
+          },
+        },
+        toProps: {
+          type: 'to_props_function_spec',
+          args: 'todo',
+          body: 'return { todo };',
+        },
+        node: {
+          type: NodeType.ReactComponentNode,
+          id: 'todo-item',
+          packageName: 'todo-app',
+          packageVersion: 'whatever',
+          exportName: 'TodoItem',
+          props: {
+            onToggleTodo: {
+              type: NodePropType.APIInvokeProperty,
+              stateID: '更新待办',
+              // template: ${data.foo}
+              paramsBuilder: {
+                type: 'param_builder_func_spec',
+                args: 'todo',
+                body: `
+                  return { params: { todoId: todo.id }, body: todo };
+                `,
+              },
+              callback: {
+                type: 'api_fetch_callback',
+                args: '{ result, error }',
+                body: `
+                  // 提供一个 refresh event？
+                  this.apiStates['全部待办列表'].refresh();
+                  this.apiStates.todoStatus.refresh();
+                `,
+              },
+            },
+            onDeleteTodo: {
+              type: NodePropType.APIInvokeProperty,
+              stateID: '删除待办',
+              paramsBuilder: {
+                type: 'param_builder_func_spec',
+                args: 'todoID',
+                body: `
+                  return { params: { todoId: todoID } };
+                `,
+              },
+              callback: {
+                type: 'api_fetch_callback',
+                args: '{ result, error }',
+                body: `
+                  this.apiStates['全部待办列表'].refresh();
+                  this.apiStates.todoStatus.refresh();
+                `,
+              },
+            },
+          },
+        },
+      },
+      {
+        id: 'todo-filter',
+        type: NodeType.ReactComponentNode,
         packageName: 'todo-app',
         exportName: 'TodoFilter',
         packageVersion: 'whatever',
         props: {
           all: {
-            type: ComponentPropType.APIDerivedProperty,
+            type: NodePropType.APIResultProperty,
             stateID: 'todoStatus',
             fallback: 0,
-            adapter: {
-              type: 'api_state_convertor_func_spec',
-              args: '{ data, error, loading, params }',
+            convertor: {
+              type: 'state_convertor_func_spec',
+              args: 'state',
               body: `
-                return data?.all || 0;
+                return state?.all || 0;
               `,
             },
           },
           working: {
-            type: ComponentPropType.APIDerivedProperty,
+            type: NodePropType.APIResultProperty,
             stateID: 'todoStatus',
             fallback: 0,
-            // convertor: (apiState: APIState): number => {
-            //   return data?.working || 0;
-            // },
-            adapter: {
-              type: 'api_state_convertor_func_spec',
-              args: '{ data, error, loading, params }',
+            convertor: {
+              type: 'state_convertor_func_spec',
+              args: 'state',
               body: `
-                return data?.working || 0;
+                return state?.working || 0;
               `,
             },
           },
           done: {
-            type: ComponentPropType.APIDerivedProperty,
+            type: NodePropType.APIResultProperty,
             stateID: 'todoStatus',
             fallback: 0,
-            adapter: {
-              type: 'api_state_convertor_func_spec',
-              args: '{ data, error, loading, params }',
+            convertor: {
+              type: 'state_convertor_func_spec',
+              args: 'state',
               body: `
-                return data?.done || 0;
+                return state?.done || 0;
               `,
             },
           },
           onToggleStatus: {
-            type: ComponentPropType.APIInvokeProperty,
-            stateID: 'listTodos',
+            type: NodePropType.APIInvokeProperty,
+            stateID: '全部待办列表',
             paramsBuilder: {
               type: 'param_builder_func_spec',
               args: 'status',
@@ -269,7 +351,7 @@ const todoAppSchema: Schema = {
             },
           },
           onFetchStatus: {
-            type: ComponentPropType.APIInvokeProperty,
+            type: NodePropType.APIInvokeProperty,
             stateID: 'todoStatus',
           },
         },

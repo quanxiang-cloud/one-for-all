@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 
 function ThirdPartyInput(props: React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>): JSX.Element {
@@ -6,25 +6,24 @@ function ThirdPartyInput(props: React.DetailedHTMLProps<React.InputHTMLAttribute
 }
 
 type Props = {
-  onEnter: (value: string) => Promise<boolean>;
+  onEnter: (value: string) => void;
+  __exposeState: (value: string) => void;
 }
 
 // clear value after enter key down
-export default function TodoInput({ onEnter }: Props): JSX.Element {
+export default function TodoInput({ onEnter, __exposeState }: Props): JSX.Element {
   const [value, setValue] = useState('');
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    __exposeState(value);
+  }, [value]);
+
   function clearInputOnEnterDown(e: React.KeyboardEvent<HTMLInputElement>): void {
     if (e.key === 'Enter') {
-      console.log(value);
-      setLoading(true);
-      onEnter(value).then((isSuccess) => {
-        setLoading(false);
-
-        if (isSuccess) {
-          setValue('');
-        }
-      });
+      // setLoading(true);
+      onEnter(value);
+      __exposeState(value);
     }
   }
 

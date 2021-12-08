@@ -1,21 +1,24 @@
 {
   "name": "@ofa/render-engine",
-  "version": "0.0.8",
+  "version": "0.5.1",
   "license": "Apache-2.0",
+  "type": "module",
   "main": "dist/index.js",
   "module": "lib",
-  "type": "module",
   "types": "lib/src/index.d.ts",
   "scripts": {
     "build": "tsc --build tsconfig.json",
-    "bundle": "rm -rf dist & rollup -c rollup.config.js",
+    "bundle": "yarn run build & rm -rf dist & rollup -c rollup.config.js",
+    "lint": "eslint src/**/*.ts --fix",
+    "prepack": "yarn run build",
     "test": "jest",
+    "test:coverage": "jest --collectCoverage",
     "updateSnapshot": "jest --updateSnapshot"
   },
   "dependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.4.0"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.0.6",
@@ -26,20 +29,16 @@
     "@types/jest": "^26.0.24",
     "@types/lodash": "^4.14.172",
     "@types/systemjs": "^6.1.1",
-    "@typescript-eslint/eslint-plugin": "^4.29.0",
-    "@typescript-eslint/parser": "^4.29.0",
+    "@typescript-eslint/parser": "^5.4.0",
     "esbuild": "^0.13.8",
     "eslint": "^7.32.0",
-    "eslint-config-google": "^0.14.0",
-    "eslint-plugin-react": "^7.24.0",
-    "eslint-plugin-unused-imports": "^1.1.5",
     "jest": "27.3.1",
-    "openapi-types": "^9.3.0",
     "rollup": "^2.58.3",
     "rollup-plugin-esbuild": "^4.6.0",
     "rollup-plugin-terser": "^7.0.2",
-    "ts-jest": "^27.0.4",
+    "ts-jest": "^27.0.7",
     "tsconfig-paths-jest": "^0.0.1",
+    "typescript": "^4.4.4",
     "xhr-mock": "^2.5.1"
   }
 }

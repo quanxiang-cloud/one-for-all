@@ -5,13 +5,11 @@ import typescriptPaths from '../../scripts/rollup-plugin-typescript-paths';
 import getOutput from '../../scripts/get-common-output';
 import packageJSON from './package.json';
 
-const packageName = `${packageJSON.name}@${packageJSON.version}`;
-
 export default {
   input: 'src/index.ts',
-  output: getOutput(packageName),
+  output: getOutput(packageJSON.name, packageJSON.version),
 
-  external: ['react', 'react-dom', 'rxjs', '@ofa/utils', /rxjs\/.*/],
+  external: ['react', 'react-dom', 'rxjs', /@ofa\/.*/, /rxjs\/.*/],
 
   plugins: [
     typescriptPaths(),
@@ -24,7 +22,7 @@ export default {
       // All options are optional
       include: /\.[jt]sx?$/, // default, inferred from `loaders` option
       exclude: /node_modules/, // default
-      sourceMap: false, // default
+      sourceMap: true, // default
       minify: process.env.NODE_ENV === 'production',
       target: 'es2017', // default, or 'es20XX', 'esnext'
       jsx: 'transform', // default, or 'preserve'
