@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReactComponentNodeRender_match_snapshots 1`] = `
+<div>
+  <div
+    id="some_dummy_component"
+  />
+</div>
+`;

@@ -1,18 +1,29 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { logger } from '@ofa/utils';
 
 import useInstantiateProps from '../use-instantiate-props';
 import type { CTX, HTMLNode, Instantiated } from '../types';
 import { ChildrenRender } from './index';
 import { useLifecycleHook } from './hooks';
+import PathContext from './path-context';
 
 type Props = {
   node: HTMLNode<Instantiated>;
   ctx: CTX;
 }
 
-function HTMLNodeRender({ node, ctx }: Props): React.ReactElement {
+function HTMLNodeRender({ node, ctx }: Props): React.ReactElement | null {
   const props = useInstantiateProps(node, ctx);
   useLifecycleHook(node.lifecycleHooks || {});
+  const currentPath = useContext(PathContext);
+
+  if (!node.name) {
+    logger.error(
+      'name property is required in html node spec,',
+      `please check the spec of node: ${currentPath}.`,
+    );
+    return null;
+  }
 
   if (!node.children || !node.children.length) {
     return React.createElement(node.name, props);

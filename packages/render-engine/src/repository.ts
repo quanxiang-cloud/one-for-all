@@ -1,3 +1,5 @@
+import { logger } from '@ofa/utils';
+
 import type { DynamicComponent } from './types';
 
 type ComponentURLResolver = (componentName: string, version?: string) => string;
@@ -30,8 +32,16 @@ type ImportComponentParams = {
 // todo how to concat packageName and packageVersion?
 export function importComponent(
   { packageName, exportName }: ImportComponentParams,
-): Promise<DynamicComponent> {
+): Promise<DynamicComponent | null> {
   return System.import(packageName).then((systemModule) => {
+    // todo catch undefined error
     return systemModule[exportName || 'default'];
+  }).catch((error) => {
+    logger.error(
+      'failed to load node component,',
+      error,
+    );
+
+    return null;
   });
 }
