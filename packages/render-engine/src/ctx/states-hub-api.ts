@@ -84,7 +84,7 @@ export default class APIStatesHub implements StatesHubAPI {
     );
 
     let _latestRunParams: RunParam | undefined = undefined;
-    const apiState$ = getResponseState$(request$, this.apiSpecAdapter);
+    const apiState$ = getResponseState$(request$, this.apiSpecAdapter.responseAdapter);
 
     // run callbacks after value resolved
     apiState$.pipe(
