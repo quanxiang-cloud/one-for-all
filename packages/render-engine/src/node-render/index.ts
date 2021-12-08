@@ -34,7 +34,7 @@ type Props = {
 
 function NodeRender({ node, ctx }: Props): React.ReactElement | null {
   const parentPath = useContext(PathContext);
-  const currentPath = `${parentPath}.${node.id}`;
+  const currentPath = `${parentPath}/${node.id}`;
 
   if (node.type === NodeType.LoopContainerNode) {
     return React.createElement(

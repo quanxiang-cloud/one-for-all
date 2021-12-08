@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { logger } from '@ofa/utils';
+
 import {
   ConstantProperty,
   CTX,
@@ -6,14 +8,16 @@ import {
   NodePropType,
   SchemaNode,
   IterableState,
+  NodeProperties,
+  NodeType,
 } from '../types';
 import useInstantiateProps from '../use-instantiate-props';
-
 import NodeRender from '../node-render';
-import { NodeProperties, NodeType } from '..';
-import { logger } from '@ofa/utils';
+import PathContext from '../node-render/path-context';
 
 function useIterable(iterableState: IterableState<Instantiated>, ctx: CTX): Array<unknown> {
+  const currentPath = useContext(PathContext);
+
   const dummyNode: SchemaNode<Instantiated> = {
     type: NodeType.HTMLNode,
     id: 'dummyLoopContainer',
@@ -27,9 +31,10 @@ function useIterable(iterableState: IterableState<Instantiated>, ctx: CTX): Arra
 
   if (!Array.isArray(iterable)) {
     // todo better error tips
+    const nodeID = currentPath.split('/').pop();
     logger.error(
       'state is not iterable.',
-      'LoopContainer node [node_id] require a array type state,',
+      `LoopContainer node [${nodeID}] require a array type state,`,
       'please check the follow property spec:\n',
       iterableState,
     );
@@ -56,6 +61,36 @@ function getAppropriateKey(item: unknown, loopKey: string, index: number): strin
   return index;
 }
 
+function tryToProps(
+  source: unknown,
+  toProps: (item: unknown) => Record<string, unknown>,
+  currentPath: string,
+): Record<string, unknown> | null {
+  try {
+    const toPropsResult = toProps(source);
+    if (typeof toPropsResult !== 'object' && !toPropsResult) {
+      logger.error(
+        'toProps result should be an object, but got: ${toPropsResult},',
+        `please check the toProps spec of node: ${currentPath},`,
+        'the corresponding node will be skipped for render.',
+      );
+      return null;
+    }
+
+    return toPropsResult;
+  } catch (error) {
+    logger.error(
+      'An error occurred while calling toProps with the following parameter:',
+      source,
+      '\n',
+      `please check the toProps spec of node: ${currentPath},`,
+      'the corresponding node will be skipped for render.',
+    );
+
+    return null;
+  }
+}
+
 type UseMergedPropsListParams = {
   iterableState: IterableState<Instantiated>;
   toProps: (item: unknown) => Record<string, unknown>;
@@ -68,12 +103,18 @@ type UseMergedPropsListParams = {
 // each `props` merged iterableState and otherProps
 function useMergedPropsList(
   { iterableState, toProps, otherProps, ctx, loopKey }: UseMergedPropsListParams,
-): Array<[NodeProperties<Instantiated>, React.Key]> {
+): Array<[React.Key, NodeProperties<Instantiated>]> {
   const iterable = useIterable(iterableState, ctx);
+  const currentPath = useContext(PathContext);
 
-  return iterable.map((item, index) => {
+  return iterable.map<[React.Key, NodeProperties<Instantiated>] | null>((item, index) => {
+    const convertedProps = tryToProps(item, toProps, currentPath);
+    if (!convertedProps) {
+      return null;
+    }
+
     // convert iterable to constant property spec for reuse of NodeRender
-    const constProps = Object.entries(toProps(item))
+    const constProps = Object.entries(convertedProps)
       .reduce<Record<string, ConstantProperty>>((constProps, [propName, value]) => {
         constProps[propName] = { type: NodePropType.ConstantProperty, value };
 
@@ -81,9 +122,11 @@ function useMergedPropsList(
       }, {});
 
     return [
-      Object.assign({}, otherProps, constProps),
       getAppropriateKey(item, loopKey, index),
+      Object.assign({}, otherProps, constProps),
     ];
+  }).filter((pair): pair is[React.Key, NodeProperties<Instantiated>] => {
+    return !!pair;
   });
 }
 
@@ -107,7 +150,7 @@ function LoopContainer({ iterableState, loopKey, node, ctx, toProps }: Props): R
   return React.createElement(
     React.Fragment,
     null,
-    mergedPropsList.map(([props, key]): React.ReactElement => {
+    mergedPropsList.map(([key, props]): React.ReactElement => {
       const newNode = Object.assign({}, node, { props });
 
       return React.createElement(NodeRender, { key, node: newNode, ctx });

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { logger } from '@ofa/utils';
 
 import useInstantiateProps from '../use-instantiate-props';
@@ -6,12 +6,14 @@ import { importComponent } from '../repository';
 import { ChildrenRender } from './index';
 import type { CTX, DynamicComponent, Repository, Instantiated, ReactComponentNode } from '../types';
 import { useLifecycleHook } from './hooks';
+import PathContext from './path-context';
 
 function useNodeComponent(
   node: ReactComponentNode<Instantiated>,
   repository?: Repository,
 ): DynamicComponent | undefined {
   const [lazyLoadedComponent, setComponent] = useState<DynamicComponent | undefined>();
+  const currentPath = useContext(PathContext);
 
   useEffect(() => {
     const packageNameVersion = `${node.packageName}@${node.packageVersion}`;
@@ -29,11 +31,18 @@ function useNodeComponent(
         logger.error(
           `got empty component for package: ${node.packageName},`,
           `exportName: ${node.exportName}, version: ${node.packageVersion}`,
+          `please check the spec for node: ${currentPath}.`,
         );
         return;
       }
 
       setComponent(() => comp);
+    }).catch((error) => {
+      logger.error(
+        `failed to load node component, please check the spec for node: ${currentPath}.`,
+        'Error:',
+        error,
+      );
     });
   }, []);
 
