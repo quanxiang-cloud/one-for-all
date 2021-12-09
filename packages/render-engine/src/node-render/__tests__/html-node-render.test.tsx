@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
+import { logger } from '@ofa/utils';
 
 import { NodeType, HTMLNode, Instantiated, NodePropType } from '../../types';
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
@@ -22,12 +23,9 @@ test('HTMLNodeRender_should_handle_empty_html_tag', () => {
     },
   };
 
-  // eslint-disable-next-line no-console
-  console.error = jest.fn();
   const { container } = render((<HTMLNodeRender node={node} ctx={dummyCTX} />));
 
-  // eslint-disable-next-line no-console
-  expect(console.error).toBeCalled();
+  expect(logger.error).toBeCalled();
   expect(container).toMatchSnapshot();
 });
 

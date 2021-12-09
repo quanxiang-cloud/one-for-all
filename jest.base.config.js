@@ -24,5 +24,5 @@ export default {
   testEnvironment: 'jsdom',
   modulePathIgnorePatterns: ['__tests__/fixtures'],
   moduleNameMapper: mapper,
-  setupFilesAfterEnv: [path.resolve(__dirname, 'scripts/jest-setup.ts')]
+  setupFilesAfterEnv: [path.resolve(__dirname, 'scripts/jest-setup-import-jest-dom.ts')]
 };

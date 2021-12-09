@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
+import { logger } from '@ofa/utils';
 
 import LoopContainer, { Props } from '../loop-container';
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
@@ -60,13 +61,9 @@ test('LoopContainer_should_log_error_when_iterableState_is_not_iterable', () => 
     },
   };
 
-  // eslint-disable-next-line no-console
-  console.error = jest.fn();
-
   render((<LoopContainer {...props} />));
 
-  // eslint-disable-next-line no-console
-  expect(console.error).toBeCalled();
+  expect(logger.error).toBeCalled();
 });
 
 // todo test case about primary value iteration

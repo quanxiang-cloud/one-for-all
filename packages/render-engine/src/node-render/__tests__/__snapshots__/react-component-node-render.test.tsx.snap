@@ -7,3 +7,13 @@ exports[`ReactComponentNodeRender_match_snapshots 1`] = `
   />
 </div>
 `;
+
+exports[`ReactComponentNodeRender_match_snapshots_with_children 1`] = `
+<div>
+  <div
+    id="some_dummy_component"
+  >
+    <span />
+  </div>
+</div>
+`;

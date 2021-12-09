@@ -1,3 +1,4 @@
+import { logger } from '@ofa/utils';
 import { renderHook, act } from '@testing-library/react-hooks/pure';
 
 import { NodePropType, Instantiated, SchemaNode, NodeType } from '../../types';
@@ -48,8 +49,6 @@ test('useSharedStateMutationProps_should_not_mutate_state_when_adapter_throw', (
     some_value: { initial: 'some_value' },
   });
   dummyCTX.statesHubShared = sharedStates;
-  // eslint-disable-next-line no-console
-  console.error = jest.fn();
   const node: SchemaNode<Instantiated> = {
     id: 'some_key',
     type: NodeType.HTMLNode,
@@ -72,8 +71,7 @@ test('useSharedStateMutationProps_should_not_mutate_state_when_adapter_throw', (
   });
 
   expect(sharedStates.getState$('some_value').getValue()).toEqual('some_value');
-  // eslint-disable-next-line no-console
-  expect(console.error).toBeCalled();
+  expect(logger.error).toBeCalled();
 
   unmount();
 });
@@ -83,8 +81,6 @@ test('useSharedStateMutationProps_should_resolve_adapter_returned', () => {
     some_value: { initial: 'some_value' },
   });
   dummyCTX.statesHubShared = sharedStates;
-  // eslint-disable-next-line no-console
-  console.error = jest.fn();
   const node: SchemaNode<Instantiated> = {
     id: 'some_key',
     type: NodeType.HTMLNode,
@@ -105,8 +101,7 @@ test('useSharedStateMutationProps_should_resolve_adapter_returned', () => {
   });
 
   expect(sharedStates.getState$('some_value').getValue()).toEqual('another_value');
-  // eslint-disable-next-line no-console
-  expect(console.error).not.toBeCalled();
+  expect(logger.error).not.toBeCalled();
 
   unmount();
 });

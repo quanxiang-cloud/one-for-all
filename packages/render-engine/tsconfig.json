@@ -6,7 +6,7 @@
     "module": "ESNext"
   },
   "include": ["src/**/*"],
-  "exclude": ["**/__tests__"],
+  "exclude": ["**/__tests__", "**/__mocks__"],
   "references": [
     { "path": "../utils"},
     { "path": "../api-spec-adapter"}

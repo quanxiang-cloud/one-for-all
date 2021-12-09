@@ -1,134 +1,13 @@
-import React, { useContext } from 'react';
-import { logger } from '@ofa/utils';
+import React from 'react';
 
 import {
-  ConstantProperty,
   CTX,
   Instantiated,
-  NodePropType,
   SchemaNode,
   IterableState,
-  NodeProperties,
-  NodeType,
 } from '../types';
-import useInstantiateProps from '../use-instantiate-props';
 import NodeRender from '../node-render';
-import PathContext from '../node-render/path-context';
-
-function useIterable(iterableState: IterableState<Instantiated>, ctx: CTX): Array<unknown> {
-  const currentPath = useContext(PathContext);
-
-  const dummyNode: SchemaNode<Instantiated> = {
-    type: NodeType.HTMLNode,
-    id: 'dummyLoopContainer',
-    name: 'div',
-    props: {
-      iterable: iterableState,
-    },
-  };
-
-  const { iterable } = useInstantiateProps(dummyNode, ctx);
-
-  if (!Array.isArray(iterable)) {
-    // todo better error tips
-    const nodeID = currentPath.split('/').pop();
-    logger.error(
-      'state is not iterable.',
-      `LoopContainer node [${nodeID}] require a array type state,`,
-      'please check the follow property spec:\n',
-      iterableState,
-    );
-    return [];
-  }
-
-  return iterable;
-}
-
-function getAppropriateKey(item: unknown, loopKey: string, index: number): string | number {
-  if (typeof item === 'string' || typeof item === 'number') {
-    return item;
-  }
-
-  if (typeof item === 'undefined' || typeof item === 'function' || typeof item === 'boolean') {
-    return index;
-  }
-
-  if (typeof item === 'object' && item !== null) {
-    // just for override typescript "No index signature" error
-    return Reflect.get(item, loopKey);
-  }
-
-  return index;
-}
-
-function tryToProps(
-  source: unknown,
-  toProps: (item: unknown) => Record<string, unknown>,
-  currentPath: string,
-): Record<string, unknown> | null {
-  try {
-    const toPropsResult = toProps(source);
-    if (typeof toPropsResult !== 'object' && !toPropsResult) {
-      logger.error(
-        'toProps result should be an object, but got: ${toPropsResult},',
-        `please check the toProps spec of node: ${currentPath},`,
-        'the corresponding node will be skipped for render.',
-      );
-      return null;
-    }
-
-    return toPropsResult;
-  } catch (error) {
-    logger.error(
-      'An error occurred while calling toProps with the following parameter:',
-      source,
-      '\n',
-      `please check the toProps spec of node: ${currentPath},`,
-      'the corresponding node will be skipped for render.',
-    );
-
-    return null;
-  }
-}
-
-type UseMergedPropsListParams = {
-  iterableState: IterableState<Instantiated>;
-  toProps: (item: unknown) => Record<string, unknown>;
-  otherProps?: NodeProperties<Instantiated>;
-  ctx: CTX;
-  loopKey: string;
-}
-
-// useMergedPropsList return a list of `props` and `key` which could be used for iteration,
-// each `props` merged iterableState and otherProps
-function useMergedPropsList(
-  { iterableState, toProps, otherProps, ctx, loopKey }: UseMergedPropsListParams,
-): Array<[React.Key, NodeProperties<Instantiated>]> {
-  const iterable = useIterable(iterableState, ctx);
-  const currentPath = useContext(PathContext);
-
-  return iterable.map<[React.Key, NodeProperties<Instantiated>] | null>((item, index) => {
-    const convertedProps = tryToProps(item, toProps, currentPath);
-    if (!convertedProps) {
-      return null;
-    }
-
-    // convert iterable to constant property spec for reuse of NodeRender
-    const constProps = Object.entries(convertedProps)
-      .reduce<Record<string, ConstantProperty>>((constProps, [propName, value]) => {
-        constProps[propName] = { type: NodePropType.ConstantProperty, value };
-
-        return constProps;
-      }, {});
-
-    return [
-      getAppropriateKey(item, loopKey, index),
-      Object.assign({}, otherProps, constProps),
-    ];
-  }).filter((pair): pair is[React.Key, NodeProperties<Instantiated>] => {
-    return !!pair;
-  });
-}
+import { useMergedPropsList } from './helpers';
 
 export type Props = {
   iterableState: IterableState<Instantiated>;
@@ -138,7 +17,7 @@ export type Props = {
   ctx: CTX;
 }
 
-function LoopContainer({ iterableState, loopKey, node, ctx, toProps }: Props): React.ReactElement {
+function LoopContainer({ iterableState, loopKey, node, ctx, toProps }: Props): React.ReactElement | null {
   const mergedPropsList = useMergedPropsList({
     iterableState,
     toProps,
@@ -146,6 +25,10 @@ function LoopContainer({ iterableState, loopKey, node, ctx, toProps }: Props): R
     loopKey,
     otherProps: node.props,
   });
+
+  if (!mergedPropsList) {
+    return null;
+  }
 
   return React.createElement(
     React.Fragment,

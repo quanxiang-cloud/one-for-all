@@ -1,5 +1,6 @@
 import { noop } from 'lodash';
 import { renderHook, act } from '@testing-library/react-hooks/pure';
+import { logger } from '@ofa/utils';
 
 import { NodePropType, Instantiated, SchemaNode, NodeType } from '../../types';
 import useSharedStateProps from '../use-shared-state-props';
@@ -54,8 +55,6 @@ describe('useSharedStateProps_resolve_expected_value', () => {
   });
 
   test('resolve_fallback_when_adapter_throw', () => {
-    // eslint-disable-next-line no-console
-    console.error = jest.fn();
     const node: SchemaNode<Instantiated> = {
       id: 'foo',
       type: NodeType.HTMLNode,
@@ -75,15 +74,12 @@ describe('useSharedStateProps_resolve_expected_value', () => {
     const { result, unmount } = renderHook(() => useSharedStateProps(node, dummyCTX));
 
     expect(result.current.foo).toEqual('foo');
-    // eslint-disable-next-line no-console
-    expect(console.error).toBeCalled();
+    expect(logger.error).toBeCalled();
 
     unmount();
   });
 
   test('resolve_fallback_when_adapter_return_undefined', () => {
-    // eslint-disable-next-line no-console
-    console.error = jest.fn();
     const node: SchemaNode<Instantiated> = {
       id: 'foo',
       type: NodeType.HTMLNode,
@@ -101,8 +97,7 @@ describe('useSharedStateProps_resolve_expected_value', () => {
     const { result, unmount } = renderHook(() => useSharedStateProps(node, dummyCTX));
 
     expect(result.current.foo).toEqual('foo');
-    // eslint-disable-next-line no-console
-    expect(console.error).not.toBeCalled();
+    expect(logger.error).not.toBeCalled();
 
     unmount();
   });

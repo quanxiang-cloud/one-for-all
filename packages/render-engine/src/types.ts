@@ -52,6 +52,7 @@ export type NodeProperties<T extends Serialized | Instantiated> = Record<string,
 
 type BaseNodeProperty = {
   type: NodePropType;
+  required?: boolean;
 }
 
 export type ConstantProperty = BaseNodeProperty & {
