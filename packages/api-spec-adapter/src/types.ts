@@ -1,7 +1,6 @@
 export type Res = { result?: any; error?: Error };
 
 export type RequestBuilder = (apiID: string, fetchParams?: FetchParams) => AjaxConfig | undefined;
-// todo define response type for reuse
 export type RawResponse = Partial<{
   body: unknown;
   error: Error;
