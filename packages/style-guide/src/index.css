@@ -1,6 +1,2 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-
 @import "./variables/colors.css";
 @import "./reset.css";
