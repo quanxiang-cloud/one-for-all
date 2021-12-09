@@ -2,9 +2,5 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-@import "./btn.css";
-@import "./border.css";
 @import "./variables/colors.css";
-@import "./variables/global.css";
-@import "./typography.css";
-@import './components/dropdown.css';
+@import "./reset.css";
