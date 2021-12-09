@@ -1,5 +1,6 @@
 import { act, renderHook } from '@testing-library/react-hooks/pure';
 import type { APISpecAdapter } from '@ofa/api-spec-adapter';
+import { logger } from '@ofa/utils';
 
 import useAPIResultProps from '../use-api-result-props';
 import APIStatesHub from '../../ctx/states-hub-api';
@@ -117,8 +118,6 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
       },
     };
 
-    // eslint-disable-next-line no-console
-    console.error = jest.fn();
     const { result, unmount } = renderHook(() => useAPIResultProps(node, dummyCTX));
     act(() => {
       apiStateHub.getState$('some_api_state').next({
@@ -148,8 +147,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
 
     expect(result.current.foo).toEqual(false);
 
-    // eslint-disable-next-line no-console
-    expect(console.error).toBeCalled();
+    expect(logger.error).toBeCalled();
 
     unmount();
   });
