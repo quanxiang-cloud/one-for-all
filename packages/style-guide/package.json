@@ -25,7 +25,6 @@
     "rollup-plugin-esbuild": "^4.6.0",
     "rollup-plugin-import-css": "^3.0.2",
     "rollup-plugin-postcss": "^4.0.2",
-    "rollup-plugin-rebase": "^3.6.9",
     "rollup-plugin-terser": "^7.0.2",
     "tailwindcss": "^2.2.19"
   }

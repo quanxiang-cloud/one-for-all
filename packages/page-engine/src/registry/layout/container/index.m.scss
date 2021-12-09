@@ -1,0 +1,16 @@
+.coll {
+  position: relative;
+  width: 100%;
+  height: auto;
+  min-height: 52px;
+  background: #F8FAFC;
+  border: 1px solid #CBD5E1;
+
+  .placeholder {
+    display: grid;
+    place-content: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+  }
+}

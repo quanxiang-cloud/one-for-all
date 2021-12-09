@@ -1,0 +1,10 @@
+dist
+lib
+node_modules
+scripts/*
+jest.*.js
+rollup.*.js
+
+/colors.js
+/*.config.js
+

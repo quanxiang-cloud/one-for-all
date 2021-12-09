@@ -3,6 +3,8 @@ import sucrase from '@rollup/plugin-sucrase';
 import styles from 'rollup-plugin-styles';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import esbuild from 'rollup-plugin-esbuild';
+import copy from 'rollup-plugin-copy';
+import path from 'path'
 
 import typescriptPaths from '../../scripts/rollup-plugin-typescript-paths';
 
@@ -77,6 +79,39 @@ export default [
       //   transforms: ['typescript', 'jsx'],
       //   production: true
       // }),
+    ]
+  },
+
+  // build for page engine
+  {
+    input: 'src/page-engine/index.tsx',
+    output: {
+      file: 'dist/page-engine/index.js',
+      format: 'system'
+    },
+
+    external: ['react', 'react-dom', "lodash", /@ofa\/.*/],
+
+    plugins: [
+      commonjs(),
+      styles(),
+      nodeResolve({
+        browser: true,
+        mainFields: ['main'],
+      }),
+      typescriptPaths(),
+      sucrase({
+        exclude: ['node_modules/**'],
+        transforms: ['typescript', 'jsx'],
+        production: true
+      }),
+      copy({
+        targets: [
+          {src: path.resolve(__dirname, '../ui/dist/images/**/*'), dest: 'dist/images'},
+          {src: path.resolve(__dirname, '../ui/assets/images/**/*'), dest: 'dist/images'},
+        ],
+        copyOnce: true
+      })
     ]
   }
 ];

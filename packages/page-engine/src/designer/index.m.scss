@@ -1,0 +1,26 @@
+.designer {
+  .body {
+    display: grid;
+    width: 100%;
+    height: calc(100vh - var(--pg-header-height));
+    grid-template-columns: 56px 1fr 282px;
+    grid-column-gap: 8px;
+
+    &.pinned {
+      grid-template-columns: 324px 1fr 282px;
+    }
+  }
+}
+
+.canvas {
+  width: 100%;
+  background: white;
+}
+
+:global {
+  .btn {
+    font-size: 12px;
+    font-weight: normal;
+  }
+}
+

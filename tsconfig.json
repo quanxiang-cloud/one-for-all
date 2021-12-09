@@ -45,9 +45,23 @@
     /* Module Resolution Options */
     "moduleResolution": "node" /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */,
     "baseUrl": "." /* Base directory to resolve non-absolute module names. */,
-//     "paths": {} /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */,
+     "paths": {
+       "@ofa/*": [
+         "packages/*/src"
+       ],
+       "@ofa/ui": [
+         "packages/qxp-ui/src"
+       ],
+       "@ofa/page-engine": [
+         "packages/page-engine/src"
+       ],
+       "@ofa/page-engine/*": [
+         "packages/page-engine/src/*"
+       ],
+     } /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */,
     // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
     "typeRoots": [
+      "types",
       "node_modules/@types",
     ] /* List of folders to include type definitions from. */,
     // "types": [] /* Type declaration files to be included in compilation. */,
@@ -78,6 +92,9 @@
     },
     {
       "path": "./packages/ui"
+    },
+    {
+      "path": "./packages/page-engine"
     }
   ],
   "plugins": [
