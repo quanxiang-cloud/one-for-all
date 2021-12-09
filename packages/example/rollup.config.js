@@ -88,11 +88,11 @@ export default [
       format: 'system'
     },
 
-    external: ['react', 'react-dom', /@ofa\/.*/],
+    external: ['react', 'react-dom', "lodash", /@ofa\/.*/],
 
     plugins: [
       commonjs(),
-      styles({ modules: false }),
+      styles(),
       nodeResolve({
         browser: true,
         mainFields: ['main'],

@@ -15,7 +15,7 @@ export default {
   external: ['react', 'react-dom', 'lodash', 'rxjs', /@ofa\/.*/, /rxjs\/.*/],
 
   plugins: [
-    peerDepsExternal(),
+    // peerDepsExternal(),
     typescriptPaths(),
     resolve({
       preferBuiltins: false,
@@ -30,7 +30,7 @@ export default {
       sourceMap: true, // default
       minify: process.env.NODE_ENV === 'production',
       target: 'es2017', // default, or 'es20XX', 'esnext'
-      jsx: 'transform', // default, or 'preserve'
+      jsx: 'transform', // default, or 'preserve'/packages/ui/src/styles/components/dropdown.scss
       jsxFactory: 'React.createElement',
       jsxFragment: 'React.Fragment',
       // Like @rollup/plugin-replace

@@ -1,10 +1,8 @@
-$headerHeight: 44px;
-
 .designer {
   .body {
     display: grid;
     width: 100%;
-    height: calc(100vh - #{$headerHeight});
+    height: calc(100vh - var(--pg-header-height));
     grid-template-columns: 56px 1fr 282px;
     grid-column-gap: 8px;
 

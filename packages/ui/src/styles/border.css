@@ -1,37 +1,39 @@
-.corner-2-8-8-8 {
-  @apply rounded-tl-2 rounded-tr-8 rounded-br-8 rounded-bl-8;
-}
+@layer components {
+  .corner-2-8-8-8 {
+    @apply rounded-tl-2 rounded-tr-8 rounded-br-8 rounded-bl-8;
+  }
 
-.corner-12-2-12-12 {
-  @apply rounded-tl-12 rounded-tr-2 rounded-br-12 rounded-bl-12;
-}
+  .corner-12-2-12-12 {
+    @apply rounded-tl-12 rounded-tr-2 rounded-br-12 rounded-bl-12;
+  }
 
-.corner-8-8-8-2 {
-  @apply rounded-tl-8 rounded-tr-8 rounded-br-8 rounded-bl-2;
-}
+  .corner-8-8-8-2 {
+    @apply rounded-tl-8 rounded-tr-8 rounded-br-8 rounded-bl-2;
+  }
 
-.corner-8-2-8-8 {
-  @apply rounded-tl-8 rounded-tr-2 rounded-br-8 rounded-bl-8;
-}
+  .corner-8-2-8-8 {
+    @apply rounded-tl-8 rounded-tr-2 rounded-br-8 rounded-bl-8;
+  }
 
-.corner-2-8-8-8 {
-  @apply rounded-tl-2 rounded-tr-8 rounded-br-8 rounded-bl-8;
-}
+  .corner-2-8-8-8 {
+    @apply rounded-tl-2 rounded-tr-8 rounded-br-8 rounded-bl-8;
+  }
 
-.corner-8-8-0-0 {
-  @apply rounded-tl-8 rounded-tr-8;
-}
+  .corner-8-8-0-0 {
+    @apply rounded-tl-8 rounded-tr-8;
+  }
 
-.corner-4-12-12-12 {
-  @apply rounded-tl-4 rounded-tr-12 rounded-br-12 rounded-bl-12;
-}
+  .corner-4-12-12-12 {
+    @apply rounded-tl-4 rounded-tr-12 rounded-br-12 rounded-bl-12;
+  }
 
-.corner-4-0-4-4 {
-  @apply rounded-tl-4 rounded-br-4 rounded-bl-4;
-}
+  .corner-4-0-4-4 {
+    @apply rounded-tl-4 rounded-br-4 rounded-bl-4;
+  }
 
-.corner-4-0-4-0 {
-  @apply rounded-tl-4 rounded-br-4;
+  .corner-4-0-4-0 {
+    @apply rounded-tl-4 rounded-br-4;
+  }
 }
 
 .input-focus-border {
