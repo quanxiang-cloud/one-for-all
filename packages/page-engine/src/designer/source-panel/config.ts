@@ -6,11 +6,11 @@ export const groups: GroupProps[] = [
     label: '组件库',
     icon: 'application_management',
   },
-  {
-    name: 'templates',
-    label: '区块模板',
-    icon: 'view',
-  },
+  // {
+  //   name: 'templates',
+  //   label: '区块模板',
+  //   icon: 'view',
+  // },
   {
     name: 'page_tree',
     label: '页面层级',

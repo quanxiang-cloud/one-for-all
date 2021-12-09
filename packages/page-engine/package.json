@@ -15,7 +15,8 @@
     "prebundle": "yarn run clean && yarn run build",
     "build": "tsc --build tsconfig.json",
     "bundle": "rollup -c",
-    "lint": "eslint src/**/*.ts --fix"
+    "lint": "eslint src/**/*.ts --fix",
+    "type-check": "tsc --noEmit --skipLibCheck --pretty -w"
   },
   "author": "sunnyw <sunnywang@yunify.com>",
   "license": "MIT",
