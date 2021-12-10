@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 import { DndProvider } from 'react-dnd';
@@ -9,7 +9,8 @@ import SourcePanel from './source-panel';
 import SettingPanel from './setting-panel';
 import Page from '../core/page';
 
-import Ctx from '../ctx';
+// import Ctx from '../ctx';
+import Ctx from '@ofa/page-engine/ctx';
 import stores from '../stores';
 
 import styles from './index.m.scss';
@@ -23,7 +24,7 @@ function Designer({ className }: Props): JSX.Element | null {
 
   useEffect(() => {
     return () => {
-      Object.entries(stores).forEach(([, store]) => {
+      Object.entries(stores).forEach(([, store]: [string, any]) => {
         if (typeof store.reset === 'function') {
           store.reset();
         }

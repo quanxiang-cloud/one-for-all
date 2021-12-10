@@ -1,10 +1,10 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 import { useDrop } from 'react-dnd';
 import { defaults } from 'lodash';
 
-import ctx from '../ctx';
+import { useCtx } from '@ofa/page-engine/ctx';
 import Elem from './elem';
 
 import styles from './index.m.scss';
@@ -17,10 +17,10 @@ interface Props {
   children?: React.ReactNode;
 }
 
-const identity = (x: any) => x;
+const identity = (x: any): any => x;
 
-function Page({ schema, children, className }: Props) {
-  const { page, registry } = useContext(ctx);
+function Page({ schema, children, className }: Props): JSX.Element {
+  const { page, registry } = useCtx();
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ['elem', 'source_elem'],

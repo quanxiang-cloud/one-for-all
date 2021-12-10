@@ -1,5 +1,20 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
-import stores from './stores';
+import PageStore from './stores/page';
+import RegistryStore from './stores/registry';
+import DesignerStore from './stores/designer';
 
-export default createContext<any>(stores);
+export type CtxValue = {
+  page: typeof PageStore;
+  registry: typeof RegistryStore;
+  designer: typeof DesignerStore;
+  [key: string]: any;
+}
+
+const ctx = createContext<CtxValue>({} as CtxValue);
+
+export function useCtx(): CtxValue {
+  return useContext(ctx);
+}
+
+export default ctx;

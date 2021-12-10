@@ -10,7 +10,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/dist', express.static('dist'));
 app.use('/pkg', express.static('pkg'));
-app.use('/externals', express.static('../../shared'));
+app.use('/externals', express.static('externals'));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));

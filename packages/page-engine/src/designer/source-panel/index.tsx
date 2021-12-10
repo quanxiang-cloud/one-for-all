@@ -1,10 +1,10 @@
-import React, { useCallback, useContext, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 import { debounce } from 'lodash';
 
 import { Panel } from '@ofa/ui';
-import ctx from '../../ctx';
+import { useCtx } from '@ofa/page-engine/ctx';
 
 import Group from './group';
 import { groups, panelTitle } from './config';
@@ -16,7 +16,7 @@ import DataSource from './data-source';
 import styles from './index.m.scss';
 
 function SourcePanel(): JSX.Element {
-  const store = useContext(ctx).designer;
+  const store = useCtx().designer;
   const panelRef = useRef<HTMLDivElement>(null);
   const hoverDoc = useCallback(debounce(handleClickOutside, 200), []);
 
@@ -35,16 +35,16 @@ function SourcePanel(): JSX.Element {
 
   function renderPanelCont(): JSX.Element | null {
     if (store.activeGroup === 'comps') {
-      return <PlatformComps/>;
+      return <PlatformComps />;
     }
     if (store.activeGroup === 'templates') {
-      return <CustomTemplate/>;
+      return <CustomTemplate />;
     }
     if (store.activeGroup === 'page_tree') {
-      return <PageTree/>;
+      return <PageTree />;
     }
     if (store.activeGroup === 'data_source') {
-      return <DataSource/>;
+      return <DataSource />;
     }
     return null;
   }
