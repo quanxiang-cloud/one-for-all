@@ -2,7 +2,7 @@
 
 ## Usage
 
-开发阶段
+### 开发环境
 
 ```
 yarn dev
@@ -14,7 +14,7 @@ yarn dev
 
 由于example引用了 `packages/page-engine`， 如果需要类型检查，可以进到page-engine目录下 执行 `yarn type-check`
 
-生成环境
+### 生产环境
 
 ```
 yarn start
