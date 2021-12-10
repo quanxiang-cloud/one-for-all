@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
+import { debounce } from 'lodash';
 
 import { Panel } from '@ofa/ui';
-import ctx from '../../ctx';
+import { useCtx } from '@ofa/page-engine/ctx';
 
 import Group from './group';
 import { groups, panelTitle } from './config';
@@ -14,18 +15,15 @@ import DataSource from './data-source';
 
 import styles from './index.m.scss';
 
-interface Props {
-  className?: string;
-}
-
-function SourcePanel(props: Props) {
-  const store = useContext(ctx).designer;
+function SourcePanel(): JSX.Element {
+  const store = useCtx().designer;
   const panelRef = useRef<HTMLDivElement>(null);
+  const hoverDoc = useCallback(debounce(handleClickOutside, 200), []);
 
   useEffect(() => {
-    document.addEventListener('click', handleClickOutside);
+    document.addEventListener('mouseover', hoverDoc);
     return () => {
-      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('mouseover', hoverDoc);
     };
   }, []);
 

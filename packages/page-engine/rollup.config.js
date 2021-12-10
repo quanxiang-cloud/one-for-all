@@ -1,8 +1,10 @@
 import esbuild from 'rollup-plugin-esbuild';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from "@rollup/plugin-commonjs";
-import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+// import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import styles from 'rollup-plugin-styles';
+import alias from '@rollup/plugin-alias'
+import path from 'path'
 
 import typescriptPaths from '../../scripts/rollup-plugin-typescript-paths';
 import getOutput from '../../scripts/get-common-output';
@@ -12,11 +14,16 @@ export default {
   input: 'src/index.ts',
   output: getOutput(packageJSON.name, packageJSON.version),
 
-  external: ['react', 'react-dom', "lodash", /@ofa\/.*/],
+  external: ['react', 'react-dom', "lodash", /@ofa\/ui/],
 
   plugins: [
     // peerDepsExternal(),
     typescriptPaths(),
+    alias({
+      entries: {
+        '@ofa/page-engine': path.resolve(__dirname, './lib/src')
+      },
+    }),
     resolve({
       preferBuiltins: false,
       browser: true,

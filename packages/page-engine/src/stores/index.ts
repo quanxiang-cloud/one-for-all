@@ -3,7 +3,9 @@ import registry from './registry';
 import designer from './designer';
 import dataSource from './data-source';
 
-const stores: Record<string, any> = {
+import { CtxValue } from '../ctx';
+
+const stores: CtxValue = {
   page,
   registry,
   designer,

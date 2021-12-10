@@ -1,23 +1,20 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import cs from 'classnames';
+import { noop } from 'lodash';
 
 import { Icon, Button, Modal } from '@ofa/ui';
-import ctx from '../../ctx';
+import { useCtx } from '@ofa/page-engine/ctx';
 
 import styles from './index.m.scss';
 
-interface Props {
-  className?: string;
-}
-
 type PreviewMode = 'pc' | 'mobile';
 
-const Divider = () => <div className='w-1 h-20 bg-gray-200 mx-16' />;
+const Divider = (): JSX.Element => <div className='w-1 h-20 bg-gray-200 mx-16' />;
 
-function Toolbar(props: Props) {
+function Toolbar(): JSX.Element {
   const [viewMode, setViewMode] = useState<PreviewMode>('pc');
   const [openModal, setOpenModal] = useState(false);
-  const { page } = useContext(ctx);
+  const { page } = useCtx();
 
   function handleSave(): void {
     page.saveSchema();
@@ -53,7 +50,7 @@ function Toolbar(props: Props) {
             key: 'check',
             iconName: 'check',
             modifier: 'primary',
-            onClick: () => {},
+            onClick: noop,
             text: '确认',
           }]}
         >

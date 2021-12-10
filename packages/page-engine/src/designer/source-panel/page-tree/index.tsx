@@ -1,14 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react';
 
-import ctx from '../../../ctx';
+import { useCtx } from '@ofa/page-engine/ctx';
 
-interface Props {
-  className?: string;
-}
-
-function PageTree(props: Props) {
-  const store = useContext(ctx).page;
+function PageTree(): JSX.Element {
+  const store = useCtx().page;
 
   return (
     <pre>
