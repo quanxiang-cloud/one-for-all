@@ -11,6 +11,8 @@ import Tab from './tab';
 import Select from './select';
 import Tag from './tag';
 import Search from './search';
+import Radio from './radio';
+import RadioGroup from './radio/group';
 
 export {
   Icon,
@@ -24,4 +26,6 @@ export {
   Select,
   Tag,
   Search,
+  Radio,
+  RadioGroup,
 };
