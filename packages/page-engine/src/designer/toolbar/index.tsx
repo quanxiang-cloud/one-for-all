@@ -25,7 +25,7 @@ function Toolbar(): JSX.Element {
 
   return (
     <div className={cs('bg-gray-50 h-44 flex justify-between items-center px-16', styles.toolbar)}>
-      <div className={styles.brand}>{designer.pageTitle}</div>
+      <div className={styles.brand}>{designer.vdoms.title}</div>
       <div className={cs('flex items-center', styles.actions)}>
         <Icon name='computer' className='cursor-pointer' color='gray' />
         <Divider />

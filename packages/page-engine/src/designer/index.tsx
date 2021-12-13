@@ -17,29 +17,18 @@ import styles from './index.m.scss';
 interface Props {
   onSave: (page_schema: PageEngine.Node) => void;
   onPreview: (page_schema: PageEngine.Node) => void;
-  title: React.ReactNode;
-  apis: Record<string, PageEngine.ApiItem>;
+  vdoms?: Record<string, React.ReactNode>; // 委托给外部渲染的vdom节点
   className?: string;
 }
 
 // https://mobx.js.org/configuration.html#isolateglobalstate-boolean
 configure({ isolateGlobalState: true });
 
-function Designer({ className, title = 'qxp page engine', onSave, onPreview, apis }: Props): JSX.Element | null {
+function Designer({ className }: Props): JSX.Element | null {
   const { designer } = stores;
 
   useEffect(() => {
-    // set page title
-    designer.setPageTitle(title);
-
-    // attach external props to ctx
-    Object.assign(stores, {
-      onSave,
-      onPreview,
-      apis,
-    });
-
-    // for dev mode
+    // todo: remove
     // @ts-ignore
     window._ctx = stores;
 

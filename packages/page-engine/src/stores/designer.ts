@@ -2,12 +2,16 @@ import { observable, action, makeObservable } from 'mobx';
 
 type SettingPanel = 'props' | 'style' | 'event' | 'renderer'
 
+type VdomKey = 'title' | 'platformApis' | 'apiStateDetail' | string;
+
 class DesignerStore {
   @observable activeGroup = ''
   @observable panelOpen = false
   @observable panelPinned = false
   @observable activePanel: SettingPanel = 'props'
-  @observable pageTitle: React.ReactNode = ''
+  @observable vdoms: Record<VdomKey, React.ReactNode> = {
+    title: 'qxp page engine',
+  }
 
   constructor() {
     makeObservable(this);
@@ -43,8 +47,8 @@ class DesignerStore {
   }
 
   @action
-  setPageTitle = (title: React.ReactNode): void => {
-    this.pageTitle = title;
+  setVdom = (keyName: VdomKey, vdom: React.ReactNode): void => {
+    this.vdoms[keyName] = vdom;
   }
 
   @action

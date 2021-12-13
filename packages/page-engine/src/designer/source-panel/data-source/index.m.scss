@@ -63,9 +63,19 @@ input, textarea {
     }
   }
 
-  .varActions {
-    > svg {
+  .bar {
+    &:hover {
+      svg:not(:last-of-type) {
+        visibility: visible;
+      }
+    }
+
+    svg {
       margin-right: 6px;
+
+      &:not(:last-of-type) {
+        visibility: hidden;
+      }
     }
   }
 
@@ -73,4 +83,15 @@ input, textarea {
     display: none;
     flex-direction: column;
   }
+
+  .apiVarCont {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.apiState {
+  //box-shadow: inset 0px -1px 0px #E2E8F0;
+  border-top: 1px solid var(--gray-200);
+  min-height: 300px;
 }
