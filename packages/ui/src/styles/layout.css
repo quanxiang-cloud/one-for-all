@@ -1,7 +1,0 @@
-.main-content {
-  height: var(--main-content-height);
-}
-
-.main-content-without-header{
-  height: var(--main-content-no-header);
-}

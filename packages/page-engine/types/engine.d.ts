@@ -19,5 +19,8 @@ declare namespace PageEngine {
     children?: Array<Node | PrimitiveType>;
   }
 
-  type DragPos = 'up' | 'down' | 'left' | 'right' | 'inner'
+  type DragPos = 'up' | 'down' | 'left' | 'right' | 'inner';
+
+  // api action
+  type ApiItem = (...args: any) => Promise<any>;
 }

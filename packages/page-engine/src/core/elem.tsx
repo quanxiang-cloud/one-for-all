@@ -4,7 +4,7 @@ import { useDrag, useDrop, DragPreviewImage } from 'react-dnd';
 import { observer } from 'mobx-react';
 
 import { Icon, Tooltip } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine/ctx';
+import { useCtx } from '@ofa/page-engine';
 import { encode } from '../utils/base64';
 import { elemId } from '../utils';
 
@@ -26,6 +26,7 @@ function Elem({ node, className, preview, children }: Props): JSX.Element {
 
   const [{ isDragging }, drag, dragPreview] = useDrag(() => ({
     type: 'elem',
+    canDrag: comp !== 'page',
     item: {
       id,
       pid,

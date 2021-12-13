@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { debounce } from 'lodash';
 
 import { Panel } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine/ctx';
+import { useCtx } from '@ofa/page-engine';
 
 import Group from './group';
 import { groups, panelTitle } from './config';

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { defaults } from 'lodash';
 
 import { Select } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine/ctx';
+import { useCtx } from '@ofa/page-engine';
 
 import type { Props } from './grid';
 

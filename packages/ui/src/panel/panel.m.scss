@@ -9,28 +9,28 @@
   border-right: none;
   transition: all .3s ease-in-out;
 
-  &-closed {
+  &.closed {
     transform: translateX(-999px) !important;
   }
 
-  &--header {
-    &-title {
+  .header {
+    > .title {
       font-weight: 600;
       font-size: 12px;
       line-height: 20px;
       color: #475569;
     }
 
-    &-actions {
-      &-pin.pinned {
-        svg {
-          transform: rotate(45deg);
+    > .actions {
+      .actionPin {
+        margin-right: 8px;
+
+        &.pinned {
+          svg {
+            transform: rotate(45deg);
+          }
         }
       }
     }
-  }
-
-  &--body {
-
   }
 }

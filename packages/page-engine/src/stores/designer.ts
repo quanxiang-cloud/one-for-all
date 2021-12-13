@@ -7,6 +7,7 @@ class DesignerStore {
   @observable panelOpen = false
   @observable panelPinned = false
   @observable activePanel: SettingPanel = 'props'
+  @observable pageTitle: React.ReactNode = ''
 
   constructor() {
     makeObservable(this);
@@ -37,8 +38,13 @@ class DesignerStore {
   }
 
   @action
-  setActivePanel = (panel: SettingPanel) => {
+  setActivePanel = (panel: SettingPanel): void => {
     this.activePanel = panel;
+  }
+
+  @action
+  setPageTitle = (title: React.ReactNode): void => {
+    this.pageTitle = title;
   }
 
   @action

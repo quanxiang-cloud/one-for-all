@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { get } from 'lodash';
 
-import { useCtx } from '@ofa/page-engine/ctx';
+import { useCtx } from '@ofa/page-engine';
 import SourceElem from './source-elem';
 
 import styles from './index.m.scss';

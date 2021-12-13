@@ -3,7 +3,7 @@ import { useDrag } from 'react-dnd';
 import cs from 'classnames';
 
 import { Icon } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine/ctx';
+import { useCtx } from '@ofa/page-engine';
 
 import styles from './index.m.scss';
 

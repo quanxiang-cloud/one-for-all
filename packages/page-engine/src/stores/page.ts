@@ -14,10 +14,11 @@ type AppendNodeOptions = {
   [key: string]: any
 }
 
-function deepMergeNode(node: PageEngine.Node) {
+function deepMergeNode(node: PageEngine.Node): PageEngine.Node {
   const target = toJS(node);
   Object.assign(target, { id: elemId(node.comp) });
   if (target.children) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     target.children = target.children.map(deepMergeNode);
   }
@@ -54,28 +55,28 @@ class PageStore {
   }
 
   @action
-  setSchema = (schema: PageEngine.Node) => {
+  setSchema = (schema: PageEngine.Node): void => {
     this.schema = schema;
   }
 
-  saveSchema = () => {
+  saveSchema = (): void => {
     // todo: save schema to backend
     localStorage.setItem('page_schema', JSON.stringify(toJS(this.schema)) as any);
     toast.success('保存成功');
   }
 
   @action
-  setMode = (mode: Mode) => {
+  setMode = (mode: Mode): void => {
     this.mode = mode;
   }
 
   @action
-  setActiveElemId = (id: string) => {
+  setActiveElemId = (id: string): void => {
     this.activeElemId = id;
   }
 
   @action
-  setDragPos = (pos: PageEngine.DragPos) => {
+  setDragPos = (pos: PageEngine.DragPos): void => {
     this.dragPos = pos;
   }
 
@@ -213,8 +214,8 @@ class PageStore {
   }
 
   @action
-  reset = () => {
-
+  reset = (): void => {
+    // todo
   }
 }
 

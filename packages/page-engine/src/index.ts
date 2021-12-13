@@ -1,11 +1,7 @@
-import Page from './core/page';
-import Elem from './core/elem';
 import Designer from './designer';
-
-import './styles/index.scss';
+import { useCtx } from './ctx';
 
 export {
-  Page,
-  Elem,
   Designer,
+  useCtx,
 };

@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { useDrop } from 'react-dnd';
 import { defaults } from 'lodash';
 
-import { useCtx } from '@ofa/page-engine/ctx';
+import { useCtx } from '@ofa/page-engine';
 import Elem from './elem';
 
 import styles from './index.m.scss';
