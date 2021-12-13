@@ -5,9 +5,9 @@ import { SwaggerSpecAdapter } from '@ofa/api-spec-adapter';
 
 import schema from './serialized-schema';
 import apiDoc from './api-doc';
-import TodoList from './src/components/todo-list';
-import TodoInput from './src/components/todo-input';
-import TodoFilter from './src/components/todo-filter';
+import TodoList from './components/todo-list';
+import TodoInput from './components/todo-input';
+import TodoFilter from './components/todo-filter';
 
 const apiSpecAdapter = new SwaggerSpecAdapter(apiDoc);
 const renderRoot = document.querySelector('#react-root');

@@ -16,6 +16,10 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+app.get('/todo', (req, res) => {
+  res.sendFile(path.join(__dirname, 'src/todo-app/index.html'));
+});
+
 app.get('/page-engine', (req, res) => {
   res.sendFile(path.join(__dirname, 'src/page-engine/index.html'));
 });

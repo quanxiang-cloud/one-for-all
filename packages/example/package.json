@@ -7,7 +7,7 @@
     "build": "rollup -c rollup.config.js",
     "build:watch": "rollup -c rollup.config.js -w",
     "bundle": "echo example bundle done",
-    "server": "node api-server.js",
+    "server": "node server.js",
     "start": "run-p build:watch server"
   },
   "dependencies": {
