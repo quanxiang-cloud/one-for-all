@@ -148,8 +148,7 @@ function Elem({ node, className, preview, children }: Props): JSX.Element {
               </div>
             )}
             <div className={cs('px-4 bg-blue-600', styles.group)}>
-              <span onClick={() => {
-              }} className='inline-flex items-center text-white'>
+              <span className='inline-flex items-center text-white'>
                 <Icon name='insert_drive_file' color='white' size={12} className='mr-6' />
                 <span>{label}</span>
               </span>

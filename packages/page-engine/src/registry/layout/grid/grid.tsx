@@ -11,7 +11,7 @@ export interface Props {
   children?: React.ReactNode;
 }
 
-function Grid({ className, style, colRatio, colGap, children }: Props) {
+function Grid({ className, style, colRatio, colGap, children }: Props): JSX.Element {
   return (
     <div
       className={cs(styles.gridElem, className)}

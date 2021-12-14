@@ -1,5 +1,5 @@
 import { observable, computed, action, makeObservable, toJS } from 'mobx';
-import { defaults } from 'lodash';
+import { defaults, set } from 'lodash';
 
 import { toast } from '@ofa/ui';
 
@@ -206,10 +206,10 @@ class PageStore {
   }
 
   @action
-  updateElemProps = (elem_id: string, props: Record<string, any>): void => {
+  updateElemProperty = (elem_id: string, propKey: string, conf: Record<string, any>): void => {
     const elem = findNode(this.schema, elem_id);
     if (elem) {
-      Object.assign(elem.props, props);
+      set(elem, propKey, conf);
     }
   }
 

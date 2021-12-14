@@ -21,7 +21,7 @@ function EventPanel({ className }: Props): JSX.Element {
       </div>
       <div className='mb-8'>
         <p className='text-12 text-gray-600'>动作类型</p>
-        <RadioGroup onChange={(val) => setType(val as string)}>
+        <RadioGroup onChange={(val: any) => setType(val)}>
           <Radio label='平台方法' value='platform' defaultChecked={eventType === 'platform'} />
           <Radio label='自定义方法' value='custom' defaultChecked={eventType === 'custom'} />
         </RadioGroup>

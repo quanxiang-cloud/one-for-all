@@ -7,7 +7,6 @@ import Editor, { loader } from '@monaco-editor/react';
 import { Search, Icon, Tooltip, Modal, toast } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
 
-import { ErrorMsg } from '../form';
 import VarItem from './var-item';
 
 import styles from '../index.m.scss';
