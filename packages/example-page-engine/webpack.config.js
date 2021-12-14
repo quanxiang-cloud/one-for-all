@@ -13,12 +13,11 @@ module.exports = {
   },
   devServer: {
     static: [
-      path.resolve(__dirname, 'build'),
-      path.resolve(__dirname, '../ui'),
       {
-        directory: path.resolve(__dirname, '../ui/assets'),
+        directory: path.resolve(__dirname, '../../dist'),
         publicPath: '/dist'
-      }
+      },
+      path.resolve(__dirname, 'build'),
     ],
     compress: false,
     port: 5000,

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
@@ -29,10 +29,10 @@ function SharedState(props: Props): JSX.Element {
     editorRef.current = editor;
   }
 
-  // useEffect(() => {
-  //   // todo: use cdn on prod mode
-  //   loader.config({ paths: { vs: 'http://localhost:5050/externals/monaco-loader/vs' } });
-  // }, []);
+  // @see https://github.com/suren-atoyan/monaco-react/issues/217
+  useEffect(() => {
+    loader.config({ paths: { vs: '/dist/monaco-editor/vs' } });
+  }, []);
 
   const noData = !Object.keys(dataSource.sharedState).length;
 
@@ -53,7 +53,7 @@ function SharedState(props: Props): JSX.Element {
       />
       <div className='relative'>
         {noData && (
-          <div className='flex justify-center items-center h-full mt-72 text-gray-400'>
+          <div className='flex justify-center items-center h-full text-gray-400' style={{ marginTop: '72px' }}>
             暂无数据
           </div>
         )}
