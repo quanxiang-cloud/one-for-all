@@ -14,7 +14,7 @@ export default {
   input: 'src/index.ts',
   output: getOutput(packageJSON.name, packageJSON.version),
 
-  external: ['react', 'react-dom', "lodash", /@ofa\/ui/],
+  external: ['react', 'react-dom', "lodash", /@ofa\/ui/, '@monaco-editor/react'],
 
   plugins: [
     // peerDepsExternal(),
