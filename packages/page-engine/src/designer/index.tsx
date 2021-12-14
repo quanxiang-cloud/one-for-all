@@ -24,13 +24,14 @@ interface Props {
 // https://mobx.js.org/configuration.html#isolateglobalstate-boolean
 configure({ isolateGlobalState: true });
 
-function Designer({ className }: Props): JSX.Element | null {
+function Designer({ className, onSave, onPreview }: Props): JSX.Element | null {
   const { designer } = stores;
 
   useEffect(() => {
-    // todo: remove
-    // @ts-ignore
-    window._ctx = stores;
+    Object.assign(stores, {
+      onSave,
+      onPreview,
+    });
 
     return () => {
       // reset ctx

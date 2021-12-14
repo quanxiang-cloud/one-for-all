@@ -29,10 +29,10 @@ function SharedState(props: Props): JSX.Element {
     editorRef.current = editor;
   }
 
-  useEffect(() => {
-    // todo: use cdn on prod mode
-    loader.config({ paths: { vs: 'http://localhost:5050/externals/monaco-loader/vs' } });
-  }, []);
+  // useEffect(() => {
+  //   // todo: use cdn on prod mode
+  //   loader.config({ paths: { vs: 'http://localhost:5050/externals/monaco-loader/vs' } });
+  // }, []);
 
   const noData = !Object.keys(dataSource.sharedState).length;
 

@@ -14,7 +14,7 @@
   ],
   "references": [
     {
-            "path": "../ui"
+//      "path": "../ui"
     }
   ]
 }

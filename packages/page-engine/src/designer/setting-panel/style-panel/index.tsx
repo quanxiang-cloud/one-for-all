@@ -1,12 +1,11 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
-import { toJS } from 'mobx';
 import Editor, { loader } from '@monaco-editor/react';
 
 import { Button, Icon, Modal, toast } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
-import Section from './section';
+import Section from '../../comps/section';
 
 import styles from './index.m.scss';
 
@@ -15,14 +14,14 @@ interface Props {
 }
 
 function StylePanel({ className }: Props): JSX.Element {
-  const { page, designer, registry } = useCtx();
+  const { page } = useCtx();
   const [modalOpen, setModalOpen] = useState(false);
   const editorRef = useRef<any>(null);
 
-  useEffect(() => {
-    // todo: use cdn on prod mode
-    loader.config({ paths: { vs: 'http://localhost:5050/externals/monaco-loader/vs' } });
-  }, []);
+  // useEffect(() => {
+  //   // todo: use cdn on prod mode
+  //   loader.config({ paths: { vs: 'http://localhost:5050/externals/monaco-loader/vs' } });
+  // }, []);
 
   function handleEditorMount(editor: any): void {
     editorRef.current = editor;
@@ -65,13 +64,13 @@ function StylePanel({ className }: Props): JSX.Element {
           <Icon name='code' />源码编辑
         </Button>
       </div>
-      <Section title='画布'>
+      <Section title='画布' defaultExpand>
 
       </Section>
-      <Section title='背景'>
+      <Section title='背景' defaultExpand>
 
       </Section>
-      <Section title='阴影'>
+      <Section title='阴影' defaultExpand>
 
       </Section>
 

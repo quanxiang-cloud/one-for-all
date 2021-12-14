@@ -7,12 +7,13 @@ import styles from './index.m.scss';
 
 interface Props {
   title: string;
+  defaultExpand?: boolean;
   className?: string;
   children?: React.ReactNode;
 }
 
-function Section({ title, className, children }: Props): JSX.Element {
-  const [expand, setExpand] = useState(false);
+function Section({ title, className, children, defaultExpand }: Props): JSX.Element {
+  const [expand, setExpand] = useState(defaultExpand ?? false);
 
   return (
     <div className={cs(styles.section, { [styles.expand]: expand }, className)}>
