@@ -19,10 +19,7 @@
     "bundle": "rollup -c",
     "preview:icons": "node scripts/preview-icons.js",
     "build:icons": "node scripts/build-icons.js",
-    "lint": "eslint src/**/*.ts --fix",
-    "copy:dist-to-qxp": "cp -r dist/@ofa/* ../../../qxp-web/pkg/@ofa/",
-    "copy:assets-to-qxp": "cp -r dist/images/* ../../../qxp-web/dist/images/ && cp -r assets/images/* ../../../qxp-web/dist/images/",
-    "postbundle": "yarn run copy:dist-to-qxp && yarn run copy:assets-to-qxp"
+    "lint": "eslint src/**/*.ts --fix"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
