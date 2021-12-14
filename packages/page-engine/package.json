@@ -14,7 +14,7 @@
     "clean": "rm -rf dist lib",
     "prebundle": "yarn run clean && yarn run build",
     "build": "tsc --build tsconfig.json",
-    "bundle": "rollup -c",
+    "bundle": "rollup -c -w",
     "lint": "eslint src/**/*.ts --fix"
   },
   "author": "sunnyw <sunnywang@yunify.com>",
