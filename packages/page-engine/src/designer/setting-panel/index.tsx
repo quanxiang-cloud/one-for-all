@@ -9,6 +9,7 @@ import EventPanel from './event-panel';
 import RendererPanel from './renderer-panel';
 
 import styles from './index.m.scss';
+import { toJS } from 'mobx';
 
 function SettingPanel(): JSX.Element {
   const { page, designer, registry } = useCtx();
@@ -19,7 +20,7 @@ function SettingPanel(): JSX.Element {
 
     return (
       <div>
-        <ConfigForm />
+        <ConfigForm {...toJS(page.activeElem.props)} />
       </div>
     );
   }
