@@ -3,7 +3,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from "@rollup/plugin-commonjs";
 // import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import styles from 'rollup-plugin-styles';
-import alias from '@rollup/plugin-alias'
+// import alias from '@rollup/plugin-alias'
 import path from 'path'
 
 import typescriptPaths from '../../scripts/rollup-plugin-typescript-paths';
@@ -19,11 +19,11 @@ export default {
   plugins: [
     // peerDepsExternal(),
     typescriptPaths(),
-    alias({
-      entries: {
-        '@ofa/page-engine': path.resolve(__dirname, './lib/src')
-      },
-    }),
+    // alias({
+    //   entries: {
+    //     '@ofa/page-engine': path.resolve(__dirname, './lib/src/'),
+    //   },
+    // }),
     resolve({
       preferBuiltins: false,
       browser: true,

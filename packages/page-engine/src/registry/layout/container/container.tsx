@@ -9,7 +9,7 @@ interface Props {
   children?: React.ReactNode;
 }
 
-function Container({ className, style, children }: Props) {
+function Container({ className, style, children }: Props): JSX.Element {
   return (
     <div
       className={cs(styles.coll, className)}

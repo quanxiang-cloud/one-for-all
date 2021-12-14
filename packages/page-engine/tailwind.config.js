@@ -1,12 +1,13 @@
 const colors = require('./colors');
 
 module.exports = {
-  mode: 'jit',
+  // mode: 'jit', // dev mode disable jit for better css debug
   purge: [
     './src/**/*.ts',
     './src/**/*.tsx',
   ],
   darkMode: false, // or 'media' or 'class'
+  // prefix: 'pge-',
   theme: {
     colors: colors,
     transitionDuration: {
@@ -84,21 +85,7 @@ module.exports = {
       none: '0px',
       full: '50%',
     },
-    // disable responsive
-    screens: {
-      // '2xl': { max: '1535px' },
-      // xl: { max: '1279px' },
-      // lg: { max: '1023px' },
-      // md: { max: '767px' },
-      // sm: { max: '639px' },
-    },
     extend: {
-      boxShadow: {
-        header: 'inset 0px -1px 0px #E2E8F0',
-        'flow-header': '0px 8px 24px 4px rgba(148, 163, 184, 0.25)',
-        'flow-aside': '1px 0px 0px #E2E8F0',
-        'more-action': '0px 8px 24px rgba(148, 163, 184, 0.25)',
-      },
       width: {
         24: '24px',
         32: '32px',
@@ -160,17 +147,7 @@ module.exports = {
         '-2px': '-2px',
         42: '42px',
         64: '64px',
-      },
-      zIndex: {
-        'z-5': 5,
-        '-z-1': -1,
-      },
-      cursor: {
-        grab: 'grab',
-      },
-      textColor: {
-        inherit: 'inherit',
-      },
+      }
     },
   },
 };

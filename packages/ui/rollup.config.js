@@ -12,7 +12,7 @@ export default {
   input: 'src/index.ts',
   output: getOutput(packageJSON.name, packageJSON.version),
 
-  external: ['react', 'react-dom', 'lodash', 'rxjs', /@ofa\/.*/, /rxjs\/.*/],
+  external: ['react', 'react-dom', 'lodash', /@ofa\/.*/],
 
   plugins: [
     // peerDepsExternal(),
@@ -48,6 +48,7 @@ export default {
       },
     }),
     styles({
+      autoModules: /\.m\.scss/,
       // mode: ["extract", "ofa-ui.css"]
     })
   ]

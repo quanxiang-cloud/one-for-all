@@ -1,11 +1,11 @@
-import Page from './core/page';
-import Elem from './core/elem';
 import Designer from './designer';
+import { useCtx, CtxValue } from './ctx';
+import stores from './stores';
 
-import './styles/index.scss';
+const getStore = (): CtxValue => stores;
 
 export {
-  Page,
-  Elem,
   Designer,
+  useCtx,
+  getStore,
 };

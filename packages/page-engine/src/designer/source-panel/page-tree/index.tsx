@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import { useCtx } from '@ofa/page-engine/ctx';
+import { useCtx } from '@ofa/page-engine';
 
 function PageTree(): JSX.Element {
   const store = useCtx().page;

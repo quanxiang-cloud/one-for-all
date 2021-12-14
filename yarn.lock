@@ -575,6 +575,21 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
+"@monaco-editor/loader@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.npmmirror.com/@monaco-editor/loader/download/@monaco-editor/loader-1.2.0.tgz#373fad69973384624e3d9b60eefd786461a76acd"
+  integrity sha1-Nz+taZczhGJOPZtg7v14ZGGnas0=
+  dependencies:
+    state-local "^1.0.6"
+
+"@monaco-editor/react@^4.3.1":
+  version "4.3.1"
+  resolved "https://registry.npmmirror.com/@monaco-editor/react/download/@monaco-editor/react-4.3.1.tgz#d65bcbf174c39b6d4e7fec43d0cddda82b70a12a"
+  integrity sha1-1lvL8XTDm21Of+xD0M3dqCtwoSo=
+  dependencies:
+    "@monaco-editor/loader" "^1.2.0"
+    prop-types "^15.7.2"
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.nlark.com/@nodelib/fs.scandir/download/@nodelib/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"
@@ -5855,6 +5870,11 @@ modern-normalize@^1.1.0:
   resolved "https://registry.nlark.com/modern-normalize/download/modern-normalize-1.1.0.tgz?cache=0&sync_timestamp=1619951149003&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fmodern-normalize%2Fdownload%2Fmodern-normalize-1.1.0.tgz#da8e80140d9221426bd4f725c6e11283d34f90b7"
   integrity sha1-2o6AFA2SIUJr1PclxuESg9NPkLc=
 
+monaco-editor@^0.31.0:
+  version "0.31.0"
+  resolved "https://registry.npmmirror.com/monaco-editor/download/monaco-editor-0.31.0.tgz#ec53566e40b612a96c0d54f77d37acef6d9dd70e"
+  integrity sha512-H3QmysEwxxY8oxmFhIFcY9JkuwilUDa6txdAxb797cVr7XFZX27a3SDwcGJmTlV9iGPwdh132r3KKCS5aNL4Gg==
+
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.npmmirror.com/ms/download/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
@@ -8165,6 +8185,11 @@ stack-utils@^2.0.3:
   integrity sha1-0lJl/KmVFUZZ27+6O0klR3jS/dU=
   dependencies:
     escape-string-regexp "^2.0.0"
+
+state-local@^1.0.6:
+  version "1.0.7"
+  resolved "https://registry.nlark.com/state-local/download/state-local-1.0.7.tgz#da50211d07f05748d53009bee46307a37db386d5"
+  integrity sha1-2lAhHQfwV0jVMAm+5GMHo32zhtU=
 
 "statuses@>= 1.4.0 < 2", "statuses@>= 1.5.0 < 2", statuses@~1.5.0:
   version "1.5.0"

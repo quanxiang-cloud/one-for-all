@@ -1,4 +1,11 @@
+@import "../styles/vars.css";
+
 .designer {
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 20px;
+  background-color: var(--pg-bg-color);
+
   .body {
     display: grid;
     width: 100%;
@@ -22,5 +29,6 @@
     font-size: 12px;
     font-weight: normal;
   }
+
 }
 

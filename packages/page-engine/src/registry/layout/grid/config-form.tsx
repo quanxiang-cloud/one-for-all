@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-// import { useForm, Controller } from 'react-hook-form';
 import { defaults } from 'lodash';
 
 import { Select } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine/ctx';
+import { useCtx } from '@ofa/page-engine';
 
 import type { Props } from './grid';
 
@@ -20,7 +19,7 @@ function ConfigForm(): JSX.Element {
   const [values, setValues] = useState<Props>(defaults(page.activeElem.props, defaultConfig));
 
   useEffect(() => {
-    page.updateElemProps(page.activeElem.id, values);
+    page.updateElemProperty(page.activeElem.id, 'props', values);
   }, [values]);
 
   return (
