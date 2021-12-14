@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
-// import { useForm, Controller } from 'react-hook-form';
+import React, { useEffect, useState } from 'react';
 import { defaults } from 'lodash';
 
 import { Select } from '@ofa/ui';
-import ctx from '../../../ctx';
+import { useCtx } from '@ofa/page-engine';
 
 import type { Props } from './grid';
 
@@ -15,12 +14,12 @@ export const defaultConfig: Props = {
 const ratios = ['12', '6:6', '4:4:4', '3:3:3:3', '2:2:2:2:2:2'].map((value) => ({ label: value, value }));
 const gaps = ['8px', '12px', '16px', '20px'].map((value) => ({ label: value, value }));
 
-function ConfigForm() {
-  const { page } = useContext(ctx);
+function ConfigForm(): JSX.Element {
+  const { page } = useCtx();
   const [values, setValues] = useState<Props>(defaults(page.activeElem.props, defaultConfig));
 
   useEffect(() => {
-    page.updateElemProps(page.activeElem.id, values);
+    page.updateElemProperty(page.activeElem.id, 'props', values);
   }, [values]);
 
   return (

@@ -1,0 +1,27 @@
+.radio-group-btn{
+  &:first-child{
+    border-radius: 8px 0 0 8px;
+  }
+
+  &:last-child{
+    border-radius: 0 8px 8px 0;
+  }
+
+  label{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    padding: 5px 16px;
+    color: var(--gray-600);
+  }
+}
+
+.radio-group-btn-active{
+  border: 1px solid var(--blue-600);
+  label{
+    color: var(--blue-600);
+  }
+}

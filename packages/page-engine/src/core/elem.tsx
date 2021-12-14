@@ -1,10 +1,10 @@
-import React, { useContext, useRef } from 'react';
+import React, { useRef } from 'react';
 import cs from 'classnames';
 import { useDrag, useDrop, DragPreviewImage } from 'react-dnd';
 import { observer } from 'mobx-react';
 
 import { Icon, Tooltip } from '@ofa/ui';
-import ctx from '../ctx';
+import { useCtx } from '@ofa/page-engine';
 import { encode } from '../utils/base64';
 import { elemId } from '../utils';
 
@@ -19,13 +19,14 @@ interface Props {
 }
 
 // node wrapper for each element in page
-function Elem({ node, className, preview, children }: Props) {
+function Elem({ node, className, preview, children }: Props): JSX.Element {
   const { comp, id = elemId(node.comp), pid = '', label = '' } = node;
-  const { page, registry, designer } = useContext(ctx);
+  const { page, registry, designer } = useCtx();
   const boxRef = useRef<HTMLDivElement>(null);
 
   const [{ isDragging }, drag, dragPreview] = useDrag(() => ({
     type: 'elem',
+    canDrag: comp !== 'page',
     item: {
       id,
       pid,
@@ -147,7 +148,7 @@ function Elem({ node, className, preview, children }: Props) {
               </div>
             )}
             <div className={cs('px-4 bg-blue-600', styles.group)}>
-              <span onClick={() => {}} className='inline-flex items-center text-white'>
+              <span className='inline-flex items-center text-white'>
                 <Icon name='insert_drive_file' color='white' size={12} className='mr-6' />
                 <span>{label}</span>
               </span>

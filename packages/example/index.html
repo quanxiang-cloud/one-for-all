@@ -3,59 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <script type="systemjs-importmap">
-    {
-      "imports": {
-        "react": "/pkg/react/dist/react.17.0.1.js",
-        "react-dom": "/pkg/react-dom/dist/react-dom.17.0.1.js",
-        "rxjs/ajax": "/pkg/rxjs/dist/@ofa/rxjs@7.4.0/rxjs-ajax.js",
-        "rxjs/fetch": "/pkg/rxjs/dist/@ofa/rxjs@7.4.0/rxjs-fetch.js",
-        "rxjs/operators": "/pkg/rxjs/dist/@ofa/rxjs@7.4.0/rxjs-operators.js",
-        "rxjs/shared": "/pkg/rxjs/dist/@ofa/rxjs@7.4.0/rxjs-shared.js",
-        "rxjs/testing": "/pkg/rxjs/dist/@ofa/rxjs@7.4.0/rxjs-testing.js",
-        "rxjs/websocket": "/pkg/rxjs/dist/@ofa/rxjs@7.4.0/rxjs-websocket.js",
-        "rxjs": "/pkg/rxjs/dist/@ofa/rxjs@7.4.0/rxjs.js"
-      }
-    }
-  </script>
-  <script type="systemjs-importmap">
-    {
-      "imports": {
-        "todo-app": "/dist/todo.js",
-        "@ofa/render-engine": "/pkg/render-engine/dist/@ofa/render-engine@latest/index.js",
-        "@ofa/api-spec-adapter": "/pkg/api-spec-adapter/dist/@ofa/api-spec-adapter@latest/index.js",
-        "@ofa/utils": "/pkg/utils/dist/@ofa/utils@latest/index.js",
-        "@ofa/ui": "/pkg/ui/dist/@ofa/ui@latest/index.js"
-      }
-    }
-  </script>
-  <!-- <script src="/externals/system.min.js"></script> -->
-  <script src="/externals/system.6.10.3.js"></script>
-  <script defer src="/externals/adoptedStyleSheets.min.js"></script>
-  <!-- <script src="/dist/core/systemjs-hooks/resolve.js"></script> -->
-  <script>
-    (function () {
-      const endsWithFileExtension = /\/?\.[a-zA-Z]{2,}$/;
-      const originalResolve = System.constructor.prototype.resolve;
-
-      System.constructor.prototype.resolve = (id, parent) => {
-        // apply original resolve to make sure importmaps are resolved first
-        const url = originalResolve.apply(System, [id, parent]);
-        // append .js file extension if url is missing a file extension
-        return endsWithFileExtension.test(url) ? url : url + ".js";
-      };
-
-      // fixme: react throw process not defined
-      if(!window.process){
-        window.process={env: {NODE_ENV: 'development'}}
-      }
-    })();
-  </script>
+  <title>One for All example</title>
 </head>
 <body>
-  <div id="react-root"></div>
-  <div id="schema-react-root"></div>
-  <script type="systemjs-module" src="/dist/index.js"></script>
+  <a href="/todo"><h1>Todo App</h1></a>
+  <a href="/page-engine"><h1>Page Engine</h1></a>
 </body>
 </html>

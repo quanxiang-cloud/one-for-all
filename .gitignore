@@ -12,3 +12,5 @@ tmp
 packages/**/lib
 gzip
 packages/*/coverage
+
+/dump.rdb

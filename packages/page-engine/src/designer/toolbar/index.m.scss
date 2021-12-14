@@ -6,11 +6,11 @@
 
   }
 
-  .emulateBtns {
-
-  }
-
-  .rightBtns {
-
+  .actions {
+    .btnSave {
+      margin-right: 16px;
+      background-color: var(--blue-600);
+      color: white;
+    }
   }
 }

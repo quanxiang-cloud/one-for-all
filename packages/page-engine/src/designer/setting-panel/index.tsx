@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react';
 
 import { Tab } from '@ofa/ui';
-import ctx from '../../ctx';
+import { useCtx } from '@ofa/page-engine';
 
 import StylePanel from './style-panel';
 import EventPanel from './event-panel';
@@ -10,12 +10,8 @@ import RendererPanel from './renderer-panel';
 
 import styles from './index.m.scss';
 
-interface Props {
-  className?: string;
-}
-
-function SettingPanel(props: Props) {
-  const { page, designer, registry } = useContext(ctx);
+function SettingPanel(): JSX.Element {
+  const { page, designer, registry } = useCtx();
 
   function renderPropsPanel(): JSX.Element {
     const elem = registry.getElemByType(page.activeElem.comp);

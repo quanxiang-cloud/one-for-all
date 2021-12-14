@@ -2,6 +2,8 @@
   "name": "@ofa/page-engine",
   "version": "0.1.0",
   "description": "A qxp page engine",
+  "license": "MIT",
+  "author": "sunnyw <sunnywang@yunify.com>",
   "main": "dist/index.js",
   "module": "lib",
   "types": "lib/src/index.d.ts",
@@ -10,20 +12,32 @@
     "lib"
   ],
   "scripts": {
-    "test": "jest",
-    "clean": "rm -rf dist lib",
-    "prebundle": "yarn run clean && yarn run build",
     "build": "tsc --build tsconfig.json",
-    "bundle": "rollup -c -w",
-    "lint": "eslint src/**/*.ts --fix"
+    "prebundle": "yarn run clean && yarn run build",
+    "bundle": "rollup -c",
+    "clean": "rm -rf dist lib",
+    "lint": "eslint src/**/*.ts --fix",
+    "test": "jest",
+    "type-check": "tsc --noEmit --skipLibCheck --pretty -w"
   },
-  "author": "sunnyw <sunnywang@yunify.com>",
-  "license": "MIT",
+  "dependencies": {
+    "@monaco-editor/react": "^4.3.1",
+    "classnames": "^2.3.1",
+    "mobx": "^6.3.8",
+    "mobx-react": "^7.2.1",
+    "nanoid": "^3.1.30",
+    "react-dnd": "^14.0.4",
+    "react-dnd-html5-backend": "^14.0.2",
+    "react-hook-form": "^7.20.4"
+  },
   "devDependencies": {
+    "@rollup/plugin-alias": "^3.1.8",
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@types/classnames": "^2.3.1",
+    "@types/lodash": "^4.14.178",
     "autoprefixer": "^10.4.0",
+    "monaco-editor": "^0.31.0",
     "postcss": "^8.4.4",
     "postcss-import": "^14.0.2",
     "rollup": "^2.60.2",
@@ -35,16 +49,7 @@
     "tailwindcss": "^2.2.19"
   },
   "peerDependencies": {
-    "react": "^17.0.2",
-    "lodash": "^4.17.21"
-  },
-  "dependencies": {
-    "classnames": "^2.3.1",
-    "mobx": "^6.3.8",
-    "mobx-react": "^7.2.1",
-    "nanoid": "^3.1.30",
-    "react-dnd": "^14.0.4",
-    "react-dnd-html5-backend": "^14.0.2",
-    "react-hook-form": "^7.20.4"
+    "lodash": "^4.17.21",
+    "react": "^17.0.2"
   }
 }

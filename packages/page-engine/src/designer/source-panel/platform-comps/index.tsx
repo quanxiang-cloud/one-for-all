@@ -1,15 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react';
 import { get } from 'lodash';
 
-import ctx from '../../../ctx';
+import { useCtx } from '@ofa/page-engine';
 import SourceElem from './source-elem';
 
 import styles from './index.m.scss';
-
-interface Props {
-  className?: string;
-}
 
 const categories: Array<{ label: string, value: Registry.Category }> = [
   { label: '布局组件', value: 'layout' },
@@ -19,8 +15,8 @@ const categories: Array<{ label: string, value: Registry.Category }> = [
   { label: '其它', value: 'others' },
 ];
 
-function PlatformComps(props: Props) {
-  const { registry } = useContext(ctx);
+function PlatformComps(): JSX.Element {
+  const { registry } = useCtx();
 
   return (
     <div className={styles.comps}>

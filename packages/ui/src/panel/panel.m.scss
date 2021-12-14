@@ -1,0 +1,36 @@
+.panel {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: white;
+  box-shadow: inset -1px 0px 0px #E2E8F0;
+  min-height: 300px;
+  border: 1px solid var(--gray-100);
+  border-right: none;
+  transition: all .3s ease-in-out;
+
+  &.closed {
+    transform: translateX(-999px) !important;
+  }
+
+  .header {
+    > .title {
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 20px;
+      color: #475569;
+    }
+
+    > .actions {
+      .actionPin {
+        margin-right: 8px;
+
+        &.pinned {
+          svg {
+            transform: rotate(45deg);
+          }
+        }
+      }
+    }
+  }
+}

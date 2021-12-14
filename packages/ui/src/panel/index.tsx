@@ -3,7 +3,7 @@ import cs from 'classnames';
 
 import Icon from '../icon';
 
-import './panel.scss';
+import styles from './panel.m.scss';
 
 interface Props {
   title?: string;
@@ -33,21 +33,21 @@ function Panel({
   children,
   onClose,
   onPin,
-}: Props) {
+}: Props): JSX.Element {
   return (
     <div
-      className={cs('panel px-8 py-16 overflow-auto z-10', { 'panel-closed': !visible }, className)}
+      className={cs('px-8 py-16 overflow-auto z-10', { [styles.closed]: !visible }, styles.panel, className)}
       style={{
         width,
         height,
         ...style,
       }}
     >
-      <div className='panel--header flex justify-between items-center pb-16'>
-        <div className='panel--header-title'>{title}</div>
-        <div className='panel--header-actions inline-flex items-center'>
+      <div className={cs('flex justify-between items-center pb-16', styles.header)}>
+        <div className={styles.title}>{title}</div>
+        <div className={cs('inline-flex items-center', styles.actions)}>
           {pinnable && (
-            <div className={cs('panel--header-actions-pin mr-8', { pinned })}>
+            <div className={cs(styles.actionPin, { [styles.pinned]: pinned })}>
               <Icon
                 name='push_pin'
                 clickable
@@ -57,7 +57,7 @@ function Panel({
             </div>
           )}
           {closable && (
-            <div className='panel--header-actions-close'>
+            <div className={styles.actionClose}>
               <Icon
                 name='close'
                 clickable
@@ -68,7 +68,7 @@ function Panel({
           )}
         </div>
       </div>
-      <div className='panel--body'>
+      <div className={styles.body}>
         {children}
       </div>
     </div>

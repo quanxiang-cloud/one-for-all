@@ -1,18 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useDrag } from 'react-dnd';
 import cs from 'classnames';
 
 import { Icon } from '@ofa/ui';
-import ctx from '../../../ctx';
+import { useCtx } from '@ofa/page-engine';
 
 import styles from './index.m.scss';
 
-interface Props {
-  className?: string;
-}
-
-function SourceElem(props: Registry.SourceElement<any>) {
-  const { page, registry } = useContext(ctx);
+function SourceElem(props: Registry.SourceElement<any>): JSX.Element {
+  const { page, registry } = useCtx();
   const compName = ['elem', props.name.toLowerCase()].join('.');
 
   const [{ isDragging }, drag] = useDrag(() => ({

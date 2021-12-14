@@ -1,10 +1,11 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 import { useDrop } from 'react-dnd';
-import { defaults } from 'lodash';
+import { defaults, get, set, flow } from 'lodash';
+import { toJS } from 'mobx';
 
-import ctx from '../ctx';
+import { useCtx } from '@ofa/page-engine';
 import Elem from './elem';
 
 import styles from './index.m.scss';
@@ -17,10 +18,10 @@ interface Props {
   children?: React.ReactNode;
 }
 
-const identity = (x: any) => x;
+const identity = (x: any): any => x;
 
-function Page({ schema, children, className }: Props) {
-  const { page, registry } = useContext(ctx);
+function Page({ schema, children, className }: Props): JSX.Element {
+  const { page, registry } = useCtx();
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ['elem', 'source_elem'],
@@ -60,20 +61,34 @@ function Page({ schema, children, className }: Props) {
     return type;
   }
 
+  function mergeStyle(s: Record<string, any>): Record<string, any> {
+    if (s._style) {
+      set(s, 'props.style', { ...get(s, 'props.style', {}), ...s._style });
+    }
+    return s;
+  }
+
+  function mergeProps(schema: Record<string, any>): Record<string, any> {
+    const elemConf = registry.getElemByType(schema.comp);
+    const toProps = elemConf.toProps || identity;
+    const elemProps = defaults(schema.props, elemConf.defaultConfig);
+    return toProps(elemProps);
+  }
+
   function renderNode(schema: PageEngine.Node, level = 0): JSX.Element | null | undefined {
     // handle primitive type
     if (typeof schema !== 'object' || schema === null) {
       return schema;
     }
 
-    // if registered elem, wrap with Elem comp
-    // if whole schema block, wrap the first level node with Elem comp
-    const elemConf = registry.getElemByType(schema.comp);
-    const toProps = elemConf.toProps || identity;
-    const elemProps = defaults(schema.props, elemConf.defaultConfig);
+    const schemaToProps = flow([
+      mergeStyle,
+      mergeProps,
+    ]);
+
     return (
       <Elem node={schema}>
-        {React.createElement(transformType(schema.comp), toProps(elemProps), ...([].concat(schema.children as any))
+        {React.createElement(transformType(schema.comp), schemaToProps(toJS(schema)), ...([].concat(schema.children as any))
           .map((child) => renderNode(child, level + 1)))}
       </Elem>
     );

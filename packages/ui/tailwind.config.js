@@ -84,21 +84,7 @@ module.exports = {
       none: '0px',
       full: '50%',
     },
-    // disable responsive
-    screens: {
-      // '2xl': { max: '1535px' },
-      // xl: { max: '1279px' },
-      // lg: { max: '1023px' },
-      // md: { max: '767px' },
-      // sm: { max: '639px' },
-    },
     extend: {
-      boxShadow: {
-        header: 'inset 0px -1px 0px #E2E8F0',
-        'flow-header': '0px 8px 24px 4px rgba(148, 163, 184, 0.25)',
-        'flow-aside': '1px 0px 0px #E2E8F0',
-        'more-action': '0px 8px 24px rgba(148, 163, 184, 0.25)',
-      },
       width: {
         24: '24px',
         32: '32px',

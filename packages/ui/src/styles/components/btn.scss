@@ -131,13 +131,6 @@
   border-color: transparent;
 }
 
-.btn-badge {
-  border-radius: 8px 8px 8px 2px;
-  padding: 6px;
-  border: none;
-  height: 20px;
-}
-
 @layer components {
   .button-border-radius {
     @apply rounded-tl-8 rounded-tr-2 rounded-br-8 rounded-bl-8;

@@ -8,78 +8,64 @@ import path from 'path'
 
 import typescriptPaths from '../../scripts/rollup-plugin-typescript-paths';
 
+const commonPlugins = [
+  commonjs(),
+  styles({ modules: false }),
+  nodeResolve({
+    browser: true,
+    mainFields: ['main'],
+  }),
+  typescriptPaths(),
+  esbuild({
+    // All options are optional
+    include: /\.[jt]sx?$/, // default, inferred from `loaders` option
+    exclude: /node_modules/, // default
+    sourceMap: false, // default
+    minify: process.env.NODE_ENV === 'production',
+    target: 'es2017', // default, or 'es20XX', 'esnext'
+    jsx: 'transform', // default, or 'preserve'
+    jsxFactory: 'React.createElement',
+    jsxFragment: 'React.Fragment',
+    // Like @rollup/plugin-replace
+    define: {
+      __VERSION__: '"x.y.z"',
+    },
+    tsconfig: 'tsconfig.json', // default
+    // Add extra loaders
+    loaders: {
+      // Add .json files support
+      // require @rollup/plugin-commonjs
+      '.json': 'json',
+      // Enable JSX in .js files too
+      '.js': 'jsx',
+    },
+  }),
+];
+
+const externals = ['react', 'react-dom', "lodash", /@ofa\/.*/];
+
 export default [
   {
-    input: 'src/index.ts',
+    input: 'src/todo-app/components/index.ts',
     output: {
-      file: 'dist/todo.js',
+      file: 'dist/todo-app/todo-components.js',
       format: 'system'
     },
 
     external: ['react', 'react-dom', /@ofa\/.*/],
 
-    plugins: [
-      commonjs(),
-      styles({ modules: false }),
-      nodeResolve({
-        browser: true,
-        mainFields: ['main'],
-      }),
-      typescriptPaths(),
-      sucrase({
-        exclude: ['node_modules/**'],
-        transforms: ['typescript', 'jsx'],
-        production: true
-      }),
-    ]
+    plugins: commonPlugins,
   },
   {
-    input: 'index.ts',
+    input: 'src/todo-app/index.ts',
     output: {
-      file: 'dist/index.js',
+      file: 'dist/todo-app/index.js',
       format: 'system'
     },
 
     external: ['react', 'react-dom', /@ofa\/.*/],
 
-    plugins: [
-      commonjs(),
-      styles({ modules: false }),
-      nodeResolve({
-        browser: true,
-        mainFields: ['main'],
-      }),
-      typescriptPaths(),
-      esbuild({
-        // All options are optional
-        include: /\.[jt]sx?$/, // default, inferred from `loaders` option
-        exclude: /node_modules/, // default
-        sourceMap: false, // default
-        minify: process.env.NODE_ENV === 'production',
-        target: 'es2017', // default, or 'es20XX', 'esnext'
-        jsx: 'transform', // default, or 'preserve'
-        jsxFactory: 'React.createElement',
-        jsxFragment: 'React.Fragment',
-        // Like @rollup/plugin-replace
-        define: {
-          __VERSION__: '"x.y.z"',
-        },
-        tsconfig: 'tsconfig.json', // default
-        // Add extra loaders
-        loaders: {
-          // Add .json files support
-          // require @rollup/plugin-commonjs
-          '.json': 'json',
-          // Enable JSX in .js files too
-          '.js': 'jsx',
-        },
-      }),
-      // sucrase({
-      //   exclude: ['node_modules/**'],
-      //   transforms: ['typescript', 'jsx'],
-      //   production: true
-      // }),
-    ]
+    plugins: commonPlugins,
   },
 
   // build for page engine
@@ -90,21 +76,10 @@ export default [
       format: 'system'
     },
 
-    external: ['react', 'react-dom', "lodash", /@ofa\/.*/],
+    external: externals,
 
     plugins: [
-      commonjs(),
-      styles(),
-      nodeResolve({
-        browser: true,
-        mainFields: ['main'],
-      }),
-      typescriptPaths(),
-      sucrase({
-        exclude: ['node_modules/**'],
-        transforms: ['typescript', 'jsx'],
-        production: true
-      }),
+      ...commonPlugins,
       copy({
         targets: [
           {src: path.resolve(__dirname, '../ui/dist/images/**/*'), dest: 'dist/images'},
