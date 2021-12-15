@@ -14,6 +14,8 @@ import Tag from './tag';
 import Search from './search';
 import Radio from './radio';
 import RadioGroup from './radio/group';
+import RadioButtonGroup from './radio/radio-button-group';
+import ColorPicker from './color-picker';
 
 export {
   Icon,
@@ -30,4 +32,6 @@ export {
   Search,
   Radio,
   RadioGroup,
+  RadioButtonGroup,
+  ColorPicker,
 };

@@ -7,10 +7,12 @@ interface Props {
   children?: React.ReactNode
 }
 
-function ButtonElem(props: Props) {
+function ButtonElem(props: Props): JSX.Element {
+  const style: any = { ...props };
+  console.log('style', props);
   return (
     <div>
-      <Button>btn elem</Button>
+      <Button >btn elem</Button>
     </div>
   );
 }
