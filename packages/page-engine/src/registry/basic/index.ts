@@ -6,6 +6,7 @@ import Divider from './divider';
 import Paragraph from './paragraph';
 import Dialog from './dialog';
 import List from './list';
+import Input from './input';
 
 export {
   Page,
@@ -16,4 +17,5 @@ export {
   Paragraph,
   Dialog,
   List,
+  Input,
 };
