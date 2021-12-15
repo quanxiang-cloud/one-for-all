@@ -3,6 +3,7 @@ import './styles/index.css';
 import Button from './button';
 import Icon from './icon';
 import Panel from './panel';
+import Paragraph from './paragraph';
 import Popper from './popper';
 import Tooltip from './tooltip';
 import toast from './toast';
@@ -18,6 +19,7 @@ export {
   Icon,
   Button,
   Panel,
+  Paragraph,
   Popper,
   Tooltip,
   toast,

@@ -1,4 +1,7 @@
-import Para from './paragraph';
+// import Para from './paragraph';
+
+import { Paragraph } from '@ofa/ui';
+
 import ConfigForm from './config-form';
 
 type Props = {
@@ -12,7 +15,7 @@ const elem: Registry.SourceElement<Props> = {
   icon: 'apps',
   label: '段落',
   category: 'basic',
-  component: Para,
+  component: Paragraph,
   configForm: ConfigForm,
   defaultConfig,
   order: 2,
