@@ -6,8 +6,6 @@ import cs from 'classnames';
 import Icon from '../icon';
 import Button from '../button';
 
-import creatModal from './dialog-modal';
-
 export interface FooterBtnProps {
   text: React.ReactNode;
   key: React.Key;
@@ -103,8 +101,6 @@ export default function Modal({
     element,
   );
 }
-
-Modal.open = creatModal;
 
 const GlobalStyle = createGlobalStyle`
   body {

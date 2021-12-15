@@ -12,7 +12,6 @@
   "license": "ISC",
   "main": "lib/index.js",
   "scripts": {
-    "test": "jest",
     "clean": "rm -rf dist",
     "prebuild": "yarn run clean",
     "build": "rollup -c",
@@ -20,8 +19,7 @@
     "copy:monaco-assets": "mkdir -p ../../dist/monaco-editor && cp -R ../../node_modules/monaco-editor/min/vs ../../dist/monaco-editor",
     "dev": "webpack serve --progress",
     "type-check": "tsc --noEmit --skipLibCheck --pretty -w",
-    "prod": "yarn run build && node server.js",
-    "prod:server": "node server.js"
+    "prod": "yarn run build && node server.js"
   },
   "publishConfig": {
     "registry": ""

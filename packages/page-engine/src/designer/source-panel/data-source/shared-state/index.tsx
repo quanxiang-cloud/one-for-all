@@ -1,8 +1,8 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
-import Editor, { loader } from '@monaco-editor/react';
+import Editor from '@monaco-editor/react';
 
 import { Search, Icon, Tooltip, Modal, toast } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
@@ -28,11 +28,6 @@ function SharedState(props: Props): JSX.Element {
   function handleEditorMount(editor: any): void {
     editorRef.current = editor;
   }
-
-  // @see https://github.com/suren-atoyan/monaco-react/issues/217
-  useEffect(() => {
-    loader.config({ paths: { vs: '/dist/monaco-editor/vs' } });
-  }, []);
 
   const noData = !Object.keys(dataSource.sharedState).length;
 
@@ -90,7 +85,6 @@ function SharedState(props: Props): JSX.Element {
                       toast.error('请输入变量数据');
                       return;
                     }
-
                     // check editor val is valid js value
                     let finalVal;
                     try {
@@ -146,7 +140,7 @@ function SharedState(props: Props): JSX.Element {
               <p>变量数据</p>
               <Editor
                 height={200}
-                defaultLanguage='javascript'
+                language='javascript'
                 theme='vs-dark'
                 onMount={handleEditorMount}
                 defaultValue={curSharedState ? JSON.stringify(curSharedState.val) : JSON.stringify({

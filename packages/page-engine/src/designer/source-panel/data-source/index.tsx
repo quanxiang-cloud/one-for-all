@@ -1,4 +1,5 @@
 import React from 'react';
+import { loader } from '@monaco-editor/react';
 
 import { Tab } from '@ofa/ui';
 
@@ -10,6 +11,16 @@ import styles from './index.m.scss';
 interface Props {
   className?: string;
 }
+
+// @see https://github.com/suren-atoyan/monaco-react/issues/217
+loader.config({ paths: { vs: '/dist/monaco-editor/vs' } });
+
+// monaco editor config, disable worker
+Object.assign(window, {
+  MonacoEnvironment: {
+    getWorker: () => null,
+  },
+});
 
 function DataSource(props: Props): JSX.Element {
   return (
