@@ -1,5 +1,5 @@
 {
-  "name": "style-guide",
+  "name": "@ofa/style-guide",
   "version": "0.0.1",
   "license": "Apache-2.0",
   "module": "lib",

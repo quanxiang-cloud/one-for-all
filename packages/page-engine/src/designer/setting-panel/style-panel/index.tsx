@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 import Editor, { loader } from '@monaco-editor/react';
@@ -18,10 +18,9 @@ function StylePanel({ className }: Props): JSX.Element {
   const [modalOpen, setModalOpen] = useState(false);
   const editorRef = useRef<any>(null);
 
-  // useEffect(() => {
-  //   // todo: use cdn on prod mode
-  //   loader.config({ paths: { vs: 'http://localhost:5050/externals/monaco-loader/vs' } });
-  // }, []);
+  useEffect(() => {
+    loader.config({ paths: { vs: '/dist/monaco-editor/vs' } });
+  }, []);
 
   function handleEditorMount(editor: any): void {
     editorRef.current = editor;

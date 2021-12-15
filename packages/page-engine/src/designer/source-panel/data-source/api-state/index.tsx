@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
@@ -44,7 +44,10 @@ function ApiState(props: Props): JSX.Element {
       />
       <div className='relative'>
         {noData && (
-          <div className='flex justify-center items-center h-full mt-72 flex-col text-center px-40 text-gray-400'>
+          <div
+            className='flex justify-center items-center h-full flex-col text-center px-40 text-gray-400'
+            style={{ marginTop: '72px' }}
+          >
             <p>暂无数据</p>
             <p>可以选择将该应用的内部API和第三方API数据加入后使用哦！</p>
           </div>
