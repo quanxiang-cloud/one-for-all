@@ -13,6 +13,7 @@ import Tag from './tag';
 import Search from './search';
 import Radio from './radio';
 import RadioGroup from './radio/group';
+import Textarea from './textarea';
 
 export {
   Icon,
@@ -28,4 +29,5 @@ export {
   Search,
   Radio,
   RadioGroup,
+  Textarea,
 };

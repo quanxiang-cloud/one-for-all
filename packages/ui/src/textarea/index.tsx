@@ -7,13 +7,13 @@ export interface Props {
   placeholder?: string;
   cols?: number;
   rows?: number;
-  minlength?: number;
-  maxlength?: number;
+  minLength?: number;
+  maxLength?: number;
   required?: boolean;
 }
 
 function Textarea(props: Props): JSX.Element {
-  const { placeholder, cols, rows, minlength, maxlength, required } = props;
+  const { placeholder, cols, rows, minLength, maxLength, required } = props;
 
   return (
     <div>
@@ -21,8 +21,8 @@ function Textarea(props: Props): JSX.Element {
         placeholder={placeholder || '请输入内容'}
         cols={cols}
         rows={rows}
-        minLength={minlength}
-        maxLength={maxlength}
+        minLength={minLength}
+        maxLength={maxLength}
         required={required}
       ></textarea>
     </div>

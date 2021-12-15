@@ -1,19 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defaults } from 'lodash';
 import { useForm } from 'react-hook-form';
+
 import { Icon } from '@ofa/ui';
-
-import ctx from '../../../ctx';
-import { Props } from './textarea';
-
-export const defaultConfig: Props = {
-  placeholder: '请输入内容',
-  cols: 30,
-  rows: 10,
-  minlength: 0,
-  maxlength: 300,
-  required: false,
-};
+import { Props } from '@ofa/ui/src/textarea/index';
+import { useCtx } from '@ofa/page-engine';
 
 interface configProps {
   name: string;
@@ -21,7 +12,15 @@ interface configProps {
   type: string;
 }
 
-const configItems: configProps[] = [
+export const DEFAULT_CONFIG: Props = {
+  placeholder: '请输入内容',
+  cols: 30,
+  rows: 10,
+  minLength: 0,
+  maxLength: 300,
+};
+
+const CONFIG_ITEMS: configProps[] = [
   {
     name: 'placeholder',
     msg: '占位语句',
@@ -38,12 +37,12 @@ const configItems: configProps[] = [
     type: 'number',
   },
   {
-    name: 'minlength',
+    name: 'minLength',
     msg: '最小输入字符数',
     type: 'number',
   },
   {
-    name: 'maxlength',
+    name: 'maxLength',
     msg: '最大输入字符数',
     type: 'number',
   },
@@ -51,11 +50,11 @@ const configItems: configProps[] = [
 
 function ConfigForm(): JSX.Element {
   const { register, getValues } = useForm();
-  const { page } = useContext(ctx);
-  const [values, setValues] = useState(defaults(page.activeElem.props, defaultConfig));
+  const { page } = useCtx();
+  const [values, setValues] = useState(defaults(page.activeElem.props, DEFAULT_CONFIG));
 
   useEffect(() => {
-    page.updateElemProps(page.activeElem.id, values);
+    page.updateElemProperty(page.activeElem.id, 'props', values);
   }, [values]);
 
   const handleChange = (): void => {
@@ -66,7 +65,7 @@ function ConfigForm(): JSX.Element {
   return (
     <form className="flex flex-col" onChange={handleChange}>
       {
-        configItems.map((item, index) => {
+        CONFIG_ITEMS.map((item, index) => {
           return (
             <div className="mb-10" key={item.name + index}>
               <div className="mb-4 flex items-center">
