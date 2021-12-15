@@ -1,6 +1,6 @@
 {
   "name": "@ofa/api-spec-adapter",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Construct HTTP Request based on API Spec and params",
   "license": "Apache-2.0",
   "type": "module",
