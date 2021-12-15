@@ -17,6 +17,7 @@
     "prebundle": "yarn run clean && yarn run build && yarn run build:icons",
     "build": "tsc --build tsconfig.json",
     "bundle": "rollup -c",
+    "bundle:watch": "rollup -c -w",
     "preview:icons": "node scripts/preview-icons.js",
     "build:icons": "node scripts/build-icons.js",
     "lint": "eslint src/**/*.ts --fix"
