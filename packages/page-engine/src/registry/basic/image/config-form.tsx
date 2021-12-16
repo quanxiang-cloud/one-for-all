@@ -18,7 +18,7 @@ interface Props {
 const fillOptions = [
   { label: '铺满', value: 'cover' },
   { label: '适合', value: 'contain' },
-  { label: '拉伸', value: 'fill' },
+  { label: '拉伸', value: '100% 100%' },
 ];
 
 const defaultConfig = {
@@ -33,7 +33,7 @@ function ConfigForm(): JSX.Element {
   const [values, setValues] = useState<Props>(defaults(page.activeElem.props, defaultConfig));
 
   useEffect(() => {
-    page.updateElemProps(page.activeElem.id, values);
+    page.updateElemProperty(page.activeElem.id, 'props', values);
   }, [values]);
 
   useEffect(() => {
@@ -49,9 +49,7 @@ function ConfigForm(): JSX.Element {
             type="text"
             className="w-full h-32 my-8 px-16 truncate mr-8"
             value={values.imageUrl}
-            onChange={(e) => {
-              setValues({ ...values, imageUrl: e.target.value });
-            }}
+            onChange={(e) => setValues({ ...values, imageUrl: e.target.value })}
           />
           <Icon name="code" />
         </div>
@@ -67,7 +65,7 @@ function ConfigForm(): JSX.Element {
         </div>
         更多方式
         <div className="config-item">
-          <div className="w-full rounded-8 px-16 py-8 flex items-center justify-between border-1 mr-8 my-8">
+          <div className="config-more mt-8">
             <div className="flex items-center">
               <Icon name="pageview" className="mr-4" />
               点击预览大图
@@ -83,7 +81,7 @@ function ConfigForm(): JSX.Element {
           <Icon name="code" />
         </div>
         <div className="config-item">
-          <div className="w-full rounded-8 px-16 py-8 flex justify-between border-1 mr-8 mb-8">
+          <div className="config-more">
             <div className="flex items-center">
               <Icon name="preview" className="mr-4" />
               点击遮罩关闭图片预览
