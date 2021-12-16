@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defaults, isEmpty } from 'lodash';
 
+import { useCtx } from '@ofa/page-engine';
 import { Select, Icon, Button } from '@ofa/ui';
-
-import ctx from '../../../ctx';
 
 import './style.scss';
 
@@ -29,7 +28,7 @@ const defaultConfig = {
 };
 
 function ConfigForm(): JSX.Element {
-  const { page } = useContext(ctx);
+  const { page } = useCtx();
   const [values, setValues] = useState<Props>(defaults(page.activeElem.props, defaultConfig));
 
   useEffect(() => {
