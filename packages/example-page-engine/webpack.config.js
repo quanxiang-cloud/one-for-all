@@ -20,7 +20,7 @@ module.exports = {
       path.resolve(__dirname, 'build'),
     ],
     compress: false,
-    port: 8089
+    port: 5000,
   },
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.css', '.scss'],
