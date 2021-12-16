@@ -65,8 +65,7 @@ function SettingPanel(): JSX.Element {
               content: <RendererPanel />,
             },
           ]}
-          // currentKey={designer.activePanel}
-          currentKey="style"
+          currentKey={designer.activePanel}
           onChange={designer.setActivePanel}
         />
       </>
