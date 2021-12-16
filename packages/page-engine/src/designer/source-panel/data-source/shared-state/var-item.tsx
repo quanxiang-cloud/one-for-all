@@ -20,7 +20,8 @@ type VarContent = {
 }
 
 function VarItem({ className, name, conf }: Props): JSX.Element {
-  const { dataSource } = useCtx();
+  const ctx = useCtx();
+  const { dataSource, page } = ctx;
   const { setCurSharedStateKey, setEditorModalOpen } = dataSource;
   const data: VarContent = useMemo(() => JSON.parse(conf), [conf]);
   const [expand, setExpand] = useState(false);
@@ -31,7 +32,7 @@ function VarItem({ className, name, conf }: Props): JSX.Element {
     const newName = countName === 1 ? `${name}_copy` : `${name}_copy${countName}`;
     const newConf = JSON.parse(conf);
     Object.assign(newConf, { name: newName });
-    dataSource.saveSharedState(newName, JSON.stringify(newConf));
+    dataSource.saveSharedState(newName, JSON.stringify(newConf), ()=> ctx.onSave(page.schema));
   }
 
   function handleEdit(): void {
@@ -40,7 +41,7 @@ function VarItem({ className, name, conf }: Props): JSX.Element {
   }
 
   function handleDelete(): void {
-    dataSource.removeSharedState(name);
+    dataSource.removeSharedState(name, ()=> ctx.onSave(page.schema));
   }
 
   return (
@@ -59,7 +60,7 @@ function VarItem({ className, name, conf }: Props): JSX.Element {
       <div className={styles.varCont}>
         <div className='flex items-center mb-8 mt-8'>
           <span>初始值:</span>
-          <span className='flex-wrap ml-6'>{JSON.stringify(data.val)}</span>
+          <span className='flex-wrap ml-6'>{typeof data.val === 'object' ? JSON.stringify(data.val) : data.val}</span>
         </div>
         <div className='flex items-center'>
           <span>描述:</span>
