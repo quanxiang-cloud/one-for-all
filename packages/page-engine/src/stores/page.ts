@@ -1,8 +1,6 @@
 import { observable, computed, action, makeObservable, toJS } from 'mobx';
 import { defaults, set } from 'lodash';
 
-import { toast } from '@ofa/ui';
-
 import { elemId } from '../utils';
 import { findNode } from '../utils/tree-utils';
 import registry from './registry';
@@ -57,12 +55,6 @@ class PageStore {
   @action
   setSchema = (schema: PageEngine.Node): void => {
     this.schema = schema;
-  }
-
-  saveSchema = (): void => {
-    // todo: save schema to backend
-    localStorage.setItem('page_schema', JSON.stringify(toJS(this.schema)) as any);
-    toast.success('保存成功');
   }
 
   @action

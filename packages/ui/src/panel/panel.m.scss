@@ -9,8 +9,12 @@
   border-right: none;
   transition: all .3s ease-in-out;
 
+  &.panelPinned {
+    transition: none;
+  }
+
   &.closed {
-    transform: translateX(-999px) !important;
+    transform: translateX(-400px) !important;
   }
 
   .header {

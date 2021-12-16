@@ -21,7 +21,7 @@ type VarContent = {
 
 function VarItem({ className, name, conf }: Props): JSX.Element {
   const { dataSource } = useCtx();
-  const { setCurSharedStateKey, setModalOpen } = dataSource;
+  const { setCurSharedStateKey, setEditorModalOpen } = dataSource;
   const data: VarContent = useMemo(() => JSON.parse(conf), [conf]);
   const [expand, setExpand] = useState(false);
 
@@ -36,7 +36,7 @@ function VarItem({ className, name, conf }: Props): JSX.Element {
 
   function handleEdit(): void {
     setCurSharedStateKey(name);
-    setModalOpen(true);
+    setEditorModalOpen(true);
   }
 
   function handleDelete(): void {
