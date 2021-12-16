@@ -21,7 +21,7 @@ interface Props {
 const identity = (x: any): any => x;
 
 function Page({ schema, children, className }: Props): JSX.Element {
-  const { page, registry } = useCtx();
+  const { page, registry, dataSource } = useCtx();
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ['elem', 'source_elem'],
@@ -41,14 +41,21 @@ function Page({ schema, children, className }: Props): JSX.Element {
     // sync schema prop with store state
     schema && page.setSchema(schema);
 
-    // fixme: restore schema from backend
-    let storedSchema = localStorage.getItem('page_schema');
-    try {
-      storedSchema = JSON.parse(storedSchema as any);
-    } catch (err) {
-      storedSchema = null;
+    if (get(window, 'process.env.NODE_ENV') === 'development') {
+      // on dev mode
+      let storedSchema = localStorage.getItem('page_schema');
+      try {
+        storedSchema = JSON.parse(storedSchema as any);
+      } catch (err) {
+        storedSchema = null;
+      }
+      storedSchema && page.setSchema(storedSchema as any);
+    } else {
+      // todo: query page schema from backend, delegate to render engine
     }
-    storedSchema && page.setSchema(storedSchema as any);
+
+    // init data source from page schema
+    dataSource.sharedState = page.schema._shared || {};
   }, []);
 
   function transformType(type: string): string | ReactComp {

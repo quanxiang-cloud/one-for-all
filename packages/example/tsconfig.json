@@ -8,5 +8,22 @@
   },
   "include": [
     "src/**/*"
+  ],
+  "references": [
+    {
+      "path": "../utils"
+    },
+    {
+      "path": "../api-spec-adapter"
+    },
+    {
+      "path": "../render-engine"
+    },
+    {
+      "path": "../page-engine"
+    },
+    {
+      "path": "../ui"
+    }
   ]
 }

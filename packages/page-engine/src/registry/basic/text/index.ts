@@ -1,4 +1,5 @@
-import Text from './text';
+import { Text } from '@ofa/ui';
+
 import ConfigForm from './config-form';
 
 type Props = {

@@ -31,6 +31,8 @@ function pageInitialSchema(): PageEngine.Node {
     label: '页面',
     props: {},
     children: [],
+    _shared: {},
+    _api: {},
   };
 }
 
@@ -55,6 +57,16 @@ class PageStore {
   @action
   setSchema = (schema: PageEngine.Node): void => {
     this.schema = schema;
+  }
+
+  @action
+  setPageSharedStates=(states: any)=> {
+    Object.assign(this.schema._shared, states);
+  }
+
+  @action
+  setPageApiStates=(states: any)=> {
+    Object.assign(this.schema._api, states);
   }
 
   @action

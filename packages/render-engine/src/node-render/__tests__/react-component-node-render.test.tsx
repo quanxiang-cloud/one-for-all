@@ -7,7 +7,7 @@ import ReactComponentNodeRender from '../react-component-node-render';
 
 jest.mock('../../repository');
 
-const dummyComponent: React.FC<PropsWithChildren<any>> = ({ children }): JSX.Element => {
+const dummyComponent: React.FC<PropsWithChildren<unknown>> = ({ children }): JSX.Element => {
   return (<div id="some_dummy_component" >{children}</div>);
 };
 const repository: Repository = {
