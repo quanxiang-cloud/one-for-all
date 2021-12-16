@@ -1,17 +1,28 @@
 import React from 'react';
-import { UseFormRegister, FieldValues, Controller } from 'react-hook-form';
+import { UseFormRegister, FieldValues } from 'react-hook-form';
 
 import { ColorPicker } from '@ofa/ui';
 // import ColorPicker from './form-color-picker';
+
+const { stringRgbToHex }: any = ColorPicker;
 
 interface Props {
   initValues: Record<string, string | number>;
   register: UseFormRegister<FieldValues>;
   control: any;
   setValue: any;
+  onFormChange: () => void;
 }
 
-function FontConfig({ initValues, register, control, setValue }: Props): JSX.Element {
+function FontConfig({ initValues, register, setValue, onFormChange }: Props): JSX.Element {
+  // const [currColor, setCurrColor] = useState(initValues.color);
+  function handleColorChange(color: string): void {
+    setValue('color', color);
+    onFormChange();
+  }
+
+  console.log('当前颜色', initValues.color);
+
   return (
     <div className='mt-8 py-8 border border-gray-300 rounded-4'>
       <div className='mb-8 flex items-center justify-content'>
@@ -30,7 +41,8 @@ function FontConfig({ initValues, register, control, setValue }: Props): JSX.Ele
         <div className='mr-8 w-2/4 flex items-center'>
           <span className='px-8 text-12 text-gray-400 whitespace-nowrap'>行高</span>
           <input
-            type="text"
+            type="number"
+            min={12}
             className='w-full focus:outline-none'
             {...register('lineHeight', { value: initValues.lineHeight || 20 })}
           />
@@ -51,26 +63,16 @@ function FontConfig({ initValues, register, control, setValue }: Props): JSX.Ele
         </div>
       </div>
       <div className='flex items-center'>
-        <div className='ml-8 flex items-center'>
-          {/* <input
-            type="color"
-            style={{ width: 20, height: 24, padding: 0, backgroundColor: 'transparent' }}
-            {...register('color', { value: initValues.color || '#ffffff' })}
-          /> */}
-          sdfddf
-          {/* <ColorPicker control={control} /> */}
-          {/* <ColorPicker {...register('color', { value: initValues.color || '#ffffff' })} /> */}
-          <Controller
-            defaultValue={''}
-            name="color"
-            control={control}
-            render={({ field }) => {
-              // const { value } = field;
-              return <ColorPicker {...field} />;
-              // return <input {...field} />;
-            }}
+        <div className='flex items-center'>
+          <span className='px-8 text-12 text-gray-400 whitespace-nowrap'>颜色</span>
+          <input type="hidden" {...register('color')} />
+          <ColorPicker
+            value={initValues.color as string}
+            onChange={handleColorChange}
           />
-          <span className='ml-8 text-12 text-gray-900'>{initValues.color}</span>
+          <span className='ml-8 text-12 text-gray-900'>
+            {stringRgbToHex(initValues.color)}
+          </span>
         </div>
         {/* <div className='mx-8 w-1 h-20 border-left bg-gray-200'></div>
         <div className='relative'>

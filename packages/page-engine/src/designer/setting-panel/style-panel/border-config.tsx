@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UseFormRegister, FieldValues } from 'react-hook-form';
 
 import { RadioButtonGroup, Icon } from '@ofa/ui';
@@ -17,40 +17,52 @@ const BORDER_LIST: LabelValue[] = [
 interface Props {
   initValues: Record<string, string | number>;
   register: UseFormRegister<FieldValues>;
+  setValue: any;
+  onFormChange: () => void;
 }
 
-function BorderConfig({ initValues, register }: Props): JSX.Element {
+function BorderConfig({ initValues, register, setValue, onFormChange }: Props): JSX.Element {
   const [borderType, setBorderType] = useState('none');
+
+  useEffect(() => {
+    const _type = (initValues.borderStyle || 'dashed') as string;
+    setBorderType(_type);
+  }, []);
+
+  function handleRadioChange(value: string): void {
+    if (borderType === value) return;
+    setValue('borderStyle', value);
+    setBorderType(value);
+    onFormChange();
+  }
 
   return (
     <div>
       <div className='text-12 text-gray-600'>填充类型</div>
       <RadioButtonGroup
         listData={BORDER_LIST}
-        onChange={(value: string)=> {
-          borderType !== value && setBorderType(value);
-        }}
+        onChange={handleRadioChange}
         currentValue={borderType}
       />
       {borderType !== 'none' && (
         <div className='mt-8 p-8 border border-gray-300 rounded-4'>
           <div className='flex items-center'>
-            <div className='mr-32 w-2/5 flex items-center'>
+            <div className='mr-8 w-2/5 flex items-center'>
               <span className='mr-8 text-12 text-gray-400 whitespace-nowrap'>宽度</span>
               <input
-                type="text"
+                type="number"
                 className='px-8 w-full border-none focus:outline-none'
-                {...register('borderWidth', { value: initValues.borderWidth || 0 })}
+                {...register('borderWidth', { value: initValues.borderWidth || 1 })}
               />
             </div>
-            <div className='mr-32 w-2/5 flex items-center'>
+            {/* <div className='mr-32 w-2/5 flex items-center'>
               <span className='mr-8 text-12 text-gray-400 whitespace-nowrap'>边角</span>
               <input
                 type="text"
                 className='px-8 w-full border-none focus:outline-none'
                 {...register('borderRadius', { value: initValues.borderRadius || 0 })}
               />
-            </div>
+            </div> */}
             <Icon name='fullscreen' color='gray' />
           </div>
           <div className='mt-8 flex items-center'>

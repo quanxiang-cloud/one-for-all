@@ -1,17 +1,17 @@
 export const DEFAULT_STYLE_CONFIG = {
   // width, height
-  width: 83,
-  height: 32,
+  width: 80,
+  height: 40,
   // margin
   marginTop: 0,
   marginLeft: 0,
   marginRight: 0,
   marginBottom: 0,
   // border
-  borderTopWidth: 4,
-  borderLeftWidth: 1,
-  borderRightWidth: 1,
-  borderBottomWidth: 1,
+  // borderTopWidth: 4,
+  // borderLeftWidth: 1,
+  // borderRightWidth: 1,
+  // borderBottomWidth: 1,
   // padding
   paddingTop: 0,
   paddingLeft: 0,
@@ -21,12 +21,12 @@ export const DEFAULT_STYLE_CONFIG = {
   fontSize: 14,
   lineHeight: 20,
   fontWeight: 400,
-  color: '#ffffff',
+  color: 'rgba(0, 0, 0)',
   // background
-  backgroundColor: '#ffffff',
+  backgroundColor: 'rgba(255, 255, 255,1)',
   // border
+  borderStyle: 'solid',
   borderWidth: 1,
-  borderRadius: 4,
   borderTopLeftRadius: 2,
   borderTopRightRadius: 2,
   borderBottomLeftRadius: 2,
@@ -34,7 +34,7 @@ export const DEFAULT_STYLE_CONFIG = {
 };
 
 const STYLE_NUMBER = [
-  'width', 'height',
+  'width', 'height', 'fontSize', 'lineHight', 'borderWidth',
   'marginTop', 'marginLeft', 'marginRight', 'marginBottom', 'borderTopWidth', 'borderLeftWidth',
   'borderRightWidth', 'borderBottomWidth', 'paddingTop', 'paddingLeft', 'paddingRight', 'paddingBottom',
 ];

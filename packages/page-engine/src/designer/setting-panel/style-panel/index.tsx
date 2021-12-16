@@ -5,7 +5,7 @@ import { observer } from 'mobx-react';
 import Editor, { loader } from '@monaco-editor/react';
 
 import { useCtx } from '@ofa/page-engine';
-import { Modal, Icon, Button, toast, ColorPicker } from '@ofa/ui';
+import { Modal, Icon, Button, toast } from '@ofa/ui';
 
 import LayoutConfig from './layout-config';
 // import MarginBPadding from './margin-b-padding';
@@ -32,9 +32,9 @@ function StylePanel({ className }: Props): JSX.Element {
     loader.config({ paths: { vs: '/dist/monaco-editor/vs' } });
   }, []);
 
-  // useEffect(() => {
-  //   page.updateElemProperty(page.activeElem.id, '_style', values);
-  // }, [values]);
+  useEffect(() => {
+    page.updateElemProperty(page.activeElem.id, '_style', values);
+  }, [values]);
 
   function handleEditorMount(editor: any): void {
     editorRef.current = editor;
@@ -88,21 +88,34 @@ function StylePanel({ className }: Props): JSX.Element {
           <Icon name='code' />源码编辑
         </Button>
       </div>
-      <div>颜色选择</div>
-      <ColorPicker />
       <form onChange={handleFormChange}>
-        <input type="submit" />
         <Section title='画布' defaultExpand>
-          <LayoutConfig initValues={values} register={register} />
+          <LayoutConfig initValues={values} register={register} setValue={setValue} />
         </Section>
         <Section title='字体' defaultExpand>
-          <FontConfig initValues={values} register={register} control={control} setValue={setValue} />
+          <FontConfig
+            initValues={values}
+            register={register}
+            control={control}
+            setValue={setValue}
+            onFormChange={handleFormChange}
+          />
         </Section>
         <Section title='背景' defaultExpand>
-          <BackgroundConfig initValues={values} register={register} />
+          <BackgroundConfig
+            initValues={values}
+            register={register}
+            setValue={setValue}
+            onFormChange={handleFormChange}
+          />
         </Section>
         <Section title='边框' defaultExpand>
-          <BorderConfig initValues={values} register={register} />
+          <BorderConfig
+            initValues={values}
+            register={register}
+            setValue={setValue}
+            onFormChange={handleFormChange}
+          />
         </Section>
         <Section title='阴影' defaultExpand>
 

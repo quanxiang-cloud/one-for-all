@@ -26,7 +26,7 @@ function MarginBPadding({ classNames, title, showIcon, children,
       className={cs('px-4', classNames)}
       style={styles}
     >
-      <div className='h-28 flex items-center justify-center relative'>
+      <div className='h-32 flex items-center justify-center relative'>
         <span className='absolute left-0 text-12 text-gray-400'>{title}</span>
         <input
           type="text"
