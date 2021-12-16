@@ -33,6 +33,9 @@ function Designer({ className, onSave, onPreview }: Props): JSX.Element | null {
       onPreview,
     });
 
+    // @ts-ignore
+    window._ctx = stores;
+
     return () => {
       // reset ctx
       Object.entries(stores).forEach(([, store]: [string, any]) => {

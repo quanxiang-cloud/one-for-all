@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 
-import { Icon, Tooltip } from '@ofa/ui';
+import { Icon } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
 
 import styles from '../index.m.scss';
@@ -21,7 +21,7 @@ type VarContent = {
 
 function VarItem({ className, name, conf }: Props): JSX.Element {
   const { dataSource } = useCtx();
-  const { setCurSharedStateKey, setModalOpen } = dataSource;
+  const { setCurSharedStateKey, setEditorModalOpen } = dataSource;
   const data: VarContent = useMemo(() => JSON.parse(conf), [conf]);
   const [expand, setExpand] = useState(false);
 
@@ -36,7 +36,7 @@ function VarItem({ className, name, conf }: Props): JSX.Element {
 
   function handleEdit(): void {
     setCurSharedStateKey(name);
-    setModalOpen(true);
+    setEditorModalOpen(true);
   }
 
   function handleDelete(): void {
@@ -50,15 +50,9 @@ function VarItem({ className, name, conf }: Props): JSX.Element {
           <span>{name}</span>
         </div>
         <div className={styles.varActions}>
-          <Tooltip position='top' label='复制'>
-            <Icon name='content_copy' clickable onClick={handleCopy} />
-          </Tooltip>
-          <Tooltip position='top' label='修改'>
-            <Icon name='edit' clickable onClick={handleEdit} />
-          </Tooltip>
-          <Tooltip position='top' label='删除'>
-            <Icon name='delete' clickable onClick={handleDelete} />
-          </Tooltip>
+          <Icon name='content_copy' clickable onClick={handleCopy} />
+          <Icon name='edit' clickable onClick={handleEdit} />
+          <Icon name='delete' clickable onClick={handleDelete} />
           <Icon name={expand ? 'expand_less' : 'expand_more'} clickable onClick={() => setExpand((exp) => !exp)} />
         </div>
       </div>

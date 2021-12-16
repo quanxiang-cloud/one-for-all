@@ -13,6 +13,7 @@ class DataSource {
   @observable apiState: Record<string, any> = {}
 
   @observable modalOpen = false
+  @observable editorModalOpen=false // lift up editor modal, keep dom node to reduce css re-paint
   @observable curSharedStateKey = ''
   @observable curApiStateKey = ''
   @observable curApiNode: any = null // 当前选中的平台api节点
@@ -45,7 +46,7 @@ class DataSource {
       set(this.sharedState, key, val);
     }
     toast.success(this.curSharedState ? '修改变量成功' : '新增变量成功');
-    this.setModalOpen(false);
+    this.setEditorModalOpen(false);
     this.setCurSharedStateKey('');
   }
 
@@ -57,6 +58,11 @@ class DataSource {
   @action
   setModalOpen = (open: boolean): void => {
     this.modalOpen = open;
+  }
+
+  @action
+  setEditorModalOpen=(open: boolean): void=> {
+    this.editorModalOpen = open;
   }
 
   @action

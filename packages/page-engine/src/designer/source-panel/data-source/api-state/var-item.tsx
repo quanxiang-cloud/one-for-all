@@ -1,8 +1,8 @@
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 
-import { Icon, Tooltip } from '@ofa/ui';
+import { Icon } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
 
 import styles from '../index.m.scss';
@@ -27,9 +27,7 @@ function VarItem({ className, name, spec }: Props): JSX.Element {
           <span>{name}</span>
         </div>
         <div className={styles.varActions}>
-          <Tooltip position='top' label='删除'>
-            <Icon name='delete' clickable onClick={handleDelete} />
-          </Tooltip>
+          <Icon name='delete' clickable onClick={handleDelete} />
         </div>
       </div>
       <div className={styles.apiVarCont}>

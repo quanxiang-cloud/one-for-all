@@ -10,15 +10,20 @@ import Group from './group';
 import { groups, panelTitle } from './config';
 import PlatformComps from './platform-comps';
 import PageTree from './page-tree';
-import CustomTemplate from './custom-template';
+// import CustomTemplate from './custom-template';
 import DataSource from './data-source';
 
 import styles from './index.m.scss';
 
 function SourcePanel(): JSX.Element {
   const store = useCtx().designer;
+  const { activeGroup, panelPinned, panelOpen } = store;
   const panelRef = useRef<HTMLDivElement>(null);
   const hoverDoc = useCallback(debounce(handleClickOutside, 200), []);
+  const hoverGroup = useCallback(debounce((name: string)=> {
+    store.setActiveGroup(name);
+    store.setPanelOpen(true);
+  }, 200), []);
 
   useEffect(() => {
     document.addEventListener('mouseover', hoverDoc);
@@ -33,22 +38,6 @@ function SourcePanel(): JSX.Element {
     }
   }
 
-  function renderPanelCont(): JSX.Element | null {
-    if (store.activeGroup === 'comps') {
-      return <PlatformComps />;
-    }
-    if (store.activeGroup === 'templates') {
-      return <CustomTemplate />;
-    }
-    if (store.activeGroup === 'page_tree') {
-      return <PageTree />;
-    }
-    if (store.activeGroup === 'data_source') {
-      return <DataSource />;
-    }
-    return null;
-  }
-
   return (
     <div className='flex relative' ref={panelRef}>
       <div className={cs(styles.sourcePanel, 'flex flex-col items-center relative')}>
@@ -57,26 +46,47 @@ function SourcePanel(): JSX.Element {
             <Group
               {...gp}
               key={gp.name}
-              active={store.activeGroup === gp.name}
-              onHover={() => {
-                store.setActiveGroup(gp.name);
-                store.setPanelOpen(true);
-              }}
+              active={activeGroup === gp.name}
+              onHover={() => hoverGroup(gp.name)}
             />
           );
         })}
       </div>
       <Panel
-        title={panelTitle[store.activeGroup]}
+        title={panelTitle[activeGroup]}
         style={{ transform: 'translateX(55px)' }}
         onClose={() => store.setPanelOpen(false)}
-        onPin={() => store.setPanelPinned(!store.panelPinned)}
-        visible={store.panelOpen}
-        pinned={store.panelPinned}
+        onPin={() => store.setPanelPinned(!panelPinned)}
+        visible={panelOpen && activeGroup === 'comps'}
+        pinned={panelPinned}
         closable
         pinnable
       >
-        {renderPanelCont()}
+        <PlatformComps />
+      </Panel>
+      <Panel
+        title={panelTitle[activeGroup]}
+        style={{ transform: 'translateX(55px)' }}
+        onClose={() => store.setPanelOpen(false)}
+        onPin={() => store.setPanelPinned(!panelPinned)}
+        visible={panelOpen && activeGroup === 'page_tree'}
+        pinned={panelPinned}
+        closable
+        pinnable
+      >
+        <PageTree />
+      </Panel>
+      <Panel
+        title={panelTitle[activeGroup]}
+        style={{ transform: 'translateX(55px)' }}
+        onClose={() => store.setPanelOpen(false)}
+        onPin={() => store.setPanelPinned(!panelPinned)}
+        visible={panelOpen && activeGroup === 'data_source'}
+        pinned={panelPinned}
+        closable
+        pinnable
+      >
+        <DataSource />
       </Panel>
     </div>
 

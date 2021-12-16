@@ -36,7 +36,10 @@ function Panel({
 }: Props): JSX.Element {
   return (
     <div
-      className={cs('px-8 py-16 overflow-auto z-10', { [styles.closed]: !visible }, styles.panel, className)}
+      className={cs('px-8 py-16 overflow-auto z-10', {
+        [styles.closed]: !visible,
+        [styles.panelPinned]: pinned,
+      }, styles.panel, className)}
       style={{
         width,
         height,
