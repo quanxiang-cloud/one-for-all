@@ -8,5 +8,11 @@
 </head>
 <body>
     <div id="app"></div>
+
+    <script>
+        if (!window.process) {
+            window.process = { env: { NODE_ENV: 'development' } }
+        }
+    </script>
 </body>
 </html>
