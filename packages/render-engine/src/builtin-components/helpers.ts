@@ -61,11 +61,12 @@ export function getAppropriateKey(item: unknown, loopKey: string, index: number)
 
 export function tryToProps(
   source: unknown,
-  toProps: (item: unknown) => Record<string, unknown>,
+  index: number,
+  toProps: (item: unknown, index: number) => Record<string, unknown>,
   currentPath: string,
 ): Record<string, unknown> | null {
   try {
-    const toPropsResult = toProps(source);
+    const toPropsResult = toProps(source, index);
     if (typeof toPropsResult !== 'object' && !toPropsResult) {
       logger.error(
         'toProps result should be an object, but got: ${toPropsResult},',
@@ -110,7 +111,7 @@ export function useMergedPropsList(
   }
 
   return iterable.map<[React.Key, NodeProperties<Instantiated>] | null>((item, index) => {
-    const convertedProps = tryToProps(item, toProps, currentPath);
+    const convertedProps = tryToProps(item, index, toProps, currentPath);
     if (!convertedProps) {
       return null;
     }

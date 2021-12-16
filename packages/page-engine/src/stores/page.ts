@@ -1,8 +1,6 @@
 import { observable, computed, action, makeObservable, toJS } from 'mobx';
 import { defaults, set } from 'lodash';
 
-import { toast } from '@ofa/ui';
-
 import { elemId } from '../utils';
 import { findNode } from '../utils/tree-utils';
 import registry from './registry';
@@ -33,6 +31,8 @@ function pageInitialSchema(): PageEngine.Node {
     label: '页面',
     props: {},
     children: [],
+    _shared: {},
+    _api: {},
   };
 }
 
@@ -59,10 +59,14 @@ class PageStore {
     this.schema = schema;
   }
 
-  saveSchema = (): void => {
-    // todo: save schema to backend
-    localStorage.setItem('page_schema', JSON.stringify(toJS(this.schema)) as any);
-    toast.success('保存成功');
+  @action
+  setPageSharedStates=(states: any)=> {
+    Object.assign(this.schema._shared, states);
+  }
+
+  @action
+  setPageApiStates=(states: any)=> {
+    Object.assign(this.schema._api, states);
   }
 
   @action
@@ -211,6 +215,11 @@ class PageStore {
     if (elem) {
       set(elem, propKey, conf);
     }
+  }
+
+  @action
+  updateElemProps=(elem_id: string, props: Record<string, any>)=> {
+    this.updateElemProperty(elem_id, 'props', props);
   }
 
   @action

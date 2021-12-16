@@ -16,6 +16,7 @@ import Radio from './radio';
 import RadioGroup from './radio/group';
 import RadioButtonGroup from './radio/radio-button-group';
 import ColorPicker from './color-picker';
+import Text from './text';
 
 export {
   Icon,
@@ -34,4 +35,5 @@ export {
   RadioGroup,
   RadioButtonGroup,
   ColorPicker,
+  Text,
 };
