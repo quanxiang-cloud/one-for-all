@@ -206,6 +206,11 @@ class PageStore {
   }
 
   @action
+  updateElemProps=(elem_id: string, props: Record<string, any>)=> {
+    this.updateElemProperty(elem_id, 'props', props);
+  }
+
+  @action
   reset = (): void => {
     // todo
   }
