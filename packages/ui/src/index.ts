@@ -14,6 +14,7 @@ import Tag from './tag';
 import Search from './search';
 import Radio from './radio';
 import RadioGroup from './radio/group';
+import Text from './text';
 
 export {
   Icon,
@@ -30,4 +31,5 @@ export {
   Search,
   Radio,
   RadioGroup,
+  Text,
 };
