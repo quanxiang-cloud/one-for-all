@@ -1,22 +1,23 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { defaults } from 'lodash';
 import { useForm } from 'react-hook-form';
-import { Icon } from '@ofa/ui';
 
-import ctx from '../../../ctx';
-import { Props } from '../../../../../ui//src/input/input';
+import { Icon } from '@ofa/ui';
+import { useCtx } from '@ofa/page-engine';
+
+import type { Props } from '@ofa/ui/src/input/index';
 
 export const defaultConfig: Props = {
   placeholder: '请输入内容',
   type: 'text',
 };
 
-interface CONFIG_PROPS {
+interface configProps {
   name: string;
   msg: string;
   type: string;
 }
-const configItems: CONFIG_PROPS[] = [
+const configItems: configProps[] = [
   {
     name: 'placeholder', // key
     msg: '默认值', // 显示信息
@@ -26,16 +27,15 @@ const configItems: CONFIG_PROPS[] = [
 
 function ConfigForm(): JSX.Element {
   const { register, getValues } = useForm();
-  const { page } = useContext(ctx);
+  const { page } = useCtx();
   const [values, setValues] = useState(defaults(page.activeElem.props, defaultConfig));
 
   useEffect(() => {
-    page.updateElemProps(page.activeElem.id, values);
-  }, [values, page.updateElemProps]);
+    page.updateElemProperty(page.activeElem.id, 'props', values);
+  }, [values]);
 
   const handleChange = (): void => {
     const formValue = getValues();
-    console.log(formValue);
     setValues({ ...formValue, type: values.type });
   };
 
@@ -52,9 +52,9 @@ function ConfigForm(): JSX.Element {
   return (
     <form className='flex flex-col' onChange={handleChange}>
       {
-        configItems.map((item, index) => {
+        configItems.map((item) => {
           return (
-            <div className='mb-10' key={item.name + index}>
+            <div className='mb-10' key={item.name}>
 
               <div className='mb-4 flex items-center'>
                 <label htmlFor='placeholder' className='mr-4 text-12 text-gray-600'>{item.msg}</label>
@@ -65,7 +65,7 @@ function ConfigForm(): JSX.Element {
                 <input
                   className='mr-8 px-8 py-4 w-full text-gray-600'
                   type={item.type}
-                  {...register(item.name, { value: values[item.name] })}
+                  {...register('isAllowSelect', { value: values.isAllowSelect })}
                 />
               </div>
             </div>

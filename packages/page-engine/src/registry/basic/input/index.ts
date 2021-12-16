@@ -1,5 +1,6 @@
-import Input from '../../../../../ui//src/input/input';
 import ConfigForm, { defaultConfig } from './config-form';
+import Input from '@ofa/ui/src/input';
+
 type Props = {
   name?: string,
   placeholder?: string,
@@ -8,6 +9,7 @@ type Props = {
   required?: boolean,
   disable?: boolean,
 }
+
 const elem: Registry.SourceElement<Props> = {
   name: 'input1',
   icon: 'apps',

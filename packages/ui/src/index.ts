@@ -14,7 +14,7 @@ import Tag from './tag';
 import Search from './search';
 import Radio from './radio';
 import RadioGroup from './radio/group';
-import Input from './input/input';
+import Input from './input';
 
 export {
   Icon,
