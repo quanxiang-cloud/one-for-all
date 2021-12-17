@@ -1,7 +1,6 @@
-// import Image from './image';
-import ConfigForm from './config-form';
+import { Link } from '@ofa/ui';
 
-import { Image } from '@ofa/ui';
+import ConfigForm from './config-form';
 
 type Props = {
   name?: string
@@ -10,14 +9,14 @@ type Props = {
 const defaultConfig: Props = {};
 
 const elem: Registry.SourceElement<Props> = {
-  name: 'image',
-  icon: 'image',
-  label: '图片',
+  name: 'link',
+  icon: 'apps',
+  label: '链接',
   category: 'basic',
-  component: Image,
+  component: Link,
   configForm: ConfigForm,
   defaultConfig,
-  order: 3,
+  order: 8,
 };
 
 export default elem;
