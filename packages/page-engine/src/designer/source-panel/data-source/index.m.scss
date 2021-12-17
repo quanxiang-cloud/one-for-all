@@ -95,3 +95,13 @@ input, textarea {
   border-top: 1px solid var(--gray-200);
   min-height: 300px;
 }
+
+.editorModal {
+  will-change: transform; // fix too many composite layers
+  transition: all 0.3s ease-in-out;
+
+  &.hide {
+    transform: translateY(-999px);
+    opacity: 0;
+  }
+}

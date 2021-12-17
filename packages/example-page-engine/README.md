@@ -17,6 +17,6 @@ yarn dev
 ### 生产环境
 
 ```
-yarn start
+yarn prod
 ```
 
