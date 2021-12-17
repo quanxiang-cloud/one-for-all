@@ -1,7 +1,7 @@
 export const DEFAULT_STYLE_CONFIG = {
   // width, height
-  width: 80,
-  height: 40,
+  width: 83,
+  height: 32,
   // margin
   marginTop: 0,
   marginLeft: 0,
@@ -18,25 +18,35 @@ export const DEFAULT_STYLE_CONFIG = {
   paddingRight: 0,
   paddingBottom: 0,
   // font
-  fontSize: 14,
-  lineHeight: 20,
+  fontSize: 12,
+  lineHeight: 30,
   fontWeight: 400,
-  color: 'rgba(0, 0, 0)',
+  color: '#000000',
   // background
-  backgroundColor: 'rgba(255, 255, 255,1)',
+  // backgroundColor: 'rgba(255, 255, 255,1)',
+  backgroundColor: 'transparent',
+  backgroundImage: '',
+  // https://t7.baidu.com/it/u=1595072465,3644073269&fm=193&f=GIF
+  // backgroundImage: 'url(https://t7.baidu.com/it/u=1297102096,3476971300&fm=193&f=GIF)',
+  backgroundSize: '100%',
   // border
   borderStyle: 'solid',
   borderWidth: 1,
-  borderTopLeftRadius: 2,
+  borderTopLeftRadius: 8,
   borderTopRightRadius: 2,
-  borderBottomLeftRadius: 2,
-  borderBottomRightRadius: 2,
+  borderBottomLeftRadius: 8,
+  borderBottomRightRadius: 8,
+  // box-shadow
+  boxShadow: 'none',
+  // boxShadow: 'rgba(0, 0, 0, 1) 8px 10px',
+  // boxShadow: 'rgba(0, 0, 0, 0.7) 2px 3px',
 };
 
 const STYLE_NUMBER = [
   'width', 'height', 'fontSize', 'lineHight', 'borderWidth',
   'marginTop', 'marginLeft', 'marginRight', 'marginBottom', 'borderTopWidth', 'borderLeftWidth',
   'borderRightWidth', 'borderBottomWidth', 'paddingTop', 'paddingLeft', 'paddingRight', 'paddingBottom',
+  'borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomRightRadius', 'borderBottomLeftRadius',
 ];
 
 export const formatStyles = (styles: Record<string, string | number>): Record<string, string | number> => {
@@ -47,6 +57,14 @@ export const formatStyles = (styles: Record<string, string | number>): Record<st
 
   Object.entries(styles).forEach((style) => {
     const [key, value] = style;
+
+    if (key === 'backgroundImage') {
+      if (value === 'none') return;
+
+      newStyles[key] = `url(${value})`;
+      return;
+    }
+
     if (STYLE_NUMBER.includes(key)) {
       newStyles[key] = Number(value) || 0;
       return;

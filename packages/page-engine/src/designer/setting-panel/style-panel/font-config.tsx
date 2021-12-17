@@ -1,27 +1,21 @@
 import React from 'react';
 import { UseFormRegister, FieldValues } from 'react-hook-form';
+import { ColorResult } from 'react-color';
 
 import { ColorPicker } from '@ofa/ui';
-// import ColorPicker from './form-color-picker';
-
-const { stringRgbToHex }: any = ColorPicker;
 
 interface Props {
   initValues: Record<string, string | number>;
   register: UseFormRegister<FieldValues>;
-  control: any;
-  setValue: any;
+  setValue: (key: string, val: string | number) => void;
   onFormChange: () => void;
 }
 
 function FontConfig({ initValues, register, setValue, onFormChange }: Props): JSX.Element {
-  // const [currColor, setCurrColor] = useState(initValues.color);
-  function handleColorChange(color: string): void {
-    setValue('color', color);
+  function handleColorChange(color: ColorResult): void {
+    setValue('color', color.hex);
     onFormChange();
   }
-
-  console.log('当前颜色', initValues.color);
 
   return (
     <div className='mt-8 py-8 border border-gray-300 rounded-4'>
@@ -42,7 +36,6 @@ function FontConfig({ initValues, register, setValue, onFormChange }: Props): JS
           <span className='px-8 text-12 text-gray-400 whitespace-nowrap'>行高</span>
           <input
             type="number"
-            min={12}
             className='w-full focus:outline-none'
             {...register('lineHeight', { value: initValues.lineHeight || 20 })}
           />
@@ -71,7 +64,7 @@ function FontConfig({ initValues, register, setValue, onFormChange }: Props): JS
             onChange={handleColorChange}
           />
           <span className='ml-8 text-12 text-gray-900'>
-            {stringRgbToHex(initValues.color)}
+            {initValues.color}
           </span>
         </div>
         {/* <div className='mx-8 w-1 h-20 border-left bg-gray-200'></div>
