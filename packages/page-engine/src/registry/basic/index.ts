@@ -6,6 +6,7 @@ import Divider from './divider';
 import Paragraph from './paragraph';
 import Dialog from './dialog';
 import List from './list';
+import Input from './input';
 import Textarea from './textarea';
 
 export {
@@ -17,5 +18,6 @@ export {
   Paragraph,
   Dialog,
   List,
+  Input,
   Textarea,
 };
