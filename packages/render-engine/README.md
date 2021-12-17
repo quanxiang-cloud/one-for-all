@@ -18,11 +18,11 @@ Yes, you can.
 
 In Schema, you can:
 
-- describe the page hierarchy
-- describe which component I want to use and how to use it
-- describe how to make an API request
-- describe how components can use API response
-- describe the communication of components
-- describe how to loop and conditional render a component
-- describe route
-- describe the combination of serval Schemas
+- Describe the page hierarchy.
+- Describe which component I want to use and how to use it.
+- Describe how to make an API request.
+- Describe how the component uses API results.
+- Describe the communication and relationship of components.
+- Describes how to render a component looped or conditionally.
+- Describe routes.
+- Describe the combination of serval Schemas.
