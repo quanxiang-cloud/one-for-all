@@ -14,9 +14,7 @@ There are some advantages of using Schema:
 
 # Can I really use schema to describe a serious web app?
 
-Yes, you can.
-
-In Schema, you can:
+Yes, you can:
 
 - Describe the page hierarchy.
 - Describe which component I want to use and how to use it.
