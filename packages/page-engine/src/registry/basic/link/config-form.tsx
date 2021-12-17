@@ -36,7 +36,7 @@ function ConfigForm(): JSX.Element {
         <div className='flex items-center'>
           <input
             type='text'
-            className='w-full h-32 my-8 px-16 mr-8'
+            className='w-full h-32 my-4 px-8 mr-8'
             value={values.content}
             onChange={(ev) => setValues({ ...values, content: ev.target.value })}
           />
@@ -73,12 +73,14 @@ function ConfigForm(): JSX.Element {
         ) : (
           <div className='mb-8'>
             <p className='mr-4 text-12 text-gray-600'>链接地址</p>
-            <input
-              className='w-full h-32 my-8 px-16 mr-8'
-              value={values.linkUrl}
-              onChange={(ev) => setValues({ ...values, linkUrl: ev.target.value })}
-            />
-            <Icon name="code" color="gray" className='cursor-pointer' />
+            <div className='flex items-center'>
+              <input
+                className='w-full h-32 my-4 px-8 mr-8'
+                value={values.linkUrl}
+                onChange={(ev) => setValues({ ...values, linkUrl: ev.target.value })}
+              />
+              <Icon name="code" color="gray" className='cursor-pointer' />
+            </div>
           </div>
         )
       }
@@ -86,7 +88,7 @@ function ConfigForm(): JSX.Element {
         <div className='flex items-center'>
           <input
             type="checkbox"
-            className='w-full h-32 my-8 px-16 truncate mr-8'
+            className='w-full h-32 my-4 px-8 mr-8'
             value={values.isBlank}
             onChange={(ev) => setValues({ ...values, isBlank: ev.target.value })}
           />
