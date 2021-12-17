@@ -7,6 +7,7 @@ import Paragraph from './paragraph';
 import Dialog from './dialog';
 import List from './list';
 import Input from './input';
+import Textarea from './textarea';
 
 export {
   Page,
@@ -18,4 +19,5 @@ export {
   Dialog,
   List,
   Input,
+  Textarea,
 };
