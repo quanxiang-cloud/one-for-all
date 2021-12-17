@@ -14,6 +14,8 @@ import Tag from './tag';
 import Search from './search';
 import Radio from './radio';
 import RadioGroup from './radio/group';
+import RadioButtonGroup from './radio/radio-button-group';
+import ColorPicker from './color-picker';
 import Textarea from './textarea';
 import Text from './text';
 import Page from './page';
@@ -37,6 +39,8 @@ export {
   Search,
   Radio,
   RadioGroup,
+  RadioButtonGroup,
+  ColorPicker,
   Textarea,
   Text,
   Page,

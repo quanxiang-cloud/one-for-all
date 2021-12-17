@@ -25,7 +25,7 @@ function ConfigForm(): JSX.Element {
   const [values, setValues] = useState<Props>(defaults(page.activeElem.props, DEFAULT_CONFIG));
 
   useEffect(() => {
-    page.updateElemProps(page.activeElem.id, values);
+    page.updateElemProperty(page.activeElem.id, 'props', values);
   }, [values]);
 
   function handleFormChange(): void {
