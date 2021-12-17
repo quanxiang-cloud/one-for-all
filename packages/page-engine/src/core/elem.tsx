@@ -3,7 +3,7 @@ import cs from 'classnames';
 import { useDrag, useDrop, DragPreviewImage } from 'react-dnd';
 import { observer } from 'mobx-react';
 
-import { Icon, Tooltip } from '@ofa/ui';
+import { Icon } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
 import { encode } from '../utils/base64';
 import { elemId } from '../utils';
@@ -135,16 +135,12 @@ function Elem({ node, className, preview, children }: Props): JSX.Element {
           <div className={styles.toolbar}>
             {comp.startsWith('elem.') && (
               <div className={cs('px-4 mr-6 bg-white mt-1', styles.group)}>
-                <Tooltip position='top' label='复制'>
-                  <span onClick={() => page.copyNode(pid, id)}>
-                    <Icon name='content_copy' size={12} className='mr-8' clickable />
-                  </span>
-                </Tooltip>
-                <Tooltip position='top' label='删除'>
-                  <span onClick={() => page.removeNode(pid, id)}>
-                    <Icon name='delete' size={14} clickable />
-                  </span>
-                </Tooltip>
+                <span onClick={() => page.copyNode(pid, id)}>
+                  <Icon name='content_copy' size={12} className='mr-8' clickable />
+                </span>
+                <span onClick={() => page.removeNode(pid, id)}>
+                  <Icon name='delete' size={14} clickable />
+                </span>
               </div>
             )}
             <div className={cs('px-4 bg-blue-600', styles.group)}>

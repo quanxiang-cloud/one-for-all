@@ -1,4 +1,5 @@
-import { Button } from '@ofa/ui';
+import { Link } from '@ofa/ui';
+
 import ConfigForm from './config-form';
 
 type Props = {
@@ -8,14 +9,14 @@ type Props = {
 const defaultConfig: Props = {};
 
 const elem: Registry.SourceElement<Props> = {
-  name: 'button',
+  name: 'link',
   icon: 'apps',
-  label: '按钮',
+  label: '链接',
   category: 'basic',
-  component: Button,
+  component: Link,
   configForm: ConfigForm,
   defaultConfig,
-  order: 4,
+  order: 8,
 };
 
 export default elem;

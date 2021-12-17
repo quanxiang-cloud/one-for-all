@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
-import { toJS } from 'mobx';
 
 import { Search, Icon, Tooltip, Modal, toast } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
@@ -17,13 +16,23 @@ interface Props {
 
 function ApiState(props: Props): JSX.Element {
   const ctx = useCtx();
-  const { dataSource } = ctx;
-  const { modalOpen, setModalOpen, curApiState, apiSpec } = dataSource;
+  const { dataSource, page } = ctx;
+  const { modalOpen, setModalOpen, curApiState, curApiId } = dataSource;
   const { register, formState: { errors }, handleSubmit, getValues, trigger, clearErrors } = useForm();
 
+  useEffect(()=> {
+    if (!dataSource.modalOpen) {
+      dataSource.setCurApiId('');
+    }
+  }, [dataSource.modalOpen]);
+
   function onSubmit(data: any): void {
-    console.log('save api state: ', data, toJS(apiSpec));
-    dataSource.saveApiState(data.name, toJS(apiSpec));
+    console.log('save api state: ', data, curApiId);
+    if (!curApiId) {
+      toast.error('请选择一个平台 API');
+      return;
+    }
+    dataSource.saveApiState(data.name, curApiId, ()=> ctx.onSave(page.schema, { silent: true }));
   }
 
   const noData = !Object.keys(dataSource.apiState).length;
@@ -102,7 +111,7 @@ function ApiState(props: Props): JSX.Element {
           >
             <div className='flex justify-between items-center'>
               <div className='flex flex-col mb-24'>
-                <p className='text-12 text-gray-600'>参数名称</p>
+                <p className='text-12 text-gray-600'>API变量名称</p>
                 <input
                   type="text"
                   className={cs('input', styles.input, { [styles.error]: errors.name })}
@@ -115,7 +124,7 @@ function ApiState(props: Props): JSX.Element {
                         toast.error('请填写变量名');
                         return false;
                       }
-                      if (!/^[a-zA-Z_]\w*$/.test(val)) {
+                      if (!/^[\u4e00-\u9fa5_a-zA-Z0-9\-\s]+$/.test(val)) {
                         toast.error('非法的变量名');
                         return false;
                       }
@@ -123,7 +132,7 @@ function ApiState(props: Props): JSX.Element {
                     },
                   })}
                 />
-                <p className='text-12 text-gray-600'>不超过 20 字符，必须以字母开头，只能包含字母、数字、下划线，名称不可重复。</p>
+                <p className='text-12 text-gray-600'>不超过 20 字符，支持字母、数字、下划线、中文，名称不可重复。</p>
               </div>
               {ctx.designer.vdoms.platformApis}
             </div>

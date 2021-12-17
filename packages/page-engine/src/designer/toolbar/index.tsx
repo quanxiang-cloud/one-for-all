@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 import { toJS } from 'mobx';
 
 import { Icon, Button } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine';
+import { useCtx, toRenderSchema } from '@ofa/page-engine';
 
 import styles from './index.m.scss';
 
@@ -24,7 +24,7 @@ function Toolbar(): JSX.Element {
   }
 
   function handlePreview(): void {
-    ctx.onPreview?.(toJS(page.schema));
+    ctx.onSave?.(toRenderSchema(toJS(page.schema)), { draft: true, silent: true });
   }
 
   return (
@@ -38,7 +38,15 @@ function Toolbar(): JSX.Element {
         <Divider />
         <Icon name='help_doc' color='gray' clickable />
         <Divider />
-        <Button iconName='preview' onClick={handlePreview}>预览</Button>
+        <Button iconName='preview' onClick={handlePreview}>
+          <a
+            href={location.href.replace(/\/page-design/, '/page-preview')}
+            target='_blank'
+            rel="noopener noreferrer"
+          >
+            预览
+          </a>
+        </Button>
         <Divider />
         <Button iconName='save' onClick={handleSave} className={styles.btnSave}>保存</Button>
         <Button iconName='save' modifier='primary' onClick={saveAndExit}>保存并退出</Button>

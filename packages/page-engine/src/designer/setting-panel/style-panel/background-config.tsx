@@ -82,7 +82,7 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
       <div className='text-12 text-gray-600'>填充类型</div>
       <RadioButtonGroup
         listData={FILL_LIST as []}
-        onChange={handleRadioChange}
+        onChange={(val)=> handleRadioChange(val + '')}
         currentValue={fillStatus}
       />
       {fillStatus === 'color' && (

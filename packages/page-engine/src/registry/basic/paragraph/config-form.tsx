@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { defaults } from 'lodash';
 
 import { Icon } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine/ctx';
+import { useCtx } from '@ofa/page-engine';
 
 const DEFAULT_CONFIG: Props = {
   content: '段落文本',

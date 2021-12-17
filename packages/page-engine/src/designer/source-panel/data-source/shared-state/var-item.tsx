@@ -32,7 +32,7 @@ function VarItem({ className, name, conf }: Props): JSX.Element {
     const newName = countName === 1 ? `${name}_copy` : `${name}_copy${countName}`;
     const newConf = JSON.parse(conf);
     Object.assign(newConf, { name: newName });
-    dataSource.saveSharedState(newName, JSON.stringify(newConf), ()=> ctx.onSave(page.schema));
+    dataSource.saveSharedState(newName, JSON.stringify(newConf), ()=> ctx.onSave(page.schema, { silent: true }));
   }
 
   function handleEdit(): void {
@@ -41,7 +41,7 @@ function VarItem({ className, name, conf }: Props): JSX.Element {
   }
 
   function handleDelete(): void {
-    dataSource.removeSharedState(name, ()=> ctx.onSave(page.schema));
+    dataSource.removeSharedState(name, ()=> ctx.onSave(page.schema, { silent: true }));
   }
 
   return (

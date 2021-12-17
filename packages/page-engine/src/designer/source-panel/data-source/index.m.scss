@@ -101,7 +101,7 @@
   transition: all 0.3s ease-in-out;
 
   &.hide {
-    transform: translateY(-999px);
+    transform: translateY(-9999px);
     opacity: 0;
   }
 }

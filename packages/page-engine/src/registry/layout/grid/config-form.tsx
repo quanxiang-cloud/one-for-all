@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { defaults } from 'lodash';
 
-import { Select } from '@ofa/ui';
+import { Select, GridProps } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
 
-import type { Props } from './grid';
-
-export const defaultConfig: Props = {
+export const defaultConfig: GridProps = {
   colRatio: '12',
   colGap: '8px',
 };
@@ -16,7 +14,7 @@ const gaps = ['8px', '12px', '16px', '20px'].map((value) => ({ label: value, val
 
 function ConfigForm(): JSX.Element {
   const { page } = useCtx();
-  const [values, setValues] = useState<Props>(defaults(page.activeElem.props, defaultConfig));
+  const [values, setValues] = useState<GridProps>(defaults(page.activeElem.props, defaultConfig));
 
   useEffect(() => {
     page.updateElemProperty(page.activeElem.id, 'props', values);
