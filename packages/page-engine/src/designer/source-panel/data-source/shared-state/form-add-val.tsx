@@ -58,7 +58,7 @@ function FormAddVal(props: Props): JSX.Element {
     if (validateName(formData.name)) {
       dataSource.saveSharedState(formData.name, JSON.stringify(formData), ()=> {
         // save whole page schema
-        ctx.onSave(page.schema);
+        ctx.onSave(page.schema, { silent: true });
       });
     }
   }
@@ -68,7 +68,7 @@ function FormAddVal(props: Props): JSX.Element {
       toast.error('请填写变量名');
       return false;
     }
-    if (!/^[a-zA-Z_]\w*$/.test(val)) {
+    if (!/^[\u4e00-\u9fa5_a-zA-Z0-9\-\s]+$/.test(val)) {
       toast.error('非法的变量名');
       return false;
     }
@@ -109,7 +109,7 @@ function FormAddVal(props: Props): JSX.Element {
               setCurSharedVal('name', ev.target.value || '');
             }}
           />
-          <p className='text-12 text-gray-600'>不超过 20 字符，必须以字母开头，只能包含字母、数字、下划线，名称不可重复。</p>
+          <p className='text-12 text-gray-600'>不超过 20 字符，支持字母、数字、下划线、中文，名称不可重复。</p>
         </div>
         <div className='flex flex-col mb-24'>
           <p>变量数据</p>
@@ -134,7 +134,7 @@ function FormAddVal(props: Props): JSX.Element {
               setCurSharedVal('desc', ev.target.value || '');
             }}
             cols={20}
-            rows={5}
+            rows={3}
           />
         </div>
       </form>

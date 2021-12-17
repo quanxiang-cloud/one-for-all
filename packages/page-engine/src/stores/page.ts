@@ -4,6 +4,7 @@ import { defaults, set } from 'lodash';
 import { elemId } from '../utils';
 import { findNode } from '../utils/tree-utils';
 import registry from './registry';
+import dataSource from './data-source';
 
 type Mode = 'design' | 'preview'
 type AppendNodeOptions = {
@@ -57,6 +58,8 @@ class PageStore {
   @action
   setSchema = (schema: PageEngine.Node): void => {
     this.schema = schema;
+    dataSource.sharedState = schema._shared || {};
+    dataSource.apiState = schema._api || {};
   }
 
   @action

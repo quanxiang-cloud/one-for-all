@@ -10,7 +10,6 @@ import Group from './group';
 import { groups, panelTitle } from './config';
 import PlatformComps from './platform-comps';
 import PageTree from './page-tree';
-// import CustomTemplate from './custom-template';
 import DataSource from './data-source';
 
 import styles from './index.m.scss';
@@ -38,6 +37,22 @@ function SourcePanel(): JSX.Element {
     }
   }
 
+  function renderPanelCont(): JSX.Element | null {
+    if (store.activeGroup === 'comps') {
+      return <PlatformComps />;
+    }
+    // if (store.activeGroup === 'templates') {
+    //   return <CustomTemplate />;
+    // }
+    if (store.activeGroup === 'page_tree') {
+      return <PageTree />;
+    }
+    // if (store.activeGroup === 'data_source') {
+    //   return <DataSource />;
+    // }
+    return null;
+  }
+
   return (
     <div className='flex relative' ref={panelRef}>
       <div className={cs(styles.sourcePanel, 'flex flex-col items-center relative')}>
@@ -57,24 +72,12 @@ function SourcePanel(): JSX.Element {
         style={{ transform: 'translateX(55px)' }}
         onClose={() => store.setPanelOpen(false)}
         onPin={() => store.setPanelPinned(!panelPinned)}
-        visible={panelOpen && activeGroup === 'comps'}
+        visible={panelOpen}
         pinned={panelPinned}
         closable
         pinnable
       >
-        <PlatformComps />
-      </Panel>
-      <Panel
-        title={panelTitle[activeGroup]}
-        style={{ transform: 'translateX(55px)' }}
-        onClose={() => store.setPanelOpen(false)}
-        onPin={() => store.setPanelPinned(!panelPinned)}
-        visible={panelOpen && activeGroup === 'page_tree'}
-        pinned={panelPinned}
-        closable
-        pinnable
-      >
-        <PageTree />
+        {renderPanelCont()}
       </Panel>
       <Panel
         title={panelTitle[activeGroup]}

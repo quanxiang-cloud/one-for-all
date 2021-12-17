@@ -16,7 +16,6 @@ import styles from './index.m.scss';
 
 interface Props {
   onSave: (page_schema: PageEngine.Node) => void;
-  onPreview: (page_schema: PageEngine.Node) => void;
   vdoms?: Record<string, React.ReactNode>; // 委托给外部渲染的vdom节点
   className?: string;
 }
@@ -24,13 +23,12 @@ interface Props {
 // https://mobx.js.org/configuration.html#isolateglobalstate-boolean
 configure({ isolateGlobalState: true });
 
-function Designer({ className, onSave, onPreview }: Props): JSX.Element | null {
+function Designer({ className, onSave }: Props): JSX.Element | null {
   const { designer } = stores;
 
   useEffect(() => {
     Object.assign(stores, {
       onSave,
-      onPreview,
     });
 
     // @ts-ignore
