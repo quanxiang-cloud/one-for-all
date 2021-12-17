@@ -1,5 +1,7 @@
-import Image from './image';
+// import Image from './image';
 import ConfigForm from './config-form';
+
+import { Image } from '@ofa/ui';
 
 type Props = {
   name?: string
