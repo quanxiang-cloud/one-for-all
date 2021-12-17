@@ -1,14 +1,44 @@
 import React from 'react';
+import cs from 'classnames';
 
-interface Props {
+import { IframeConfigProps } from './config-form';
+
+interface Props extends IframeConfigProps {
   className?: string;
 }
 
-function Iframe(props: Props) {
+function Iframe({
+  className,
+  iframeName,
+  iframeAddr,
+  iframeHeight,
+  iframeWidth,
+  allowFullscreen,
+  sandbox,
+  referrerPolicy,
+  iframeAllow,
+}: Props): JSX.Element {
+  if (!iframeAddr) {
+    return (
+      <div className="bg-gray-200 h-200 flex justify-center items-center text-20">
+        iframe 占位
+      </div>
+    );
+  }
+
   return (
-    <div>
-      iframe elem
-    </div>
+    <iframe
+      allow={iframeAllow}
+      referrerPolicy={referrerPolicy}
+      name={iframeName}
+      width={iframeWidth}
+      height={iframeHeight}
+      className={cs(className)}
+      allowFullScreen={allowFullscreen}
+      src={iframeAddr}
+      sandbox={sandbox}
+    >
+    </iframe>
   );
 }
 
