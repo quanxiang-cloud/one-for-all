@@ -1,4 +1,4 @@
-import Page from './page';
+import { Page } from '@ofa/ui';
 import ConfigForm from './config-form';
 
 type Props = {

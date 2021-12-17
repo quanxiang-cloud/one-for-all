@@ -1,4 +1,4 @@
-import Container from './container';
+import { Container } from '@ofa/ui';
 import ConfigForm from './config-form';
 
 type Props = {

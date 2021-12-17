@@ -20,7 +20,7 @@ function SourceElem(props: Registry.SourceElement<any>): JSX.Element {
     end: (item, monitor) => {
       const targetNode: any = monitor.getDropResult();
       if (targetNode?.comp) {
-        console.log('[source-elem] dropped %o onto: %o', item, targetNode);
+        // console.log('[source-elem] dropped %o onto: %o', item, targetNode);
         page.appendNode({
           comp: compName,
           label: registry.getLabelByElemType(compName),

@@ -1,7 +1,7 @@
-import Grid, { Props } from './grid';
+import { Grid, GridProps } from '@ofa/ui';
 import ConfigForm, { defaultConfig } from './config-form';
 
-const elem: Registry.SourceElement<Props> = {
+const elem: Registry.SourceElement<GridProps> = {
   name: 'grid',
   icon: 'apps',
   label: '布局容器',

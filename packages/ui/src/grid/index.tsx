@@ -1,17 +1,11 @@
 import React from 'react';
 import cs from 'classnames';
 
+import { GridProps } from '../types';
+
 import styles from './index.m.scss';
 
-export interface Props {
-  colRatio: string; // 列比例
-  colGap: string; // 列间距
-  className?: string;
-  style?: React.CSSProperties;
-  children?: React.ReactNode;
-}
-
-function Grid({ className, style, colRatio, colGap, children }: Props): JSX.Element {
+function Grid({ className, style, colRatio, colGap, children }: GridProps): JSX.Element {
   return (
     <div
       className={cs(styles.gridElem, className)}

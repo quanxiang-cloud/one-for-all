@@ -115,7 +115,7 @@ class PageStore {
     }
 
     if (targetNode) {
-      console.log('append node: ', toJS(srcNode), toJS(targetNode), this.dragPos);
+      // console.log('append node: ', toJS(srcNode), toJS(targetNode), this.dragPos);
 
       if (this.dragPos === 'up') {
         this.insertBefore(srcNode, targetNode);

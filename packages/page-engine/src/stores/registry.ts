@@ -2,6 +2,7 @@ import { observable, computed, action, makeObservable } from 'mobx';
 import { mapValues } from 'lodash';
 
 import * as builtInElems from '../registry/elements';
+import SourceElement = Registry.SourceElement;
 
 const defaultElements = mapValues(builtInElems, (group) => {
   return Object.entries(group).map(([, conf]) => conf).sort((elemA, elemB) => {
@@ -56,6 +57,15 @@ class RegistryStore {
 
   acceptChild = (elemType: string) => {
     return this.elementMap[this.normalizeType(elemType)].acceptChild;
+  }
+
+  toComponentMap=(): Record<string, ReactComp>=> {
+    return Object.values({ ...defaultElements })
+      .flat()
+      .reduce((memo: Record<string, ReactComp>, elem: SourceElement<any>)=> {
+        memo[this.normalizeType(elem.name)] = elem.component;
+        return memo;
+      }, {});
   }
 
   @action

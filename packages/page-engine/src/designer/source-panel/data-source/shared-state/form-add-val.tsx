@@ -104,7 +104,7 @@ function FormAddVal(props: Props): JSX.Element {
             className={cs('input', styles.input, { [styles.error]: errors.name })}
             maxLength={20}
             value={curSharedVal.name}
-            onBlur={(ev)=> validateName(ev.target.value)}
+            // onBlur={(ev)=> validateName(ev.target.value)}
             onChange={(ev)=> {
               setCurSharedVal('name', ev.target.value || '');
             }}

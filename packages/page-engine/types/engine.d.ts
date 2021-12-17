@@ -7,8 +7,12 @@ declare module '*.m.scss' {
 }
 
 declare namespace PageEngine {
-  type LifeCycleName='willMount' | 'didMount' | 'unMount'
-  type SerializedFunc=string;
+  type LifeCycleName='willMount' | 'didMount' | 'willUnmount'
+  type SerializedFunc={
+    type:'',
+    args: '',
+    body: ''
+  };
   type RenderRule='if' | 'for'
 
   interface Node {
@@ -24,7 +28,7 @@ declare namespace PageEngine {
     _events?: Record<string, any>; // setting panel的 events配置
     _renderer?: Record<RenderRule, any>; // setting panel的 动态渲染配置
     _hooks?: Record<LifeCycleName, SerializedFunc>; // 节点生命周期hook
-    children?: Array<Node | PrimitiveType>;
+    children?: Array<Node>;
   }
 
   type DragPos = 'up' | 'down' | 'left' | 'right' | 'inner';

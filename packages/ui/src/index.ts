@@ -16,6 +16,11 @@ import Radio from './radio';
 import RadioGroup from './radio/group';
 import Textarea from './textarea';
 import Text from './text';
+import Page from './page';
+import Grid from './grid';
+import Container from './container';
+
+export * from './types';
 
 export {
   Icon,
@@ -34,4 +39,7 @@ export {
   RadioGroup,
   Textarea,
   Text,
+  Page,
+  Grid,
+  Container,
 };
