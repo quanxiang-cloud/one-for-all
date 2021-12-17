@@ -28,8 +28,7 @@ class DataSource {
   @observable editorModalOpen=false // lift up editor modal, keep dom node to reduce css re-paint
   @observable curSharedStateKey = ''
   @observable curApiStateKey = ''
-  @observable curApiNode: any = null // 当前选中的平台api节点
-  @observable.shallow apiSpec: Record<string, any> | null = null // 选中api的 spec，包括swagger描述，method, fullPath
+  @observable curApiId: any = null // 当前选中的平台api id，以 `method: api_path` 描述
 
   @observable
   curSharedVal=defaultSharedVal; // editing shared val
@@ -109,37 +108,38 @@ class DataSource {
   }
 
   @action
-  setCurSharedStateKey = (key: string) => {
+  setCurSharedStateKey = (key: string): void => {
     this.curSharedStateKey = key;
   }
 
   @action
-  setCurApiNode = (node: any) => {
-    this.curApiNode = node;
+  setCurApiId = (api_id: string): void => {
+    this.curApiId = api_id;
   }
 
   @action
-  setApiSpec = (spec: Record<string, any>) => {
-    this.apiSpec = spec;
-  }
-
-  @action
-  saveApiState = (key: string, val: any): void => {
+  saveApiState = (key: string, val: any, onSaved?: ()=> void): void => {
     set(this.apiState, key, val);
 
     toast.success('新增API变量成功');
     this.setModalOpen(false);
     this.curApiStateKey = '';
+
+    // auto save api state
+    pageStore.setPageApiStates(toJS(this.apiState));
+    onSaved?.();
   }
 
   @action
-  removeApiState = (key: string) => {
+  removeApiState = (key: string, onSaved?: ()=> void): void => {
     delete this.apiState[key];
+    pageStore.setPageApiStates(toJS(this.apiState));
+    onSaved?.();
   }
 
   @action
-  reset = () => {
-
+  reset = (): void => {
+    // todo
   }
 }
 

@@ -14,10 +14,11 @@ interface Props {
 }
 
 function VarItem({ className, name, spec }: Props): JSX.Element {
-  const { dataSource } = useCtx();
+  const ctx = useCtx();
+  const { dataSource, page } = ctx;
 
   function handleDelete(): void {
-    dataSource.removeApiState(name);
+    dataSource.removeApiState(name, ()=> ctx.onSave(page.schema, { silent: true }));
   }
 
   return (

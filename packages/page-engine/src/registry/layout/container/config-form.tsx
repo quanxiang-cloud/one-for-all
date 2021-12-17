@@ -4,7 +4,7 @@ interface Props {
   className?: string;
 }
 
-function ConfigForm(props: Props) {
+function ConfigForm(props: Props): JSX.Element {
   return (
     <div>
       container config

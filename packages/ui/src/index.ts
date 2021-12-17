@@ -20,7 +20,12 @@ import RadioButtonGroup from './radio/radio-button-group';
 import ColorPicker from './color-picker';
 import Textarea from './textarea';
 import Text from './text';
+import Page from './page';
+import Grid from './grid';
+import Container from './container';
 import Link from './link';
+
+export * from './types';
 
 export {
   Icon,
@@ -43,5 +48,8 @@ export {
   ColorPicker,
   Textarea,
   Text,
+  Page,
+  Grid,
+  Container,
   Link,
 };

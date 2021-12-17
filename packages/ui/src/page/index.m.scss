@@ -1,0 +1,4 @@
+.page {
+  --min-height: calc(var(--pg-header-height, 44px) + 16px);
+  min-height: calc(100vh - var(--min-height));
+}

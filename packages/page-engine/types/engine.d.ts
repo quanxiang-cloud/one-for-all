@@ -7,6 +7,14 @@ declare module '*.m.scss' {
 }
 
 declare namespace PageEngine {
+  type LifeCycleName='willMount' | 'didMount' | 'willUnmount'
+  type SerializedFunc={
+    type:'',
+    args: '',
+    body: ''
+  };
+  type RenderRule='if' | 'for'
+
   interface Node {
     comp: string;
     id?: string;
@@ -18,8 +26,9 @@ declare namespace PageEngine {
     _stateRef?: Record<string, any>; // 节点引用的数据源的key path, 包括_shared, _api 数据, 存于page 以下的任何节点
     _style?: React.CSSProperties; // setting panel的style配置
     _events?: Record<string, any>; // setting panel的 events配置
-    _renderer?: Record<string, any>; // setting panel的 动态渲染配置
-    children?: Array<Node | PrimitiveType>;
+    _renderer?: Record<RenderRule, any>; // setting panel的 动态渲染配置
+    _hooks?: Record<LifeCycleName, SerializedFunc>; // 节点生命周期hook
+    children?: Array<Node>;
   }
 
   type DragPos = 'up' | 'down' | 'left' | 'right' | 'inner';

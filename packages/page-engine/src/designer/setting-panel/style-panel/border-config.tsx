@@ -41,7 +41,7 @@ function BorderConfig({ initValues, register, setValue, onFormChange }: Props): 
       <div className='text-12 text-gray-600'>填充类型</div>
       <RadioButtonGroup
         listData={BORDER_LIST}
-        onChange={handleRadioChange}
+        onChange={(val)=> handleRadioChange(val + '')}
         currentValue={borderType}
       />
       {borderType !== 'none' && (

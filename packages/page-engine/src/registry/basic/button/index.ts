@@ -1,4 +1,4 @@
-import Button from './button';
+import { Button } from '@ofa/ui';
 import ConfigForm from './config-form';
 
 type Props = {
