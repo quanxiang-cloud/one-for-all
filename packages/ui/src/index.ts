@@ -15,6 +15,10 @@ import Search from './search';
 import Radio from './radio';
 import RadioGroup from './radio/group';
 import Image from './img';
+import Input from './input';
+import RadioButtonGroup from './radio/radio-button-group';
+import ColorPicker from './color-picker';
+import Textarea from './textarea';
 import Text from './text';
 
 export {
@@ -33,5 +37,9 @@ export {
   Radio,
   RadioGroup,
   Image,
+  Input,
+  RadioButtonGroup,
+  ColorPicker,
+  Textarea,
   Text,
 };
