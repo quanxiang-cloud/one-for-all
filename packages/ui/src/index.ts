@@ -16,6 +16,7 @@ import Radio from './radio';
 import RadioGroup from './radio/group';
 import RadioButtonGroup from './radio/radio-button-group';
 import ColorPicker from './color-picker';
+import Textarea from './textarea';
 import Text from './text';
 
 export {
@@ -35,5 +36,6 @@ export {
   RadioGroup,
   RadioButtonGroup,
   ColorPicker,
+  Textarea,
   Text,
 };
