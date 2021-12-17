@@ -5,6 +5,8 @@ import type { FetchParams, APISpecAdapter } from '@ofa/api-spec-adapter';
 export type Serialized = 'Serialized';
 export type Instantiated = 'Instantiated';
 
+// APIState define the type of API results from view perspective.
+// This type is inspired by [react-query](https://react-query.tanstack.com/).
 export type APIState = {
   loading: boolean;
   result?: unknown;
@@ -21,18 +23,7 @@ export const enum NodePropType {
 
   APIInvokeProperty = 'api_invoke_property',
   SharedStateMutationProperty = 'shared_state_mutation_property',
-
   FunctionalProperty = 'functional_property',
-
-  // <ParentComponent
-  //   render={<SomeComponent />}
-  // />
-  // <ParentComponent
-  //   render={(someData): JSX.Element => (<SomeComponent data={someData} />)}
-  // />
-  // <ParentComponent
-  //   render={(someData, someIgnoredValue): JSX.Element => (<SomeComponent data={someData} otherProp={otherProp} />)}
-  // />
   RenderProperty = 'render_property',
 }
 
@@ -61,25 +52,27 @@ export type ConstantProperty = BaseNodeProperty & {
 
 export type APIResultProperty<T> = BaseNodeProperty & {
   type: NodePropType.APIResultProperty;
-  // in the previous implementation, this property is called: initialValue,
-  // why changed to `fallback`?
-  // - please refer to API State Table, it's hard to modify the `data` to initialValue in the second stage
-  // - always defining a fallback value for API response is best practices,
-  //   no matter before API result returned or encounter a API error.
-  // fallback is the latest NOT nullish value passed to node, it's NOT THE FALLBACK OF API RESPONSE
-  // fallback will be passed to node when:
-  // - api error
-  // - adapter throw
-  // - adapter return null/undefined
-  // fallback value assignment happens only when:
-  // - define schema
-  // - adapter return NOT nullish value
-  fallback: unknown;
   stateID: string;
-  // todo define different type adapter
-  // adapter will never be called if api error or api response body is undefined
-  // todo add test cases
+  // Convertor is used to transform the API result before passing it to node,
+  // convertor will never be called if API request failed or the result is nullish.
+  // the signature of this function is: (state: unknown) => unknown,
+  // there is only one argument called `state`, which is the `result` in APIState
   convertor?: StateConvertor<T>;
+  // It is a best practice to always define a fallback for API results,
+  // no matter before the API response returned or after an unexpected error has occurred.
+  //
+  // fallback should be a NOT nullish value, and will be passed to node in the following situations:
+  // - the initial state
+  // - API request failed or some business error returned
+  // - convertor throw an error when calling it with API result
+  // - convertor return `null` or `undefined`
+  //
+  // The value of fallback will not always be the same.
+  // It will be assign a new value when convertor returned a not-nullish value.
+  // If there is no convertor defined, fallback will be assigned to the latest not-nullish api result.
+  //
+  // Be Attention. fallback is NOT the fallback of API result, it is the fallback of a property passed to node.
+  fallback: unknown;
 }
 
 export type StateConvertor<T> = T extends Serialized ? SerializedStateConvertor : StateConvertorFunc;
@@ -88,7 +81,7 @@ export type StateConvertorFunc = (v: any) => any;
 
 type StateConvertExpression = {
   type: 'state_convert_expression';
-  // expression for data, loading, params, error
+  // same as JavaScript expression, with a predefined variable called `state`
   // state.foo
   // state.offset / (state.limit + state.offset)
   // state.list.map((item) => item.name))
@@ -150,6 +143,19 @@ export type APIInvokeProperty<T> = {
   callback?: T extends Serialized ? APIFetchCallbackSpec : APIFetchCallback;
 }
 
+// It is common to passing a component to another component,
+// or defined a function which may take some argument and return a component.
+// RenderProperty is the spec for this kind of property.
+//
+// <ParentComponent
+//   render={<SomeComponent />}
+// />
+// <ParentComponent
+//   render={(someData): JSX.Element => (<SomeComponent data={someData} />)}
+// />
+// <ParentComponent
+//   render={(someData, someIgnoredValue): JSX.Element => (<SomeComponent data={someData} otherProp={otherProp} />)}
+// />
 export type RenderProperty<T extends Serialized | Instantiated> = BaseNodeProperty & {
   type: NodePropType.RenderProperty;
   toProps?: ToProps<T>;
@@ -174,28 +180,41 @@ export type BaseFunctionSpec = {
   body: string;
 }
 
-// 为什么这里采用 callback 的形式，而不是让 runAction 返回一个 promise 呢？
-// - 在使用渲染引擎来实现页面逻辑的场景中，所有的 view 都是平等的，任何一个 view 都可以调用 API
-// - 在 Pro Code 的场景中，view 有着明确的业务属性，就是说何时会调用 API 有着明确的逻辑
-// - 一般的 API 请求都是副作用的，平等的 API 请求权限意味着不可控的副作用
-// - 在 Pro Code 的场景中，为了避免不期望的副作用，需要引入状态标识和 request cancellation
-// - 在 Pro Code 的场景中，实现状态标识和 request cancellation 需要很多的脑细胞
-// - 为了简化，渲染引擎支持 API 请求自动 cancellation，当有新的 runAction 调用时，处在 pending 状态的 HTTP 请求会被 abort
-// - 这样实现的问题就是，runAction 的副作用不保证会被执行
-// - 所以如果 runAction return Promise 的话，那这个 Promise 可能永远处于 pending 的状态，例如下面的代码
-//
-//   new Promise((resolve, reject) => {
-//     setTimeout(() => {
-//       // resolve will never be called
-//       resolve();
-//     }, forever);
-//   });
-//
-// - 为了解决这个问题，需要把副作用都放到一个堆栈里?
-// - 这样不好吧，比如用户多次点击一个按钮，成功后会有一个消息提示，那应该只提示一次吧
-// - 再考虑一下
 export type RunParam = {
   params?: FetchParams;
+  // Callback is the hook for performing side effect after an API request.
+  //
+  // Why use callback style hook instead of Promise style?
+  //
+  // Every node should be equal, but some nodes are more equal than others.
+  // In Pro-Code scenario, we can carefully design a Model to handle view actions and perform API request,
+  // we also can carefully design some FLAG state to prevent extra API request or an complex cancellation mechanism.
+  // These solutions may not be difficult for experienced programmers,
+  // but our goal of building low-code platform is to enable junior programmers, even non-programmers,
+  // to develop complex applications quickly and easily.
+  // To solve this problem, we use `rxjs/ajax` to implement automatic cancellation of requests.
+  // Doing so led us to a small problem, we can not use Promise style hook.
+  // As said at the beginning, every node should be equal,
+  // so every node could perform a side effect after some API request,
+  // and if we use a Promise style hook,
+  // there must will be some hooks will never be called and stay in pending status forever,
+  // just like the following code:
+  //
+  //   new Promise((resolve, reject) => {
+  //     setTimeout(() => {
+  //       // resolve will never be called
+  //       resolve();
+  //     }, forever);
+  //   });
+  //
+  // We, the developers, design a action which has a side effect,
+  // but user make the finial decision when to trigger that action.
+  // Side effect could be perform as many times as wanted,
+  // but only under user's expectation.
+  // When user trigger the *same action* many times,
+  // only the last one should perform side effect.
+  //
+  // ps. Same actions means they have the same API stateID.
   callback?: APIFetchCallback;
 }
 
