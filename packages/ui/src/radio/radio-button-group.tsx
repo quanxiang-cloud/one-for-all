@@ -37,7 +37,7 @@ export default function RadioButtonGroup(
               className={cs(
                 'radio-group-btn justify-center border-1 border-gray-300 -ml-1',
                 {
-                  'radio-group-btn-active bg-blue-100 z-10': currentValue === value,
+                  'radio-group-btn-active bg-blue-100': currentValue === value,
                   'hover:bg-blue-100': !disabled,
                   'opacity-60': disabled,
                 },

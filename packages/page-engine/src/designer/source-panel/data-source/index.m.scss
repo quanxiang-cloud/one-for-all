@@ -18,28 +18,28 @@
   }
 }
 
-input, textarea {
-  outline: none;
-  @apply border rounded-tl-2 rounded-tr-8 rounded-br-8 rounded-bl-8;
-  &:focus {
-    box-shadow: 0px 0px 4px rgb(50 69 88 / 12%);
-    border-color: var(--blue-600);
-  }
-}
+// input, textarea {
+//   outline: none;
+//   @apply border rounded-tl-2 rounded-tr-8 rounded-br-8 rounded-bl-8;
+//   &:focus {
+//     box-shadow: 0px 0px 4px rgb(50 69 88 / 12%);
+//     border-color: var(--blue-600);
+//   }
+// }
 
-.input {
-  border-radius: 2px 8px 8px 8px !important;
+// .input {
+//   border-radius: 2px 8px 8px 8px !important;
 
-  &.error, &.error:focus {
-    border-color: var(--red-500) !important;
-  }
-}
+//   &.error, &.error:focus {
+//     border-color: var(--red-500) !important;
+//   }
+// }
 
-.textarea {
-  &.error, &.error:focus {
-    border-color: var(--red-500) !important;
-  }
-}
+// .textarea {
+//   &.error, &.error:focus {
+//     border-color: var(--red-500) !important;
+//   }
+// }
 
 .varItem {
   background: #F8FAFC;
@@ -57,7 +57,7 @@ input, textarea {
     font-weight: 500;
     border-left: 2px solid var(--blue-600);
 
-    > span {
+    >span {
       display: inline-flex;
       margin-left: 6px;
     }
