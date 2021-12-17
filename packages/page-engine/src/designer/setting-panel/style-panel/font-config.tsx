@@ -21,7 +21,7 @@ function FontConfig({ initValues, register, setValue, onFormChange }: Props): JS
     onFormChange();
   }
 
-  console.log('当前颜色', initValues.color);
+  // console.log('当前颜色', initValues.color);
 
   return (
     <div className='mt-8 py-8 border border-gray-300 rounded-4'>

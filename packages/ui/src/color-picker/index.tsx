@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { SketchPicker, ColorResult, RGBColor } from 'react-color';
 
-import { Popper } from '@ofa/ui';
+import Popper from '../popper';
 
 interface Props {
   value?: string;
@@ -68,7 +68,7 @@ function ColorPicker(props: Props): JSX.Element {
     return rgba;
   }
 
-  console.log('currColor', currColor);
+  // console.log('currColor', currColor);
 
   return (
     <div >
