@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { UseFormRegister, FieldValues } from 'react-hook-form';
+import { UseFormRegister, FieldValues, UseFormSetValue } from 'react-hook-form';
+
+import { Icon } from '@ofa/ui';
 
 import MarginBPadding from './margin-b-padding';
 
 interface Props {
   register: UseFormRegister<FieldValues>;
   initValues: Record<string, string | number>;
-  setValue: any;
+  setValue: UseFormSetValue<FieldValues>;
 }
 
 function LayoutConfig({ register, initValues, setValue }: Props): JSX.Element {
@@ -75,16 +77,6 @@ function LayoutConfig({ register, initValues, setValue }: Props): JSX.Element {
           </div>
           <div className='w-1/2 flex items-center'>
             <span className='mr-8 text-12 text-gray-400 whitespace-nowrap'>高度</span>
-            {/* <input
-              type="number"
-              className='px-8 border-none focus:outline-none'
-              style={{ width: 46 }}
-              {...register('height', {
-                value: initValues.height || 0,
-                onBlur: (e: React.ChangeEvent<HTMLInputElement>) => handleBlur(e, 'height'),
-              })}
-            /> */}
-            {/* <span className='ml-4 text-12 text-gray-400'>px</span> */}
             <div className='relative' style={{ width: 50 }}>
               <input
                 type="number"
@@ -97,17 +89,22 @@ function LayoutConfig({ register, initValues, setValue }: Props): JSX.Element {
               <span className='ml-4 w-16 absolute right-0 top-0 bg-white text-12 text-gray-400'>px</span>
             </div>
           </div>
-          {/* <Icon name="link" color='gray' /> */}
-          <span className='text-12 cursor-pointer' onClick={handleLocking}>{locking ? '已锁' : '未锁'}</span>
+          <Icon
+            name="link"
+            className='cursor-pointer'
+            color={locking ? 'blue' : 'gray'}
+            onClick={handleLocking}
+          />
         </div>
       </div>
       <div className='mt-8'>
         <MarginBPadding
           classNames='border border-dashed border-gray-400 bg-blue-200 rounded-4'
           title="margin"
-          showIcon
           register={register}
           initValues={initValues}
+          setKey='margin'
+          setValue={setValue}
           keywords={['marginTop', 'marginLeft', 'marginRight', 'marginBottom']}
         >
           <MarginBPadding
@@ -116,6 +113,8 @@ function LayoutConfig({ register, initValues, setValue }: Props): JSX.Element {
             styles={{ height: 98, backgroundColor: '#F0FDF4' }}
             register={register}
             initValues={initValues}
+            setKey='padding'
+            setValue={setValue}
             keywords={['paddingTop', 'paddingLeft', 'paddingRight', 'paddingBottom']}
           >
             <div

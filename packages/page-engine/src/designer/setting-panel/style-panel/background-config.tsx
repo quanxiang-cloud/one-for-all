@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UseFormRegister, FieldValues } from 'react-hook-form';
+import { ColorResult } from 'react-color';
 
 import { RadioButtonGroup, Icon, ColorPicker } from '@ofa/ui';
 
-const { stringRgbToHex }: any = ColorPicker;
+const { formatRgba }: any = ColorPicker;
 
 type LabelValue = {
   label: string;
@@ -26,28 +27,54 @@ interface Props {
 function BackgroundConfig({ initValues, register, setValue, onFormChange }: Props): JSX.Element {
   const [fillStatus, setFillStatus] = useState('none');
 
-  function handleRadioChange(value: string): void {
-    console.log('value', value);
-    if (fillStatus === value) return;
-    if (value === 'none') {
+  useEffect(() => {
+    const { backgroundColor, backgroundImage } = initValues;
+    if (backgroundColor !== 'transparent') {
+      setFillStatus('color');
+    }
+    if (backgroundImage) {
+      setFillStatus('img');
+    }
+  }, []);
+
+  function handleRadioChange(value: string | number | boolean): void {
+    const _value = value as string;
+    if (fillStatus === _value) return;
+    if (_value === 'none') {
       setValue('backgroundColor', 'transparent');
       setValue('backgroundImage', 'none');
     }
-    if (value === 'color') {
+    if (_value === 'color') {
       setValue('backgroundColor', 'rgba(255, 255, 255, 1)');
       setValue('backgroundImage', 'none');
     }
-    if (value === 'img') {
+    if (_value === 'img') {
       setValue('backgroundColor', 'transparent');
-      // setValue('backgroundImage', 'none');
+      setValue('backgroundImage', '');
+      setValue('backgroundSize', '100%');
     }
-    setFillStatus(value);
+    setFillStatus(_value);
+  }
+
+  function handleColorChange(color: ColorResult): void {
+    const { rgb } = color;
+    const _color = formatRgba(rgb);
+    setValue('backgroundColor', _color);
     onFormChange();
   }
 
-  function handleColorChange(color: string): void {
-    setValue('backgroundColor', color);
-    onFormChange();
+  function handleImageUrl(url: string): string {
+    let _url = '';
+
+    if (url.indexOf('url') === 0) {
+      _url = url.substring(4, url.length - 1);
+    }
+
+    if (url === 'none') {
+      return _url;
+    }
+
+    return _url;
   }
 
   return (
@@ -62,24 +89,12 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
         <div className='mt-8 px-8 py-6 border border-gray-300 rounded-4 flex items-center justify-between'>
           <div className='flex items-center'>
             <div className='flex items-center justify-between'>
-              {/* <input
-                style={{ width: 20, height: 24, padding: 0, backgroundColor: 'transparent' }}
-                type="color"
-                {...register('backgroundColor', { value: initValues.backgroundColor || '' })}
-              />
-              <span className='ml-8 text-12 text-gray-900'>{initValues.backgroundColor}</span> */}
-              <input
-                style={{ width: 20, height: 24, padding: 0, backgroundColor: 'transparent' }}
-                type="hidden"
-                {...register('backgroundColor', { value: initValues.backgroundColor || '' })}
-              />
               <ColorPicker
-                opacity={true}
-                value={initValues.color as string}
+                value={initValues.backgroundColor as string}
                 onChange={handleColorChange}
               />
               <span className='ml-8 text-12 text-gray-900'>
-                {stringRgbToHex(initValues.color)}
+                {initValues.backgroundColor}
               </span>
             </div>
             {/* <div className='mx-8 w-1 h-20 border-left bg-gray-200'></div>
@@ -88,12 +103,12 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
               <span className='absolute right-2 top-1'>%</span>
             </div> */}
           </div>
-          <Icon name="remove_red_eye" color="gray" />
+          {/* <Icon name="remove_red_eye" color="gray" /> */}
         </div>
       )}
       {fillStatus === 'img' && (
         <div className='mt-8'>
-          <div className='text-12 text-gray-600'>图片填充</div>
+          <div className='text-12 text-gray-600'>图片地址</div>
           <div className='flex items-center justify-between'>
             {/* <label
               htmlFor='inputUpload'
@@ -110,10 +125,11 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
             </label> */}
             <input
               type="text"
-              className='px-8 py-6 w-full border border-gray-300 corner-2-8-8-8'
-              {...register('backgroundImage', { value: initValues.backgroundImage || '' })}
+              className='mr-8 px-8 py-6 w-full border border-gray-300 corner-2-8-8-8'
+              {...register('backgroundImage', {
+                value: handleImageUrl((initValues.backgroundImage as string) || ''),
+              })}
             />
-
             <Icon name='code' color='gray' />
           </div>
         </div>

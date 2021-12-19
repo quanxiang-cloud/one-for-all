@@ -8,10 +8,10 @@ import { useCtx } from '@ofa/page-engine';
 import { Modal, Icon, Button, toast } from '@ofa/ui';
 
 import LayoutConfig from './layout-config';
-// import MarginBPadding from './margin-b-padding';
 import BackgroundConfig from './background-config';
 import FontConfig from './font-config';
 import BorderConfig from './border-config';
+import ShadowConfig from './shadow-config';
 import { DEFAULT_STYLE_CONFIG, formatStyles } from './default-config';
 import Section from '../../comps/section';
 
@@ -22,7 +22,7 @@ interface Props {
 }
 
 function StylePanel({ className }: Props): JSX.Element {
-  const { register, getValues, control, setValue } = useForm();
+  const { register, getValues, setValue } = useForm();
   const { page } = useCtx();
   const [values, setValues] = useState<any>(DEFAULT_STYLE_CONFIG);
   const [modalOpen, setModalOpen] = useState(false);
@@ -73,12 +73,7 @@ function StylePanel({ className }: Props): JSX.Element {
   function handleFormChange(): void {
     const _values = getValues();
     const newValues = formatStyles(_values);
-    console.log('newValues', newValues);
     setValues(newValues);
-  }
-
-  function onSubmit(data: any): void {
-    console.log('最新的数据', data);
   }
 
   return (
@@ -96,7 +91,6 @@ function StylePanel({ className }: Props): JSX.Element {
           <FontConfig
             initValues={values}
             register={register}
-            control={control}
             setValue={setValue}
             onFormChange={handleFormChange}
           />
@@ -118,7 +112,12 @@ function StylePanel({ className }: Props): JSX.Element {
           />
         </Section>
         <Section title='阴影' defaultExpand>
-
+          <ShadowConfig
+            initValues={values}
+            register={register}
+            setValue={setValue}
+            onFormChange={handleFormChange}
+          />
         </Section>
       </form>
 
