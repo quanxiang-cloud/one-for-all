@@ -1,13 +1,8 @@
 import React from 'react';
 
-export interface Props {
-  style?: React.CSSProperties;
-  children?: React.ReactNode;
-  placeholder?: string;
-  type?: string;
-}
+import { InputProps } from '../types';
 
-function Input(props: Props): JSX.Element {
+function Input(props: InputProps): JSX.Element {
   const { placeholder, type } = props;
   return (
     <div>

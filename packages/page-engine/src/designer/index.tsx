@@ -20,7 +20,10 @@ interface Props {
   className?: string;
 }
 
-// https://mobx.js.org/configuration.html#isolateglobalstate-boolean
+/*
+  同一个环境存在多个mobx实例时，如果要共享实例的状态, mobx版本必须相同
+  @see https://mobx.js.org/configuration.html#isolateglobalstate-boolean
+ */
 configure({ isolateGlobalState: true });
 
 function Designer({ className, onSave }: Props): JSX.Element | null {
@@ -30,9 +33,6 @@ function Designer({ className, onSave }: Props): JSX.Element | null {
     Object.assign(stores, {
       onSave,
     });
-
-    // @ts-ignore
-    window._ctx = stores;
 
     return () => {
       // reset ctx

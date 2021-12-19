@@ -9,9 +9,7 @@ class DesignerStore {
   @observable panelOpen = false
   @observable panelPinned = false
   @observable activePanel: SettingPanel = 'props'
-  @observable vdoms: Record<VdomKey, React.ReactNode> = {
-    title: 'qxp page engine',
-  }
+  @observable vdoms: Record<VdomKey, React.ReactNode> = {}
 
   constructor() {
     makeObservable(this);
@@ -52,8 +50,12 @@ class DesignerStore {
   }
 
   @action
-  reset = () => {
-
+  reset = (): void => {
+    this.activeGroup = '';
+    this.panelOpen = false;
+    this.panelPinned = false;
+    this.activePanel = 'props';
+    this.vdoms = {};
   }
 }
 

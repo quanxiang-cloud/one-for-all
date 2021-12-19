@@ -1,4 +1,4 @@
-import { makeObservable, observable, action, computed, toJS } from 'mobx';
+import { observable, action, computed, toJS, makeObservable } from 'mobx';
 import { get, set } from 'lodash';
 
 import { toast } from '@ofa/ui';
@@ -25,7 +25,6 @@ class DataSource {
   @observable apiState: Record<string, any> = {}
 
   @observable modalOpen = false
-  @observable editorModalOpen=false // lift up editor modal, keep dom node to reduce css re-paint
   @observable curSharedStateKey = ''
   @observable curApiStateKey = ''
   @observable curApiId: any = null // 当前选中的平台api id，以 `method: api_path` 描述
@@ -82,7 +81,7 @@ class DataSource {
       set(this.sharedState, key, val);
     }
     toast.success(this.curSharedStateKey ? '修改变量成功' : '新增变量成功');
-    this.setEditorModalOpen(false);
+    this.setModalOpen(false);
     this.setCurSharedStateKey('');
 
     // auto save to page schema
@@ -100,11 +99,6 @@ class DataSource {
   @action
   setModalOpen = (open: boolean): void => {
     this.modalOpen = open;
-  }
-
-  @action
-  setEditorModalOpen=(open: boolean): void=> {
-    this.editorModalOpen = open;
   }
 
   @action
@@ -139,7 +133,13 @@ class DataSource {
 
   @action
   reset = (): void => {
-    // todo
+    this.sharedState = {};
+    this.apiState = {};
+    this.modalOpen = false;
+    this.curSharedStateKey = '';
+    this.curApiStateKey = '';
+    this.curApiId = null;
+    this.curSharedVal = { ...defaultSharedVal };
   }
 }
 

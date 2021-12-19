@@ -27,7 +27,7 @@ function ApiState(props: Props): JSX.Element {
   }, [dataSource.modalOpen]);
 
   function onSubmit(data: any): void {
-    console.log('save api state: ', data, curApiId);
+    // console.log('save api state: ', data, curApiId);
     if (!curApiId) {
       toast.error('请选择一个平台 API');
       return;

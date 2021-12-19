@@ -1,11 +1,14 @@
-import Input from './input';
-import ConfigForm from './config-form';
+import { Input } from '@ofa/ui';
+import ConfigForm, { defaultConfig } from './config-form';
 
 type Props = {
-  name?: string
+  name?: string,
+  placeholder?: string,
+  rows?: number,
+  cols?: number,
+  required?: boolean,
+  disable?: boolean,
 }
-
-const defaultConfig: Props = {};
 
 const elem: Registry.SourceElement<Props> = {
   name: 'input',
@@ -17,5 +20,4 @@ const elem: Registry.SourceElement<Props> = {
   defaultConfig,
   order: 1,
 };
-
 export default elem;

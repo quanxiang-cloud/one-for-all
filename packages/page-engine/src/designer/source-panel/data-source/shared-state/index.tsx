@@ -1,25 +1,21 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react';
 
 import { Search, Icon, Tooltip } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
 
 import VarItem from './var-item';
+import FormAddVal from './form-add-val';
 
 import styles from '../index.m.scss';
 
 interface Props {
   className?: string;
-  onMountEditor: ()=> void;
 }
 
 function SharedState(props: Props): JSX.Element {
   const { dataSource } = useCtx();
   const noData = !Object.keys(dataSource.sharedState).length;
-
-  useEffect(()=> {
-    dataSource.editorModalOpen && props.onMountEditor();
-  }, [dataSource.editorModalOpen]);
 
   return (
     <div>
@@ -31,7 +27,7 @@ function SharedState(props: Props): JSX.Element {
           <Tooltip position='top' label='新建变量参数'>
             <Icon name='add' clickable onClick={() => {
               dataSource.setCurSharedStateKey('');
-              dataSource.setEditorModalOpen(true);
+              dataSource.setModalOpen(true);
             }} />
           </Tooltip>
         )}
@@ -52,6 +48,7 @@ function SharedState(props: Props): JSX.Element {
           </div>
         )}
       </div>
+      <FormAddVal />
     </div>
   );
 }
