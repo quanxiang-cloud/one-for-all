@@ -1,4 +1,4 @@
-import { Button } from '@ofa/ui';
+import ButtonElem from './button';
 import ConfigForm from './config-form';
 
 type Props = {
@@ -12,7 +12,7 @@ const elem: Registry.SourceElement<Props> = {
   icon: 'apps',
   label: '按钮',
   category: 'basic',
-  component: Button,
+  component: ButtonElem,
   configForm: ConfigForm,
   defaultConfig,
   order: 4,

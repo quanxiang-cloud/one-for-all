@@ -6,6 +6,7 @@ import Icon from '../icon';
 interface Props
   extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement> {
+  size?: 'normal' | 'compact';
   modifier?: 'primary' | 'danger';
   loading?: boolean;
   forbidden?: boolean;
@@ -27,6 +28,7 @@ function Button(
     textClassName,
     iconClassName,
     type = 'button',
+    size,
     ...rest
   }: Props,
   ref?: Ref<HTMLButtonElement>,
@@ -42,6 +44,7 @@ function Button(
         'btn--loading': loading,
         'opacity-50': forbidden,
         'pointer-events-none': loading || forbidden,
+        'h-26': size === 'compact',
       })}
       disabled={forbidden}
     >
