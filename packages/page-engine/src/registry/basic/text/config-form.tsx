@@ -38,7 +38,7 @@ function ConfigForm(): JSX.Element {
         </div>
         <div className='flex'>
           <textarea
-            className='mr-8 px-8 py-4 w-full'
+            className='mr-8 px-8 py-4 w-full border corner-2-8-8-8 border-gray-300 focus:border-blue-600'
             rows={4}
             {...register('content', { value: values.content })}
           />
