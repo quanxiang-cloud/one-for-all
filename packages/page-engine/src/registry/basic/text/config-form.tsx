@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { defaults } from 'lodash';
+import { defaults, get } from 'lodash';
 import { useForm } from 'react-hook-form';
+import cs from 'classnames';
+import { observer } from 'mobx-react';
 
 import { Icon } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
@@ -17,11 +19,12 @@ export interface Props {
 
 function ConfigForm(): JSX.Element {
   const { register, getValues } = useForm();
-  const { page } = useCtx();
+  const { page, designer } = useCtx();
   const [values, setValues] = useState(defaults(page.activeElem.props, DEFAULT_CONFIG));
+  const { activeElem } = page;
 
   useEffect(() => {
-    page.updateElemProperty(page.activeElem.id, 'props', values);
+    page.updateElemProperty(activeElem.id, 'props', values);
   }, [values]);
 
   function handleFormChange(): void {
@@ -42,7 +45,13 @@ function ConfigForm(): JSX.Element {
             rows={4}
             {...register('content', { value: values.content })}
           />
-          <Icon name="code" color="gray" className='cursor-pointer' />
+          <Icon
+            name="code"
+            color="gray"
+            clickable
+            onClick={()=> designer.openDataBinding('content')}
+            className={cs(get(activeElem, '_stateRef.content') ? 'bg-blue-200' : '')}
+          />
         </div>
       </div>
       <div className='mb-8'>
@@ -54,11 +63,17 @@ function ConfigForm(): JSX.Element {
             <input type="checkbox" {...register('isAllowSelect', { value: values.isAllowSelect })} />
             <span className='ml-8 text-12 text-gray-900'>可选中文本</span>
           </div>
-          <Icon name="code" color="gray" className='cursor-pointer' />
+          <Icon
+            name="code"
+            color="gray"
+            clickable
+            onClick={()=> designer.openDataBinding('isAllowSelect')}
+            className={cs(get(activeElem, '_stateRef.isAllowSelect') ? 'bg-blue-200' : '')}
+          />
         </div>
       </div>
     </form>
   );
 }
 
-export default ConfigForm;
+export default observer(ConfigForm);

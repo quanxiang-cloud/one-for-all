@@ -213,7 +213,7 @@ class PageStore {
   }
 
   @action
-  updateElemProperty = (elem_id: string, propKey: string, conf: Record<string, any>): void => {
+  updateElemProperty = (elem_id: string, propKey: string, conf: any): void => {
     const elem = findNode(this.schema, elem_id);
     if (elem) {
       set(elem, propKey, conf);

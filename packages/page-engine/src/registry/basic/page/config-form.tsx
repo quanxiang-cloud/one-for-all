@@ -1,11 +1,16 @@
-import React, { useCallback, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import Editor from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
+import { get } from 'lodash';
 
-import { Icon, Modal } from '@ofa/ui';
+import { Icon, Modal, toast, Tooltip } from '@ofa/ui';
+import { useCtx } from '@ofa/page-engine';
+import { isFuncSource } from '../../../utils/index';
 
 import Section from '../../../designer/comps/section';
+import BindItem from './bind-item';
+
 import styles from './index.m.scss';
 
 interface Props {
@@ -23,51 +28,94 @@ const titleMap: Record<string, string> = {
 function ConfigForm(props: Props): JSX.Element {
   const [modalOpen, setModalOpen] = useState(false);
   const [action, setAction] = useState<ActionName>('');
-  const getDefaultCode = ()=> {
+  const { page } = useCtx();
+  const { activeElem } = page;
+  const [fn, setFn] = useState('');
+
+  useEffect(()=> {
+    setFn(get(activeElem._hooks, action, getDefaultCode()));
+  }, [action]);
+
+  function getDefaultCode(): string {
     if (action === 'willMount') {
-      return 'function willMount() {\n\t//\n}';
+      return 'function willMount() {}';
     }
     if (action === 'didMount') {
-      return 'function didMount() {\n\t//\n}';
+      return 'function didMount() {}';
     }
     if (action === 'willUnmount') {
-      return 'function willUnmount() {\n\t//\n}';
+      return 'function willUnmount() {}';
     }
     return '';
-  };
+  }
+
+  function addLifecycleHook(fn: string): void {
+    if (isFuncSource(fn)) {
+      const curElem = page.activeElem as PageEngine.Node;
+      const hooks = Object.assign({}, curElem._hooks, { [action]: fn });
+      page.updateElemProperty(curElem.id || '', '_hooks', hooks);
+      setModalOpen(false);
+    } else {
+      toast.error('非法的函数定义');
+    }
+  }
 
   return (
     <div>
       <Section title='生命周期' defaultExpand>
         <div className='mb-8'>
           <p>页面加载之前执行</p>
-          <div className={styles.btnAdd} onClick={()=> {
-            setModalOpen(true);
-            setAction('willMount');
-          }}>
-            <Icon name='add' />
-            <span>绑定动作</span>
-          </div>
+          <BindItem
+            bound={!!activeElem._hooks?.willMount}
+            onEdit={()=> {
+              setModalOpen(true);
+              setAction('willMount');
+            }}
+            onBind={()=> {
+              setModalOpen(true);
+              setAction('willMount');
+            }}
+            onUnbind={()=> {
+              page.updateElemProperty(activeElem.id || '', '_hooks.willMount', '');
+              setFn('');
+            }}
+          />
         </div>
         <div className='mb-8'>
           <p>页面加载完成时</p>
-          <div className={styles.btnAdd} onClick={()=> {
-            setModalOpen(true);
-            setAction('didMount');
-          }}>
-            <Icon name='add' />
-            <span>绑定动作</span>
-          </div>
+          <BindItem
+            bound={!!activeElem._hooks?.didMount}
+            onEdit={()=> {
+              setModalOpen(true);
+              setAction('didMount');
+            }}
+            onBind={()=> {
+              setModalOpen(true);
+              setAction('didMount');
+            }}
+            onUnbind={()=> {
+              page.updateElemProperty(activeElem.id || '', '_hooks.didMount', '');
+              setFn('');
+            }}
+          />
         </div>
         <div>
           <p>页面关闭时</p>
-          <div className={styles.btnAdd} onClick={()=> {
-            setModalOpen(true);
-            setAction('willUnmount');
-          }}>
-            <Icon name='add' />
-            <span>绑定动作</span>
-          </div>
+          <BindItem
+            bound={!!activeElem._hooks?.willUnmount}
+            onEdit={()=> {
+              setModalOpen(true);
+              setAction('willUnmount');
+            }}
+            onBind={()=> {
+              setModalOpen(true);
+              setAction('willUnmount');
+            }}
+            onUnbind={()=> {
+              page.updateElemProperty(activeElem.id || '', '_hooks.willUnmount', '');
+              setFn('');
+            }}
+          />
         </div>
       </Section>
       {modalOpen && (
@@ -88,7 +136,7 @@ function ConfigForm(props: Props): JSX.Element {
               iconName: 'check',
               modifier: 'primary',
               onClick: () => {
-                //
+                addLifecycleHook(fn);
               },
               text: '绑定动作',
             },
@@ -103,11 +151,11 @@ function ConfigForm(props: Props): JSX.Element {
             </div>
             <div className={styles.body}>
               <Editor
-                value={getDefaultCode()}
+                value={fn}
                 height="480px"
                 extensions={[javascript()]}
                 onChange={(value) => {
-                  console.log('value:', value);
+                  setFn(value);
                 }}
               />
             </div>

@@ -10,6 +10,9 @@ class DesignerStore {
   @observable panelPinned = false
   @observable activePanel: SettingPanel = 'props'
   @observable vdoms: Record<VdomKey, React.ReactNode> = {}
+  @observable modalBindStateOpen=false // 状态绑定的modal
+  @observable activeFieldName='' // 当前要绑定变量的字段的name
+  @observable modalBindRenderOpen=false
 
   constructor() {
     makeObservable(this);
@@ -50,12 +53,29 @@ class DesignerStore {
   }
 
   @action
+  setModalBindStateOpen=(open: boolean): void=> {
+    this.modalBindStateOpen = open;
+  }
+
+  @action
+  openDataBinding=(fieldName: string)=> {
+    this.modalBindStateOpen = true;
+    this.activeFieldName = fieldName;
+  }
+
+  @action
+  setModalBindRender=(open:boolean)=> {
+    this.modalBindRenderOpen = open;
+  }
+
+  @action
   reset = (): void => {
     this.activeGroup = '';
     this.panelOpen = false;
     this.panelPinned = false;
     this.activePanel = 'props';
     this.vdoms = {};
+    this.activeFieldName = '';
   }
 }
 
