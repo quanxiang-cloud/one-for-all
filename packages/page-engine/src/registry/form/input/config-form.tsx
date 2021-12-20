@@ -5,6 +5,8 @@ import { useForm } from 'react-hook-form';
 import { Icon } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
 
+import ConfigBind from '../../../designer/comps/config-item-bind';
+
 import type { InputProps } from '@ofa/ui';
 
 export const defaultConfig: InputProps = {
@@ -55,18 +57,17 @@ function ConfigForm(): JSX.Element {
         configItems.map((item) => {
           return (
             <div className='mb-10' key={item.name}>
-
               <div className='mb-4 flex items-center'>
                 <label htmlFor='placeholder' className='mr-4 text-12 text-gray-600'>{item.msg}</label>
                 <Icon name='info' color='gray' />
               </div>
-
               <div className='flex items-center'>
                 <input
                   className='mr-8 px-8 py-4 w-full text-gray-600'
                   type={item.type}
                   {...register('isAllowSelect', { value: values.isAllowSelect })}
                 />
+                <ConfigBind name='isAllowSelect' />
               </div>
             </div>
           );

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { defaults, get } from 'lodash';
+import { defaults } from 'lodash';
 import { useForm } from 'react-hook-form';
-import cs from 'classnames';
 import { observer } from 'mobx-react';
 
 import { Icon } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
+
+import ConfigBind from '../../../designer/comps/config-item-bind';
 
 const DEFAULT_CONFIG: Props = {
   content: '文本',
@@ -45,13 +46,7 @@ function ConfigForm(): JSX.Element {
             rows={4}
             {...register('content', { value: values.content })}
           />
-          <Icon
-            name="code"
-            color="gray"
-            clickable
-            onClick={()=> designer.openDataBinding('content')}
-            className={cs(get(activeElem, '_stateRef.content') ? 'bg-blue-200' : '')}
-          />
+          <ConfigBind name='content'/>
         </div>
       </div>
       <div className='mb-8'>
@@ -63,13 +58,7 @@ function ConfigForm(): JSX.Element {
             <input type="checkbox" {...register('isAllowSelect', { value: values.isAllowSelect })} />
             <span className='ml-8 text-12 text-gray-900'>可选中文本</span>
           </div>
-          <Icon
-            name="code"
-            color="gray"
-            clickable
-            onClick={()=> designer.openDataBinding('isAllowSelect')}
-            className={cs(get(activeElem, '_stateRef.isAllowSelect') ? 'bg-blue-200' : '')}
-          />
+          <ConfigBind name='isAllowSelect'/>
         </div>
       </div>
     </form>
