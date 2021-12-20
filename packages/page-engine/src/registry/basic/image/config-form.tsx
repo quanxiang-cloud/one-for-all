@@ -4,6 +4,8 @@ import { defaults, isEmpty } from 'lodash';
 import { useCtx } from '@ofa/page-engine';
 import { Select, Icon, Button } from '@ofa/ui';
 
+import ConfigBind from '../../../designer/comps/config-item-bind';
+
 import './style.scss';
 
 interface Props {
@@ -50,7 +52,7 @@ function ConfigForm(): JSX.Element {
             value={values.imageUrl}
             onChange={(e) => setValues({ ...values, imageUrl: e.target.value })}
           />
-          <Icon name="code" />
+          <ConfigBind name='imageUrl' />
         </div>
         填充方式
         <div className="config-item">
@@ -60,7 +62,7 @@ function ConfigForm(): JSX.Element {
             value={values.fillMode}
             onChange={(value) => setValues({ ...values, fillMode: value })}
           />
-          <Icon name="code" />
+          <ConfigBind name='fillMode' />
         </div>
         更多方式
         <div className="config-item">
@@ -77,7 +79,7 @@ function ConfigForm(): JSX.Element {
               {values.preview ? '关闭' : '开启'}
             </Button>
           </div>
-          <Icon name="code" />
+          <ConfigBind name='preview' />
         </div>
         <div className="config-item">
           <div className="config-more">
@@ -93,7 +95,7 @@ function ConfigForm(): JSX.Element {
               {values.closeOnMaskClick ? '关闭' : '开启'}
             </Button>
           </div>
-          <Icon name="code" />
+          <ConfigBind name='closeOnMaskClick' />
         </div>
       </div>
     </>

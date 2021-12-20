@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { defaults } from 'lodash';
 
 import { useCtx } from '@ofa/page-engine';
-import { Icon, Radio, RadioGroup, Select } from '@ofa/ui';
+import { Radio, RadioGroup, Select } from '@ofa/ui';
+
+import ConfigBind from '../../../designer/comps/config-item-bind';
 
 export interface Props {
   content: string,
@@ -40,7 +42,7 @@ function ConfigForm(): JSX.Element {
             value={values.content}
             onChange={(ev) => setValues({ ...values, content: ev.target.value })}
           />
-          <Icon name="code" color="gray" className='cursor-pointer' />
+          <ConfigBind name='content' />
         </div>
       </div>
       <div className='mb-8'>
@@ -79,7 +81,7 @@ function ConfigForm(): JSX.Element {
                 value={values.linkUrl}
                 onChange={(ev) => setValues({ ...values, linkUrl: ev.target.value })}
               />
-              <Icon name="code" color="gray" className='cursor-pointer' />
+              <ConfigBind name='linkUrl' />
             </div>
           </div>
         )
@@ -94,7 +96,7 @@ function ConfigForm(): JSX.Element {
           />
           <span className='ml-8 text-12 text-gray-900'>新开页面</span>
         </div>
-        <Icon name="code" color="gray" className='cursor-pointer' />
+        <ConfigBind name='isBlank' />
       </div>
     </form>
   );

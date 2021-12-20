@@ -6,6 +6,8 @@ import { Icon } from '@ofa/ui';
 import { Props } from '@ofa/ui/src/textarea/index';
 import { useCtx } from '@ofa/page-engine';
 
+import ConfigBind from '../../../designer/comps/config-item-bind';
+
 interface configProps {
   name: string;
   msg: string;
@@ -70,7 +72,7 @@ function ConfigForm(): JSX.Element {
             <div className="mb-10" key={item.name + index}>
               <div className="mb-4 flex items-center">
                 <label htmlFor="placeholder" className="mr-4 text-12 text-gray-600">{item.msg}</label>
-                <Icon name="info" color="gray"></Icon>
+                <Icon name="info" color="gray" />
               </div>
               <div className="flex items-center">
                 <input
@@ -78,6 +80,7 @@ function ConfigForm(): JSX.Element {
                   type={item.type}
                   {...register(item.name, { value: values[item.name] })}
                 />
+                <ConfigBind name={item.name} />
               </div>
             </div>
           );

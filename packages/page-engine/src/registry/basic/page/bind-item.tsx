@@ -15,12 +15,12 @@ interface Props {
 function BindItem({ bound, onBind, onEdit, onUnbind }: Props): JSX.Element {
   if (bound) {
     return (
-      <div className='inline-flex items-center'>
+      <div className='inline-flex items-center w-full'>
         <span className='border border-gray-100 flex-1 w-100 mr-8 px-8 py-4'>已绑定</span>
         <Tooltip position='top' label='编辑绑定函数'>
           <Icon
             name='code'
-            className='mr-8'
+            className='mr-16'
             clickable
             onClick={onEdit}
           />

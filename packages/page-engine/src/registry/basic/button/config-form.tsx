@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { defaults } from 'lodash';
 
 import { useCtx } from '@ofa/page-engine';
-import { Icon, Select } from '@ofa/ui';
+import { Select } from '@ofa/ui';
 
+import ConfigBind from '../../../designer/comps/config-item-bind';
 import type { Props } from './button';
 
 const modifierOptions: {label: string, value: 'primary' | 'danger'}[] = [
@@ -45,7 +46,7 @@ function ConfigForm(): JSX.Element {
             placeholder="请填写"
             onChange={(e) => setValues((prev) => ({ ...prev, title: e.target.value }))}
           />
-          <Icon name="code" color="gray" className='cursor-pointer' />
+          <ConfigBind name='title' />
         </div>
       </div>
         按钮类型

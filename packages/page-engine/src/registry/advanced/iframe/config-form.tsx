@@ -2,9 +2,8 @@ import React, { useState, useContext, HTMLAttributeReferrerPolicy } from 'react'
 import { useForm } from 'react-hook-form';
 import { defaults } from 'lodash';
 
-import { Icon } from '@ofa/ui';
-
 import ctx from '../../../ctx';
+import ConfigBind from '../../../designer/comps/config-item-bind';
 
 export interface IframeConfigProps {
   sandbox?: string;
@@ -54,7 +53,7 @@ function ConfigForm(): JSX.Element {
               className="px-8 py-4 flex-1"
               placeholder="请填写"
             />
-            <Icon name="code" color="gray" className='cursor-pointer' />
+            <ConfigBind name='iframeAddr' />
           </div>
         </label>
         <label className="flex flex-col">
@@ -66,7 +65,7 @@ function ConfigForm(): JSX.Element {
               placeholder="请填写"
               value={values.iframeWidth}
             />
-            <Icon name="code" color="gray" className='cursor-pointer' />
+            <ConfigBind name='iframeWidth' />
           </div>
         </label>
 
@@ -79,7 +78,7 @@ function ConfigForm(): JSX.Element {
               placeholder="请填写"
               value={values.iframeHeight}
             />
-            <Icon name="code" color="gray" className='cursor-pointer' />
+            <ConfigBind name='iframeHeight' />
           </div>
         </label>
         <label className="flex flex-col">
@@ -91,7 +90,7 @@ function ConfigForm(): JSX.Element {
               placeholder="请填写"
               value={values.iframeName}
             />
-            <Icon name="code" color="gray" className='cursor-pointer' />
+            <ConfigBind name='iframeName' />
           </div>
         </label>
         <label className="flex flex-col">
@@ -102,7 +101,7 @@ function ConfigForm(): JSX.Element {
               className="px-8 py-4 flex-1"
               placeholder="请填写"
             />
-            <Icon name="code" color="gray" className='cursor-pointer' />
+            <ConfigBind name='sandbox' />
           </div>
         </label>
         <label className="flex flex-col">
@@ -113,7 +112,7 @@ function ConfigForm(): JSX.Element {
               className="px-8 py-4 flex-1"
               placeholder="请填写"
             />
-            <Icon name="code" color="gray" className='cursor-pointer' />
+            <ConfigBind name='iframeAllow' />
           </div>
         </label>
         <label className="flex justify-between items-center gap-10">
@@ -125,7 +124,7 @@ function ConfigForm(): JSX.Element {
               <input {...register('allowFullscreen', { value: values.allowFullscreen })} type="checkbox" />
             </div>
           </div>
-          <Icon name="code" color="gray" className='cursor-pointer' />
+          <ConfigBind name='allowFullscreen' />
         </label>
         <label className="flex flex-col">
           iframe referrer policy:
@@ -144,7 +143,7 @@ function ConfigForm(): JSX.Element {
               <option value="strict-origin-when-cross-origin">strict-origin-when-cross-origin</option>
               <option value="unsafe-url">unsafe-url</option>
             </select>
-            <Icon name="code" color="gray" className='cursor-pointer' />
+            <ConfigBind name='referrerPolicy' />
           </div>
         </label>
       </form>
