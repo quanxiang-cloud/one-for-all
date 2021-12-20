@@ -1,13 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
-import Editor, { loader } from '@monaco-editor/react';
+import Editor from '@uiw/react-codemirror';
+import { javascript } from '@codemirror/lang-javascript';
+import { defaults } from 'lodash';
 
 import { useCtx } from '@ofa/page-engine';
 import { Modal, Icon, Button, toast } from '@ofa/ui';
 
-import LayoutConfig from './layout-config';
 import BackgroundConfig from './background-config';
 import FontConfig from './font-config';
 import BorderConfig from './border-config';
@@ -24,21 +25,15 @@ interface Props {
 function StylePanel({ className }: Props): JSX.Element {
   const { register, getValues, setValue } = useForm();
   const { page } = useCtx();
-  const [values, setValues] = useState<any>(DEFAULT_STYLE_CONFIG);
+  const [values, setValues] = useState<any>(()=> defaults(getCurStyle(), DEFAULT_STYLE_CONFIG));
   const [modalOpen, setModalOpen] = useState(false);
-  const editorRef = useRef<any>(null);
+  const [editorVal, setEditorVal] = useState(JSON.stringify(values, null, 2));
 
   useEffect(() => {
-    loader.config({ paths: { vs: '/dist/monaco-editor/vs' } });
-  }, []);
-
-  useEffect(() => {
-    page.updateElemProperty(page.activeElem.id, '_style', values);
+    if (checkStyles(values)) {
+      page.updateElemProperty(page.activeElem.id, '_style', values);
+    }
   }, [values]);
-
-  function handleEditorMount(editor: any): void {
-    editorRef.current = editor;
-  }
 
   function getCurStyle(): React.CSSProperties {
     if (page.activeElem) {
@@ -47,17 +42,23 @@ function StylePanel({ className }: Props): JSX.Element {
     return {};
   }
 
-  function saveStyle(): void {
-    const editorVal = editorRef.current.getValue();
-    let styleVal;
+  function checkStyles(vals: any): boolean {
     try {
-      styleVal = JSON.parse(editorVal);
-      console.log('final style: ', styleVal);
-      page.updateElemProperty(page.activeElem.id, '_style', styleVal);
-      setModalOpen(false);
+      if (typeof vals === 'string') {
+        JSON.parse(vals);
+      }
+      return true;
     } catch (err: any) {
       toast.error(`错误的 CSS值，请填写 JSX 格式的 JSON object: ${err.message}`);
-      return;
+      return false;
+    }
+  }
+
+  function saveStyle(): void {
+    // save editor values
+    if (checkStyles(editorVal)) {
+      setModalOpen(false);
+      setValues(JSON.parse(editorVal));
     }
   }
 
@@ -85,7 +86,7 @@ function StylePanel({ className }: Props): JSX.Element {
       </div>
       <form onChange={handleFormChange}>
         <Section title='画布' defaultExpand>
-          <LayoutConfig initValues={values} register={register} setValue={setValue} />
+          {/* <LayoutConfig initValues={values} register={register} setValue={setValue} />*/}
         </Section>
         <Section title='字体' defaultExpand>
           <FontConfig
@@ -142,12 +143,11 @@ function StylePanel({ className }: Props): JSX.Element {
           ]}
         >
           <Editor
-            height={300}
-            // lang=javascript
-            language='css'
-            theme='vs-dark'
-            onMount={handleEditorMount}
-            defaultValue={JSON.stringify(getCurStyle(), null, 2)}
+            value={editorVal}
+            height="200px"
+            theme='dark'
+            extensions={[javascript()]}
+            onChange={(val) => setEditorVal(val)}
           />
         </Modal>
       )}

@@ -16,7 +16,6 @@
     "prebuild": "yarn run clean",
     "build": "rollup -c",
     "copy:assets": "mkdir -p ../../dist/images && cp -R ../ui/{assets,dist}/images/* ../../dist/images",
-    "copy:monaco-assets": "mkdir -p ../../dist/monaco-editor && cp -R ../../node_modules/monaco-editor/min/vs ../../dist/monaco-editor",
     "dev": "webpack serve --progress",
     "type-check": "tsc --noEmit --skipLibCheck --pretty -w",
     "prod": "yarn run build && node server.js"

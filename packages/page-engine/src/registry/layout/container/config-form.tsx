@@ -7,7 +7,7 @@ interface Props {
 function ConfigForm(props: Props): JSX.Element {
   return (
     <div>
-      container config
+      暂无
     </div>
   );
 }

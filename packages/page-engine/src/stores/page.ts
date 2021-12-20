@@ -1,4 +1,4 @@
-import { observable, computed, action, makeObservable, toJS } from 'mobx';
+import { observable, computed, action, toJS, makeObservable } from 'mobx';
 import { defaults, set } from 'lodash';
 
 import { elemId } from '../utils';
@@ -213,7 +213,7 @@ class PageStore {
   }
 
   @action
-  updateElemProperty = (elem_id: string, propKey: string, conf: Record<string, any>): void => {
+  updateElemProperty = (elem_id: string, propKey: string, conf: any): void => {
     const elem = findNode(this.schema, elem_id);
     if (elem) {
       set(elem, propKey, conf);
@@ -227,7 +227,10 @@ class PageStore {
 
   @action
   reset = (): void => {
-    // todo
+    this.schema = pageInitialSchema();
+    this.mode = 'design';
+    this.activeElemId = '';
+    this.dragPos = 'down';
   }
 }
 

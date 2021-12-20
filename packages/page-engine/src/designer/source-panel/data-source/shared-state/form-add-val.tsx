@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import cs from 'classnames';
-import Editor from '@monaco-editor/react';
+import Editor from '@uiw/react-codemirror';
+import { javascript } from '@codemirror/lang-javascript';
 import { useForm } from 'react-hook-form';
 import { observer } from 'mobx-react';
 import { toJS } from 'mobx';
@@ -14,42 +15,28 @@ interface Props {
   className?: string;
 }
 
-function FormAddVal(props: Props): JSX.Element {
+function FormAddVal(props: Props): JSX.Element | null {
   const ctx = useCtx();
   const { dataSource, page } = ctx;
-  const { formState: { errors }, setValue } = useForm();
-  const { curSharedState, editorModalOpen, setEditorModalOpen, curSharedVal, setCurSharedVal } = dataSource;
-  const editorRef = useRef<any>(null);
+  const { formState: { errors } } = useForm();
+  const { curSharedState, modalOpen, setModalOpen, curSharedVal, setCurSharedVal } = dataSource;
 
   useEffect(()=> {
     // set form initial vals
-    if (!editorModalOpen) {
+    if (!modalOpen) {
       dataSource.resetCurSharedVal();
     } else {
       // init cur shared val by chosen state key
       if (curSharedState) {
         setCurSharedVal(curSharedState);
-        // sync with editor
-        editorRef.current?.setValue(curSharedState.val);
       }
     }
-  }, [editorModalOpen]);
-
-  function handleEditorMount(editor: any): void {
-    editorRef.current = editor;
-  }
+  }, [modalOpen]);
 
   function handleSaveSharedVal(): void {
-    const editorVal = editorRef.current?.getValue();
-    if (!editorVal) {
-      toast.error('请输入变量数据');
-      return;
-    }
     // check editor val is valid js value
-    let finalVal;
     try {
-      finalVal = JSON.parse(editorVal);
-      setValue('val', finalVal);
+      JSON.parse(curSharedVal.val);
     } catch (err: any) {
       toast.error(`变量值不是合法的 JS 数据: ${err.message}`);
       return;
@@ -75,16 +62,20 @@ function FormAddVal(props: Props): JSX.Element {
     return true;
   }
 
+  if (!modalOpen) {
+    return null;
+  }
+
   return (
     <Modal
-      className={cs(styles.editorModal, { [styles.hide]: !editorModalOpen })}
+      className={styles.editorModal}
       title={dataSource.curSharedStateKey ? '修改变量参数' : '新建变量参数'}
-      onClose={() => setEditorModalOpen(false)}
+      onClose={() => setModalOpen(false)}
       footerBtns={[
         {
           key: 'close',
           iconName: 'close',
-          onClick: () => setEditorModalOpen(false),
+          onClick: () => setModalOpen(false),
           text: '取消',
         },
         {
@@ -114,12 +105,11 @@ function FormAddVal(props: Props): JSX.Element {
         <div className='flex flex-col mb-24'>
           <p>变量数据</p>
           <Editor
-            height={200}
-            language='javascript'
-            theme='vs-dark'
-            onMount={handleEditorMount}
             value={curSharedVal.val}
-            onChange={(val)=> {
+            height="200px"
+            theme='dark'
+            extensions={[javascript()]}
+            onChange={(val) => {
               setCurSharedVal('val', val);
             }}
           />

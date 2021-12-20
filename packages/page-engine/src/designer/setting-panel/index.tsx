@@ -7,6 +7,7 @@ import { useCtx } from '@ofa/page-engine';
 import StylePanel from './style-panel';
 import EventPanel from './event-panel';
 import RendererPanel from './renderer-panel';
+import ModalBindState from './modal-bind-state';
 
 import styles from './index.m.scss';
 
@@ -75,6 +76,7 @@ function SettingPanel(): JSX.Element {
   return (
     <div className={styles.panel}>
       {renderCont()}
+      {designer.modalBindStateOpen && <ModalBindState />}
     </div>
   );
 }

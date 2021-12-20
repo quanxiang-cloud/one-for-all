@@ -9,6 +9,7 @@ import { useCtx } from '@ofa/page-engine';
 import Group from './group';
 import { groups, panelTitle } from './config';
 import PlatformComps from './platform-comps';
+// import CustomTemplate from './custom-template'
 import PageTree from './page-tree';
 import DataSource from './data-source';
 
@@ -47,9 +48,9 @@ function SourcePanel(): JSX.Element {
     if (store.activeGroup === 'page_tree') {
       return <PageTree />;
     }
-    // if (store.activeGroup === 'data_source') {
-    //   return <DataSource />;
-    // }
+    if (store.activeGroup === 'data_source') {
+      return <DataSource />;
+    }
     return null;
   }
 
@@ -78,18 +79,6 @@ function SourcePanel(): JSX.Element {
         pinnable
       >
         {renderPanelCont()}
-      </Panel>
-      <Panel
-        title={panelTitle[activeGroup]}
-        style={{ transform: 'translateX(55px)' }}
-        onClose={() => store.setPanelOpen(false)}
-        onPin={() => store.setPanelPinned(!panelPinned)}
-        visible={panelOpen && activeGroup === 'data_source'}
-        pinned={panelPinned}
-        closable
-        pinnable
-      >
-        <DataSource />
       </Panel>
     </div>
 

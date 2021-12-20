@@ -1,11 +1,13 @@
-import Textarea from './textarea';
-import ConfigForm from './config-form';
+import { Textarea } from '@ofa/ui';
+
+import ConfigForm, { DEFAULT_CONFIG } from './config-form';
 
 type Props = {
-  name?: string
+  placeholder: string,
+  rows: number,
+  cols: number,
+  name: string,
 }
-
-const defaultConfig: Props = {};
 
 const elem: Registry.SourceElement<Props> = {
   name: 'textarea',
@@ -14,8 +16,9 @@ const elem: Registry.SourceElement<Props> = {
   category: 'form',
   component: Textarea,
   configForm: ConfigForm,
-  defaultConfig,
+  defaultConfig: DEFAULT_CONFIG,
   order: 2,
+  // acceptChild: true,
 };
 
 export default elem;
