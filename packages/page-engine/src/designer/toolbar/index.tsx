@@ -15,7 +15,9 @@ function Toolbar(): JSX.Element {
   const { page, designer } = ctx;
 
   function handleSave(): void {
-    ctx.onSave?.(toJS(page.schema));
+    const pageSchema = toJS(page.schema);
+    console.log('save page schema: ', pageSchema);
+    ctx.onSave?.(pageSchema);
   }
 
   function saveAndExit(): void {
@@ -24,7 +26,10 @@ function Toolbar(): JSX.Element {
   }
 
   function handlePreview(): void {
-    ctx.onSave?.(toRenderSchema(toJS(page.schema)), { draft: true, silent: true });
+    // todo: revert
+    const renderSchema = toRenderSchema(toJS(page.schema));
+    console.log('preview render schema: ', renderSchema);
+    ctx.onSave?.(renderSchema, { draft: true, silent: true });
   }
 
   return (
