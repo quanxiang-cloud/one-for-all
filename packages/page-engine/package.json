@@ -1,6 +1,6 @@
 {
   "name": "@ofa/page-engine",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A qxp page engine",
   "license": "MIT",
   "author": "sunnyw <sunnywang@yunify.com>",
@@ -36,6 +36,7 @@
     "@rollup/plugin-alias": "^3.1.8",
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
+    "@rollup/plugin-replace": "^3.0.0",
     "@types/classnames": "^2.3.1",
     "@types/lodash": "^4.14.178",
     "autoprefixer": "^10.4.0",
