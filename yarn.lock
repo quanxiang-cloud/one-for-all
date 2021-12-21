@@ -915,8 +915,8 @@
 
 "@rollup/plugin-replace@^3.0.0":
   version "3.0.0"
-  resolved "https://registry.nlark.com/@rollup/plugin-replace/download/@rollup/plugin-replace-3.0.0.tgz#3a4c9665d4e7a4ce2c360cf021232784892f3fac"
-  integrity sha1-OkyWZdTnpM4sNgzwISMnhIkvP6w=
+  resolved "https://registry.yarnpkg.com/@rollup/plugin-replace/-/plugin-replace-3.0.0.tgz#3a4c9665d4e7a4ce2c360cf021232784892f3fac"
+  integrity sha512-3c7JCbMuYXM4PbPWT4+m/4Y6U60SgsnDT/cCyAyUKwFHg7pTSfsSQzIpETha3a3ig6OdOKzZz87D9ZXIK3qsDg==
   dependencies:
     "@rollup/pluginutils" "^3.1.0"
     magic-string "^0.25.7"
