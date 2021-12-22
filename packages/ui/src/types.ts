@@ -5,3 +5,10 @@ export interface GridProps {
   style?: React.CSSProperties;
   children?: React.ReactNode;
 }
+
+export interface InputProps {
+  style?: React.CSSProperties;
+  children?: React.ReactNode;
+  placeholder?: string;
+  type?: string;
+}

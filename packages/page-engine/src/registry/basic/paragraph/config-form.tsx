@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { defaults } from 'lodash';
 
-import { Icon } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
+
+import ConfigBind from '../../../designer/comps/config-item-bind';
 
 const DEFAULT_CONFIG: Props = {
   content: '段落文本',
@@ -38,7 +39,6 @@ function ConfigForm(): JSX.Element {
       <div className='mb-8'>
         <div className='mb-4 flex items-center'>
           <label htmlFor="maxLength" className='mr-4 text-12 text-gray-600'>最大显示行数</label>
-          <Icon name="info" color="gray" />
         </div>
         <div className='flex items-center'>
           <input
@@ -47,13 +47,12 @@ function ConfigForm(): JSX.Element {
             min={1}
             {...register('maxLength', { value: values.maxLength })}
           />
-          <Icon name="code" color="gray" className='cursor-pointer' />
+          <ConfigBind name='maxLength' />
         </div>
       </div>
       <div className='mb-8'>
         <div className='mb-4 flex items-center'>
           <label htmlFor="content" className='mr-4 text-12 text-gray-600'>文本内容</label>
-          <Icon name="info" color="gray" />
         </div>
         <div className='flex'>
           <textarea
@@ -61,7 +60,7 @@ function ConfigForm(): JSX.Element {
             rows={4}
             {...register('content', { value: values.content, required: true, maxLength: 30 })}
           />
-          <Icon name="code" color="gray" className='cursor-pointer' />
+          <ConfigBind name='content' />
         </div>
         {/* TODO remove */}
         {errors.content && errors.content.type === 'required' && (
@@ -77,7 +76,7 @@ function ConfigForm(): JSX.Element {
             <input type="checkbox" {...register('isAllowSelect', { value: values.isAllowSelect })} />
             <span className='ml-8 text-12 text-gray-900'>可选中文本</span>
           </div>
-          <Icon name="code" color="gray" className='cursor-pointer' />
+          <ConfigBind name='isAllowSelect' />
         </div>
         {/* <div className='mb-8 flex items-center justify-between'>
           <div className='flex items-center'>

@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { defaults } from 'lodash';
 import { useForm } from 'react-hook-form';
+import { observer } from 'mobx-react';
 
 import { Icon } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
+
+import ConfigBind from '../../../designer/comps/config-item-bind';
 
 const DEFAULT_CONFIG: Props = {
   content: '文本',
@@ -17,11 +20,12 @@ export interface Props {
 
 function ConfigForm(): JSX.Element {
   const { register, getValues } = useForm();
-  const { page } = useCtx();
+  const { page, designer } = useCtx();
   const [values, setValues] = useState(defaults(page.activeElem.props, DEFAULT_CONFIG));
+  const { activeElem } = page;
 
   useEffect(() => {
-    page.updateElemProperty(page.activeElem.id, 'props', values);
+    page.updateElemProperty(activeElem.id, 'props', values);
   }, [values]);
 
   function handleFormChange(): void {
@@ -42,7 +46,7 @@ function ConfigForm(): JSX.Element {
             rows={4}
             {...register('content', { value: values.content })}
           />
-          <Icon name="code" color="gray" className='cursor-pointer' />
+          <ConfigBind name='content'/>
         </div>
       </div>
       <div className='mb-8'>
@@ -54,11 +58,11 @@ function ConfigForm(): JSX.Element {
             <input type="checkbox" {...register('isAllowSelect', { value: values.isAllowSelect })} />
             <span className='ml-8 text-12 text-gray-900'>可选中文本</span>
           </div>
-          <Icon name="code" color="gray" className='cursor-pointer' />
+          <ConfigBind name='isAllowSelect'/>
         </div>
       </div>
     </form>
   );
 }
 
-export default ConfigForm;
+export default observer(ConfigForm);

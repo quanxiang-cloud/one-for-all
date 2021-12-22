@@ -1,7 +1,6 @@
 export const DEFAULT_STYLE_CONFIG = {
-  // width, height
-  width: 83,
-  height: 32,
+  // width: 83,
+  // height: 32,
   // margin
   marginTop: 0,
   marginLeft: 0,
@@ -24,7 +23,7 @@ export const DEFAULT_STYLE_CONFIG = {
   justifyContent: 'center', // default: normal    flex-start center flex-end stretch baseline
   // font
   fontSize: 12,
-  lineHeight: 30,
+  lineHeight: 1,
   fontWeight: 400,
   fontAlign: 'left',
   color: '#000000',
@@ -49,7 +48,7 @@ export const DEFAULT_STYLE_CONFIG = {
 };
 
 const STYLE_NUMBER = [
-  'width', 'height', 'fontSize', 'lineHight', 'borderWidth', 'fontWeight',
+  'width', 'height', 'fontSize', 'lineHeight', 'borderWidth', 'fontWeight',
   'marginTop', 'marginLeft', 'marginRight', 'marginBottom', 'borderTopWidth', 'borderLeftWidth',
   'borderRightWidth', 'borderBottomWidth', 'paddingTop', 'paddingLeft', 'paddingRight', 'paddingBottom',
   'borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomRightRadius', 'borderBottomLeftRadius',
