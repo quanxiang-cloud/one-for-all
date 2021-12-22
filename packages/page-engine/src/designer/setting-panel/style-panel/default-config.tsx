@@ -17,10 +17,16 @@ export const DEFAULT_STYLE_CONFIG = {
   paddingLeft: 0,
   paddingRight: 0,
   paddingBottom: 0,
+  // display
+  display: 'flex', // default: inline   block inline inline-block flex
+  flexDirection: 'row', // default: row   row row-reverse column column-reverse
+  alignItems: 'center', // default: normal    flex-start center flex-end stretch baseline
+  justifyContent: 'center', // default: normal    flex-start center flex-end stretch baseline
   // font
   fontSize: 12,
   lineHeight: 30,
   fontWeight: 400,
+  fontAlign: 'left',
   color: '#000000',
   // background
   // backgroundColor: 'rgba(255, 255, 255,1)',
@@ -43,7 +49,7 @@ export const DEFAULT_STYLE_CONFIG = {
 };
 
 const STYLE_NUMBER = [
-  'width', 'height', 'fontSize', 'lineHight', 'borderWidth',
+  'width', 'height', 'fontSize', 'lineHight', 'borderWidth', 'fontWeight',
   'marginTop', 'marginLeft', 'marginRight', 'marginBottom', 'borderTopWidth', 'borderLeftWidth',
   'borderRightWidth', 'borderBottomWidth', 'paddingTop', 'paddingLeft', 'paddingRight', 'paddingBottom',
   'borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomRightRadius', 'borderBottomLeftRadius',
@@ -51,7 +57,7 @@ const STYLE_NUMBER = [
 
 export const formatStyles = (styles: Record<string, string | number>): Record<string, string | number> => {
   const newStyles: Record<string, string | number> = {};
-  if (typeof(styles) !== 'object' || styles === null) {
+  if (typeof (styles) !== 'object' || styles === null) {
     return newStyles;
   }
 

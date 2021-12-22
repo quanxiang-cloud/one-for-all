@@ -3,11 +3,13 @@ import { useForm } from 'react-hook-form';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 import Editor, { loader } from '@monaco-editor/react';
+import { defaults } from 'lodash';
 
 import { useCtx } from '@ofa/page-engine';
 import { Modal, Icon, Button, toast } from '@ofa/ui';
 
 import LayoutConfig from './layout-config';
+import DisplayConfig from './display-config';
 import BackgroundConfig from './background-config';
 import FontConfig from './font-config';
 import BorderConfig from './border-config';
@@ -24,7 +26,7 @@ interface Props {
 function StylePanel({ className }: Props): JSX.Element {
   const { register, getValues, setValue } = useForm();
   const { page } = useCtx();
-  const [values, setValues] = useState<any>(DEFAULT_STYLE_CONFIG);
+  const [values, setValues] = useState<any>(defaults(page.activeElem._style || {}, DEFAULT_STYLE_CONFIG));
   const [modalOpen, setModalOpen] = useState(false);
   const editorRef = useRef<any>(null);
 
@@ -86,6 +88,9 @@ function StylePanel({ className }: Props): JSX.Element {
       <form onChange={handleFormChange}>
         <Section title='画布' defaultExpand>
           <LayoutConfig initValues={values} register={register} setValue={setValue} />
+        </Section>
+        <Section title='显示布局' defaultExpand>
+          <DisplayConfig initValues={values} register={register} setValue={setValue} />
         </Section>
         <Section title='字体' defaultExpand>
           <FontConfig

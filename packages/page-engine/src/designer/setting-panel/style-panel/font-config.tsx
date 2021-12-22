@@ -2,7 +2,26 @@ import React from 'react';
 import { UseFormRegister, FieldValues } from 'react-hook-form';
 import { ColorResult } from 'react-color';
 
-import { ColorPicker } from '@ofa/ui';
+import { ColorPicker, Select } from '@ofa/ui';
+
+const FONT_WEIGHT_OPTIONS: Record<'label' | 'value', string | number>[] = [
+  { label: '100', value: 100 },
+  { label: '200', value: 200 },
+  { label: '300', value: 300 },
+  { label: '400', value: 400 },
+  { label: '500', value: 500 },
+  { label: '600', value: 600 },
+  { label: '700', value: 700 },
+  { label: '800', value: 800 },
+  { label: '900', value: 900 },
+];
+
+const TEXT_ALIGN_OPTIONS: Record<'label' | 'value', string | number>[] = [
+  { label: 'left', value: 'left' },
+  { label: 'center', value: 'center' },
+  { label: 'right', value: 'right' },
+  { label: 'justify', value: 'justify' },
+];
 
 interface Props {
   initValues: Record<string, string | number>;
@@ -14,6 +33,16 @@ interface Props {
 function FontConfig({ initValues, register, setValue, onFormChange }: Props): JSX.Element {
   function handleColorChange(color: ColorResult): void {
     setValue('color', color.hex);
+    onFormChange();
+  }
+
+  function handleFontWeightChange(value: string | number): void {
+    setValue('fontWeight', value);
+    onFormChange();
+  }
+
+  function handleTextAlignChange(value: string | number): void {
+    setValue('textAlign', value);
     onFormChange();
   }
 
@@ -45,26 +74,44 @@ function FontConfig({ initValues, register, setValue, onFormChange }: Props): JS
         <div className='w-2/4 flex items-center'>
           <span className='px-8 text-12 text-gray-400 whitespace-nowrap'>字重</span>
           <input
-            type="text"
+            type="hidden"
             className='w-full focus:outline-none'
-            {...register('fontWight', { value: initValues.fontWeight || 400 })}
+            {...register('fontWeight', { value: initValues.fontWeight || 400 })}
+          />
+          <Select
+            style={{ padding: 0, minWidth: 73 }}
+            border={false}
+            options={FONT_WEIGHT_OPTIONS}
+            value={Number(initValues.fontWeight) || 400}
+            onChange={handleFontWeightChange}
           />
         </div>
-        <div className='mr-8 w-2/4 flex items-center'>
+        <div className='mr-20 w-2/4 flex items-center'>
           <span className='px-8 text-12 text-gray-400 whitespace-nowrap'>对齐</span>
-          {/* <input className='w-full focus:outline-none' type="text" /> */}
+          <input type="hidden" {...register('textAlign', {
+            value: initValues.textAlign || 'left',
+          })} />
+          <Select
+            style={{ padding: 0, minWidth: 73 }}
+            border={false}
+            options={TEXT_ALIGN_OPTIONS}
+            value={initValues.textAlign || 'left'}
+            onChange={handleTextAlignChange}
+          />
         </div>
       </div>
       <div className='flex items-center'>
         <div className='flex items-center'>
           <span className='px-8 text-12 text-gray-400 whitespace-nowrap'>颜色</span>
-          <input type="hidden" {...register('color')} />
+          <input readOnly type="hidden" {...register('color', {
+            value: initValues.color || '#000000',
+          })} />
           <ColorPicker
-            value={initValues.color as string}
+            value={initValues.color as string || '#000000'}
             onChange={handleColorChange}
           />
           <span className='ml-8 text-12 text-gray-900'>
-            {initValues.color}
+            {initValues.color || '#000000'}
           </span>
         </div>
         {/* <div className='mx-8 w-1 h-20 border-left bg-gray-200'></div>

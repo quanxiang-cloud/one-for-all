@@ -31,11 +31,14 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
     const { backgroundColor, backgroundImage } = initValues;
     if (backgroundColor !== 'transparent') {
       setFillStatus('color');
+      return;
     }
-    if (backgroundImage) {
+
+    if (backgroundImage && ((backgroundImage as string).indexOf('url') >= 0)) {
       setFillStatus('img');
+      return;
     }
-  }, []);
+  }, [initValues]);
 
   function handleRadioChange(value: string | number | boolean): void {
     const _value = value as string;
@@ -82,9 +85,15 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
       <div className='text-12 text-gray-600'>填充类型</div>
       <RadioButtonGroup
         listData={FILL_LIST as []}
-        onChange={(val)=> handleRadioChange(val + '')}
+        onChange={(val) => handleRadioChange(val + '')}
         currentValue={fillStatus}
       />
+      <input type="hidden" {...register('backgroundColor', {
+        value: initValues.backgroundColor || 'transparent',
+      })} />
+      {fillStatus !== 'img' && (
+        <input type="hidden" {...register('backgroundImage', { value: initValues.backgroundImage || '' })} />
+      )}
       {fillStatus === 'color' && (
         <div className='mt-8 px-8 py-6 border border-gray-300 rounded-4 flex items-center justify-between'>
           <div className='flex items-center'>
