@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useImperativeHandle } from 'react';
 
 import initCTX from './ctx';
 import NodeRender from './node-render';
 import deserializeSchema from './deserialize-schema';
-import type { InitProps } from './types';
+import type { InitProps, RenderEngineCTX } from './types';
 
-// todo forward ref
-function SchemaRender({ schema, apiSpecAdapter, repository }: InitProps): React.ReactElement | null {
+function SchemaRender(
+  { schema, apiSpecAdapter, repository }: InitProps,
+  ref: React.Ref<RenderEngineCTX>,
+): React.ReactElement | null {
   const ctx = initCTX({ schema, apiSpecAdapter, repository });
+
+  useImperativeHandle(ref, () => ({
+    states: ctx.states,
+    apiStates: ctx.apiStates,
+  }));
 
   const instantiatedNode = deserializeSchema(schema.node, ctx);
   if (!instantiatedNode) {
@@ -18,4 +25,4 @@ function SchemaRender({ schema, apiSpecAdapter, repository }: InitProps): React.
   return React.createElement(NodeRender, { node: instantiatedNode, ctx });
 }
 
-export default SchemaRender;
+export default React.forwardRef<RenderEngineCTX, InitProps>(SchemaRender);
