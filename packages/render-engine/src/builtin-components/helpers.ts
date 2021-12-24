@@ -7,14 +7,14 @@ import {
   Instantiated,
   NodePropType,
   SchemaNode,
-  IterableState,
+  PlainState,
   NodeProperties,
   NodeType,
 } from '../types';
 import PathContext from '../node-render/path-context';
 import useInstantiateProps from '../use-instantiate-props';
 
-export function useIterable(iterableState: IterableState<Instantiated>, ctx: CTX): Array<unknown> | null {
+export function useIterable(iterableState: PlainState<Instantiated>, ctx: CTX): Array<unknown> | null {
   const currentPath = useContext(PathContext);
 
   const dummyNode: SchemaNode<Instantiated> = {
@@ -91,7 +91,7 @@ export function tryToProps(
 }
 
 type UseMergedPropsListParams = {
-  iterableState: IterableState<Instantiated>;
+  iterableState: PlainState<Instantiated>;
   toProps: (item: unknown) => Record<string, unknown>;
   otherProps?: NodeProperties<Instantiated>;
   ctx: CTX;

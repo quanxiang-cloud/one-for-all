@@ -1,6 +1,6 @@
 import { logger } from '@ofa/utils';
 import React, { useMemo } from 'react';
-import { ToProps } from '..';
+import { RenderPropertyAdapter } from '../types';
 
 import NodeRender from '../node-render';
 import {
@@ -18,13 +18,13 @@ type RenderProps = Record<string, Render>;
 function buildRender(
   node: SchemaNode<Instantiated>,
   ctx: CTX,
-  toProps?: ToProps<Instantiated>,
+  adapter?: RenderPropertyAdapter<Instantiated>,
 ): Render {
   return (...args: unknown[]): React.ReactElement => {
     // convert render args to constant properties for reuse of NodeRender
     let constantProps = {};
     try {
-      const customProps = toProps?.(...args) || {};
+      const customProps = adapter?.(...args) || {};
       if (typeof customProps === 'object') {
         constantProps = Object.entries(customProps)
           .reduce<Record<string, ConstantProperty>>((acc, [key, value]) => {
@@ -51,8 +51,8 @@ function useRenderProps({ props }: SchemaNode<Instantiated>, ctx: CTX): RenderPr
     return Object.entries(props || {})
       .filter((pair): pair is [string, RenderProperty<Instantiated>] => {
         return pair[1].type === NodePropType.RenderProperty;
-      }).reduce<RenderProps>((acc, [propName, { toProps, node }]) => {
-        acc[propName] = buildRender(node, ctx, toProps);
+      }).reduce<RenderProps>((acc, [propName, { adapter, node }]) => {
+        acc[propName] = buildRender(node, ctx, adapter);
 
         return acc;
       }, {});

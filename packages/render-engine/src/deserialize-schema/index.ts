@@ -16,6 +16,10 @@ function transformNode(node: SchemaNode<Serialized>, ctx: CTX): SchemaNode<Insta
     return transformLoopNode(node, ctx);
   }
 
+  if (node.type === NodeType.ComposedNode) {
+    throw new Error('unimplemented');
+  }
+
   const children = (node.children || []).map((n) => transformNode(n, ctx));
 
   return {

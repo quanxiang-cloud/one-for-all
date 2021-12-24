@@ -4,13 +4,13 @@ import {
   CTX,
   Instantiated,
   SchemaNode,
-  IterableState,
+  PlainState,
 } from '../types';
 import NodeRender from '../node-render';
 import { useMergedPropsList } from './helpers';
 
 export type Props = {
-  iterableState: IterableState<Instantiated>;
+  iterableState: PlainState<Instantiated>;
   loopKey: string;
   toProps: (item: unknown) => Record<string, unknown>;
   node: SchemaNode<Instantiated>;

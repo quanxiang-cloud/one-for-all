@@ -22,7 +22,7 @@ test('useRenderProps_simplest_case', () => {
     props: {
       itemRender: {
         type: NodePropType.RenderProperty,
-        toProps: () => {
+        adapter: () => {
           return { className: 'foobar' };
         },
         node: {

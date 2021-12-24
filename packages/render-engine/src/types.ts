@@ -98,10 +98,11 @@ export type StateConvertorFuncSpec = BaseFunctionSpec & {
 // toProps function should return Record<string, unknown>;
 export type ToPropsFuncSpec = BaseFunctionSpec & {
   type: 'to_props_function_spec',
+  args: 'state'
 };
 export type ToProps<T> = T extends Serialized ?
   ToPropsFuncSpec :
-  (...args: unknown[]) => Record<string, unknown>;
+  (state: unknown) => Record<string, unknown>;
 
 export type APILoadingProperty = BaseNodeProperty & {
   type: NodePropType.APILoadingProperty;
@@ -158,9 +159,17 @@ export type APIInvokeProperty<T> = {
 // />
 export type RenderProperty<T extends Serialized | Instantiated> = BaseNodeProperty & {
   type: NodePropType.RenderProperty;
-  toProps?: ToProps<T>;
+  adapter: RenderPropertyAdapter<T>;
   node: SchemaNode<T>;
 }
+
+export type RenderPropertyAdapterFuncSpec = BaseFunctionSpec & {
+  type: 'render_property_function_spec',
+};
+
+export type RenderPropertyAdapter<T> = T extends Serialized ?
+  RenderPropertyAdapterFuncSpec :
+  (...args: unknown[]) => Record<string, unknown>;
 
 export type ParamsBuilder<T> = T extends Serialized ?
   ParamsBuilderFuncSpec : (...args: unknown[]) => FetchParams;
@@ -268,6 +277,7 @@ export const enum NodeType {
   HTMLNode = 'html-element',
   ReactComponentNode = 'react-component',
   LoopContainerNode = 'loop-container',
+  ComposedNode = 'composed-node',
 }
 
 export interface BaseNode<T extends Serialized | Instantiated> {
@@ -293,7 +303,7 @@ export interface ReactComponentNode<T extends Serialized | Instantiated> extends
   children?: Array<SchemaNode<T>>;
 }
 
-export type IterableState<T extends Serialized | Instantiated> =
+export type PlainState<T extends Serialized | Instantiated> =
   APIResultProperty<T> |
   SharedStateProperty<T> |
   NodeStateProperty<T> |
@@ -302,16 +312,28 @@ export type IterableState<T extends Serialized | Instantiated> =
 export interface LoopContainerNode<T extends Serialized | Instantiated> extends BaseNode<T> {
   type: NodeType.LoopContainerNode;
   // props: LoopContainerNodeProps<T>;
-  iterableState: IterableState<T>;
+  iterableState: PlainState<T>;
   loopKey: string;
   node: SchemaNode<T>;
   toProps: ToProps<T>;
 }
 
+export type ComposedNodeChild<T extends Serialized | Instantiated> = SchemaNode<T> & {
+  toProps?: ToProps<T>;
+}
+
+export interface ComposedNode<T extends Serialized | Instantiated> extends BaseNode<T> {
+  type: NodeType.ComposedNode;
+  outLayer?: Omit<HTMLNode<T>, 'children'>;
+  composedState: PlainState<T>;
+  children: Array<ComposedNodeChild<T>>;
+}
+
 export type SchemaNode<T extends Serialized | Instantiated> =
   HTMLNode<T> |
   ReactComponentNode<T> |
-  LoopContainerNode<T>;
+  LoopContainerNode<T> |
+  ComposedNode<T>;
 
 // map of stateID and apiID
 // todo should also store builder info

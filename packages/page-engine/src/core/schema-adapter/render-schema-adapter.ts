@@ -68,8 +68,8 @@ function mapNode(node: PageEngine.Node): SchemaNode<Serialized> {
       loopKey: 'id', // todo: collect from page
       toProps: {
         type: 'to_props_function_spec',
-        args: 'v',
-        body: 'return v', // todo: collect toProps body from page
+        args: 'state',
+        body: 'return state', // todo: collect toProps body from page
       },
       type: NodeType.LoopContainerNode,
       iterableState: {

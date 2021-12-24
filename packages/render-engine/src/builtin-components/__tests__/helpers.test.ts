@@ -4,7 +4,7 @@ import { renderHook } from '@testing-library/react-hooks/pure';
 import APIStatesHub from '../../ctx/states-hub-api';
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 import { useIterable } from '../helpers';
-import { Instantiated, IterableState, NodePropType } from '../..';
+import { Instantiated, PlainState, NodePropType } from '../..';
 
 const dummyStatesHubAPI = new APIStatesHub(
   { build: () => ({ url: '', method: '' }) },
@@ -17,7 +17,7 @@ test('useIterable_should_return_null_if_state_is_not_iterable', () => {
   dummyCTX.statesHubShared.exposeNodeState('not_arr_node', {});
   dummyCTX.statesHubAPI.getState$('not_array_result').next({ result: {}, loading: false, error: undefined });
 
-  const iterableStates: Array<IterableState<Instantiated>> = [
+  const iterableStates: Array<PlainState<Instantiated>> = [
     {
       type: NodePropType.SharedStateProperty,
       stateID: 'not_arr',

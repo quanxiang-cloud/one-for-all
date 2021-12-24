@@ -6,7 +6,7 @@ import {
   Serialized,
   Instantiated,
   NodePropType,
-  IterableState,
+  PlainState,
   CTX,
   LoopContainerNode,
 } from '../types';
@@ -29,7 +29,7 @@ export function transformLoopNode(
     type: node.type,
     props: node.props ? transformProps(node.props, ctx) : {},
     // todo fixme
-    iterableState: iterableState as IterableState<Instantiated>,
+    iterableState: iterableState as PlainState<Instantiated>,
     toProps: instantiatedToProps,
     loopKey: node.loopKey,
     node: instantiatedNode,
