@@ -255,6 +255,8 @@ export type CTX = {
   repository?: Repository;
 }
 
+export type RenderEngineCTX = Pick<CTX, 'states' | 'apiStates'>;
+
 export type VersatileFunc<T = unknown> = (...args: unknown[]) => T;
 
 export type LifecycleHooks<T extends Serialized | Instantiated> = Partial<{

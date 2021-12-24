@@ -9,6 +9,7 @@ import {
   Instantiated,
   LifecycleHooks,
   Serialized,
+  RenderEngineCTX,
 } from '../types';
 
 export function instantiateConvertor(
@@ -16,10 +17,10 @@ export function instantiateConvertor(
   ctx: CTX,
 ): StateConvertorFunc | undefined {
   // todo handle new function error
-  const publicCtx = { apiStates: ctx.apiStates, states: ctx.states };
+  const renderEngineCTX: RenderEngineCTX = { apiStates: ctx.apiStates, states: ctx.states };
 
   if (serializedStateConvertor.type === 'state_convert_expression') {
-    const fn = new Function('state', `return ${serializedStateConvertor.expression}`).bind(publicCtx);
+    const fn = new Function('state', `return ${serializedStateConvertor.expression}`).bind(renderEngineCTX);
     fn.toString = () => [
       '',
       'function wrappedStateConvertor(state) {',
@@ -31,7 +32,7 @@ export function instantiateConvertor(
   }
 
   if (serializedStateConvertor.type === 'state_convertor_func_spec') {
-    const fn = new Function('state', serializedStateConvertor.body).bind(publicCtx);
+    const fn = new Function('state', serializedStateConvertor.body).bind(renderEngineCTX);
     fn.toString = () => [
       '',
       'function wrappedStateConvertor(state) {',
@@ -59,9 +60,9 @@ export function instantiateFuncSpec<T = unknown>(
   spec: BaseFunctionSpec,
   ctx: CTX,
 ): VersatileFunc<T> {
-  const publicCtx = { apiStates: ctx.apiStates, states: ctx.states };
+  const renderEngineCTX: RenderEngineCTX = { apiStates: ctx.apiStates, states: ctx.states };
   try {
-    const fn = new Function(spec.args, spec.body).bind(publicCtx);
+    const fn = new Function(spec.args, spec.body).bind(renderEngineCTX);
     fn.toString = () => [
       '',
       `function wrappedFunc(${spec.args}) {`,
