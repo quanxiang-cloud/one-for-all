@@ -18,6 +18,7 @@ interface BaseSelectProps<T> {
   className?: string;
   optionClassName?: string;
   disabled?: boolean;
+  border?: boolean;
   // inputRef?: React.RefObject<HTMLInputElement>;
   inputRef?: React.Ref<HTMLInputElement>;
   name?: string;
@@ -251,7 +252,7 @@ export default class Select<T extends React.Key> extends React.Component<SelectP
   render(): React.ReactNode {
     const { triggerActive, selectedValue } = this.state;
     const {
-      children, triggerRender, name, inputRef, style, className, disabled, id,
+      children, triggerRender, name, inputRef, style, className, disabled, id, border = true
     } = this.props;
 
     const arrowStyle: React.CSSProperties | undefined = triggerActive ? {
@@ -266,7 +267,8 @@ export default class Select<T extends React.Key> extends React.Component<SelectP
               ref={this.reference}
               style={style}
               className={cs('dropdown-trigger', className, {
-                'border-blue-600': triggerActive && !disabled,
+                'border-none': !border,
+                'border-blue-600': border && triggerActive && !disabled,
                 'select-trigger--disabled': disabled,
               })}
             >

@@ -9,6 +9,8 @@ import { defaults } from 'lodash';
 import { useCtx } from '@ofa/page-engine';
 import { Modal, Icon, Button, toast } from '@ofa/ui';
 
+import LayoutConfig from './layout-config';
+import DisplayConfig from './display-config';
 import BackgroundConfig from './background-config';
 import FontConfig from './font-config';
 import BorderConfig from './border-config';
@@ -86,7 +88,10 @@ function StylePanel({ className }: Props): JSX.Element {
       </div>
       <form onChange={handleFormChange}>
         <Section title='画布' defaultExpand>
-          {/* <LayoutConfig initValues={values} register={register} setValue={setValue} />*/}
+          <LayoutConfig initValues={values} register={register} setValue={setValue} />
+        </Section>
+        <Section title='显示布局' defaultExpand>
+          <DisplayConfig initValues={values} register={register} setValue={setValue} />
         </Section>
         <Section title='字体' defaultExpand>
           <FontConfig
