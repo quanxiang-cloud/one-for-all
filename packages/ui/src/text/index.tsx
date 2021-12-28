@@ -9,12 +9,13 @@ export interface Props {
   children?: React.ReactNode;
 }
 
-function Text({ content, isAllowSelect }: Props): JSX.Element {
+function Text({ content, isAllowSelect, style, className }: Props): JSX.Element {
   return (
     <span
+      style={style}
       className={cs({
         'user-select': isAllowSelect ? 'none' : 'auto',
-      })}
+      }, className)}
     >
       {content || '文本'}
     </span>

@@ -17,6 +17,10 @@ const elem: Registry.SourceElement<Props> = {
   defaultConfig,
   hidden: true,
   acceptChild: true,
+  defaultStyle: {
+    width: '960px',
+    height: '100%',
+  },
 };
 
 export default elem;

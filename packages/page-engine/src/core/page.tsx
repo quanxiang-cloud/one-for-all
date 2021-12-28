@@ -70,7 +70,11 @@ function Page({ schema, children, className }: Props): JSX.Element {
 
   function mergeStyle(s: Record<string, any>): Record<string, any> {
     if (s._style) {
-      set(s, 'props.style', { ...get(s, 'props.style', {}), ...s._style });
+      const curStyle = { ...get(s, 'props.style', {}), ...s._style };
+      const defaultStyle = page.getElemDefaultStyle(s?.comp || '');
+      const mergeStyle = defaults({}, curStyle, defaultStyle);
+      console.log('node final style, default type: ', mergeStyle, defaultStyle);
+      set(s, 'props.style', page.formatStyles(mergeStyle));
     }
     return s;
   }

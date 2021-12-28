@@ -4,7 +4,6 @@ import cs from 'classnames';
 import { observer } from 'mobx-react';
 import Editor from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
-import { defaults } from 'lodash';
 
 import { useCtx } from '@ofa/page-engine';
 import { Modal, Icon, Button, toast } from '@ofa/ui';
@@ -15,7 +14,6 @@ import BackgroundConfig from './background-config';
 import FontConfig from './font-config';
 import BorderConfig from './border-config';
 import ShadowConfig from './shadow-config';
-import { DEFAULT_STYLE_CONFIG, formatStyles } from './default-config';
 import Section from '../../comps/section';
 
 import styles from './index.m.scss';
@@ -27,15 +25,27 @@ interface Props {
 function StylePanel({ className }: Props): JSX.Element {
   const { register, getValues, setValue } = useForm();
   const { page } = useCtx();
-  const [values, setValues] = useState<any>(()=> defaults(getCurStyle(), DEFAULT_STYLE_CONFIG));
+  const [values, setValues] = useState<any>(()=> getCurStyle());
   const [modalOpen, setModalOpen] = useState(false);
-  const [editorVal, setEditorVal] = useState(JSON.stringify(values, null, 2));
+  const [editorVal, setEditorVal] = useState(()=> getEditorValues());
 
   useEffect(() => {
     if (checkStyles(values)) {
+      // no need save default styles to page node
       page.updateElemProperty(page.activeElem.id, '_style', values);
+      setEditorVal(getEditorValues());
     }
   }, [values]);
+
+  useEffect(()=> {
+    if (page.activeElemId) {
+      setValues(getCurStyle());
+    }
+  }, [page.activeElemId]);
+
+  function getEditorValues(): string {
+    return JSON.stringify(values, null, 2);
+  }
 
   function getCurStyle(): React.CSSProperties {
     if (page.activeElem) {
@@ -74,9 +84,9 @@ function StylePanel({ className }: Props): JSX.Element {
   }
 
   function handleFormChange(): void {
-    const _values = getValues();
-    const newValues = formatStyles(_values);
-    setValues(newValues);
+    // const _values = getValues();
+    // const newValues = page.formatStyles(_values);
+    setValues(getValues());
   }
 
   return (
