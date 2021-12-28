@@ -7,7 +7,7 @@ declare module '*.m.scss' {
 }
 
 declare namespace PageEngine {
-  type LifeCycleName='willMount' | 'didMount' | 'willUnmount'
+  type LifeCycleName='didMount' | 'willUnmount'
   type SerializedFunc={
     type:'',
     args: '',

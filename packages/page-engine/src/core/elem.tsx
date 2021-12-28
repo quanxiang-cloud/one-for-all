@@ -15,11 +15,11 @@ interface Props {
   className?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode;
-  preview?: boolean;
+  // preview?: boolean;
 }
 
 // node wrapper for each element in page
-function Elem({ node, className, preview, children }: Props): JSX.Element {
+function Elem({ node, className, children }: Props): JSX.Element {
   const { comp, id = elemId(node.comp), pid = '', label = '' } = node;
   const { page, registry, designer } = useCtx();
   const boxRef = useRef<HTMLDivElement>(null);
@@ -107,58 +107,50 @@ function Elem({ node, className, preview, children }: Props): JSX.Element {
     return `data:image/svg+xml;base64,${encode(svg)}`;
   }
 
-  if (!preview) {
-    drag(drop(boxRef));
-
-    return (
-      <>
-        <DragPreviewImage connect={dragPreview} src={svgPreviewImg(label)} />
-        <div
-          className={cs(styles.elem, {
-            [styles.isPage]: comp === 'page',
-            [styles.dragging]: isDragging,
-            [styles.isOver]: isOver,
-            [styles.selected]: page.activeElemId === id,
-            [styles.draggingUp]: isOver && page.dragPos === 'up',
-            [styles.draggingInner]: isOver && page.dragPos === 'inner',
-            [styles.draggingDown]: isOver && page.dragPos === 'down',
-          }, className)}
-          ref={boxRef}
-          onClick={(ev) => {
-            ev.preventDefault();
-            ev.stopPropagation();
-            page.setActiveElemId(id);
-            // check source panel open
-            designer.checkPanel();
-          }}
-        >
-          <div className={styles.toolbar}>
-            {comp.startsWith('elem.') && (
-              <div className={cs('px-4 mr-6 bg-white mt-1', styles.group)}>
-                <span onClick={() => page.copyNode(pid, id)}>
-                  <Icon name='content_copy' size={12} className='mr-8' clickable />
-                </span>
-                <span onClick={() => page.removeNode(pid, id)}>
-                  <Icon name='delete' size={14} clickable />
-                </span>
-              </div>
-            )}
-            <div className={cs('px-4 bg-blue-600', styles.group)}>
-              <span className='inline-flex items-center text-white'>
-                <Icon name='insert_drive_file' color='white' size={12} className='mr-6' />
-                <span>{label}</span>
-              </span>
-            </div>
-          </div>
-          {children}
-        </div>
-      </>
-    );
-  }
+  drag(drop(boxRef));
 
   return (
     <>
-      {children}
+      <DragPreviewImage connect={dragPreview} src={svgPreviewImg(label)} />
+      <div
+        className={cs(styles.elem, {
+          [styles.isPage]: comp === 'page',
+          [styles.dragging]: isDragging,
+          // [styles.isOver]: isOver,
+          [styles.selected]: page.activeElemId === id,
+          [styles.draggingUp]: isOver && page.dragPos === 'up',
+          [styles.draggingInner]: isOver && page.dragPos === 'inner',
+          [styles.draggingDown]: isOver && page.dragPos === 'down',
+        }, className)}
+        ref={boxRef}
+        onClick={(ev) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          page.setActiveElemId(id);
+          // check source panel open
+          designer.checkPanel();
+        }}
+      >
+        <div className={styles.toolbar}>
+          {comp.startsWith('elem.') && (
+            <div className={cs('px-4 mr-6 bg-white mt-1', styles.group)}>
+              <span onClick={() => page.copyNode(pid, id)}>
+                <Icon name='content_copy' size={12} className='mr-8' clickable />
+              </span>
+              <span onClick={() => page.removeNode(pid, id)}>
+                <Icon name='delete' size={14} clickable />
+              </span>
+            </div>
+          )}
+          <div className={cs('px-4 bg-blue-600', styles.group)}>
+            <span className='inline-flex items-center text-white'>
+              <Icon name='insert_drive_file' color='white' size={12} className='mr-6' />
+              <span>{label}</span>
+            </span>
+          </div>
+        </div>
+        {children}
+      </div>
     </>
   );
 }

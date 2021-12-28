@@ -3,7 +3,6 @@ import cs from 'classnames';
 import { observer } from 'mobx-react';
 import { useDrop } from 'react-dnd';
 import { defaults, get, set, flow } from 'lodash';
-import { toJS } from 'mobx';
 
 import { useCtx } from '@ofa/page-engine';
 import Elem from './elem';
@@ -11,16 +10,15 @@ import Elem from './elem';
 import styles from './index.m.scss';
 
 interface Props {
-  schema?: PageEngine.Node;
+  schema?: PageEngine.Node; // todo: replace with render-engine schema
   className?: string;
   onSave?: () => void;
   onPreview?: () => void;
-  children?: React.ReactNode;
 }
 
 const identity = (x: any): any => x;
 
-function Page({ schema, children, className }: Props): JSX.Element {
+function Page({ schema, className }: Props): JSX.Element {
   const { page, registry, dataSource } = useCtx();
 
   const [{ isOver }, drop] = useDrop(() => ({
@@ -50,8 +48,6 @@ function Page({ schema, children, className }: Props): JSX.Element {
         storedSchema = null;
       }
       storedSchema && page.setSchema(storedSchema as any);
-    } else {
-      // todo: query page schema from backend, delegate to render engine
     }
 
     // init data source from page schema
@@ -82,29 +78,33 @@ function Page({ schema, children, className }: Props): JSX.Element {
     return toProps(elemProps);
   }
 
+  const schemaToProps = flow([
+    mergeStyle,
+    mergeProps,
+  ]);
+
   function renderNode(schema: PageEngine.Node, level = 0): JSX.Element | null | undefined {
     // handle primitive type
     if (typeof schema !== 'object' || schema === null) {
       return schema;
     }
 
-    const schemaToProps = flow([
-      mergeStyle,
-      mergeProps,
-    ]);
+    // return React.createElement(transformType(schema.comp), schemaToProps(schema), ...([].concat(schema.children as any))
+    //   .map((child) => renderNode(child, level + 1)));
 
     return (
       <Elem node={schema}>
-        {React.createElement(transformType(schema.comp), schemaToProps(toJS(schema)), ...([].concat(schema.children as any))
-          .map((child) => renderNode(child, level + 1)))}
+        {
+          React.createElement(transformType(schema.comp), schemaToProps(schema), ...([].concat(schema.children as any))
+            .map((child) => renderNode(child, level + 1)))
+        }
       </Elem>
     );
   }
 
   return (
-    <div className={cs(styles.page, { [styles.isOver]: isOver }, className)} ref={drop}>
+    <div className={cs(styles.page, className)} ref={drop}>
       {renderNode(page.schema)}
-      {children}
     </div>
   );
 }

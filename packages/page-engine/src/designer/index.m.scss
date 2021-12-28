@@ -5,8 +5,12 @@
   font-size: 12px;
   line-height: 20px;
   background-color: var(--pg-bg-color);
+  height: 100vh;
 
   .body {
+    position: relative;
+    top: var(--pg-header-height);
+    overflow: hidden;
     display: grid;
     width: 100%;
     height: calc(100vh - var(--pg-header-height));
@@ -22,6 +26,7 @@
 .canvas {
   width: 100%;
   background: white;
+  overflow: auto;
 }
 
 :global {
