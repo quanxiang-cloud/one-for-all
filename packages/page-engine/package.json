@@ -1,6 +1,6 @@
 {
   "name": "@ofa/page-engine",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "A qxp page engine",
   "license": "MIT",
   "author": "sunnyw <sunnywang@yunify.com>",
@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^0.19.3",
-    "@uiw/react-codemirror": "^4.3.0",
+    "@uiw/react-codemirror": "~4.2.0",
     "classnames": "^2.3.1",
     "mobx": "^6.3.8",
     "mobx-react": "^7.2.1",
