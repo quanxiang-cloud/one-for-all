@@ -1,5 +1,6 @@
 import { Input } from '@ofa/ui';
 import ConfigForm, { defaultConfig } from './config-form';
+import type { SourceElement } from '@ofa/page-engine';
 
 type Props = {
   name?: string,
@@ -10,7 +11,7 @@ type Props = {
   disable?: boolean,
 }
 
-const elem: Registry.SourceElement<Props> = {
+const elem: SourceElement<Props> = {
   name: 'input',
   icon: 'apps',
   label: '单行文本',

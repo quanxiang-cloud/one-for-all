@@ -1,4 +1,5 @@
 import { Textarea } from '@ofa/ui';
+import type { SourceElement } from '@ofa/page-engine';
 
 import ConfigForm, { DEFAULT_CONFIG } from './config-form';
 
@@ -9,7 +10,7 @@ type Props = {
   name: string,
 }
 
-const elem: Registry.SourceElement<Props> = {
+const elem: SourceElement<Props> = {
   name: 'textarea',
   icon: 'apps',
   label: '多行文本',

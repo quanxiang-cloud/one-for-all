@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { toJS } from 'mobx';
 
 import { Icon, Button } from '@ofa/ui';
-import { useCtx, toRenderSchema } from '@ofa/page-engine';
+import { useCtx } from '@ofa/page-engine';
 
 import styles from './index.m.scss';
 
@@ -26,8 +26,7 @@ function Toolbar(): JSX.Element {
   }
 
   function handlePreview(): void {
-    // todo: revert
-    const renderSchema = toRenderSchema(toJS(page.schema));
+    const renderSchema = toJS(page.schema);
     console.log('preview render schema: ', renderSchema);
     ctx.onSave?.(renderSchema, { draft: true, silent: true });
   }

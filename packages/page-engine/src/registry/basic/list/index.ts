@@ -1,5 +1,6 @@
 import List from './list';
 import ConfigForm from './config-form';
+import type { SourceElement } from '@ofa/page-engine';
 
 type Props = {
   name?: string
@@ -7,7 +8,7 @@ type Props = {
 
 const defaultConfig: Props = {};
 
-const elem: Registry.SourceElement<Props> = {
+const elem: SourceElement<Props> = {
   name: 'list',
   icon: 'apps',
   label: '列表',

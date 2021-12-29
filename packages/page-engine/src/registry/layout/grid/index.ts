@@ -1,7 +1,8 @@
 import { Grid, GridProps } from '@ofa/ui';
 import ConfigForm, { defaultConfig } from './config-form';
+import type { SourceElement } from '@ofa/page-engine';
 
-const elem: Registry.SourceElement<GridProps> = {
+const elem: SourceElement<GridProps> = {
   name: 'grid',
   icon: 'apps',
   label: '布局容器',

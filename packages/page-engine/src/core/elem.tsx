@@ -7,39 +7,39 @@ import { Icon } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
 import { encode } from '../utils/base64';
 import { elemId } from '../utils';
+import type { PageNode, DragPos } from '@ofa/page-engine';
 
 import styles from './index.m.scss';
 
 interface Props {
-  node: PageEngine.Node;
+  node: PageNode;
   className?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode;
-  // preview?: boolean;
 }
 
 // node wrapper for each element in page
 function Elem({ node, className, children }: Props): JSX.Element {
-  const { comp, id = elemId(node.comp), pid = '', label = '' } = node;
+  const { exportName, id = elemId(node.exportName), pid = '', label = '' } = node;
   const { page, registry, designer } = useCtx();
   const boxRef = useRef<HTMLDivElement>(null);
 
   const [{ isDragging }, drag, dragPreview] = useDrag(() => ({
     type: 'elem',
-    canDrag: comp !== 'page',
+    canDrag: exportName !== 'page',
     item: {
       id,
       pid,
-      comp,
-      label: registry.getLabelByElemType(comp),
+      exportName,
+      label: registry.getLabelByElemType(exportName),
     },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
     end: (item, monitor) => {
       const targetNode: any = monitor.getDropResult();
-      if (targetNode?.comp) {
-        console.log('[elem] dropped %o onto: %o', item, targetNode);
+      if (targetNode?.exportName) {
+        // console.log('[elem] dropped %o onto: %o', item, targetNode);
         page.appendNode(item, targetNode);
       }
     },
@@ -59,8 +59,8 @@ function Elem({ node, className, children }: Props): JSX.Element {
       return {
         id,
         pid,
-        comp,
-        label: registry.getLabelByElemType(comp),
+        exportName,
+        label: registry.getLabelByElemType(exportName),
       };
     },
     hover: (item, monitor) => {
@@ -81,7 +81,7 @@ function Elem({ node, className, children }: Props): JSX.Element {
         const hoverClientY = dragOffsetY - hoverDOMTop;
         const hoverClientX = dragOffsetX - hoverDOMLeft;
 
-        let pos: PageEngine.DragPos = 'up';
+        let pos: DragPos = 'up';
         if (Math.abs(hoverClientY) <= hoverMiddleY / 2) {
           pos = 'inner';
         } else if (hoverClientY < 0 && Math.abs(hoverClientY) > hoverMiddleY / 2) {
@@ -114,7 +114,7 @@ function Elem({ node, className, children }: Props): JSX.Element {
       <DragPreviewImage connect={dragPreview} src={svgPreviewImg(label)} />
       <div
         className={cs(styles.elem, {
-          [styles.isPage]: comp === 'page',
+          [styles.isPage]: exportName === 'page',
           [styles.dragging]: isDragging,
           // [styles.isOver]: isOver,
           [styles.selected]: page.activeElemId === id,
@@ -132,12 +132,12 @@ function Elem({ node, className, children }: Props): JSX.Element {
         }}
       >
         <div className={styles.toolbar}>
-          {comp.startsWith('elem.') && (
+          {exportName !== 'page' && (
             <div className={cs('px-4 mr-6 bg-white mt-1', styles.group)}>
               <span onClick={() => page.copyNode(pid, id)}>
                 <Icon name='content_copy' size={12} className='mr-8' clickable />
               </span>
-              <span onClick={() => page.removeNode(pid, id)}>
+              <span onClick={() => page.removeNode(id)}>
                 <Icon name='delete' size={14} clickable />
               </span>
             </div>

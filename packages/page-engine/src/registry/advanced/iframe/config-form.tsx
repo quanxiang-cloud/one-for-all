@@ -32,12 +32,12 @@ const DEFAULT_CONFIG: IframeConfigProps = {
 function ConfigForm(): JSX.Element {
   const { register, getValues } = useForm();
   const { page } = useContext(ctx);
-  const [values, setValues] = useState<IframeConfigProps>(defaults(page.activeElem.props, DEFAULT_CONFIG));
+  const [values, setValues] = useState<IframeConfigProps>(defaults(page.activeElemProps, DEFAULT_CONFIG));
 
   function handleFormChange(): void {
     const _values = getValues();
     setValues(_values);
-    page.updateElemProps(page.activeElem.id, _values);
+    page.updateElemProperty(page.activeElem.id, 'props', _values);
   }
 
   return (

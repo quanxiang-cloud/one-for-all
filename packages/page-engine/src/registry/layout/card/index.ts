@@ -1,5 +1,6 @@
 import Card from './card';
 import ConfigForm from './config-form';
+import type { SourceElement } from '@ofa/page-engine';
 
 type Props = {
   name?: string
@@ -7,7 +8,7 @@ type Props = {
 
 const defaultConfig: Props = {};
 
-const elem: Registry.SourceElement<Props> = {
+const elem: SourceElement<Props> = {
   name: 'card',
   icon: 'apps',
   label: '分组',

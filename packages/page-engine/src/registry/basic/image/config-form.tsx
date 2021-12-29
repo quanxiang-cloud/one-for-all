@@ -31,14 +31,14 @@ const defaultConfig = {
 
 function ConfigForm(): JSX.Element {
   const { page } = useCtx();
-  const [values, setValues] = useState<Props>(defaults(page.activeElem.props, defaultConfig));
+  const [values, setValues] = useState<Props>(defaults(page.activeElemProps, defaultConfig));
 
   useEffect(() => {
     page.updateElemProperty(page.activeElem.id, 'props', values);
   }, [values]);
 
   useEffect(() => {
-    !isEmpty(page.activeElem.props) && setValues(defaults(page.activeElem.props, defaultConfig));
+    !isEmpty(page.activeElem.props) && setValues(defaults(page.activeElemProps, defaultConfig));
   }, [page.activeElem.props]);
 
   return (

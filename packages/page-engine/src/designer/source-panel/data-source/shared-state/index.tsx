@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { observer } from 'mobx-react';
 
 import { Search, Icon, Tooltip } from '@ofa/ui';
@@ -16,6 +16,10 @@ interface Props {
 function SharedState(props: Props): JSX.Element {
   const { dataSource } = useCtx();
   const noData = !Object.keys(dataSource.sharedState).length;
+
+  useEffect(()=> {
+    dataSource.sharedState = dataSource.mapSharedStateSpec();
+  }, []);
 
   return (
     <div>

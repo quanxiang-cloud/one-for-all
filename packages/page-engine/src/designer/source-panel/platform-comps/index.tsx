@@ -2,12 +2,12 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { get } from 'lodash';
 
-import { useCtx } from '@ofa/page-engine';
+import { useCtx, Category, SourceElement } from '@ofa/page-engine';
 import SourceElem from './source-elem';
 
 import styles from './index.m.scss';
 
-const categories: Array<{ label: string, value: Registry.Category }> = [
+const categories: Array<{ label: string, value: Category }> = [
   { label: '布局组件', value: 'layout' },
   { label: '基础组件', value: 'basic' },
   { label: '表单组件', value: 'form' },
@@ -30,7 +30,7 @@ function PlatformComps(): JSX.Element {
           <div className={styles.cate} key={value}>
             <div className={styles.title}>{label}</div>
             <div className={styles.elems}>
-              {elems.map((elem: Registry.SourceElement<any>) => {
+              {elems.map((elem: SourceElement<any>) => {
                 if (elem.hidden) {
                   return null;
                 }

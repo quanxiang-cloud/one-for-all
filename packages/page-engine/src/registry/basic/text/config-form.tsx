@@ -21,7 +21,7 @@ export interface Props {
 function ConfigForm(): JSX.Element {
   const { register, getValues } = useForm();
   const { page, designer } = useCtx();
-  const [values, setValues] = useState(defaults(page.activeElem.props, DEFAULT_CONFIG));
+  const [values, setValues] = useState(defaults({}, page.activeElemProps, DEFAULT_CONFIG));
   const { activeElem } = page;
 
   useEffect(() => {

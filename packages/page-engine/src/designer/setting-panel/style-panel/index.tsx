@@ -33,7 +33,7 @@ function StylePanel({ className }: Props): JSX.Element {
 
   useEffect(() => {
     if (checkStyles(values)) {
-      page.updateElemProperty(page.activeElem.id, '_style', values);
+      page.updateElemProperty(page.activeElem.id, 'props.style', values);
     }
   }, [values]);
 

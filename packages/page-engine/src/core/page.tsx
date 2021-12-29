@@ -2,15 +2,17 @@ import React, { useEffect } from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 import { useDrop } from 'react-dnd';
-import { defaults, get, set, flow } from 'lodash';
+import { defaults, get, set, flow, mapValues } from 'lodash';
+import { toJS } from 'mobx';
 
-import { useCtx } from '@ofa/page-engine';
+import { useCtx, PageNode, PageSchema } from '@ofa/page-engine';
+import { ConstantProperty } from '@ofa/render-engine';
 import Elem from './elem';
 
 import styles from './index.m.scss';
 
 interface Props {
-  schema?: PageEngine.Node; // todo: replace with render-engine schema
+  schema?: PageSchema;
   className?: string;
   onSave?: () => void;
   onPreview?: () => void;
@@ -51,17 +53,11 @@ function Page({ schema, className }: Props): JSX.Element {
     }
 
     // init data source from page schema
-    dataSource.sharedState = page.schema._shared || {};
+    // dataSource.sharedState = page.schema._shared || {};
   }, []);
 
-  function transformType(type: string): string | ReactComp {
-    if (type.startsWith('elem.')) {
-      return registry.elementMap[type.slice('elem.'.length)].component;
-    }
-    if (type === 'page') {
-      return registry.elementMap.page.component;
-    }
-    return type;
+  function transformType(type: string): string | React.ComponentType {
+    return registry.elementMap?.[type]?.component || type;
   }
 
   function mergeStyle(s: Record<string, any>): Record<string, any> {
@@ -71,31 +67,31 @@ function Page({ schema, className }: Props): JSX.Element {
     return s;
   }
 
-  function mergeProps(schema: Record<string, any>): Record<string, any> {
-    const elemConf = registry.getElemByType(schema.comp);
+  function mergeProps(schema: PageNode): Record<string, any> {
+    const elemConf = registry.getElemByType(schema.exportName);
     const toProps = elemConf.toProps || identity;
-    const elemProps = defaults(schema.props, elemConf.defaultConfig);
+    const elemProps = defaults({}, mapValues(schema.props, (v: ConstantProperty)=> v.value), elemConf.defaultConfig);
     return toProps(elemProps);
   }
 
   const schemaToProps = flow([
-    mergeStyle,
+    // mergeStyle,
     mergeProps,
   ]);
 
-  function renderNode(schema: PageEngine.Node, level = 0): JSX.Element | null | undefined {
+  function renderNode(schema: PageNode, level = 0): JSX.Element | null | undefined {
     // handle primitive type
     if (typeof schema !== 'object' || schema === null) {
       return schema;
     }
 
-    // return React.createElement(transformType(schema.comp), schemaToProps(schema), ...([].concat(schema.children as any))
+    // return React.createElement(transformType(schema.exportName), schemaToProps(schema), ...([].concat(schema.children as any))
     //   .map((child) => renderNode(child, level + 1)));
 
     return (
       <Elem node={schema}>
         {
-          React.createElement(transformType(schema.comp), schemaToProps(schema), ...([].concat(schema.children as any))
+          React.createElement(transformType(schema.exportName), schemaToProps(toJS(schema)), ...([].concat(schema.children as any))
             .map((child) => renderNode(child, level + 1)))
         }
       </Elem>
@@ -104,7 +100,7 @@ function Page({ schema, className }: Props): JSX.Element {
 
   return (
     <div className={cs(styles.page, className)} ref={drop}>
-      {renderNode(page.schema)}
+      {renderNode(page.schema.node)}
     </div>
   );
 }
