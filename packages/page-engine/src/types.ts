@@ -1,4 +1,4 @@
-import { Serialized, BaseNode, NodeType, Schema, APIStatesSpec, SharedStatesSpec } from '@ofa/render-engine';
+import { Serialized, BaseNode, NodeType, APIStatesSpec, SharedStatesSpec } from '@ofa/render-engine';
 
 // export type PrimitiveType = string | number | boolean | undefined | null
 export type ReactComp = React.ComponentType | React.JSXElementConstructor<any>;
@@ -63,4 +63,5 @@ export interface SourceElement<T> {
   hidden?: boolean; // 在source panel 隐藏
   acceptChild?: boolean; // 是否接受子节点
   expose?: Record<string, any>; // 对外暴露的属性/方法
+  defaultStyle?: Record<string, any>; // 默认样式
 }

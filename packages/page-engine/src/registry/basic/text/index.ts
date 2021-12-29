@@ -17,6 +17,10 @@ const elem: SourceElement<Props> = {
   component: Text,
   configForm: ConfigForm,
   defaultConfig,
+  defaultStyle: {
+    width: '100px',
+    height: '20px',
+  },
   order: 1,
 };
 

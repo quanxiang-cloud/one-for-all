@@ -7,6 +7,7 @@ import { findNode, removeNode as removeTreeNode } from '../utils/tree-utils';
 import registry from './registry';
 import type { DragPos, PageNode, PageSchema } from '../types';
 import { transformLifecycleHooks, transformConstantProps } from '../utils/schema-adapter';
+import { DEFAULT_STYLE_CONFIG, STYLE_NUMBER } from '../config/default-styles';
 
 type Mode = 'design' | 'preview'
 
@@ -252,6 +253,38 @@ class PageStore {
         set(elem, propKey, conf);
       }
     }
+  }
+
+  getElemDefaultStyle=(type: string)=> {
+    const elem = registry.getElemByType(type);
+    return toJS(elem?.defaultStyle || {});
+  }
+
+  formatStyles = (styles: Record<string, string | number>): Record<string, string | number> => {
+    // console.log('format style: ', styles);
+    const newStyles: Record<string, string | number> = {};
+    if (typeof (styles) !== 'object' || styles === null) {
+      return newStyles;
+    }
+
+    Object.entries(styles).forEach((style) => {
+      const [key, value] = style;
+
+      if (key === 'backgroundImage') {
+        if (value === 'none') return;
+
+        newStyles[key] = `url(${value})`;
+        return;
+      }
+
+      if (STYLE_NUMBER.includes(key)) {
+        newStyles[key] = Number(value) || 0;
+        return;
+      }
+      newStyles[key] = value;
+    });
+
+    return newStyles;
   }
 
   @action

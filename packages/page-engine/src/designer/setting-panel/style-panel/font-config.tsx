@@ -55,7 +55,7 @@ function FontConfig({ initValues, register, setValue, onFormChange }: Props): JS
             <input
               type="number"
               className='w-full focus:outline-none'
-              {...register('fontSize', { value: initValues.fontSize || 0 })}
+              {...register('fontSize', { value: initValues.fontSize || '12px' })}
             />
             <div className='w-20 absolute right-0 top-0 bg-white
               text-12 text-gray-400 cursor-pointer'>px</div>
@@ -66,7 +66,7 @@ function FontConfig({ initValues, register, setValue, onFormChange }: Props): JS
           <input
             type="number"
             className='w-full focus:outline-none'
-            {...register('lineHeight', { value: initValues.lineHeight || 20 })}
+            {...register('lineHeight', { value: initValues.lineHeight || 1 })}
           />
         </div>
       </div>
