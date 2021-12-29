@@ -51,10 +51,6 @@ function Page({ schema, className }: Props): JSX.Element {
       }
       storedSchema && page.setSchema(storedSchema as any);
     }
-
-    // init data source from page schema
-    dataSource.sharedState = dataSource.mapSharedStateSpec();
-    dataSource.apiState = dataSource.mapApiStateSpec();
   }, []);
 
   function transformType(type: string): string | React.ComponentType {

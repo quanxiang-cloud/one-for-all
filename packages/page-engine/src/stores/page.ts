@@ -5,9 +5,10 @@ import { NodeType, NodePropType } from '@ofa/render-engine';
 import { elemId } from '../utils';
 import { findNode, removeNode as removeTreeNode } from '../utils/tree-utils';
 import registry from './registry';
+import dataSource from './data-source';
 import type { DragPos, PageNode, PageSchema } from '../types';
 import { transformLifecycleHooks, transformConstantProps } from '../utils/schema-adapter';
-import { DEFAULT_STYLE_CONFIG, STYLE_NUMBER } from '../config/default-styles';
+import { STYLE_NUMBER } from '../config/default-styles';
 
 type Mode = 'design' | 'preview'
 
@@ -75,6 +76,10 @@ class PageStore {
   @action
   setSchema = (schema: PageSchema): void => {
     this.schema = schema;
+
+    // init data source when set page schema
+    dataSource.sharedState = dataSource.mapSharedStateSpec();
+    dataSource.apiState = dataSource.mapApiStateSpec();
   }
 
   @action

@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 import { toJS } from 'mobx';
 
 import { Icon, Button, Tooltip, Modal } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
-import { SchemaRender, Schema, RenderEngineCTX } from '@ofa/render-engine';
+import { SchemaRender, Schema } from '@ofa/render-engine';
 
 import styles from './index.m.scss';
 
@@ -18,18 +18,17 @@ function Toolbar(): JSX.Element {
   const repository = useMemo(()=> ({
     'ofa-ui@latest': registry.toComponentMap(),
   }), []);
-  const renderRef = useRef<RenderEngineCTX>();
+  // const renderRef = useRef<RenderEngineCTX>();
 
-  useEffect(()=>{
-    if (renderRef.current) {
-      // console.log('render ref: ', renderRef.current);
-      if (renderRef.current.states) {
-        // @ts-ignore
-        const st = renderRef.current.states['text cont'];
-        console.log('test state: ', st);
-      }
-    }
-  }, [renderRef.current]);
+  // useEffect(()=>{
+  //   if (renderRef.current) {
+  //     if (renderRef.current.states) {
+  //       // @ts-ignore
+  //       const st = renderRef.current.states['text cont'];
+  //       console.log('test state: ', st);
+  //     }
+  //   }
+  // }, [renderRef.current]);
 
   function handleSave(): void {
     const pageSchema = toJS(page.schema);
@@ -57,13 +56,13 @@ function Toolbar(): JSX.Element {
         schema={schema as Schema}
         apiSpecAdapter={{} as any}
         repository={repository as any}
-        ref={renderRef}
+        // ref={renderRef}
       />
     );
   }
 
   return (
-    <div className={cs('bg-gray-50 h-44 flex justify-between items-center px-16', styles.toolbar)} ref={renderRef}>
+    <div className={cs('bg-gray-50 h-44 flex justify-between items-center px-16', styles.toolbar)}>
       <div className={styles.brand}>{designer.vdoms.title}</div>
       <div className={cs('flex items-center', styles.actions)}>
         <Icon name='computer' className='cursor-pointer' color='gray' />
