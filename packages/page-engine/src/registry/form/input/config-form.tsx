@@ -30,7 +30,7 @@ const configItems: configProps[] = [
 function ConfigForm(): JSX.Element {
   const { register, getValues } = useForm();
   const { page } = useCtx();
-  const [values, setValues] = useState(defaults(page.activeElem.props, defaultConfig));
+  const [values, setValues] = useState(defaults(page.activeElemProps, defaultConfig));
 
   useEffect(() => {
     page.updateElemProperty(page.activeElem.id, 'props', values);

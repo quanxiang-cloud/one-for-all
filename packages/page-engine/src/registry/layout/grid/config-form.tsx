@@ -14,7 +14,7 @@ const gaps = ['8px', '12px', '16px', '20px'].map((value) => ({ label: value, val
 
 function ConfigForm(): JSX.Element {
   const { page } = useCtx();
-  const [values, setValues] = useState<GridProps>(defaults(page.activeElem.props, defaultConfig));
+  const [values, setValues] = useState<GridProps>(defaults(page.activeElemProps, defaultConfig));
 
   useEffect(() => {
     page.updateElemProperty(page.activeElem.id, 'props', values);

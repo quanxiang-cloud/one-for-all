@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { observer } from 'mobx-react';
 
 import { Tab } from '@ofa/ui';
@@ -15,7 +15,7 @@ function SettingPanel(): JSX.Element {
   const { page, designer, registry } = useCtx();
 
   function renderPropsPanel(): JSX.Element {
-    const elem = registry.getElemByType(page.activeElem.comp);
+    const elem = registry.getElemByType(page.activeElem.exportName);
     const ConfigForm = elem.configForm;
 
     return (

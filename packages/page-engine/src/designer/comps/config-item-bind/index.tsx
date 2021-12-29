@@ -5,15 +5,16 @@ import { get } from 'lodash';
 
 import { Icon, Tooltip } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
+import { NodePropType } from '@ofa/render-engine';
 
 interface Props {
   name: string; // bind field name
   className?: string;
 }
 
-function ConfigItemBind({ name }: Props) {
+function ConfigItemBind({ name }: Props): JSX.Element {
   const { designer, page } = useCtx();
-  const bound = get(page.activeElem, ['_stateRef', name].join('.'));
+  const bound = get(page.activeElem, `props.${name}.type`) === NodePropType.SharedStateProperty;
 
   return (
     <div className='inline-flex items-center'>
@@ -28,9 +29,16 @@ function ConfigItemBind({ name }: Props) {
       </Tooltip>
       {bound && (
         <Tooltip position='top' label='解绑'>
-          <Icon name='link' clickable onClick={()=> {
-            page.updateElemProperty(page.activeElem.id, ['_stateRef', name].join('.'), '');
-          }} />
+          <Icon
+            name='link'
+            clickable
+            onClick={()=> {
+              const { fallback } = get(page.activeElem, `props.${name}`, {});
+              page.updateElemProperty(page.activeElem.id, `props.${name}`, {
+                type: NodePropType.ConstantProperty,
+                value: fallback,
+              });
+            }} />
         </Tooltip>
       )}
     </div>

@@ -4,6 +4,7 @@ import { get, set } from 'lodash';
 import { toast } from '@ofa/ui';
 
 import pageStore from './page';
+import { mapShareState, mapApiState } from '../utils/schema-adapter';
 
 export type SharedVal={
   name: string;
@@ -85,14 +86,46 @@ class DataSource {
     this.setCurSharedStateKey('');
 
     // auto save to page schema
-    pageStore.setPageSharedStates(toJS(this.sharedState));
+    this.saveSharedStateToPage();
+
     onSaved?.();
+  }
+
+  @action
+  saveSharedStateToPage=()=>{
+    set(pageStore.schema, 'sharedStatesSpec', mapShareState(toJS(this.sharedState)));
+  }
+
+  @action
+  saveApiStateToPage=()=>{
+    set(pageStore.schema, 'apiStateSpec', mapApiState(toJS(this.apiState)));
+  }
+
+  // map render engine shared state to page schema
+  mapSharedStateSpec=()=> {
+    return Object.entries(pageStore.schema.sharedStatesSpec).reduce((acc: Record<string, any>, [k, v]: [string, any])=> {
+      const conf = {
+        name: k,
+        val: JSON.stringify(toJS(v.initial)),
+        desc: '',
+      };
+      acc[k] = JSON.stringify(conf);
+      return acc;
+    }, {});
+  }
+
+  // map render engine api state to page schema
+  mapApiStateSpec=()=> {
+    return Object.entries(pageStore.schema.apiStateSpec).reduce((acc: Record<string, any>, [k, v]: [string, any])=> {
+      acc[k] = v.apiID;
+      return acc;
+    }, {});
   }
 
   @action
   removeSharedState = (key: string, onSaved?: ()=> void) => {
     delete this.sharedState[key];
-    pageStore.setPageSharedStates(toJS(this.sharedState));
+    this.saveSharedStateToPage();
     onSaved?.();
   }
 
@@ -120,14 +153,15 @@ class DataSource {
     this.curApiStateKey = '';
 
     // auto save api state
-    pageStore.setPageApiStates(toJS(this.apiState));
+    this.saveApiStateToPage();
+
     onSaved?.();
   }
 
   @action
   removeApiState = (key: string, onSaved?: ()=> void): void => {
     delete this.apiState[key];
-    pageStore.setPageApiStates(toJS(this.apiState));
+    this.saveApiStateToPage();
     onSaved?.();
   }
 

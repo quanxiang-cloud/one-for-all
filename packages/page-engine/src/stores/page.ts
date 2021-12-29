@@ -1,11 +1,14 @@
-import { observable, computed, action, toJS, makeObservable } from 'mobx';
-import { defaults, set } from 'lodash';
+import { action, computed, makeObservable, observable, toJS } from 'mobx';
+import { defaults, set, mapValues } from 'lodash';
 
+import { NodeType, NodePropType } from '@ofa/render-engine';
 import { elemId } from '../utils';
-import { findNode } from '../utils/tree-utils';
+import { findNode, removeNode as removeTreeNode } from '../utils/tree-utils';
 import registry from './registry';
 import dataSource from './data-source';
-import { DEFAULT_STYLE_CONFIG, STYLE_NUMBER } from '../config/default-styles';
+import type { DragPos, PageNode, PageSchema } from '../types';
+import { transformLifecycleHooks, transformConstantProps } from '../utils/schema-adapter';
+import { STYLE_NUMBER } from '../config/default-styles';
 
 type Mode = 'design' | 'preview'
 
@@ -15,9 +18,9 @@ type AppendNodeOptions = {
   [key: string]: any
 }
 
-function deepMergeNode(node: PageEngine.Node): PageEngine.Node {
+function deepMergeNode(node: PageNode): PageNode {
   const target = toJS(node);
-  Object.assign(target, { id: elemId(node.comp) });
+  Object.assign(target, { id: elemId(node.type || NodeType.ReactComponentNode) });
   if (target.children) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -26,24 +29,29 @@ function deepMergeNode(node: PageEngine.Node): PageEngine.Node {
   return target;
 }
 
-function pageInitialSchema(): PageEngine.Node {
+function initialPageSchema(): PageSchema {
   return {
-    id: elemId('page'),
-    pid: '',
-    comp: 'page',
-    label: '页面',
-    props: {},
-    children: [],
-    _shared: {},
-    _api: {},
+    node: {
+      id: elemId('page'),
+      pid: '',
+      type: NodeType.ReactComponentNode,
+      packageName: 'ofa-ui',
+      packageVersion: 'latest',
+      exportName: 'page', // todo
+      label: '页面',
+      props: {},
+      children: [],
+    },
+    apiStateSpec: {},
+    sharedStatesSpec: {},
   };
 }
 
 class PageStore {
-  @observable schema: PageEngine.Node = pageInitialSchema()
+  @observable schema: PageSchema = initialPageSchema()
   @observable mode: Mode = 'design'
   @observable activeElemId = ''
-  @observable dragPos: PageEngine.DragPos = 'down'
+  @observable dragPos: DragPos = 'down'
 
   constructor() {
     makeObservable(this);
@@ -54,24 +62,24 @@ class PageStore {
     if (!this.activeElemId) {
       return null;
     }
-    return findNode(this.schema, this.activeElemId);
+    return findNode(this.schema.node, this.activeElemId);
+  }
+
+  @computed
+  get activeElemProps(): any {
+    if (this.activeElem) {
+      return mapValues(this.activeElem.props, (v)=> v.value);
+    }
+    return {};
   }
 
   @action
-  setSchema = (schema: PageEngine.Node): void => {
+  setSchema = (schema: PageSchema): void => {
     this.schema = schema;
-    dataSource.sharedState = schema._shared || {};
-    dataSource.apiState = schema._api || {};
-  }
 
-  @action
-  setPageSharedStates=(states: any)=> {
-    Object.assign(this.schema._shared, states);
-  }
-
-  @action
-  setPageApiStates=(states: any)=> {
-    Object.assign(this.schema._api, states);
+    // init data source when set page schema
+    dataSource.sharedState = dataSource.mapSharedStateSpec();
+    dataSource.apiState = dataSource.mapApiStateSpec();
   }
 
   @action
@@ -85,42 +93,58 @@ class PageStore {
   }
 
   @action
-  setDragPos = (pos: PageEngine.DragPos): void => {
+  setDragPos = (pos: DragPos): void => {
     this.dragPos = pos;
   }
 
   @action
-  appendNode = (node: PageEngine.Node, target?: PageEngine.Node | null, options?: AppendNodeOptions): void => {
+  appendNode = (node: Omit<PageNode, 'type'| 'id'>, target?: Omit<PageNode, 'type' | 'id'> | null, options?: AppendNodeOptions): void => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const targetId = target?.id || this.schema.id;
-    const targetNode = findNode(this.schema, targetId);
+    const targetNode = findNode(this.schema.node, targetId);
 
-    const params: any = {
-      id: elemId(node.comp),
-      pid: targetNode.pid || this.schema.id,
+    const params: Partial<PageNode> = {
+      id: elemId(node.exportName),
+      pid: targetNode.pid || this.schema.node.id,
+      // exportName: node.exportName,
+      type: NodeType.ReactComponentNode,
+      packageName: 'ofa-ui',
+      packageVersion: 'latest',
       props: {},
     };
 
-    if (registry.acceptChild(node.comp)) {
+    if (registry.acceptChild(node.exportName)) {
       Object.assign(params, { children: [] });
       // check layout comps
-      if (node.comp === 'elem.grid') {
-        const subComp = 'elem.container';
+      if (node.exportName === 'grid') {
+        const subComp = 'container';
         params.children = [
-          { comp: subComp, id: elemId(subComp), pid: params.id, label: '容器', props: {}, children: [] },
+          {
+            id: elemId(subComp),
+            pid: params.id,
+            type: NodeType.ReactComponentNode,
+            exportName: subComp,
+            packageName: 'ofa-ui',
+            packageVersion: 'latest',
+            label: '容器',
+            props: {},
+            children: [],
+          },
         ];
       }
     }
 
     const srcNode = defaults(node, params);
     if (options?.renewId) {
-      Object.assign(srcNode, { id: elemId(srcNode.comp) });
+      Object.assign(srcNode, { id: elemId(srcNode.exportName) });
     }
 
     if (targetNode) {
       // console.log('append node: ', toJS(srcNode), toJS(targetNode), this.dragPos);
 
       if (this.dragPos === 'up') {
-        this.insertBefore(srcNode, targetNode);
+        this.insertBefore(srcNode as PageNode, targetNode);
         return;
       }
 
@@ -131,9 +155,11 @@ class PageStore {
         targetNode?.children?.push(Object.assign({}, srcNode, { pid: targetNode.id }));
         if (srcNode.id && options?.from !== 'source') {
           // remove src node
-          const srcParent = findNode(this.schema, srcNode.pid);
+          const srcParent = findNode(this.schema.node, srcNode.pid);
           if (srcParent && srcParent.children) {
-            const idx = srcParent.children.findIndex((v: PageEngine.Node) => v.id === node.id);
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            const idx = srcParent.children.findIndex((v: PageNode) => v.id === node.id);
             if (idx > -1) {
               srcParent.children.splice(idx, 1);
             }
@@ -143,25 +169,25 @@ class PageStore {
       }
 
       if (this.dragPos === 'down') {
-        this.insertAfter(srcNode, targetNode);
+        this.insertAfter(srcNode as PageNode, targetNode);
       }
     }
   }
 
   @action
-  insertBefore = (node: PageEngine.Node, target: PageEngine.Node): void => {
-    const srcParent = findNode(this.schema, node.pid);
-    const targetParent = findNode(this.schema, target.pid);
+  insertBefore = (node: PageNode, target: PageNode): void => {
+    const srcParent = findNode(this.schema.node, node.pid);
+    const targetParent = findNode(this.schema.node, target.pid);
     // remove node from src parent
     if (srcParent && srcParent.children) {
-      const idx = srcParent.children.findIndex((v: PageEngine.Node) => v.id === node.id);
+      const idx = srcParent.children.findIndex((v: PageNode) => v.id === node.id);
       if (idx > -1) {
         srcParent.children.splice(idx, 1);
       }
     }
 
     if (targetParent && targetParent.children) {
-      const idx = targetParent.children.findIndex((v: PageEngine.Node) => v.id === target.id);
+      const idx = targetParent.children.findIndex((v: PageNode) => v.id === target.id);
       if (idx > -1) {
         if (idx === 0) {
           targetParent.children.unshift(node);
@@ -173,26 +199,29 @@ class PageStore {
   }
 
   @action
-  insertAfter = (node: PageEngine.Node, target: PageEngine.Node): void => {
-    const srcParent = findNode(this.schema, node.pid);
-    const targetParent = findNode(this.schema, target.pid);
+  insertAfter = (node: PageNode, target: PageNode): void => {
+    const srcParent = findNode(this.schema.node, node.pid);
+    const targetParent = findNode(this.schema.node, target.pid);
 
     if (srcParent && srcParent.children) {
-      const idx = srcParent.children.findIndex((v: PageEngine.Node) => v.id === node.id);
+      const idx = srcParent.children.findIndex((v: PageNode) => v.id === node.id);
       if (idx > -1) {
         srcParent.children.splice(idx, 1);
       }
     }
 
     if (!target.pid) {
+      // removeTreeNode(this.schema, node?.id);
       // append to page
       targetParent.children.push(Object.assign({}, node, { pid: targetParent.id }));
       return;
     }
 
     if (targetParent && targetParent.children) {
-      const idx = targetParent.children.findIndex((v: PageEngine.Node) => v.id === target.id);
+      const idx = targetParent.children.findIndex((v: PageNode) => v.id === target.id);
       if (idx > -1) {
+        // double check node pid
+        Object.assign(node, { pid: targetParent.id });
         targetParent.children.splice(idx + 1, 0, node);
       }
     }
@@ -200,31 +229,35 @@ class PageStore {
 
   @action
   copyNode = (pid: string, id: string): void => {
-    const parent = findNode(this.schema, pid);
-    const srcNode = findNode(this.schema, id);
+    const parent = findNode(this.schema.node, pid);
+    const srcNode = findNode(this.schema.node, id);
     if (parent && parent.children) {
       const srcIdx = parent.children.indexOf(srcNode);
-      parent.children.splice(srcIdx, 0, deepMergeNode(srcNode));
+      if (srcIdx > -1) {
+        parent.children.splice(srcIdx, 0, deepMergeNode(srcNode));
+      }
     }
   }
 
   @action
-  removeNode = (pid: string, id: string): void => {
-    const parent = findNode(this.schema, pid);
-    parent.children = parent.children.filter((c: PageEngine.Node) => c.id !== id);
+  removeNode = (id: string): void => {
+    removeTreeNode(this.schema.node, id);
   }
 
   @action
   updateElemProperty = (elem_id: string, propKey: string, conf: any): void => {
-    const elem = findNode(this.schema, elem_id);
+    const elem = findNode(this.schema.node, elem_id);
     if (elem) {
-      set(elem, propKey, conf);
+      if (propKey === 'props') {
+        set(elem, propKey, transformConstantProps({ ...this.activeElemProps, ...conf }));
+      } else if (propKey === 'props.style') {
+        set(elem, propKey, { type: NodePropType.ConstantProperty, value: conf });
+      } else if (propKey === 'lifecycleHooks') {
+        set(elem, propKey, transformLifecycleHooks(conf));
+      } else {
+        set(elem, propKey, conf);
+      }
     }
-  }
-
-  @action
-  updateElemProps=(elem_id: string, props: Record<string, any>)=> {
-    this.updateElemProperty(elem_id, 'props', props);
   }
 
   getElemDefaultStyle=(type: string)=> {
@@ -261,7 +294,7 @@ class PageStore {
 
   @action
   reset = (): void => {
-    this.schema = pageInitialSchema();
+    this.schema = initialPageSchema();
     this.mode = 'design';
     this.activeElemId = '';
     this.dragPos = 'down';

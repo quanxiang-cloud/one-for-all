@@ -1,7 +1,7 @@
-// import Image from './image';
 import ConfigForm from './config-form';
 
 import { Image } from '@ofa/ui';
+import type { SourceElement } from '@ofa/page-engine';
 
 type Props = {
   name?: string
@@ -9,7 +9,7 @@ type Props = {
 
 const defaultConfig: Props = {};
 
-const elem: Registry.SourceElement<Props> = {
+const elem: SourceElement<Props> = {
   name: 'image',
   icon: 'image',
   label: '图片',

@@ -1,5 +1,6 @@
 import Tabs from './tabs';
 import ConfigForm from './config-form';
+import type { SourceElement } from '@ofa/page-engine';
 
 type Props = {
   name?: string
@@ -7,7 +8,7 @@ type Props = {
 
 const defaultConfig: Props = {};
 
-const elem: Registry.SourceElement<Props> = {
+const elem: SourceElement<Props> = {
   name: 'tabs',
   icon: 'apps',
   label: '选项卡',

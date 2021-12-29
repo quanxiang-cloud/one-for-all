@@ -6,7 +6,7 @@
 .page {
   position: relative;
   width: 100%;
-  //height: 100%;
+  padding: 4px;
 
   &.isOver {
     @extend %isOver;
@@ -16,10 +16,10 @@
 
 .elem {
   position: relative;
-  //margin-top: 4px;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 
   &.isPage {
+    height: 100%;
     > .toolbar {
       top: 20px;
       transform: translateY(-100%);
@@ -69,7 +69,8 @@
   }
 
   &.draggingInner {
-
+    @extend %isOver;
+    opacity: .2;
   }
 
   &.draggingDown {

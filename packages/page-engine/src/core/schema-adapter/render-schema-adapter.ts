@@ -11,14 +11,14 @@ import { get, set, mapValues, omit, cloneDeep } from 'lodash';
 import { elemId } from '../../utils';
 import registry from '../../stores/registry';
 
-function mapApiState(states: Record<string, string>): APIStatesSpec {
+export function mapApiState(states: Record<string, string>): APIStatesSpec {
   return Object.entries(states).reduce((memo: Record<string, any>, [k, v]: [string, string])=> {
     memo[k] = { apiID: v };
     return memo;
   }, {});
 }
 
-function mapShareState(states: Record<string, string>): SharedStatesSpec {
+export function mapShareState(states: Record<string, string>): SharedStatesSpec {
   return Object.entries(states).reduce((memo: Record<string, any>, [k, v]: [string, string])=> {
     const parsedVal: {val: any} = JSON.parse(v);
     memo[k] = { initial: JSON.parse(parsedVal.val) };
@@ -26,7 +26,7 @@ function mapShareState(states: Record<string, string>): SharedStatesSpec {
   }, {});
 }
 
-function transformProps(node: PageEngine.Node): any {
+export function transformProps(node: any): any {
   const props = mapValues(node.props, (value: any)=> ({ type: NodePropType.ConstantProperty, value }));
   if (node._style) {
     Object.assign(props, { style: { type: NodePropType.ConstantProperty, value: node._style } });
@@ -34,7 +34,7 @@ function transformProps(node: PageEngine.Node): any {
   return props;
 }
 
-function transformLifecycleHooks(node: PageEngine.Node): Record<string, any> {
+export function transformLifecycleHooks(node: any): Record<string, any> {
   return mapValues(node._hooks, (rawHook: string)=> {
     return {
       type: 'lifecycle_hook_func_spec',
@@ -45,7 +45,7 @@ function transformLifecycleHooks(node: PageEngine.Node): Record<string, any> {
 }
 
 // todo: 暂时不考虑 html-node, 需要考虑 react node, loop container node
-function mapNode(node: PageEngine.Node): SchemaNode<Serialized> {
+function mapNode(node: any): SchemaNode<Serialized> {
   const loopConf = get(node, '_renderer.for', '');
 
   if (loopConf) {
@@ -99,7 +99,7 @@ function mapNode(node: PageEngine.Node): SchemaNode<Serialized> {
   }
 }
 
-export default function toRenderSchema(schema: PageEngine.Node): Schema {
+export default function toRenderSchema(schema: any): Schema {
   const apiStateSpec = mapApiState(schema._api || {});
   const sharedStatesSpec = mapShareState(schema._shared || {});
 

@@ -7,6 +7,7 @@ import { get } from 'lodash';
 
 import { Modal, Icon, toast } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
+import { NodePropType } from '@ofa/render-engine';
 
 import styles from './index.m.scss';
 
@@ -21,7 +22,12 @@ function ModalBindState(props: Props): JSX.Element | null {
   const [stateExpr, setStateExpr] = useState(''); // 绑定变量的表达式
 
   useEffect(()=> {
-    setStateExpr(get(page.activeElem, ['_stateRef', designer.activeFieldName].join('.')));
+    // get shared state id
+    const bindConf = get(page.activeElem, `props.${designer.activeFieldName}`);
+    if (bindConf.type === NodePropType.SharedStateProperty) {
+      const expr = `states['${bindConf.stateID}']`;
+      setStateExpr(expr);
+    }
   }, []);
 
   function handleBind(): void {
@@ -29,7 +35,19 @@ function ModalBindState(props: Props): JSX.Element | null {
       toast.error('变量表达式不能为空');
       return;
     }
-    page.updateElemProperty(page.activeElem.id, ['_stateRef', designer.activeFieldName].join('.'), stateExpr);
+    const propName = designer.activeFieldName;
+    const match = stateExpr.match(/sharedState\['(.+)'\]/);
+    const fallbackVal = page.activeElemProps[propName]?.value;
+    page.updateElemProperty(page.activeElem.id, `props.${propName}`, {
+      type: NodePropType.SharedStateProperty,
+      stateID: match ? match[1] : '',
+      fallback: fallbackVal,
+      convertor: {
+        type: 'state_convert_expression',
+        // todo
+        expression: 'state',
+      },
+    });
     setModalBindStateOpen(false);
   }
 
@@ -99,7 +117,7 @@ function ModalBindState(props: Props): JSX.Element | null {
         <div className={styles.body}>
           <Editor
             value={stateExpr}
-            theme='dark'
+            // theme='dark'
             height="480px"
             extensions={[javascript()]}
             onChange={(value) => {

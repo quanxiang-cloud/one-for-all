@@ -31,8 +31,7 @@ function StylePanel({ className }: Props): JSX.Element {
 
   useEffect(() => {
     if (checkStyles(values)) {
-      // no need save default styles to page node
-      page.updateElemProperty(page.activeElem.id, '_style', values);
+      page.updateElemProperty(page.activeElem.id, 'props.style', values);
       setEditorVal(getEditorValues());
     }
   }, [values]);
@@ -160,7 +159,7 @@ function StylePanel({ className }: Props): JSX.Element {
           <Editor
             value={editorVal}
             height="200px"
-            theme='dark'
+            theme='light'
             extensions={[javascript()]}
             onChange={(val) => setEditorVal(val)}
           />

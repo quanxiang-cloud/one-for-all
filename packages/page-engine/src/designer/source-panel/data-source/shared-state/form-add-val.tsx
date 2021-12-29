@@ -107,7 +107,7 @@ function FormAddVal(props: Props): JSX.Element | null {
           <Editor
             value={curSharedVal.val}
             height="200px"
-            theme='dark'
+            // theme='dark'
             extensions={[javascript()]}
             onChange={(val) => {
               setCurSharedVal('val', val);

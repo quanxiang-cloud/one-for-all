@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import Editor from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
-import { get } from 'lodash';
+import { get, mapValues } from 'lodash';
 
-import { Icon, Modal, toast, Tooltip } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine';
+import { Icon, Modal, toast } from '@ofa/ui';
+import { useCtx, PageNode } from '@ofa/page-engine';
 import { isFuncSource } from '../../../utils/index';
 
 import Section from '../../../designer/comps/section';
@@ -17,13 +17,15 @@ interface Props {
   className?: string;
 }
 
-type ActionName='willMount' | 'didMount' | 'willUnmount' | ''
+type ActionName='didMount' | 'willUnmount' | ''
 
 const titleMap: Record<string, string> = {
-  willMount: '页面加载之前',
+  // willMount: '页面加载之前',
   didMount: '页面加载完成时',
   willUnmount: '页面关闭时',
 };
+
+const regFn = new RegExp('const fn = (.+); return fn\\(...args\\)');
 
 function ConfigForm(props: Props): JSX.Element {
   const [modalOpen, setModalOpen] = useState(false);
@@ -33,13 +35,18 @@ function ConfigForm(props: Props): JSX.Element {
   const [fn, setFn] = useState('');
 
   useEffect(()=> {
-    setFn(get(activeElem._hooks, action, getDefaultCode()));
+    const rawFn = get(activeElem.lifecycleHooks, `${action}.body`);
+    if (!rawFn) {
+      setFn(getDefaultCode());
+    } else {
+      setFn(get(rawFn.match(regFn), [1]) || getDefaultCode());
+    }
   }, [action]);
 
   function getDefaultCode(): string {
-    if (action === 'willMount') {
-      return 'function willMount() {}';
-    }
+    // if (action === 'willMount') {
+    //   return 'function willMount() {}';
+    // }
     if (action === 'didMount') {
       return 'function didMount() {}';
     }
@@ -51,9 +58,14 @@ function ConfigForm(props: Props): JSX.Element {
 
   function addLifecycleHook(fn: string): void {
     if (isFuncSource(fn)) {
-      const curElem = page.activeElem as PageEngine.Node;
-      const hooks = Object.assign({}, curElem._hooks, { [action]: fn });
-      page.updateElemProperty(curElem.id || '', '_hooks', hooks);
+      const curElem = page.activeElem as PageNode;
+      const hooks = Object.assign({}, mapValues(curElem.lifecycleHooks, (v)=> {
+        if (typeof v === 'object') {
+          return get(v.body.match(regFn), [1], '');
+        }
+        return v;
+      }), { [action]: fn });
+      page.updateElemProperty(curElem.id || '', 'lifecycleHooks', hooks);
       setModalOpen(false);
     } else {
       toast.error('非法的函数定义');
@@ -64,27 +76,9 @@ function ConfigForm(props: Props): JSX.Element {
     <div>
       <Section title='生命周期' defaultExpand>
         <div className='mb-8'>
-          <p>页面加载之前执行</p>
-          <BindItem
-            bound={!!activeElem._hooks?.willMount}
-            onEdit={()=> {
-              setModalOpen(true);
-              setAction('willMount');
-            }}
-            onBind={()=> {
-              setModalOpen(true);
-              setAction('willMount');
-            }}
-            onUnbind={()=> {
-              page.updateElemProperty(activeElem.id || '', '_hooks.willMount', '');
-              setFn('');
-            }}
-          />
-        </div>
-        <div className='mb-8'>
           <p>页面加载完成时</p>
           <BindItem
-            bound={!!activeElem._hooks?.didMount}
+            bound={!!activeElem.lifecycleHooks?.didMount}
             onEdit={()=> {
               setModalOpen(true);
               setAction('didMount');
@@ -94,7 +88,7 @@ function ConfigForm(props: Props): JSX.Element {
               setAction('didMount');
             }}
             onUnbind={()=> {
-              page.updateElemProperty(activeElem.id || '', '_hooks.didMount', '');
+              page.updateElemProperty(activeElem.id || '', 'lifecycleHooks.didMount', '');
               setFn('');
             }}
           />
@@ -102,7 +96,7 @@ function ConfigForm(props: Props): JSX.Element {
         <div>
           <p>页面关闭时</p>
           <BindItem
-            bound={!!activeElem._hooks?.willUnmount}
+            bound={!!activeElem.lifecycleHooks?.willUnmount}
             onEdit={()=> {
               setModalOpen(true);
               setAction('willUnmount');
@@ -112,7 +106,7 @@ function ConfigForm(props: Props): JSX.Element {
               setAction('willUnmount');
             }}
             onUnbind={()=> {
-              page.updateElemProperty(activeElem.id || '', '_hooks.willUnmount', '');
+              page.updateElemProperty(activeElem.id || '', 'lifecycleHooks.willUnmount', '');
               setFn('');
             }}
           />

@@ -1,8 +1,8 @@
 import { observable, computed, action, makeObservable } from 'mobx';
 import { mapValues } from 'lodash';
 
+import type { Category, SourceElement } from '@ofa/page-engine';
 import * as builtInElems from '../registry/elements';
-import SourceElement = Registry.SourceElement;
 
 const defaultElements = mapValues(builtInElems, (group) => {
   return Object.entries(group).map(([, conf]) => conf).sort((elemA, elemB) => {
@@ -11,15 +11,15 @@ const defaultElements = mapValues(builtInElems, (group) => {
 });
 
 class RegistryStore {
-  @observable elements: Record<Registry.Category, Array<Registry.SourceElement<any>>> = { ...defaultElements }
+  @observable elements: Record<Category, Array<SourceElement<any>>> = { ...defaultElements }
   @observable countRegisteredElem = 0
 
   constructor() {
     makeObservable(this);
   }
 
-  @computed get elementMap(): Record<string, Registry.SourceElement<any>> {
-    return Object.values(this.elements).flat().reduce((acc: Record<string, any>, cur: Registry.SourceElement<any>) => {
+  @computed get elementMap(): Record<string, SourceElement<any>> {
+    return Object.values(this.elements).flat().reduce((acc: Record<string, any>, cur: SourceElement<any>) => {
       const compName = (cur.name as string).toLowerCase();
       acc[compName] = cur;
       return acc;
@@ -27,7 +27,7 @@ class RegistryStore {
   }
 
   @action
-  registerElement = (name: string, component: ReactComp, options?: Record<string, any>) => {
+  registerElement = (name: string, component: React.ComponentType, options?: Record<string, any>) => {
     this.countRegisteredElem = this.countRegisteredElem + 1;
     const opts = Object.assign({ name, component }, {
       icon: 'insert_drive_file',
@@ -51,7 +51,7 @@ class RegistryStore {
     return this.elementMap[this.normalizeType(type)].label || '';
   }
 
-  getElemByType = (type: string): Registry.SourceElement<any> => {
+  getElemByType = (type: string): SourceElement<any> => {
     return this.elementMap[this.normalizeType(type)];
   }
 
@@ -59,10 +59,10 @@ class RegistryStore {
     return this.elementMap[this.normalizeType(elemType)].acceptChild;
   }
 
-  toComponentMap=(): Record<string, ReactComp>=> {
+  toComponentMap=(): Record<string, React.ComponentType>=> {
     return Object.values({ ...defaultElements })
       .flat()
-      .reduce((memo: Record<string, ReactComp>, elem: SourceElement<any>)=> {
+      .reduce((memo: Record<string, React.ComponentType>, elem: SourceElement<any>)=> {
         memo[this.normalizeType(elem.name)] = elem.component;
         return memo;
       }, {});

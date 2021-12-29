@@ -24,7 +24,7 @@ const DEFAULT_CONFIG: Props = {
 
 function ConfigForm(): JSX.Element {
   const { page } = useCtx();
-  const [values, setValues] = useState(defaults(page.activeElem.props, DEFAULT_CONFIG));
+  const [values, setValues] = useState(defaults(page.activeElemProps, DEFAULT_CONFIG));
   const example = [{ label: '示例页面', value: '#' }];
 
   useEffect(() => {

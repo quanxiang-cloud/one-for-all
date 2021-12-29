@@ -16,7 +16,7 @@ import DataSource from './data-source';
 import styles from './index.m.scss';
 
 function SourcePanel(): JSX.Element {
-  const store = useCtx().designer;
+  const { designer: store } = useCtx();
   const { activeGroup, panelPinned, panelOpen } = store;
   const panelRef = useRef<HTMLDivElement>(null);
   const hoverDoc = useCallback(debounce(handleClickOutside, 200), []);

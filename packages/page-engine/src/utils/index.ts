@@ -1,12 +1,12 @@
 import { nanoid } from 'nanoid';
 
-export function h(type: string, props: Record<string, any> | null, ...children: Array<PageEngine.Node> | [PrimitiveType]) {
-  return {
-    type,
-    props,
-    children,
-  };
-}
+// export function h(type: string, props: Record<string, any> | null, ...children: Array<PageEngine.Node> | [PrimitiveType]) {
+//   return {
+//     type,
+//     props,
+//     children,
+//   };
+// }
 
 // extend json.stringify/parser to serialize and deserialize vdom
 export function serialize(schema: any) {

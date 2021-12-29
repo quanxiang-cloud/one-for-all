@@ -29,7 +29,7 @@ const defaultConfig = {
 
 function ConfigForm(): JSX.Element {
   const { page } = useCtx();
-  const [values, setValues] = useState<Props>(defaults(page.activeElem.props, defaultConfig));
+  const [values, setValues] = useState<Props>(defaults(page.activeElemProps, defaultConfig));
 
   useEffect(() => {
     page.updateElemProperty(page.activeElem.id, 'props', values);

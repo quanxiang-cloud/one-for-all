@@ -11,11 +11,12 @@ import SettingPanel from './setting-panel';
 import Page from '../core/page';
 import Ctx from '../ctx';
 import stores from '../stores';
+import type { PageNode } from '../types';
 
 import styles from './index.m.scss';
 
 interface Props {
-  onSave: (page_schema: PageEngine.Node) => void;
+  onSave: (page_schema: PageNode) => void;
   vdoms?: Record<string, React.ReactNode>; // 委托给外部渲染的vdom节点
   className?: string;
 }
@@ -33,6 +34,9 @@ function Designer({ className, onSave }: Props): JSX.Element | null {
     Object.assign(stores, {
       onSave,
     });
+
+    // @ts-ignore
+    window._ctx = stores;
 
     return () => {
       // reset ctx
