@@ -17,10 +17,6 @@ function SharedState(props: Props): JSX.Element {
   const { dataSource } = useCtx();
   const noData = !Object.keys(dataSource.sharedState).length;
 
-  useEffect(()=> {
-    dataSource.sharedState = dataSource.mapSharedStateSpec();
-  }, []);
-
   return (
     <div>
       <Search

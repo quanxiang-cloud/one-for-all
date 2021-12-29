@@ -37,9 +37,9 @@ function ConfigForm(): JSX.Element {
     page.updateElemProperty(page.activeElem.id, 'props', values);
   }, [values]);
 
-  useEffect(() => {
-    !isEmpty(page.activeElem.props) && setValues(defaults(page.activeElemProps, defaultConfig));
-  }, [page.activeElem.props]);
+  // useEffect(() => {
+  //   !isEmpty(page.activeElemProps) && setValues(defaults(page.activeElemProps, defaultConfig));
+  // }, [page.activeElemProps]);
 
   return (
     <>

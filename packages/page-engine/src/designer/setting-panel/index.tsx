@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { observer } from 'mobx-react';
 
 import { Tab } from '@ofa/ui';

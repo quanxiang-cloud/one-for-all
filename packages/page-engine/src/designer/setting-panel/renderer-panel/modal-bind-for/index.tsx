@@ -99,7 +99,7 @@ function ModalBindFor({ onClose }: Props): JSX.Element | null {
         <div className={styles.body}>
           <Editor
             value={stateExpr}
-            theme='dark'
+            // theme='dark'
             height="480px"
             extensions={[javascript()]}
             onChange={(value) => {

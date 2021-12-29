@@ -21,10 +21,6 @@ function ApiState(props: Props): JSX.Element {
   const { register, formState: { errors }, handleSubmit, getValues, trigger, clearErrors } = useForm();
 
   useEffect(()=> {
-    dataSource.apiState = dataSource.mapApiStateSpec();
-  }, []);
-
-  useEffect(()=> {
     if (!dataSource.modalOpen) {
       dataSource.setCurApiId('');
     }
