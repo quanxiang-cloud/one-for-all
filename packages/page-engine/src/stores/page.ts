@@ -5,8 +5,10 @@ import { elemId } from '../utils';
 import { findNode } from '../utils/tree-utils';
 import registry from './registry';
 import dataSource from './data-source';
+import { DEFAULT_STYLE_CONFIG, STYLE_NUMBER } from '../config/default-styles';
 
 type Mode = 'design' | 'preview'
+
 type AppendNodeOptions = {
   renewId?: boolean;
   from?: 'source' | 'canvas';
@@ -223,6 +225,38 @@ class PageStore {
   @action
   updateElemProps=(elem_id: string, props: Record<string, any>)=> {
     this.updateElemProperty(elem_id, 'props', props);
+  }
+
+  getElemDefaultStyle=(type: string)=> {
+    const elem = registry.getElemByType(type);
+    return toJS(elem?.defaultStyle || {});
+  }
+
+  formatStyles = (styles: Record<string, string | number>): Record<string, string | number> => {
+    // console.log('format style: ', styles);
+    const newStyles: Record<string, string | number> = {};
+    if (typeof (styles) !== 'object' || styles === null) {
+      return newStyles;
+    }
+
+    Object.entries(styles).forEach((style) => {
+      const [key, value] = style;
+
+      if (key === 'backgroundImage') {
+        if (value === 'none') return;
+
+        newStyles[key] = `url(${value})`;
+        return;
+      }
+
+      if (STYLE_NUMBER.includes(key)) {
+        newStyles[key] = Number(value) || 0;
+        return;
+      }
+      newStyles[key] = value;
+    });
+
+    return newStyles;
   }
 
   @action
