@@ -96,6 +96,11 @@ class DataSource {
     set(pageStore.schema, 'sharedStatesSpec', mapShareState(toJS(this.sharedState)));
   }
 
+  @action
+  saveApiStateToPage=()=>{
+    set(pageStore.schema, 'apiStateSpec', mapApiState(toJS(this.apiState)));
+  }
+
   // map render engine shared state to page schema
   mapSharedStateSpec=()=> {
     return Object.entries(pageStore.schema.sharedStatesSpec).reduce((acc: Record<string, any>, [k, v]: [string, any])=> {
@@ -105,6 +110,14 @@ class DataSource {
         desc: '',
       };
       acc[k] = JSON.stringify(conf);
+      return acc;
+    }, {});
+  }
+
+  // map render engine api state to page schema
+  mapApiStateSpec=()=> {
+    return Object.entries(pageStore.schema.apiStateSpec).reduce((acc: Record<string, any>, [k, v]: [string, any])=> {
+      acc[k] = v.apiID;
       return acc;
     }, {});
   }
@@ -140,14 +153,15 @@ class DataSource {
     this.curApiStateKey = '';
 
     // auto save api state
-    // pageStore.setPageApiStates(toJS(this.apiState));
+    this.saveApiStateToPage();
+
     onSaved?.();
   }
 
   @action
   removeApiState = (key: string, onSaved?: ()=> void): void => {
     delete this.apiState[key];
-    // pageStore.setPageApiStates(toJS(this.apiState));
+    this.saveApiStateToPage();
     onSaved?.();
   }
 
