@@ -80,11 +80,6 @@ class PageStore {
 
     // init data source when set page schema
     runInAction(()=> {
-      // fixme: mock api state
-      Object.assign(this.schema.apiStateSpec, {
-        getApps: { apiID: 'get:/api/v1/get_apps' },
-      });
-
       dataSource.sharedState = dataSource.mapSharedStateSpec();
       dataSource.apiState = dataSource.mapApiStateSpec();
     });
@@ -256,7 +251,7 @@ class PageStore {
   updateElemProperty = (elem_id: string, propKey: string, conf: any): void => {
     const elem = findNode(this.schema.node, elem_id);
     if (elem) {
-      console.log('update node props: ', elem_id, propKey, conf);
+      // console.log('update node props: ', elem_id, propKey, conf);
       if (propKey === 'props') {
         set(elem, propKey, mergeProps(toJS(this.activeElem?.props), conf));
       } else if (propKey === 'props.style') {

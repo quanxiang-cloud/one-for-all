@@ -18,6 +18,9 @@
   }
 
   .header {
+    position: sticky;
+    top: 0;
+
     > .title {
       font-weight: 600;
       font-size: 12px;
