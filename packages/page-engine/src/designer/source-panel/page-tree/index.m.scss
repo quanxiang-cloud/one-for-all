@@ -1,0 +1,20 @@
+.pageTree {
+
+}
+
+.treeView {
+  font-size: 12px;
+
+  .node {
+    height: 32px;
+  }
+  .subNodes {
+    //&:hover {
+    //  border-left: 1px solid var(--blue-200);
+    //}
+
+    &.hide {
+      display: none;
+    }
+  }
+}
