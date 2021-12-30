@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 import { useDrop } from 'react-dnd';
-import { defaults, get, set, flow, mapValues } from 'lodash';
+import { defaults, flow, get, set } from 'lodash';
 import { toJS } from 'mobx';
 
-import { useCtx, PageNode, PageSchema } from '@ofa/page-engine';
-import { ConstantProperty } from '@ofa/render-engine';
+import { PageNode, PageSchema, useCtx } from '@ofa/page-engine';
+import { NodeType } from '@ofa/render-engine';
 import Elem from './elem';
+import { mapRawProps } from '../utils/schema-adapter';
 
 import styles from './index.m.scss';
 
@@ -17,6 +18,8 @@ interface Props {
   onSave?: () => void;
   onPreview?: () => void;
 }
+
+// type NodeProp=ConstantProperty | SharedStateProperty<Serialized> | FunctionalProperty<Serialized>
 
 const identity = (x: any): any => x;
 
@@ -41,6 +44,7 @@ function Page({ schema, className }: Props): JSX.Element {
     // sync schema prop with store state
     schema && page.setSchema(schema);
 
+    // todo: remove
     if (get(window, 'process.env.NODE_ENV') === 'development') {
       // on dev mode
       let storedSchema = localStorage.getItem('page_schema');
@@ -53,8 +57,15 @@ function Page({ schema, className }: Props): JSX.Element {
     }
   }, []);
 
-  function transformType(type: string): string | React.ComponentType {
-    return registry.elementMap?.[type]?.component || type;
+  function transformType(schema: PageNode): string | React.ComponentType {
+    const { type } = schema;
+    if (type === NodeType.ReactComponentNode) {
+      return registry.elementMap?.[schema.exportName]?.component || type;
+    }
+    if (type === NodeType.HTMLNode) {
+      return schema.name || 'div';
+    }
+    return 'div';
   }
 
   function mergeStyle(s: Record<string, any>): Record<string, any> {
@@ -62,16 +73,16 @@ function Page({ schema, className }: Props): JSX.Element {
       const curStyle = { ...get(s, 'props.style', {}), ...s._style };
       const defaultStyle = page.getElemDefaultStyle(s?.comp || '');
       const mergeStyle = defaults({}, curStyle, defaultStyle);
-      console.log('node final style, default type: ', mergeStyle, defaultStyle);
+      // console.log('node final style, default type: ', mergeStyle, defaultStyle);
       set(s, 'props.style', page.formatStyles(mergeStyle));
     }
     return s;
   }
 
   function mergeProps(schema: PageNode): Record<string, any> {
-    const elemConf = registry.getElemByType(schema.exportName);
-    const toProps = elemConf.toProps || identity;
-    const elemProps = defaults({}, mapValues(schema.props, (v: ConstantProperty)=> v.value), elemConf.defaultConfig);
+    const elemConf = registry.getElemByType(schema.exportName) || {};
+    const toProps = elemConf?.toProps || identity;
+    const elemProps = defaults({}, mapRawProps(schema.props || {}), elemConf?.defaultConfig);
     return toProps(elemProps);
   }
 
@@ -81,7 +92,6 @@ function Page({ schema, className }: Props): JSX.Element {
   ]);
 
   function renderNode(schema: PageNode, level = 0): JSX.Element | null | undefined {
-    // handle primitive type
     if (typeof schema !== 'object' || schema === null) {
       return schema;
     }
@@ -89,10 +99,14 @@ function Page({ schema, className }: Props): JSX.Element {
     // return React.createElement(transformType(schema.exportName), schemaToProps(schema), ...([].concat(schema.children as any))
     //   .map((child) => renderNode(child, level + 1)));
 
+    // if (schema.type === NodeType.HTMLNode) {
+    //   return React.createElement(schema?.name || 'div');
+    // }
+
     return (
       <Elem node={schema}>
         {
-          React.createElement(transformType(schema.exportName), schemaToProps(toJS(schema)), ...([].concat(schema.children as any))
+          React.createElement(transformType(schema), schemaToProps(toJS(schema)), ...([].concat(schema.children as any))
             .map((child) => renderNode(child, level + 1)))
         }
       </Elem>

@@ -30,8 +30,9 @@ export type ReactComp = React.ComponentType | React.JSXElementConstructor<any>;
 export interface PageNode extends BaseNode<Serialized> {
   id: string;
   pid?: string; // only used on page-engine
-  type: NodeType.ReactComponentNode | NodeType.LoopContainerNode;
+  type: NodeType.ReactComponentNode | NodeType.LoopContainerNode | NodeType.HTMLNode;
   label: string;
+  name?: string; // for html node
   // `packageName, packageVersion, exportName` only for react comp node
   packageName?: 'ofa-ui' | string;
   packageVersion?: 'latest' | string;
@@ -62,6 +63,7 @@ export interface SourceElement<T> {
   order?: number; // 排序权重
   hidden?: boolean; // 在source panel 隐藏
   acceptChild?: boolean; // 是否接受子节点
-  expose?: Record<string, any>; // 对外暴露的属性/方法
+  exportActions?: string[]; // 对外暴露的方法名
+  // expose?: Record<string, any>; // 对外暴露的属性/方法
   defaultStyle?: Record<string, any>; // 默认样式
 }

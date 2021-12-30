@@ -23,12 +23,12 @@ function ModalBindState(props: Props): JSX.Element | null {
 
   useEffect(()=> {
     // get shared state id
-    const bindConf = get(page.activeElem, `props.${designer.activeFieldName}`);
+    const bindConf = get(page.activeElem, `props.${designer.activeFieldName}`, {});
     if (bindConf.type === NodePropType.SharedStateProperty) {
       const expr = `states['${bindConf.stateID}']`;
       setStateExpr(expr);
     }
-  }, []);
+  }, [page.activeElemProps]);
 
   function handleBind(): void {
     if (!stateExpr) {
@@ -36,11 +36,15 @@ function ModalBindState(props: Props): JSX.Element | null {
       return;
     }
     const propName = designer.activeFieldName;
-    const match = stateExpr.match(/sharedState\['(.+)'\]/);
+    const match = stateExpr.match(/states\['(.+)'\]/);
     const fallbackVal = page.activeElemProps[propName]?.value;
+    if (!match || !match[1]) {
+      toast.error(`非法的 stateID: ${stateExpr}`);
+      return;
+    }
     page.updateElemProperty(page.activeElem.id, `props.${propName}`, {
       type: NodePropType.SharedStateProperty,
-      stateID: match ? match[1] : '',
+      stateID: match[1],
       fallback: fallbackVal,
       convertor: {
         type: 'state_convert_expression',
@@ -74,42 +78,44 @@ function ModalBindState(props: Props): JSX.Element | null {
       <div className={styles.modal}>
         <div className={styles.side}>
           {Object.entries(dataSource.sharedState).map(([name, conf])=> {
+            const checked = selected?.name === name || stateExpr.includes(`['${name}']`);
             return (
               <div
                 key={name}
                 className={cs('flex justify-between items-center cursor-pointer px-16 py-4 hover:bg-gray-200', {
-                  [styles.active]: selected?.name === name,
+                  [styles.active]: checked,
                 })}
                 onClick={()=> {
                   setSelected({ name, conf });
-                  setStateExpr(`sharedState['${name}']`);
+                  setStateExpr(`states['${name}']`);
                 }}
               >
                 <span className='flex-1 flex flex-wrap items-center'>
                   {name}
                   <span className='ml-8 border border-gray-100 text-12 text-gray-400'>普通变量</span>
                 </span>
-                {selected?.name === name && <Icon name='check' />}
+                {checked && <Icon name='check' />}
               </div>
             );
           })}
           {Object.entries(dataSource.apiState).map(([name, conf])=> {
+            const checked = selected?.name === name || stateExpr.includes(`['${name}']`);
             return (
               <div
                 key={name}
                 className={cs('flex justify-between items-center cursor-pointer px-16 py-4 hover:bg-gray-200', {
-                  [styles.active]: selected?.name === name,
+                  [styles.active]: checked,
                 })}
                 onClick={()=> {
                   setSelected({ name, conf });
-                  setStateExpr(`apiState['${name}']`);
+                  setStateExpr(`apiStates['${name}']`);
                 }}
               >
                 <span className='flex-1 flex flex-wrap items-center'>
                   {name}
                   <span className='ml-8 border border-gray-100 text-12 text-gray-400'>API 变量</span>
                 </span>
-                {selected?.name === name && <Icon name='check' />}
+                {checked && <Icon name='check' />}
               </div>
             );
           })}

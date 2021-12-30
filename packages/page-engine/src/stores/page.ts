@@ -1,13 +1,13 @@
-import { action, computed, makeObservable, observable, toJS } from 'mobx';
-import { defaults, set, mapValues } from 'lodash';
+import { action, computed, makeObservable, observable, runInAction, toJS } from 'mobx';
+import { defaults, set } from 'lodash';
 
-import { NodeType, NodePropType } from '@ofa/render-engine';
+import { NodePropType, NodeType } from '@ofa/render-engine';
 import { elemId } from '../utils';
 import { findNode, removeNode as removeTreeNode } from '../utils/tree-utils';
 import registry from './registry';
 import dataSource from './data-source';
-import type { DragPos, PageNode, PageSchema } from '../types';
-import { transformLifecycleHooks, transformConstantProps } from '../utils/schema-adapter';
+import type { DragPos, PageNode, PageSchema, SourceElement } from '../types';
+import { mapRawProps, mergeProps, transformLifecycleHooks } from '../utils/schema-adapter';
 import { STYLE_NUMBER } from '../config/default-styles';
 
 type Mode = 'design' | 'preview'
@@ -58,7 +58,7 @@ class PageStore {
   }
 
   @computed
-  get activeElem() {
+  get activeElem(): any {
     if (!this.activeElemId) {
       return null;
     }
@@ -67,19 +67,27 @@ class PageStore {
 
   @computed
   get activeElemProps(): any {
-    if (this.activeElem) {
-      return mapValues(this.activeElem.props, (v)=> v.value);
-    }
-    return {};
+    return mapRawProps(this.activeElem?.props || {});
   }
 
   @action
   setSchema = (schema: PageSchema): void => {
+    // ignore html node
+    if (schema.node.type === NodeType.HTMLNode) {
+      return;
+    }
     this.schema = schema;
 
     // init data source when set page schema
-    dataSource.sharedState = dataSource.mapSharedStateSpec();
-    dataSource.apiState = dataSource.mapApiStateSpec();
+    runInAction(()=> {
+      // fixme: mock api state
+      Object.assign(this.schema.apiStateSpec, {
+        getApps: { apiID: 'get:/api/v1/get_apps' },
+      });
+
+      dataSource.sharedState = dataSource.mapSharedStateSpec();
+      dataSource.apiState = dataSource.mapApiStateSpec();
+    });
   }
 
   @action
@@ -248,9 +256,11 @@ class PageStore {
   updateElemProperty = (elem_id: string, propKey: string, conf: any): void => {
     const elem = findNode(this.schema.node, elem_id);
     if (elem) {
+      console.log('update node props: ', elem_id, propKey, conf);
       if (propKey === 'props') {
-        set(elem, propKey, transformConstantProps({ ...this.activeElemProps, ...conf }));
+        set(elem, propKey, mergeProps(toJS(this.activeElem?.props), conf));
       } else if (propKey === 'props.style') {
+        // fixme: style bind variable
         set(elem, propKey, { type: NodePropType.ConstantProperty, value: conf });
       } else if (propKey === 'lifecycleHooks') {
         set(elem, propKey, transformLifecycleHooks(conf));
@@ -290,6 +300,11 @@ class PageStore {
     });
 
     return newStyles;
+  }
+
+  getElemBoundActions=(): string[] =>{
+    const elemConf = registry.getElemByType(this.activeElem?.exportName) as SourceElement<any>;
+    return ['didMount', 'willUnmount'].concat(elemConf?.exportActions || []);
   }
 
   @action

@@ -39,6 +39,7 @@ export function transformLifecycleHooks(node: any): Record<string, any> {
     return {
       type: 'lifecycle_hook_func_spec',
       args: '...args',
+      // use func raw body, no need wrap
       body: `const fn = ${rawHook}; return fn(...args)`,
     };
   });
