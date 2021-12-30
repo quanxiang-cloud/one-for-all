@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 import { useDrop } from 'react-dnd';
-import { defaults, get, set, flow, mapValues } from 'lodash';
+import { defaults, flow, get, mapValues, set } from 'lodash';
 import { toJS } from 'mobx';
 
-import { useCtx, PageNode, PageSchema } from '@ofa/page-engine';
-import { ConstantProperty } from '@ofa/render-engine';
+import { PageNode, PageSchema, useCtx } from '@ofa/page-engine';
+import { NodeProperty, NodePropType, Serialized } from '@ofa/render-engine';
 import Elem from './elem';
+import { mapRawProps } from '../utils/schema-adapter';
 
 import styles from './index.m.scss';
 
@@ -17,6 +18,8 @@ interface Props {
   onSave?: () => void;
   onPreview?: () => void;
 }
+
+// type NodeProp=ConstantProperty | SharedStateProperty<Serialized> | FunctionalProperty<Serialized>
 
 const identity = (x: any): any => x;
 
@@ -41,6 +44,7 @@ function Page({ schema, className }: Props): JSX.Element {
     // sync schema prop with store state
     schema && page.setSchema(schema);
 
+    // todo: remove
     if (get(window, 'process.env.NODE_ENV') === 'development') {
       // on dev mode
       let storedSchema = localStorage.getItem('page_schema');
@@ -62,7 +66,7 @@ function Page({ schema, className }: Props): JSX.Element {
       const curStyle = { ...get(s, 'props.style', {}), ...s._style };
       const defaultStyle = page.getElemDefaultStyle(s?.comp || '');
       const mergeStyle = defaults({}, curStyle, defaultStyle);
-      console.log('node final style, default type: ', mergeStyle, defaultStyle);
+      // console.log('node final style, default type: ', mergeStyle, defaultStyle);
       set(s, 'props.style', page.formatStyles(mergeStyle));
     }
     return s;
@@ -71,7 +75,7 @@ function Page({ schema, className }: Props): JSX.Element {
   function mergeProps(schema: PageNode): Record<string, any> {
     const elemConf = registry.getElemByType(schema.exportName);
     const toProps = elemConf.toProps || identity;
-    const elemProps = defaults({}, mapValues(schema.props, (v: ConstantProperty)=> v.value), elemConf.defaultConfig);
+    const elemProps = defaults({}, mapRawProps(schema.props || {}), elemConf.defaultConfig);
     return toProps(elemProps);
   }
 
@@ -81,7 +85,6 @@ function Page({ schema, className }: Props): JSX.Element {
   ]);
 
   function renderNode(schema: PageNode, level = 0): JSX.Element | null | undefined {
-    // handle primitive type
     if (typeof schema !== 'object' || schema === null) {
       return schema;
     }

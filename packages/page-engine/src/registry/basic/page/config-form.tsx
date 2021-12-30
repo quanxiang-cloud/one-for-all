@@ -20,12 +20,11 @@ interface Props {
 type ActionName='didMount' | 'willUnmount' | ''
 
 const titleMap: Record<string, string> = {
-  // willMount: '页面加载之前',
   didMount: '页面加载完成时',
   willUnmount: '页面关闭时',
 };
 
-const regFn = new RegExp('const fn = (.+); return fn\\(...args\\)');
+// const regFn = new RegExp('const fn = (.+); return fn\\(...args\\)');
 
 function ConfigForm(props: Props): JSX.Element {
   const [modalOpen, setModalOpen] = useState(false);
@@ -39,14 +38,11 @@ function ConfigForm(props: Props): JSX.Element {
     if (!rawFn) {
       setFn(getDefaultCode());
     } else {
-      setFn(get(rawFn.match(regFn), [1]) || getDefaultCode());
+      setFn(rawFn.substring(11, rawFn.length - '; return fn(...args)'.length) || getDefaultCode());
     }
   }, [action]);
 
   function getDefaultCode(): string {
-    // if (action === 'willMount') {
-    //   return 'function willMount() {}';
-    // }
     if (action === 'didMount') {
       return 'function didMount() {}';
     }
@@ -58,14 +54,11 @@ function ConfigForm(props: Props): JSX.Element {
 
   function addLifecycleHook(fn: string): void {
     if (isFuncSource(fn)) {
-      const curElem = page.activeElem as PageNode;
-      const hooks = Object.assign({}, mapValues(curElem.lifecycleHooks, (v)=> {
-        if (typeof v === 'object') {
-          return get(v.body.match(regFn), [1], '');
-        }
-        return v;
-      }), { [action]: fn });
-      page.updateElemProperty(curElem.id || '', 'lifecycleHooks', hooks);
+      page.updateElemProperty(page.activeElemId, `lifecycleHooks.${action}`, {
+        type: 'lifecycle_hook_func_spec',
+        args: '...args',
+        body: `const fn = ${fn}; return fn(...args)`,
+      });
       setModalOpen(false);
     } else {
       toast.error('非法的函数定义');

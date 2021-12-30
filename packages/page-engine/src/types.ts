@@ -62,6 +62,7 @@ export interface SourceElement<T> {
   order?: number; // 排序权重
   hidden?: boolean; // 在source panel 隐藏
   acceptChild?: boolean; // 是否接受子节点
-  expose?: Record<string, any>; // 对外暴露的属性/方法
+  exportActions?: string[]; // 对外暴露的方法名
+  // expose?: Record<string, any>; // 对外暴露的属性/方法
   defaultStyle?: Record<string, any>; // 默认样式
 }

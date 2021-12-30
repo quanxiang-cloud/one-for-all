@@ -43,7 +43,10 @@ class RegistryStore {
     }
   }
 
-  normalizeType = (type: string) => {
+  normalizeType = (type: string): string => {
+    if (!type) {
+      return '';
+    }
     return (type.startsWith('elem.') ? type.slice('elem.'.length) : type).toLowerCase();
   }
 
