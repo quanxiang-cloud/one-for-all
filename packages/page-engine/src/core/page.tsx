@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 import { useDrop } from 'react-dnd';
-import { defaults, flow, get, mapValues, set } from 'lodash';
+import { defaults, flow, get, set } from 'lodash';
 import { toJS } from 'mobx';
 
 import { PageNode, PageSchema, useCtx } from '@ofa/page-engine';
-import { NodeProperty, NodePropType, Serialized } from '@ofa/render-engine';
+import { NodeType } from '@ofa/render-engine';
 import Elem from './elem';
 import { mapRawProps } from '../utils/schema-adapter';
 
@@ -57,8 +57,15 @@ function Page({ schema, className }: Props): JSX.Element {
     }
   }, []);
 
-  function transformType(type: string): string | React.ComponentType {
-    return registry.elementMap?.[type]?.component || type;
+  function transformType(schema: PageNode): string | React.ComponentType {
+    const { type } = schema;
+    if (type === NodeType.ReactComponentNode) {
+      return registry.elementMap?.[schema.exportName]?.component || type;
+    }
+    if (type === NodeType.HTMLNode) {
+      return schema.name || 'div';
+    }
+    return 'div';
   }
 
   function mergeStyle(s: Record<string, any>): Record<string, any> {
@@ -73,9 +80,9 @@ function Page({ schema, className }: Props): JSX.Element {
   }
 
   function mergeProps(schema: PageNode): Record<string, any> {
-    const elemConf = registry.getElemByType(schema.exportName);
-    const toProps = elemConf.toProps || identity;
-    const elemProps = defaults({}, mapRawProps(schema.props || {}), elemConf.defaultConfig);
+    const elemConf = registry.getElemByType(schema.exportName) || {};
+    const toProps = elemConf?.toProps || identity;
+    const elemProps = defaults({}, mapRawProps(schema.props || {}), elemConf?.defaultConfig);
     return toProps(elemProps);
   }
 
@@ -92,10 +99,14 @@ function Page({ schema, className }: Props): JSX.Element {
     // return React.createElement(transformType(schema.exportName), schemaToProps(schema), ...([].concat(schema.children as any))
     //   .map((child) => renderNode(child, level + 1)));
 
+    // if (schema.type === NodeType.HTMLNode) {
+    //   return React.createElement(schema?.name || 'div');
+    // }
+
     return (
       <Elem node={schema}>
         {
-          React.createElement(transformType(schema.exportName), schemaToProps(toJS(schema)), ...([].concat(schema.children as any))
+          React.createElement(transformType(schema), schemaToProps(toJS(schema)), ...([].concat(schema.children as any))
             .map((child) => renderNode(child, level + 1)))
         }
       </Elem>

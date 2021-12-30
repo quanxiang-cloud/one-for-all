@@ -30,8 +30,9 @@ export type ReactComp = React.ComponentType | React.JSXElementConstructor<any>;
 export interface PageNode extends BaseNode<Serialized> {
   id: string;
   pid?: string; // only used on page-engine
-  type: NodeType.ReactComponentNode | NodeType.LoopContainerNode;
+  type: NodeType.ReactComponentNode | NodeType.LoopContainerNode | NodeType.HTMLNode;
   label: string;
+  name?: string; // for html node
   // `packageName, packageVersion, exportName` only for react comp node
   packageName?: 'ofa-ui' | string;
   packageVersion?: 'latest' | string;

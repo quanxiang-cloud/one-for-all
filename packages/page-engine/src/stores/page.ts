@@ -1,13 +1,13 @@
-import { action, computed, makeObservable, observable, toJS, runInAction } from 'mobx';
-import { defaults, set, mapValues } from 'lodash';
+import { action, computed, makeObservable, observable, runInAction, toJS } from 'mobx';
+import { defaults, set } from 'lodash';
 
-import { NodeType, NodePropType, NodeProperty, Serialized } from '@ofa/render-engine';
+import { NodePropType, NodeType } from '@ofa/render-engine';
 import { elemId } from '../utils';
 import { findNode, removeNode as removeTreeNode } from '../utils/tree-utils';
 import registry from './registry';
 import dataSource from './data-source';
 import type { DragPos, PageNode, PageSchema, SourceElement } from '../types';
-import { transformLifecycleHooks, mergeProps, mapRawProps } from '../utils/schema-adapter';
+import { mapRawProps, mergeProps, transformLifecycleHooks } from '../utils/schema-adapter';
 import { STYLE_NUMBER } from '../config/default-styles';
 
 type Mode = 'design' | 'preview'
@@ -72,6 +72,10 @@ class PageStore {
 
   @action
   setSchema = (schema: PageSchema): void => {
+    // ignore html node
+    if (schema.node.type === NodeType.HTMLNode) {
+      return;
+    }
     this.schema = schema;
 
     // init data source when set page schema

@@ -9,7 +9,6 @@ import { Select, RadioGroup, Radio, Modal, Icon, Button, toast } from '@ofa/ui';
 import { PageNode, useCtx } from '@ofa/page-engine';
 import { NodePropType } from '@ofa/render-engine';
 import BindItem from './bind-item';
-import { isFuncSource } from '../../../utils';
 
 import styles from './index.m.scss';
 
@@ -30,21 +29,19 @@ function EventPanel({ className }: Props): JSX.Element {
   useEffect(()=>{
     if (curAction) {
       const rawFn = get(page.activeElem.lifecycleHooks, `${curAction}.body`);
-      if (!rawFn) {
-        setFn(getDefaultFunc());
-      } else {
-        setFn(rawFn.substring(11, rawFn.length - '; return fn(...args)'.length) || getDefaultFunc());
-      }
+      setFn(rawFn || getDefaultFunc());
     }
-  }, [page.activeElemId, curAction]);
+  }, [page.activeElemId, curAction, modalOpen]);
 
   function addAction(fn: string): void {
-    if (isFuncSource(fn)) {
+    // todo: validate func
+    if (fn) {
       if (builtInEvents.includes(curAction)) {
         page.updateElemProperty(page.activeElemId, `lifecycleHooks.${curAction}`, {
           type: 'lifecycle_hook_func_spec',
           args: '...args',
-          body: `const fn = ${fn}; return fn(...args)`,
+          // body: `const fn = ${fn}; return fn(...args)`,
+          body: fn,
         });
       } else {
         page.updateElemProperty(page.activeElemId, `props.${curAction}`, {
@@ -53,7 +50,7 @@ function EventPanel({ className }: Props): JSX.Element {
           func: {
             type: '',
             args: '...args',
-            body: `const fn = ${fn}; return fn(...args)`,
+            body: fn,
           },
         });
       }
@@ -65,7 +62,8 @@ function EventPanel({ className }: Props): JSX.Element {
   }
 
   function getDefaultFunc(): string {
-    return `function customAction(params) {\n  // this.apiStates['my-apps'].fetch();\n}`;
+    // return `function customAction(params) {\n  // this.apiStates['my-apps'].fetch();\n}`;
+    return `// this.apiStates['get_apps'].fetch()`;
   }
 
   function isActionBound(actionName: string): boolean {
@@ -100,6 +98,7 @@ function EventPanel({ className }: Props): JSX.Element {
               {exportedActions.map((ac)=> {
                 return (
                   <BindItem
+                    key={ac}
                     name={ac}
                     bound={isActionBound(ac)}
                     onEdit={()=> {
@@ -107,12 +106,12 @@ function EventPanel({ className }: Props): JSX.Element {
                       setModalOpen(true);
                     }}
                     onUnbind={()=> {
-                      if (builtInEvents.includes(curAction)) {
-                        page.updateElemProperty(page.activeElemId, `lifecycleHooks.${curAction}`, '');
+                      if (builtInEvents.includes(ac)) {
+                        page.updateElemProperty(page.activeElemId, `lifecycleHooks.${ac}`, '');
                       } else {
-                        page.updateElemProperty(page.activeElem.id, `props.${curAction}`, '');
+                        page.updateElemProperty(page.activeElem.id, `props.${ac}`, '');
                       }
-                      // setFn('');
+                      setFn('');
                     }}
                   />
                 );
@@ -130,6 +129,7 @@ function EventPanel({ className }: Props): JSX.Element {
         <p className='text-12 text-gray-600'>触发条件</p>
         <Select
           options={page.getElemBoundActions().map((value)=> ({ label: value, value }))}
+          value={curAction}
           onChange={setCurAction}
         />
       </div>
@@ -161,9 +161,10 @@ function EventPanel({ className }: Props): JSX.Element {
           <div className={styles.modal}>
             <div className={styles.eventType}>
               <p className='text-12 text-gray-600'>动作类型</p>
+              {/* @ts-ignore */}
               <RadioGroup onChange={(val: any) => setType(val)}>
-                {/* <Radio label='平台方法' value='platform' defaultChecked={eventType === 'platform'} />*/}
-                <Radio label='自定义方法' value='custom' defaultChecked={eventType === 'custom'} />
+                {/* <Radio key='platform' label='平台方法' value='platform' defaultChecked={eventType === 'platform'} />*/}
+                <Radio key='custom' label='自定义方法' value='custom' defaultChecked={eventType === 'custom'} />
               </RadioGroup>
             </div>
             <div className={styles.side}>

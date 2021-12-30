@@ -13,7 +13,7 @@ const elem: SourceElement<GridProps> = {
   defaultConfig,
   order: 1,
   acceptChild: true,
-  expose: {},
+  exportActions: [],
 };
 
 export default elem;

@@ -4,7 +4,6 @@ import {
   NodeProperty,
   Serialized,
   SharedStatesSpec,
-  ConstantProperty,
 } from '@ofa/render-engine';
 
 import { mapValues, mergeWith } from 'lodash';
@@ -76,7 +75,8 @@ export function transformLifecycleHooks(hooks: any): Record<string, any> {
       return {
         type: 'lifecycle_hook_func_spec',
         args: '...args',
-        body: `const fn = ${hook}; return fn(...args)`,
+        // body: `const fn = ${hook}; return fn(...args)`,
+        body: hook,
       };
     }
     return '';
