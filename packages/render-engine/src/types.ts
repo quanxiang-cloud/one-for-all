@@ -242,6 +242,7 @@ export type APIFetchCallback = (state: Omit<APIState, 'loading'>) => void;
 export type APIFetch = (params: FetchParams, callback?: APIFetchCallback) => void;
 
 export interface StatesHubShared {
+  hasState$: (stateID: string) => boolean;
   getState$: (stateID: string) => BehaviorSubject<unknown>;
   getState: (stateID: string) => unknown;
   getNodeState$: (nodeKey: string) => BehaviorSubject<unknown>;

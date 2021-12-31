@@ -8,29 +8,43 @@ import {
 } from '../types';
 
 export default class SharedStateHub implements StatesHubShared {
-  cache: Record<string, BehaviorSubject<unknown>> = {};
-  spec: SharedStatesSpec;
+  cache: Record<string, BehaviorSubject<unknown>>;
+  parentHub?: StatesHubShared = undefined;
 
-  constructor(spec: SharedStatesSpec) {
-    this.spec = spec;
+  constructor(spec: SharedStatesSpec, parentHub?: StatesHubShared) {
+    this.parentHub = parentHub;
+    this.cache = Object.entries(spec)
+      .reduce<Record<string, BehaviorSubject<unknown>>>((acc, [stateID, { initial }]) => {
+        acc[stateID] = new BehaviorSubject(initial);
+
+        return acc;
+      }, {});
   }
 
-  createState$IfNotExist(stateID: string, initialValue: unknown): void {
-    if (this.cache[stateID]) {
-      return;
-    }
+  hasState$(stateID: string): boolean {
+    return !!this.cache[stateID];
+  }
 
+  createState$(stateID: string, initialValue?: unknown): void {
     this.cache[stateID] = new BehaviorSubject(initialValue);
   }
 
   getState$(stateID: string): BehaviorSubject<unknown> {
-    this.createState$IfNotExist(stateID, this.spec[stateID]?.initial);
+    if (this.cache[stateID]) {
+      return this.cache[stateID];
+    }
+
+    if (this.parentHub?.hasState$(stateID)) {
+      return this.parentHub?.getState$(stateID);
+    }
+
+    this.createState$(stateID);
 
     return this.cache[stateID];
   }
 
   getState(stateID: string): unknown {
-    return this.getState$(stateID)?.getValue();
+    return this.getState$(stateID).getValue();
   }
 
   mutateState(stateID: string, state: unknown): void {
@@ -55,18 +69,15 @@ export default class SharedStateHub implements StatesHubShared {
   exposeNodeState(nodeKey: React.Key, state: unknown): void {
     const stateID = `$${nodeKey}`;
 
-    this.createState$IfNotExist(stateID, state);
+    if (!this.hasState$(stateID)) {
+      this.createState$(stateID, state);
+      return;
+    }
 
     this.cache[stateID].next(state);
   }
 
   retrieveNodeState(nodeKey: string): unknown {
-    const stateID = `$${nodeKey}`;
-
-    if (!this.cache[stateID]) {
-      return undefined;
-    }
-
-    return this.cache[stateID].getValue();
+    return this.getNodeState$(nodeKey).value;
   }
 }
