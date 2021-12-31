@@ -3,7 +3,7 @@ import { map, filter, share, skip } from 'rxjs/operators';
 import type { APISpecAdapter, FetchParams } from '@ofa/api-spec-adapter';
 
 import type {
-  StatesHubAPI, APIState, APIStatesSpec, CTX, RunParam, APIFetch, APIFetchCallback,
+  StatesHubAPI, APIState, APIStatesSpec, RunParam, APIFetch, APIFetchCallback,
 } from '../types';
 import getResponseState$ from './http/response';
 
@@ -24,7 +24,6 @@ export default class APIStatesHub implements StatesHubAPI {
   apiSpecAdapter: APISpecAdapter;
   apiStateSpec: APIStatesSpec;
   statesCache: Record<string, [BehaviorSubject<APIState>, StreamActions]> = {};
-  ctx: CTX | null = null;
 
   constructor(apiSpecAdapter: APISpecAdapter, apiStateSpec: APIStatesSpec) {
     this.apiStateSpec = apiStateSpec;
