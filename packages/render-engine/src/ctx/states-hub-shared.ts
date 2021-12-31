@@ -3,22 +3,16 @@ import { logger } from '@ofa/utils';
 import { BehaviorSubject } from 'rxjs';
 
 import {
-  CTX,
   StatesHubShared,
   SharedStatesSpec,
 } from '../types';
 
 export default class SharedStateHub implements StatesHubShared {
   cache: Record<string, BehaviorSubject<unknown>> = {};
-  ctx: CTX | null = null;
   spec: SharedStatesSpec;
 
   constructor(spec: SharedStatesSpec) {
     this.spec = spec;
-  }
-
-  initContext(ctx: CTX): void {
-    this.ctx = ctx;
   }
 
   createState$IfNotExist(stateID: string, initialValue: unknown): void {

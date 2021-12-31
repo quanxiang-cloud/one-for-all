@@ -17,9 +17,6 @@ function initCTX({ schema, apiSpecAdapter, repository }: InitProps): CTX {
     repository,
   };
 
-  statesHubAPI.initContext(ctx);
-  statesHubShared.initContext(ctx);
-
   return ctx;
 }
 

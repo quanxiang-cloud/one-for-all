@@ -12,7 +12,7 @@ type StreamActions = {
   refresh: () => void;
 };
 
-function executeCallback(ctx: CTX, state: APIState, callback: APIFetchCallback): void {
+function executeCallback(state: APIState, callback: APIFetchCallback): void {
   if (state.loading) {
     return;
   }
@@ -29,10 +29,6 @@ export default class APIStatesHub implements StatesHubAPI {
   constructor(apiSpecAdapter: APISpecAdapter, apiStateSpec: APIStatesSpec) {
     this.apiStateSpec = apiStateSpec;
     this.apiSpecAdapter = apiSpecAdapter;
-  }
-
-  initContext(ctx: CTX): void {
-    this.ctx = ctx;
   }
 
   getState$(stateID: string): BehaviorSubject<APIState> {
@@ -99,7 +95,6 @@ export default class APIStatesHub implements StatesHubAPI {
         setTimeout(() => {
           // todo refactor this
           executeCallback(
-            this.ctx as CTX,
             state,
             callback,
           );

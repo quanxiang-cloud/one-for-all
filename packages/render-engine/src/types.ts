@@ -247,7 +247,6 @@ export interface StatesHubShared {
   getNodeState$: (nodeKey: string) => BehaviorSubject<unknown>;
   exposeNodeState: (nodeKey: React.Key, state: unknown) => void;
   retrieveNodeState: (nodeKey: string) => unknown;
-  initContext: (ctx: CTX) => void;
   mutateState: (stateID: string, state: unknown) => void;
 }
 
