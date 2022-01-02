@@ -52,10 +52,6 @@ export default class SharedStateHub implements StatesHubShared {
     return this.cache[stateID];
   }
 
-  getState(stateID: string): unknown {
-    return this.getState$(stateID).getValue();
-  }
-
   mutateState(stateID: string, state: unknown): void {
     if (stateID.startsWith('$')) {
       logger.warn('shared stateID can not starts with $, this action will be ignored');

@@ -245,7 +245,6 @@ export interface StatesHubShared {
   hasState$: (stateID: string) => boolean;
   findState$: (stateID: string) => BehaviorSubject<unknown> | undefined;
   getState$: (stateID: string) => BehaviorSubject<unknown>;
-  getState: (stateID: string) => unknown;
   getNodeState$: (nodeKey: string) => BehaviorSubject<unknown>;
   exposeNodeState: (nodeKey: React.Key, state: unknown) => void;
   mutateState: (stateID: string, state: unknown) => void;
