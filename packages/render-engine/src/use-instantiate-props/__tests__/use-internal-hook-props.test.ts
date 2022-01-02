@@ -24,10 +24,10 @@ test('useInternalHooks_resolve_expected_value', () => {
   const { result, unmount } = renderHook(() => useInternalHooks(node, dummyCTX));
 
   result.current.__exposeState?.(someNodeInternalState);
-  expect(hub.retrieveNodeState(nodeID)).toEqual(someNodeInternalState);
+  expect(hub.getNodeState$(nodeID).value).toEqual(someNodeInternalState);
 
   result.current.__exposeState?.(123);
-  expect(hub.retrieveNodeState(nodeID)).toEqual(123);
+  expect(hub.getNodeState$(nodeID).value).toEqual(123);
 
   unmount();
 });

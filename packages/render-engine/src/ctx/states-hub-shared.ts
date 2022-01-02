@@ -70,11 +70,6 @@ export default class SharedStateHub implements StatesHubShared {
     return this.getState$(stateID);
   }
 
-  getNodeState(nodeKey: string): unknown {
-    const stateID = `$${nodeKey}`;
-    return this.getState$(stateID).getValue();
-  }
-
   exposeNodeState(nodeKey: React.Key, state: unknown): void {
     const stateID = `$${nodeKey}`;
 
@@ -84,9 +79,5 @@ export default class SharedStateHub implements StatesHubShared {
     }
 
     this.cache[stateID].next(state);
-  }
-
-  retrieveNodeState(nodeKey: string): unknown {
-    return this.getNodeState$(nodeKey).value;
   }
 }
