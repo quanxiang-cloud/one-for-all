@@ -72,12 +72,11 @@ export default class SharedStateHub implements StatesHubShared {
 
   exposeNodeState(nodeKey: React.Key, state: unknown): void {
     const stateID = `$${nodeKey}`;
-
-    if (!this.hasState$(stateID)) {
-      this.createState$(stateID, state);
+    if (this.cache[stateID]) {
+      this.cache[stateID].next(state);
       return;
     }
 
-    this.cache[stateID].next(state);
+    this.createState$(stateID, state);
   }
 }
