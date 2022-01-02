@@ -21,6 +21,9 @@ export const enum NodePropType {
   SharedStateProperty = 'shared_state_property',
   NodeStateProperty = 'node_state_property',
 
+  /**
+   * @deprecated This type has been deprecated, please use FunctionalProperty instead
+   */
   APIInvokeProperty = 'api_invoke_property',
   SharedStateMutationProperty = 'shared_state_mutation_property',
   FunctionalProperty = 'functional_property',
@@ -135,7 +138,9 @@ export type SharedStateMutationProperty<T> = {
   convertor?: T extends Serialized ? BaseFunctionSpec : VersatileFunc;
 }
 
-// todo refactor this type property spec
+/**
+ * @deprecated This type has been deprecated, please use FunctionalProperty instead
+ */
 export type APIInvokeProperty<T> = {
   type: NodePropType.APIInvokeProperty;
   stateID: string;
