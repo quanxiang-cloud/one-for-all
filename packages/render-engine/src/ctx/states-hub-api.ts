@@ -3,12 +3,12 @@ import { map, filter, share, skip } from 'rxjs/operators';
 import type { APISpecAdapter, FetchParams } from '@ofa/api-spec-adapter';
 
 import type {
-  StatesHubAPI, APIState, APIStatesSpec, RunParam, APIFetch, APIFetchCallback,
+  StatesHubAPI, APIState, APIStatesSpec, FetchOption, APIFetch, APIFetchCallback,
 } from '../types';
 import getResponseState$ from './http/response';
 
 type StreamActions = {
-  run: (runParam: RunParam) => void;
+  run: (fetchOption: FetchOption) => void;
   refresh: () => void;
 };
 
@@ -36,10 +36,10 @@ export default class APIStatesHub implements StatesHubAPI {
     return state$;
   }
 
-  runAction(stateID: string, runParam: RunParam): void {
+  fetch(stateID: string, fetchOption: FetchOption): void {
     const [, { run }] = this.getCached(stateID);
 
-    run(runParam);
+    run(fetchOption);
   }
 
   refresh(stateID: string): void {
@@ -51,7 +51,7 @@ export default class APIStatesHub implements StatesHubAPI {
   getFetch(stateID: string): APIFetch {
     return (fetchParams: FetchParams, callback?: APIFetchCallback): void => {
       // todo implement callback
-      this.runAction(stateID, { params: fetchParams, callback });
+      this.fetch(stateID, { params: fetchParams, callback });
     };
   }
 
@@ -78,7 +78,7 @@ export default class APIStatesHub implements StatesHubAPI {
       share(),
     );
 
-    let _latestRunParams: RunParam | undefined = undefined;
+    let _latestFetchOption: FetchOption | undefined = undefined;
     const apiState$ = getResponseState$(request$, this.apiSpecAdapter.responseAdapter);
 
     // run callbacks after value resolved
@@ -89,8 +89,8 @@ export default class APIStatesHub implements StatesHubAPI {
       }),
     ).subscribe((state) => {
       // todo refactor this
-      if (_latestRunParams?.callback) {
-        const callback = _latestRunParams.callback;
+      if (_latestFetchOption?.callback) {
+        const callback = _latestFetchOption.callback;
         setTimeout(() => {
           // todo refactor this
           executeCallback(
@@ -102,18 +102,18 @@ export default class APIStatesHub implements StatesHubAPI {
     });
 
     const streamActions: StreamActions = {
-      run: (runParam: RunParam) => {
-        _latestRunParams = runParam;
+      run: (fetchOption: FetchOption) => {
+        _latestFetchOption = fetchOption;
 
-        params$.next(runParam?.params);
+        params$.next(fetchOption?.params);
       },
       refresh: () => {
-        if (!_latestRunParams) {
+        if (!_latestFetchOption) {
           return;
         }
         // override onSuccess and onError to undefined
-        _latestRunParams = { params: _latestRunParams.params };
-        params$.next(_latestRunParams?.params);
+        _latestFetchOption = { params: _latestFetchOption.params };
+        params$.next(_latestFetchOption?.params);
       },
     };
 

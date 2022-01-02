@@ -50,7 +50,7 @@ test('APIStates_call_refresh_should_have_no_effect_if_api_has_not_been_called_ev
   expect(mockBuild).toBeCalledTimes(0);
 });
 
-test('APIStates_runAction_should_call_adapter_build_method', (done) => {
+test('APIStates_fetch_should_call_adapter_build_method', (done) => {
   const mockRes = { data: { id: 'abc-123' } };
   mockXHR.get(/.*/, (req, res) => {
     return res.status(200).body(JSON.stringify(mockRes));
@@ -74,13 +74,13 @@ test('APIStates_runAction_should_call_adapter_build_method', (done) => {
     }
   }
 
-  apiStates.runAction('findPetsByTags', {
+  apiStates.fetch('findPetsByTags', {
     callback: fetchCallback,
     params: fetchParams,
   });
 });
 
-test('APIStates_runAction_called_should_resolve_values', (done) => {
+test('APIStates_fetch_called_should_resolve_values', (done) => {
   const mockRes = { data: { id: 'abc-123' } };
   mockXHR.get(/.*/, (req, res) => {
     return res.status(200).body(JSON.stringify(mockRes));
@@ -102,7 +102,7 @@ test('APIStates_runAction_called_should_resolve_values', (done) => {
     }
   }
 
-  apiStates.runAction('findPetsByTags', {
+  apiStates.fetch('findPetsByTags', {
     callback: fetchCallback,
     params: fetchParams,
   });

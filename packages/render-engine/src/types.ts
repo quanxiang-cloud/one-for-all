@@ -194,7 +194,7 @@ export type BaseFunctionSpec = {
   body: string;
 }
 
-export type RunParam = {
+export type FetchOption = {
   params?: FetchParams;
   // Callback is the hook for performing side effect after an API request.
   //
@@ -234,7 +234,7 @@ export type RunParam = {
 
 export interface StatesHubAPI {
   getState$: (stateID: string) => BehaviorSubject<APIState>;
-  runAction: (stateID: string, runParam: RunParam) => void;
+  fetch: (stateID: string, fetchOption: FetchOption) => void;
   refresh: (stateID: string) => void;
 }
 
