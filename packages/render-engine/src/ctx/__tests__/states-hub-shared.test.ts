@@ -13,18 +13,7 @@ describe('StatesHubShared_hasState$_return_expected_value', () => {
     expect(statesHubShared.hasState$('bar')).toBe(false);
   });
 
-  test('defined_state_if_not_exist', () => {
-    const sharedStatesSpec: SharedStatesSpec = {
-      foo: { initial: 'foo' },
-    };
-    const statesHubShared = new StatesHubShared(sharedStatesSpec);
-
-    statesHubShared.getState$('bar');
-
-    expect(statesHubShared.hasState$('bar')).toBe(true);
-  });
-
-  test('return_false_even_if_parent_has_state', () => {
+  test('return_true_if_parent_has_state', () => {
     const parentState: StatesHubShared = new StatesHubShared({
       someStateInParent: { initial: 'foo' },
     });
@@ -33,12 +22,36 @@ describe('StatesHubShared_hasState$_return_expected_value', () => {
     };
     const statesHubShared = new StatesHubShared(sharedStatesSpec, parentState);
 
-    expect(statesHubShared.hasState$('someStateInParent')).toBe(false);
+    expect(statesHubShared.hasState$('someStateInParent')).toBe(true);
+  });
+
+  test('return_true_if_grand_parent_has_state', () => {
+    const grandState: StatesHubShared = new StatesHubShared({ grandState: { initial: 'grandState' } });
+    const parentState: StatesHubShared = new StatesHubShared({}, grandState);
+    const sharedStatesSpec: SharedStatesSpec = {
+      foo: { initial: 'foo' },
+    };
+    const statesHubShared = new StatesHubShared(sharedStatesSpec, parentState);
+
+    expect(statesHubShared.hasState$('grandState')).toBe(true);
+  });
+
+  test('return_true_after_get_state$_called', () => {
+    const sharedStatesSpec: SharedStatesSpec = {
+      foo: { initial: 'foo' },
+    };
+    const statesHubShared = new StatesHubShared(sharedStatesSpec);
+
+    expect(statesHubShared.hasState$('bar')).toBe(false);
+
+    statesHubShared.getState$('bar');
+
+    expect(statesHubShared.hasState$('bar')).toBe(true);
   });
 });
 
 describe('StatesHubShared_getState$_return_expected_value', () => {
-  test('return_expected_initial', () => {
+  test('getState$_always_return_truthy', () => {
     const sharedStatesSpec: SharedStatesSpec = {
       foo: { initial: 'foo' },
     };
@@ -66,6 +79,17 @@ describe('StatesHubShared_getState$_return_expected_value', () => {
 
     expect(someStateInParent$).toBeInstanceOf(BehaviorSubject);
     expect(someStateInParent$.value).toBe('some_parent_value');
+  });
+
+  test('return_grand_parent_state', () => {
+    const grandState: StatesHubShared = new StatesHubShared({ grandState: { initial: 'grandState' } });
+    const parentState: StatesHubShared = new StatesHubShared({}, grandState);
+    const statesHubShared = new StatesHubShared({}, parentState);
+
+    const someStateInParent$ = statesHubShared.getState$('grandState');
+
+    expect(someStateInParent$).toBeInstanceOf(BehaviorSubject);
+    expect(someStateInParent$.value).toBe('grandState');
   });
 });
 

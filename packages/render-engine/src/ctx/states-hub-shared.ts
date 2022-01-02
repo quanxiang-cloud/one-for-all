@@ -22,20 +22,29 @@ export default class SharedStateHub implements StatesHubShared {
   }
 
   hasState$(stateID: string): boolean {
-    return !!this.cache[stateID];
+    if (this.cache[stateID]) {
+      return true;
+    }
+
+    return !!this.parentHub?.hasState$(stateID);
   }
 
   createState$(stateID: string, initialValue?: unknown): void {
     this.cache[stateID] = new BehaviorSubject(initialValue);
   }
 
-  getState$(stateID: string): BehaviorSubject<unknown> {
+  findState$(stateID: string): BehaviorSubject<unknown> | undefined {
     if (this.cache[stateID]) {
       return this.cache[stateID];
     }
 
-    if (this.parentHub?.hasState$(stateID)) {
-      return this.parentHub?.getState$(stateID);
+    return this.parentHub?.findState$(stateID);
+  }
+
+  getState$(stateID: string): BehaviorSubject<unknown> {
+    const state$ = this.findState$(stateID);
+    if (state$) {
+      return state$;
     }
 
     this.createState$(stateID);
