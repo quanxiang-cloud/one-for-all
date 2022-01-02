@@ -7,8 +7,8 @@ import type {
 } from '../types';
 import getResponseState$ from './http/response';
 
-type StreamActions = {
-  run: (fetchOption: FetchOption) => void;
+type StateActions = {
+  fetch: (fetchOption: FetchOption) => void;
   refresh: () => void;
 };
 
@@ -23,7 +23,7 @@ function executeCallback(state: APIState, callback: APIFetchCallback): void {
 export default class APIStatesHub implements StatesHubAPI {
   apiSpecAdapter: APISpecAdapter;
   apiStateSpec: APIStatesSpec;
-  statesCache: Record<string, [BehaviorSubject<APIState>, StreamActions]> = {};
+  statesCache: Record<string, [BehaviorSubject<APIState>, StateActions]> = {};
 
   constructor(apiSpecAdapter: APISpecAdapter, apiStateSpec: APIStatesSpec) {
     this.apiStateSpec = apiStateSpec;
@@ -37,9 +37,9 @@ export default class APIStatesHub implements StatesHubAPI {
   }
 
   fetch(stateID: string, fetchOption: FetchOption): void {
-    const [, { run }] = this.getCached(stateID);
+    const [, { fetch }] = this.getCached(stateID);
 
-    run(fetchOption);
+    fetch(fetchOption);
   }
 
   refresh(stateID: string): void {
@@ -55,7 +55,7 @@ export default class APIStatesHub implements StatesHubAPI {
     };
   }
 
-  getCached(stateID: string): [BehaviorSubject<APIState>, StreamActions] {
+  getCached(stateID: string): [BehaviorSubject<APIState>, StateActions] {
     if (!this.statesCache[stateID]) {
       this.initState(stateID);
     }
@@ -101,8 +101,8 @@ export default class APIStatesHub implements StatesHubAPI {
       }
     });
 
-    const streamActions: StreamActions = {
-      run: (fetchOption: FetchOption) => {
+    const streamActions: StateActions = {
+      fetch: (fetchOption: FetchOption) => {
         _latestFetchOption = fetchOption;
 
         params$.next(fetchOption?.params);
