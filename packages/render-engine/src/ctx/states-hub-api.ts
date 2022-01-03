@@ -1,24 +1,14 @@
 import { BehaviorSubject, Subject } from 'rxjs';
-import { map, filter, share, skip } from 'rxjs/operators';
+import { map, filter, share, skip, delay } from 'rxjs/operators';
 import type { APISpecAdapter, FetchParams } from '@ofa/api-spec-adapter';
 
-import type {
-  StatesHubAPI, APIState, APIStatesSpec, FetchOption, APIFetchCallback,
-} from '../types';
+import type { StatesHubAPI, APIState, APIStatesSpec, FetchOption } from '../types';
 import getResponseState$ from './http/response';
 
 type StateActions = {
   fetch: (fetchOption: FetchOption) => void;
   refresh: () => void;
 };
-
-function executeCallback(state: APIState, callback: APIFetchCallback): void {
-  if (state.loading) {
-    return;
-  }
-
-  callback(state);
-}
 
 export default class APIStatesHub implements StatesHubAPI {
   apiSpecAdapter: APISpecAdapter;
@@ -74,31 +64,22 @@ export default class APIStatesHub implements StatesHubAPI {
     let _latestFetchOption: FetchOption | undefined = undefined;
     const apiState$ = getResponseState$(request$, this.apiSpecAdapter.responseAdapter);
 
-    // run callbacks after value resolved
+    // execute fetch callback after new `result` emitted from apiState$
     apiState$.pipe(
       skip(1),
-      filter(({ loading }) => {
-        return !loading;
-      }),
+      filter(({ loading }) => !loading),
+      // because this subscription is happened before than view's,
+      // so delay `callback` execution to next frame.
+      delay(10),
     ).subscribe((state) => {
-      // todo refactor this
-      if (_latestFetchOption?.callback) {
-        const callback = _latestFetchOption.callback;
-        setTimeout(() => {
-          // todo refactor this
-          executeCallback(
-            state,
-            callback,
-          );
-        }, 10);
-      }
+      _latestFetchOption?.callback?.(state);
     });
 
     const streamActions: StateActions = {
       fetch: (fetchOption: FetchOption) => {
         _latestFetchOption = fetchOption;
 
-        params$.next(fetchOption?.params);
+        params$.next(fetchOption.params);
       },
       refresh: () => {
         if (!_latestFetchOption) {
@@ -106,7 +87,7 @@ export default class APIStatesHub implements StatesHubAPI {
         }
         // override onSuccess and onError to undefined
         _latestFetchOption = { params: _latestFetchOption.params };
-        params$.next(_latestFetchOption?.params);
+        params$.next(_latestFetchOption.params);
       },
     };
 
