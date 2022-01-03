@@ -3,7 +3,7 @@ import { map, filter, share, skip } from 'rxjs/operators';
 import type { APISpecAdapter, FetchParams } from '@ofa/api-spec-adapter';
 
 import type {
-  StatesHubAPI, APIState, APIStatesSpec, FetchOption, APIFetch, APIFetchCallback,
+  StatesHubAPI, APIState, APIStatesSpec, FetchOption, APIFetchCallback,
 } from '../types';
 import getResponseState$ from './http/response';
 
@@ -46,13 +46,6 @@ export default class APIStatesHub implements StatesHubAPI {
     const [, { refresh }] = this.getCached(stateID);
 
     refresh();
-  }
-
-  getFetch(stateID: string): APIFetch {
-    return (fetchParams: FetchParams, callback?: APIFetchCallback): void => {
-      // todo implement callback
-      this.fetch(stateID, { params: fetchParams, callback });
-    };
   }
 
   getCached(stateID: string): [BehaviorSubject<APIState>, StateActions] {

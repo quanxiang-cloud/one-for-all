@@ -1,13 +1,17 @@
-import { APIStateWithFetch, APIState } from '../types';
-import APIStatesHub from './states-hub-api';
+import { FetchParams } from '@ofa/api-spec-adapter';
+import { APIFetchCallback } from '..';
+import { APIStateWithFetch, APIState, StatesHubAPI } from '../types';
 
-function getAPIStates(statesHubAPI: APIStatesHub): Readonly<Record<string, APIStateWithFetch>> {
+function getAPIStates(statesHubAPI: StatesHubAPI): Readonly<Record<string, APIStateWithFetch>> {
   const handler: ProxyHandler<Readonly<Record<string, APIState>>> = {
     get: (target: Readonly<Record<string, APIState>>, p: string): APIStateWithFetch => {
       const apiState = statesHubAPI.getState$(p).getValue();
+
       return {
         ...apiState,
-        fetch: statesHubAPI.getFetch(p),
+        fetch: (fetchParams: FetchParams, callback?: APIFetchCallback): void => {
+          statesHubAPI.fetch(p, { params: fetchParams, callback });
+        },
         refresh: () => statesHubAPI.refresh(p),
       };
     },
