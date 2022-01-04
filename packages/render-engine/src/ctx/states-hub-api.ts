@@ -61,14 +61,10 @@ function initState(apiID: string, apiSpecAdapter: APISpecAdapter): APIState$With
 }
 
 export default class Hub implements StatesHubAPI {
-  apiSpecAdapter: APISpecAdapter;
-  apiStateSpec: APIStatesSpec;
   cache: Cache;
   parentHub?: StatesHubAPI = undefined;
 
   constructor({ apiStateSpec, apiSpecAdapter }: Props, parentHub?: StatesHubAPI) {
-    this.apiStateSpec = apiStateSpec;
-    this.apiSpecAdapter = apiSpecAdapter;
     this.parentHub = parentHub;
 
     this.cache = Object.entries(apiStateSpec).reduce<Cache>((acc, [stateID, { apiID }]) => {
