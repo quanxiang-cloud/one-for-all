@@ -7,7 +7,7 @@ import {
   SharedStatesSpec,
 } from '../types';
 
-export default class SharedStateHub implements StatesHubShared {
+export default class Hub implements StatesHubShared {
   cache: Record<string, BehaviorSubject<unknown>>;
   parentHub?: StatesHubShared = undefined;
 

@@ -1,7 +1,7 @@
 import mockXHR from 'xhr-mock';
 import type { APISpecAdapter, AjaxConfig } from '@ofa/api-spec-adapter';
 
-import APIStatesHub from '../states-hub-api';
+import StatesHubAPI from '../states-hub-api';
 import { initialState } from '../http/response';
 import { APIStatesSpec } from '../..';
 
@@ -17,18 +17,18 @@ const apiStateSpec: APIStatesSpec = {
 };
 
 test('APIStates_getCached_should_throw_if_stateID_has_not_corresponding_api', () => {
-  const apiStates = new APIStatesHub(apiSpecAdapter, apiStateSpec);
+  const apiStates = new StatesHubAPI(apiSpecAdapter, apiStateSpec);
   expect(() => apiStates.getCached('some_state_not_exist')).toThrow();
 });
 
 test('APIStates_getState_should_return_behaviorSubject_with_expected_initial_state', () => {
-  const apiStates = new APIStatesHub(apiSpecAdapter, apiStateSpec);
+  const apiStates = new StatesHubAPI(apiSpecAdapter, apiStateSpec);
   const state$ = apiStates.getState$('findPetsByTags');
   expect(state$.getValue()).toEqual(initialState);
 });
 
 test('APIStates_getState_should_return_the_same_behaviorSubject', () => {
-  const apiStates = new APIStatesHub(apiSpecAdapter, apiStateSpec);
+  const apiStates = new StatesHubAPI(apiSpecAdapter, apiStateSpec);
   const state$1 = apiStates.getState$('findPetsByTags');
   const state$2 = apiStates.getState$('findPetsByTags');
 
@@ -38,7 +38,7 @@ test('APIStates_getState_should_return_the_same_behaviorSubject', () => {
 test('APIStates_call_refresh_should_have_no_effect_if_api_has_not_been_called_ever', () => {
   const mockBuild = jest.fn();
   const adapter = { build: mockBuild };
-  const apiStates = new APIStatesHub(adapter, apiStateSpec);
+  const apiStates = new StatesHubAPI(adapter, apiStateSpec);
   const state$ = apiStates.getState$('findPetsByTags');
 
   const callback = jest.fn();
@@ -61,7 +61,7 @@ test('APIStates_fetch_should_call_adapter_build_method', (done) => {
       return { method: 'get', url: 'api' };
     }),
   };
-  const apiStates = new APIStatesHub(adapter, apiStateSpec);
+  const apiStates = new StatesHubAPI(adapter, apiStateSpec);
   const fetchParams = { params: { foo: 'bar' }, body: 'abc' };
 
   function fetchCallback(): void {
@@ -87,7 +87,7 @@ test('APIStates_fetch_called_should_resolve_values', (done) => {
   });
 
   const callback = jest.fn();
-  const apiStates = new APIStatesHub(apiSpecAdapter, apiStateSpec);
+  const apiStates = new StatesHubAPI(apiSpecAdapter, apiStateSpec);
   const state$ = apiStates.getState$('findPetsByTags');
   const fetchParams = { params: { foo: 'bar' }, body: 'abc' };
 

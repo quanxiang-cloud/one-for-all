@@ -10,10 +10,10 @@ type StateActions = {
   refresh: () => void;
 };
 
-export default class APIStatesHub implements StatesHubAPI {
+export default class Hub implements StatesHubAPI {
   apiSpecAdapter: APISpecAdapter;
   apiStateSpec: APIStatesSpec;
-  statesCache: Record<string, [BehaviorSubject<APIState>, StateActions]> = {};
+  cache: Record<string, [BehaviorSubject<APIState>, StateActions]> = {};
 
   constructor(apiSpecAdapter: APISpecAdapter, apiStateSpec: APIStatesSpec) {
     this.apiStateSpec = apiStateSpec;
@@ -41,11 +41,11 @@ export default class APIStatesHub implements StatesHubAPI {
   }
 
   getCached(stateID: string): [BehaviorSubject<APIState>, StateActions] {
-    if (!this.statesCache[stateID]) {
+    if (!this.cache[stateID]) {
       this.initState(stateID);
     }
 
-    return this.statesCache[stateID];
+    return this.cache[stateID];
   }
 
   initState(stateID: string): void {
@@ -93,6 +93,6 @@ export default class APIStatesHub implements StatesHubAPI {
       },
     };
 
-    this.statesCache[stateID] = [apiState$, streamActions];
+    this.cache[stateID] = [apiState$, streamActions];
   }
 }
