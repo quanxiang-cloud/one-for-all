@@ -158,7 +158,7 @@ function StylePanel({ className }: Props): JSX.Element {
         >
           <Editor
             value={editorVal}
-            height="200px"
+            height="480px"
             theme='light'
             extensions={[javascript()]}
             onChange={(val) => setEditorVal(val)}

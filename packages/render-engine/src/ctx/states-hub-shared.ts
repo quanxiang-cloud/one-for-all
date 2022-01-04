@@ -3,40 +3,53 @@ import { logger } from '@ofa/utils';
 import { BehaviorSubject } from 'rxjs';
 
 import {
-  CTX,
   StatesHubShared,
   SharedStatesSpec,
 } from '../types';
 
-export default class SharedStateHub implements StatesHubShared {
-  cache: Record<string, BehaviorSubject<unknown>> = {};
-  ctx: CTX | null = null;
-  spec: SharedStatesSpec;
+export default class Hub implements StatesHubShared {
+  cache: Record<string, BehaviorSubject<unknown>>;
+  parentHub?: StatesHubShared = undefined;
 
-  constructor(spec: SharedStatesSpec) {
-    this.spec = spec;
+  constructor(spec: SharedStatesSpec, parentHub?: StatesHubShared) {
+    this.parentHub = parentHub;
+    this.cache = Object.entries(spec)
+      .reduce<Record<string, BehaviorSubject<unknown>>>((acc, [stateID, { initial }]) => {
+        acc[stateID] = new BehaviorSubject(initial);
+
+        return acc;
+      }, {});
   }
 
-  initContext(ctx: CTX): void {
-    this.ctx = ctx;
-  }
-
-  createState$IfNotExist(stateID: string, initialValue: unknown): void {
+  hasState$(stateID: string): boolean {
     if (this.cache[stateID]) {
-      return;
+      return true;
     }
 
+    return !!this.parentHub?.hasState$(stateID);
+  }
+
+  createState$(stateID: string, initialValue?: unknown): void {
     this.cache[stateID] = new BehaviorSubject(initialValue);
   }
 
-  getState$(stateID: string): BehaviorSubject<unknown> {
-    this.createState$IfNotExist(stateID, this.spec[stateID]?.initial);
+  findState$(stateID: string): BehaviorSubject<unknown> | undefined {
+    if (this.cache[stateID]) {
+      return this.cache[stateID];
+    }
 
-    return this.cache[stateID];
+    return this.parentHub?.findState$(stateID);
   }
 
-  getState(stateID: string): unknown {
-    return this.getState$(stateID)?.getValue();
+  getState$(stateID: string): BehaviorSubject<unknown> {
+    const state$ = this.findState$(stateID);
+    if (state$) {
+      return state$;
+    }
+
+    this.createState$(stateID);
+
+    return this.cache[stateID];
   }
 
   mutateState(stateID: string, state: unknown): void {
@@ -53,26 +66,13 @@ export default class SharedStateHub implements StatesHubShared {
     return this.getState$(stateID);
   }
 
-  getNodeState(nodeKey: string): unknown {
-    const stateID = `$${nodeKey}`;
-    return this.getState$(stateID).getValue();
-  }
-
   exposeNodeState(nodeKey: React.Key, state: unknown): void {
     const stateID = `$${nodeKey}`;
-
-    this.createState$IfNotExist(stateID, state);
-
-    this.cache[stateID].next(state);
-  }
-
-  retrieveNodeState(nodeKey: string): unknown {
-    const stateID = `$${nodeKey}`;
-
-    if (!this.cache[stateID]) {
-      return undefined;
+    if (this.cache[stateID]) {
+      this.cache[stateID].next(state);
+      return;
     }
 
-    return this.cache[stateID].getValue();
+    this.createState$(stateID, state);
   }
 }

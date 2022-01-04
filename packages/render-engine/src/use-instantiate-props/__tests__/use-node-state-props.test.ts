@@ -3,13 +3,13 @@ import { act, renderHook } from '@testing-library/react-hooks/pure';
 import { logger } from '@ofa/utils';
 
 import { NodePropType, Instantiated, SchemaNode, NodeType } from '../../types';
-import SharedStateHub from '../../ctx/states-hub-shared';
+import StatesHubShared from '../../ctx/states-hub-shared';
 import useSharedStateProps from '../use-shared-state-props';
 
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 
 describe('useNodeStateProps_resolve_expected_value', () => {
-  const hub = new SharedStateHub({});
+  const hub = new StatesHubShared({});
   dummyCTX.statesHubShared = hub;
   const nodeKey = 'node_id';
   const someNodeInternalState = { foo: 'bar' };
@@ -125,7 +125,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
 });
 
 test('useNodeStateProps_should_resolve_after_changed', () => {
-  const hub = new SharedStateHub({});
+  const hub = new StatesHubShared({});
   dummyCTX.statesHubShared = hub;
   const nodeKey = 'node_id';
   const node: SchemaNode<Instantiated> = {

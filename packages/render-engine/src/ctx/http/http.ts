@@ -22,9 +22,5 @@ export default function http(request$: Observable<AjaxConfig>): Response$ {
     share(),
   );
 
-  // // keep at least one subscriber to ensure response$ hot
-  // // TODO: give more explanation
-  // response$.subscribe(noop);
-
   return response$;
 }

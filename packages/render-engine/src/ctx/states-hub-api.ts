@@ -1,128 +1,131 @@
-import { BehaviorSubject, Subject } from 'rxjs';
-import { map, filter, share, skip } from 'rxjs/operators';
+import { BehaviorSubject, Subject, noop } from 'rxjs';
+import { map, filter, share, skip, delay } from 'rxjs/operators';
 import type { APISpecAdapter, FetchParams } from '@ofa/api-spec-adapter';
+import { logger } from '@ofa/utils';
 
-import type {
-  StatesHubAPI, APIState, APIStatesSpec, CTX, RunParam, APIFetch, APIFetchCallback,
-} from '../types';
-import getResponseState$ from './http/response';
+import type { StatesHubAPI, APIState, APIStatesSpec, FetchOption, APIState$WithActions } from '../types';
+import getResponseState$, { initialState } from './http/response';
 
-type StreamActions = {
-  run: (runParam: RunParam) => void;
-  refresh: () => void;
-};
+type Cache = Record<string, APIState$WithActions>;
 
-function executeCallback(ctx: CTX, state: APIState, callback: APIFetchCallback): void {
-  if (state.loading) {
-    return;
-  }
-
-  callback(state);
-}
-
-export default class APIStatesHub implements StatesHubAPI {
+type Props = {
   apiSpecAdapter: APISpecAdapter;
   apiStateSpec: APIStatesSpec;
-  statesCache: Record<string, [BehaviorSubject<APIState>, StreamActions]> = {};
-  ctx: CTX | null = null;
+}
+const dummyState$WithAction: APIState$WithActions = {
+  state$: new BehaviorSubject<APIState>(initialState),
+  fetch: noop,
+  refresh: noop,
+};
 
-  constructor(apiSpecAdapter: APISpecAdapter, apiStateSpec: APIStatesSpec) {
-    this.apiStateSpec = apiStateSpec;
-    this.apiSpecAdapter = apiSpecAdapter;
+function initState(apiID: string, apiSpecAdapter: APISpecAdapter): APIState$WithActions {
+  const params$ = new Subject<FetchParams | undefined>();
+  const request$ = params$.pipe(
+    // it is adapter's responsibility to handle build error
+    // if a error occurred, build should return undefined
+    map((params) => apiSpecAdapter.build(apiID, params)),
+    filter(Boolean),
+    share(),
+  );
+
+  let _latestFetchOption: FetchOption | undefined = undefined;
+  const apiState$ = getResponseState$(request$, apiSpecAdapter.responseAdapter);
+
+  // execute fetch callback after new `result` emitted from apiState$
+  apiState$.pipe(
+    skip(1),
+    filter(({ loading }) => !loading),
+    // because this subscription is happened before than view's,
+    // so delay `callback` execution to next frame.
+    delay(10),
+  ).subscribe((state) => {
+    _latestFetchOption?.callback?.(state);
+  });
+
+  return {
+    state$: apiState$,
+    fetch: (fetchOption: FetchOption) => {
+      _latestFetchOption = fetchOption;
+
+      params$.next(fetchOption.params);
+    },
+    refresh: () => {
+      if (!_latestFetchOption) {
+        return;
+      }
+      // override onSuccess and onError to undefined
+      _latestFetchOption = { params: _latestFetchOption.params };
+      params$.next(_latestFetchOption.params);
+    },
+  };
+}
+
+export default class Hub implements StatesHubAPI {
+  cache: Cache;
+  parentHub?: StatesHubAPI = undefined;
+
+  constructor({ apiStateSpec, apiSpecAdapter }: Props, parentHub?: StatesHubAPI) {
+    this.parentHub = parentHub;
+
+    this.cache = Object.entries(apiStateSpec).reduce<Cache>((acc, [stateID, { apiID }]) => {
+      acc[stateID] = initState(apiID, apiSpecAdapter);
+      return acc;
+    }, {});
   }
 
-  initContext(ctx: CTX): void {
-    this.ctx = ctx;
+  hasState$(stateID: string): boolean {
+    if (this.cache[stateID]) {
+      return true;
+    }
+
+    return !!this.parentHub?.hasState$(stateID);
+  }
+
+  findState$(stateID: string): APIState$WithActions | undefined {
+    if (this.cache[stateID]) {
+      return this.cache[stateID];
+    }
+
+    return this.parentHub?.findState$(stateID);
   }
 
   getState$(stateID: string): BehaviorSubject<APIState> {
-    const [state$] = this.getCached(stateID);
+    const { state$ } = this.findState$(stateID) || {};
+    if (state$) {
+      return state$;
+    }
 
-    return state$;
+    logger.error([
+      `can't find api state: ${stateID}, please check apiStateSpec or parent schema.`,
+      'In order to prevent UI crash, a dummyState$ will be returned.',
+    ].join(' '));
+
+    return dummyState$WithAction.state$;
   }
 
-  runAction(stateID: string, runParam: RunParam): void {
-    const [, { run }] = this.getCached(stateID);
+  fetch(stateID: string, fetchOption: FetchOption): void {
+    const { fetch } = this.findState$(stateID) || {};
+    if (fetch) {
+      fetch(fetchOption);
+      return;
+    }
 
-    run(runParam);
+    logger.error([
+      `can't find api state: ${stateID}, please check apiStateSpec or parent schema,`,
+      'this fetch action will be ignored.',
+    ].join(' '));
   }
 
   refresh(stateID: string): void {
-    const [, { refresh }] = this.getCached(stateID);
-
-    refresh();
-  }
-
-  getFetch(stateID: string): APIFetch {
-    return (fetchParams: FetchParams, callback?: APIFetchCallback): void => {
-      // todo implement callback
-      this.runAction(stateID, { params: fetchParams, callback });
-    };
-  }
-
-  getCached(stateID: string): [BehaviorSubject<APIState>, StreamActions] {
-    if (!this.statesCache[stateID]) {
-      this.initState(stateID);
+    const { refresh } = this.findState$(stateID) || {};
+    if (refresh) {
+      refresh();
+      return;
     }
 
-    return this.statesCache[stateID];
-  }
-
-  initState(stateID: string): void {
-    const operation = this.apiStateSpec[stateID];
-    if (!operation) {
-      throw new Error(`no operation for stateID: ${stateID}`);
-    }
-
-    const params$ = new Subject<FetchParams | undefined>();
-    const request$ = params$.pipe(
-      // it is adapter's responsibility to handle build error
-      // if a error occurred, build should return undefined
-      map((params) => this.apiSpecAdapter.build(operation.apiID, params)),
-      filter(Boolean),
-      share(),
-    );
-
-    let _latestRunParams: RunParam | undefined = undefined;
-    const apiState$ = getResponseState$(request$, this.apiSpecAdapter.responseAdapter);
-
-    // run callbacks after value resolved
-    apiState$.pipe(
-      skip(1),
-      filter(({ loading }) => {
-        return !loading;
-      }),
-    ).subscribe((state) => {
-      // todo refactor this
-      if (_latestRunParams?.callback) {
-        const callback = _latestRunParams.callback;
-        setTimeout(() => {
-          // todo refactor this
-          executeCallback(
-            this.ctx as CTX,
-            state,
-            callback,
-          );
-        }, 10);
-      }
-    });
-
-    const streamActions: StreamActions = {
-      run: (runParam: RunParam) => {
-        _latestRunParams = runParam;
-
-        params$.next(runParam?.params);
-      },
-      refresh: () => {
-        if (!_latestRunParams) {
-          return;
-        }
-        // override onSuccess and onError to undefined
-        _latestRunParams = { params: _latestRunParams.params };
-        params$.next(_latestRunParams?.params);
-      },
-    };
-
-    this.statesCache[stateID] = [apiState$, streamActions];
+    logger.error([
+      `can't find api state: ${stateID}, please check apiStateSpec or parent schema,`,
+      'this refresh action will be ignored.',
+    ].join(' '));
   }
 }

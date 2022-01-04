@@ -2,7 +2,7 @@ import { act, renderHook } from '@testing-library/react-hooks/pure';
 import type { APISpecAdapter } from '@ofa/api-spec-adapter';
 
 import useAPILoadingProps from '../use-api-loading-props';
-import APIStatesHub from '../../ctx/states-hub-api';
+import StatesHubAPI from '../../ctx/states-hub-api';
 import { SchemaNode, NodePropType, Instantiated, NodeType } from '../../types';
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 
@@ -15,7 +15,7 @@ const stateIDMap = {
 };
 
 test('useAPILoadingProps_resolve_expected_values', () => {
-  const apiStateHub = new APIStatesHub(apiSpecAdapter, stateIDMap);
+  const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
   dummyCTX.statesHubAPI = apiStateHub;
 
   const node: SchemaNode<Instantiated> = {

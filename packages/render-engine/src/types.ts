@@ -21,6 +21,9 @@ export const enum NodePropType {
   SharedStateProperty = 'shared_state_property',
   NodeStateProperty = 'node_state_property',
 
+  /**
+   * @deprecated This type has been deprecated, please use FunctionalProperty instead
+   */
   APIInvokeProperty = 'api_invoke_property',
   SharedStateMutationProperty = 'shared_state_mutation_property',
   FunctionalProperty = 'functional_property',
@@ -135,7 +138,9 @@ export type SharedStateMutationProperty<T> = {
   convertor?: T extends Serialized ? BaseFunctionSpec : VersatileFunc;
 }
 
-// todo refactor this type property spec
+/**
+ * @deprecated This type has been deprecated, please use FunctionalProperty instead
+ */
 export type APIInvokeProperty<T> = {
   type: NodePropType.APIInvokeProperty;
   stateID: string;
@@ -189,7 +194,7 @@ export type BaseFunctionSpec = {
   body: string;
 }
 
-export type RunParam = {
+export type FetchOption = {
   params?: FetchParams;
   // Callback is the hook for performing side effect after an API request.
   //
@@ -228,10 +233,18 @@ export type RunParam = {
 }
 
 export interface StatesHubAPI {
+  hasState$: (stateID: string) => boolean;
+  findState$: (stateID: string) => APIState$WithActions | undefined;
   getState$: (stateID: string) => BehaviorSubject<APIState>;
-  runAction: (stateID: string, runParam: RunParam) => void;
+  fetch: (stateID: string, fetchOption: FetchOption) => void;
   refresh: (stateID: string) => void;
 }
+
+export type APIState$WithActions = {
+  state$: BehaviorSubject<APIState>;
+  fetch: (fetchOption: FetchOption) => void;
+  refresh: () => void;
+};
 
 export type APIFetchCallbackSpec = BaseFunctionSpec & {
   type: 'api_fetch_callback';
@@ -242,12 +255,11 @@ export type APIFetchCallback = (state: Omit<APIState, 'loading'>) => void;
 export type APIFetch = (params: FetchParams, callback?: APIFetchCallback) => void;
 
 export interface StatesHubShared {
+  hasState$: (stateID: string) => boolean;
+  findState$: (stateID: string) => BehaviorSubject<unknown> | undefined;
   getState$: (stateID: string) => BehaviorSubject<unknown>;
-  getState: (stateID: string) => unknown;
   getNodeState$: (nodeKey: string) => BehaviorSubject<unknown>;
   exposeNodeState: (nodeKey: React.Key, state: unknown) => void;
-  retrieveNodeState: (nodeKey: string) => unknown;
-  initContext: (ctx: CTX) => void;
   mutateState: (stateID: string, state: unknown) => void;
 }
 

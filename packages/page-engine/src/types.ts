@@ -1,37 +1,13 @@
 import { Serialized, BaseNode, NodeType, APIStatesSpec, SharedStatesSpec } from '@ofa/render-engine';
 
-// export type PrimitiveType = string | number | boolean | undefined | null
 export type ReactComp = React.ComponentType | React.JSXElementConstructor<any>;
-
-// export type LifeCycleName='didMount' | 'willUnmount'
-// export type SerializedFunc={
-//   type:'',
-//   args: '',
-//   body: ''
-// };
-// export type RenderRule='if' | 'for'
-
-// export interface Node {
-//   comp: string;
-//   id?: string;
-//   pid?: string;
-//   label?: string; // 在page tree展示的名称
-//   props?: Record<string, any> | null;
-//   _shared?: Record<string, any>; // 页面的普通变量数据源, 只存于page节点
-//   _api?: Record<string, any>; // 页面的api变量数据源, 只存于page节点
-//   _stateRef?: Record<string, any>; // 节点引用的数据源的key path, 包括_shared, _api 数据, 存于page 以下的任何节点
-//   _style?: React.CSSProperties; // setting panel的style配置
-//   _events?: Record<string, any>; // setting panel的 events配置
-//   _renderer?: Record<RenderRule, any>; // setting panel的 动态渲染配置
-//   _hooks?: Record<LifeCycleName, SerializedFunc>; // 节点生命周期hook
-//   children?: Array<Node>;
-// }
 
 export interface PageNode extends BaseNode<Serialized> {
   id: string;
   pid?: string; // only used on page-engine
-  type: NodeType.ReactComponentNode | NodeType.LoopContainerNode;
+  type: NodeType.ReactComponentNode | NodeType.LoopContainerNode | NodeType.HTMLNode;
   label: string;
+  name?: string; // for html node
   // `packageName, packageVersion, exportName` only for react comp node
   packageName?: 'ofa-ui' | string;
   packageVersion?: 'latest' | string;
@@ -62,6 +38,6 @@ export interface SourceElement<T> {
   order?: number; // 排序权重
   hidden?: boolean; // 在source panel 隐藏
   acceptChild?: boolean; // 是否接受子节点
-  expose?: Record<string, any>; // 对外暴露的属性/方法
+  exportActions?: string[]; // 对外暴露的方法名
   defaultStyle?: Record<string, any>; // 默认样式
 }

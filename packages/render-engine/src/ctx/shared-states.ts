@@ -4,7 +4,7 @@ import SharedStateHub from './states-hub-shared';
 function getSharedStates(statesHubShared: SharedStateHub): Record<string, unknown> {
   const handler: ProxyHandler<Readonly<Record<string, unknown>>> = {
     get: (target: ProxyHandler<Readonly<Record<string, unknown>>>, p: string): unknown => {
-      return statesHubShared.getState(p);
+      return statesHubShared.getState$(p).value;
     },
 
     set: (target: ProxyHandler<Readonly<Record<string, unknown>>>, p: string, value: unknown): boolean => {

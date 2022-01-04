@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { FetchParams } from '@ofa/api-spec-adapter';
 import { logger } from '@ofa/utils';
 
 import { APIInvokeProperty, CTX, Instantiated, NodePropType, SchemaNode } from '../types';
@@ -6,6 +7,8 @@ import { APIInvokeProperty, CTX, Instantiated, NodePropType, SchemaNode } from '
 type APICallProps = Record<string, (...args: unknown[]) => void>;
 
 export default function useAPIInvokeProps(node: SchemaNode<Instantiated>, ctx: CTX): APICallProps {
+  logger.warn('hook useAPIInvokeProps has been deprecated, please use hook useFuncProps instead');
+
   return useMemo(() => {
     if (!node.props) {
       return {};
@@ -16,8 +19,8 @@ export default function useAPIInvokeProps(node: SchemaNode<Instantiated>, ctx: C
     }).reduce<APICallProps>((acc, [propName, { stateID, paramsBuilder, callback }]) => {
       function handleAction(...args: unknown[]): void {
         try {
-          const fetchParams = paramsBuilder?.(...args);
-          ctx.statesHubAPI.runAction(stateID, { params: fetchParams, callback });
+          const fetchParams: FetchParams = paramsBuilder?.(...args) || {};
+          ctx.apiStates[stateID].fetch(fetchParams, callback);
         } catch (error) {
           logger.log('failed to run convertor or run action:', error);
         }
