@@ -6,10 +6,10 @@ import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 import { useIterable } from '../helpers';
 import { Instantiated, PlainState, NodePropType } from '../..';
 
-const dummyStatesHubAPI = new StatesHubAPI(
-  { build: () => ({ url: '', method: '' }) },
-  { not_array_result: { apiID: 'not_array_result' } },
-);
+const dummyStatesHubAPI = new StatesHubAPI({
+  apiSpecAdapter: { build: () => ({ url: '', method: '' }) },
+  apiStateSpec: { not_array_result: { apiID: 'not_array_result' } },
+});
 
 test('useIterable_should_return_null_if_state_is_not_iterable', () => {
   dummyCTX.statesHubAPI = dummyStatesHubAPI;

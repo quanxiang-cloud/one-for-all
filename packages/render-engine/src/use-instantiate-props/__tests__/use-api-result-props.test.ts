@@ -18,7 +18,7 @@ const stateIDMap = {
 
 describe('useAPIResultProps_resolve_expected_fallback', () => {
   test('when_it_is_the_initial_state', () => {
-    const apiStateHub = new StatesHubAPI(apiSpecAdapter, stateIDMap);
+    const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
@@ -41,7 +41,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
   });
 
   test('when_api_return_error', () => {
-    const apiStateHub = new StatesHubAPI(apiSpecAdapter, stateIDMap);
+    const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
@@ -95,7 +95,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
   });
 
   test('when_adapter_throw', () => {
-    const apiStateHub = new StatesHubAPI(apiSpecAdapter, stateIDMap);
+    const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
@@ -153,7 +153,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
   });
 
   test('when_adapter_return_undefined', () => {
-    const apiStateHub = new StatesHubAPI(apiSpecAdapter, stateIDMap);
+    const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
@@ -188,7 +188,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
   });
 
   test('when_data_is_undefined', () => {
-    const apiStateHub = new StatesHubAPI(apiSpecAdapter, stateIDMap);
+    const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
@@ -228,7 +228,7 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
 describe('useAPIResultProps_should_call_adapter_correctly', () => {
   test('do_not_call_on_initial_stage', () => {
     const adapter = jest.fn();
-    const apiStateHub = new StatesHubAPI(apiSpecAdapter, stateIDMap);
+    const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
@@ -255,7 +255,7 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
 
   test('do_not_call_when_data_is_undefined', () => {
     const adapter = jest.fn();
-    const apiStateHub = new StatesHubAPI(apiSpecAdapter, stateIDMap);
+    const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
@@ -290,7 +290,7 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
 
   test('do_call_when_data_is_not_nullish', () => {
     const adapter = jest.fn((v) => v);
-    const apiStateHub = new StatesHubAPI(apiSpecAdapter, stateIDMap);
+    const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
@@ -324,7 +324,7 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
   });
 
   test('return_expected_value', () => {
-    const apiStateHub = new StatesHubAPI(apiSpecAdapter, stateIDMap);
+    const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
     const node: SchemaNode<Instantiated> = {
@@ -358,7 +358,7 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
 });
 
 test('useAPIResultProps_resolve_expected_value', () => {
-  const apiStateHub = new StatesHubAPI(apiSpecAdapter, stateIDMap);
+  const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
   dummyCTX.statesHubAPI = apiStateHub;
 
   const node: SchemaNode<Instantiated> = {

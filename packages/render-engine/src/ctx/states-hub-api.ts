@@ -10,14 +10,21 @@ type StateActions = {
   refresh: () => void;
 };
 
+type Props = {
+  apiSpecAdapter: APISpecAdapter;
+  apiStateSpec: APIStatesSpec;
+}
+
 export default class Hub implements StatesHubAPI {
   apiSpecAdapter: APISpecAdapter;
   apiStateSpec: APIStatesSpec;
   cache: Record<string, [BehaviorSubject<APIState>, StateActions]> = {};
+  parentHub?: StatesHubAPI = undefined;
 
-  constructor(apiSpecAdapter: APISpecAdapter, apiStateSpec: APIStatesSpec) {
+  constructor({ apiStateSpec, apiSpecAdapter }: Props, parentHub?: StatesHubAPI) {
     this.apiStateSpec = apiStateSpec;
     this.apiSpecAdapter = apiSpecAdapter;
+    this.parentHub = parentHub;
   }
 
   getState$(stateID: string): BehaviorSubject<APIState> {

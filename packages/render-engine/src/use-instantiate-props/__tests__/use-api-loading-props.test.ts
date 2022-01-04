@@ -15,7 +15,7 @@ const stateIDMap = {
 };
 
 test('useAPILoadingProps_resolve_expected_values', () => {
-  const apiStateHub = new StatesHubAPI(apiSpecAdapter, stateIDMap);
+  const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
   dummyCTX.statesHubAPI = apiStateHub;
 
   const node: SchemaNode<Instantiated> = {

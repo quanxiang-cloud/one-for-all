@@ -5,7 +5,7 @@ import getSharedStates from './shared-states';
 import type { CTX, InitProps } from '../types';
 
 function initCTX({ schema, apiSpecAdapter, repository }: InitProps): CTX {
-  const statesHubAPI = new StatesHubAPI(apiSpecAdapter, schema.apiStateSpec);
+  const statesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: schema.apiStateSpec });
   const statesHubShared = new StatesHubShared(schema.sharedStatesSpec);
   const ctx: CTX = {
     statesHubAPI: statesHubAPI,
