@@ -17,6 +17,37 @@ const apiStateSpec: APIStatesSpec = {
   findPetsByTags: { apiID: 'get:/api' },
 };
 
+describe('StatesHubAPI_hasState$_return_expected_value', () => {
+  test('return_true_if_state_defined_in_self', () => {
+    const statesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec });
+    const has = statesHubAPI.hasState$('findPetsByTags');
+
+    expect(has).toBe(true);
+  });
+
+  test('return_true_if_state_defined_in_parent', () => {
+    const parentStateSpec: APIStatesSpec = {
+      parentState: { apiID: 'get:/api' },
+    };
+    const parentHub: StatesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: parentStateSpec });
+    const statesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec }, parentHub);
+    const has = statesHubAPI.hasState$('parentState');
+
+    expect(has).toBe(true);
+  });
+
+  test('return_false_no_state_defined_in_self_or_parent', () => {
+    const parentStateSpec: APIStatesSpec = {
+      parentState: { apiID: 'get:/api' },
+    };
+    const parentHub: StatesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: parentStateSpec });
+    const statesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec }, parentHub);
+    const has = statesHubAPI.hasState$('some_state_not_exist');
+
+    expect(has).toBe(false);
+  });
+});
+
 describe('APIStates_getState$_refresh_fetch_should_logger_error_if_no_state_id_found', () => {
   test('call_getState$', () => {
     const statesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec });
