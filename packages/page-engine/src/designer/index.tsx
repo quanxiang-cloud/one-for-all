@@ -19,6 +19,8 @@ interface Props {
   onSave: (page_schema: PageNode) => void;
   vdoms?: Record<string, React.ReactNode>; // 委托给外部渲染的vdom节点
   className?: string;
+  docLink?: string; // 帮助文档链接
+  hideTestPreview?: boolean; // 隐藏测试预览
 }
 
 /*
@@ -27,7 +29,7 @@ interface Props {
  */
 configure({ isolateGlobalState: true });
 
-function Designer({ className, onSave }: Props): JSX.Element | null {
+function Designer({ className, onSave, docLink, hideTestPreview }: Props): JSX.Element | null {
   const { designer } = stores;
 
   useEffect(() => {
@@ -52,7 +54,7 @@ function Designer({ className, onSave }: Props): JSX.Element | null {
     <DndProvider backend={HTML5Backend}>
       <Ctx.Provider value={stores}>
         <div className={cs(styles.designer, className)}>
-          <Toolbar />
+          <Toolbar docLink={docLink} hideTestPreview={hideTestPreview} />
           <div className={cs(styles.body, {
             [styles.pinned]: designer.panelOpen && designer.panelPinned,
           })}>

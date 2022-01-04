@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 import { useDrop } from 'react-dnd';
@@ -11,6 +11,7 @@ import Elem from './elem';
 import { mapRawProps } from '../utils/schema-adapter';
 
 import styles from './index.m.scss';
+import Icon from '@ofa/ui/lib/src/icon';
 
 interface Props {
   schema?: PageSchema;
@@ -25,6 +26,14 @@ const identity = (x: any): any => x;
 
 function Page({ schema, className }: Props): JSX.Element {
   const { page, registry, dataSource } = useCtx();
+  const handleKeyPress = useCallback((ev)=> {
+    if (ev.code === 'Backspace') {
+      // delete elem
+      if (page.activeElem?.exportName !== 'page') {
+        page.removeNode(page.activeElemId);
+      }
+    }
+  }, []);
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ['elem', 'source_elem'],
@@ -39,6 +48,13 @@ function Page({ schema, className }: Props): JSX.Element {
       isOver: monitor.isOver({ shallow: true }),
     }),
   }));
+
+  useEffect(()=> {
+    // bind events
+    document.addEventListener('keyup', handleKeyPress);
+
+    return document.addEventListener('keyup', handleKeyPress);
+  }, []);
 
   useEffect(() => {
     // sync schema prop with store state
@@ -83,6 +99,29 @@ function Page({ schema, className }: Props): JSX.Element {
     const elemConf = registry.getElemByType(schema.exportName) || {};
     const toProps = elemConf?.toProps || identity;
     const elemProps = defaults({}, mapRawProps(schema.props || {}), elemConf?.defaultConfig);
+
+    // patch certain elem's props
+    if (schema.type === NodeType.ReactComponentNode) {
+      // add placeholder to page elem
+      if (schema.exportName === 'page' && !schema.children?.length) {
+        Object.assign(elemProps, { placeholder: (
+          <div className='flex flex-col items-center justify-center absolute w-full h-full'>
+            <Icon name='pg-engine-empty' size={120} />
+            <p className='text-gray-400 text-12'>开始构建页面，从左侧 组件库或模版库 面板中拖入元素</p>
+          </div>
+        ) });
+      }
+
+      // add placeholder to container elem
+      if (schema.exportName === 'container' && !schema.children?.length) {
+        Object.assign(elemProps, { placeholder: (
+          <div className={styles.emptyContainer}>
+              拖拽组件或模板到这里
+          </div>
+        ) });
+      }
+    }
+
     return toProps(elemProps);
   }
 
@@ -95,13 +134,6 @@ function Page({ schema, className }: Props): JSX.Element {
     if (typeof schema !== 'object' || schema === null) {
       return schema;
     }
-
-    // return React.createElement(transformType(schema.exportName), schemaToProps(schema), ...([].concat(schema.children as any))
-    //   .map((child) => renderNode(child, level + 1)));
-
-    // if (schema.type === NodeType.HTMLNode) {
-    //   return React.createElement(schema?.name || 'div');
-    // }
 
     return (
       <Elem node={schema}>

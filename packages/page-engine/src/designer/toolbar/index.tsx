@@ -9,26 +9,20 @@ import { SchemaRender, Schema } from '@ofa/render-engine';
 
 import styles from './index.m.scss';
 
+interface Props{
+  docLink?: string;
+  hideTestPreview?: boolean;
+}
+
 const Divider = (): JSX.Element => <div className='w-1 h-20 bg-gray-200 mx-16' />;
 
-function Toolbar(): JSX.Element {
+function Toolbar({ docLink = '', hideTestPreview }: Props): JSX.Element {
   const ctx = useCtx();
   const { page, designer, registry } = ctx;
   const [openTestPreview, setOpenPreview] = useState(false);
   const repository = useMemo(()=> ({
     'ofa-ui@latest': registry.toComponentMap(),
   }), []);
-  // const renderRef = useRef<RenderEngineCTX>();
-
-  // useEffect(()=>{
-  //   if (renderRef.current) {
-  //     if (renderRef.current.states) {
-  //       // @ts-ignore
-  //       const st = renderRef.current.states['text cont'];
-  //       console.log('test state: ', st);
-  //     }
-  //   }
-  // }, [renderRef.current]);
 
   function handleSave(): void {
     const pageSchema = toJS(page.schema);
@@ -56,7 +50,6 @@ function Toolbar(): JSX.Element {
         schema={schema as Schema}
         apiSpecAdapter={{} as any}
         repository={repository as any}
-        // ref={renderRef}
       />
     );
   }
@@ -65,16 +58,32 @@ function Toolbar(): JSX.Element {
     <div className={cs('bg-gray-50 h-44 flex justify-between items-center px-16', styles.toolbar)}>
       <div className={styles.brand}>{designer.vdoms.title}</div>
       <div className={cs('flex items-center', styles.actions)}>
-        <Icon name='computer' className='cursor-pointer' color='gray' />
-        <Divider />
-        <Icon name='undo' className='mr-16' clickable />
-        <Icon name='redo' clickable />
-        <Divider />
-        <Icon name='help_doc' color='gray' clickable />
-        <Divider />
-        <Tooltip position='top' label='测试预览'>
-          <Icon name='eye-open' color='gray' clickable onClick={()=> setOpenPreview(true)}/>
+        {/* <Icon name='computer' className='cursor-pointer' color='gray' />*/}
+        {/* <Divider />*/}
+        <Tooltip position='top' label='撤销'>
+          <Icon name='undo' className='mr-16' clickable />
         </Tooltip>
+        <Tooltip position='top' label='重做'>
+          <Icon name='redo' clickable />
+        </Tooltip>
+        <Divider />
+        <Tooltip position='top' label='点击前往查看如何使用页面设计器'>
+          <a
+            href={docLink}
+            target='_blank'
+            rel="noopener noreferrer"
+          >
+            <Icon name='help_doc' color='gray' clickable/>
+          </a>
+        </Tooltip>
+        {!hideTestPreview && (
+          <>
+            <Divider />
+            <Tooltip position='top' label='测试预览'>
+              <Icon name='eye-open' color='gray' clickable onClick={()=> setOpenPreview(true)}/>
+            </Tooltip>
+          </>
+        )}
         <Divider />
         <Button iconName='preview' onClick={handlePreview}>
           <a
