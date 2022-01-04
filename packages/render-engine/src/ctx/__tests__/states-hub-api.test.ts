@@ -48,6 +48,37 @@ describe('StatesHubAPI_hasState$_return_expected_value', () => {
   });
 });
 
+describe('StatesHubAPI_findState$_return_expected_value', () => {
+  test('return_truthy_if_state_defined_in_self', () => {
+    const statesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec });
+    const state$WithActions = statesHubAPI.findState$('findPetsByTags');
+
+    expect(state$WithActions).toBeTruthy();
+  });
+
+  test('return_truthy_if_state_defined_in_parent', () => {
+    const parentStateSpec: APIStatesSpec = {
+      parentState: { apiID: 'get:/api' },
+    };
+    const parentHub: StatesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: parentStateSpec });
+    const statesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec }, parentHub);
+    const state$WithActions = statesHubAPI.findState$('parentState');
+
+    expect(state$WithActions).toBeTruthy();
+  });
+
+  test('return_falsy_no_state_defined_in_self_or_parent', () => {
+    const parentStateSpec: APIStatesSpec = {
+      parentState: { apiID: 'get:/api' },
+    };
+    const parentHub: StatesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: parentStateSpec });
+    const statesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec }, parentHub);
+    const state$WithActions = statesHubAPI.findState$('some_state_not_exist');
+
+    expect(state$WithActions).toBeFalsy();
+  });
+});
+
 describe('APIStates_getState$_refresh_fetch_should_logger_error_if_no_state_id_found', () => {
   test('call_getState$', () => {
     const statesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec });
