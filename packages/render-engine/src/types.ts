@@ -233,6 +233,8 @@ export type FetchOption = {
 }
 
 export interface StatesHubAPI {
+  hasState$: (stateID: string) => boolean;
+  findState$: (stateID: string) => BehaviorSubject<APIState> | undefined;
   getState$: (stateID: string) => BehaviorSubject<APIState>;
   fetch: (stateID: string, fetchOption: FetchOption) => void;
   refresh: (stateID: string) => void;

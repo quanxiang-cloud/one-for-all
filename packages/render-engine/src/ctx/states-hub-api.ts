@@ -27,12 +27,32 @@ export default class Hub implements StatesHubAPI {
     this.parentHub = parentHub;
   }
 
-  getState$(stateID: string): BehaviorSubject<APIState> {
-    // todo
-    // implement find state$ here
-    const [state$] = this.getCached(stateID);
+  hasState$(stateID: string): boolean {
+    if (this.cache[stateID]) {
+      return true;
+    }
 
-    return state$;
+    return !!this.parentHub?.hasState$(stateID);
+  }
+
+  findState$(stateID: string): BehaviorSubject<APIState> | undefined {
+    if (this.cache[stateID]) {
+      const [state$] = this.cache[stateID];
+      return state$;
+    }
+
+    return this.parentHub?.findState$(stateID);
+  }
+
+  getState$(stateID: string): BehaviorSubject<APIState> {
+    const state$ = this.findState$(stateID);
+    if (state$) {
+      return state$;
+    }
+
+    this.initState(stateID);
+
+    return this.cache[stateID][0];
   }
 
   fetch(stateID: string, fetchOption: FetchOption): void {
