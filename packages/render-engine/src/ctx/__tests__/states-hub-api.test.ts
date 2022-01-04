@@ -1,5 +1,6 @@
 import mockXHR from 'xhr-mock';
 import type { APISpecAdapter, AjaxConfig } from '@ofa/api-spec-adapter';
+import { logger } from '@ofa/utils';
 
 import StatesHubAPI from '../states-hub-api';
 import { initialState } from '../http/response';
@@ -16,9 +17,27 @@ const apiStateSpec: APIStatesSpec = {
   findPetsByTags: { apiID: 'get:/api' },
 };
 
-test('APIStates_getCached_should_throw_if_stateID_has_not_corresponding_api', () => {
-  const apiStates = new StatesHubAPI({ apiSpecAdapter, apiStateSpec });
-  expect(() => apiStates.getCached('some_state_not_exist')).toThrow();
+describe('APIStates_getState$_refresh_fetch_should_logger_error_if_no_state_id_found', () => {
+  test('call_getState$', () => {
+    const statesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec });
+    statesHubAPI.getState$('some_state_not_exist');
+
+    expect(logger.error).toBeCalled();
+  });
+
+  test('call_fetch', () => {
+    const statesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec });
+    statesHubAPI.fetch('some_state_not_exist', {});
+
+    expect(logger.error).toBeCalled();
+  });
+
+  test('call_refresh', () => {
+    const statesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec });
+    statesHubAPI.refresh('some_state_not_exist');
+
+    expect(logger.error).toBeCalled();
+  });
 });
 
 test('APIStates_getState_should_return_behaviorSubject_with_expected_initial_state', () => {

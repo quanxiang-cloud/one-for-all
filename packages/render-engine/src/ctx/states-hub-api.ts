@@ -1,30 +1,80 @@
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Subject, noop } from 'rxjs';
 import { map, filter, share, skip, delay } from 'rxjs/operators';
 import type { APISpecAdapter, FetchParams } from '@ofa/api-spec-adapter';
 
-import type { StatesHubAPI, APIState, APIStatesSpec, FetchOption } from '../types';
+import type { StatesHubAPI, APIState, APIStatesSpec, FetchOption, APIState$WithActions } from '../types';
 import getResponseState$ from './http/response';
+import { logger } from '@ofa/utils';
 
-type StateActions = {
-  fetch: (fetchOption: FetchOption) => void;
-  refresh: () => void;
-};
+type Cache = Record<string, APIState$WithActions>;
 
 type Props = {
   apiSpecAdapter: APISpecAdapter;
   apiStateSpec: APIStatesSpec;
 }
+const dummyState$WithAction: APIState$WithActions = {
+  state$: new BehaviorSubject<APIState>({ loading: false, result: undefined, error: undefined }),
+  fetch: noop,
+  refresh: noop,
+};
+
+function initState(apiID: string, apiSpecAdapter: APISpecAdapter): APIState$WithActions {
+  const params$ = new Subject<FetchParams | undefined>();
+  const request$ = params$.pipe(
+    // it is adapter's responsibility to handle build error
+    // if a error occurred, build should return undefined
+    map((params) => apiSpecAdapter.build(apiID, params)),
+    filter(Boolean),
+    share(),
+  );
+
+  let _latestFetchOption: FetchOption | undefined = undefined;
+  const apiState$ = getResponseState$(request$, apiSpecAdapter.responseAdapter);
+
+  // execute fetch callback after new `result` emitted from apiState$
+  apiState$.pipe(
+    skip(1),
+    filter(({ loading }) => !loading),
+    // because this subscription is happened before than view's,
+    // so delay `callback` execution to next frame.
+    delay(10),
+  ).subscribe((state) => {
+    _latestFetchOption?.callback?.(state);
+  });
+
+  return {
+    state$: apiState$,
+    fetch: (fetchOption: FetchOption) => {
+      _latestFetchOption = fetchOption;
+
+      params$.next(fetchOption.params);
+    },
+    refresh: () => {
+      if (!_latestFetchOption) {
+        return;
+      }
+      // override onSuccess and onError to undefined
+      _latestFetchOption = { params: _latestFetchOption.params };
+      params$.next(_latestFetchOption.params);
+    },
+  };
+}
 
 export default class Hub implements StatesHubAPI {
   apiSpecAdapter: APISpecAdapter;
   apiStateSpec: APIStatesSpec;
-  cache: Record<string, [BehaviorSubject<APIState>, StateActions]> = {};
+  cache: Cache;
   parentHub?: StatesHubAPI = undefined;
 
   constructor({ apiStateSpec, apiSpecAdapter }: Props, parentHub?: StatesHubAPI) {
     this.apiStateSpec = apiStateSpec;
     this.apiSpecAdapter = apiSpecAdapter;
     this.parentHub = parentHub;
+
+    this.cache = Object.entries(apiStateSpec).reduce<Cache>((acc, [stateID, { apiID }]) => {
+      acc[stateID] = initState(apiID, apiSpecAdapter);
+      return acc;
+    }, {});
   }
 
   hasState$(stateID: string): boolean {
@@ -35,91 +85,51 @@ export default class Hub implements StatesHubAPI {
     return !!this.parentHub?.hasState$(stateID);
   }
 
-  findState$(stateID: string): BehaviorSubject<APIState> | undefined {
+  findState$(stateID: string): APIState$WithActions | undefined {
     if (this.cache[stateID]) {
-      const [state$] = this.cache[stateID];
-      return state$;
+      return this.cache[stateID];
     }
 
     return this.parentHub?.findState$(stateID);
   }
 
   getState$(stateID: string): BehaviorSubject<APIState> {
-    const state$ = this.findState$(stateID);
+    const { state$ } = this.findState$(stateID) || {};
     if (state$) {
       return state$;
     }
 
-    this.initState(stateID);
+    logger.error([
+      `can't find api state: ${stateID}, please check apiStateSpec or parent schema.`,
+      'In order to prevent UI crash, a dummyState$ will be returned.',
+    ].join(' '));
 
-    return this.cache[stateID][0];
+    return dummyState$WithAction.state$;
   }
 
   fetch(stateID: string, fetchOption: FetchOption): void {
-    const [, { fetch }] = this.getCached(stateID);
+    const { fetch } = this.findState$(stateID) || {};
+    if (fetch) {
+      fetch(fetchOption);
+      return;
+    }
 
-    fetch(fetchOption);
+    logger.error([
+      `can't find api state: ${stateID}, please check apiStateSpec or parent schema,`,
+      'this fetch action will be ignored.',
+    ].join(' '));
   }
 
   refresh(stateID: string): void {
-    const [, { refresh }] = this.getCached(stateID);
-
-    refresh();
-  }
-
-  getCached(stateID: string): [BehaviorSubject<APIState>, StateActions] {
-    if (!this.cache[stateID]) {
-      this.initState(stateID);
+    const { refresh } = this.findState$(stateID) || {};
+    if (refresh) {
+      refresh();
+      return;
     }
 
-    return this.cache[stateID];
-  }
-
-  initState(stateID: string): void {
-    const operation = this.apiStateSpec[stateID];
-    if (!operation) {
-      throw new Error(`no operation for stateID: ${stateID}`);
-    }
-
-    const params$ = new Subject<FetchParams | undefined>();
-    const request$ = params$.pipe(
-      // it is adapter's responsibility to handle build error
-      // if a error occurred, build should return undefined
-      map((params) => this.apiSpecAdapter.build(operation.apiID, params)),
-      filter(Boolean),
-      share(),
-    );
-
-    let _latestFetchOption: FetchOption | undefined = undefined;
-    const apiState$ = getResponseState$(request$, this.apiSpecAdapter.responseAdapter);
-
-    // execute fetch callback after new `result` emitted from apiState$
-    apiState$.pipe(
-      skip(1),
-      filter(({ loading }) => !loading),
-      // because this subscription is happened before than view's,
-      // so delay `callback` execution to next frame.
-      delay(10),
-    ).subscribe((state) => {
-      _latestFetchOption?.callback?.(state);
-    });
-
-    const streamActions: StateActions = {
-      fetch: (fetchOption: FetchOption) => {
-        _latestFetchOption = fetchOption;
-
-        params$.next(fetchOption.params);
-      },
-      refresh: () => {
-        if (!_latestFetchOption) {
-          return;
-        }
-        // override onSuccess and onError to undefined
-        _latestFetchOption = { params: _latestFetchOption.params };
-        params$.next(_latestFetchOption.params);
-      },
-    };
-
-    this.cache[stateID] = [apiState$, streamActions];
+    logger.error([
+      `can't find api state: ${stateID}, please check apiStateSpec or parent schema,`,
+      'this refresh action will be ignored.',
+    ].join(' '));
   }
 }

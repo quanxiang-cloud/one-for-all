@@ -234,11 +234,17 @@ export type FetchOption = {
 
 export interface StatesHubAPI {
   hasState$: (stateID: string) => boolean;
-  findState$: (stateID: string) => BehaviorSubject<APIState> | undefined;
+  findState$: (stateID: string) => APIState$WithActions | undefined;
   getState$: (stateID: string) => BehaviorSubject<APIState>;
   fetch: (stateID: string, fetchOption: FetchOption) => void;
   refresh: (stateID: string) => void;
 }
+
+export type APIState$WithActions = {
+  state$: BehaviorSubject<APIState>;
+  fetch: (fetchOption: FetchOption) => void;
+  refresh: () => void;
+};
 
 export type APIFetchCallbackSpec = BaseFunctionSpec & {
   type: 'api_fetch_callback';
