@@ -33,3 +33,7 @@
 .corner-4-0-4-0 {
   @apply rounded-tl-4 rounded-br-4;
 }
+
+.corner-0-0-4-4 {
+  @apply rounded-br-4 rounded-bl-4;
+}
