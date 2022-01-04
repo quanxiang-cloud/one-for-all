@@ -1,10 +1,10 @@
 import { BehaviorSubject, Subject, noop } from 'rxjs';
 import { map, filter, share, skip, delay } from 'rxjs/operators';
 import type { APISpecAdapter, FetchParams } from '@ofa/api-spec-adapter';
+import { logger } from '@ofa/utils';
 
 import type { StatesHubAPI, APIState, APIStatesSpec, FetchOption, APIState$WithActions } from '../types';
-import getResponseState$ from './http/response';
-import { logger } from '@ofa/utils';
+import getResponseState$, { initialState } from './http/response';
 
 type Cache = Record<string, APIState$WithActions>;
 
@@ -13,7 +13,7 @@ type Props = {
   apiStateSpec: APIStatesSpec;
 }
 const dummyState$WithAction: APIState$WithActions = {
-  state$: new BehaviorSubject<APIState>({ loading: false, result: undefined, error: undefined }),
+  state$: new BehaviorSubject<APIState>(initialState),
   fetch: noop,
   refresh: noop,
 };
