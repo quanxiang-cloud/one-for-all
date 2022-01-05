@@ -104,7 +104,7 @@ class PageStore {
   appendNode = (node: Omit<PageNode, 'type'| 'id'>, target?: Omit<PageNode, 'type' | 'id'> | null, options?: AppendNodeOptions): void => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const targetId = target?.id || this.schema.id;
+    const targetId = target?.id || this.schema.node.id;
     const targetNode = findNode(this.schema.node, targetId);
 
     const params: Partial<PageNode> = {
@@ -155,16 +155,17 @@ class PageStore {
         if (!targetNode.children) {
           return;
         }
-        targetNode?.children?.push(Object.assign({}, srcNode, { pid: targetNode.id }));
         if (srcNode.id && options?.from !== 'source') {
-          // remove src node
           const srcParent = findNode(this.schema.node, srcNode.pid);
           if (srcParent && srcParent.children) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             const idx = srcParent.children.findIndex((v: PageNode) => v.id === node.id);
             if (idx > -1) {
+              // remove src node
               srcParent.children.splice(idx, 1);
+              // append to target
+              targetNode?.children?.push(Object.assign({}, srcNode, { pid: targetNode.id }));
             }
           }
         }
@@ -181,21 +182,26 @@ class PageStore {
   insertBefore = (node: PageNode, target: PageNode): void => {
     const srcParent = findNode(this.schema.node, node.pid);
     const targetParent = findNode(this.schema.node, target.pid);
-    // remove node from src parent
+    let srcIdx = -1;
+    let targetIdx = -1;
+
     if (srcParent && srcParent.children) {
-      const idx = srcParent.children.findIndex((v: PageNode) => v.id === node.id);
-      if (idx > -1) {
-        srcParent.children.splice(idx, 1);
-      }
+      srcIdx = srcParent.children.findIndex((v: PageNode) => v.id === node.id);
+      // if (idx > -1) {
+      //   srcParent.children.splice(idx, 1);
+      // }
     }
 
     if (targetParent && targetParent.children) {
-      const idx = targetParent.children.findIndex((v: PageNode) => v.id === target.id);
-      if (idx > -1) {
-        if (idx === 0) {
+      targetIdx = targetParent.children.findIndex((v: PageNode) => v.id === target.id);
+      if (srcIdx > -1 && targetIdx > -1) {
+        // remove node from src parent
+        srcParent.children.splice(srcIdx, 1);
+
+        if (targetIdx === 0) {
           targetParent.children.unshift(node);
         } else {
-          targetParent.children.splice(idx, 0, node);
+          targetParent.children.splice(targetIdx, 0, node);
         }
       }
     }
@@ -205,27 +211,29 @@ class PageStore {
   insertAfter = (node: PageNode, target: PageNode): void => {
     const srcParent = findNode(this.schema.node, node.pid);
     const targetParent = findNode(this.schema.node, target.pid);
+    let srcIdx = -1; // node in src parent idx
+    let targetIdx = -1; // node in target parant idx
 
     if (srcParent && srcParent.children) {
-      const idx = srcParent.children.findIndex((v: PageNode) => v.id === node.id);
-      if (idx > -1) {
-        srcParent.children.splice(idx, 1);
-      }
+      srcIdx = srcParent.children.findIndex((v: PageNode) => v.id === node.id);
     }
 
     if (!target.pid) {
-      // removeTreeNode(this.schema, node?.id);
+      removeTreeNode(this.schema.node, node.id);
       // append to page
       targetParent.children.push(Object.assign({}, node, { pid: targetParent.id }));
       return;
     }
 
     if (targetParent && targetParent.children) {
-      const idx = targetParent.children.findIndex((v: PageNode) => v.id === target.id);
-      if (idx > -1) {
-        // double check node pid
+      targetIdx = targetParent.children.findIndex((v: PageNode) => v.id === target.id);
+      if (srcIdx > -1 && targetIdx > -1) {
+        // remove node in src parent
+        srcParent.children.splice(srcIdx, 1);
+
+        // add node in target parent, double check node pid
         Object.assign(node, { pid: targetParent.id });
-        targetParent.children.splice(idx + 1, 0, node);
+        targetParent.children.splice(targetIdx + 1, 0, node);
       }
     }
   }

@@ -5,13 +5,14 @@ import { useDrop } from 'react-dnd';
 import { defaults, flow, get, set } from 'lodash';
 import { toJS } from 'mobx';
 
+import { Icon } from '@ofa/ui';
 import { PageNode, PageSchema, useCtx } from '@ofa/page-engine';
 import { NodeType } from '@ofa/render-engine';
 import Elem from './elem';
 import { mapRawProps } from '../utils/schema-adapter';
+import { isDev } from '../utils';
 
 import styles from './index.m.scss';
-import Icon from '@ofa/ui/lib/src/icon';
 
 interface Props {
   schema?: PageSchema;
@@ -41,7 +42,7 @@ function Page({ schema, className }: Props): JSX.Element {
       if (monitor.didDrop()) {
         return;
       }
-      // console.log('dropped %o onto page: ', item);
+      console.log('dropped %o onto page: ', item);
       page.appendNode(item, null, { renewId: true });
     },
     collect: (monitor) => ({
@@ -57,11 +58,8 @@ function Page({ schema, className }: Props): JSX.Element {
   }, []);
 
   useEffect(() => {
-    // sync schema prop with store state
-    schema && page.setSchema(schema);
-
     // todo: remove
-    if (get(window, 'process.env.NODE_ENV') === 'development') {
+    if (isDev()) {
       // on dev mode
       let storedSchema = localStorage.getItem('page_schema');
       try {
@@ -71,6 +69,9 @@ function Page({ schema, className }: Props): JSX.Element {
       }
       storedSchema && page.setSchema(storedSchema as any);
     }
+
+    // sync schema prop with store state
+    schema && page.setSchema(schema);
   }, []);
 
   function transformType(schema: PageNode): string | React.ComponentType {

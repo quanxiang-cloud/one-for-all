@@ -1,3 +1,4 @@
+// render engine schema adapter
 import {
   APIStatesSpec,
   NodePropType,
@@ -8,8 +9,8 @@ import {
   SharedStatesSpec,
 } from '@ofa/render-engine';
 import { get, set, mapValues, omit, cloneDeep } from 'lodash';
-import { elemId } from '../../utils';
-import registry from '../../stores/registry';
+import { elemId } from '../utils';
+import registry from '../stores/registry';
 
 export function mapApiState(states: Record<string, string>): APIStatesSpec {
   return Object.entries(states).reduce((memo: Record<string, any>, [k, v]: [string, string])=> {
