@@ -1,28 +1,28 @@
 import React, { useRef } from 'react';
 // import cs from 'classnames';
 import { useDrag, useDrop, DragPreviewImage } from 'react-dnd';
-import { observer } from 'mobx-react';
+import { defaults, flow } from 'lodash';
+import { toJS } from 'mobx';
 
-// import { Icon } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine';
-import { encode } from '../utils/base64';
+import { PageNode, useCtx } from '@ofa/page-engine';
+import { NodeType } from '@ofa/render-engine';
+
+import { mapRawProps } from '../utils/schema-adapter';
 import { elemId } from '../utils';
-import type { PageNode, DragPos } from '@ofa/page-engine';
+import { encode } from '../utils/base64';
 
 // import styles from './index.m.scss';
 
 interface Props {
-  node: PageNode;
-  className?: string;
-  style?: React.CSSProperties;
-  children?: React.ReactNode;
+  schema: PageNode,
 }
 
-// node wrapper for each element in page
-function Elem({ node, className, children }: Props): JSX.Element {
-  const { exportName, id = elemId(node.exportName), pid = '', label = '' } = node;
-  const { page, registry, designer } = useCtx();
-  const boxRef = useRef<HTMLDivElement>(null);
+const identity = (x: any): any => x;
+
+function RenderNode({ schema }: Props): JSX.Element {
+  const { exportName, id = elemId(schema.exportName), pid = '', label = '' } = schema;
+  const { page, registry, dataSource } = useCtx();
+  const boxRef = useRef<any>(null);
 
   const [{ isDragging }, drag, dragPreview] = useDrag(() => ({
     type: 'elem',
@@ -109,51 +109,58 @@ function Elem({ node, className, children }: Props): JSX.Element {
 
   drag(drop(boxRef));
 
+  function mergeProps(schema: PageNode): Record<string, any> {
+    const elemConf = registry.getElemByType(schema.exportName) || {};
+    const toProps = elemConf?.toProps || identity;
+    const elemProps = defaults({}, mapRawProps(schema.props || {}), elemConf?.defaultConfig);
+
+    // console.log({ ref: boxRef });
+
+    return Object.assign(toProps(elemProps), {
+      'data-node-key': schema.id,
+      ref: boxRef,
+      // className: cs({
+      //   [styles.isPage]: exportName === 'page',
+      //   [styles.dragging]: isDragging,
+      //   // [styles.isOver]: isOver,
+      //   [styles.selected]: page.activeElemId === id,
+      //   [styles.draggingUp]: isOver && page.dragPos === 'up',
+      //   [styles.draggingInner]: isOver && page.dragPos === 'inner',
+      //   [styles.draggingDown]: isOver && page.dragPos === 'down',
+      // }),
+      // draggable: true,
+    });
+  }
+
+  const schemaToProps = flow([
+    // mergeStyle,
+    mergeProps,
+  ]);
+
+  function transformType(schema: PageNode): string | React.ComponentType {
+    const { type } = schema;
+    if (type === NodeType.ReactComponentNode) {
+      return registry.elementMap?.[schema.exportName]?.component || type;
+    }
+    // if (type === NodeType.HTMLNode) {
+    //   return schema.name || 'div';
+    // }
+
+    return 'div';
+  }
+
   return (
     <>
       <DragPreviewImage connect={dragPreview} src={svgPreviewImg(label)} />
-      {/* <div
-        className={cs(styles.elem, {
-          [styles.isPage]: exportName === 'page',
-          [styles.dragging]: isDragging,
-          // [styles.isOver]: isOver,
-          [styles.selected]: page.activeElemId === id,
-          [styles.draggingUp]: isOver && page.dragPos === 'up',
-          [styles.draggingInner]: isOver && page.dragPos === 'inner',
-          [styles.draggingDown]: isOver && page.dragPos === 'down',
-        }, className)}
-        ref={boxRef}
-        onClick={(ev) => {
-          ev.preventDefault();
-          ev.stopPropagation();
-          page.setActiveElemId(id);
-          // check source panel open
-          designer.checkPanel();
-        }}
-      >
-        <div className={styles.toolbar}>
-          {exportName !== 'page' && (
-            <div className={cs('px-4 mr-6 bg-white mt-1', styles.group)}>
-              <span onClick={() => page.copyNode(pid, id)}>
-                <Icon name='content_copy' size={12} className='mr-8' clickable />
-              </span>
-              <span onClick={() => page.removeNode(id)}>
-                <Icon name='delete' size={14} clickable />
-              </span>
-            </div>
-          )}
-          <div className={cs('px-4 bg-blue-600', styles.group)}>
-            <span className='inline-flex items-center text-white'>
-              <Icon name='insert_drive_file' color='white' size={12} className='mr-6' />
-              <span>{label}</span>
-            </span>
-          </div>
-        </div>
-        {children}
-      </div> */}
-      {children}
+      {
+        React.createElement(
+          transformType(schema),
+          schemaToProps(toJS(schema)),
+          ...([].concat(schema.children as any))
+            .map((child, index) => <RenderNode key={schema.id + index} schema={child} />))
+      }
     </>
   );
 }
 
-export default observer(Elem);
+export default RenderNode;

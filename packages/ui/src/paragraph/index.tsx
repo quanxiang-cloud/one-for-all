@@ -20,14 +20,16 @@ interface Props {
   maxLength?: number;
 }
 
-function Paragraph(props: Props): JSX.Element {
-  const { content, isAllowSelect, maxLength } = props;
+function Paragraph(props: Props, ref: React.LegacyRef<HTMLDivElement>): JSX.Element {
+  const { content, isAllowSelect, maxLength, ...rest } = props;
 
   if (Number(maxLength) > 0) {
     OVERFLOW_STYLE.WebkitLineClamp = maxLength?.toString() || 'none';
   }
   return (
     <p
+      {...rest}
+      ref={ref}
       className={cs({
         'user-select': isAllowSelect ? 'none' : 'auto',
       })}
@@ -40,4 +42,4 @@ function Paragraph(props: Props): JSX.Element {
   );
 }
 
-export default Paragraph;
+export default React.forwardRef(Paragraph);

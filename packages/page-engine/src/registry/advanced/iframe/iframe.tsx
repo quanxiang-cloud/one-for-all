@@ -17,7 +17,8 @@ function Iframe({
   sandbox,
   referrerPolicy,
   iframeAllow,
-}: Props): JSX.Element {
+  ...rest
+}: Props, ref: React.LegacyRef<HTMLIFrameElement>): JSX.Element {
   if (!iframeAddr) {
     return (
       <div className="bg-gray-200 h-200 flex justify-center items-center text-20">
@@ -28,6 +29,8 @@ function Iframe({
 
   return (
     <iframe
+      {...rest}
+      ref={ref}
       allow={iframeAllow}
       referrerPolicy={referrerPolicy}
       name={iframeName}
@@ -42,4 +45,4 @@ function Iframe({
   );
 }
 
-export default Iframe;
+export default React.forwardRef(Iframe);

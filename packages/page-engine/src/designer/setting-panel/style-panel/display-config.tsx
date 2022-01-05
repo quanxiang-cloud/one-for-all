@@ -48,7 +48,6 @@ interface Props {
 }
 
 function DisplayConfig({ initValues, register, setValue }: Props): JSX.Element {
-  // console.log('initValues', toJS(initValues));
   const [flexValue, setFlexValue] = useState({
     display: 'block',
     flexDirection: 'row',
@@ -86,9 +85,7 @@ function DisplayConfig({ initValues, register, setValue }: Props): JSX.Element {
   let ALIGN_LIST: Record<string, string | JSX.Element>[] = [];
   let JUSTIFY_LIST: Record<string, string | JSX.Element>[] = [];
 
-  // console.log(flexValue);
   if (flexValue.display === 'flex') {
-    console.log('sdf', flexValue['flexDirection']);
     ALIGN_LIST = [
       { value: 'flex-start', label: (<Tooltip position='top' label="Align:flex-start">
         <Icon name={DISPLAY_ICONS[flexValue['flexDirection']][0]} color='gray' /></Tooltip>) },

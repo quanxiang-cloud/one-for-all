@@ -11,9 +11,9 @@ interface Props {
   children?: React.ReactNode;
 }
 
-function Page({ className, style, children }: Props): JSX.Element {
+function Page({ className, style, children, ...rest }: Props, ref: any): JSX.Element {
   return (
-    <div className={cs(styles.page, className)} style={style}>
+    <div {...rest} className={cs(styles.page, className)} ref={ref} style={style}>
       {!Children.count(children) && (
         <div className='flex flex-col items-center justify-center absolute w-full h-full'>
           <Icon name='pg-engine-empty' size={120} />
@@ -25,4 +25,4 @@ function Page({ className, style, children }: Props): JSX.Element {
   );
 }
 
-export default Page;
+export default React.forwardRef(Page);

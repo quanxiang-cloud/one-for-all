@@ -36,13 +36,14 @@ function Panel({
 }: Props): JSX.Element {
   return (
     <div
-      className={cs('overflow-y-auto z-10', {
+      className={cs('overflow-y-auto', {
         [styles.closed]: !visible,
         [styles.panelPinned]: pinned,
       }, styles.panel, className)}
       style={{
         width,
         height,
+        zIndex: 11,
         ...style,
       }}
     >

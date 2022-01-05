@@ -6,7 +6,7 @@ import { elemId } from '../utils';
 import { findNode, removeNode as removeTreeNode } from '../utils/tree-utils';
 import registry from './registry';
 import dataSource from './data-source';
-import type { DragPos, PageNode, PageSchema, SourceElement } from '../types';
+import type { DragPos, PageNode, PageSchema, SourceElement, SchemaElements } from '../types';
 import { mapRawProps, mergeProps, transformLifecycleHooks } from '../utils/schema-adapter';
 import { STYLE_NUMBER } from '../config/default-styles';
 
@@ -52,6 +52,7 @@ class PageStore {
   @observable mode: Mode = 'design'
   @observable activeElemId = ''
   @observable dragPos: DragPos = 'down'
+  @observable schemaElements: Record<string, SchemaElements> = {}
 
   constructor() {
     makeObservable(this);
@@ -68,6 +69,13 @@ class PageStore {
   @computed
   get activeElemProps(): any {
     return mapRawProps(this.activeElem?.props || {});
+  }
+
+  findElement(id: string): any {
+    if (!id) {
+      return null;
+    }
+    return findNode(this.schema.node, id);
   }
 
   @action
@@ -308,6 +316,11 @@ class PageStore {
     this.mode = 'design';
     this.activeElemId = '';
     this.dragPos = 'down';
+  }
+
+  @action
+  setSchemaElements = (elements: Record<string, SchemaElements>): void => {
+    this.schemaElements = elements;
   }
 }
 

@@ -9,11 +9,16 @@ interface Props {
   children?: React.ReactNode;
 }
 
-function Container({ className, style, children }: Props): JSX.Element {
+function Container(
+  { className, style, children, ...rest }: Props,
+  ref: React.LegacyRef<HTMLDivElement>,
+): JSX.Element {
   return (
     <div
+      {...rest}
       className={cs(styles.coll, className)}
       style={style}
+      ref={ref}
     >
       {children || (
         <div className={styles.placeholder}>
@@ -24,4 +29,4 @@ function Container({ className, style, children }: Props): JSX.Element {
   );
 }
 
-export default Container;
+export default React.forwardRef(Container);

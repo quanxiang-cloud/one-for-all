@@ -4,9 +4,15 @@
 }
 
 .page {
-  position: relative;
+  // position: relative;
+  // width: 100%;
+  // padding: 4px;
   width: 100%;
-  padding: 4px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
 
   &.isOver {
     @extend %isOver;
@@ -20,13 +26,14 @@
 
   &.isPage {
     height: 100%;
-    > .toolbar {
+
+    >.toolbar {
       top: 20px;
       transform: translateY(-100%);
     }
   }
 
-  > .toolbar {
+  >.toolbar {
     position: absolute;
     visibility: hidden;
     display: inline-flex;
@@ -38,7 +45,7 @@
     height: 20px;
     z-index: 1;
 
-    > .group {
+    >.group {
       display: inline-flex;
       align-items: center;
       box-shadow: 0px 8px 24px 4px rgba(148, 163, 184, 0.25);
@@ -54,7 +61,7 @@
   &.selected {
     outline: 1px solid var(--blue-600);
 
-    & > .toolbar {
+    &>.toolbar {
       visibility: visible;
     }
   }
@@ -84,7 +91,7 @@
   &.isOver {
     @extend %isOver;
 
-    & > * {
+    &>* {
       @extend %isOver;
     }
   }

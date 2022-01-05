@@ -41,3 +41,15 @@ export interface SourceElement<T> {
   exportActions?: string[]; // 对外暴露的方法名
   defaultStyle?: Record<string, any>; // 默认样式
 }
+
+export interface ElementInfo {
+  element: Element;
+  position: DOMRect;
+}
+
+export interface SchemaElements {
+  id: string;
+  label: string;
+  element: Element;
+  position: DOMRect;
+}

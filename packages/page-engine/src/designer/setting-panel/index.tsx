@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react';
 
 import { Tab } from '@ofa/ui';
@@ -66,7 +66,8 @@ function SettingPanel(): JSX.Element {
               content: <RendererPanel />,
             },
           ]}
-          currentKey={designer.activePanel}
+          // currentKey={designer.activePanel}
+          currentKey={'style'}
           onChange={designer.setActivePanel}
         />
       </>

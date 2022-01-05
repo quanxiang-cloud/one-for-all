@@ -14,13 +14,13 @@ export interface Props {
   iconClassName?: string;
 }
 
-function ButtonElem(props: Props): JSX.Element {
+function ButtonElem(props: Props, ref: any): JSX.Element {
   const { title = '按钮' } = props;
   return (
 
-    <Button {...props}>{title}</Button>
+    <Button {...props} ref={ref}>{title}</Button>
   );
 }
 
-export default ButtonElem;
+export default React.forwardRef(ButtonElem);
 

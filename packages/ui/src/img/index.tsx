@@ -12,13 +12,15 @@ interface Props {
   closeOnMaskClick?: boolean;
 }
 
-function Image(props: Props): JSX.Element {
-  const { imageUrl, fillMode, preview, closeOnMaskClick } = props;
+function Image(props: Props, ref: React.LegacyRef<HTMLDivElement>): JSX.Element {
+  const { imageUrl, fillMode, preview, closeOnMaskClick, ...rest } = props;
   const [imgPreview, setImgPreview] = useState(false);
 
   return (
     <>
       <div
+        {...rest}
+        ref={ref}
         className="img"
         style={{
           backgroundImage: imageUrl ? `url(${imageUrl})` : '',
@@ -48,4 +50,4 @@ function Image(props: Props): JSX.Element {
   );
 }
 
-export default Image;
+export default React.forwardRef(Image);

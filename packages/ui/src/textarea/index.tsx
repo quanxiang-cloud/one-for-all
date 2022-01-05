@@ -12,11 +12,11 @@ export interface Props {
   required?: boolean;
 }
 
-function Textarea(props: Props): JSX.Element {
-  const { placeholder, cols, rows, minLength, maxLength, required } = props;
+function Textarea(props: Props, ref: React.LegacyRef<HTMLDivElement>): JSX.Element {
+  const { placeholder, cols, rows, minLength, maxLength, required, ...rest } = props;
 
   return (
-    <div>
+    <div {...rest} ref={ref}>
       <textarea
         placeholder={placeholder || '请输入内容'}
         cols={cols}
@@ -29,4 +29,4 @@ function Textarea(props: Props): JSX.Element {
   );
 }
 
-export default Textarea;
+export default React.forwardRef(Textarea);
