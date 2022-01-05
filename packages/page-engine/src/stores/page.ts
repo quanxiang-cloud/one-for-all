@@ -187,9 +187,6 @@ class PageStore {
 
     if (srcParent && srcParent.children) {
       srcIdx = srcParent.children.findIndex((v: PageNode) => v.id === node.id);
-      // if (idx > -1) {
-      //   srcParent.children.splice(idx, 1);
-      // }
     }
 
     if (targetParent && targetParent.children) {
@@ -198,10 +195,11 @@ class PageStore {
         // remove node from src parent
         srcParent.children.splice(srcIdx, 1);
 
+        const newNode = Object.assign({}, node, { pid: targetParent.id });
         if (targetIdx === 0) {
-          targetParent.children.unshift(node);
+          targetParent.children.unshift(newNode);
         } else {
-          targetParent.children.splice(targetIdx, 0, node);
+          targetParent.children.splice(targetIdx, 0, newNode);
         }
       }
     }

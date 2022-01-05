@@ -50,12 +50,12 @@ function Page({ schema, className }: Props): JSX.Element {
     }),
   }));
 
-  useEffect(()=> {
-    // bind events
-    document.addEventListener('keyup', handleKeyPress);
-
-    return document.addEventListener('keyup', handleKeyPress);
-  }, []);
+  // useEffect(()=> {
+  //   // bind events
+  //   document.addEventListener('keyup', handleKeyPress);
+  //
+  //   return document.addEventListener('keyup', handleKeyPress);
+  // }, []);
 
   useEffect(() => {
     // todo: remove
