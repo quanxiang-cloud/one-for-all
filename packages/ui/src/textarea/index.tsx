@@ -17,10 +17,12 @@ function Textarea(props: Props): JSX.Element {
   return (
     <div>
       <textarea
+        className="pl-5"
         placeholder={placeholder || '请输入内容'}
         cols={cols} rows={rows}
+        defaultValue=''
         minLength={minLength}
-        maxLength={maxLength}> </textarea>
+        maxLength={maxLength}></textarea>
     </div>
   );
 }
