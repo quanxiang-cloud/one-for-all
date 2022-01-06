@@ -1,7 +1,8 @@
 import { action, computed, makeObservable, observable, runInAction, toJS } from 'mobx';
-import { defaults, set } from 'lodash';
+import { defaults, set, cloneDeep } from 'lodash';
 
-import { NodePropType, NodeType } from '@ofa/render-engine';
+import { LoopContainerNode, NodePropType, NodeType, Serialized } from '@ofa/render-engine';
+import { LoopNodeConf } from '@ofa/page-engine';
 import { elemId } from '../utils';
 import { findNode, removeNode as removeTreeNode } from '../utils/tree-utils';
 import registry from './registry';
@@ -20,7 +21,7 @@ type AppendNodeOptions = {
 
 function deepMergeNode(node: PageNode): PageNode {
   const target = toJS(node);
-  Object.assign(target, { id: elemId(node.type || NodeType.ReactComponentNode) });
+  Object.assign(target, { id: elemId(node.exportName) });
   if (target.children) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -109,7 +110,7 @@ class PageStore {
 
     const params: Partial<PageNode> = {
       id: elemId(node.exportName),
-      pid: targetNode.pid || this.schema.node.id,
+      pid: this.dragPos === 'inner' ? targetNode.id : (targetNode.pid || this.schema.node.id),
       // exportName: node.exportName,
       type: NodeType.ReactComponentNode,
       packageName: 'ofa-ui',
@@ -138,9 +139,15 @@ class PageStore {
       }
     }
 
-    const srcNode = defaults(node, params);
+    let srcNode = defaults(node, params);
     if (options?.renewId) {
       Object.assign(srcNode, { id: elemId(srcNode.exportName) });
+    }
+
+    // check if srcNode already in page
+    const foundNode = findNode(this.schema.node, srcNode.id);
+    if (foundNode) {
+      srcNode = cloneDeep(foundNode);
     }
 
     if (targetNode) {
@@ -168,6 +175,9 @@ class PageStore {
               targetNode?.children?.push(Object.assign({}, srcNode, { pid: targetNode.id }));
             }
           }
+        } else {
+          // from source panel
+          targetNode?.children?.push(Object.assign({}, srcNode, { pid: targetNode.id }));
         }
         return;
       }
@@ -306,6 +316,46 @@ class PageStore {
   getElemBoundActions=(): string[] =>{
     const elemConf = registry.getElemByType(this.activeElem?.exportName) as SourceElement<any>;
     return ['didMount', 'willUnmount'].concat(elemConf?.exportActions || []);
+  }
+
+  @action
+  replaceNode=(node_id: string, replaced: PageNode | LoopContainerNode<Serialized>)=> {
+
+  }
+
+  @action
+  setNodeAsLoopContainer=(node_id: string, loopConfig?: Partial<LoopNodeConf>): void => {
+    // wrap normal node as loop node
+    const target = findNode(this.schema.node, node_id);
+    if (!target) {
+      return;
+    }
+    const nodeCopy = cloneDeep(target);
+    const loopNodeParams = {
+      id: elemId('loop-node'),
+      type: NodeType.LoopContainerNode,
+      node: nodeCopy,
+      loopKey: 'id', // todo
+      toProps: {
+        args: 'state',
+        body: 'return { appInfo: state }',
+        type: 'to_props_function_spec',
+      },
+      iterableState: {
+
+      },
+    };
+  }
+
+  @action
+  unsetLoopNode=(loop_node_id: string)=> {
+    // reset loop container, lift up inner node
+
+  }
+
+  isLoopNode=(node_id: string): boolean=> {
+    // todo: get up-level loop-node wrapper
+    return false;
   }
 
   @action

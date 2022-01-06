@@ -1,4 +1,5 @@
 @import "../styles/vars.css";
+@import "../styles/border.css";
 
 .designer {
   font-weight: normal;
@@ -33,6 +34,10 @@
   .btn {
     font-size: 12px;
     font-weight: normal;
+  }
+
+  .pg-input {
+    @apply px-8 py-4 w-full border corner-2-8-8-8 border-gray-300 focus:border-blue-600;
   }
 
 }

@@ -37,7 +37,7 @@ function SourceElem(props: SourceElement<any>): JSX.Element {
     <div
       className={cs(styles.sourceElem, { [styles.dragging]: isDragging })}
       ref={drag}
-      onClick={addNodeToCanvas}
+      onClick={(ev)=> addNodeToCanvas()}
     >
       <div>
         <Icon name={props.icon || 'apps'} size={24} />

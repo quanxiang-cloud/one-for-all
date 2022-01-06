@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { observer } from 'mobx-react';
 
 import { Tab } from '@ofa/ui';
@@ -13,6 +13,44 @@ import styles from './index.m.scss';
 
 function SettingPanel(): JSX.Element {
   const { page, designer, registry } = useCtx();
+  const getAvailablePanels = useCallback(()=> {
+    const panels = [
+      {
+        id: 'props',
+        name: '属性',
+        content: renderPropsPanel(),
+      },
+      {
+        id: 'style',
+        name: '样式',
+        content: <StylePanel />,
+      },
+    ];
+
+    if (page.activeElem?.exportName === 'page') {
+      return panels;
+    }
+
+    return panels.concat([
+      {
+        id: 'event',
+        name: '事件',
+        content: <EventPanel />,
+      },
+      {
+        id: 'renderer',
+        name: '动态渲染',
+        content: <RendererPanel />,
+      },
+    ]);
+  }, [page.activeElem]);
+
+  useEffect(()=> {
+    if (page.activeElem?.exportName === 'page' && !['props', 'style'].includes(designer.activePanel)) {
+      // reset to default panel
+      designer.setActivePanel('props');
+    }
+  }, [page.activeElemId]);
 
   function renderPropsPanel(): JSX.Element {
     const elem = registry.getElemByType(page.activeElem.exportName);
@@ -44,28 +82,7 @@ function SettingPanel(): JSX.Element {
         <Tab
           className={styles.tabs}
           contentClassName={styles.tabCont}
-          items={[
-            {
-              id: 'props',
-              name: '属性',
-              content: renderPropsPanel(),
-            },
-            {
-              id: 'style',
-              name: '样式',
-              content: <StylePanel />,
-            },
-            {
-              id: 'event',
-              name: '事件',
-              content: <EventPanel />,
-            },
-            {
-              id: 'renderer',
-              name: '动态渲染',
-              content: <RendererPanel />,
-            },
-          ]}
+          items={getAvailablePanels()}
           currentKey={designer.activePanel}
           onChange={designer.setActivePanel}
         />
