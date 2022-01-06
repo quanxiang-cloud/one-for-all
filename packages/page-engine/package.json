@@ -15,7 +15,6 @@
     "build": "tsc --build tsconfig.json",
     "prebundle": "yarn run clean && yarn run build",
     "bundle": "rollup -c",
-    "bundle:watch": "rollup -c -w",
     "clean": "rm -rf dist lib",
     "lint": "eslint src/**/*.ts --fix",
     "test": "jest",

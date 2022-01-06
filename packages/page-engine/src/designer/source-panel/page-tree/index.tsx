@@ -5,7 +5,6 @@ import { useCtx } from '@ofa/page-engine';
 import { RadioButtonGroup } from '@ofa/ui';
 
 import TreeView from './tree-view';
-import { isDev } from '../../../utils';
 
 import styles from './index.m.scss';
 
@@ -17,16 +16,14 @@ function PageTree(): JSX.Element {
 
   return (
     <div className={styles.pageTree}>
-      {isDev() && (
-        <RadioButtonGroup
-          listData={[
-            { label: '大纲视图', value: 'tree' },
-            { label: '源码视图', value: 'code' },
-          ]}
-          onChange={(mode)=> setMode(mode as string)}
-          currentValue={mode}
-        />
-      )}
+      <RadioButtonGroup
+        listData={[
+          { label: '大纲视图', value: 'tree' },
+          { label: '源码视图', value: 'code' },
+        ]}
+        onChange={(mode)=> setMode(mode as string)}
+        currentValue={mode}
+      />
       {mode === 'tree' && (
         <TreeView />
       )}

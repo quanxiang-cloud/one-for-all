@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
+import { pickBy } from 'lodash';
 
 import { Search, Icon, Tooltip, Modal, toast } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine';
+import { useCtx, useUpdateEffect, useDebounce } from '@ofa/page-engine';
 
 import VarItem from './var-item';
 
@@ -19,12 +20,23 @@ function ApiState(props: Props): JSX.Element {
   const { dataSource, page } = ctx;
   const { modalOpen, setModalOpen, curApiState, curApiId } = dataSource;
   const { register, formState: { errors }, handleSubmit, getValues, trigger, clearErrors } = useForm();
+  const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [curStates, setCurStates] = useState(dataSource.apiState);
 
   useEffect(()=> {
     if (!dataSource.modalOpen) {
       dataSource.setCurApiId('');
     }
   }, [dataSource.modalOpen]);
+
+  useDebounce(()=> {
+    setDebouncedSearch(search);
+  }, 500, [search]);
+
+  useUpdateEffect(()=> {
+    setCurStates(pickBy(dataSource.apiState, (_, key)=> key.toLowerCase().includes(debouncedSearch.toLowerCase())));
+  }, [debouncedSearch]);
 
   function onSubmit(data: any): void {
     // console.log('save api state: ', data, curApiId);
@@ -35,12 +47,14 @@ function ApiState(props: Props): JSX.Element {
     dataSource.saveApiState(data.name, curApiId, ()=> ctx.onSave(page.schema, { silent: true }));
   }
 
-  const noData = !Object.keys(dataSource.apiState).length;
+  const noData = !Object.keys(curStates).length;
 
   return (
     <div>
       <Search
         className={styles.search}
+        value={search}
+        onChange={setSearch}
         placeholder='搜索 API 名称..'
         // @ts-ignore
         actions={(
@@ -58,12 +72,12 @@ function ApiState(props: Props): JSX.Element {
             style={{ marginTop: '72px' }}
           >
             <p>暂无数据</p>
-            <p>可以选择将该应用的内部API和第三方API数据加入后使用哦！</p>
+            {!Object.keys(dataSource.apiState).length && <p>可以选择将该应用的内部API和第三方API数据加入后使用哦！</p>}
           </div>
         )}
         {!noData && (
           <div className='flex flex-col h-full'>
-            {Object.entries(dataSource.apiState).map(([name, spec]: [string, any]) => {
+            {Object.entries(curStates).map(([name, spec]: [string, any]) => {
               return (
                 <VarItem key={name} name={name} spec={spec} />
               );

@@ -15,7 +15,7 @@ import type { PageNode } from '../types';
 import { isDev } from '../utils';
 
 // todo: move mock schema into unit test
-// import schemaWithWrongPid from '../mock-schema/drag-into-container-lost-elem';
+// import schemaWithApiState from '../mock-schema/with-api-state';
 
 import styles from './index.m.scss';
 
@@ -68,7 +68,7 @@ function Designer({ className, onSave, docLink, hideTestPreview }: Props): JSX.E
             <SourcePanel />
             <Page
               className={cs('my-8', styles.canvas)}
-              // schema={schemaWithWrongPid as any}
+              // schema={schemaWithApiState as any}
             />
             <SettingPanel />
           </div>
