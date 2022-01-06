@@ -10,11 +10,38 @@ import { NodePropType } from '@ofa/render-engine';
 interface Props {
   name: string; // bind field name
   className?: string;
+  isLoopNode?: boolean;
 }
 
-function ConfigItemBind({ name }: Props): JSX.Element {
+const iterableStateType = [
+  NodePropType.SharedStateProperty,
+  NodePropType.APIResultProperty,
+  NodePropType.ConstantProperty,
+];
+
+function ConfigItemBind({ name, isLoopNode }: Props): JSX.Element {
   const { designer, page } = useCtx();
-  const bound = get(page.activeElem, `props.${name}.type`) === NodePropType.SharedStateProperty;
+  let bound = false;
+  if (isLoopNode) {
+    // if bind shared state, loop node iterableState will label as shared_property
+    // if bind api state, loop node iterableState will label as api_result_property
+    const iterType = get(page.activeElem, 'iterableState.type');
+    bound = iterableStateType.includes(iterType);
+  } else {
+    bound = get(page.activeElem, `props.${name}.type`) === NodePropType.SharedStateProperty;
+  }
+
+  function handleUnbind(): void {
+    if (isLoopNode) {
+      // replace loop node with inner normal node, detach iterable state prop
+    } else {
+      const { fallback } = get(page.activeElem, `props.${name}`, {});
+      page.updateElemProperty(page.activeElem.id, `props.${name}`, {
+        type: NodePropType.ConstantProperty,
+        value: fallback,
+      });
+    }
+  }
 
   return (
     <div className='inline-flex items-center'>
@@ -23,7 +50,7 @@ function ConfigItemBind({ name }: Props): JSX.Element {
           name="code"
           color="gray"
           clickable
-          onClick={()=> designer.openDataBinding(name)}
+          onClick={()=> designer.openDataBinding(name, isLoopNode)}
           className={cs('mr-8', bound ? 'bg-blue-200' : '')}
         />
       </Tooltip>
@@ -32,13 +59,8 @@ function ConfigItemBind({ name }: Props): JSX.Element {
           <Icon
             name='link'
             clickable
-            onClick={()=> {
-              const { fallback } = get(page.activeElem, `props.${name}`, {});
-              page.updateElemProperty(page.activeElem.id, `props.${name}`, {
-                type: NodePropType.ConstantProperty,
-                value: fallback,
-              });
-            }} />
+            onClick={handleUnbind}
+          />
         </Tooltip>
       )}
     </div>

@@ -27,7 +27,7 @@ function SourceElem(props: SourceElement<any>): JSX.Element {
     end: (item, monitor) => {
       const targetNode: any = monitor.getDropResult();
       if (targetNode?.exportName) {
-        // console.log('[source-elem] dropped %o onto: %o', item, targetNode);
+        console.log('[source-elem] dropped %o onto: %o, pos: %s', item, targetNode, page.dragPos);
         addNodeToCanvas(targetNode);
       }
     },
@@ -37,7 +37,7 @@ function SourceElem(props: SourceElement<any>): JSX.Element {
     <div
       className={cs(styles.sourceElem, { [styles.dragging]: isDragging })}
       ref={drag}
-      onClick={addNodeToCanvas}
+      onClick={(ev)=> addNodeToCanvas()}
     >
       <div>
         <Icon name={props.icon || 'apps'} size={24} />

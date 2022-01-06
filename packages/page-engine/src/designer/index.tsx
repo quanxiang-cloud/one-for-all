@@ -12,6 +12,10 @@ import Page from '../core/page';
 import Ctx from '../ctx';
 import stores from '../stores';
 import type { PageNode } from '../types';
+import { isDev } from '../utils';
+
+// todo: move mock schema into unit test
+// import schemaWithWrongPid from '../mock-schema/drag-into-container-lost-elem';
 
 import styles from './index.m.scss';
 
@@ -19,6 +23,8 @@ interface Props {
   onSave: (page_schema: PageNode) => void;
   vdoms?: Record<string, React.ReactNode>; // 委托给外部渲染的vdom节点
   className?: string;
+  docLink?: string; // 帮助文档链接
+  hideTestPreview?: boolean; // 隐藏测试预览
 }
 
 /*
@@ -27,7 +33,7 @@ interface Props {
  */
 configure({ isolateGlobalState: true });
 
-function Designer({ className, onSave }: Props): JSX.Element | null {
+function Designer({ className, onSave, docLink, hideTestPreview }: Props): JSX.Element | null {
   const { designer } = stores;
 
   useEffect(() => {
@@ -35,8 +41,11 @@ function Designer({ className, onSave }: Props): JSX.Element | null {
       onSave,
     });
 
-    // @ts-ignore
-    window._ctx = stores;
+    if (isDev()) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      window._ctx = stores;
+    }
 
     return () => {
       // reset ctx
@@ -52,12 +61,15 @@ function Designer({ className, onSave }: Props): JSX.Element | null {
     <DndProvider backend={HTML5Backend}>
       <Ctx.Provider value={stores}>
         <div className={cs(styles.designer, className)}>
-          <Toolbar />
+          <Toolbar docLink={docLink} hideTestPreview={hideTestPreview} />
           <div className={cs(styles.body, {
             [styles.pinned]: designer.panelOpen && designer.panelPinned,
           })}>
             <SourcePanel />
-            <Page className={cs('my-8', styles.canvas)} />
+            <Page
+              className={cs('my-8', styles.canvas)}
+              // schema={schemaWithWrongPid as any}
+            />
             <SettingPanel />
           </div>
         </div>

@@ -1,7 +1,8 @@
 import { action, computed, makeObservable, observable, runInAction, toJS } from 'mobx';
-import { defaults, set } from 'lodash';
+import { defaults, set, cloneDeep } from 'lodash';
 
-import { NodePropType, NodeType } from '@ofa/render-engine';
+import { LoopContainerNode, NodePropType, NodeType, Serialized } from '@ofa/render-engine';
+import { LoopNodeConf } from '@ofa/page-engine';
 import { elemId } from '../utils';
 import { findNode, removeNode as removeTreeNode } from '../utils/tree-utils';
 import registry from './registry';
@@ -20,7 +21,7 @@ type AppendNodeOptions = {
 
 function deepMergeNode(node: PageNode): PageNode {
   const target = toJS(node);
-  Object.assign(target, { id: elemId(node.type || NodeType.ReactComponentNode) });
+  Object.assign(target, { id: elemId(node.exportName) });
   if (target.children) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -104,12 +105,12 @@ class PageStore {
   appendNode = (node: Omit<PageNode, 'type'| 'id'>, target?: Omit<PageNode, 'type' | 'id'> | null, options?: AppendNodeOptions): void => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const targetId = target?.id || this.schema.id;
+    const targetId = target?.id || this.schema.node.id;
     const targetNode = findNode(this.schema.node, targetId);
 
     const params: Partial<PageNode> = {
       id: elemId(node.exportName),
-      pid: targetNode.pid || this.schema.node.id,
+      pid: this.dragPos === 'inner' ? targetNode.id : (targetNode.pid || this.schema.node.id),
       // exportName: node.exportName,
       type: NodeType.ReactComponentNode,
       packageName: 'ofa-ui',
@@ -138,9 +139,15 @@ class PageStore {
       }
     }
 
-    const srcNode = defaults(node, params);
+    let srcNode = defaults(node, params);
     if (options?.renewId) {
       Object.assign(srcNode, { id: elemId(srcNode.exportName) });
+    }
+
+    // check if srcNode already in page
+    const foundNode = findNode(this.schema.node, srcNode.id);
+    if (foundNode) {
+      srcNode = cloneDeep(foundNode);
     }
 
     if (targetNode) {
@@ -155,18 +162,22 @@ class PageStore {
         if (!targetNode.children) {
           return;
         }
-        targetNode?.children?.push(Object.assign({}, srcNode, { pid: targetNode.id }));
         if (srcNode.id && options?.from !== 'source') {
-          // remove src node
           const srcParent = findNode(this.schema.node, srcNode.pid);
           if (srcParent && srcParent.children) {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             const idx = srcParent.children.findIndex((v: PageNode) => v.id === node.id);
             if (idx > -1) {
+              // remove src node
               srcParent.children.splice(idx, 1);
+              // append to target
+              targetNode?.children?.push(Object.assign({}, srcNode, { pid: targetNode.id }));
             }
           }
+        } else {
+          // from source panel
+          targetNode?.children?.push(Object.assign({}, srcNode, { pid: targetNode.id }));
         }
         return;
       }
@@ -181,21 +192,24 @@ class PageStore {
   insertBefore = (node: PageNode, target: PageNode): void => {
     const srcParent = findNode(this.schema.node, node.pid);
     const targetParent = findNode(this.schema.node, target.pid);
-    // remove node from src parent
+    let srcIdx = -1;
+    let targetIdx = -1;
+
     if (srcParent && srcParent.children) {
-      const idx = srcParent.children.findIndex((v: PageNode) => v.id === node.id);
-      if (idx > -1) {
-        srcParent.children.splice(idx, 1);
-      }
+      srcIdx = srcParent.children.findIndex((v: PageNode) => v.id === node.id);
     }
 
     if (targetParent && targetParent.children) {
-      const idx = targetParent.children.findIndex((v: PageNode) => v.id === target.id);
-      if (idx > -1) {
-        if (idx === 0) {
-          targetParent.children.unshift(node);
+      targetIdx = targetParent.children.findIndex((v: PageNode) => v.id === target.id);
+      if (srcIdx > -1 && targetIdx > -1) {
+        // remove node from src parent
+        srcParent.children.splice(srcIdx, 1);
+
+        const newNode = Object.assign({}, node, { pid: targetParent.id });
+        if (targetIdx === 0) {
+          targetParent.children.unshift(newNode);
         } else {
-          targetParent.children.splice(idx, 0, node);
+          targetParent.children.splice(targetIdx, 0, newNode);
         }
       }
     }
@@ -205,27 +219,29 @@ class PageStore {
   insertAfter = (node: PageNode, target: PageNode): void => {
     const srcParent = findNode(this.schema.node, node.pid);
     const targetParent = findNode(this.schema.node, target.pid);
+    let srcIdx = -1; // node in src parent idx
+    let targetIdx = -1; // node in target parant idx
 
     if (srcParent && srcParent.children) {
-      const idx = srcParent.children.findIndex((v: PageNode) => v.id === node.id);
-      if (idx > -1) {
-        srcParent.children.splice(idx, 1);
-      }
+      srcIdx = srcParent.children.findIndex((v: PageNode) => v.id === node.id);
     }
 
     if (!target.pid) {
-      // removeTreeNode(this.schema, node?.id);
+      removeTreeNode(this.schema.node, node.id);
       // append to page
       targetParent.children.push(Object.assign({}, node, { pid: targetParent.id }));
       return;
     }
 
     if (targetParent && targetParent.children) {
-      const idx = targetParent.children.findIndex((v: PageNode) => v.id === target.id);
-      if (idx > -1) {
-        // double check node pid
+      targetIdx = targetParent.children.findIndex((v: PageNode) => v.id === target.id);
+      if (srcIdx > -1 && targetIdx > -1) {
+        // remove node in src parent
+        srcParent.children.splice(srcIdx, 1);
+
+        // add node in target parent, double check node pid
         Object.assign(node, { pid: targetParent.id });
-        targetParent.children.splice(idx + 1, 0, node);
+        targetParent.children.splice(targetIdx + 1, 0, node);
       }
     }
   }
@@ -300,6 +316,46 @@ class PageStore {
   getElemBoundActions=(): string[] =>{
     const elemConf = registry.getElemByType(this.activeElem?.exportName) as SourceElement<any>;
     return ['didMount', 'willUnmount'].concat(elemConf?.exportActions || []);
+  }
+
+  @action
+  replaceNode=(node_id: string, replaced: PageNode | LoopContainerNode<Serialized>)=> {
+
+  }
+
+  @action
+  setNodeAsLoopContainer=(node_id: string, loopConfig?: Partial<LoopNodeConf>): void => {
+    // wrap normal node as loop node
+    const target = findNode(this.schema.node, node_id);
+    if (!target) {
+      return;
+    }
+    const nodeCopy = cloneDeep(target);
+    const loopNodeParams = {
+      id: elemId('loop-node'),
+      type: NodeType.LoopContainerNode,
+      node: nodeCopy,
+      loopKey: 'id', // todo
+      toProps: {
+        args: 'state',
+        body: 'return { appInfo: state }',
+        type: 'to_props_function_spec',
+      },
+      iterableState: {
+
+      },
+    };
+  }
+
+  @action
+  unsetLoopNode=(loop_node_id: string)=> {
+    // reset loop container, lift up inner node
+
+  }
+
+  isLoopNode=(node_id: string): boolean=> {
+    // todo: get up-level loop-node wrapper
+    return false;
   }
 
   @action
