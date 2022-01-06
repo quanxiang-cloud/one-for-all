@@ -1,5 +1,5 @@
 @import "../styles/vars.css";
-@import "../styles/border.css";
+//@import "../styles/border.css";
 
 .designer {
   font-weight: normal;
@@ -37,7 +37,11 @@
   }
 
   .pg-input {
-    @apply px-8 py-4 w-full border corner-2-8-8-8 border-gray-300 focus:border-blue-600;
+    //@apply px-8 py-4 w-full border corner-2-8-8-8 border-gray-300;
+    padding: 4px 8px;
+    width: 100%;
+    border: 1px solid var(--gray-300);
+    border-radius: 2px 8px 8px;
   }
 
 }
