@@ -13,6 +13,10 @@ const elem: SourceElement<Props> = {
   name: 'image',
   icon: 'image-component',
   iconSize: 32,
+  iconStyle: {
+    width: '32px',
+    height: '24px',
+  },
   label: '图片',
   category: 'basic',
   component: Image,

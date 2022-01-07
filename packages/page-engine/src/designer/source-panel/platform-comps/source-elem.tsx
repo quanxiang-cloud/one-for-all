@@ -40,7 +40,10 @@ function SourceElem(props: SourceElement<any>): JSX.Element {
       onClick={addNodeToCanvas}
     >
       <div>
-        <Icon name={props.icon || 'apps'} size={props.iconSize || 24} style={{width: '48px', height: '28px'}}/>
+        <Icon
+          name={props.icon || 'apps'}
+          size={props.iconSize || 24}
+          style={props.iconStyle || {}}/>
       </div>
       <div>
         {props.label}

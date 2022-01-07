@@ -21,6 +21,11 @@ export interface PageSchema {
   sharedStatesSpec: SharedStatesSpec;
 }
 
+export interface iconStyle {
+  width: string,
+  height: string
+}
+
 export type DragPos = 'up' | 'down' | 'left' | 'right' | 'inner';
 
 // registry types
@@ -34,6 +39,7 @@ export interface SourceElement<T> {
   icon: string;
   label: string;
   category: Category;
+  iconStyle?: iconStyle;
   iconSize?: number;
   toProps?: (formData: any) => T; // 将configForm的配置项转换到 component的 props
   order?: number; // 排序权重
