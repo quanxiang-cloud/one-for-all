@@ -29,7 +29,8 @@
     "nanoid": "^3.1.30",
     "react-dnd": "^14.0.4",
     "react-dnd-html5-backend": "^14.0.2",
-    "react-hook-form": "^7.20.4"
+    "react-hook-form": "^7.20.4",
+    "react-use": "^17.3.2"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.8",

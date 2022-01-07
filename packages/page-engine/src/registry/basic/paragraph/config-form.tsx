@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { defaults } from 'lodash';
 
-import { useCtx } from '@ofa/page-engine';
-
-import ConfigBind from '../../../designer/comps/config-item-bind';
+import { useCtx, DataBind as ConfigBind } from '@ofa/page-engine';
 
 const DEFAULT_CONFIG: Props = {
   content: '段落文本',

@@ -3,9 +3,10 @@ import { useForm } from 'react-hook-form';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 import { pickBy } from 'lodash';
+import { useUpdateEffect, useDebounce } from 'react-use';
 
 import { Search, Icon, Tooltip, Modal, toast } from '@ofa/ui';
-import { useCtx, useUpdateEffect, useDebounce } from '@ofa/page-engine';
+import { useCtx } from '@ofa/page-engine';
 
 import VarItem from './var-item';
 

@@ -4,9 +4,7 @@ import { useForm } from 'react-hook-form';
 import { observer } from 'mobx-react';
 
 import { Icon } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine';
-
-import ConfigBind from '../../../designer/comps/config-item-bind';
+import { useCtx, DataBind as ConfigBind } from '@ofa/page-engine';
 
 const DEFAULT_CONFIG: Props = {
   content: '文本',

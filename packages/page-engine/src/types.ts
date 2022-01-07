@@ -5,7 +5,8 @@ import {
   APIStatesSpec,
   SharedStatesSpec,
   PlainState,
-  ToProps, APIResultProperty, SharedStateProperty, NodeStateProperty, ConstantProperty,
+  // ToProps,
+  LoopContainerNode,
 } from '@ofa/render-engine';
 
 export type ReactComp = React.ComponentType | React.JSXElementConstructor<any>;
@@ -50,9 +51,12 @@ export interface SourceElement<T> {
   defaultStyle?: Record<string, any>; // 默认样式
 }
 
-// loop node
+// loop node types
+export type LoopNode=LoopContainerNode<Serialized>;
+
 export type LoopNodeConf={
   iterableState: PlainState<Serialized>;
   loopKey: string;
-  toProps: ToProps<Serialized>;
+  toProps: string; // func body
+  // toProps: ToProps<Serialized>;
 }

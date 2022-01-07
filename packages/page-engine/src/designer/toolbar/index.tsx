@@ -6,6 +6,7 @@ import { toJS } from 'mobx';
 import { Icon, Button, Tooltip, Modal } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
 import { SchemaRender, Schema } from '@ofa/render-engine';
+import { isDev } from '../../utils';
 
 import styles from './index.m.scss';
 
@@ -58,8 +59,6 @@ function Toolbar({ docLink = '', hideTestPreview }: Props): JSX.Element {
     <div className={cs('bg-gray-50 h-44 flex justify-between items-center px-16', styles.toolbar)}>
       <div className={styles.brand}>{designer.vdoms.title}</div>
       <div className={cs('flex items-center', styles.actions)}>
-        {/* <Icon name='computer' className='cursor-pointer' color='gray' />*/}
-        {/* <Divider />*/}
         <Tooltip position='top' label='撤销'>
           <Icon name='undo' className='mr-16' clickable />
         </Tooltip>
@@ -76,7 +75,7 @@ function Toolbar({ docLink = '', hideTestPreview }: Props): JSX.Element {
             <Icon name='help_doc' color='gray' clickable/>
           </a>
         </Tooltip>
-        {!hideTestPreview && (
+        {isDev() && !hideTestPreview && (
           <>
             <Divider />
             <Tooltip position='top' label='测试预览'>

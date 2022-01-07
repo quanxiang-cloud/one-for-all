@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import { pickBy } from 'lodash';
+import { useUpdateEffect, useDebounce } from 'react-use';
 
 import { Search, Icon, Tooltip } from '@ofa/ui';
-import { useCtx, useUpdateEffect, useDebounce } from '@ofa/page-engine';
+import { useCtx } from '@ofa/page-engine';
 
 import VarItem from './var-item';
 import FormAddVal from './form-add-val';

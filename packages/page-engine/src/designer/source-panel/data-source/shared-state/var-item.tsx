@@ -29,8 +29,8 @@ function VarItem({ className, name, conf }: Props): JSX.Element {
   function handleCopy(ev: React.MouseEvent<SVGElement>): void {
     ev.stopPropagation();
     setCurSharedStateKey('');
-    const countName = Object.keys(dataSource.sharedState).filter((n) => n === name || n.startsWith(`${name}_copy`)).length;
-    const newName = countName === 1 ? `${name}_copy` : `${name}_copy${countName}`;
+    const countName = Object.keys(dataSource.sharedState).filter((n) => n.startsWith(`${name}_copy`)).length;
+    const newName = countName === 0 ? `${name}_copy` : `${name}_copy${countName}`;
     const newConf = JSON.parse(conf);
     Object.assign(newConf, { name: newName });
     dataSource.saveSharedState(newName, JSON.stringify(newConf), ()=> ctx.onSave(page.schema, { silent: true }));

@@ -4,9 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import { Icon } from '@ofa/ui';
 import { Props } from '@ofa/ui/src/textarea/index';
-import { useCtx } from '@ofa/page-engine';
-
-import ConfigBind from '../../../designer/comps/config-item-bind';
+import { useCtx, DataBind as ConfigBind } from '@ofa/page-engine';
 
 interface configProps {
   name: string;

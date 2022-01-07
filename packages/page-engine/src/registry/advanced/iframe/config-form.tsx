@@ -2,8 +2,7 @@ import React, { useState, useContext, HTMLAttributeReferrerPolicy } from 'react'
 import { useForm } from 'react-hook-form';
 import { defaults } from 'lodash';
 
-import ctx from '../../../ctx';
-import ConfigBind from '../../../designer/comps/config-item-bind';
+import { useCtx, DataBind as ConfigBind } from '@ofa/page-engine';
 
 export interface IframeConfigProps {
   sandbox?: string;
@@ -31,7 +30,7 @@ const DEFAULT_CONFIG: IframeConfigProps = {
 
 function ConfigForm(): JSX.Element {
   const { register, getValues } = useForm();
-  const { page } = useContext(ctx);
+  const { page } = useCtx();
   const [values, setValues] = useState<IframeConfigProps>(defaults(page.activeElemProps, DEFAULT_CONFIG));
 
   function handleFormChange(): void {

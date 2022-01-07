@@ -1,14 +1,14 @@
 import { action, computed, makeObservable, observable, runInAction, toJS } from 'mobx';
-import { defaults, set, cloneDeep } from 'lodash';
+import { cloneDeep, defaults, set } from 'lodash';
 
-import { LoopContainerNode, NodePropType, NodeType, Serialized } from '@ofa/render-engine';
-import { LoopNodeConf } from '@ofa/page-engine';
+import { NodePropType, NodeType } from '@ofa/render-engine';
+import { LoopNode, LoopNodeConf } from '@ofa/page-engine';
 import { elemId } from '../utils';
-import { findNode, removeNode as removeTreeNode } from '../utils/tree-utils';
+import { findNode, findParent, removeNode as removeTreeNode } from '../utils/tree-utils';
 import registry from './registry';
 import dataSource from './data-source';
 import type { DragPos, PageNode, PageSchema, SourceElement } from '../types';
-import { mapRawProps, mergeProps, transformLifecycleHooks } from '../utils/schema-adapter';
+import { mapRawProps, mergeAsRenderEngineProps, transformLifecycleHooks } from '../utils/schema-adapter';
 import { STYLE_NUMBER } from '../config/default-styles';
 
 type Mode = 'design' | 'preview'
@@ -63,7 +63,11 @@ class PageStore {
     if (!this.activeElemId) {
       return null;
     }
-    return findNode(this.schema.node, this.activeElemId);
+    const node = findNode(this.schema.node, this.activeElemId);
+    if (node?.type === NodeType.LoopContainerNode) {
+      return node.node;
+    }
+    return node;
   }
 
   @computed
@@ -101,6 +105,7 @@ class PageStore {
     this.dragPos = pos;
   }
 
+  //  todo: refine
   @action
   appendNode = (node: Omit<PageNode, 'type'| 'id'>, target?: Omit<PageNode, 'type' | 'id'> | null, options?: AppendNodeOptions): void => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -165,19 +170,26 @@ class PageStore {
         if (srcNode.id && options?.from !== 'source') {
           const srcParent = findNode(this.schema.node, srcNode.pid);
           if (srcParent && srcParent.children) {
+            const isLoopNode = srcNode.type === NodeType.LoopContainerNode;
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            const idx = srcParent.children.findIndex((v: PageNode) => v.id === node.id);
+            const srcNodeId = isLoopNode ? srcNode.node.id : srcNode.id;
+
+            const idx = srcParent.children.findIndex((v: PageNode) => v.id === srcNodeId || v.id === srcNode.id);
             if (idx > -1) {
               // remove src node
               srcParent.children.splice(idx, 1);
+
               // append to target
-              targetNode?.children?.push(Object.assign({}, srcNode, { pid: targetNode.id }));
+              if (isLoopNode) {
+                set(srcNode, 'node.pid', targetNode.id);
+              }
+              targetNode?.children?.push(Object.assign(srcNode, { pid: targetNode.id }));
             }
           }
         } else {
           // from source panel
-          targetNode?.children?.push(Object.assign({}, srcNode, { pid: targetNode.id }));
+          targetNode?.children?.push(Object.assign(srcNode, { pid: targetNode.id }));
         }
         return;
       }
@@ -188,15 +200,20 @@ class PageStore {
     }
   }
 
+  getRealNode=(rawNode: PageNode): PageNode=> {
+    return rawNode.type === NodeType.LoopContainerNode ? (rawNode as any).node : rawNode;
+  }
+
   @action
-  insertBefore = (node: PageNode, target: PageNode): void => {
+  insertBefore = (rawNode: PageNode, target: PageNode): void => {
+    const node = this.getRealNode(rawNode);
     const srcParent = findNode(this.schema.node, node.pid);
     const targetParent = findNode(this.schema.node, target.pid);
     let srcIdx = -1;
     let targetIdx = -1;
 
     if (srcParent && srcParent.children) {
-      srcIdx = srcParent.children.findIndex((v: PageNode) => v.id === node.id);
+      srcIdx = srcParent.children.findIndex((v: PageNode) => v.id === node.id || v.id === rawNode.id);
     }
 
     if (targetParent && targetParent.children) {
@@ -205,7 +222,8 @@ class PageStore {
         // remove node from src parent
         srcParent.children.splice(srcIdx, 1);
 
-        const newNode = Object.assign({}, node, { pid: targetParent.id });
+        set(node, 'pid', targetParent.id);
+        const newNode = Object.assign(rawNode, { pid: targetParent.id });
         if (targetIdx === 0) {
           targetParent.children.unshift(newNode);
         } else {
@@ -216,20 +234,22 @@ class PageStore {
   }
 
   @action
-  insertAfter = (node: PageNode, target: PageNode): void => {
+  insertAfter = (rawNode: PageNode, target: PageNode): void => {
+    const node = this.getRealNode(rawNode);
     const srcParent = findNode(this.schema.node, node.pid);
     const targetParent = findNode(this.schema.node, target.pid);
     let srcIdx = -1; // node in src parent idx
     let targetIdx = -1; // node in target parant idx
 
     if (srcParent && srcParent.children) {
-      srcIdx = srcParent.children.findIndex((v: PageNode) => v.id === node.id);
+      srcIdx = srcParent.children.findIndex((v: PageNode) => v.id === node.id || v.id === rawNode.id);
     }
 
     if (!target.pid) {
       removeTreeNode(this.schema.node, node.id);
       // append to page
-      targetParent.children.push(Object.assign({}, node, { pid: targetParent.id }));
+      set(node, 'pid', targetParent.id);
+      targetParent.children.push(Object.assign(rawNode, { pid: targetParent.id }));
       return;
     }
 
@@ -240,8 +260,8 @@ class PageStore {
         srcParent.children.splice(srcIdx, 1);
 
         // add node in target parent, double check node pid
-        Object.assign(node, { pid: targetParent.id });
-        targetParent.children.splice(targetIdx + 1, 0, node);
+        set(node, 'pid', targetParent.id);
+        targetParent.children.splice(targetIdx + 1, 0, Object.assign(rawNode, { pid: targetParent.id }));
       }
     }
   }
@@ -269,7 +289,7 @@ class PageStore {
     if (elem) {
       // console.log('update node props: ', elem_id, propKey, conf);
       if (propKey === 'props') {
-        set(elem, propKey, mergeProps(toJS(this.activeElem?.props), conf));
+        set(elem, propKey, mergeAsRenderEngineProps(toJS(this.activeElem?.props), conf));
       } else if (propKey === 'props.style') {
         // fixme: style bind variable
         set(elem, propKey, { type: NodePropType.ConstantProperty, value: conf });
@@ -319,43 +339,53 @@ class PageStore {
   }
 
   @action
-  replaceNode=(node_id: string, replaced: PageNode | LoopContainerNode<Serialized>)=> {
-
+  replaceNode=(node_id: string, replaced: PageNode): void=> {
+    const parent = findParent(this.schema.node, node_id);
+    if (parent) {
+      const srcIdx = parent.children?.findIndex((v)=> v.id === node_id) ?? -1;
+      if (srcIdx > -1) {
+        parent.children?.splice(srcIdx, 1, replaced);
+      }
+    }
   }
 
   @action
-  setNodeAsLoopContainer=(node_id: string, loopConfig?: Partial<LoopNodeConf>): void => {
+  setNodeAsLoopContainer=(node_id: string, loopConfig: LoopNodeConf): void => {
     // wrap normal node as loop node
     const target = findNode(this.schema.node, node_id);
     if (!target) {
       return;
     }
     const nodeCopy = cloneDeep(target);
-    const loopNodeParams = {
+    const loopNodeConfig = {
       id: elemId('loop-node'),
       type: NodeType.LoopContainerNode,
       node: nodeCopy,
-      loopKey: 'id', // todo
+      loopKey: loopConfig.loopKey || 'id',
       toProps: {
         args: 'state',
-        body: 'return { appInfo: state }',
+        body: loopConfig.toProps || 'return state',
         type: 'to_props_function_spec',
       },
-      iterableState: {
-
-      },
+      iterableState: loopConfig.iterableState || {},
     };
+
+    console.log('set loop node: ', loopNodeConfig);
+    this.replaceNode(node_id, loopNodeConfig as any);
   }
 
   @action
   unsetLoopNode=(loop_node_id: string)=> {
     // reset loop container, lift up inner node
-
-  }
-
-  isLoopNode=(node_id: string): boolean=> {
-    // todo: get up-level loop-node wrapper
-    return false;
+    const loopNode = findNode(this.schema.node, loop_node_id);
+    if (!loopNode) {
+      return;
+    }
+    if (loopNode.type === NodeType.LoopContainerNode) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const innerNode = (loopNode as LoopNode).node;
+    }
   }
 
   @action

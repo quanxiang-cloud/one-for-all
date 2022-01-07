@@ -1,8 +1,7 @@
 import Designer from './designer';
 import { useCtx, CtxValue } from './ctx';
 import stores from './stores';
-import useUpdateEffect from './hooks/use-update-effect';
-import useDebounce from './hooks/use-debounce';
+import DataBind from './designer/comps/config-item-bind';
 
 const getStore = (): CtxValue => stores;
 
@@ -11,7 +10,6 @@ export {
   Designer,
   useCtx,
   getStore,
-  useUpdateEffect,
-  useDebounce,
+  DataBind,
 };
 export default Designer;
