@@ -18,8 +18,7 @@ const elem: SourceElement<Props> = {
   configForm: ConfigForm,
   defaultConfig,
   defaultStyle: {
-    width: '100px',
-    height: '20px',
+    display: 'inline',
   },
   order: 1,
 };

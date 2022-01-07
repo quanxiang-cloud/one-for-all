@@ -1,7 +1,4 @@
 import React from 'react';
-import cs from 'classnames';
-
-import styles from './index.m.scss';
 
 interface Props {
   className?: string;
@@ -10,21 +7,26 @@ interface Props {
 }
 
 function Container(
-  { className, style, children, ...rest }: Props,
+  { style, children, ...rest }: Props,
   ref: React.LegacyRef<HTMLDivElement>,
 ): JSX.Element {
+  const pathname = window.location.pathname;
+  const isSee = pathname.indexOf('/page-preview') >= 0;
   return (
     <div
       {...rest}
-      className={cs(styles.coll, className)}
       style={style}
       ref={ref}
     >
       {children || (
-        <div className={styles.placeholder}>
+        !isSee && (
+          <div
+            style={{ minHeight: 60 }}
+            className="w-full h-full bg-gray-100 border border-dashed flex items-center justify-center"
+          >
           拖拽组件或模板到这里
-        </div>
-      )}
+          </div>
+        ))}
     </div>
   );
 }

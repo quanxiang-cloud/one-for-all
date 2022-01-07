@@ -48,15 +48,15 @@ interface Props {
 }
 
 function DisplayConfig({ initValues, register, setValue }: Props): JSX.Element {
+  const { display, flexDirection, alignItems, justifyContent } = initValues;
   const [flexValue, setFlexValue] = useState({
     display: 'block',
     flexDirection: 'row',
-    alignItems: 'normal',
-    justifyContent: 'normal',
+    alignItems: '',
+    justifyContent: '',
   });
 
   useEffect(() => {
-    const { display, flexDirection, alignItems, justifyContent } = initValues;
     setFlexValue({
       ...flexValue,
       display: display as string || 'block',
@@ -64,16 +64,16 @@ function DisplayConfig({ initValues, register, setValue }: Props): JSX.Element {
       alignItems: (alignItems as string) || '',
       justifyContent: (justifyContent as string) || '',
     });
-  }, []);
+  }, [display, flexDirection, alignItems, justifyContent]);
 
   function handleFlexChange(value: string | number | boolean, key: 'display' | 'flexDirection' |
    'alignItems' | 'justifyContent'): void {
     const _value = value as string;
     if (flexValue[key] === _value) return;
     if (key === 'display' && value !== 'flex') {
-      setValue('flexDirection', 'row');
-      setValue('alignItems', 'normal');
-      setValue('justifyContent', 'normal');
+      setValue('flexDirection', '');
+      setValue('alignItems', '');
+      setValue('justifyContent', '');
     }
     setValue(key, _value);
     setFlexValue({
@@ -115,15 +115,15 @@ function DisplayConfig({ initValues, register, setValue }: Props): JSX.Element {
 
   return (
     <div>
-      <input type="hidden" {...register('display', { value: initValues.display || 'block' })} />
-      <input type="hidden" {...register('flexDirection', { value: initValues.display || 'row' })} />
-      <input type="hidden" {...register('alignItems', { value: initValues.display || 'normal' })} />
-      <input type="hidden" {...register('justifyContent', { value: initValues.display || 'normal' })} />
+      <input type="hidden" {...register('display', { value: display || 'block' })} />
+      <input type="hidden" {...register('flexDirection', { value: flexDirection || '' })} />
+      <input type="hidden" {...register('alignItems', { value: alignItems || '' })} />
+      <input type="hidden" {...register('justifyContent', { value: justifyContent || '' })} />
       <div className='text-12 text-gray-600'>填充类型</div>
       <RadioButtonGroup
         listData={FILL_LIST as []}
         onChange={(val) => handleFlexChange(val, 'display')}
-        currentValue={flexValue['display']}
+        currentValue={flexValue.display}
       />
       { flexValue.display === 'flex' && (
         <>

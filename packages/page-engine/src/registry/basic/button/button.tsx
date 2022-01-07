@@ -12,13 +12,14 @@ export interface Props {
   iconSize?: number;
   textClassName?: string;
   iconClassName?: string;
+  style?: React.CSSProperties;
 }
 
 function ButtonElem(props: Props, ref: any): JSX.Element {
   const { title = '按钮' } = props;
   return (
 
-    <Button {...props} ref={ref}>{title}</Button>
+    <Button {...props} ref={ref} style={props.style}>{title}</Button>
   );
 }
 

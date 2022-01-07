@@ -4,7 +4,6 @@ import { UseFormRegister, FieldValues, UseFormSetValue } from 'react-hook-form';
 import { Icon } from '@ofa/ui';
 
 import MarginBPadding from './margin-b-padding';
-import { parseStyleString } from '../../../config/utils';
 
 interface Props {
   register: UseFormRegister<FieldValues>;
@@ -13,11 +12,10 @@ interface Props {
 }
 
 function LayoutConfig({ register, initValues, setValue }: Props): JSX.Element {
-  const widthInfo = parseStyleString(initValues.width || 0);
-  const heightInfo = parseStyleString(initValues.height || 0);
+  const { width, widthUnit, height, heightUnit } = initValues;
   const [oldValue, setOldValue] = useState({
-    width: Number(widthInfo.value) || 0,
-    height: Number(heightInfo.value) || 0,
+    width: Number(width) || 0,
+    height: Number(height) || 0,
   });
   const [locking, setLocking] = useState(false);
 
@@ -87,24 +85,24 @@ function LayoutConfig({ register, initValues, setValue }: Props): JSX.Element {
             <span className='mr-8 text-12 text-gray-400 whitespace-nowrap'>宽度</span>
             <div className='relative flex' style={{ width: 50 }}>
               <input
-                type={widthInfo.value === 'auto' ? 'hidden' : 'number'}
-                disabled={widthInfo.value === 'auto'}
+                type={width === 'auto' ? 'hidden' : 'number'}
+                disabled={width === 'auto'}
                 min={0}
                 className='w-full border-none focus:outline-none'
                 style={{ background: 'none' }}
                 {...register('width', {
-                  value: widthInfo.value || '',
+                  value: width || '',
                   onBlur: (e: React.ChangeEvent<HTMLInputElement>) => handleBlur(e, 'width'),
                 })}
               />
-              {widthInfo.value === 'auto' && (
-                <span className='ml-4 w-16 bg-white text-12 text-gray-400'>{widthInfo.value}</span>
+              {width === 'auto' && (
+                <span className='ml-4 w-16 bg-white text-12 text-gray-400'>{width}</span>
               )}
               <div className='ml-4 w-16 absolute right-0 top-0 bg-white text-12 text-gray-400'>
-                <select onChange={(e) => handleUnitChange(e, 'width')} value={widthInfo.unit}>
-                  <option>px</option>
-                  <option>%</option>
-                  <option>auto</option>
+                <select onChange={(e) => handleUnitChange(e, 'width')} value={widthUnit || 'px'}>
+                  <option label='px' value={'px'} />
+                  <option label='%' value={'%'} />
+                  <option label='auto' value={'auto'} />
                 </select>
               </div>
             </div>
@@ -113,20 +111,21 @@ function LayoutConfig({ register, initValues, setValue }: Props): JSX.Element {
             <span className='mr-8 text-12 text-gray-400 whitespace-nowrap'>高度</span>
             <div className='relative' style={{ width: 50 }}>
               <input
-                type={heightInfo.value === 'auto' ? 'hidden' : 'number'}
-                disabled={heightInfo.value === 'auto'}
+                type={height === 'auto' ? 'hidden' : 'number'}
+                disabled={height === 'auto'}
                 className='w-full border-none focus:outline-none'
                 style={{ background: 'none' }}
+                // value={height || ''}
                 {...register('height', {
-                  value: heightInfo.value,
+                  value: height || '',
                   onBlur: (e: React.ChangeEvent<HTMLInputElement>) => handleBlur(e, 'height'),
                 })}
               />
-              {heightInfo.value === 'auto' && (
-                <span className='ml-4 w-16 bg-white text-12 text-gray-400'>{heightInfo.value}</span>
+              {height === 'auto' && (
+                <span className='ml-4 w-16 bg-white text-12 text-gray-400'>{height}</span>
               )}
               <div className='ml-4 w-16 absolute right-0 top-0 bg-white text-12 text-gray-400'>
-                <select onChange={(e) => handleUnitChange(e, 'height')} value={heightInfo.unit}>
+                <select onChange={(e) => handleUnitChange(e, 'height')} value={heightUnit || 'px'}>
                   <option>px</option>
                   <option>%</option>
                   <option>auto</option>

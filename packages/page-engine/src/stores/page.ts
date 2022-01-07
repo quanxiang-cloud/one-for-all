@@ -39,7 +39,15 @@ function initialPageSchema(): PageSchema {
       packageVersion: 'latest',
       exportName: 'page', // todo
       label: '页面',
-      props: {},
+      props: {
+        style: {
+          type: 'constant_property',
+          value: {
+            width: '100%',
+            height: '100%',
+          },
+        },
+      },
       children: [],
     },
     apiStateSpec: {},
@@ -63,6 +71,7 @@ class PageStore {
     if (!this.activeElemId) {
       return null;
     }
+
     return findNode(this.schema.node, this.activeElemId);
   }
 
@@ -84,7 +93,7 @@ class PageStore {
     if (schema.node.type === NodeType.HTMLNode) {
       return;
     }
-    this.schema = schema;
+    this.schema = schema || initialPageSchema();
 
     // init data source when set page schema
     runInAction(()=> {
@@ -114,6 +123,7 @@ class PageStore {
     // @ts-ignore
     const targetId = target?.id || this.schema.id;
     const targetNode = findNode(this.schema.node, targetId);
+    console.log('targetNode', toJS(targetNode));
 
     const params: Partial<PageNode> = {
       id: elemId(node.exportName),
@@ -122,7 +132,12 @@ class PageStore {
       type: NodeType.ReactComponentNode,
       packageName: 'ofa-ui',
       packageVersion: 'latest',
-      props: {},
+      props: {
+        style: {
+          type: 'constant_property',
+          value: node.defaultStyle || {},
+        },
+      },
     };
 
     if (registry.acceptChild(node.exportName)) {
@@ -139,7 +154,12 @@ class PageStore {
             packageName: 'ofa-ui',
             packageVersion: 'latest',
             label: '容器',
-            props: {},
+            props: {
+              style: {
+                type: 'constant_property',
+                value: node.defaultStyle || {},
+              },
+            },
             children: [],
           },
         ];
@@ -253,6 +273,7 @@ class PageStore {
   @action
   removeNode = (id: string): void => {
     removeTreeNode(this.schema.node, id);
+    this.activeElemId = '';
   }
 
   @action

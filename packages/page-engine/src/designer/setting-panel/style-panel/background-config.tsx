@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { UseFormRegister, FieldValues } from 'react-hook-form';
 import { ColorResult } from 'react-color';
 
@@ -26,36 +26,33 @@ interface Props {
 
 function BackgroundConfig({ initValues, register, setValue, onFormChange }: Props): JSX.Element {
   const [fillStatus, setFillStatus] = useState('none');
+  const { backgroundColor, backgroundImage } = initValues;
 
   useEffect(() => {
-    const { backgroundColor, backgroundImage } = initValues;
-    if (backgroundColor !== 'transparent') {
+    if (backgroundImage) {
+      setFillStatus('img');
+      return;
+    }
+
+    if (backgroundColor) {
       setFillStatus('color');
       return;
     }
 
-    if (backgroundImage && ((backgroundImage as string).indexOf('url') >= 0)) {
-      setFillStatus('img');
-      return;
-    }
-  }, [initValues]);
+    setFillStatus('none');
+  }, [backgroundColor, backgroundImage]);
 
   function handleRadioChange(value: string | number | boolean): void {
     const _value = value as string;
     if (fillStatus === _value) return;
     if (_value === 'none') {
-      setValue('backgroundColor', 'transparent');
-      setValue('backgroundImage', 'none');
-    }
-    if (_value === 'color') {
-      setValue('backgroundColor', 'rgba(255, 255, 255, 1)');
-      setValue('backgroundImage', 'none');
-    }
-    if (_value === 'img') {
-      setValue('backgroundColor', 'transparent');
+      setValue('backgroundColor', '');
       setValue('backgroundImage', '');
-      setValue('backgroundSize', '100%');
     }
+    // if (_value === 'color') {
+    //   setValue('backgroundColor', 'rgba(255, 255, 255, 1)');
+    //   setValue('backgroundImage', '');
+    // }
     setFillStatus(_value);
   }
 
@@ -63,21 +60,8 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
     const { rgb } = color;
     const _color = formatRgba(rgb);
     setValue('backgroundColor', _color);
+    setValue('backgroundSize', '100%');
     onFormChange();
-  }
-
-  function handleImageUrl(url: string): string {
-    let _url = '';
-
-    if (url.indexOf('url') === 0) {
-      _url = url.substring(4, url.length - 1);
-    }
-
-    if (url === 'none') {
-      return _url;
-    }
-
-    return _url;
   }
 
   return (
@@ -85,25 +69,23 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
       <div className='text-12 text-gray-600'>填充类型</div>
       <RadioButtonGroup
         listData={FILL_LIST as []}
-        onChange={(val) => handleRadioChange(val + '')}
+        onChange={(val) => handleRadioChange(val)}
         currentValue={fillStatus}
       />
       <input type="hidden" {...register('backgroundColor', {
-        value: initValues.backgroundColor || 'transparent',
+        value: backgroundColor || '',
       })} />
-      {fillStatus !== 'img' && (
-        <input type="hidden" {...register('backgroundImage', { value: initValues.backgroundImage || '' })} />
-      )}
+      <input type="hidden" {...register('backgroundImage', { value: backgroundImage || '' })} />
       {fillStatus === 'color' && (
         <div className='mt-8 px-8 py-6 border border-gray-300 rounded-4 flex items-center justify-between'>
           <div className='flex items-center'>
             <div className='flex items-center justify-between'>
               <ColorPicker
-                value={initValues.backgroundColor as string}
+                value={backgroundColor as string}
                 onChange={handleColorChange}
               />
               <span className='ml-8 text-12 text-gray-900'>
-                {initValues.backgroundColor}
+                {backgroundColor}
               </span>
             </div>
             {/* <div className='mx-8 w-1 h-20 border-left bg-gray-200'></div>
@@ -136,7 +118,7 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
               type="text"
               className='mr-8 px-8 py-6 w-full border border-gray-300 corner-2-8-8-8'
               {...register('backgroundImage', {
-                value: handleImageUrl((initValues.backgroundImage as string) || ''),
+                value: backgroundImage || '',
               })}
             />
             <Icon name='code' color='gray' />

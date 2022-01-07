@@ -13,7 +13,16 @@ interface Props {
 
 function Page({ className, style, children, ...rest }: Props, ref: any): JSX.Element {
   return (
-    <div {...rest} className={cs(styles.page, className)} ref={ref} style={style}>
+    <div
+      {...rest}
+      className={cs(styles.page, className)}
+      ref={ref}
+      style={{
+        width: '100%',
+        height: '100%',
+        ...style,
+      }}
+    >
       {!Children.count(children) && (
         <div className='flex flex-col items-center justify-center absolute w-full h-full'>
           <Icon name='pg-engine-empty' size={120} />

@@ -10,10 +10,11 @@ interface Props {
   fillMode?: string;
   preview?: boolean;
   closeOnMaskClick?: boolean;
+  style?: React.CSSProperties,
 }
 
 function Image(props: Props, ref: React.LegacyRef<HTMLDivElement>): JSX.Element {
-  const { imageUrl, fillMode, preview, closeOnMaskClick, ...rest } = props;
+  const { imageUrl, fillMode, preview, closeOnMaskClick, style, ...rest } = props;
   const [imgPreview, setImgPreview] = useState(false);
 
   return (
@@ -25,6 +26,7 @@ function Image(props: Props, ref: React.LegacyRef<HTMLDivElement>): JSX.Element 
         style={{
           backgroundImage: imageUrl ? `url(${imageUrl})` : '',
           backgroundSize: fillMode ? `${fillMode}` : 'cover',
+          ...style,
         }}
       >
         {!imageUrl && <Icon name="add_photo_alternate" size={42} />}

@@ -15,6 +15,7 @@ import FontConfig from './font-config';
 import BorderConfig from './border-config';
 import ShadowConfig from './shadow-config';
 import Section from '../../comps/section';
+import { parseStyleToForm, formatStyles } from '../../../config/utils';
 
 import styles from './index.m.scss';
 
@@ -23,33 +24,35 @@ interface Props {
 }
 
 function StylePanel({ className }: Props): JSX.Element {
-  const { register, getValues, setValue } = useForm();
+  const { register, getValues, setValue, reset } = useForm();
   const { page } = useCtx();
-  const [values, setValues] = useState<any>(()=> getCurStyle());
+  const [values, setValues] = useState<any>({});
   const [modalOpen, setModalOpen] = useState(false);
-  const [editorVal, setEditorVal] = useState(()=> getEditorValues());
-
-  useEffect(() => {
-    if (checkStyles(values)) {
-      page.updateElemProperty(page.activeElem.id, 'props.style', values);
-      setEditorVal(getEditorValues());
-    }
-  }, [values]);
+  const [editorVal, setEditorVal] = useState<any>({});
 
   useEffect(()=> {
     if (page.activeElemId) {
       setValues(getCurStyle());
+      reset(getCurStyle());
     }
   }, [page.activeElemId]);
 
-  function getEditorValues(): string {
+  function getEditorValues(values: any): string {
+    let _values = values;
+    if (!checkStyles(_values)) {
+      _values = {};
+    }
     return JSON.stringify(values, null, 2);
   }
 
   function getCurStyle(): React.CSSProperties {
     if (page.activeElem) {
-      return page.activeElem._style || {};
+      const defaultStyles = (page.activeElem.props.style && page.activeElem.props.style.value) || {};
+      setEditorVal(getEditorValues(defaultStyles));
+      const newStyles = parseStyleToForm(defaultStyles);
+      return newStyles;
     }
+
     return {};
   }
 
@@ -69,7 +72,12 @@ function StylePanel({ className }: Props): JSX.Element {
     // save editor values
     if (checkStyles(editorVal)) {
       setModalOpen(false);
-      setValues(JSON.parse(editorVal));
+      // setValues(JSON.parse(editorVal));
+      const newValues = JSON.parse(editorVal);
+      const _newValues = parseStyleToForm(newValues);
+      setValues(_newValues);
+      reset(_newValues);
+      page.updateElemProperty(page.activeElem.id, 'props.style', newValues);
     }
   }
 
@@ -83,9 +91,11 @@ function StylePanel({ className }: Props): JSX.Element {
   }
 
   function handleFormChange(): void {
-    // const _values = getValues();
-    // const newValues = page.formatStyles(_values);
-    setValues(getValues());
+    const _values = getValues();
+    setValues(_values);
+    const newValues = formatStyles(_values);
+    page.updateElemProperty(page.activeElem.id, 'props.style', newValues);
+    setEditorVal(getEditorValues(newValues));
   }
 
   return (

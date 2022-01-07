@@ -33,7 +33,6 @@ function Button(
   }: Props,
   ref?: Ref<HTMLButtonElement>,
 ): JSX.Element {
-  // console.log('button的ref', ref);
   return (
     <button
       {...rest}
