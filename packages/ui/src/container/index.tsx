@@ -1,9 +1,5 @@
 import React, { Children } from 'react';
 
-import cs from 'classnames';
-
-import styles from './index.m.scss';
-
 interface Props {
   className?: string;
   style?: React.CSSProperties;
@@ -19,7 +15,7 @@ function Container(
     <div
       {...rest}
       ref={ref}
-      className={cs(styles.coll, className)}
+      className={className}
       style={style}
     >
       {children}

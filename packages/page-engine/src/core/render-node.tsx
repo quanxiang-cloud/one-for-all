@@ -130,7 +130,10 @@ function RenderNode({ schema }: Props): JSX.Element {
       // add placeholder to container elem
       if (schema.exportName === 'container' && !schema.children?.length) {
         Object.assign(elemProps, { placeholder: (
-          <div className={styles.emptyContainer}>
+          <div
+            style={{ minHeight: 60 }}
+            className='bg-gray-100 border border-dashed flex items-center justify-center'
+          >
               拖拽组件或模板到这里
           </div>
         ) });

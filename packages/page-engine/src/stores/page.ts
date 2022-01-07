@@ -328,7 +328,7 @@ class PageStore {
         actualNode = elem.node;
       }
 
-      isDev() && console.log('update node props: ', elem_id, toJS(actualNode), propKey, conf);
+      // isDev() && console.log('update node props: ', elem_id, toJS(actualNode), propKey, conf);
 
       if (propKey === 'props') {
         set(actualNode, propKey, mergeAsRenderEngineProps(toJS(this.activeElem?.props), conf));
