@@ -1,4 +1,4 @@
-import { CTX, Instantiated, NodePropType, NodeType, SchemaNode } from '../../types';
+import { RefLoader, CTX, Instantiated, NodePropType, NodeType, SchemaNode } from '../../types';
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 
 export function useLifecycleHook(): void {
@@ -6,8 +6,13 @@ export function useLifecycleHook(): void {
 }
 
 type RefResult = { refCTX: CTX; refNode: SchemaNode<Instantiated>; }
+type UseRefResultProps = {
+  schemaID: string;
+  refLoader?: RefLoader;
+  orphan?: boolean;
+}
 
-export function useRefResult(schemaID: string): RefResult | undefined {
+export function useRefResult({ schemaID } :UseRefResultProps): RefResult | undefined {
   if (schemaID === 'undefined') {
     return;
   }

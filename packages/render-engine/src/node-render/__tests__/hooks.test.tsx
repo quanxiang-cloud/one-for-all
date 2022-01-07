@@ -2,6 +2,7 @@ import React from 'react';
 import { renderHook } from '@testing-library/react-hooks/pure';
 import { logger } from '@ofa/utils';
 
+import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 import {
   ReactComponentNode,
   Instantiated,
@@ -97,7 +98,7 @@ const DUMMY_SCHEMA: Schema = {
 describe('useRefResult_should_return_undefined', () => {
   test('if_no_schema_id', () => {
     const schemaID = 'some_id';
-    const { result, unmount } = renderHook(() => useRefResult(schemaID));
+    const { result, unmount } = renderHook(() => useRefResult({ schemaID }, dummyCTX));
 
     expect(result.current?.refCTX).toBeFalsy();
     expect(result.current?.refNode).toBeFalsy();
@@ -109,7 +110,7 @@ describe('useRefResult_should_return_undefined', () => {
 
   test('if_no_refLoader_provided', () => {
     const schemaID = 'some_id';
-    const { result, unmount } = renderHook(() => useRefResult(schemaID));
+    const { result, unmount } = renderHook(() => useRefResult({ schemaID }, dummyCTX));
 
     expect(result.current?.refCTX).toBeFalsy();
     expect(result.current?.refNode).toBeFalsy();
@@ -127,7 +128,7 @@ test('useRefResult_should_catch_promise_reject', async () => {
     return Promise.reject(err);
   };
 
-  const { result, unmount } = renderHook(() => useRefResult(schemaID, refLoader));
+  const { result, unmount } = renderHook(() => useRefResult({ schemaID, refLoader }, dummyCTX));
 
   await wait(1);
 
@@ -148,7 +149,9 @@ test('useRefResult_should_return_expected_value', async () => {
     });
   };
 
-  const { result, unmount, waitForValueToChange } = renderHook(() => useRefResult(schemaID, refLoader));
+  const {
+    result, unmount, waitForValueToChange,
+  } = renderHook(() => useRefResult({ schemaID, refLoader }, dummyCTX));
 
   await waitForValueToChange(() => result.current);
 
