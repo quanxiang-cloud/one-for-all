@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
 // import cs from 'classnames';
 import { useDrag, useDrop, DragPreviewImage } from 'react-dnd';
-import { defaults, flow } from 'lodash';
+import { defaults, flow, get } from 'lodash';
 import { toJS } from 'mobx';
 
 import { Icon } from '@ofa/ui';
-import { PageNode, useCtx } from '@ofa/page-engine';
+import { PageNode, useCtx, DragPos, LoopNode } from '@ofa/page-engine';
 import { NodeType } from '@ofa/render-engine';
 
 import { mapRawProps } from '../utils/schema-adapter';
@@ -20,8 +20,19 @@ interface Props {
 
 const identity = (x: any): any => x;
 
-function RenderNode({ schema }: Props): JSX.Element {
-  const { exportName, id = elemId(schema.exportName), pid = '', label = '' } = schema;
+function RenderNode({ schema }: Props): JSX.Element | null {
+  if (typeof schema !== 'object' || !schema) {
+    return null;
+  }
+
+  let node : any;
+  if (schema.type === NodeType.LoopContainerNode) {
+    node = (schema as unknown as LoopNode).node as PageNode;
+  } else {
+    node = schema;
+  }
+
+  const { exportName, id = elemId(node.exportName), pid = '', label = '' } = node;
   const { page, registry, dataSource } = useCtx();
   const boxRef = useRef<any>(null);
 
@@ -137,7 +148,7 @@ function RenderNode({ schema }: Props): JSX.Element {
       }
     }
 
-    return Object.assign(toProps(elemProps), {
+    return Object.assign({}, toProps(elemProps), {
       'data-node-key': schema.id,
       ref: boxRef,
       // className: cs({
@@ -158,15 +169,18 @@ function RenderNode({ schema }: Props): JSX.Element {
     mergeProps,
   ]);
 
-  function transformType(schema: PageNode): string | React.ComponentType {
+  function transformType(schema: PageNode | LoopNode): string | React.ComponentType {
     const { type } = schema;
     if (type === NodeType.ReactComponentNode) {
       return registry.elementMap?.[schema.exportName]?.component || type;
     }
-    // if (type === NodeType.HTMLNode) {
-    //   return schema.name || 'div';
-    // }
-
+    if (type === NodeType.LoopContainerNode) {
+      const nodeType = get(schema, 'node.exportName');
+      return registry.elementMap[nodeType]?.component;
+    }
+    if (type === NodeType.HTMLNode) {
+      return schema.name || 'div';
+    }
     return 'div';
   }
 
@@ -175,10 +189,10 @@ function RenderNode({ schema }: Props): JSX.Element {
       <DragPreviewImage connect={dragPreview} src={svgPreviewImg(label)} />
       {
         React.createElement(
-          transformType(schema),
-          schemaToProps(toJS(schema)),
-          ...([].concat(schema.children as any))
-            .map((child, index) => <RenderNode key={schema.id + index} schema={child} />))
+          transformType(node),
+          schemaToProps(toJS(node)),
+          ...([].concat(node.children as any))
+            .map((child, idx) => <RenderNode key={node.id + idx} schema={child} />))
       }
     </>
   );

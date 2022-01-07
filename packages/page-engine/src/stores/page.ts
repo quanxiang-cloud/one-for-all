@@ -1,5 +1,5 @@
 import { action, computed, makeObservable, observable, runInAction, toJS } from 'mobx';
-import { cloneDeep, defaults, set, get } from 'lodash';
+import { cloneDeep, defaults, get, set } from 'lodash';
 
 import { NodePropType, NodeType } from '@ofa/render-engine';
 import { LoopNode, LoopNodeConf } from '@ofa/page-engine';
@@ -7,9 +7,8 @@ import { elemId, isDev } from '../utils';
 import { findNode, findParent, removeNode as removeTreeNode } from '../utils/tree-utils';
 import registry from './registry';
 import dataSource from './data-source';
-import type { DragPos, PageNode, PageSchema, SourceElement, SchemaElements } from '../types';
-import { mapRawProps, mergeProps, mergeAsRenderEngineProps,
-  transformLifecycleHooks } from '../utils/schema-adapter';
+import type { DragPos, PageNode, PageSchema, SchemaElements, SourceElement } from '../types';
+import { mapRawProps, mergeAsRenderEngineProps, transformLifecycleHooks } from '../utils/schema-adapter';
 import { STYLE_NUMBER } from '../config/default-styles';
 import React from 'react';
 
@@ -44,7 +43,7 @@ function initialPageSchema(): PageSchema {
       label: '页面',
       props: {
         style: {
-          type: 'constant_property',
+          type: NodePropType.ConstantProperty,
           value: {
             width: '100%',
             height: '100%',
@@ -102,9 +101,9 @@ class PageStore {
   @action
   setSchema = (schema: PageSchema): void => {
     // ignore html node
-    // if (schema.node.type === NodeType.HTMLNode) {
-    //   return;
-    // }
+    if (schema.node.type === NodeType.HTMLNode) {
+      return;
+    }
 
     this.schema = schema || initialPageSchema();
 
@@ -130,7 +129,6 @@ class PageStore {
     this.dragPos = pos;
   }
 
-  //  todo: refine
   @action
   appendNode = (node: Omit<PageNode, 'type'| 'id'>, target?: Omit<PageNode, 'type' | 'id'> | null, options?: AppendNodeOptions): void => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -147,7 +145,7 @@ class PageStore {
       packageVersion: 'latest',
       props: {
         style: {
-          type: 'constant_property',
+          type: NodePropType.ConstantProperty,
           value: node.defaultStyle || {},
         },
       },
@@ -169,7 +167,7 @@ class PageStore {
             label: '容器',
             props: {
               style: {
-                type: 'constant_property',
+                type: NodePropType.ConstantProperty,
                 value: node.defaultStyle || {},
               },
             },
@@ -341,38 +339,6 @@ class PageStore {
         set(actualNode, propKey, conf);
       }
     }
-  }
-
-  getElemDefaultStyle=(type: string): React.CSSProperties => {
-    const elem = registry.getElemByType(type);
-    return toJS(elem?.defaultStyle || {});
-  }
-
-  formatStyles = (styles: Record<string, string | number>): Record<string, string | number> => {
-    // console.log('format style: ', styles);
-    const newStyles: Record<string, string | number> = {};
-    if (typeof (styles) !== 'object' || styles === null) {
-      return newStyles;
-    }
-
-    Object.entries(styles).forEach((style) => {
-      const [key, value] = style;
-
-      if (key === 'backgroundImage') {
-        if (value === 'none') return;
-
-        newStyles[key] = `url(${value})`;
-        return;
-      }
-
-      if (STYLE_NUMBER.includes(key)) {
-        newStyles[key] = Number(value) || 0;
-        return;
-      }
-      newStyles[key] = value;
-    });
-
-    return newStyles;
   }
 
   getElemBoundActions=(): string[] =>{
