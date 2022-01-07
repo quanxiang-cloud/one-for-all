@@ -34,6 +34,7 @@ export interface SourceElement<T> {
   icon: string;
   label: string;
   category: Category;
+  iconSize?: number;
   toProps?: (formData: any) => T; // 将configForm的配置项转换到 component的 props
   order?: number; // 排序权重
   hidden?: boolean; // 在source panel 隐藏

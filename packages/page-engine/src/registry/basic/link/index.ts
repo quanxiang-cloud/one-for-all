@@ -11,7 +11,8 @@ const defaultConfig: Props = {};
 
 const elem: SourceElement<Props> = {
   name: 'link',
-  icon: 'apps',
+  icon: 'hyper-link',
+  iconSize: 44,
   label: '链接',
   category: 'basic',
   component: Link,

@@ -4,7 +4,8 @@ import type { SourceElement } from '@ofa/page-engine';
 
 const elem: SourceElement<GridProps> = {
   name: 'grid',
-  icon: 'apps',
+  icon: 'layout-container',
+  iconSize: 48,
   label: '布局容器',
   category: 'layout',
   component: Grid,

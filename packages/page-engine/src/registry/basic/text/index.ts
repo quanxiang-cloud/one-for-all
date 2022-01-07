@@ -11,7 +11,8 @@ const defaultConfig: Props = {};
 
 const elem: SourceElement<Props> = {
   name: 'text',
-  icon: 'apps',
+  icon: 'text-component',
+  iconSize: 48,
   label: '文本',
   category: 'basic',
   component: Text,

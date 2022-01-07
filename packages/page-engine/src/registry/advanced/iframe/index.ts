@@ -10,7 +10,8 @@ const defaultConfig: Props = {};
 
 const elem: SourceElement<Props> = {
   name: 'iframe',
-  icon: 'apps',
+  icon: 'layout-container',
+  iconSize: 48,
   label: 'Iframe',
   category: 'advanced',
   component: Iframe,

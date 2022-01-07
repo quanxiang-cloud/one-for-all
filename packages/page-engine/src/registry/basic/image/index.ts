@@ -11,7 +11,8 @@ const defaultConfig: Props = {};
 
 const elem: SourceElement<Props> = {
   name: 'image',
-  icon: 'image',
+  icon: 'image-component',
+  iconSize: 32,
   label: '图片',
   category: 'basic',
   component: Image,
