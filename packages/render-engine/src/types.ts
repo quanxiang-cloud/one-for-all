@@ -274,6 +274,7 @@ export type CTX = {
   apiStates: Readonly<Record<string, APIStateWithFetch>>;
   states: Record<string, unknown>;
   repository?: Repository;
+  refLoader?: RefLoader;
 }
 
 export type RenderEngineCTX = Pick<CTX, 'states' | 'apiStates'>;
@@ -290,6 +291,7 @@ export const enum NodeType {
   ReactComponentNode = 'react-component',
   LoopContainerNode = 'loop-container',
   ComposedNode = 'composed-node',
+  RefNode = 'ref-node',
 }
 
 export interface BaseNode<T extends Serialized | Instantiated> {
@@ -341,11 +343,22 @@ export interface ComposedNode<T extends Serialized | Instantiated> extends BaseN
   children: Array<ComposedNodeChild<T>>;
 }
 
+export interface RefNode<T extends Serialized | Instantiated> extends BaseNode<T> {
+  type: NodeType.RefNode;
+  schemaID: string;
+  fallback?: SchemaNode<T>;
+  // RefNode will inherit parent context,
+  // which means use states if not found in current context.
+  // set `orphan` to `true` to disable inheritance
+  orphan?: boolean;
+}
+
 export type SchemaNode<T extends Serialized | Instantiated> =
   HTMLNode<T> |
   ReactComponentNode<T> |
   LoopContainerNode<T> |
-  ComposedNode<T>;
+  ComposedNode<T> |
+  RefNode<T>;
 
 // map of stateID and apiID
 // todo should also store builder info
@@ -355,6 +368,7 @@ export type SharedStatesSpec = Record<string, { initial: unknown; }>;
 
 export type Schema = {
   node: SchemaNode<Serialized>;
+  // todo set apiStateSpec and sharedStatesSpec as optional
   apiStateSpec: APIStatesSpec;
   sharedStatesSpec: SharedStatesSpec;
 }
@@ -367,8 +381,11 @@ export type DynamicComponent = React.FC<any> | React.ComponentClass<unknown>;
 type PackageNameVersion = string;
 export type Repository = Record<PackageNameVersion, Record<string, DynamicComponent>>;
 
+export type RefLoader = (schemaID: string) => Promise<InitProps>;
+
 export type InitProps = {
   schema: Schema;
   apiSpecAdapter: APISpecAdapter;
   repository?: Repository;
+  refLoader?: RefLoader;
 }

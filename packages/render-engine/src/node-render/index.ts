@@ -4,6 +4,7 @@ import { logger } from '@ofa/utils';
 import HTMLNodeRender from './html-node-render';
 import LoopNodeRender from './loop-node-render';
 import ReactComponentNodeRender from './react-component-node-render';
+import RefNodeRender from './ref-node-render';
 import type { CTX, InstantiatedNode } from '../types';
 import { NodeType } from '../types';
 import PathContext from './path-context';
@@ -57,6 +58,14 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
       PathContext.Provider,
       { value: currentPath },
       React.createElement(ReactComponentNodeRender, { node, ctx }),
+    );
+  }
+
+  if (node.type === NodeType.RefNode) {
+    return React.createElement(
+      PathContext.Provider,
+      { value: currentPath },
+      React.createElement(RefNodeRender, { node, ctx }),
     );
   }
 

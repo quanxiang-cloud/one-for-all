@@ -10,9 +10,9 @@ export default class RenderEngine {
   ctx: CTX;
   schema: Schema;
 
-  constructor({ schema, apiSpecAdapter, repository }: InitProps) {
-    this.schema = schema;
-    this.ctx = initCTX({ schema, apiSpecAdapter, repository });
+  constructor(initProps: InitProps) {
+    this.schema = initProps.schema;
+    this.ctx = initCTX(initProps);
   }
 
   render(renderRoot: Element): void {
