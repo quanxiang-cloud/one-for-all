@@ -368,9 +368,8 @@ export type SharedStatesSpec = Record<string, { initial: unknown; }>;
 
 export type Schema = {
   node: SchemaNode<Serialized>;
-  // todo set apiStateSpec and sharedStatesSpec as optional
-  apiStateSpec: APIStatesSpec;
-  sharedStatesSpec: SharedStatesSpec;
+  apiStateSpec?: APIStatesSpec;
+  sharedStatesSpec?: SharedStatesSpec;
 }
 
 export type InstantiatedNode = SchemaNode<Instantiated>;

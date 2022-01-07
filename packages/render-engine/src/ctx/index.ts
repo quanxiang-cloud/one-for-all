@@ -6,10 +6,10 @@ import type { CTX, InitProps } from '../types';
 
 function initCTX({ schema, apiSpecAdapter, repository, refLoader }: InitProps, parentCTX?: CTX): CTX {
   const statesHubAPI = new StatesHubAPI(
-    { apiSpecAdapter, apiStateSpec: schema.apiStateSpec },
+    { apiSpecAdapter, apiStateSpec: schema.apiStateSpec || {} },
     parentCTX?.statesHubAPI,
   );
-  const statesHubShared = new StatesHubShared(schema.sharedStatesSpec, parentCTX?.statesHubShared);
+  const statesHubShared = new StatesHubShared(schema.sharedStatesSpec || {}, parentCTX?.statesHubShared);
   const ctx: CTX = {
     statesHubAPI: statesHubAPI,
     statesHubShared: statesHubShared,
