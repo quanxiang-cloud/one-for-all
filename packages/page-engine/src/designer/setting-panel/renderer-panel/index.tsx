@@ -2,9 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import Editor from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
+import { pick, get } from 'lodash';
+import { useUpdateEffect } from 'react-use';
+import cs from 'classnames';
 
-import { Button, Icon, Tooltip } from '@ofa/ui';
+import { Button, Icon, Tooltip, Modal, toast } from '@ofa/ui';
 import { useCtx, LoopNodeConf, DataBind } from '@ofa/page-engine';
+import { NodePropType, NodeType } from '@ofa/render-engine';
 
 import Section from '../../comps/section';
 
@@ -14,32 +18,76 @@ interface Props {
   className?: string;
 }
 
+const defaultToPropsFn = '// return state';
+const defaultLoopKey = 'id';
+
 function RendererPanel(props: Props): JSX.Element {
   const { page } = useCtx();
-  const [values, setValues] = useState<LoopNodeConf>(getCurNodeLoopConf());
-  const [toPropsFn, setToPropsFn] = useState('// return state');
+  const [toPropsFn, setToPropsFn] = useState(defaultToPropsFn);
+  const [loopKey, setLoopKey] = useState(defaultLoopKey);
+  const [modalBindConstOpen, setModalBindConstOpen] = useState(false);
+  const [bindConst, setBindConst] = useState('null'); // 绑定的常量循环数据
 
   useEffect(()=> {
-    // todo
-    setValues(getCurNodeLoopConf());
+    // todo: get cur loop node conf
+    const rawNode = page.rawActiveElem;
+    if (rawNode.type === NodeType.LoopContainerNode) {
+      const { iterableState, loopKey, toProps } = pick(rawNode, ['iterableState', 'loopKey', 'toProps']);
+      setLoopKey(loopKey);
+      setToPropsFn(get(toProps, 'body', defaultToPropsFn));
+
+      if (iterableState?.type === NodePropType.ConstantProperty) {
+        setBindConst(iterableState.value);
+      }
+    }
   }, [page.activeElemId]);
 
-  // loop node current config
-  function getCurNodeLoopConf(): LoopNodeConf {
-    return {
-      // fixme
-      iterableState: {
-        // convertor: {
-        //   expression: 'state.data',
-        //   type: 'state_convert_expression',
-        // },
-        // fallback: [],
-        // stateID: 'my-apps',
-        // type: NodePropType.SharedStateProperty,
-      } as any,
-      loopKey: 'id',
-      toProps: 'return state',
-    };
+  useUpdateEffect(()=> {
+    console.log('sync all loop conf to elem: %s, %s, %s', toPropsFn, loopKey, bindConst);
+  }, [toPropsFn, loopKey, bindConst]);
+
+  function handleBindConstVal(): void {
+    try {
+      const bindVal = JSON.parse(bindConst);
+      if (bindVal === null) {
+        setModalBindConstOpen(false);
+        // ignore
+        return;
+      }
+
+      if (!Array.isArray(bindVal)) {
+        toast.error('循环数据必须为数组');
+        return;
+      }
+
+      page.updateCurNodeAsLoopContainer({
+        type: NodePropType.ConstantProperty,
+        value: bindVal,
+      });
+
+      setModalBindConstOpen(false);
+    } catch (err: any) {
+      toast.error(err.message);
+    }
+  }
+
+  function hasBindConst(): boolean {
+    const rawNode = page.rawActiveElem;
+    if (rawNode.type === NodeType.LoopContainerNode) {
+      const isConstType = get(rawNode, 'iterableState.type') === NodePropType.ConstantProperty;
+      const val = get(rawNode, 'iterableState.value');
+      if (!isConstType) {
+        return false;
+      }
+
+      try {
+        const parsedVal = typeof val === 'string' ? JSON.parse(val) : val;
+        return Array.isArray(parsedVal);
+      } catch (err: unknown) {
+        return false;
+      }
+    }
+    return false;
   }
 
   return (
@@ -61,7 +109,12 @@ function RendererPanel(props: Props): JSX.Element {
             <div className='mb-8'>
               <p>循环数据</p>
               <div className='flex items-center justify-between'>
-                <Button>绑定常量数据</Button>
+                <Button
+                  className={cs({ [styles.boundConst]: hasBindConst() })}
+                  onClick={()=> setModalBindConstOpen(true)}
+                >
+                  {hasBindConst() ? '已绑定常量数据' : '绑定常量数据'}
+                </Button>
                 <DataBind name='loop-node' isLoopNode />
               </div>
             </div>
@@ -71,9 +124,9 @@ function RendererPanel(props: Props): JSX.Element {
                 <input
                   className='mr-8 pg-input'
                   placeholder='默认为 id'
-                  value={values.loopKey}
+                  value={loopKey}
                   onChange={(ev)=> {
-                    setValues((prev)=> ({ ...prev, loopKey: ev.target.value }));
+                    setLoopKey(ev.target.value);
                   }}
                 />
               </div>
@@ -107,6 +160,36 @@ function RendererPanel(props: Props): JSX.Element {
           </form>
         </Section>
       </div>
+      {modalBindConstOpen && (
+        <Modal
+          title='绑定常量循环数据'
+          onClose={()=> setModalBindConstOpen(false)}
+          footerBtns={[
+            {
+              key: 'close',
+              iconName: 'close',
+              onClick: () => setModalBindConstOpen(false),
+              text: '取消',
+            },
+            {
+              key: 'check',
+              iconName: 'check',
+              modifier: 'primary',
+              onClick: handleBindConstVal,
+              text: '绑定',
+            },
+          ]}
+        >
+          <Editor
+            value={typeof bindConst === 'string' ? bindConst : JSON.stringify(bindConst)}
+            height="120px"
+            extensions={[javascript()]}
+            onChange={(value)=> {
+              setBindConst(value);
+            }}
+          />
+        </Modal>
+      )}
     </>
 
   );

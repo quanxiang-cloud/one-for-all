@@ -21,28 +21,29 @@ function ModalBindState(props: Props): JSX.Element | null {
   const [selected, setSelected] = useState<{name: string, conf: string} | null>(null);
   const [stateExpr, setStateExpr] = useState(''); // 绑定变量的表达式
   const [convertorExpr, setConvertorExpr] = useState('state'); // 绑定变量的convertor表达式
-  const [toPropsExpr, setToPropsExpr] = useState('return state'); // 绑定变量的toProps表达式
 
   useEffect(()=> {
+    let bindConf;
     if (isLoopNode) {
-      // todo
+      // todo: get loop node iterableState bind value
+      bindConf = get(page.rawActiveElem, 'iterableState', {});
     } else {
-      // get shared state id
-      const bindConf = get(page.activeElem, `props.${activeFieldName}`, {});
-      if (bindConf.type === NodePropType.SharedStateProperty) {
-        const expr = `states['${bindConf.stateID}']`;
-        setStateExpr(expr);
-        setConvertorExpr(get(bindConf, 'convertor.expression', ''));
-      }
+      bindConf = get(page.activeElem, `props.${activeFieldName}`, {});
+    }
 
-      if (bindConf.type === NodePropType.APIResultProperty) {
-        const expr = `apiStates['${bindConf.stateID}']`;
-        setStateExpr(expr);
-        setConvertorExpr(get(bindConf, 'convertor.expression', ''));
-      }
-      if (bindConf.type === NodePropType.SharedStateMutationProperty) {
-        // todo
-      }
+    if (bindConf.type === NodePropType.SharedStateProperty) {
+      const expr = `states['${bindConf.stateID}']`;
+      setStateExpr(expr);
+      setConvertorExpr(get(bindConf, 'convertor.expression', ''));
+    }
+
+    if (bindConf.type === NodePropType.APIResultProperty) {
+      const expr = `apiStates['${bindConf.stateID}']`;
+      setStateExpr(expr);
+      setConvertorExpr(get(bindConf, 'convertor.expression', ''));
+    }
+    if (bindConf.type === NodePropType.SharedStateMutationProperty) {
+      // todo
     }
   }, [page.activeElemId]);
 
@@ -69,25 +70,16 @@ function ModalBindState(props: Props): JSX.Element | null {
     const nodeType = stateExpr.includes('apiStates[') ? NodePropType.APIResultProperty : NodePropType.SharedStateProperty;
 
     if (isLoopNode) {
-      if (!page.activeElem.iterableState) {
-        // replace current normal node to loop node
-        page.setNodeAsLoopContainer(page.activeElemId, {
-          iterableState: {
-            type: nodeType,
-            stateID: match[1],
-            fallback: [],
-            convertor: {
-              type: 'state_convert_expression',
-              expression: convertorExpr,
-            },
-          },
-          // todo
-          loopKey: 'id',
-          toProps: toPropsExpr,
-        });
-      } else {
-        // todo: update loop node config
-      }
+      const iterableState = {
+        type: nodeType,
+        stateID: match[1],
+        fallback: [],
+        convertor: {
+          type: 'state_convert_expression',
+          expression: convertorExpr,
+        },
+      };
+      page.updateCurNodeAsLoopContainer(iterableState);
     } else {
       const fallbackVal = page.activeElemProps[activeFieldName]?.value;
       page.updateElemProperty(page.activeElem.id, `props.${activeFieldName}`, {

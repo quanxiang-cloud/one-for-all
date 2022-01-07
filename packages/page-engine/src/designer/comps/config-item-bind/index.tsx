@@ -31,7 +31,7 @@ function ConfigItemBind({ name, isLoopNode }: Props): JSX.Element {
     // if bind constant value, loop node iterableState will be constant_property
     // if bind shared state, loop node iterableState will be shared_property
     // if bind api state, loop node iterableState will be api_result_property
-    const iterType = get(page.activeElem, 'iterableState.type');
+    const iterType = get(page.rawActiveElem, 'iterableState.type');
     bound = iterableStateTypes.includes(iterType);
   } else {
     const propType = get(page.activeElem, `props.${name}.type`);
@@ -41,6 +41,7 @@ function ConfigItemBind({ name, isLoopNode }: Props): JSX.Element {
   function handleUnbind(): void {
     if (isLoopNode) {
       // replace loop node with inner normal node, detach iterable state prop
+      page.unsetLoopNode(page.activeElemId);
     } else {
       const { fallback } = get(page.activeElem, `props.${name}`, {});
       page.updateElemProperty(page.activeElem.id, `props.${name}`, {

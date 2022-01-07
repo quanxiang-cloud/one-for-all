@@ -1,5 +1,5 @@
 import { action, computed, makeObservable, observable, runInAction, toJS } from 'mobx';
-import { cloneDeep, defaults, set } from 'lodash';
+import { cloneDeep, defaults, set, get } from 'lodash';
 
 import { NodePropType, NodeType } from '@ofa/render-engine';
 import { LoopNode, LoopNodeConf } from '@ofa/page-engine';
@@ -59,11 +59,16 @@ class PageStore {
   }
 
   @computed
-  get activeElem(): any {
+  get rawActiveElem(): any {
     if (!this.activeElemId) {
       return null;
     }
-    const node = findNode(this.schema.node, this.activeElemId);
+    return findNode(this.schema.node, this.activeElemId);
+  }
+
+  @computed
+  get activeElem(): any {
+    const node = this.rawActiveElem;
     if (node?.type === NodeType.LoopContainerNode) {
       return node.node;
     }
@@ -284,19 +289,25 @@ class PageStore {
   }
 
   @action
-  updateElemProperty = (elem_id: string, propKey: string, conf: any): void => {
+  updateElemProperty = (elem_id: string, propKey: string, conf: any, options?: Record<string, any>): void => {
     const elem = findNode(this.schema.node, elem_id);
     if (elem) {
-      // console.log('update node props: ', elem_id, propKey, conf);
+      let actualNode = elem;
+      if (!options?.useRawNode && elem.type === NodeType.LoopContainerNode) {
+        actualNode = elem.node;
+      }
+
+      console.log('update node props: ', elem_id, toJS(actualNode), propKey, conf);
+
       if (propKey === 'props') {
-        set(elem, propKey, mergeAsRenderEngineProps(toJS(this.activeElem?.props), conf));
+        set(actualNode, propKey, mergeAsRenderEngineProps(toJS(this.activeElem?.props), conf));
       } else if (propKey === 'props.style') {
         // fixme: style bind variable
-        set(elem, propKey, { type: NodePropType.ConstantProperty, value: conf });
+        set(actualNode, propKey, { type: NodePropType.ConstantProperty, value: conf });
       } else if (propKey === 'lifecycleHooks') {
-        set(elem, propKey, transformLifecycleHooks(conf));
+        set(actualNode, propKey, transformLifecycleHooks(conf));
       } else {
-        set(elem, propKey, conf);
+        set(actualNode, propKey, conf);
       }
     }
   }
@@ -342,7 +353,7 @@ class PageStore {
   replaceNode=(node_id: string, replaced: PageNode): void=> {
     const parent = findParent(this.schema.node, node_id);
     if (parent) {
-      const srcIdx = parent.children?.findIndex((v)=> v.id === node_id) ?? -1;
+      const srcIdx = parent.children?.findIndex((v)=> v.id === node_id || get(v, 'node.id') === node_id) ?? -1;
       if (srcIdx > -1) {
         parent.children?.splice(srcIdx, 1, replaced);
       }
@@ -350,7 +361,7 @@ class PageStore {
   }
 
   @action
-  setNodeAsLoopContainer=(node_id: string, loopConfig: LoopNodeConf): void => {
+  setNodeAsLoopContainer=(node_id: string, loopConfig: Partial<LoopNodeConf>): void => {
     // wrap normal node as loop node
     const target = findNode(this.schema.node, node_id);
     if (!target) {
@@ -375,6 +386,21 @@ class PageStore {
   }
 
   @action
+  updateCurNodeAsLoopContainer=(iterableState: any): void=> {
+    if (!this.rawActiveElem?.iterableState) {
+      // replace current normal node to loop node
+      this.setNodeAsLoopContainer(this.activeElemId, {
+        iterableState: iterableState as any,
+        // loopKey: 'id',
+        // toProps: toPropsExpr,
+      });
+    } else {
+      // update loop node iterable state config
+      this.updateElemProperty(this.activeElemId, 'iterableState', iterableState, { useRawNode: true });
+    }
+  }
+
+  @action
   unsetLoopNode=(loop_node_id: string)=> {
     // reset loop container, lift up inner node
     const loopNode = findNode(this.schema.node, loop_node_id);
@@ -385,6 +411,7 @@ class PageStore {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const innerNode = (loopNode as LoopNode).node;
+      this.replaceNode(loop_node_id, innerNode as PageNode);
     }
   }
 

@@ -12,6 +12,7 @@ export function findNode(tree: PageNode, node_id?: string): any {
   if (!node_id) {
     return tree;
   }
+  // if loop node, return wrapper node
   if (tree.type === NodeType.LoopContainerNode && get(tree, 'node.id') === node_id) {
     return tree;
   }
@@ -59,7 +60,14 @@ export function findParent(tree: PageNode, node_id: string): PageNode | undefine
     return;
   }
 
-  if (tree.children?.find((v)=> v.id === node_id)) {
+  if (tree.children?.find((c: any)=> {
+    if (c.type === NodeType.ReactComponentNode) {
+      return c.id === node_id;
+    }
+    if (c.type === NodeType.LoopContainerNode) {
+      return c.id === node_id || c.node.id === node_id;
+    }
+  })) {
     return tree;
   }
   if (tree.children) {
