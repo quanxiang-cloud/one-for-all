@@ -3,7 +3,7 @@ import { cloneDeep, defaults, set, get } from 'lodash';
 
 import { NodePropType, NodeType } from '@ofa/render-engine';
 import { LoopNode, LoopNodeConf } from '@ofa/page-engine';
-import { elemId } from '../utils';
+import { elemId, isDev } from '../utils';
 import { findNode, findParent, removeNode as removeTreeNode } from '../utils/tree-utils';
 import registry from './registry';
 import dataSource from './data-source';
@@ -297,7 +297,7 @@ class PageStore {
         actualNode = elem.node;
       }
 
-      console.log('update node props: ', elem_id, toJS(actualNode), propKey, conf);
+      isDev() && console.log('update node props: ', elem_id, toJS(actualNode), propKey, conf);
 
       if (propKey === 'props') {
         set(actualNode, propKey, mergeAsRenderEngineProps(toJS(this.activeElem?.props), conf));

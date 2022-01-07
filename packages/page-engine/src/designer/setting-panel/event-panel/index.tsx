@@ -28,7 +28,12 @@ function EventPanel({ className }: Props): JSX.Element {
 
   useEffect(()=>{
     if (curAction) {
-      const rawFn = get(page.activeElem.lifecycleHooks, `${curAction}.body`);
+      let rawFn = '';
+      if (builtInEvents.includes(curAction)) {
+        rawFn = get(page.activeElem.lifecycleHooks, `${curAction}.body`);
+      } else {
+        rawFn = get(page.activeElem, `props.${curAction}.func.body`);
+      }
       setFn(rawFn || getDefaultFunc());
     }
   }, [page.activeElemId, curAction, modalOpen]);
@@ -63,7 +68,7 @@ function EventPanel({ className }: Props): JSX.Element {
 
   function getDefaultFunc(): string {
     // return `function customAction(params) {\n  // this.apiStates['my-apps'].fetch();\n}`;
-    return `// this.apiStates['get_apps'].fetch()`;
+    return `// this.apiStates['get-apps'].fetch()`;
   }
 
   function isActionBound(actionName: string): boolean {
@@ -176,7 +181,7 @@ function EventPanel({ className }: Props): JSX.Element {
             <div className={styles.body}>
               <Editor
                 value={fn}
-                height="480px"
+                height="400px"
                 extensions={[javascript()]}
                 onChange={(value) => {
                   setFn(value);
