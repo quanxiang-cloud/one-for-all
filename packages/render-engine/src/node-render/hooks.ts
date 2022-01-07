@@ -9,7 +9,12 @@ import type {
   Instantiated,
   ReactComponentNode,
   LifecycleHooks,
+  CTX,
+  RefLoader,
+  SchemaNode,
 } from '../types';
+import initCTX from '../ctx';
+import deserializeSchema from '../deserialize-schema';
 
 export function useLifecycleHook({ didMount, willUnmount }: LifecycleHooks<Instantiated>): void {
   useEffect(() => {
@@ -56,4 +61,60 @@ export function useNodeComponent(
   }, []);
 
   return lazyLoadedComponent;
+}
+
+type RefResult = { refCTX: CTX; refNode: SchemaNode<Instantiated>; }
+type UseRefResultProps = {
+  schemaID: string;
+  refLoader?: RefLoader;
+  orphan?: boolean;
+}
+
+export function useRefResult(
+  { schemaID, refLoader, orphan }: UseRefResultProps,
+  ctx: CTX,
+): RefResult | undefined {
+  const [result, setResult] = useState<RefResult | undefined>();
+  const currentPath = useContext(PathContext);
+
+  useEffect(() => {
+    if (!schemaID) {
+      logger.error(`schemaID is required on RefNode, please check the spec for node: ${currentPath}`);
+      return;
+    }
+
+    if (!refLoader) {
+      logger.error(
+        'refLoader is required on RefNode in order to get ref schema and corresponding APISpecAdapter,',
+        'please implement refLoader and pass it to parent RenderEngine.',
+        `current RefNode path is: ${currentPath}`,
+      );
+      return;
+    }
+
+    let unMounting = false;
+
+    refLoader(schemaID).then((initProps) => {
+      if (unMounting) {
+        return;
+      }
+
+      const refCTX = initCTX(initProps, orphan ? undefined : ctx);
+      const instantiatedNode = deserializeSchema(initProps.schema.node, refCTX);
+      if (!instantiatedNode) {
+        // TODO: paint error
+        return;
+      }
+
+      setResult({ refCTX, refNode: instantiatedNode });
+    }).catch((err) => {
+      logger.error(err);
+    });
+
+    return () => {
+      unMounting = true;
+    };
+  }, []);
+
+  return result;
 }
