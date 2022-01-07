@@ -30,6 +30,11 @@ export interface PageSchema {
   sharedStatesSpec: SharedStatesSpec;
 }
 
+export interface iconStyle {
+  width: string,
+  height: string
+}
+
 export type DragPos = 'up' | 'down' | 'left' | 'right' | 'inner';
 
 // registry types
@@ -40,7 +45,9 @@ export interface SourceElement<T> {
   component: ReactComp;
   defaultConfig: Record<string, any>; // 表单默认配置
   configForm: ReactComp; // 属性配置组件
-  icon: string;
+  icon?: string;
+  iconStyle?: iconStyle;
+  iconSize?: number;
   label: string;
   category: Category;
   toProps?: (formData: any) => T; // 将configForm的配置项转换到 component的 props
