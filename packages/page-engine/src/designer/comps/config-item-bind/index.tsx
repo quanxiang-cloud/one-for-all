@@ -13,27 +13,35 @@ interface Props {
   isLoopNode?: boolean;
 }
 
-const iterableStateType = [
+const iterableStateTypes = [
   NodePropType.SharedStateProperty,
   NodePropType.APIResultProperty,
   NodePropType.ConstantProperty,
 ];
 
+const normalStateTypes = [
+  NodePropType.SharedStateProperty,
+  NodePropType.APIResultProperty,
+];
+
 function ConfigItemBind({ name, isLoopNode }: Props): JSX.Element {
   const { designer, page } = useCtx();
-  let bound = false;
+  let bound;
   if (isLoopNode) {
-    // if bind shared state, loop node iterableState will label as shared_property
-    // if bind api state, loop node iterableState will label as api_result_property
-    const iterType = get(page.activeElem, 'iterableState.type');
-    bound = iterableStateType.includes(iterType);
+    // if bind constant value, loop node iterableState will be constant_property
+    // if bind shared state, loop node iterableState will be shared_property
+    // if bind api state, loop node iterableState will be api_result_property
+    const iterType = get(page.rawActiveElem, 'iterableState.type');
+    bound = iterableStateTypes.includes(iterType);
   } else {
-    bound = get(page.activeElem, `props.${name}.type`) === NodePropType.SharedStateProperty;
+    const propType = get(page.activeElem, `props.${name}.type`);
+    bound = normalStateTypes.includes(propType);
   }
 
   function handleUnbind(): void {
     if (isLoopNode) {
       // replace loop node with inner normal node, detach iterable state prop
+      page.unsetLoopNode(page.activeElemId);
     } else {
       const { fallback } = get(page.activeElem, `props.${name}`, {});
       page.updateElemProperty(page.activeElem.id, `props.${name}`, {

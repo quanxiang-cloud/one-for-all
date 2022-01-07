@@ -23,25 +23,27 @@ function ModalBindState(props: Props): JSX.Element | null {
   const [convertorExpr, setConvertorExpr] = useState('state'); // 绑定变量的convertor表达式
 
   useEffect(()=> {
+    let bindConf;
     if (isLoopNode) {
-
+      // todo: get loop node iterableState bind value
+      bindConf = get(page.rawActiveElem, 'iterableState', {});
     } else {
-      // get shared state id
-      const bindConf = get(page.activeElem, `props.${activeFieldName}`, {});
-      if (bindConf.type === NodePropType.SharedStateProperty) {
-        const expr = `states['${bindConf.stateID}']`;
-        setStateExpr(expr);
-        setConvertorExpr(get(bindConf, 'convertor.expression', ''));
-      }
+      bindConf = get(page.activeElem, `props.${activeFieldName}`, {});
+    }
 
-      if (bindConf.type === NodePropType.APIResultProperty) {
-        const expr = `apiStates['${bindConf.stateID}']`;
-        setStateExpr(expr);
-        setConvertorExpr(get(bindConf, 'convertor.expression', ''));
-      }
-      if (bindConf.type === NodePropType.SharedStateMutationProperty) {
-        // todo
-      }
+    if (bindConf.type === NodePropType.SharedStateProperty) {
+      const expr = `states['${bindConf.stateID}']`;
+      setStateExpr(expr);
+      setConvertorExpr(get(bindConf, 'convertor.expression', ''));
+    }
+
+    if (bindConf.type === NodePropType.APIResultProperty) {
+      const expr = `apiStates['${bindConf.stateID}']`;
+      setStateExpr(expr);
+      setConvertorExpr(get(bindConf, 'convertor.expression', ''));
+    }
+    if (bindConf.type === NodePropType.SharedStateMutationProperty) {
+      // todo
     }
   }, [page.activeElemId]);
 
@@ -59,35 +61,29 @@ function ModalBindState(props: Props): JSX.Element | null {
       return;
     }
 
-    // todo: handle apiStates
     const match = stateExpr.match(/states\['(.+)'\]/i);
     if (!match || !match[1]) {
-      toast.error(`非法的 stateID: ${stateExpr}`);
+      toast.error(`无效的 stateID: ${stateExpr}`);
       return;
     }
 
+    const nodeType = stateExpr.includes('apiStates[') ? NodePropType.APIResultProperty : NodePropType.SharedStateProperty;
+
     if (isLoopNode) {
-      // parse iterableState
-      if (!page.activeElem.iterableState) {
-        // not converted to loop node
-        page.setNodeAsLoopContainer(page.activeElemId, {
-          iterableState: {
-            type: NodePropType.SharedStateProperty,
-            convertor: {
-              expression: 'state.data', // collect state convertor from form
-              type: 'state_convert_expression',
-            },
-            fallback: [],
-            stateID: match[1],
-          },
-        });
-      } else {
-        // todo
-      }
+      const iterableState = {
+        type: nodeType,
+        stateID: match[1],
+        fallback: [],
+        convertor: {
+          type: 'state_convert_expression',
+          expression: convertorExpr,
+        },
+      };
+      page.updateCurNodeAsLoopContainer('iterableState', iterableState);
     } else {
       const fallbackVal = page.activeElemProps[activeFieldName]?.value;
       page.updateElemProperty(page.activeElem.id, `props.${activeFieldName}`, {
-        type: stateExpr.includes('apiStates[') ? NodePropType.APIResultProperty : NodePropType.SharedStateProperty,
+        type: nodeType,
         stateID: match[1],
         fallback: fallbackVal,
         convertor: {
@@ -169,7 +165,7 @@ function ModalBindState(props: Props): JSX.Element | null {
           <div className='mb-8'>
             <p className='flex items-center'>
               <span className='mr-8'>变量表达式</span>
-              <Tooltip position='top' label='请选择左侧某个变量'>
+              <Tooltip position='top' label='请选择普通变量 或 api变量'>
                 <Icon name='info' />
               </Tooltip>
             </p>
@@ -182,8 +178,8 @@ function ModalBindState(props: Props): JSX.Element | null {
           </div>
           <div className='mb-8'>
             <p className='flex items-center'>
-              <span className='mr-8'>变量转换函数</span>
-              <Tooltip position='top' label='将变量值转换后传递给组件'>
+              <span className='mr-8'>变量转换函数(state convertor)</span>
+              <Tooltip position='top' label='将初始变量进行一次转换，一般用于 api 变量'>
                 <Icon name='info' />
               </Tooltip>
             </p>
@@ -193,13 +189,13 @@ function ModalBindState(props: Props): JSX.Element | null {
                 {'state.user_name'}
               </pre>
               <div className='text-gray-400'>
-                <p>state 为页面引擎内部传入的当前变量(请勿修改名称)，您只需修改state的表达式即可。</p>
+                <p>state 为页面引擎传入的当前变量(请勿修改名称)，您只需修改state的表达式即可。</p>
                 <p>代码编辑器只接收函数体的表达式，不需要填写完整的函数定义</p>
               </div>
             </div>
             <Editor
               value={convertorExpr}
-              height="200px"
+              height="120px"
               extensions={[javascript()]}
               onChange={setConvertorExpr}
             />

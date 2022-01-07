@@ -3,9 +3,7 @@ import { defaults } from 'lodash';
 import { useForm } from 'react-hook-form';
 
 import { Icon } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine';
-
-import ConfigBind from '../../../designer/comps/config-item-bind';
+import { useCtx, DataBind as ConfigBind } from '@ofa/page-engine';
 
 import type { InputProps } from '@ofa/ui';
 

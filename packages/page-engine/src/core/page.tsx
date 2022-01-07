@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 import { useDrop } from 'react-dnd';
@@ -6,7 +6,7 @@ import { defaults, flow, get, set } from 'lodash';
 import { toJS } from 'mobx';
 
 import { Icon } from '@ofa/ui';
-import { PageNode, PageSchema, useCtx } from '@ofa/page-engine';
+import { PageNode, LoopNode, PageSchema, useCtx } from '@ofa/page-engine';
 import { NodeType } from '@ofa/render-engine';
 import Elem from './elem';
 import { mapRawProps } from '../utils/schema-adapter';
@@ -74,10 +74,14 @@ function Page({ schema, className }: Props): JSX.Element {
     schema && page.setSchema(schema);
   }, []);
 
-  function transformType(schema: PageNode): string | React.ComponentType {
+  function transformType(schema: PageNode | LoopNode): string | React.ComponentType {
     const { type } = schema;
     if (type === NodeType.ReactComponentNode) {
       return registry.elementMap?.[schema.exportName]?.component || type;
+    }
+    if (type === NodeType.LoopContainerNode) {
+      const nodeType = get(schema, 'node.exportName');
+      return registry.elementMap[nodeType]?.component;
     }
     if (type === NodeType.HTMLNode) {
       return schema.name || 'div';
@@ -131,15 +135,23 @@ function Page({ schema, className }: Props): JSX.Element {
     mergeProps,
   ]);
 
-  function renderNode(schema: PageNode, level = 0): JSX.Element | null | undefined {
+  function renderNode(schema: PageNode | LoopNode, level = 0): JSX.Element | null | undefined {
     if (typeof schema !== 'object' || schema === null) {
-      return schema;
+      return null;
+    }
+
+    let node;
+
+    if (schema.type === NodeType.LoopContainerNode) {
+      node = (schema as LoopNode).node as PageNode;
+    } else {
+      node = schema;
     }
 
     return (
-      <Elem node={schema}>
+      <Elem node={node}>
         {
-          React.createElement(transformType(schema), schemaToProps(toJS(schema)), ...([].concat(schema.children as any))
+          React.createElement(transformType(node), schemaToProps(toJS(node)), ...([].concat(node.children as any))
             .map((child) => renderNode(child, level + 1)))
         }
       </Elem>

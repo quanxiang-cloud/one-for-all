@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 
@@ -16,25 +16,49 @@ interface Props {
 function VarItem({ className, name, spec }: Props): JSX.Element {
   const ctx = useCtx();
   const { dataSource, page } = ctx;
+  const [expand, setExpand] = useState(true);
+  const [method, apiPath] = String(spec).split(':');
 
-  function handleDelete(): void {
+  function handleDelete(ev: React.MouseEvent<SVGElement>): void {
+    ev.stopPropagation();
     dataSource.removeApiState(name, ()=> ctx.onSave(page.schema, { silent: true }));
   }
 
+  // function handleEdit(ev: React.MouseEvent<SVGElement>): void {
+  //   ev.stopPropagation();
+  //   dataSource.setCurApiId(spec);
+  //   dataSource.curApiStateKey = name;
+  //   dataSource.setModalOpen(true);
+  // }
+
+  function handleExpand(ev: React.MouseEvent<SVGElement>): void {
+    ev.stopPropagation();
+    setExpand((exp) => !exp);
+  }
+
   return (
-    <div className={cs('px-8 py-4', styles.varItem, className)}>
-      <div className={cs('flex justify-between', styles.bar)}>
-        <div className='flex-1 font-medium'>
+    <div className={cs('px-8 py-4', styles.varItem, { [styles.expand]: expand }, className)}>
+      <div
+        className={cs('flex justify-between cursor-pointer', styles.bar)}
+        onClick={() => setExpand((exp) => !exp)}
+      >
+        <div className={cs('flex-1 font-medium', styles.varName)}>
           <span>{name}</span>
         </div>
         <div className={styles.varActions}>
+          {/* <Icon name='edit' clickable onClick={handleEdit} />*/}
           <Icon name='delete' clickable onClick={handleDelete} />
+          <Icon name={expand ? 'expand_less' : 'expand_more'} clickable onClick={handleExpand}/>
         </div>
       </div>
-      <div className={styles.apiVarCont}>
+      <div className={styles.varCont}>
         <div className='flex items-center mb-8 mt-8'>
-          <span>API 数据源:</span>
-          <span className='flex-wrap ml-6'>{spec.title || name}</span>
+          <span>路径:</span>
+          <span className='flex-wrap break-all flex-1 ml-6'>{apiPath}</span>
+        </div>
+        <div className='flex items-center mb-8'>
+          <span>请求方法:</span>
+          <span className='flex-wrap break-all flex-1 ml-6'>{method.toUpperCase()}</span>
         </div>
       </div>
     </div>
