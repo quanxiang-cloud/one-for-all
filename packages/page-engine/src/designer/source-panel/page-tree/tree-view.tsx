@@ -2,19 +2,22 @@ import React, { useState } from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 
-import { useCtx, PageNode } from '@ofa/page-engine';
+import { LoopNode, PageNode, useCtx } from '@ofa/page-engine';
 import { Icon } from '@ofa/ui';
+import { NodeType } from '@ofa/render-engine';
 
 import styles from './index.m.scss';
 
 interface NodeItemProps {
-  node: PageNode;
+  node: PageNode | LoopNode;
   level: number;
   onSelect?: (node: PageNode) => void;
 }
 
-function NodeItem({ node, level, onSelect }: NodeItemProps): JSX.Element {
+function NodeItem({ node: rawNode, level, onSelect }: NodeItemProps): JSX.Element {
   const { page } = useCtx();
+  const isLoopNode = rawNode.type === NodeType.LoopContainerNode;
+  const node = (isLoopNode ? (rawNode as LoopNode).node : rawNode) as PageNode;
   const hasChild = node.children && node.children.length > 0;
   const [expand, setExpand] = useState(hasChild);
 

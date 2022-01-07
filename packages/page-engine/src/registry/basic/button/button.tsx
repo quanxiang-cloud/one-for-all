@@ -12,6 +12,7 @@ export interface Props {
   iconSize?: number;
   textClassName?: string;
   iconClassName?: string;
+  onChange?: (...args: any[])=> void;
 }
 
 function ButtonElem(props: Props): JSX.Element {

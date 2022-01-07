@@ -1,4 +1,13 @@
-import { Serialized, BaseNode, NodeType, APIStatesSpec, SharedStatesSpec } from '@ofa/render-engine';
+import {
+  Serialized,
+  BaseNode,
+  NodeType,
+  APIStatesSpec,
+  SharedStatesSpec,
+  PlainState,
+  // ToProps,
+  LoopContainerNode,
+} from '@ofa/render-engine';
 
 export type ReactComp = React.ComponentType | React.JSXElementConstructor<any>;
 
@@ -12,7 +21,7 @@ export interface PageNode extends BaseNode<Serialized> {
   packageName?: 'ofa-ui' | string;
   packageVersion?: 'latest' | string;
   exportName: 'page' | 'elemName' | string; // registry elem type
-  children?: Array<PageNode>
+  children?: Array<PageNode>;
 }
 
 export interface PageSchema {
@@ -47,4 +56,14 @@ export interface SourceElement<T> {
   acceptChild?: boolean; // 是否接受子节点
   exportActions?: string[]; // 对外暴露的方法名
   defaultStyle?: Record<string, any>; // 默认样式
+}
+
+// loop node types
+export type LoopNode=LoopContainerNode<Serialized>;
+
+export type LoopNodeConf={
+  iterableState: PlainState<Serialized>;
+  loopKey: string;
+  toProps: string; // func body
+  // toProps: ToProps<Serialized>;
 }

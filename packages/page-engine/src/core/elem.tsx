@@ -39,7 +39,7 @@ function Elem({ node, className, children }: Props): JSX.Element {
     end: (item, monitor) => {
       const targetNode: any = monitor.getDropResult();
       if (targetNode?.exportName) {
-        // console.log('[elem] dropped %o onto: %o', item, targetNode);
+        console.log('[elem] dropped %o onto: %o, pos: %s', item, targetNode, page.dragPos);
         page.appendNode(item, targetNode);
       }
     },

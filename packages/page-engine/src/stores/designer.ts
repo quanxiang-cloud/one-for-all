@@ -1,6 +1,6 @@
 import { observable, action, makeObservable } from 'mobx';
 
-type SettingPanel = 'props' | 'style' | 'event' | 'renderer'
+type SettingPanel = 'props' | 'style' | 'event' | 'renderer' | string;
 
 type VdomKey = 'title' | 'platformApis' | 'apiStateDetail' | string;
 
@@ -13,6 +13,7 @@ class DesignerStore {
   @observable modalBindStateOpen=false // 状态绑定的modal
   @observable activeFieldName='' // 当前要绑定变量的字段的name
   @observable modalBindRenderOpen=false
+  @observable isLoopNode=false; // 当前节点需标记为loop node
 
   constructor() {
     makeObservable(this);
@@ -58,9 +59,10 @@ class DesignerStore {
   }
 
   @action
-  openDataBinding=(fieldName: string)=> {
+  openDataBinding=(fieldName: string, isLoopNode?: boolean)=> {
     this.modalBindStateOpen = true;
     this.activeFieldName = fieldName;
+    this.isLoopNode = !!isLoopNode;
   }
 
   @action
@@ -76,6 +78,7 @@ class DesignerStore {
     this.activePanel = 'props';
     this.vdoms = {};
     this.activeFieldName = '';
+    this.isLoopNode = false;
   }
 }
 

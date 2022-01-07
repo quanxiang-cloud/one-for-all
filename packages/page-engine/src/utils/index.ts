@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid';
+import { get } from 'lodash';
 
 // export function h(type: string, props: Record<string, any> | null, ...children: Array<PageEngine.Node> | [PrimitiveType]) {
 //   return {
@@ -41,4 +42,8 @@ export function isFuncSource(source: string) {
 export function elemId(elemType: string): string {
   const type = elemType.replace(/elem\./, '').toLowerCase();
   return [type, nanoid(8)].join('-');
+}
+
+export function isDev() {
+  return get(window, 'process.env.NODE_ENV') === 'development';
 }

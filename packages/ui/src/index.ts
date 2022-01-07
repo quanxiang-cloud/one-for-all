@@ -24,6 +24,7 @@ import Page from './page';
 import Grid from './grid';
 import Container from './container';
 import Link from './link';
+import Toggle from './toggle';
 
 export * from './types';
 
@@ -52,4 +53,5 @@ export {
   Grid,
   Container,
   Link,
+  Toggle,
 };

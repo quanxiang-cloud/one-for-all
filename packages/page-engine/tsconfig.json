@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "lib",
     "rootDir": ".",
-    "module": "esnext"
+    "module": "esnext",
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*.ts",
