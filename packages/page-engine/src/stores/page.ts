@@ -1,5 +1,5 @@
 import { action, computed, makeObservable, observable, runInAction, toJS } from 'mobx';
-import { cloneDeep, defaults, set, get } from 'lodash';
+import { cloneDeep, defaults, get, set } from 'lodash';
 
 import { NodePropType, NodeType } from '@ofa/render-engine';
 import { LoopNode, LoopNodeConf } from '@ofa/page-engine';
@@ -7,9 +7,10 @@ import { elemId, isDev } from '../utils';
 import { findNode, findParent, removeNode as removeTreeNode } from '../utils/tree-utils';
 import registry from './registry';
 import dataSource from './data-source';
-import type { DragPos, PageNode, PageSchema, SourceElement } from '../types';
+import type { DragPos, PageNode, PageSchema, SchemaElements, SourceElement } from '../types';
 import { mapRawProps, mergeAsRenderEngineProps, transformLifecycleHooks } from '../utils/schema-adapter';
 import { STYLE_NUMBER } from '../config/default-styles';
+import React from 'react';
 
 type Mode = 'design' | 'preview'
 
@@ -40,7 +41,15 @@ function initialPageSchema(): PageSchema {
       packageVersion: 'latest',
       exportName: 'page', // todo
       label: '页面',
-      props: {},
+      props: {
+        style: {
+          type: NodePropType.ConstantProperty,
+          value: {
+            width: '100%',
+            height: '100%',
+          },
+        },
+      },
       children: [],
     },
     apiStateSpec: {},
@@ -53,6 +62,7 @@ class PageStore {
   @observable mode: Mode = 'design'
   @observable activeElemId = ''
   @observable dragPos: DragPos = 'down'
+  @observable schemaElements: Record<string, SchemaElements> = {}
 
   constructor() {
     makeObservable(this);
@@ -63,6 +73,7 @@ class PageStore {
     if (!this.activeElemId) {
       return null;
     }
+
     return findNode(this.schema.node, this.activeElemId);
   }
 
@@ -80,13 +91,21 @@ class PageStore {
     return mapRawProps(this.activeElem?.props || {});
   }
 
+  findElement(id: string): any {
+    if (!id) {
+      return null;
+    }
+    return findNode(this.schema.node, id);
+  }
+
   @action
   setSchema = (schema: PageSchema): void => {
     // ignore html node
     if (schema.node.type === NodeType.HTMLNode) {
       return;
     }
-    this.schema = schema;
+
+    this.schema = schema || initialPageSchema();
 
     // init data source when set page schema
     runInAction(()=> {
@@ -110,7 +129,6 @@ class PageStore {
     this.dragPos = pos;
   }
 
-  //  todo: refine
   @action
   appendNode = (node: Omit<PageNode, 'type'| 'id'>, target?: Omit<PageNode, 'type' | 'id'> | null, options?: AppendNodeOptions): void => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -125,7 +143,12 @@ class PageStore {
       type: NodeType.ReactComponentNode,
       packageName: 'ofa-ui',
       packageVersion: 'latest',
-      props: {},
+      props: {
+        style: {
+          type: NodePropType.ConstantProperty,
+          value: node.defaultStyle || {},
+        },
+      },
     };
 
     if (registry.acceptChild(node.exportName)) {
@@ -142,7 +165,12 @@ class PageStore {
             packageName: 'ofa-ui',
             packageVersion: 'latest',
             label: '容器',
-            props: {},
+            props: {
+              style: {
+                type: NodePropType.ConstantProperty,
+                value: node.defaultStyle || {},
+              },
+            },
             children: [],
           },
         ];
@@ -286,6 +314,7 @@ class PageStore {
   @action
   removeNode = (id: string): void => {
     removeTreeNode(this.schema.node, id);
+    this.activeElemId = '';
   }
 
   @action
@@ -297,7 +326,7 @@ class PageStore {
         actualNode = elem.node;
       }
 
-      isDev() && console.log('update node props: ', elem_id, toJS(actualNode), propKey, conf);
+      // isDev() && console.log('update node props: ', elem_id, toJS(actualNode), propKey, conf);
 
       if (propKey === 'props') {
         set(actualNode, propKey, mergeAsRenderEngineProps(toJS(this.activeElem?.props), conf));
@@ -310,38 +339,6 @@ class PageStore {
         set(actualNode, propKey, conf);
       }
     }
-  }
-
-  getElemDefaultStyle=(type: string)=> {
-    const elem = registry.getElemByType(type);
-    return toJS(elem?.defaultStyle || {});
-  }
-
-  formatStyles = (styles: Record<string, string | number>): Record<string, string | number> => {
-    // console.log('format style: ', styles);
-    const newStyles: Record<string, string | number> = {};
-    if (typeof (styles) !== 'object' || styles === null) {
-      return newStyles;
-    }
-
-    Object.entries(styles).forEach((style) => {
-      const [key, value] = style;
-
-      if (key === 'backgroundImage') {
-        if (value === 'none') return;
-
-        newStyles[key] = `url(${value})`;
-        return;
-      }
-
-      if (STYLE_NUMBER.includes(key)) {
-        newStyles[key] = Number(value) || 0;
-        return;
-      }
-      newStyles[key] = value;
-    });
-
-    return newStyles;
   }
 
   getElemBoundActions=(): string[] =>{
@@ -401,7 +398,7 @@ class PageStore {
   }
 
   @action
-  unsetLoopNode=(loop_node_id: string)=> {
+  unsetLoopNode=(loop_node_id: string): void => {
     // reset loop container, lift up inner node
     const loopNode = findNode(this.schema.node, loop_node_id);
     if (!loopNode) {
@@ -421,6 +418,11 @@ class PageStore {
     this.mode = 'design';
     this.activeElemId = '';
     this.dragPos = 'down';
+  }
+
+  @action
+  setSchemaElements = (elements: Record<string, SchemaElements>): void => {
+    this.schemaElements = elements;
   }
 }
 

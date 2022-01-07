@@ -12,9 +12,14 @@ export interface Props {
   children?: React.ReactNode;
 }
 
-function Link({ content, linkType, linkUrl, linkPage, isBlank, className }: Props): JSX.Element {
+function Link(
+  { content, linkType, linkUrl, linkPage, isBlank, className, ...rest }: Props,
+  ref: React.LegacyRef<HTMLAnchorElement>,
+): JSX.Element {
   return (
     <a
+      {...rest}
+      ref={ref}
       href={linkType === 'outside' ? linkUrl : linkPage}
       className={cs('text-blue-600', className)}
       target={isBlank ? '_blank' : '_self'}
@@ -25,4 +30,4 @@ function Link({ content, linkType, linkUrl, linkPage, isBlank, className }: Prop
   );
 }
 
-export default Link;
+export default React.forwardRef(Link);

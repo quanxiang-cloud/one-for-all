@@ -1,15 +1,15 @@
 import React, { useRef } from 'react';
-import cs from 'classnames';
+// import cs from 'classnames';
 import { useDrag, useDrop, DragPreviewImage } from 'react-dnd';
 import { observer } from 'mobx-react';
 
-import { Icon } from '@ofa/ui';
+// import { Icon } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
 import { encode } from '../utils/base64';
 import { elemId } from '../utils';
 import type { PageNode, DragPos } from '@ofa/page-engine';
 
-import styles from './index.m.scss';
+// import styles from './index.m.scss';
 
 interface Props {
   node: PageNode;
@@ -112,7 +112,7 @@ function Elem({ node, className, children }: Props): JSX.Element {
   return (
     <>
       <DragPreviewImage connect={dragPreview} src={svgPreviewImg(label)} />
-      <div
+      {/* <div
         className={cs(styles.elem, {
           [styles.isPage]: exportName === 'page',
           [styles.dragging]: isDragging,
@@ -150,7 +150,8 @@ function Elem({ node, className, children }: Props): JSX.Element {
           </div>
         </div>
         {children}
-      </div>
+      </div> */}
+      {children}
     </>
   );
 }

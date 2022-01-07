@@ -31,6 +31,8 @@ interface Props {
 }
 
 function FontConfig({ initValues, register, setValue, onFormChange }: Props): JSX.Element {
+  const { fontSize, lineHeight, fontWeight, textAlign, color } = initValues;
+
   function handleColorChange(color: ColorResult): void {
     setValue('color', color.hex);
     onFormChange();
@@ -55,7 +57,7 @@ function FontConfig({ initValues, register, setValue, onFormChange }: Props): JS
             <input
               type="number"
               className='w-full focus:outline-none'
-              {...register('fontSize', { value: initValues.fontSize || '12px' })}
+              {...register('fontSize', { value: fontSize || '' })}
             />
             <div className='w-20 absolute right-0 top-0 bg-white
               text-12 text-gray-400 cursor-pointer'>px</div>
@@ -63,11 +65,15 @@ function FontConfig({ initValues, register, setValue, onFormChange }: Props): JS
         </div>
         <div className='mr-8 w-2/4 flex items-center'>
           <span className='px-8 text-12 text-gray-400 whitespace-nowrap'>行高</span>
-          <input
-            type="number"
-            className='w-full focus:outline-none'
-            {...register('lineHeight', { value: initValues.lineHeight || 1 })}
-          />
+          <div className='relative flex' style={{ width: 50 }}>
+            <input
+              type="number"
+              className='w-full focus:outline-none'
+              {...register('lineHeight', { value: lineHeight || '' })}
+            />
+            <div className='w-20 absolute right-0 top-0 bg-white
+              text-12 text-gray-400 cursor-pointer'>px</div>
+          </div>
         </div>
       </div>
       <div className='mb-8 flex items-center justify-content'>
@@ -76,26 +82,26 @@ function FontConfig({ initValues, register, setValue, onFormChange }: Props): JS
           <input
             type="hidden"
             className='w-full focus:outline-none'
-            {...register('fontWeight', { value: initValues.fontWeight || 400 })}
+            {...register('fontWeight', { value: fontWeight || 400 })}
           />
           <Select
             style={{ padding: 0, minWidth: 73 }}
             border={false}
             options={FONT_WEIGHT_OPTIONS}
-            value={Number(initValues.fontWeight) || 400}
+            value={Number(fontWeight) || 400}
             onChange={handleFontWeightChange}
           />
         </div>
         <div className='mr-20 w-2/4 flex items-center'>
           <span className='px-8 text-12 text-gray-400 whitespace-nowrap'>对齐</span>
           <input type="hidden" {...register('textAlign', {
-            value: initValues.textAlign || 'left',
+            value: textAlign || '',
           })} />
           <Select
             style={{ padding: 0, minWidth: 73 }}
             border={false}
             options={TEXT_ALIGN_OPTIONS}
-            value={initValues.textAlign || 'left'}
+            value={textAlign || 'left'}
             onChange={handleTextAlignChange}
           />
         </div>
@@ -104,14 +110,14 @@ function FontConfig({ initValues, register, setValue, onFormChange }: Props): JS
         <div className='flex items-center'>
           <span className='px-8 text-12 text-gray-400 whitespace-nowrap'>颜色</span>
           <input readOnly type="hidden" {...register('color', {
-            value: initValues.color || '#000000',
+            value: color || '#000000',
           })} />
           <ColorPicker
-            value={initValues.color as string || '#000000'}
+            value={color as string || '#000000'}
             onChange={handleColorChange}
           />
           <span className='ml-8 text-12 text-gray-900'>
-            {initValues.color || '#000000'}
+            {color || '#000000'}
           </span>
         </div>
         {/* <div className='mx-8 w-1 h-20 border-left bg-gray-200'></div>

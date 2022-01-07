@@ -2,10 +2,10 @@ import React from 'react';
 
 import { InputProps } from '../types';
 
-function Input(props: InputProps): JSX.Element {
-  const { placeholder, type } = props;
+function Input(props: InputProps, ref: React.LegacyRef<HTMLDivElement>): JSX.Element {
+  const { placeholder, type, ...rest } = props;
   return (
-    <div>
+    <div {...rest} ref={ref}>
       <input
         type={type}
         placeholder={placeholder}
@@ -13,4 +13,4 @@ function Input(props: InputProps): JSX.Element {
     </div>
   );
 }
-export default Input;
+export default React.forwardRef(Input);

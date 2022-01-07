@@ -1,7 +1,10 @@
-export const DEFAULT_STYLE_CONFIG = {
-  // width: 800,
-  // height: 24,
+import { formatStyleString } from './utils';
 
+export const DEFAULT_STYLE_CONFIG = {
+  width: 'auto',
+  widthUnit: 'auto',
+  height: 'auto',
+  widthHeight: 'auto',
   // margin
   marginTop: 0,
   marginLeft: 0,
@@ -21,11 +24,10 @@ export const DEFAULT_STYLE_CONFIG = {
   paddingBottom: 0,
 
   // display
-  display: 'flex', // default: inline   block inline inline-block flex
+  display: 'block', // default: inline   block inline inline-block flex
   flexDirection: 'row', // default: row   row row-reverse column column-reverse
-  alignItems: 'center', // default: normal    flex-start center flex-end stretch baseline
-  justifyContent: 'center', // default: normal    flex-start center flex-end stretch baseline
-
+  alignItems: 'normal', // default: normal    flex-start center flex-end stretch baseline
+  justifyContent: 'normal', // default: normal    flex-start center flex-end stretch baseline
   // font
   fontSize: 12,
   lineHeight: 1,
@@ -61,3 +63,41 @@ export const STYLE_NUMBER = [
   'borderRightWidth', 'borderBottomWidth', 'paddingTop', 'paddingLeft', 'paddingRight', 'paddingBottom',
   'borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomRightRadius', 'borderBottomLeftRadius',
 ];
+
+const NEW_STYLES = [
+  'width', 'height',
+];
+
+export const formatStyles = (styles: Record<string, string | number>): Record<string, string | number> => {
+  const newStyles: Record<string, string | number> = {};
+  if (typeof (styles) !== 'object' || styles === null) {
+    return newStyles;
+  }
+
+  Object.entries(styles).forEach((style) => {
+    const [key, value] = style;
+
+    if (key.indexOf('Unit') >= 0) return;
+
+    if (key === 'backgroundImage') {
+      if (value === 'none') return;
+
+      newStyles[key] = `url(${value})`;
+      return;
+    }
+
+    if (NEW_STYLES.includes(key)) {
+      const _value = formatStyleString(value, (styles[`${key}Unit`] as string) || 'px');
+      newStyles[key] = _value;
+      return;
+    }
+
+    if (STYLE_NUMBER.includes(key)) {
+      newStyles[key] = Number(value) || 0;
+      return;
+    }
+    newStyles[key] = value;
+  });
+
+  return newStyles;
+};

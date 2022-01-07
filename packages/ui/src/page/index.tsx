@@ -10,13 +10,22 @@ interface Props {
   placeholder?: React.ReactNode;
 }
 
-function Page({ className, style, children, placeholder }: Props): JSX.Element {
+function Page(
+  { className, style, children, placeholder, ...rest }: Props,
+  ref: React.LegacyRef<HTMLDivElement>,
+): JSX.Element {
   return (
-    <div className={cs(styles.page, className)} style={style}>
+    <div
+      {...rest}
+      ref={ref}
+      className={cs(styles.page, className)}
+      style={style}
+
+    >
       {children}
       {!Children.count(children) && placeholder}
     </div>
   );
 }
 
-export default Page;
+export default React.forwardRef(Page);

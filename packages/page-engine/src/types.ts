@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Serialized,
   BaseNode,
@@ -21,7 +22,8 @@ export interface PageNode extends BaseNode<Serialized> {
   packageName?: 'ofa-ui' | string;
   packageVersion?: 'latest' | string;
   exportName: 'page' | 'elemName' | string; // registry elem type
-  children?: Array<PageNode>;
+  children?: Array<PageNode>
+  defaultStyle?: React.CSSProperties;
 }
 
 export interface PageSchema {
@@ -55,7 +57,19 @@ export interface SourceElement<T> {
   hidden?: boolean; // 在source panel 隐藏
   acceptChild?: boolean; // 是否接受子节点
   exportActions?: string[]; // 对外暴露的方法名
-  defaultStyle?: Record<string, any>; // 默认样式
+  defaultStyle?: React.CSSProperties; // 默认样式
+}
+
+export interface ElementInfo {
+  element: Element;
+  position: DOMRect;
+}
+
+export interface SchemaElements {
+  id: string;
+  label: string;
+  element: Element;
+  position: DOMRect;
 }
 
 // loop node types

@@ -19,6 +19,7 @@ const elem: SourceElement<Props> = {
   order: 2,
   acceptChild: true,
   exportActions: [],
+  defaultStyle: {},
 };
 
 export default elem;

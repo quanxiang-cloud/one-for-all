@@ -48,15 +48,15 @@ interface Props {
 }
 
 function DisplayConfig({ initValues, register, setValue }: Props): JSX.Element {
+  const { display, flexDirection, alignItems, justifyContent } = initValues;
   const [flexValue, setFlexValue] = useState({
     display: 'block',
     flexDirection: 'row',
-    alignItems: 'normal',
-    justifyContent: 'normal',
+    alignItems: '',
+    justifyContent: '',
   });
 
   useEffect(() => {
-    const { display, flexDirection, alignItems, justifyContent } = initValues;
     setFlexValue({
       ...flexValue,
       display: display as string || 'block',
@@ -64,16 +64,16 @@ function DisplayConfig({ initValues, register, setValue }: Props): JSX.Element {
       alignItems: (alignItems as string) || '',
       justifyContent: (justifyContent as string) || '',
     });
-  }, []);
+  }, [display, flexDirection, alignItems, justifyContent]);
 
   function handleFlexChange(value: string | number | boolean, key: 'display' | 'flexDirection' |
    'alignItems' | 'justifyContent'): void {
     const _value = value as string;
     if (flexValue[key] === _value) return;
     if (key === 'display' && value !== 'flex') {
-      setValue('flexDirection', 'row');
-      setValue('alignItems', 'normal');
-      setValue('justifyContent', 'normal');
+      setValue('flexDirection', '');
+      setValue('alignItems', '');
+      setValue('justifyContent', '');
     }
     setValue(key, _value);
     setFlexValue({
@@ -82,43 +82,48 @@ function DisplayConfig({ initValues, register, setValue }: Props): JSX.Element {
     });
   }
 
-  const ALIGN_LIST: Record<string, string | JSX.Element>[] = [
-    { value: 'flex-start', label: (<Tooltip position='top' label="Align:flex-start">
-      <Icon name={DISPLAY_ICONS[flexValue['flexDirection']][0]} color='gray' /></Tooltip>) },
-    { value: 'center', label: (<Tooltip position='top' label="Align:center">
-      <Icon name={DISPLAY_ICONS[flexValue['flexDirection']][1]} color='gray' /></Tooltip>) },
-    { value: 'flex-end', label: (<Tooltip position='top' label="Align:flex-end">
-      <Icon name={DISPLAY_ICONS[flexValue['flexDirection']][2]} color='gray' /></Tooltip>) },
-    { value: 'stretch', label: (<Tooltip position='top' label="Align:stretch">
-      <Icon name={DISPLAY_ICONS[flexValue['flexDirection']][3]} color='gray' /></Tooltip>) },
-    { value: 'baseline', label: (<Tooltip position='top' label="Align:baseline">
-      <Icon name={DISPLAY_ICONS[flexValue['flexDirection']][4]} color='gray' /></Tooltip>) },
-  ];
+  let ALIGN_LIST: Record<string, string | JSX.Element>[] = [];
+  let JUSTIFY_LIST: Record<string, string | JSX.Element>[] = [];
 
-  const JUSTIFY_LIST: Record<string, string | JSX.Element>[] = [
-    { value: 'flex-start', label: (<Tooltip position='top' label="Justify:flex-start">
-      <Icon name={DISPLAY_ICONS[flexValue['flexDirection']][5]} color='gray' /></Tooltip>) },
-    { value: 'center', label: (<Tooltip position='top' label="Justify:center">
-      <Icon name={DISPLAY_ICONS[flexValue['flexDirection']][6]} color='gray' /></Tooltip>) },
-    { value: 'flex-end', label: (<Tooltip position='top' label="Justify:flex-end">
-      <Icon name={DISPLAY_ICONS[flexValue['flexDirection']][7]} color='gray' /></Tooltip>) },
-    { value: 'space-between', label: (<Tooltip position='top' label="Justify:stretch">
-      <Icon name={DISPLAY_ICONS[flexValue['flexDirection']][8]} color='gray' /></Tooltip>) },
-    { value: 'space-around', label: (<Tooltip position='top' label="Justify:baseline">
-      <Icon name={DISPLAY_ICONS[flexValue['flexDirection']][9]} color='gray' /></Tooltip>) },
-  ];
+  if (flexValue.display === 'flex') {
+    ALIGN_LIST = [
+      { value: 'flex-start', label: (<Tooltip position='top' label="Align:flex-start">
+        <Icon name={DISPLAY_ICONS[flexValue['flexDirection']][0]} color='gray' /></Tooltip>) },
+      { value: 'center', label: (<Tooltip position='top' label="Align:center">
+        <Icon name={DISPLAY_ICONS[flexValue['flexDirection']][1]} color='gray' /></Tooltip>) },
+      { value: 'flex-end', label: (<Tooltip position='top' label="Align:flex-end">
+        <Icon name={DISPLAY_ICONS[flexValue['flexDirection']][2]} color='gray' /></Tooltip>) },
+      { value: 'stretch', label: (<Tooltip position='top' label="Align:stretch">
+        <Icon name={DISPLAY_ICONS[flexValue['flexDirection']][3]} color='gray' /></Tooltip>) },
+      { value: 'baseline', label: (<Tooltip position='top' label="Align:baseline">
+        <Icon name={DISPLAY_ICONS[flexValue['flexDirection']][4]} color='gray' /></Tooltip>) },
+    ];
+
+    JUSTIFY_LIST = [
+      { value: 'flex-start', label: (<Tooltip position='top' label="Justify:flex-start">
+        <Icon name={DISPLAY_ICONS[flexValue['flexDirection']][5]} color='gray' /></Tooltip>) },
+      { value: 'center', label: (<Tooltip position='top' label="Justify:center">
+        <Icon name={DISPLAY_ICONS[flexValue['flexDirection']][6]} color='gray' /></Tooltip>) },
+      { value: 'flex-end', label: (<Tooltip position='top' label="Justify:flex-end">
+        <Icon name={DISPLAY_ICONS[flexValue['flexDirection']][7]} color='gray' /></Tooltip>) },
+      { value: 'space-between', label: (<Tooltip position='top' label="Justify:space-between">
+        <Icon name={DISPLAY_ICONS[flexValue['flexDirection']][8]} color='gray' /></Tooltip>) },
+      { value: 'space-around', label: (<Tooltip position='top' label="Justify:space-around">
+        <Icon name={DISPLAY_ICONS[flexValue['flexDirection']][9]} color='gray' /></Tooltip>) },
+    ];
+  }
 
   return (
     <div>
-      <input type="hidden" {...register('display', { value: initValues.display || 'block' })} />
-      <input type="hidden" {...register('flexDirection', { value: initValues.display || 'row' })} />
-      <input type="hidden" {...register('alignItems', { value: initValues.display || 'normal' })} />
-      <input type="hidden" {...register('justifyContent', { value: initValues.display || 'normal' })} />
+      <input type="hidden" {...register('display', { value: display || 'block' })} />
+      <input type="hidden" {...register('flexDirection', { value: flexDirection || '' })} />
+      <input type="hidden" {...register('alignItems', { value: alignItems || '' })} />
+      <input type="hidden" {...register('justifyContent', { value: justifyContent || '' })} />
       <div className='text-12 text-gray-600'>填充类型</div>
       <RadioButtonGroup
         listData={FILL_LIST as []}
         onChange={(val) => handleFlexChange(val, 'display')}
-        currentValue={flexValue['display']}
+        currentValue={flexValue.display}
       />
       { flexValue.display === 'flex' && (
         <>

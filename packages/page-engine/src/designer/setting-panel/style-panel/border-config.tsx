@@ -22,14 +22,14 @@ interface Props {
 }
 
 function BorderConfig({ initValues, register, setValue, onFormChange }: Props): JSX.Element {
+  const { borderStyle, borderWidth, borderTopLeftRadius, borderTopRightRadius,
+    borderBottomLeftRadius, borderBottomRightRadius } = initValues;
   const [borderType, setBorderType] = useState('none');
   const [opening, setOpening] = useState(false);
   const [borderRadius, setBorderRadius] = useState(0);
 
   useEffect(() => {
-    const _type = (initValues.borderStyle || 'dashed') as string;
-    const { borderTopLeftRadius, borderTopRightRadius, borderBottomRightRadius,
-      borderBottomLeftRadius } = initValues;
+    const _type = (borderStyle || 'none') as string;
     if ((borderTopLeftRadius === borderTopRightRadius) &&
       (borderTopLeftRadius === borderBottomRightRadius) &&
       (borderTopLeftRadius === borderBottomLeftRadius)) {
@@ -39,7 +39,7 @@ function BorderConfig({ initValues, register, setValue, onFormChange }: Props): 
       setOpening(true);
     }
     setBorderType(_type);
-  }, []);
+  }, [borderStyle]);
 
   function handleRadioChange(value: string | number | boolean): void {
     const _value = (value || '') as string;
@@ -87,7 +87,7 @@ function BorderConfig({ initValues, register, setValue, onFormChange }: Props): 
               <input
                 type="number"
                 className='px-8 w-full border-none focus:outline-none'
-                {...register('borderWidth', { value: initValues.borderWidth || 1 })}
+                {...register('borderWidth', { value: borderWidth || 1 })}
               />
             </div>
             <div className='mr-32 w-2/5 flex items-center'>
@@ -111,14 +111,14 @@ function BorderConfig({ initValues, register, setValue, onFormChange }: Props): 
                   <input
                     type="text"
                     className='w-full text-center border-none focus:outline-none'
-                    {...register('borderTopLeftRadius', { value: initValues.borderTopLeftRadius || 0 })}
+                    {...register('borderTopLeftRadius', { value: borderTopLeftRadius || 0 })}
                   />
                 </li>
                 <li style={{ width: 30 }}>
                   <input
                     type="text"
                     className='w-full text-center border-none focus:outline-none'
-                    {...register('borderTopRightRadius', { value: initValues.borderTopRightRadius || 0 })}
+                    {...register('borderTopRightRadius', { value: borderTopRightRadius || 0 })}
                   />
                 </li>
                 <li style={{ width: 30 }}>
@@ -126,7 +126,7 @@ function BorderConfig({ initValues, register, setValue, onFormChange }: Props): 
                     type="text"
                     className='w-full text-center border-none focus:outline-none'
                     {...register('borderBottomRightRadius', {
-                      value: initValues.borderBottomRightRadius || 0,
+                      value: borderBottomRightRadius || 0,
                     })}
                   />
                 </li>
@@ -134,7 +134,7 @@ function BorderConfig({ initValues, register, setValue, onFormChange }: Props): 
                   <input
                     type="text"
                     className='w-full text-center border-none focus:outline-none'
-                    {...register('borderBottomLeftRadius', { value: initValues.borderBottomLeftRadius || 0 })}
+                    {...register('borderBottomLeftRadius', { value: borderBottomLeftRadius || 0 })}
                   />
                 </li>
               </ul>

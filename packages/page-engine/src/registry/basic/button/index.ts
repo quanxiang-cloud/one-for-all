@@ -22,6 +22,7 @@ const elem: SourceElement<Props> = {
   configForm: ConfigForm,
   defaultConfig,
   order: 4,
+  defaultStyle: {},
   exportActions: ['onClick'],
 };
 

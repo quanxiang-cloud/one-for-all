@@ -1,7 +1,4 @@
 import React, { Children } from 'react';
-import cs from 'classnames';
-
-import styles from './index.m.scss';
 
 interface Props {
   className?: string;
@@ -10,10 +7,15 @@ interface Props {
   placeholder?: React.ReactNode;
 }
 
-function Container({ className, style, children, placeholder }: Props): JSX.Element {
+function Container(
+  { className, style, children, placeholder, ...rest }: Props,
+  ref: React.LegacyRef<HTMLDivElement>,
+): JSX.Element {
   return (
     <div
-      className={cs(styles.coll, className)}
+      {...rest}
+      ref={ref}
+      className={className}
       style={style}
     >
       {children}
@@ -22,4 +24,4 @@ function Container({ className, style, children, placeholder }: Props): JSX.Elem
   );
 }
 
-export default Container;
+export default React.forwardRef(Container);

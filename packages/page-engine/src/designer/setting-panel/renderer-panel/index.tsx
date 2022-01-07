@@ -18,7 +18,7 @@ interface Props {
   className?: string;
 }
 
-const defaultToPropsFn = '// return state';
+const defaultToPropsFn = 'return state';
 const defaultLoopKey = 'id';
 
 function RendererPanel(props: Props): JSX.Element {

@@ -12,16 +12,17 @@ export interface Props {
   iconSize?: number;
   textClassName?: string;
   iconClassName?: string;
+  style?: React.CSSProperties;
   onChange?: (...args: any[])=> void;
 }
 
-function ButtonElem(props: Props): JSX.Element {
+function ButtonElem(props: Props, ref: React.Ref<HTMLButtonElement>): JSX.Element {
   const { title = '按钮' } = props;
   return (
 
-    <Button {...props}>{title}</Button>
+    <Button {...props} ref={ref} style={props.style}>{title}</Button>
   );
 }
 
-export default ButtonElem;
+export default React.forwardRef(ButtonElem);
 

@@ -12,9 +12,14 @@ function SourceElem(props: SourceElement<any>): JSX.Element {
   const compName = props.name.toLowerCase();
 
   function addNodeToCanvas(target?: any): void {
+    const { defaultStyle } = props;
     page.appendNode({
       exportName: compName,
       label: registry.getLabelByElemType(compName),
+      defaultStyle: {
+        // ...InitStyles,
+        ...defaultStyle,
+      },
     }, target, { from: 'source' });
   }
 

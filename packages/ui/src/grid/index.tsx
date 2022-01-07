@@ -5,9 +5,10 @@ import { GridProps } from '../types';
 
 import styles from './index.m.scss';
 
-function Grid({ className, style, colRatio, colGap, children }: GridProps): JSX.Element {
+function Grid({ className, style, colRatio, colGap, children }: GridProps, ref: any): JSX.Element {
   return (
     <div
+      ref={ref}
       className={cs(styles.gridElem, className)}
       style={{
         ...style,
@@ -20,4 +21,4 @@ function Grid({ className, style, colRatio, colGap, children }: GridProps): JSX.
   );
 }
 
-export default Grid;
+export default React.forwardRef(Grid);

@@ -9,9 +9,11 @@ export interface Props {
   children?: React.ReactNode;
 }
 
-function Text({ content, isAllowSelect, style, className }: Props): JSX.Element {
+function Text({ content, isAllowSelect, style, className, ...rest }: Props, ref: any): JSX.Element {
   return (
     <span
+      {...rest}
+      ref={ref}
       style={style}
       className={cs({
         'user-select': isAllowSelect ? 'none' : 'auto',
@@ -22,4 +24,4 @@ function Text({ content, isAllowSelect, style, className }: Props): JSX.Element 
   );
 }
 
-export default Text;
+export default React.forwardRef(Text);

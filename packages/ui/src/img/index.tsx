@@ -10,19 +10,23 @@ interface Props {
   fillMode?: string;
   preview?: boolean;
   closeOnMaskClick?: boolean;
+  style?: React.CSSProperties,
 }
 
-function Image(props: Props): JSX.Element {
-  const { imageUrl, fillMode, preview, closeOnMaskClick } = props;
+function Image(props: Props, ref: React.LegacyRef<HTMLDivElement>): JSX.Element {
+  const { imageUrl, fillMode, preview, closeOnMaskClick, style, ...rest } = props;
   const [imgPreview, setImgPreview] = useState(false);
 
   return (
     <>
       <div
+        {...rest}
+        ref={ref}
         className="img"
         style={{
           backgroundImage: imageUrl ? `url(${imageUrl})` : '',
           backgroundSize: fillMode ? `${fillMode}` : 'cover',
+          ...style,
         }}
       >
         {!imageUrl && <Icon name="add_photo_alternate" size={42} />}
@@ -48,4 +52,4 @@ function Image(props: Props): JSX.Element {
   );
 }
 
-export default Image;
+export default React.forwardRef(Image);
