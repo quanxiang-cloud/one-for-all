@@ -1,7 +1,7 @@
-import { OpenAPIV3 } from 'openapi-types';
+import { Spec } from '@ofa/api-spec-adapter';
 
-const todoSpec: OpenAPIV3.Document = {
-  openapi: '3.0.0',
+const todoSpec: Spec = {
+  swagger: '3.0.0',
   info: {
     contact: {
       email: 'Stephane.Carrez@gmail.com',
@@ -19,19 +19,6 @@ const todoSpec: OpenAPIV3.Document = {
     description: 'Find out more about Swagger',
     url: 'http://swagger.io',
   },
-  servers: [
-    {
-      url: 'https://todo.vacs.fr/v1',
-    },
-    {
-      url: 'http://todo.vacs.fr/v1',
-    },
-  ],
-  security: [
-    {
-      todo_auth: [],
-    },
-  ],
   tags: [
     {
       description: 'Tasks',
@@ -43,6 +30,11 @@ const todoSpec: OpenAPIV3.Document = {
       get: {
         description: 'get todo status count',
         operationId: 'todoStatus',
+        responses: {
+          200: {
+            description: 'successful operation',
+          },
+        },
       },
     },
     '/todos': {
@@ -51,35 +43,25 @@ const todoSpec: OpenAPIV3.Document = {
         operationId: 'listTodos',
         parameters: [
           {
-            description: 'Filters the tasks by their status',
-            explode: true,
             in: 'query',
             name: 'status',
-            required: false,
-            schema: {
-              enum: [
-                'done',
-                'waiting',
-                'working',
-                'all',
-              ],
-              type: 'string',
-            },
-            style: 'form',
+            description: 'Filters the tasks by their status',
+            // explode: true,
+            // required: false,
+            // schema: {
+            //   enum: [
+            //     'done',
+            //     'waiting',
+            //     'working',
+            //     'all',
+            //   ],
+            //   type: 'string',
+            // },
+            // style: 'form',
           },
         ],
         responses: {
           200: {
-            content: {
-              'application/json': {
-                schema: {
-                  items: {
-                    $ref: '#/components/schemas/Todo',
-                  },
-                  type: 'array',
-                },
-              },
-            },
             description: 'successful operation',
           },
           400: {
@@ -100,18 +82,11 @@ const todoSpec: OpenAPIV3.Document = {
       },
       post: {
         operationId: 'createTodo',
-        requestBody: {
-          $ref: '#/components/requestBodies/inline_object',
-        },
+        // requestBody: {
+        //   $ref: '#/components/requestBodies/inline_object',
+        // },
         responses: {
           200: {
-            content: {
-              'application/json': {
-                schema: {
-                  $ref: '#/components/schemas/Todo',
-                },
-              },
-            },
             description: 'successful operation',
           },
           405: {
@@ -137,16 +112,19 @@ const todoSpec: OpenAPIV3.Document = {
         operationId: 'deleteTodo',
         parameters: [
           {
-            description: 'The todo identifier',
-            explode: false,
-            in: 'path',
             name: 'todoId',
+            in: 'path',
+            type: 'integer',
             required: true,
-            schema: {
-              format: 'int64',
-              type: 'integer',
-            },
-            style: 'simple',
+            format: 'int64',
+            // description: 'The todo identifier',
+            // explode: false,
+            // required: true,
+            // schema: {
+            //   format: 'int64',
+            //   type: 'integer',
+            // },
+            // style: 'simple',
           },
         ],
         responses: {
@@ -175,29 +153,13 @@ const todoSpec: OpenAPIV3.Document = {
         parameters: [
           {
             description: 'The todo identifier',
-            explode: false,
             in: 'path',
             name: 'todoId',
             required: true,
-            schema: {
-              format: 'int64',
-              type: 'integer',
-            },
-            style: 'simple',
           },
         ],
-        requestBody: {
-          $ref: '#/components/requestBodies/inline_object_1',
-        },
         responses: {
           200: {
-            content: {
-              'application/json': {
-                schema: {
-                  $ref: '#/components/schemas/Todo',
-                },
-              },
-            },
             description: 'successful operation',
           },
           404: {
@@ -215,123 +177,6 @@ const todoSpec: OpenAPIV3.Document = {
         tags: [
           'tasks',
         ],
-      },
-    },
-  },
-  components: {
-    requestBodies: {
-      inline_object_1: {
-        content: {
-          'application/x-www-form-urlencoded': {
-            schema: {
-              $ref: '#/components/schemas/inline_object_1',
-            },
-          },
-        },
-      },
-      inline_object: {
-        content: {
-          'application/x-www-form-urlencoded': {
-            schema: {
-              $ref: '#/components/schemas/inline_object',
-            },
-          },
-        },
-      },
-    },
-    schemas: {
-      Todo: {
-        example: {
-          id: 23,
-          title: 'Make the FOSDEM presentation',
-          description: 'password',
-          status: 'working',
-          create_date: '2017-12-24T00:00:00.000Z',
-        },
-        properties: {
-          id: {
-            description: 'The todo identifier',
-            format: 'int64',
-            type: 'integer',
-          },
-          title: {
-            description: 'The todo title',
-            type: 'string',
-          },
-          create_date: {
-            description: 'The todo creation date',
-            format: 'date-time',
-            type: 'string',
-          },
-          done_date: {
-            description: 'The todo resolution date',
-            format: 'date-time',
-            type: 'string',
-          },
-          status: {
-            description: 'The todo state',
-            enum: [
-              'waiting',
-              'working',
-              'done',
-            ],
-            type: 'string',
-          },
-        },
-        required: [
-          'create_date',
-          'id',
-          'status',
-          'title',
-        ],
-        type: 'object',
-        xml: {
-          name: 'Todo',
-        },
-      },
-      inline_object: {
-        properties: {
-          title: {
-            description: 'The todo title',
-            type: 'string',
-          },
-        },
-        required: [
-          'title',
-        ],
-        type: 'object',
-      },
-      inline_object_1: {
-        properties: {
-          title: {
-            description: 'The todo title',
-            type: 'string',
-          },
-          status: {
-            description: 'The todo status',
-            enum: [
-              'working',
-              'waiting',
-              'done',
-            ],
-            type: 'string',
-          },
-        },
-        type: 'object',
-      },
-    },
-    securitySchemes: {
-      todo_auth: {
-        flows: {
-          password: {
-            scopes: {
-              'write:todo': 'Write a todo',
-              'read:todo': 'Read a todo',
-            },
-            tokenUrl: 'http://localhost:8080/v1/oauth/token',
-          },
-        },
-        type: 'oauth2',
       },
     },
   },
