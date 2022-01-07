@@ -45,11 +45,11 @@ export interface SourceElement<T> {
   component: ReactComp;
   defaultConfig: Record<string, any>; // 表单默认配置
   configForm: ReactComp; // 属性配置组件
-  icon: string;
-  label: string;
-  category: Category;
+  icon?: string;
   iconStyle?: iconStyle;
   iconSize?: number;
+  label: string;
+  category: Category;
   toProps?: (formData: any) => T; // 将configForm的配置项转换到 component的 props
   order?: number; // 排序权重
   hidden?: boolean; // 在source panel 隐藏

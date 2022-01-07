@@ -27,7 +27,7 @@ function SourceElem(props: SourceElement<any>): JSX.Element {
     end: (item, monitor) => {
       const targetNode: any = monitor.getDropResult();
       if (targetNode?.exportName) {
-        console.log('[source-elem] dropped %o onto: %o, pos: %s', item, targetNode, page.dragPos);
+        // console.log('[source-elem] dropped %o onto: %o, pos: %s', item, targetNode, page.dragPos);
         addNodeToCanvas(targetNode);
       }
     },
@@ -41,9 +41,10 @@ function SourceElem(props: SourceElement<any>): JSX.Element {
     >
       <div>
         <Icon
-          name={props.icon || 'apps'}
+          name={props.icon || 'insert_drive_file'}
           size={props.iconSize || 24}
-          style={props.iconStyle || {}}/>
+          style={props.iconStyle || {}}
+        />
       </div>
       <div>
         {props.label}
