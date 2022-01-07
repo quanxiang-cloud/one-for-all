@@ -37,17 +37,7 @@ function Page({ schema, className }: Props): JSX.Element {
     x: 0,
     y: 0,
   });
-  // console.log(toJS(page.schema));
   const [parentNodes, setParentNodes] = useState<string[]>([]);
-
-  const handleKeyPress = useCallback((ev)=> {
-    if (ev.code === 'Backspace') {
-      // delete elem
-      if (page.activeElem?.exportName !== 'page') {
-        page.removeNode(page.activeElemId);
-      }
-    }
-  }, []);
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ['elem', 'source_elem'],
@@ -63,13 +53,6 @@ function Page({ schema, className }: Props): JSX.Element {
     }),
   }));
 
-  // useEffect(()=> {
-  //   // bind events
-  //   document.addEventListener('keyup', handleKeyPress);
-  //
-  //   return document.addEventListener('keyup', handleKeyPress);
-  // }, []);
-
   useEffect(() => {
     // todo: remove
     if (isDev()) {
@@ -81,8 +64,7 @@ function Page({ schema, className }: Props): JSX.Element {
         storedSchema = null;
       }
       // console.log('storedSchema', storedSchema);
-      // storedSchema && page.setSchema(storedSchema as any);
-      page.setSchema(storedSchema as any);
+      storedSchema && page.setSchema(storedSchema as any);
     }
 
     // sync schema prop with store state
