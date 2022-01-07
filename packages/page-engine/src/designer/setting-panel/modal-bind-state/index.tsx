@@ -79,7 +79,7 @@ function ModalBindState(props: Props): JSX.Element | null {
           expression: convertorExpr,
         },
       };
-      page.updateCurNodeAsLoopContainer(iterableState);
+      page.updateCurNodeAsLoopContainer('iterableState', iterableState);
     } else {
       const fallbackVal = page.activeElemProps[activeFieldName]?.value;
       page.updateElemProperty(page.activeElem.id, `props.${activeFieldName}`, {

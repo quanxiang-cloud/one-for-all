@@ -7,7 +7,7 @@ import { useUpdateEffect } from 'react-use';
 import cs from 'classnames';
 
 import { Button, Icon, Tooltip, Modal, toast } from '@ofa/ui';
-import { useCtx, LoopNodeConf, DataBind } from '@ofa/page-engine';
+import { useCtx, DataBind } from '@ofa/page-engine';
 import { NodePropType, NodeType } from '@ofa/render-engine';
 
 import Section from '../../comps/section';
@@ -43,7 +43,10 @@ function RendererPanel(props: Props): JSX.Element {
   }, [page.activeElemId]);
 
   useUpdateEffect(()=> {
-    console.log('sync all loop conf to elem: %s, %s, %s', toPropsFn, loopKey, bindConst);
+    // console.log('sync all loop conf to elem: %s, %s, %o', toPropsFn, loopKey, toJS(bindConst));
+    // todo: debounce update
+    page.updateCurNodeAsLoopContainer('loopKey', loopKey || defaultLoopKey);
+    page.updateCurNodeAsLoopContainer('toProps', toPropsFn || defaultToPropsFn);
   }, [toPropsFn, loopKey, bindConst]);
 
   function handleBindConstVal(): void {
@@ -60,7 +63,7 @@ function RendererPanel(props: Props): JSX.Element {
         return;
       }
 
-      page.updateCurNodeAsLoopContainer({
+      page.updateCurNodeAsLoopContainer('iterableState', {
         type: NodePropType.ConstantProperty,
         value: bindVal,
       });

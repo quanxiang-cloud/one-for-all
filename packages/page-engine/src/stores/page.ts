@@ -381,22 +381,22 @@ class PageStore {
       iterableState: loopConfig.iterableState || {},
     };
 
-    console.log('set loop node: ', loopNodeConfig);
+    // console.log('set loop node: ', loopNodeConfig);
     this.replaceNode(node_id, loopNodeConfig as any);
   }
 
   @action
-  updateCurNodeAsLoopContainer=(iterableState: any): void=> {
+  updateCurNodeAsLoopContainer=(propKey: string, confItem: any): void=> {
     if (!this.rawActiveElem?.iterableState) {
       // replace current normal node to loop node
-      this.setNodeAsLoopContainer(this.activeElemId, {
-        iterableState: iterableState as any,
-        // loopKey: 'id',
-        // toProps: toPropsExpr,
-      });
+      this.setNodeAsLoopContainer(this.activeElemId, { [propKey]: confItem });
     } else {
       // update loop node iterable state config
-      this.updateElemProperty(this.activeElemId, 'iterableState', iterableState, { useRawNode: true });
+      this.updateElemProperty(this.activeElemId, propKey, propKey === 'toProps' ? {
+        args: 'state',
+        body: confItem || 'return state',
+        type: 'to_props_function_spec',
+      } : confItem, { useRawNode: true });
     }
   }
 
