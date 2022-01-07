@@ -1,10 +1,4 @@
-import {
-  APIStatesSpec,
-  NodePropType,
-  NodeProperty,
-  Serialized,
-  SharedStatesSpec,
-} from '@ofa/render-engine';
+import { APIStatesSpec, NodeProperty, NodePropType, Serialized, SharedStatesSpec } from '@ofa/render-engine';
 
 import { mapValues, mergeWith } from 'lodash';
 
@@ -35,22 +29,24 @@ export function mapRawProps(props: Record<string, NodeProperty<Serialized>>): Re
       return v.fallback;
     }
     // 配置api状态，发送请求
-    if (v.type === NodePropType.APIInvokeProperty) {
-
-    }
+    // if (v.type === NodePropType.APIInvokeProperty) {
+    //   return v;
+    // }
     // api返回结果
     if (v.type === NodePropType.APIResultProperty) {
-
+      return v.fallback;
     }
     // 任意自定义函数
     if (v.type === NodePropType.FunctionalProperty) {
-
+      // fixme
+      return v.func.body;
     }
+    // todo: other property
     return v;
   });
 }
 
-export function mergeProps(prevProps: Record<string, NodeProperty<Serialized>>, newProps: Record<string, any>): Record<string, NodeProperty<Serialized>> {
+export function mergeAsRenderEngineProps(prevProps: Record<string, NodeProperty<Serialized>>, newProps: Record<string, any>): Record<string, NodeProperty<Serialized>> {
   return mergeWith(prevProps, newProps, (v: NodeProperty<Serialized> | undefined, newVal: any)=> {
     if (!v) {
       return { type: NodePropType.ConstantProperty, value: newVal };
@@ -59,7 +55,7 @@ export function mergeProps(prevProps: Record<string, NodeProperty<Serialized>>, 
     if (v.type === NodePropType.ConstantProperty) {
       return Object.assign({}, v, { value: newVal ?? v.value });
     }
-    if (v.type === NodePropType.SharedStateProperty) {
+    if (v.type === NodePropType.SharedStateProperty || v.type === NodePropType.APIResultProperty) {
       return Object.assign({}, v, { fallback: newVal });
     }
     // if (v.type === NodePropType.APIInvokeProperty) {

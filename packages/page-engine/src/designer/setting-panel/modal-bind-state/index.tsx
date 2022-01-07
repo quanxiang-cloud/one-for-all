@@ -5,7 +5,7 @@ import Editor from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { get } from 'lodash';
 
-import { Modal, Icon, toast } from '@ofa/ui';
+import { Icon, Modal, toast, Tooltip } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
 import { NodePropType } from '@ofa/render-engine';
 
@@ -17,41 +17,82 @@ interface Props {
 
 function ModalBindState(props: Props): JSX.Element | null {
   const { designer, dataSource, page } = useCtx();
-  const { setModalBindStateOpen } = designer;
+  const { setModalBindStateOpen, activeFieldName, isLoopNode } = designer;
   const [selected, setSelected] = useState<{name: string, conf: string} | null>(null);
   const [stateExpr, setStateExpr] = useState(''); // 绑定变量的表达式
+  const [convertorExpr, setConvertorExpr] = useState('state'); // 绑定变量的convertor表达式
 
   useEffect(()=> {
-    // get shared state id
-    const bindConf = get(page.activeElem, `props.${designer.activeFieldName}`, {});
+    let bindConf;
+    if (isLoopNode) {
+      // todo: get loop node iterableState bind value
+      bindConf = get(page.rawActiveElem, 'iterableState', {});
+    } else {
+      bindConf = get(page.activeElem, `props.${activeFieldName}`, {});
+    }
+
     if (bindConf.type === NodePropType.SharedStateProperty) {
       const expr = `states['${bindConf.stateID}']`;
       setStateExpr(expr);
+      setConvertorExpr(get(bindConf, 'convertor.expression', ''));
     }
-  }, [page.activeElemProps]);
+
+    if (bindConf.type === NodePropType.APIResultProperty) {
+      const expr = `apiStates['${bindConf.stateID}']`;
+      setStateExpr(expr);
+      setConvertorExpr(get(bindConf, 'convertor.expression', ''));
+    }
+    if (bindConf.type === NodePropType.SharedStateMutationProperty) {
+      // todo
+    }
+  }, [page.activeElemId]);
 
   function handleBind(): void {
     if (!stateExpr) {
       toast.error('变量表达式不能为空');
       return;
     }
-    const propName = designer.activeFieldName;
-    const match = stateExpr.match(/states\['(.+)'\]/);
-    const fallbackVal = page.activeElemProps[propName]?.value;
-    if (!match || !match[1]) {
-      toast.error(`非法的 stateID: ${stateExpr}`);
+    if (!convertorExpr) {
+      toast.error('变量转换函数不能为空');
       return;
     }
-    page.updateElemProperty(page.activeElem.id, `props.${propName}`, {
-      type: NodePropType.SharedStateProperty,
-      stateID: match[1],
-      fallback: fallbackVal,
-      convertor: {
-        type: 'state_convert_expression',
-        // todo
-        expression: 'state',
-      },
-    });
+    if (convertorExpr.indexOf('state') < 0) {
+      toast.error('变量转换函数必须包含 state 来引用当前变量值');
+      return;
+    }
+
+    const match = stateExpr.match(/states\['(.+)'\]/i);
+    if (!match || !match[1]) {
+      toast.error(`无效的 stateID: ${stateExpr}`);
+      return;
+    }
+
+    const nodeType = stateExpr.includes('apiStates[') ? NodePropType.APIResultProperty : NodePropType.SharedStateProperty;
+
+    if (isLoopNode) {
+      const iterableState = {
+        type: nodeType,
+        stateID: match[1],
+        fallback: [],
+        convertor: {
+          type: 'state_convert_expression',
+          expression: convertorExpr,
+        },
+      };
+      page.updateCurNodeAsLoopContainer('iterableState', iterableState);
+    } else {
+      const fallbackVal = page.activeElemProps[activeFieldName]?.value;
+      page.updateElemProperty(page.activeElem.id, `props.${activeFieldName}`, {
+        type: nodeType,
+        stateID: match[1],
+        fallback: fallbackVal,
+        convertor: {
+          type: 'state_convert_expression',
+          expression: convertorExpr,
+        },
+      });
+    }
+
     setModalBindStateOpen(false);
   }
 
@@ -121,15 +162,44 @@ function ModalBindState(props: Props): JSX.Element | null {
           })}
         </div>
         <div className={styles.body}>
-          <Editor
-            value={stateExpr}
-            // theme='dark'
-            height="480px"
-            extensions={[javascript()]}
-            onChange={(value) => {
-              setStateExpr(value);
-            }}
-          />
+          <div className='mb-8'>
+            <p className='flex items-center'>
+              <span className='mr-8'>变量表达式</span>
+              <Tooltip position='top' label='请选择普通变量 或 api变量'>
+                <Icon name='info' />
+              </Tooltip>
+            </p>
+            <Editor
+              value={stateExpr}
+              height="200px"
+              extensions={[javascript()]}
+              onChange={setStateExpr}
+            />
+          </div>
+          <div className='mb-8'>
+            <p className='flex items-center'>
+              <span className='mr-8'>变量转换函数(state convertor)</span>
+              <Tooltip position='top' label='将初始变量进行一次转换，一般用于 api 变量'>
+                <Icon name='info' />
+              </Tooltip>
+            </p>
+            <div className='text-12'>
+              <p>示例:</p>
+              <pre className='text-12 text-blue-400 bg-gray-100'>
+                {'state.user_name'}
+              </pre>
+              <div className='text-gray-400'>
+                <p>state 为页面引擎传入的当前变量(请勿修改名称)，您只需修改state的表达式即可。</p>
+                <p>代码编辑器只接收函数体的表达式，不需要填写完整的函数定义</p>
+              </div>
+            </div>
+            <Editor
+              value={convertorExpr}
+              height="120px"
+              extensions={[javascript()]}
+              onChange={setConvertorExpr}
+            />
+          </div>
         </div>
       </div>
     </Modal>

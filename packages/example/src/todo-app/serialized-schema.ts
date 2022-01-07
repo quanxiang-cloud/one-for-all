@@ -40,6 +40,11 @@ const todoAppSchema: Schema = {
     },
     children: [
       {
+        id: 'ref-schema',
+        type: NodeType.RefNode,
+        schemaID: 'whatever',
+      },
+      {
         id: 'todo-input-html-element',
         type: NodeType.HTMLNode,
         name: 'div',

@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { defaults, isEmpty } from 'lodash';
 
-import { useCtx } from '@ofa/page-engine';
+import { useCtx, DataBind as ConfigBind } from '@ofa/page-engine';
 import { Select, Icon, Button } from '@ofa/ui';
-
-import ConfigBind from '../../../designer/comps/config-item-bind';
 
 import './style.scss';
 

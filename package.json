@@ -10,10 +10,6 @@
     "bootstrap": "lerna bootstrap",
     "clean": "lerna run clean",
     "bundle": "lerna run bundle --stream",
-    "test": "lerna run test",
-    "type-check": "tsc --noEmit --skipLibCheck --pretty -w",
-    "copy:pg-dist": "cp -rf packages/{page-engine,ui}/dist/@ofa/* dist/@ofa/",
-    "bundle:pg": "lerna run bundle --scope @ofa/page-engine --stream",
-    "postbundle:pg": "yarn run copy:pg-dist"
+    "test": "lerna run test"
   }
 }

@@ -1,5 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react';
+import { pickBy } from 'lodash';
+import { useUpdateEffect, useDebounce } from 'react-use';
 
 import { Search, Icon, Tooltip } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
@@ -15,12 +17,26 @@ interface Props {
 
 function SharedState(props: Props): JSX.Element {
   const { dataSource } = useCtx();
-  const noData = !Object.keys(dataSource.sharedState).length;
+  const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [curStates, setCurStates] = useState(dataSource.sharedState);
+
+  useDebounce(()=> {
+    setDebouncedSearch(search);
+  }, 500, [search]);
+
+  useUpdateEffect(()=> {
+    setCurStates(pickBy(dataSource.sharedState, (_, key)=> key.toLowerCase().includes(debouncedSearch.toLowerCase())));
+  }, [debouncedSearch]);
+
+  const noData = !Object.keys(curStates).length;
 
   return (
     <div>
       <Search
         className={styles.search}
+        value={search}
+        onChange={setSearch}
         placeholder='搜索参数名称..'
         // @ts-ignore
         actions={(
@@ -40,7 +56,7 @@ function SharedState(props: Props): JSX.Element {
         )}
         {!noData && (
           <div className='flex flex-col h-full'>
-            {Object.entries(dataSource.sharedState).map(([name, conf]: [string, any]) => {
+            {Object.entries(curStates).map(([name, conf]: [string, any]) => {
               return (
                 <VarItem key={name} name={name} conf={conf} />
               );

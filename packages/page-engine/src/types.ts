@@ -1,5 +1,14 @@
-import { Serialized, BaseNode, NodeType, APIStatesSpec, SharedStatesSpec } from '@ofa/render-engine';
 import React from 'react';
+import {
+  Serialized,
+  BaseNode,
+  NodeType,
+  APIStatesSpec,
+  SharedStatesSpec,
+  PlainState,
+  // ToProps,
+  LoopContainerNode,
+} from '@ofa/render-engine';
 
 export type ReactComp = React.ComponentType | React.JSXElementConstructor<any>;
 
@@ -23,6 +32,11 @@ export interface PageSchema {
   sharedStatesSpec: SharedStatesSpec;
 }
 
+export interface iconStyle {
+  width: string,
+  height: string
+}
+
 export type DragPos = 'up' | 'down' | 'left' | 'right' | 'inner';
 
 // registry types
@@ -33,7 +47,9 @@ export interface SourceElement<T> {
   component: ReactComp;
   defaultConfig: Record<string, any>; // 表单默认配置
   configForm: ReactComp; // 属性配置组件
-  icon: string;
+  icon?: string;
+  iconStyle?: iconStyle;
+  iconSize?: number;
   label: string;
   category: Category;
   toProps?: (formData: any) => T; // 将configForm的配置项转换到 component的 props
@@ -54,4 +70,14 @@ export interface SchemaElements {
   label: string;
   element: Element;
   position: DOMRect;
+}
+
+// loop node types
+export type LoopNode=LoopContainerNode<Serialized>;
+
+export type LoopNodeConf={
+  iterableState: PlainState<Serialized>;
+  loopKey: string;
+  toProps: string; // func body
+  // toProps: ToProps<Serialized>;
 }

@@ -13,9 +13,10 @@ export interface Props {
   textClassName?: string;
   iconClassName?: string;
   style?: React.CSSProperties;
+  onChange?: (...args: any[])=> void;
 }
 
-function ButtonElem(props: Props, ref: any): JSX.Element {
+function ButtonElem(props: Props, ref: React.Ref<HTMLButtonElement>): JSX.Element {
   const { title = '按钮' } = props;
   return (
 

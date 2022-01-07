@@ -1,32 +1,29 @@
-import React from 'react';
+import React, { Children } from 'react';
+
+import cs from 'classnames';
+
+import styles from './index.m.scss';
 
 interface Props {
   className?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode;
+  placeholder?: React.ReactNode;
 }
 
 function Container(
-  { style, children, ...rest }: Props,
+  { className, style, children, placeholder, ...rest }: Props,
   ref: React.LegacyRef<HTMLDivElement>,
 ): JSX.Element {
-  const pathname = window.location.pathname;
-  const isSee = pathname.indexOf('/page-preview') >= 0;
   return (
     <div
       {...rest}
-      style={style}
       ref={ref}
+      className={cs(styles.coll, className)}
+      style={style}
     >
-      {children || (
-        !isSee && (
-          <div
-            style={{ minHeight: 60 }}
-            className="w-full h-full bg-gray-100 border border-dashed flex items-center justify-center"
-          >
-          拖拽组件或模板到这里
-          </div>
-        ))}
+      {children}
+      {!Children.count(children) && placeholder}
     </div>
   );
 }

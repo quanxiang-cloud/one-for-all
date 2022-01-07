@@ -30,4 +30,4 @@ function Link(
   );
 }
 
-export default Link;
+export default React.forwardRef(Link);

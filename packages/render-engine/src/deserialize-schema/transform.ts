@@ -1,17 +1,20 @@
 import { logger } from '@ofa/utils';
 
 import {
-  NodeProperty,
-  NodeProperties,
-  Serialized,
-  Instantiated,
-  NodePropType,
-  PlainState,
   CTX,
+  Instantiated,
   LoopContainerNode,
+  NodeProperties,
+  NodeProperty,
+  NodePropType,
+  NodeType,
+  PlainState,
+  RefNode,
+  SchemaNode,
+  Serialized,
 } from '../types';
 import deserializeSchema from './index';
-import { instantiateConvertor, instantiateFuncSpec } from './utils';
+import { instantiateConvertor, instantiateFuncSpec, instantiateLifecycleHook } from './utils';
 
 export function transformLoopNode(
   node: LoopContainerNode<Serialized>,
@@ -36,24 +39,44 @@ export function transformLoopNode(
   };
 }
 
+export function transformRefNode(node: RefNode<Serialized>, ctx: CTX): RefNode<Instantiated> {
+  if (!node.fallback) {
+    return { id: node.id, type: NodeType.RefNode, schemaID: node.schemaID };
+  }
+
+  return {
+    id: node.id,
+    type: NodeType.RefNode,
+    schemaID: node.schemaID,
+    fallback: transformNode(node.fallback, ctx),
+  };
+}
+
+export function transformNode(node: SchemaNode<Serialized>, ctx: CTX): SchemaNode<Instantiated> {
+  if (node.type === NodeType.LoopContainerNode) {
+    return transformLoopNode(node, ctx);
+  }
+
+  if (node.type === NodeType.ComposedNode) {
+    throw new Error('unimplemented');
+  }
+
+  if (node.type === NodeType.RefNode) {
+    return transformRefNode(node, ctx);
+  }
+
+  const children = (node.children || []).map((n) => transformNode(n, ctx));
+
+  return {
+    ...node,
+    lifecycleHooks: node.lifecycleHooks ? instantiateLifecycleHook(node.lifecycleHooks, ctx) : undefined,
+    children,
+    props: transformProps(node.props || {}, ctx),
+  };
+}
+
 export function transformProps(props: NodeProperties<Serialized>, ctx: CTX): NodeProperties<Instantiated> {
   return Object.entries(props).map<[string, NodeProperty<Instantiated>] | null>(([propName, propDesc]) => {
-    // instantiate Array<APIInvokeProperty<T>>
-    // if (Array.isArray(propDesc)) {
-    //   return [
-    //     propName,
-    //     propDesc.map(({ type, stateID, paramsBuilder, onSuccess, onError }) => {
-    //       return {
-    //         type,
-    //         stateID,
-    //         paramsBuilder: paramsBuilder ? instantiateFuncSpec(paramsBuilder, ctx) : undefined,
-    //         onSuccess: onSuccess ? instantiateFuncSpec(onSuccess, ctx) : undefined,
-    //         onError: onError ? instantiateFuncSpec(onError, ctx) : undefined,
-    //       };
-    //     }),
-    //   ];
-    // }
-
     if (
       propDesc.type === NodePropType.ConstantProperty ||
       propDesc.type === NodePropType.APILoadingProperty

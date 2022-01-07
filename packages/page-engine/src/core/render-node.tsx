@@ -4,6 +4,7 @@ import { useDrag, useDrop, DragPreviewImage } from 'react-dnd';
 import { defaults, flow } from 'lodash';
 import { toJS } from 'mobx';
 
+import { Icon } from '@ofa/ui';
 import { PageNode, useCtx } from '@ofa/page-engine';
 import { NodeType } from '@ofa/render-engine';
 
@@ -11,7 +12,7 @@ import { mapRawProps } from '../utils/schema-adapter';
 import { elemId } from '../utils';
 import { encode } from '../utils/base64';
 
-// import styles from './index.m.scss';
+import styles from './index.m.scss';
 
 interface Props {
   schema: PageNode,
@@ -114,7 +115,27 @@ function RenderNode({ schema }: Props): JSX.Element {
     const toProps = elemConf?.toProps || identity;
     const elemProps = defaults({}, mapRawProps(schema.props || {}), elemConf?.defaultConfig);
 
-    // console.log({ ref: boxRef });
+    // patch certain elem's props
+    if (schema.type === NodeType.ReactComponentNode) {
+      // add placeholder to page elem
+      if (schema.exportName === 'page' && !schema.children?.length) {
+        Object.assign(elemProps, { placeholder: (
+          <div className='flex flex-col items-center justify-center absolute w-full h-full'>
+            <Icon name='pg-engine-empty' size={120} />
+            <p className='text-gray-400 text-12'>开始构建页面，从左侧 组件库或模版库 面板中拖入元素</p>
+          </div>
+        ) });
+      }
+
+      // add placeholder to container elem
+      if (schema.exportName === 'container' && !schema.children?.length) {
+        Object.assign(elemProps, { placeholder: (
+          <div className={styles.emptyContainer}>
+              拖拽组件或模板到这里
+          </div>
+        ) });
+      }
+    }
 
     return Object.assign(toProps(elemProps), {
       'data-node-key': schema.id,

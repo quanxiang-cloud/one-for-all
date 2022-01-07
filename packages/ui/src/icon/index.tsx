@@ -38,9 +38,9 @@ function Icon(
   ref?: React.Ref<SVGSVGElement>,
 ): JSX.Element {
   const _style: React.CSSProperties = {
-    ...style,
     width: `${size}px`,
     height: `${size}px`,
+    ...style,
   };
 
   return (

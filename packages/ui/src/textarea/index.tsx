@@ -9,22 +9,20 @@ export interface Props {
   rows?: number;
   minLength?: number;
   maxLength?: number;
-  required?: boolean;
 }
 
 function Textarea(props: Props, ref: React.LegacyRef<HTMLDivElement>): JSX.Element {
-  const { placeholder, cols, rows, minLength, maxLength, required, ...rest } = props;
+  const { placeholder, cols, rows, minLength, maxLength, ...rest } = props;
 
   return (
     <div {...rest} ref={ref}>
       <textarea
+        className="pl-5"
         placeholder={placeholder || '请输入内容'}
-        cols={cols}
-        rows={rows}
+        cols={cols} rows={rows}
+        defaultValue=''
         minLength={minLength}
-        maxLength={maxLength}
-        required={required}
-      ></textarea>
+        maxLength={maxLength}></textarea>
     </div>
   );
 }

@@ -11,7 +11,7 @@ const defaultConfig: Props = {};
 
 const elem: SourceElement<Props> = {
   name: 'para',
-  icon: 'apps',
+  icon: 'notes',
   label: '段落',
   category: 'basic',
   component: Paragraph,

@@ -1,14 +1,19 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useCallback, useState, useRef } from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 import { useDrop } from 'react-dnd';
-import { get } from 'lodash';
+import { get, defaults, flow } from 'lodash';
 import { toJS } from 'mobx';
 
-import { PageSchema, useCtx } from '@ofa/page-engine';
+import { PageNode, LoopNode, PageSchema, useCtx } from '@ofa/page-engine';
 import { Icon, Popper } from '@ofa/ui';
+
 import { ElementInfo } from '../types';
 import RenderNode from './render-node';
+import { NodeType } from '@ofa/render-engine';
+import Elem from './elem';
+import { mapRawProps } from '../utils/schema-adapter';
+import { isDev } from '../utils';
 
 import styles from './index.m.scss';
 
@@ -20,11 +25,12 @@ interface Props {
 }
 
 // type NodeProp=ConstantProperty | SharedStateProperty<Serialized> | FunctionalProperty<Serialized>
+const identity = (x: any): any => x;
 
 function Page({ schema, className }: Props): JSX.Element {
   const popperRef = useRef<Popper>(null);
   const reference = useRef<any>(null);
-  const { page } = useCtx();
+  const { page, registry, dataSource } = useCtx();
   const [seat, setSeat] = useState({
     width: 0,
     height: 0,
@@ -34,13 +40,22 @@ function Page({ schema, className }: Props): JSX.Element {
   // console.log(toJS(page.schema));
   const [parentNodes, setParentNodes] = useState<string[]>([]);
 
+  const handleKeyPress = useCallback((ev)=> {
+    if (ev.code === 'Backspace') {
+      // delete elem
+      if (page.activeElem?.exportName !== 'page') {
+        page.removeNode(page.activeElemId);
+      }
+    }
+  }, []);
+
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ['elem', 'source_elem'],
     drop: (item: any, monitor) => {
       if (monitor.didDrop()) {
         return;
       }
-      // console.log('dropped %o onto page: ', item);
+      console.log('dropped %o onto page: ', item);
       page.appendNode(item, null, { renewId: true });
     },
     collect: (monitor) => ({
@@ -48,12 +63,16 @@ function Page({ schema, className }: Props): JSX.Element {
     }),
   }));
 
-  useEffect(() => {
-    // sync schema prop with store state
-    schema && page.setSchema(schema);
+  // useEffect(()=> {
+  //   // bind events
+  //   document.addEventListener('keyup', handleKeyPress);
+  //
+  //   return document.addEventListener('keyup', handleKeyPress);
+  // }, []);
 
+  useEffect(() => {
     // todo: remove
-    if (get(window, 'process.env.NODE_ENV') === 'development') {
+    if (isDev()) {
       // on dev mode
       let storedSchema = localStorage.getItem('page_schema');
       try {
@@ -65,6 +84,9 @@ function Page({ schema, className }: Props): JSX.Element {
       // storedSchema && page.setSchema(storedSchema as any);
       page.setSchema(storedSchema as any);
     }
+
+    // sync schema prop with store state
+    schema && page.setSchema(schema);
   }, []);
 
   useEffect(() => {
@@ -81,9 +103,24 @@ function Page({ schema, className }: Props): JSX.Element {
     }
   }, [page.activeElemId]);
 
+  function transformType(schema: PageNode | LoopNode): string | React.ComponentType {
+    const { type } = schema;
+    if (type === NodeType.ReactComponentNode) {
+      return registry.elementMap?.[schema.exportName]?.component || type;
+    }
+    if (type === NodeType.LoopContainerNode) {
+      const nodeType = get(schema, 'node.exportName');
+      return registry.elementMap[nodeType]?.component;
+    }
+    if (type === NodeType.HTMLNode) {
+      return schema.name || 'div';
+    }
+    return 'div';
+  }
+
   function handleGetElements(): void {
     const root = document.getElementById('all') as HTMLDivElement;
-    const _rootChildren = Array.from(root.children);
+    const _rootChildren = Array.from(root.children || []);
     const elementMap: any = {};
     handleEle(_rootChildren, elementMap);
     page.setSchemaElements(elementMap);
@@ -105,6 +142,36 @@ function Page({ schema, className }: Props): JSX.Element {
     });
   }
 
+  function mergeProps(schema: PageNode): Record<string, any> {
+    const elemConf = registry.getElemByType(schema.exportName) || {};
+    const toProps = elemConf?.toProps || identity;
+    const elemProps = defaults({}, mapRawProps(schema.props || {}), elemConf?.defaultConfig);
+
+    // patch certain elem's props
+    if (schema.type === NodeType.ReactComponentNode) {
+      // add placeholder to page elem
+      if (schema.exportName === 'page' && !schema.children?.length) {
+        Object.assign(elemProps, { placeholder: (
+          <div className='flex flex-col items-center justify-center absolute w-full h-full'>
+            <Icon name='pg-engine-empty' size={120} />
+            <p className='text-gray-400 text-12'>开始构建页面，从左侧 组件库或模版库 面板中拖入元素</p>
+          </div>
+        ) });
+      }
+
+      // add placeholder to container elem
+      if (schema.exportName === 'container' && !schema.children?.length) {
+        Object.assign(elemProps, { placeholder: (
+          <div className={styles.emptyContainer}>
+              拖拽组件或模板到这里
+          </div>
+        ) });
+      }
+    }
+
+    return toProps(elemProps);
+  }
+
   function handleClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
     const { pageX, pageY } = e;
     const checkedNodeIds: string[] = [];
@@ -123,7 +190,7 @@ function Page({ schema, className }: Props): JSX.Element {
     setParentNodes(checkedNodeIds);
     const currActiveId = checkedNodeIds[checkedNodeIds.length - 1];
     if (page.activeElemId === currActiveId) return;
-    page.setActiveElemId(checkedNodeIds[checkedNodeIds.length - 1]);
+    page.setActiveElemId(currActiveId);
   }
 
   function handleElementPosition(ele: Element): void {
@@ -154,6 +221,34 @@ function Page({ schema, className }: Props): JSX.Element {
 
   function handleSelectParenNode(id: string): void {
     page.setActiveElemId(id);
+  }
+
+  const schemaToProps = flow([
+    // mergeStyle,
+    mergeProps,
+  ]);
+
+  function renderNode(schema: PageNode | LoopNode, level = 0): JSX.Element | null | undefined {
+    if (typeof schema !== 'object' || schema === null) {
+      return null;
+    }
+
+    let node;
+
+    if (schema.type === NodeType.LoopContainerNode) {
+      node = (schema as LoopNode).node as PageNode;
+    } else {
+      node = schema;
+    }
+
+    return (
+      <Elem node={node}>
+        {
+          React.createElement(transformType(node), schemaToProps(toJS(node)), ...([].concat(node.children as any))
+            .map((child) => renderNode(child, level + 1)))
+        }
+      </Elem>
+    );
   }
 
   // 监听浏览器窗口变动
@@ -243,15 +338,10 @@ function Page({ schema, className }: Props): JSX.Element {
       <div
         id='all'
         onClick={(e) => handleClick(e)}
-        className={cs(styles.page, className, '哈哈哈哈')}
+        className={cs(styles.page, className)}
         ref={drop}
       >
-        {/* {renderNode(page.schema.node)} */}
-        {/* {
-          (page.schema.node.children && page.schema.node.children.length > 0) && ( */}
         <RenderNode schema={page.schema.node} />
-        {/* )
-        } */}
       </div>
     </div>
   );
