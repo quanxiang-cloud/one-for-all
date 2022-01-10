@@ -12,15 +12,13 @@ import { mapRawProps } from '../utils/schema-adapter';
 import { elemId } from '../utils';
 import { encode } from '../utils/base64';
 
-import styles from './index.m.scss';
-
 interface Props {
   schema: PageNode,
 }
 
 const identity = (x: any): any => x;
 
-function RenderNode({ schema }: Props): JSX.Element | null {
+function NodeRender({ schema }: Props): JSX.Element | null {
   if (typeof schema !== 'object' || !schema) {
     return null;
   }
@@ -119,6 +117,7 @@ function RenderNode({ schema }: Props): JSX.Element | null {
     return `data:image/svg+xml;base64,${encode(svg)}`;
   }
 
+  // todo: refine
   drag(drop(boxRef));
 
   function mergeProps(schema: PageNode): Record<string, any> {
@@ -195,10 +194,10 @@ function RenderNode({ schema }: Props): JSX.Element | null {
           transformType(node),
           schemaToProps(toJS(node)),
           ...([].concat(node.children as any))
-            .map((child, idx) => <RenderNode key={node.id + idx} schema={child} />))
+            .map((child, idx) => <NodeRender key={node.id + idx} schema={child} />))
       }
     </>
   );
 }
 
-export default RenderNode;
+export default NodeRender;

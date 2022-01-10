@@ -5,6 +5,7 @@
   "license": "MIT",
   "author": "sunnyw <sunnywang@yunify.com>",
   "main": "dist/index.js",
+  "type": "module",
   "module": "lib",
   "types": "lib/src/index.d.ts",
   "files": [

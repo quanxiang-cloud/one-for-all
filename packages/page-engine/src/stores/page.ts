@@ -9,8 +9,6 @@ import registry from './registry';
 import dataSource from './data-source';
 import type { DragPos, PageNode, PageSchema, SchemaElements, SourceElement } from '../types';
 import { mapRawProps, mergeAsRenderEngineProps, transformLifecycleHooks } from '../utils/schema-adapter';
-import { STYLE_NUMBER } from '../config/default-styles';
-import React from 'react';
 
 type Mode = 'design' | 'preview'
 
@@ -63,6 +61,7 @@ class PageStore {
   @observable activeElemId = ''
   @observable dragPos: DragPos = 'down'
   @observable schemaElements: Record<string, SchemaElements> = {}
+  @observable parentNodes: string[]=[] // canvas cur node's parents
 
   constructor() {
     makeObservable(this);
@@ -423,6 +422,11 @@ class PageStore {
   @action
   setSchemaElements = (elements: Record<string, SchemaElements>): void => {
     this.schemaElements = elements;
+  }
+
+  @action
+  setParentNodes=(node_ids: string[])=> {
+    this.parentNodes = node_ids;
   }
 }
 

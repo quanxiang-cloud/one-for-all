@@ -8,15 +8,11 @@ import { configure } from 'mobx';
 import Toolbar from './toolbar';
 import SourcePanel from './source-panel';
 import SettingPanel from './setting-panel';
-import Page from '../core/page';
+import Canvas from '../core/canvas';
 import Ctx from '../ctx';
 import stores from '../stores';
 import type { PageNode } from '../types';
 import { isDev } from '../utils';
-
-// todo: move mock schema into unit test
-// import schemaWithApiState from '../mock-schema/with-api-state';
-// import schemaWithLoopNode from '../mock-schema/loop-node';
 
 import styles from './index.m.scss';
 
@@ -67,10 +63,7 @@ function Designer({ className, onSave, docLink, hideTestPreview }: Props): JSX.E
             [styles.pinned]: designer.panelOpen && designer.panelPinned,
           })}>
             <SourcePanel />
-            <Page
-              className={cs('my-8', styles.canvas)}
-              // schema={schemaWithLoopNode as any}
-            />
+            <Canvas className={cs('my-8', styles.canvas)} />
             <SettingPanel />
           </div>
         </div>

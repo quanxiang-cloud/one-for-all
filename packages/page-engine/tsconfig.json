@@ -3,13 +3,10 @@
   "compilerOptions": {
     "outDir": "lib",
     "rootDir": ".",
-    "module": "esnext",
-    "skipLibCheck": true
+    "module": "esnext"
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "types/*.d.ts"
+    "src/**/*"
   ],
   "exclude": [
     "**/__tests__"

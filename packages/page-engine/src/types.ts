@@ -6,7 +6,6 @@ import {
   APIStatesSpec,
   SharedStatesSpec,
   PlainState,
-  // ToProps,
   LoopContainerNode,
 } from '@ofa/render-engine';
 
@@ -79,5 +78,4 @@ export type LoopNodeConf={
   iterableState: PlainState<Serialized>;
   loopKey: string;
   toProps: string; // func body
-  // toProps: ToProps<Serialized>;
 }
