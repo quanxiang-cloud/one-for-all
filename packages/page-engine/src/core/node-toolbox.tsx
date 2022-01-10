@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useImperativeHandle } from 'react';
 import { observer } from 'mobx-react';
+import { toJS } from 'mobx';
 
 import { useCtx } from '@ofa/page-engine';
 import { Icon, Popper } from '@ofa/ui';
@@ -8,7 +9,7 @@ interface Props {
   className?: string;
 }
 
-function NodeToolbox(props: Props): JSX.Element {
+function NodeToolbox(props: Props, ref: any): JSX.Element {
   const popperRef = useRef<Popper>(null);
   const reference = useRef<any>(null);
   const { page, registry, dataSource } = useCtx();
@@ -17,6 +18,12 @@ function NodeToolbox(props: Props): JSX.Element {
     height: 0,
     x: 0,
     y: 0,
+  });
+
+  useImperativeHandle(ref, () => {
+    return {
+      computedPlace,
+    };
   });
 
   useEffect(()=> {
@@ -31,11 +38,7 @@ function NodeToolbox(props: Props): JSX.Element {
   }, []);
 
   useEffect(() => {
-    if (page.activeElemId) {
-      const elementInfo = page.schemaElements[page.activeElemId];
-      const { element } = elementInfo;
-      handleElementPosition(element);
-    }
+    computedPlace();
   }, [page.activeElemId]);
 
   function handleElementPosition(ele: Element): void {
@@ -48,6 +51,14 @@ function NodeToolbox(props: Props): JSX.Element {
         x: x - _p.x,
         y: y - _p.y,
       });
+    }
+  }
+
+  function computedPlace(): void {
+    if (page.activeElemId) {
+      const elementInfo = page.schemaElements[page.activeElemId];
+      const { element } = elementInfo;
+      handleElementPosition(element);
     }
   }
 
@@ -79,7 +90,7 @@ function NodeToolbox(props: Props): JSX.Element {
             }}>
               <div
                 className='h-20 border border-black flex absolute'
-                style={{ top: '22px', right: '-2px', pointerEvents: 'all' }}
+                style={{ bottom: '-22px', right: '-2px', pointerEvents: 'all' }}
               >
                 <div
                   className='mr-4 px-4 flex items-center bg-gradient-to-r from-blue-500 to-blue-600
@@ -137,4 +148,4 @@ function NodeToolbox(props: Props): JSX.Element {
   );
 }
 
-export default observer(NodeToolbox);
+export default observer(React.forwardRef(NodeToolbox));

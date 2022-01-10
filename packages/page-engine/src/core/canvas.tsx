@@ -22,6 +22,7 @@ interface Props {
 
 function Canvas({ schema, className }: Props): JSX.Element {
   const { page, registry, dataSource } = useCtx();
+  const toolRef = useRef<any>();
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ['elem', 'source_elem'],
@@ -46,6 +47,7 @@ function Canvas({ schema, className }: Props): JSX.Element {
   useEffect(() => {
     setTimeout(() => {
       handleGetElements();
+      toolRef.current.computedPlace();
     }, 100);
   }, [toJS(page.schema.node)]);
 
@@ -96,7 +98,7 @@ function Canvas({ schema, className }: Props): JSX.Element {
 
   return (
     <div className='relative bg-red' id="page-engine-canvas">
-      <NodeToolbox />
+      <NodeToolbox ref={toolRef} />
       <div
         id='all'
         onClick={handleClick}
