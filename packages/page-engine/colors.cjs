@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   // current: 'currentColor',
   black: {
     50: 'var(--black-50)',

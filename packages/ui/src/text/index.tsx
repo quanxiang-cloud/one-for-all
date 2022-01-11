@@ -9,7 +9,7 @@ export interface Props {
   children?: React.ReactNode;
 }
 
-function Text({ content, isAllowSelect, style, className, ...rest }: Props, ref: any): JSX.Element {
+function Text({ content = '文本', isAllowSelect, style, className, ...rest }: Props, ref: any): JSX.Element {
   return (
     <span
       {...rest}
@@ -19,7 +19,7 @@ function Text({ content, isAllowSelect, style, className, ...rest }: Props, ref:
         'user-select': isAllowSelect ? 'none' : 'auto',
       }, className)}
     >
-      {content || '文本'}
+      {content}
     </span>
   );
 }

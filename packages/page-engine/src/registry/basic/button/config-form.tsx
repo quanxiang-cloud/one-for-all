@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { defaults } from 'lodash';
+import { defaults, noop } from 'lodash';
 
 import { useCtx, DataBind as ConfigBind } from '@ofa/page-engine';
 import { Select } from '@ofa/ui';
@@ -24,6 +24,7 @@ const defaultConfig = {
   iconName: '',
   preview: false,
   closeOnMaskClick: false,
+  onClick: noop,
 };
 
 function ConfigForm(): JSX.Element {

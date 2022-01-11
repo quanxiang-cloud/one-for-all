@@ -1,4 +1,4 @@
-const colors = require('./colors');
+const colors = require('./colors.cjs');
 
 module.exports = {
   // mode: 'jit', // dev mode disable jit for better css debug
