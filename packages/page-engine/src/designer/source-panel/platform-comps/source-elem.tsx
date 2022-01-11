@@ -47,7 +47,7 @@ function SourceElem(props: SourceElement<any>): JSX.Element {
       <div className='w-full h-40 flex items-center justify-center bg-gray-50'>
         <Icon
           name={props.icon || 'insert_drive_file'}
-          size={props.iconSize || 24}
+          size={48}
         />
       </div>
       <div>

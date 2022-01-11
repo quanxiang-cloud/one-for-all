@@ -11,7 +11,6 @@ const defaultConfig: Props = {};
 const elem: SourceElement<Props> = {
   name: 'container',
   icon: 'single-container',
-  iconSize: 48,
   label: '容器',
   category: 'layout',
   component: Container,

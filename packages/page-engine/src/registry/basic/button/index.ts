@@ -11,7 +11,6 @@ const defaultConfig: Props = {};
 const elem: SourceElement<Props> = {
   name: 'button',
   icon: 'button-component',
-  iconSize: 48,
   label: '按钮',
   category: 'basic',
   component: ButtonElem,
