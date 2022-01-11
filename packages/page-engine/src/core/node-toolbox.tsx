@@ -96,8 +96,9 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
                 style={{ bottom: '-22px', right: '-2px', pointerEvents: 'all' }}
               >
                 <div
-                  className='mr-4 px-4 flex items-center bg-gradient-to-r from-blue-500 to-blue-600
-                  rounded-2 cursor-pointer'
+                  // bg-gradient-to-r from-blue-500 to-blue-600
+                  className='mr-4 px-4 flex items-center rounded-2 cursor-pointer'
+                  style={{ backgroundColor: '#006cff', borderRadius: 2 }}
                   ref={reference}
                 >
                   <Icon name='insert_drive_file' color='white' className='mr-4' clickable />
@@ -134,7 +135,10 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
                   getParentList().map((item) => {
                     return (
                       <li className='mb-2' key={item.value} onClick={() => page.setActiveElemId(item.value)}>
-                        <div className='px-4 flex items-center bg-gray-400 rounded-2 cursor-pointer'>
+                        <div
+                          className='px-4 flex items-center rounded-2 cursor-pointer' // bg-gray-400
+                          style={{ backgroundColor: '#94A3B8', borderRadius: 2 }}
+                        >
                           <Icon name='insert_drive_file' color='white' className='mr-4' clickable />
                           <span className='text-12 text-white whitespace-nowrap'>{item.label}</span>
                         </div>
