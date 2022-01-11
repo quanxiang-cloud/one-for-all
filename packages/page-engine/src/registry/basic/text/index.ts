@@ -12,11 +12,7 @@ const defaultConfig: Props = {};
 const elem: SourceElement<Props> = {
   name: 'text',
   icon: 'text-component',
-  iconSize: 32,
-  // iconStyle: {
-  //   width: '48px',
-  //   height: '24px',
-  // },
+  iconSize: 48,
   label: '文本',
   category: 'basic',
   component: Text,

@@ -10,12 +10,8 @@ const defaultConfig: Props = {};
 
 const elem: SourceElement<Props> = {
   name: 'iframe',
-  icon: 'layout-container',
+  icon: 'iframe-component',
   iconSize: 48,
-  iconStyle: {
-    width: '48px',
-    height: '28px',
-  },
   label: 'Iframe',
   category: 'advanced',
   component: Iframe,

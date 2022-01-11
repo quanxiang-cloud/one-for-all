@@ -44,11 +44,10 @@ function SourceElem(props: SourceElement<any>): JSX.Element {
       ref={drag}
       onClick={(ev)=> addNodeToCanvas()}
     >
-      <div>
+      <div className='w-full h-40 flex items-center justify-center bg-gray-50'>
         <Icon
           name={props.icon || 'insert_drive_file'}
           size={props.iconSize || 24}
-          style={props.iconStyle || {}}
         />
       </div>
       <div>

@@ -6,10 +6,6 @@ const elem: SourceElement<GridProps> = {
   name: 'grid',
   icon: 'layout-container',
   iconSize: 48,
-  iconStyle: {
-    width: '48px',
-    height: '28px',
-  },
   label: '布局容器',
   category: 'layout',
   component: Grid,

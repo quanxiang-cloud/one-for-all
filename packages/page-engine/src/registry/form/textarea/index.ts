@@ -12,7 +12,8 @@ type Props = {
 
 const elem: SourceElement<Props> = {
   name: 'textarea',
-  icon: 'featured_play_list',
+  icon: 'text-component',
+  iconSize: 48,
   label: '多行文本',
   category: 'form',
   component: Textarea,
