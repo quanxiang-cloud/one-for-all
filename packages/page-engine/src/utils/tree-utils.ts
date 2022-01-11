@@ -1,4 +1,5 @@
-import { get } from 'lodash';
+import { get, omit } from 'lodash';
+import { toJS } from 'mobx';
 
 import type { PageNode } from '@ofa/page-engine';
 import { NodeType } from '@ofa/render-engine';
@@ -14,8 +15,21 @@ export function findNode(tree: PageNode, node_id?: string): any {
   }
   // if loop node, return wrapper node
   if (tree.type === NodeType.LoopContainerNode && get(tree, 'node.id') === node_id) {
-    return tree;
+    const loopChildren = tree.node.children || [];
+    if (loopChildren) {
+      for (const child of loopChildren) {
+        const found = findNode(child as PageNode, node_id);
+        if (found) {
+          return found;
+        }
+      }
+    }
+
+    if (get(tree, 'node.id') === node_id) {
+      return tree;
+    }
   }
+
   if (tree.id === node_id) {
     return tree;
   }

@@ -76,6 +76,7 @@ function Canvas({ schema, className }: Props): JSX.Element {
   }
 
   function handleClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
+    e.stopPropagation();
     const { pageX, pageY } = e;
     const checkedNodeIds: string[] = [];
     const elementMap = toJS(page.schemaElements);

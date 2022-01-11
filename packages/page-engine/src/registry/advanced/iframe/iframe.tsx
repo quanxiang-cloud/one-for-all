@@ -21,7 +21,11 @@ function Iframe({
 }: Props, ref: React.LegacyRef<HTMLIFrameElement>): JSX.Element {
   if (!iframeAddr) {
     return (
-      <div className="bg-gray-200 h-200 flex justify-center items-center text-20">
+      <div
+        {...rest}
+        ref={ref}
+        className="bg-gray-200 h-200 flex justify-center items-center text-20"
+      >
         iframe 占位
       </div>
     );
