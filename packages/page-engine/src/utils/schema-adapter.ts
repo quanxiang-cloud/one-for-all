@@ -1,6 +1,6 @@
 import { APIStatesSpec, NodeProperty, NodePropType, Serialized, SharedStatesSpec } from '@ofa/render-engine';
 
-import { mapValues, mergeWith } from 'lodash';
+import { mapValues, mergeWith, noop } from 'lodash';
 
 export function mapApiState(states: Record<string, string>): APIStatesSpec {
   return Object.entries(states).reduce((memo: Record<string, any>, [k, v]: [string, string])=> {
@@ -38,8 +38,9 @@ export function mapRawProps(props: Record<string, NodeProperty<Serialized>>): Re
     }
     // 任意自定义函数
     if (v.type === NodePropType.FunctionalProperty) {
-      // fixme
-      return v.func.body;
+      // fixme: since func prop body may bind render engine ctx, we set it noop
+      // return v.func.body;
+      return noop;
     }
     // todo: other property
     return v;

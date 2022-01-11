@@ -9,8 +9,6 @@ import registry from './registry';
 import dataSource from './data-source';
 import type { DragPos, PageNode, PageSchema, SchemaElements, SourceElement } from '../types';
 import { mapRawProps, mergeAsRenderEngineProps, transformLifecycleHooks } from '../utils/schema-adapter';
-import { STYLE_NUMBER } from '../config/default-styles';
-import React from 'react';
 
 type Mode = 'design' | 'preview'
 
@@ -28,6 +26,48 @@ function deepMergeNode(node: PageNode): PageNode {
     // @ts-ignore
     target.children = target.children.map(deepMergeNode);
   }
+  return target;
+}
+
+function generatorGridChildren(
+  node: Omit<PageNode, 'type'| 'id'>,
+  parentId: string,
+  conf?: any,
+): Omit<PageNode, 'type'| 'id'> {
+  const target = node;
+  const { defaultConfig, children } = target;
+  const { colRatio = '12' } = conf || defaultConfig;
+  const scaleArray: string[] = colRatio.split(':');
+  if (children?.length === scaleArray.length) return target;
+  const _children: any[] = [];
+  scaleArray.map((item) => {
+    _children.push({
+      id: elemId('container'),
+      pid: parentId,
+      type: NodeType.ReactComponentNode,
+      exportName: 'container',
+      packageName: 'ofa-ui',
+      packageVersion: 'latest',
+      label: '布局',
+      props: {
+        style: {
+          type: NodePropType.ConstantProperty,
+          value: {
+            display: 'flex',
+            flexFlow: 'column nowrap',
+            justifyContent: 'flex-start',
+            alignItems: 'stretch',
+            gridArea: `span 1 / span ${item} / auto / auto`,
+            minWidth: 'auto',
+          },
+        },
+      },
+      children: [],
+    });
+  });
+
+  target.children = _children;
+
   return target;
 }
 
@@ -63,6 +103,7 @@ class PageStore {
   @observable activeElemId = ''
   @observable dragPos: DragPos = 'down'
   @observable schemaElements: Record<string, SchemaElements> = {}
+  @observable parentNodes: string[]=[] // canvas cur node's parents
 
   constructor() {
     makeObservable(this);
@@ -155,25 +196,27 @@ class PageStore {
       Object.assign(params, { children: [] });
       // check layout comps
       if (node.exportName === 'grid') {
-        const subComp = 'container';
-        params.children = [
-          {
-            id: elemId(subComp),
-            pid: params.id,
-            type: NodeType.ReactComponentNode,
-            exportName: subComp,
-            packageName: 'ofa-ui',
-            packageVersion: 'latest',
-            label: '容器',
-            props: {
-              style: {
-                type: NodePropType.ConstantProperty,
-                value: node.defaultStyle || {},
-              },
-            },
-            children: [],
-          },
-        ];
+        params.children = generatorGridChildren(node, params.id || '').children;
+        // const { defaultConfig } = node;
+        // const subComp = 'container';
+        // params.children = [
+        //   {
+        //     id: elemId(subComp),
+        //     pid: params.id,
+        //     type: NodeType.ReactComponentNode,
+        //     exportName: subComp,
+        //     packageName: 'ofa-ui',
+        //     packageVersion: 'latest',
+        //     label: '布局',
+        //     props: {
+        //       style: {
+        //         type: NodePropType.ConstantProperty,
+        //         value: node.defaultStyle || {},
+        //       },
+        //     },
+        //     children: [],
+        //   },
+        // ];
       }
     }
 
@@ -330,6 +373,9 @@ class PageStore {
 
       if (propKey === 'props') {
         set(actualNode, propKey, mergeAsRenderEngineProps(toJS(this.activeElem?.props), conf));
+        if (actualNode.exportName === 'grid') {
+          set(actualNode, 'children', generatorGridChildren(actualNode, actualNode.id, conf).children);
+        }
       } else if (propKey === 'props.style') {
         // fixme: style bind variable
         set(actualNode, propKey, { type: NodePropType.ConstantProperty, value: conf });
@@ -423,6 +469,11 @@ class PageStore {
   @action
   setSchemaElements = (elements: Record<string, SchemaElements>): void => {
     this.schemaElements = elements;
+  }
+
+  @action
+  setParentNodes=(node_ids: string[])=> {
+    this.parentNodes = node_ids;
   }
 }
 

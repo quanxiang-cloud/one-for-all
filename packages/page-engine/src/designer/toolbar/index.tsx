@@ -40,6 +40,14 @@ function Toolbar({ docLink = '', hideTestPreview }: Props): JSX.Element {
     const renderSchema = toJS(page.schema);
     console.log('preview render schema: ', renderSchema);
     ctx.onSave?.(renderSchema, { draft: true, silent: true });
+    // open new page
+    const aElem = document.createElement('a');
+    Object.assign(aElem, {
+      href: location.href.replace(/\/page-design/, '/page-preview'),
+      rel: 'noopener noreferrer',
+      target: '_blank',
+    });
+    aElem.click();
   }
 
   function renderSchemaRender(): JSX.Element {
@@ -84,15 +92,7 @@ function Toolbar({ docLink = '', hideTestPreview }: Props): JSX.Element {
           </>
         )}
         <Divider />
-        <Button iconName='preview' onClick={handlePreview}>
-          <a
-            href={location.href.replace(/\/page-design/, '/page-preview')}
-            target='_blank'
-            rel="noopener noreferrer"
-          >
-            预览
-          </a>
-        </Button>
+        <Button iconName='preview' onClick={handlePreview}>预览</Button>
         <Divider />
         <Button iconName='save' onClick={handleSave} className={styles.btnSave}>保存</Button>
         <Button iconName='save' modifier='primary' onClick={saveAndExit}>保存并退出</Button>

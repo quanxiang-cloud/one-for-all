@@ -6,7 +6,6 @@ import {
   APIStatesSpec,
   SharedStatesSpec,
   PlainState,
-  // ToProps,
   LoopContainerNode,
 } from '@ofa/render-engine';
 
@@ -23,6 +22,7 @@ export interface PageNode extends BaseNode<Serialized> {
   packageVersion?: 'latest' | string;
   exportName: 'page' | 'elemName' | string; // registry elem type
   children?: Array<PageNode>
+  defaultConfig?: any;
   defaultStyle?: React.CSSProperties;
 }
 
@@ -79,5 +79,4 @@ export type LoopNodeConf={
   iterableState: PlainState<Serialized>;
   loopKey: string;
   toProps: string; // func body
-  // toProps: ToProps<Serialized>;
 }

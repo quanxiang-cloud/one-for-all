@@ -76,7 +76,7 @@ function EventPanel({ className }: Props): JSX.Element {
       return !!get(page.activeElem.lifecycleHooks, actionName);
     }
     // todo: just check type is functional property?
-    return get(elemProps, `${curAction}.type`) === NodePropType.FunctionalProperty;
+    return get(elemProps, `${actionName}.type`) === NodePropType.FunctionalProperty;
   }
 
   function renderBoundActions(): JSX.Element {

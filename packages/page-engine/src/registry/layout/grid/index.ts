@@ -19,6 +19,9 @@ const elem: SourceElement<GridProps> = {
   order: 1,
   acceptChild: true,
   exportActions: [],
+  defaultStyle: {
+    marginBottom: 16,
+  },
 };
 
 export default elem;
