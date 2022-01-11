@@ -10,7 +10,7 @@ const defaultConfig: Props = {};
 
 const elem: SourceElement<Props> = {
   name: 'container',
-  icon: 'view_agenda',
+  icon: 'single-container',
   label: '容器',
   category: 'layout',
   component: Container,

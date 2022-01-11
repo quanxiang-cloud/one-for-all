@@ -11,7 +11,7 @@ const defaultConfig: Props = {};
 
 const elem: SourceElement<Props> = {
   name: 'image',
-  icon: 'insert_photo',
+  icon: 'image-component',
   label: '图片',
   category: 'basic',
   component: Image,
