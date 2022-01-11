@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDrag } from 'react-dnd';
 import cs from 'classnames';
+import { toJS } from 'mobx';
 
 import { Icon } from '@ofa/ui';
 import { useCtx, SourceElement } from '@ofa/page-engine';
@@ -12,10 +13,11 @@ function SourceElem(props: SourceElement<any>): JSX.Element {
   const compName = props.name.toLowerCase();
 
   function addNodeToCanvas(target?: any): void {
-    const { defaultStyle } = props;
+    const { defaultStyle, defaultConfig } = props;
     page.appendNode({
       exportName: compName,
       label: registry.getLabelByElemType(compName),
+      defaultConfig: toJS(defaultConfig),
       defaultStyle: {
         // ...InitStyles,
         ...defaultStyle,

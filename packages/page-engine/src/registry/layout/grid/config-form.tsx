@@ -5,7 +5,7 @@ import { Select, GridProps } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
 
 export const defaultConfig: GridProps = {
-  colRatio: '12',
+  colRatio: '12:9:3',
   colGap: '8px',
 };
 

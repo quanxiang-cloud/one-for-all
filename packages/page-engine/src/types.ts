@@ -22,6 +22,7 @@ export interface PageNode extends BaseNode<Serialized> {
   packageVersion?: 'latest' | string;
   exportName: 'page' | 'elemName' | string; // registry elem type
   children?: Array<PageNode>
+  defaultConfig?: any;
   defaultStyle?: React.CSSProperties;
 }
 

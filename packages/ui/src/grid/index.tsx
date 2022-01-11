@@ -1,20 +1,26 @@
 import React from 'react';
-import cs from 'classnames';
 
 import { GridProps } from '../types';
 
-import styles from './index.m.scss';
+const DefaultStyles: React.CSSProperties = {
+  display: 'grid',
+  gap: '16px',
+  gridTemplateColumns: 'repeat(12, 1fr)',
+  placeItems: 'stretch',
+  gridAutoRows: 'auto',
+  gridArea: 'span 1 / span 1 / auto / auto',
+};
 
-function Grid({ className, style, colRatio, colGap, children }: GridProps, ref: any): JSX.Element {
+function Grid(
+  { className, style, colRatio, colGap, children, ...rest }: GridProps,
+  ref: React.LegacyRef<HTMLDivElement>,
+): JSX.Element {
   return (
     <div
+      {...rest}
       ref={ref}
-      className={cs(styles.gridElem, className)}
-      style={{
-        ...style,
-        gridTemplateColumns: colRatio?.split(':').map((v) => `${v}fr`).join(' '),
-        gridColumnGap: colGap,
-      }}
+      className={className}
+      style={{ ...DefaultStyles, ...style }}
     >
       {children}
     </div>
