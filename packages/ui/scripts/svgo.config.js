@@ -32,7 +32,6 @@ const plugins = {
   convertShapeToPath: true,
   sortAttrs: true,
   removeDimensions: true,
-  removeAttrs: { attrs: '(stroke)' },
   removeAttributesBySelector: {
     selectors: [
       { selector: "[fill = 'none']", attributes: 'fill' },
