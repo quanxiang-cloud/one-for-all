@@ -1,5 +1,6 @@
 dist/
 node_modules/
 
-docs/
 src/mock-schema/
+
+/dev-issues.md
