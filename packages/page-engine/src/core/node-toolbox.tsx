@@ -64,11 +64,14 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
 
   function getParentList(): any[] {
     const parentIds = page.parentNodes.slice(0, page.parentNodes.length - 1);
-    return parentIds.map((item) => ({
-      value: item,
-      // label: `容器${index}`,
-      label: page.findElement(item).label || '',
-    })).reverse();
+    return parentIds.map((item) => {
+      const element = page.findElement(item);
+      return ({
+        value: item,
+        // label: `容器${index}`,
+        label: (element && element.label) || '容器',
+      });
+    }).reverse();
   }
 
   return (
@@ -99,7 +102,7 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
                 >
                   <Icon name='insert_drive_file' color='white' className='mr-4' clickable />
                   <span className='text-12 text-white whitespace-nowrap'>
-                    {(page.activeElem.label) || '容器'}
+                    {(page.activeElem && page.activeElem.label) || '容器'}
                   </span>
                 </div>
                 {
