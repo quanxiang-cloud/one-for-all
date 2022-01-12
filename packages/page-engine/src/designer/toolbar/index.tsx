@@ -46,9 +46,9 @@ function Toolbar({ docLink = '', hideTestPreview }: Props): JSX.Element {
     return dispose;
   }, []);
 
-  useEffect(()=> {
-    console.log('cur page schema: ', historyList);
-  }, [historyList]);
+  // useEffect(()=> {
+  //   console.log('cur page schema: ', historyList);
+  // }, [historyList]);
 
   function handleSave(): void {
     const pageSchema = toJS(page.schema);
