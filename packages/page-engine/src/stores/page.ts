@@ -3,12 +3,13 @@ import { cloneDeep, defaults, get, set } from 'lodash';
 
 import { NodePropType, NodeType } from '@ofa/render-engine';
 import { LoopNode, LoopNodeConf } from '@ofa/page-engine';
-import { elemId, isDev } from '../utils';
+import { elemId } from '../utils';
 import { findNode, findParent, removeNode as removeTreeNode } from '../utils/tree-utils';
 import registry from './registry';
 import dataSource from './data-source';
 import type { DragPos, PageNode, PageSchema, SchemaElements, SourceElement } from '../types';
 import { mapRawProps, mergeAsRenderEngineProps, transformLifecycleHooks } from '../utils/schema-adapter';
+import { initPageSchema, deepMergeNode, generateGridChildren } from './page-helpers';
 
 type Mode = 'design' | 'preview'
 
@@ -18,87 +19,8 @@ type AppendNodeOptions = {
   [key: string]: any
 }
 
-function deepMergeNode(node: PageNode): PageNode {
-  const target = toJS(node);
-  Object.assign(target, { id: elemId(node.exportName) });
-  if (target.children) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    target.children = target.children.map(deepMergeNode);
-  }
-  return target;
-}
-
-function generatorGridChildren(
-  node: Omit<PageNode, 'type'| 'id'>,
-  parentId: string,
-  conf?: any,
-): Omit<PageNode, 'type'| 'id'> {
-  const target = node;
-  const { defaultConfig, children } = target;
-  const { colRatio = '12' } = conf || defaultConfig;
-  const scaleArray: string[] = colRatio.split(':');
-  if (children?.length === scaleArray.length) return target;
-  const _children: any[] = [];
-  scaleArray.map((item) => {
-    _children.push({
-      id: elemId('container'),
-      pid: parentId,
-      type: NodeType.ReactComponentNode,
-      exportName: 'container',
-      packageName: 'ofa-ui',
-      packageVersion: 'latest',
-      label: '布局',
-      props: {
-        style: {
-          type: NodePropType.ConstantProperty,
-          value: {
-            display: 'flex',
-            flexFlow: 'column nowrap',
-            justifyContent: 'flex-start',
-            alignItems: 'stretch',
-            gridArea: `span 1 / span ${item} / auto / auto`,
-            minWidth: 'auto',
-          },
-        },
-      },
-      children: [],
-    });
-  });
-
-  target.children = _children;
-
-  return target;
-}
-
-function initialPageSchema(): PageSchema {
-  return {
-    node: {
-      id: elemId('page'),
-      pid: '',
-      type: NodeType.ReactComponentNode,
-      packageName: 'ofa-ui',
-      packageVersion: 'latest',
-      exportName: 'page', // todo
-      label: '页面',
-      props: {
-        style: {
-          type: NodePropType.ConstantProperty,
-          value: {
-            width: '100%',
-            height: '100%',
-          },
-        },
-      },
-      children: [],
-    },
-    apiStateSpec: {},
-    sharedStatesSpec: {},
-  };
-}
-
 class PageStore {
-  @observable schema: PageSchema = initialPageSchema()
+  @observable schema: PageSchema = initPageSchema()
   @observable mode: Mode = 'design'
   @observable activeElemId = ''
   @observable dragPos: DragPos = 'down'
@@ -146,7 +68,7 @@ class PageStore {
       return;
     }
 
-    this.schema = schema || initialPageSchema();
+    this.schema = schema || initPageSchema();
 
     // init data source when set page schema
     runInAction(()=> {
@@ -196,27 +118,7 @@ class PageStore {
       Object.assign(params, { children: [] });
       // check layout comps
       if (node.exportName === 'grid') {
-        params.children = generatorGridChildren(node, params.id || '').children;
-        // const { defaultConfig } = node;
-        // const subComp = 'container';
-        // params.children = [
-        //   {
-        //     id: elemId(subComp),
-        //     pid: params.id,
-        //     type: NodeType.ReactComponentNode,
-        //     exportName: subComp,
-        //     packageName: 'ofa-ui',
-        //     packageVersion: 'latest',
-        //     label: '布局',
-        //     props: {
-        //       style: {
-        //         type: NodePropType.ConstantProperty,
-        //         value: node.defaultStyle || {},
-        //       },
-        //     },
-        //     children: [],
-        //   },
-        // ];
+        params.children = generateGridChildren(node, params.id || '').children;
       }
     }
 
@@ -369,12 +271,12 @@ class PageStore {
         actualNode = elem.node;
       }
 
-      // isDev() && console.log('update node props: ', elem_id, toJS(actualNode), propKey, conf);
+      // console.log('update node props: ', elem_id, toJS(actualNode), propKey, conf);
 
       if (propKey === 'props') {
         set(actualNode, propKey, mergeAsRenderEngineProps(toJS(this.activeElem?.props), conf));
         if (actualNode.exportName === 'grid') {
-          set(actualNode, 'children', generatorGridChildren(actualNode, actualNode.id, conf).children);
+          set(actualNode, 'children', generateGridChildren(actualNode, actualNode.id, conf).children);
         }
       } else if (propKey === 'props.style') {
         // fixme: style bind variable
@@ -460,7 +362,7 @@ class PageStore {
 
   @action
   reset = (): void => {
-    this.schema = initialPageSchema();
+    this.schema = initPageSchema();
     this.mode = 'design';
     this.activeElemId = '';
     this.dragPos = 'down';
@@ -472,7 +374,7 @@ class PageStore {
   }
 
   @action
-  setParentNodes=(node_ids: string[])=> {
+  setParentNodes=(node_ids: string[]): void => {
     this.parentNodes = node_ids;
   }
 }
