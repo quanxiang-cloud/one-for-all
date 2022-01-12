@@ -15,7 +15,7 @@ interface Props
   textClassName?: string;
   iconClassName?: string;
   'data-node-key'?: string;
-  onClick?: () => void;
+  onClick?: (...args: any[]) => void;
 }
 
 function Button(
