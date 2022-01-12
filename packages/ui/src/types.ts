@@ -4,6 +4,7 @@ export interface GridProps {
   className?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode;
+  'data-node-key'?: string;
 }
 
 export interface InputProps {

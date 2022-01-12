@@ -12,6 +12,7 @@ export interface Props {
   iconSize?: number;
   textClassName?: string;
   iconClassName?: string;
+  'data-node-key': string;
   style?: React.CSSProperties;
   onChange?: (...args: any[])=> void;
 }

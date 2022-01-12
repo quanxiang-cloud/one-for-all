@@ -19,13 +19,19 @@ export interface Props {
 }
 
 function ConfigForm(): JSX.Element {
-  const { register, getValues, formState: { errors } } = useForm();
+  const { register, getValues, formState: { errors }, reset } = useForm();
   const { page } = useCtx();
   const [values, setValues] = useState<Props>(defaults(page.activeElemProps, DEFAULT_CONFIG));
 
   useEffect(() => {
     page.updateElemProperty(page.activeElem.id, 'props', values);
   }, [values]);
+
+  useEffect(() => {
+    const _values = page.activeElemProps;
+    setValues(_values);
+    reset(_values);
+  }, [page.activeElemId]);
 
   function handleFormChange(): void {
     const _values = getValues();

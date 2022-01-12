@@ -20,6 +20,10 @@ function ConfigForm(): JSX.Element {
     page.updateElemProperty(page.activeElem.id, 'props', values);
   }, [values]);
 
+  useEffect(() => {
+    setValues(page.activeElemProps);
+  }, [page.activeElemId]);
+
   return (
     <form className='flex flex-col'>
       <div className='mb-8'>

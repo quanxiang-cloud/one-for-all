@@ -1,4 +1,4 @@
-import React, { useState, useContext, HTMLAttributeReferrerPolicy } from 'react';
+import React, { useState, useEffect, HTMLAttributeReferrerPolicy } from 'react';
 import { useForm } from 'react-hook-form';
 import { defaults } from 'lodash';
 
@@ -29,7 +29,7 @@ const DEFAULT_CONFIG: IframeConfigProps = {
 };
 
 function ConfigForm(): JSX.Element {
-  const { register, getValues } = useForm();
+  const { register, getValues, reset } = useForm();
   const { page } = useCtx();
   const [values, setValues] = useState<IframeConfigProps>(defaults(page.activeElemProps, DEFAULT_CONFIG));
 
@@ -38,6 +38,12 @@ function ConfigForm(): JSX.Element {
     setValues(_values);
     page.updateElemProperty(page.activeElem.id, 'props', _values);
   }
+
+  useEffect(() => {
+    const _values = page.activeElemProps;
+    reset(_values);
+    setValues(_values);
+  }, [page.activeElemId]);
 
   return (
     <div>
