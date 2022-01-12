@@ -14,6 +14,8 @@ interface Props
   iconSize?: number;
   textClassName?: string;
   iconClassName?: string;
+  'data-node-key'?: string;
+  onClick?: () => void;
 }
 
 function Button(
@@ -28,6 +30,7 @@ function Button(
     textClassName,
     iconClassName,
     type = 'button',
+    onClick,
     size,
     ...rest
   }: Props,
@@ -35,7 +38,8 @@ function Button(
 ): JSX.Element {
   return (
     <button
-      {...rest}
+      data-node-key={rest['data-node-key']}
+      onClick={onClick}
       type={type}
       ref={ref}
       className={cs('btn', className, {

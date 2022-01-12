@@ -76,7 +76,8 @@ function Canvas({ schema, className }: Props): JSX.Element {
   }
 
   function handleClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
-    e.stopPropagation();
+    e.stopPropagation(); // Onclick event of inner element
+    e.preventDefault(); // Default behavior of the link component
     const { pageX, pageY } = e;
     const checkedNodeIds: string[] = [];
     const elementMap = toJS(page.schemaElements);

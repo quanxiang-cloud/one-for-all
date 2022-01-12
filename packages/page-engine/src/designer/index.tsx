@@ -9,6 +9,7 @@ import Toolbar from './toolbar';
 import SourcePanel from './source-panel';
 import SettingPanel from './setting-panel';
 import Canvas from '../core/canvas';
+// import IFrameDemo from '../core/iframe-demo';
 import Ctx from '../ctx';
 import stores from '../stores';
 import type { PageNode } from '../types';
@@ -64,6 +65,7 @@ function Designer({ className, onSave, docLink, hideTestPreview }: Props): JSX.E
           })}>
             <SourcePanel />
             <Canvas className={cs('my-8', styles.canvas)} />
+            {/* <IFrameDemo /> */}
             <SettingPanel />
           </div>
         </div>

@@ -29,6 +29,10 @@ function ConfigForm(): JSX.Element {
     page.updateElemProperty(page.activeElem.id, 'props', values);
   }, [values]);
 
+  useEffect(() => {
+    setValues(page.activeElemProps);
+  }, [page.activeElemId]);
+
   return (
     <form>
       <div className='mb-8'>
@@ -36,7 +40,7 @@ function ConfigForm(): JSX.Element {
         <div className='flex items-center'>
           <input
             type='text'
-            className='w-full h-32 my-4 px-8 mr-8'
+            className='w-full h-32 my-4 px-8 mr-8 border corner-2-8-8-8 border-gray-300 focus:border-blue-600'
             value={values.content}
             onChange={(ev) => setValues({ ...values, content: ev.target.value })}
           />
@@ -75,7 +79,8 @@ function ConfigForm(): JSX.Element {
             <p className='mr-4 text-12 text-gray-600'>链接地址</p>
             <div className='flex items-center'>
               <input
-                className='w-full h-32 my-4 px-8 mr-8'
+                className='w-full h-32 my-4 px-8 mr-8 border
+                  corner-2-8-8-8 border-gray-300 focus:border-blue-600'
                 value={values.linkUrl}
                 onChange={(ev) => setValues({ ...values, linkUrl: ev.target.value })}
               />
@@ -85,14 +90,15 @@ function ConfigForm(): JSX.Element {
         )
       }
       <div className='mb-8 flex items-center justify-between'>
-        <div className='flex items-center'>
+        <div className='w-full flex items-center'>
           <input
             type="checkbox"
-            className='w-full h-32 my-4 px-8 mr-8'
+            className='w-full h-32 my-4 px-8 mr-4'
+            style={{ width: 15 }}
             value={values.isBlank}
             onChange={(ev) => setValues({ ...values, isBlank: ev.target.value })}
           />
-          <span className='ml-8 text-12 text-gray-900'>新开页面</span>
+          <span className='ml-8 text-12 text-gray-900 whitespace-nowrap'>新开页面</span>
         </div>
         <ConfigBind name='isBlank' />
       </div>

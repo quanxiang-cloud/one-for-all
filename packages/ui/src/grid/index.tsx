@@ -12,12 +12,12 @@ const DefaultStyles: React.CSSProperties = {
 };
 
 function Grid(
-  { className, style, colRatio, colGap, children, ...rest }: GridProps,
+  { className, style, children, ...rest }: GridProps,
   ref: React.LegacyRef<HTMLDivElement>,
 ): JSX.Element {
   return (
     <div
-      {...rest}
+      data-node-key={rest['data-node-key']}
       ref={ref}
       className={className}
       style={{ ...DefaultStyles, ...style }}

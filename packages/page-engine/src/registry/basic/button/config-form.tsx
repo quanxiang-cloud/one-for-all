@@ -35,6 +35,10 @@ function ConfigForm(): JSX.Element {
     page.updateElemProperty(page.activeElem.id, 'props', values);
   }, [values]);
 
+  useEffect(() => {
+    setValues(page.activeElemProps);
+  }, [page.activeElemId]);
+
   return (
     <div>
       <div className="flex flex-col">
@@ -42,8 +46,9 @@ function ConfigForm(): JSX.Element {
         <div className='flex justify-between items-center gap-10'>
           <input
             name='title'
-            className="px-8 py-4 flex-1"
+            className="px-8 py-4 flex-1 border corner-2-8-8-8 border-gray-300 focus:border-blue-600"
             placeholder="请填写"
+            value={values.title || ''}
             onChange={(e) => setValues((prev) => ({ ...prev, title: e.target.value }))}
           />
           <ConfigBind name='title' />
@@ -52,7 +57,7 @@ function ConfigForm(): JSX.Element {
         按钮类型
       <div className="config-item">
         <Select
-          className="my-8 w-full mr-4"
+          className="my-8 w-full mr-4 border corner-2-8-8-8 border-gray-300 focus:border-blue-600"
           options={modifierOptions}
           value={values.modifier}
           onChange={(value) => setValues({ ...values, modifier: value })}
@@ -61,7 +66,7 @@ function ConfigForm(): JSX.Element {
         按钮大小
       <div className="config-item">
         <Select
-          className="my-8 w-full mr-4"
+          className="my-8 w-full mr-4 border corner-2-8-8-8 border-gray-300 focus:border-blue-600"
           options={sizeOptions}
           value={values.size}
           onChange={(value) => setValues({ ...values, size: value })}
@@ -71,8 +76,9 @@ function ConfigForm(): JSX.Element {
         图标名称
         <div className='flex justify-between items-center gap-10'>
           <input
-            className="px-8 py-4 flex-1"
+            className="px-8 py-4 flex-1 border corner-2-8-8-8 border-gray-300 focus:border-blue-600"
             placeholder="请填写"
+            value={values.iconName}
             onChange={(e) => setValues({ ...values, iconName: e.target.value })}
           />
         </div>
@@ -80,8 +86,9 @@ function ConfigForm(): JSX.Element {
         <div className='flex justify-between items-center gap-10'>
           <input
             type='number'
-            className="px-8 py-4 flex-1"
+            className="px-8 py-4 flex-1 border corner-2-8-8-8 border-gray-300 focus:border-blue-600"
             placeholder="请填写"
+            value={values.iconSize}
             onChange={(e) => setValues({ ...values, iconSize: Number(e.target.value) })}
           />
         </div>

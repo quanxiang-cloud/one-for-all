@@ -17,7 +17,7 @@ export interface Props {
 }
 
 function ConfigForm(): JSX.Element {
-  const { register, getValues } = useForm();
+  const { register, getValues, reset } = useForm();
   const { page } = useCtx();
   const [values, setValues] = useState(getDefaultProps());
   const { activeElem } = page;
@@ -27,7 +27,9 @@ function ConfigForm(): JSX.Element {
   }, [values]);
 
   useEffect(()=> {
-    setValues(getDefaultProps());
+    const _values = getDefaultProps();
+    setValues(_values);
+    reset(_values);
   }, [page.activeElemId]);
 
   function getDefaultProps(): Record<string, any> {
