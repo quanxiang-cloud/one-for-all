@@ -69,44 +69,45 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
   }
 
   // todo: remove
-  // function renderParents(): JSX.Element {
-  //   function getParentList(): any[] {
-  //     const parentIds = page.parentNodes.slice(0, page.parentNodes.length - 1);
-  //     return parentIds.map((item) => {
-  //       const element = page.findElement(item);
-  //       return ({
-  //         value: item,
-  //         // label: `容器${index}`,
-  //         label: (element && element.label) || '容器',
-  //       });
-  //     }).reverse();
-  //   }
-  //
-  //   return (
-  //     <Popper
-  //       ref={popperRef}
-  //       reference={reference}
-  //     >
-  //       <ul>
-  //         {
-  //           getParentList().map((item) => {
-  //             return (
-  //               <li className='mb-2' key={item.value} onClick={() => page.setActiveElemId(item.value)}>
-  //                 <div
-  //                   className='px-4 flex items-center rounded-2 cursor-pointer' // bg-gray-400
-  //                   style={{ backgroundColor: '#94A3B8', borderRadius: 2 }}
-  //                 >
-  //                   <Icon name='insert_drive_file' color='white' className='mr-4' clickable />
-  //                   <span className='text-12 text-white whitespace-nowrap'>{item.label}</span>
-  //                 </div>
-  //               </li>
-  //             );
-  //           })
-  //         }
-  //       </ul>
-  //     </Popper>
-  //   );
-  // }
+  function renderParents(): JSX.Element {
+    function getParentList(): any[] {
+      const parentIds = page.parentNodes;
+      return parentIds.map((item) => {
+        const element = page.findElement(item);
+        return ({
+          value: item,
+          // label: `容器${index}`,
+          label: (element && element.label) || '容器',
+        });
+      });
+    }
+
+    return (
+      <Popper
+        ref={popperRef}
+        reference={reference}
+        trigger='hover'
+      >
+        <ul>
+          {
+            getParentList().map((item) => {
+              return (
+                <li className='mb-2' key={item.value} onClick={() => page.setActiveElemId(item.value)}>
+                  <div
+                    className='px-4 flex items-center rounded-2 cursor-pointer' // bg-gray-400
+                    style={{ backgroundColor: '#94A3B8', borderRadius: 2 }}
+                  >
+                    <Icon name='insert_drive_file' color='white' className='mr-4' clickable />
+                    <span className='text-12 text-white whitespace-nowrap'>{item.label}</span>
+                  </div>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </Popper>
+    );
+  }
 
   const { width, height, x, y } = seat;
 
@@ -157,7 +158,7 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
                 </div>
               </div>
             </div>
-            {/* {renderParents()}*/}
+            {renderParents()}
           </>
         )
       }
