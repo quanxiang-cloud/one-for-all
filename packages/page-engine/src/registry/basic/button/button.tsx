@@ -17,11 +17,9 @@ export interface Props {
   onChange?: (...args: any[])=> void;
 }
 
-function ButtonElem(props: Props, ref: React.Ref<HTMLButtonElement>): JSX.Element {
-  const { title = '按钮' } = props;
+function ButtonElem({ title = '按钮', style, ...rest }: Props, ref: React.Ref<HTMLButtonElement>): JSX.Element {
   return (
-
-    <Button {...props} ref={ref} style={props.style}>{title}</Button>
+    <Button {...rest} ref={ref} style={style}>{title}</Button>
   );
 }
 

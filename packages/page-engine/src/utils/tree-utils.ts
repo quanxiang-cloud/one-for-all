@@ -92,3 +92,23 @@ export function findParent(tree: PageNode, node_id: string): PageNode | undefine
     }
   }
 }
+
+export function findParentId(tree: PageNode, node_id: string, parentIds: string[], allTree: PageNode): void {
+  if (!tree || typeof tree !== 'object') {
+    return;
+  }
+
+  if (tree.id === node_id) {
+    if (tree.pid) {
+      parentIds.push(tree.pid);
+      findParentId(allTree, tree.pid, parentIds, allTree);
+    }
+    return;
+  }
+
+  if (tree.children) {
+    for (const child of tree.children) {
+      findParentId(child, node_id, parentIds, allTree);
+    }
+  }
+}

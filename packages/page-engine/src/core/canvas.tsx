@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useLayoutEffect } from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 import { useDrop } from 'react-dnd';
@@ -44,20 +44,16 @@ function Canvas({ schema, className }: Props): JSX.Element {
     schema && page.setSchema(schema);
   }, []);
 
-  useEffect(() => {
-    setTimeout(() => {
-      handleGetElements();
-      toolRef.current.computedPlace();
-    }, 100);
-  }, [toJS(page.schema.node)]);
-
-  function handleGetElements(): void {
-    const root = document.getElementById('all') as HTMLDivElement;
+  useLayoutEffect(() => {
+    // get all elems on page
+    const root = document.querySelector('.pge-canvas') as HTMLDivElement;
     const _rootChildren = Array.from(root.children || []);
     const elementMap: any = {};
     handleEle(_rootChildren, elementMap);
     page.setSchemaElements(elementMap);
-  }
+
+    toolRef.current.computedPlace();
+  }, [toJS(page.schema.node)]);
 
   function handleEle(elements: Element[], newElements: Record<string, ElementInfo>): void {
     elements.map((element: Element) => {
@@ -78,37 +74,21 @@ function Canvas({ schema, className }: Props): JSX.Element {
   function handleClick(e: React.MouseEvent<HTMLDivElement, MouseEvent>): void {
     e.stopPropagation(); // Onclick event of inner element
     e.preventDefault(); // Default behavior of the link component
-    const { pageX, pageY } = e;
-    const checkedNodeIds: string[] = [];
-    const elementMap = toJS(page.schemaElements);
-    Object.entries(elementMap).forEach((item) => {
-      const [nodeKey, params] = item;
-      const { position } = params;
-      const { x, y, width, height } = position;
-      if ((x < pageX && pageX < (x + width)) && (y < pageY && pageY < (y + height))) {
-        if (nodeKey) {
-          checkedNodeIds.push(nodeKey);
-        }
-      }
-    });
 
-    page.setParentNodes(checkedNodeIds);
-    const currActiveId = checkedNodeIds[checkedNodeIds.length - 1];
-    if (page.activeElemId === currActiveId) return;
-    page.setActiveElemId(currActiveId);
+    // get event target's closest parent with attribute data-node-key
+    // because some elem may has children, like container
+    const elemId = (e.target as Element)?.closest('[data-node-key]')?.getAttribute('data-node-key') || '';
+    elemId && page.setActiveElemId(elemId);
   }
 
   return (
-    <div className='relative bg-red' id="page-engine-canvas">
+    <div
+      className={cs('relative pge-canvas', styles.page, className)}
+      onClick={handleClick}
+      ref={drop}
+    >
+      <NodeRender schema={page.schema.node} />
       <NodeToolbox ref={toolRef} />
-      <div
-        id='all'
-        onClick={handleClick}
-        className={cs(styles.page, className)}
-        ref={drop}
-      >
-        <NodeRender schema={page.schema.node} />
-      </div>
     </div>
   );
 }

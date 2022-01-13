@@ -1,8 +1,9 @@
 import React, { useRef } from 'react';
-// import cs from 'classnames';
+import cs from 'classnames';
 import { useDrag, useDrop, DragPreviewImage } from 'react-dnd';
-import { defaults, flow, get } from 'lodash';
+import { defaults, flow, get, identity } from 'lodash';
 import { toJS } from 'mobx';
+import { observer } from 'mobx-react';
 
 import { Icon } from '@ofa/ui';
 import { PageNode, useCtx, DragPos, LoopNode } from '@ofa/page-engine';
@@ -12,11 +13,11 @@ import { mapRawProps } from '../utils/schema-adapter';
 import { elemId } from '../utils';
 import { encode } from '../utils/base64';
 
+import styles from './index.m.scss';
+
 interface Props {
   schema: PageNode,
 }
-
-const identity = (x: any): any => x;
 
 function NodeRender({ schema }: Props): JSX.Element | null {
   if (typeof schema !== 'object' || !schema) {
@@ -153,16 +154,16 @@ function NodeRender({ schema }: Props): JSX.Element | null {
     return Object.assign({}, toProps(elemProps), {
       'data-node-key': schema.id,
       ref: boxRef,
-      // className: cs({
-      //   [styles.isPage]: exportName === 'page',
-      //   [styles.dragging]: isDragging,
-      //   // [styles.isOver]: isOver,
-      //   [styles.selected]: page.activeElemId === id,
-      //   [styles.draggingUp]: isOver && page.dragPos === 'up',
-      //   [styles.draggingInner]: isOver && page.dragPos === 'inner',
-      //   [styles.draggingDown]: isOver && page.dragPos === 'down',
-      // }),
-      // draggable: true,
+      className: cs(styles.elem, {
+        [styles.isPage]: exportName === 'page',
+        [styles.dragging]: isDragging,
+        // [styles.isOver]: isOver,
+        [styles.selected]: page.activeElemId === id,
+        [styles.draggingUp]: isOver && page.dragPos === 'up',
+        [styles.draggingInner]: isOver && page.dragPos === 'inner',
+        [styles.draggingDown]: isOver && page.dragPos === 'down',
+      }),
+      draggable: true,
     });
   }
 
@@ -200,4 +201,4 @@ function NodeRender({ schema }: Props): JSX.Element | null {
   );
 }
 
-export default NodeRender;
+export default observer(NodeRender);
