@@ -3,6 +3,7 @@ import cs from 'classnames';
 import { useDrag, useDrop, DragPreviewImage } from 'react-dnd';
 import { defaults, flow, get, identity } from 'lodash';
 import { toJS } from 'mobx';
+import { observer } from 'mobx-react';
 
 import { Icon } from '@ofa/ui';
 import { PageNode, useCtx, DragPos, LoopNode } from '@ofa/page-engine';
@@ -200,4 +201,4 @@ function NodeRender({ schema }: Props): JSX.Element | null {
   );
 }
 
-export default NodeRender;
+export default observer(NodeRender);
