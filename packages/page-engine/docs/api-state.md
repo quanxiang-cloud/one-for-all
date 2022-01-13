@@ -20,11 +20,7 @@ api变量在页面引擎中用于发送api请求和保持api请求的结果，ap
 ```js
 const data = {
   // "page": 1,
-  // "size": 16,
-  // "sort": [
-  //   "nsHBoV4YQ5i"
-  // ],
-  "x_polyapi_signature": "EJML8aQ3BkbciPwMYHlffv2BagW0kdoI3L_qOedQylw"
+  // "size": 20,
 };
 
 this.apiStates['form-api-01'].fetch({
@@ -35,7 +31,7 @@ this.apiStates['form-api-01'].fetch({
 ```
 
 这里 `this.apiStates['form-api-01']` 就是对 名称为 `form-api-01`的api变量的引用，前提是 `form-api-01`这个数据源
-已经在数据源面板的api变量里创建了，并且名称是一一对应的。
+已经在数据源面板的api变量里创建了。
 
 `this.apiStates` 的 `this` 是渲染引擎的context，这里this是由平台内部自动绑定的，用户只需要遵循这个约定去写即可。
 
@@ -50,16 +46,14 @@ fetch(params: FetchParams, callback?: APIFetchCallback)
 这里的意思是，fetch支持传入两个参数，第一个是请求参数params，第二个是请求完成后的回调函数(可选的)，
 请求参数params一般包含 params, body 两个key，但是我们通常只需要定义body。
 
-### 从 api文档获取对应 api的 签名参数
+### 从 api文档获取对应 api的参数格式
 
-当按照上一步的 fetch函数写好了api请求的逻辑之后，还是不能获取最终数据，因为目前渲染引擎只支持平台内部的api，所有的请求要经过polyapi
-网关的转发，这就需要拿到polyapi提供的签名数据
-
+当按照上一步的 fetch函数写好了api请求的逻辑之后，还需要知道请求参数params的格式。
 打开qxp-web的portal端，进到 数据管理 -> api文档，找到你当前使用的api变量对应的api文档的条目(你在选择平台api时 就能看到name，再去api文档的左侧导航里查找)。
 
 ![api doc](assets/api-doc.jpg)
 
-拿到api的签名参数，就可以正常发送请求了
+拿到api的请求参数格式，就可以正常发送请求了
 
 ![api call](assets/api-call.jpg)
 

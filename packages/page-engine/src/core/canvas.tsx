@@ -75,22 +75,6 @@ function Canvas({ schema, className }: Props): JSX.Element {
     e.stopPropagation(); // Onclick event of inner element
     e.preventDefault(); // Default behavior of the link component
 
-    // const { pageX, pageY } = e;
-    // const checkedNodeIds: string[] = [];
-    // const elementMap = toJS(page.schemaElements);
-    // Object.entries(elementMap).forEach(([nodeKey, { position }]) => {
-    //   const { x, y, width, height } = position;
-    //   if ((x < pageX && pageX < (x + width)) && (y < pageY && pageY < (y + height))) {
-    //     if (nodeKey) {
-    //       checkedNodeIds.push(nodeKey);
-    //     }
-    //   }
-    // });
-    //
-    // page.setParentNodes(checkedNodeIds);
-    // const currActiveId = checkedNodeIds[checkedNodeIds.length - 1];
-    // if (page.activeElemId === currActiveId) return;
-
     // get event target's closest parent with attribute data-node-key
     // because some elem may has children, like container
     const elemId = (e.target as Element)?.closest('[data-node-key]')?.getAttribute('data-node-key') || '';

@@ -68,7 +68,6 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
     return 'translateX(0)';
   }
 
-  // todo: remove
   function renderParents(): JSX.Element {
     function getParentList(): any[] {
       const parentIds = page.activeElemParents;
@@ -133,7 +132,9 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
             }}>
               <div
                 className='h-20 border border-black flex absolute z-10'
-                style={{ bottom: '-22px', right: '0', pointerEvents: 'all', transform: getTransformX() }}
+                // @ts-ignore
+                style={Object.assign({ right: '0', pointerEvents: 'all', transform: getTransformX() },
+                  page.activeElem?.exportName === 'page' ? { top: 0 } : { bottom: '-22px' })}
               >
                 <div
                   // bg-gradient-to-r from-blue-500 to-blue-600
@@ -147,17 +148,20 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
                   </span>
                 </div>
                 <div className='px-4 flex items-center justify-around corner-0-0-4-4 bg-white'>
-                  <Icon
-                    name='content_copy'
-                    size={14}
-                    className='mr-4'
-                    clickable
-                    onClick={() => {
-                      page.copyNode(page.activeElemId);
-                    }}
-                  />
-                  <Icon name='delete' clickable onClick={() => page.removeNode(page.activeElemId)}
-                  />
+                  {page.activeElem?.exportName !== 'page' && (
+                    <>
+                      <Icon
+                        name='content_copy'
+                        size={14}
+                        className='mr-4'
+                        clickable
+                        onClick={() => {
+                          page.copyNode(page.activeElemId);
+                        }}
+                      />
+                      <Icon name='delete' clickable onClick={() => page.removeNode(page.activeElemId)} />
+                    </>
+                  )}
                 </div>
               </div>
             </div>
