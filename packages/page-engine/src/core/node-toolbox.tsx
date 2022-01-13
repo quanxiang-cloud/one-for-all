@@ -60,7 +60,6 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
     if (element) {
       const { width } = element.getBoundingClientRect();
       const canvasWid = (document.querySelector('.pge-canvas') as Element).getBoundingClientRect().width;
-      console.log(width, canvasWid);
       if (Math.abs(canvasWid - width) < 100) {
         return 'translateX(0)';
       }
@@ -133,7 +132,8 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
             }}>
               <div
                 className='h-20 border border-black flex absolute z-10'
-                style={Object.assign({ right: '0', transform: getTransformX() },
+                // @ts-ignore
+                style={Object.assign({ right: '0', pointerEvents: 'all', transform: getTransformX() },
                   page.activeElem?.exportName === 'page' ? { top: 0 } : { bottom: '-22px' })}
               >
                 <div
