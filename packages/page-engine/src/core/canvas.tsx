@@ -10,7 +10,6 @@ import { ElementInfo } from '../types';
 import NodeRender from './node-render';
 import NodeToolbox from './node-toolbox';
 import { loadDevEnvPageSchema } from './helpers';
-import { findParentId } from '../utils/tree-utils';
 
 import styles from './index.m.scss';
 
@@ -95,9 +94,6 @@ function Canvas({ schema, className }: Props): JSX.Element {
     // get event target's closest parent with attribute data-node-key
     // because some elem may has children, like container
     const elemId = (e.target as Element)?.closest('[data-node-key]')?.getAttribute('data-node-key') || '';
-    const parentIds: string[] = [];
-    findParentId(toJS(page.schema.node), elemId, parentIds, toJS(page.schema.node));
-    page.setParentNodes(parentIds);
     elemId && page.setActiveElemId(elemId);
   }
 

@@ -4,7 +4,7 @@ import { cloneDeep, defaults, get, set } from 'lodash';
 import { NodePropType, NodeType } from '@ofa/render-engine';
 import { LoopNode, LoopNodeConf } from '@ofa/page-engine';
 import { elemId } from '../utils';
-import { findNode, findParent, removeNode as removeTreeNode } from '../utils/tree-utils';
+import { findNode, findParent, findParentId, removeNode as removeTreeNode } from '../utils/tree-utils';
 import registry from './registry';
 import dataSource from './data-source';
 import type { DragPos, PageNode, PageSchema, SchemaElements, SourceElement } from '../types';
@@ -52,6 +52,13 @@ class PageStore {
   @computed
   get activeElemProps(): any {
     return mapRawProps(this.activeElem?.props || {});
+  }
+
+  @computed
+  get activeElemParents(): string[] {
+    const parentIds: string[] = [];
+    findParentId(toJS(this.schema.node), this.activeElemId, parentIds, toJS(this.schema.node));
+    return parentIds;
   }
 
   findElement(id: string): any {

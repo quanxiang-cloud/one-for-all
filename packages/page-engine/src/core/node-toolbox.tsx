@@ -60,6 +60,7 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
     if (element) {
       const { width } = element.getBoundingClientRect();
       const canvasWid = (document.querySelector('.pge-canvas') as Element).getBoundingClientRect().width;
+      console.log(width, canvasWid);
       if (Math.abs(canvasWid - width) < 100) {
         return 'translateX(0)';
       }
@@ -71,7 +72,7 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
   // todo: remove
   function renderParents(): JSX.Element {
     function getParentList(): any[] {
-      const parentIds = page.parentNodes;
+      const parentIds = page.activeElemParents;
       return parentIds.map((item) => {
         const element = page.findElement(item);
         return ({
@@ -92,7 +93,10 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
           {
             getParentList().map((item) => {
               return (
-                <li className='mb-2' key={item.value} onClick={() => page.setActiveElemId(item.value)}>
+                <li className='mb-2' key={item.value} onClick={(e) => {
+                  e.stopPropagation();
+                  page.setActiveElemId(item.value);
+                }}>
                   <div
                     className='px-4 flex items-center rounded-2 cursor-pointer' // bg-gray-400
                     style={{ backgroundColor: '#94A3B8', borderRadius: 2 }}
