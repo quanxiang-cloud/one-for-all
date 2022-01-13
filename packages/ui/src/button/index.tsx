@@ -32,6 +32,7 @@ function Button(
     type = 'button',
     onClick,
     size,
+    style,
     ...rest
   }: Props,
   ref?: Ref<HTMLButtonElement>,
@@ -42,6 +43,7 @@ function Button(
       onClick={onClick}
       type={type}
       ref={ref}
+      style={style}
       className={cs('btn', className, {
         [`btn--${modifier}`]: modifier,
         'btn--forbidden': forbidden,
