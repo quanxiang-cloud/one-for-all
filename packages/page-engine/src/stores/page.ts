@@ -245,8 +245,8 @@ class PageStore {
   }
 
   @action
-  copyNode = (pid: string, id: string): void => {
-    const parent = findNode(this.schema.node, pid);
+  copyNode = (id: string): void => {
+    const parent = findParent(this.schema.node, id);
     const srcNode = findNode(this.schema.node, id);
     if (parent && parent.children) {
       const srcIdx = parent.children.indexOf(srcNode);
@@ -373,6 +373,7 @@ class PageStore {
     this.schemaElements = elements;
   }
 
+  // todo: deprecate
   @action
   setParentNodes=(node_ids: string[]): void => {
     this.parentNodes = node_ids;

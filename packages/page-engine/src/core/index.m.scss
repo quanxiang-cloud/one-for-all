@@ -4,15 +4,13 @@
 }
 
 .page {
-  // position: relative;
-  // width: 100%;
-  // padding: 4px;
+  position: relative;
   width: 100%;
   height: 100%;
-  position: absolute;
+  //padding: 4px;
   top: 0;
   left: 0;
-  overflow: hidden;
+  overflow: auto;
 
   &.isOver {
     @extend %isOver;
@@ -21,8 +19,8 @@
 }
 
 .elem {
-  position: relative;
-  margin-bottom: 2px;
+  //position: relative;
+  //margin-bottom: 2px;
 
   &.isPage {
     height: 100%;
