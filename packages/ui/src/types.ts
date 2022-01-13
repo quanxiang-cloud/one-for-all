@@ -12,4 +12,5 @@ export interface InputProps {
   children?: React.ReactNode;
   placeholder?: string;
   type?: string;
+  'data-node-key'?: string;
 }

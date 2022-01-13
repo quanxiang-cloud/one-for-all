@@ -29,9 +29,12 @@ function Paragraph(props: Props, ref: React.LegacyRef<HTMLDivElement>): JSX.Elem
     OVERFLOW_STYLE.WebkitLineClamp = maxLength?.toString() || 'none';
   }
 
+  const dataNodeKey = rest['data-node-key'];
+
   return (
     <p
-      data-node-key={rest['data-node-key']}
+      data-node-key={dataNodeKey}
+      id={dataNodeKey}
       ref={ref}
       className={cs({
         'user-select': isAllowSelect ? 'none' : 'auto',

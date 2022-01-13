@@ -60,7 +60,6 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
     if (element) {
       const { width } = element.getBoundingClientRect();
       const canvasWid = (document.querySelector('.pge-canvas') as Element).getBoundingClientRect().width;
-      console.log(width, canvasWid);
       if (Math.abs(canvasWid - width) < 100) {
         return 'translateX(0)';
       }

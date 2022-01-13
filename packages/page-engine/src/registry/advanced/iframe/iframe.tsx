@@ -4,7 +4,9 @@ import cs from 'classnames';
 import { IframeConfigProps } from './config-form';
 
 interface Props extends IframeConfigProps {
+  style?: React.CSSProperties;
   className?: string;
+  'data-node-key'?: string;
 }
 
 function Iframe({
@@ -17,13 +19,18 @@ function Iframe({
   sandbox,
   referrerPolicy,
   iframeAllow,
+  style,
   ...rest
 }: Props, ref: React.LegacyRef<HTMLIFrameElement>): JSX.Element {
+  const dataNodeKey = rest['data-node-key'] || '';
+
   if (!iframeAddr) {
     return (
       <div
-        {...rest}
+        data-node-key={dataNodeKey}
+        id={dataNodeKey}
         ref={ref}
+        style={style}
         className="bg-gray-200 h-200 flex justify-center items-center text-20"
       >
         iframe 占位
@@ -33,7 +40,9 @@ function Iframe({
 
   return (
     <iframe
-      {...rest}
+      data-node-key={dataNodeKey}
+      id={dataNodeKey}
+      style={style}
       ref={ref}
       allow={iframeAllow}
       referrerPolicy={referrerPolicy}

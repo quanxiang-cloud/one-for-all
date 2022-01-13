@@ -10,16 +10,21 @@ export interface Props {
   className?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode;
+  'data-node-key'?: string;
 }
 
 function Link(
-  { content, linkType, linkUrl, linkPage, isBlank, className, ...rest }: Props,
+  { content, linkType, linkUrl, linkPage, isBlank, className, style, ...rest }: Props,
   ref: React.LegacyRef<HTMLAnchorElement>,
 ): JSX.Element {
+  const dataNodeKey = rest['data-node-key'] || '';
+
   return (
     <a
-      {...rest}
+      data-node-key={dataNodeKey}
+      id={dataNodeKey}
       ref={ref}
+      style={style}
       href={linkType === 'outside' ? linkUrl : linkPage}
       className={cs('text-blue-600', className)}
       target={isBlank ? '_blank' : '_self'}

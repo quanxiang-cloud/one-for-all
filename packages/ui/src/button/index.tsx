@@ -37,9 +37,12 @@ function Button(
   }: Props,
   ref?: Ref<HTMLButtonElement>,
 ): JSX.Element {
+  const dataNodeKey = rest['data-node-key'] || '';
+
   return (
     <button
-      data-node-key={rest['data-node-key']}
+      data-node-key={dataNodeKey}
+      id={dataNodeKey}
       onClick={onClick}
       type={type}
       ref={ref}
