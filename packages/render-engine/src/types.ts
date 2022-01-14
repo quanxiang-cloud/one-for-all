@@ -4,6 +4,7 @@ import type { FetchParams, APISpecAdapter } from '@ofa/api-spec-adapter';
 
 export type Serialized = 'Serialized';
 export type Instantiated = 'Instantiated';
+export type Z = Serialized | Instantiated;
 
 // APIState define the type of API results from view perspective.
 // This type is inspired by [react-query](https://react-query.tanstack.com/).
@@ -25,12 +26,17 @@ export const enum NodePropType {
    * @deprecated This type has been deprecated, please use FunctionalProperty instead
    */
   APIInvokeProperty = 'api_invoke_property',
+
+  /**
+   * @deprecated This type has been deprecated, please use FunctionalProperty instead
+   */
   SharedStateMutationProperty = 'shared_state_mutation_property',
+
   FunctionalProperty = 'functional_property',
   RenderProperty = 'render_property',
 }
 
-export type NodeProperty<T extends Serialized | Instantiated> =
+export type NodeProperty<T extends Z> =
   ConstantProperty |
   APIResultProperty<T> |
   APILoadingProperty |
@@ -42,7 +48,7 @@ export type NodeProperty<T extends Serialized | Instantiated> =
   RenderProperty<T>;
   // Array<APIInvokeProperty<T>>;
 
-export type NodeProperties<T extends Serialized | Instantiated> = Record<string, NodeProperty<T>>;
+export type NodeProperties<T extends Z> = Record<string, NodeProperty<T>>;
 
 type BaseNodeProperty = {
   type: NodePropType;
@@ -131,7 +137,9 @@ export type FunctionalProperty<T> = BaseNodeProperty & {
   func: T extends Serialized ? BaseFunctionSpec : VersatileFunc;
 }
 
-// todo refactor this type property spec
+/**
+ * @deprecated This type has been deprecated, please use FunctionalProperty instead
+ */
 export type SharedStateMutationProperty<T> = {
   type: NodePropType.SharedStateMutationProperty;
   stateID: string;
@@ -162,7 +170,7 @@ export type APIInvokeProperty<T> = {
 // <ParentComponent
 //   render={(someData, someIgnoredValue): JSX.Element => (<SomeComponent data={someData} otherProp={otherProp} />)}
 // />
-export type RenderProperty<T extends Serialized | Instantiated> = BaseNodeProperty & {
+export type RenderProperty<T extends Z> = BaseNodeProperty & {
   type: NodePropType.RenderProperty;
   adapter: RenderPropertyAdapter<T>;
   node: SchemaNode<T>;
@@ -281,7 +289,7 @@ export type RenderEngineCTX = Pick<CTX, 'states' | 'apiStates'>;
 
 export type VersatileFunc<T = unknown> = (...args: unknown[]) => T;
 
-export type LifecycleHooks<T extends Serialized | Instantiated> = Partial<{
+export type LifecycleHooks<T extends Z> = Partial<{
   didMount: T extends Serialized ? LifecycleHookFuncSpec : VersatileFunc;
   willUnmount: T extends Serialized ? LifecycleHookFuncSpec : VersatileFunc;
 }>;
@@ -294,20 +302,20 @@ export const enum NodeType {
   RefNode = 'ref-node',
 }
 
-export interface BaseNode<T extends Serialized | Instantiated> {
+export interface BaseNode<T extends Z> {
   id: React.Key;
   type: NodeType;
   props?: NodeProperties<T>;
   lifecycleHooks?: LifecycleHooks<T>;
 }
 
-export interface HTMLNode<T extends Serialized | Instantiated> extends BaseNode<T> {
+export interface HTMLNode<T extends Z> extends BaseNode<T> {
   type: NodeType.HTMLNode;
   name: string;
   children?: Array<SchemaNode<T>>;
 }
 
-export interface ReactComponentNode<T extends Serialized | Instantiated> extends BaseNode<T> {
+export interface ReactComponentNode<T extends Z> extends BaseNode<T> {
   type: NodeType.ReactComponentNode;
   packageName: string;
   packageVersion: string;
@@ -317,13 +325,13 @@ export interface ReactComponentNode<T extends Serialized | Instantiated> extends
   children?: Array<SchemaNode<T>>;
 }
 
-export type PlainState<T extends Serialized | Instantiated> =
+export type PlainState<T extends Z> =
   APIResultProperty<T> |
   SharedStateProperty<T> |
   NodeStateProperty<T> |
   ConstantProperty;
 
-export interface LoopContainerNode<T extends Serialized | Instantiated> extends BaseNode<T> {
+export interface LoopContainerNode<T extends Z> extends BaseNode<T> {
   type: NodeType.LoopContainerNode;
   // props: LoopContainerNodeProps<T>;
   iterableState: PlainState<T>;
@@ -332,18 +340,18 @@ export interface LoopContainerNode<T extends Serialized | Instantiated> extends 
   toProps: ToProps<T>;
 }
 
-export type ComposedNodeChild<T extends Serialized | Instantiated> = SchemaNode<T> & {
+export type ComposedNodeChild<T extends Z> = SchemaNode<T> & {
   toProps?: ToProps<T>;
 }
 
-export interface ComposedNode<T extends Serialized | Instantiated> extends BaseNode<T> {
+export interface ComposedNode<T extends Z> extends BaseNode<T> {
   type: NodeType.ComposedNode;
   outLayer?: Omit<HTMLNode<T>, 'children'>;
   composedState: PlainState<T>;
   children: Array<ComposedNodeChild<T>>;
 }
 
-export interface RefNode<T extends Serialized | Instantiated> extends BaseNode<T> {
+export interface RefNode<T extends Z> extends BaseNode<T> {
   type: NodeType.RefNode;
   schemaID: string;
   fallback?: SchemaNode<T>;
@@ -353,7 +361,7 @@ export interface RefNode<T extends Serialized | Instantiated> extends BaseNode<T
   orphan?: boolean;
 }
 
-export type SchemaNode<T extends Serialized | Instantiated> =
+export type SchemaNode<T extends Z> =
   HTMLNode<T> |
   ReactComponentNode<T> |
   LoopContainerNode<T> |
