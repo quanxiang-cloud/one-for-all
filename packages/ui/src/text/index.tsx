@@ -7,13 +7,17 @@ export interface Props {
   className?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode;
+  'data-node-key'?: string;
 }
 
 function Text({ content = '文本', isAllowSelect, style, className, ...rest }: Props, ref: any): JSX.Element {
+  const dataNodeKey = rest['data-node-key'];
+
   return (
     <span
-      {...rest}
+      data-node-key={dataNodeKey}
       ref={ref}
+      id={dataNodeKey}
       style={style}
       className={cs({
         'user-select': isAllowSelect ? 'none' : 'auto',

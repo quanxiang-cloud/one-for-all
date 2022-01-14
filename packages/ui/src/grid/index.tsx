@@ -15,9 +15,12 @@ function Grid(
   { className, style, children, ...rest }: GridProps,
   ref: React.LegacyRef<HTMLDivElement>,
 ): JSX.Element {
+  const dataNodeKey = rest['data-node-key'] || '';
+
   return (
     <div
-      data-node-key={rest['data-node-key']}
+      data-node-key={dataNodeKey}
+      id={dataNodeKey}
       ref={ref}
       className={className}
       style={{ ...DefaultStyles, ...style }}

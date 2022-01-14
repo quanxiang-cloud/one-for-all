@@ -11,16 +11,20 @@ interface Props {
   preview?: boolean;
   closeOnMaskClick?: boolean;
   style?: React.CSSProperties,
+  'data-node-key'?: string;
 }
 
 function Image(props: Props, ref: React.LegacyRef<HTMLDivElement>): JSX.Element {
   const { imageUrl, fillMode, preview, closeOnMaskClick, style, ...rest } = props;
   const [imgPreview, setImgPreview] = useState(false);
 
+  const dataNodeKey = rest['data-node-key'];
+
   return (
     <>
       <div
-        {...rest}
+        data-node-key={dataNodeKey}
+        id={dataNodeKey}
         ref={ref}
         className="img"
         style={{

@@ -20,6 +20,9 @@ const elem: SourceElement<Props> = {
   defaultConfig: DEFAULT_CONFIG,
   order: 2,
   // acceptChild: true,
+  defaultStyle: {
+    display: 'inline-block',
+  },
 };
 
 export default elem;

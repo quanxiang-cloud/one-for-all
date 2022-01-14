@@ -20,5 +20,8 @@ const elem: SourceElement<Props> = {
   configForm: ConfigForm,
   defaultConfig,
   order: 1,
+  defaultStyle: {
+    display: 'inline-block',
+  },
 };
 export default elem;
