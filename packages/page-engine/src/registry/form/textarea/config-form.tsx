@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { defaults } from 'lodash';
-import { useForm } from 'react-hook-form';
 
-import { Icon } from '@ofa/ui';
-import { Props } from '@ofa/ui/src/textarea/index';
+import { TextareaProps } from '@ofa/ui';
 import { useCtx, DataBind as ConfigBind } from '@ofa/page-engine';
 
 interface configProps {
@@ -12,10 +10,10 @@ interface configProps {
   type: string;
 }
 
-export const DEFAULT_CONFIG: Props = {
+export const DEFAULT_CONFIG: TextareaProps = {
   placeholder: '请输入内容',
-  cols: 30,
-  rows: 10,
+  cols: 40,
+  rows: 5,
   minLength: 0,
   maxLength: 300,
 };
@@ -23,7 +21,17 @@ export const DEFAULT_CONFIG: Props = {
 const CONFIG_ITEMS: configProps[] = [
   {
     name: 'placeholder',
-    msg: '占位语句',
+    msg: '占位符',
+    type: 'text',
+  },
+  {
+    name: 'id',
+    msg: 'ID',
+    type: 'text',
+  },
+  {
+    name: 'name',
+    msg: 'name',
     type: 'text',
   },
   {
@@ -49,42 +57,41 @@ const CONFIG_ITEMS: configProps[] = [
 ];
 
 function ConfigForm(): JSX.Element {
-  const { register, getValues } = useForm();
   const { page } = useCtx();
-  const [values, setValues] = useState(defaults(page.activeElemProps, DEFAULT_CONFIG));
+  const [values, setValues] = useState<TextareaProps>(defaults(page.activeElemProps, DEFAULT_CONFIG));
 
   useEffect(() => {
     page.updateElemProperty(page.activeElem.id, 'props', values);
   }, [values]);
 
-  const handleChange = (): void => {
-    const formValue = getValues();
-    setValues(formValue);
+  const handleChange = (name: string, value: any): void => {
+    setValues((prev)=> ({ ...prev, [name]: value }));
   };
 
   return (
-    <form className="flex flex-col" onChange={handleChange}>
+    <div className="flex flex-col">
       {
-        CONFIG_ITEMS.map((item, index) => {
+        CONFIG_ITEMS.map(({ name, msg, type }) => {
           return (
-            <div className="mb-10" key={item.name + index}>
+            <div className="mb-10" key={name}>
               <div className="mb-4 flex items-center">
-                <label htmlFor="placeholder" className="mr-4 text-12 text-gray-600">{item.msg}</label>
-                <Icon name="info" color="gray" />
+                <label className="mr-4 text-12 text-gray-600">{msg}</label>
               </div>
               <div className="flex items-center">
                 <input
-                  className="mr-8 px-8 py-4 w-full text-gray-600"
-                  type={item.type}
-                  {...register(item.name, { value: values[item.name] })}
+                  className="mr-8 px-8 py-4 w-full text-gray-600 border border-gray-300 corner-2-8-8-8"
+                  type={type}
+                  // @ts-ignore
+                  value={values[name]}
+                  onChange={(ev)=> handleChange(name, ev.target.value)}
                 />
-                <ConfigBind name={item.name} />
+                <ConfigBind name={name} />
               </div>
             </div>
           );
         })
       }
-    </form>
+    </div>
   );
 }
 
