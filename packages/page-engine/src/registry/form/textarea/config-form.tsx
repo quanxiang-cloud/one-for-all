@@ -35,6 +35,11 @@ const CONFIG_ITEMS: configProps[] = [
     type: 'text',
   },
   {
+    name: 'defaultValue',
+    msg: '默认值',
+    type: 'text',
+  },
+  {
     name: 'rows',
     msg: '行数',
     type: 'number',

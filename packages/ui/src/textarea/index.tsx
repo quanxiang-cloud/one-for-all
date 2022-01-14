@@ -27,7 +27,6 @@ function Textarea(props: TextareaProps, ref: React.LegacyRef<HTMLTextAreaElement
       placeholder={placeholder}
       cols={cols}
       rows={rows}
-      defaultValue=''
       minLength={minLength}
       maxLength={maxLength}
     />
