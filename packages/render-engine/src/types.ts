@@ -82,7 +82,7 @@ export type StateConvertor<T> = T extends Serialized ? SerializedStateConvertor 
 export type SerializedStateConvertor = StateConvertExpression | StateConvertorFuncSpec;
 export type StateConvertorFunc = (v: any) => any;
 
-type StateConvertExpression = {
+export type StateConvertExpression = {
   type: 'state_convert_expression';
   // same as JavaScript expression, with a predefined variable called `state`
   // state.foo
