@@ -1,3 +1,5 @@
+import { DetailedHTMLProps, InputHTMLAttributes } from 'react';
+
 export interface GridProps {
   colRatio: string; // 列比例
   colGap: string; // 列间距
@@ -7,10 +9,10 @@ export interface GridProps {
   'data-node-key'?: string;
 }
 
-export interface InputProps {
+export interface InputProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>{
   style?: React.CSSProperties;
   children?: React.ReactNode;
   placeholder?: string;
   type?: string;
-  'data-node-key'?: string;
+  className?: string;
 }

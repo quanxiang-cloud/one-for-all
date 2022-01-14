@@ -11,7 +11,7 @@ interface Props {
 function NodeToolbox(props: Props, ref: any): JSX.Element {
   const popperRef = useRef<Popper>(null);
   const reference = useRef<any>(null);
-  const { page } = useCtx();
+  const { page, designer } = useCtx();
   const [seat, setSeat] = useState({
     width: 0,
     height: 0,
@@ -29,6 +29,10 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
     // 监听浏览器窗口变动
     window.addEventListener('resize', computedPlace);
   }, []);
+
+  useEffect(()=> {
+    computedPlace();
+  }, [designer.panelPinned]);
 
   useEffect(() => {
     computedPlace();
