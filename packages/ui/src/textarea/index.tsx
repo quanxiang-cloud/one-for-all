@@ -5,7 +5,8 @@ import { TextareaProps } from '../types';
 
 function Textarea(props: TextareaProps, ref: React.LegacyRef<HTMLTextAreaElement>): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars,unused-imports/no-unused-vars
-  const { placeholder = '请输入内容', style, className, children, id, name, value, cols, rows, minLength, maxLength, ...rest } = props;
+  const { placeholder = '请输入内容', style, className, children, id, name, value, cols, rows,
+    minLength, maxLength, onChange, onKeyDown, onFocus, onBlur, ...rest } = props;
   const normalizeProps = {};
   if (id) {
     Object.assign(normalizeProps, { id });
@@ -29,6 +30,10 @@ function Textarea(props: TextareaProps, ref: React.LegacyRef<HTMLTextAreaElement
       rows={rows}
       minLength={minLength}
       maxLength={maxLength}
+      onChange={onChange}
+      onKeyDown={onKeyDown}
+      onFocus={onFocus}
+      onBlur={onBlur}
     />
   );
 }

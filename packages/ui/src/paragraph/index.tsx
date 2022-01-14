@@ -20,10 +20,11 @@ interface Props {
   isAllowSpace?: boolean;
   maxLength?: number;
   'data-node-key': string;
+  onClick?: () => void;
 }
 
 function Paragraph(props: Props, ref: React.LegacyRef<HTMLDivElement>): JSX.Element {
-  const { content, isAllowSelect, maxLength, style, ...rest } = props;
+  const { content, isAllowSelect, maxLength, style, onClick, ...rest } = props;
 
   if (Number(maxLength) > 0) {
     OVERFLOW_STYLE.WebkitLineClamp = maxLength?.toString() || 'none';
@@ -43,6 +44,7 @@ function Paragraph(props: Props, ref: React.LegacyRef<HTMLDivElement>): JSX.Elem
         ...OVERFLOW_STYLE,
         ...style,
       }}
+      onClick={onClick}
     >
       {content || '段落文本'}
     </p>
