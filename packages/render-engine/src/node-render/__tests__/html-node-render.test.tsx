@@ -1,10 +1,10 @@
 import React from 'react';
-import { render } from '@testing-library/react';
 import { logger } from '@ofa/utils';
+import { render } from '@testing-library/react';
 
-import { NodeType, HTMLNode, Instantiated, NodePropType } from '../../types';
-import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 import HTMLNodeRender from '../html-node-render';
+import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
+import { NodeType, HTMLNode, Instantiated, NodePropType } from '../../types';
 
 test('HTMLNodeRender_should_handle_empty_html_tag', () => {
   const node: HTMLNode<Instantiated> = {

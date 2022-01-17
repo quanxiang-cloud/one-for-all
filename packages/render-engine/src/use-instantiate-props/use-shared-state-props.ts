@@ -10,7 +10,7 @@ import {
   NodePropType,
   SchemaNode,
 } from '../types';
-import convertState from './convert-state';
+import { convertState } from './utils';
 
 type Pair = [string, SharedStateProperty<Instantiated> | NodeStateProperty<Instantiated>];
 

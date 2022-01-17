@@ -3,18 +3,21 @@ import { logger } from '@ofa/utils';
 
 import { importComponent } from '../repository';
 import PathContext from './path-context';
+import initCTX from '../ctx';
+import deserializeSchema from '../deserialize-schema';
+import useInstantiateProps from '../use-instantiate-props';
+import { NodeType, NodePropType } from '../types';
 import type {
-  DynamicComponent,
-  Repository,
-  Instantiated,
-  ReactComponentNode,
-  LifecycleHooks,
   CTX,
   RefLoader,
   SchemaNode,
+  Repository,
+  Instantiated,
+  LifecycleHooks,
+  DynamicComponent,
+  InstantiatedNode,
+  ReactComponentNode,
 } from '../types';
-import initCTX from '../ctx';
-import deserializeSchema from '../deserialize-schema';
 
 export function useLifecycleHook({ didMount, willUnmount }: LifecycleHooks<Instantiated>): void {
   useEffect(() => {
@@ -36,6 +39,7 @@ export function useNodeComponent(
   const currentPath = useContext(PathContext);
 
   useEffect(() => {
+    let unMounting = true;
     const packageNameVersion = `${node.packageName}@${node.packageVersion}`;
     if (repository?.[packageNameVersion]?.[node.exportName || 'default']) {
       setComponent(() => repository?.[packageNameVersion]?.[node.exportName || 'default']);
@@ -47,6 +51,10 @@ export function useNodeComponent(
       version: node.packageVersion,
       exportName: node.exportName,
     }).then((comp) => {
+      if (!unMounting) {
+        return;
+      }
+
       if (!comp) {
         logger.error(
           `got empty component for package: ${node.packageName},`,
@@ -58,6 +66,10 @@ export function useNodeComponent(
 
       setComponent(() => comp);
     });
+
+    return () => {
+      unMounting = false;
+    };
   }, []);
 
   return lazyLoadedComponent;
@@ -117,4 +129,26 @@ export function useRefResult(
   }, []);
 
   return result;
+}
+
+export function useShouldRender(node: InstantiatedNode, ctx: CTX): boolean {
+  const condition = node.shouldRender;
+  const placeholderNode: SchemaNode<Instantiated> = {
+    id: 'placeholder-node',
+    type: NodeType.HTMLNode,
+    name: 'div',
+    props: condition ? { shouldRender: condition } : undefined,
+  };
+
+  const { shouldRender } = useInstantiateProps(placeholderNode, ctx);
+
+  if (!condition) {
+    return true;
+  }
+
+  if (condition.type === NodePropType.APILoadingProperty) {
+    return condition.revert ? !shouldRender : !!shouldRender;
+  }
+
+  return !!shouldRender;
 }

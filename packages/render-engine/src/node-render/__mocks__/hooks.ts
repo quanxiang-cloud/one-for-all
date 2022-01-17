@@ -1,5 +1,7 @@
-import { RefLoader, CTX, Instantiated, NodePropType, NodeType, SchemaNode } from '../../types';
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
+import {
+  InstantiatedNode, RefLoader, CTX, Instantiated, NodePropType, NodeType, SchemaNode,
+} from '../../types';
 
 export function useLifecycleHook(): void {
   return;
@@ -35,4 +37,8 @@ export function useRefResult({ schemaID } :UseRefResultProps): RefResult | undef
       },
     },
   };
+}
+
+export function useShouldRender(node: InstantiatedNode, ctx: CTX): boolean {
+  return true;
 }
