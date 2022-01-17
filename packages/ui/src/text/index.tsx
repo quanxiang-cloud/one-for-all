@@ -8,9 +8,13 @@ export interface Props {
   style?: React.CSSProperties;
   children?: React.ReactNode;
   'data-node-key'?: string;
+  onClick?: () => void;
 }
 
-function Text({ content = '文本', isAllowSelect, style, className, ...rest }: Props, ref: any): JSX.Element {
+function Text(
+  { content = '文本', isAllowSelect, style, className, onClick, ...rest }: Props,
+  ref: React.LegacyRef<HTMLSpanElement>,
+): JSX.Element {
   const dataNodeKey = rest['data-node-key'];
 
   return (
@@ -22,6 +26,7 @@ function Text({ content = '文本', isAllowSelect, style, className, ...rest }: 
       className={cs({
         'user-select': isAllowSelect ? 'none' : 'auto',
       }, className)}
+      onClick={onClick}
     >
       {content}
     </span>

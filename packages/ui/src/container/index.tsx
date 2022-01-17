@@ -6,10 +6,11 @@ interface Props {
   children?: React.ReactNode;
   placeholder?: React.ReactNode;
   'data-node-key'?: string;
+  onClick?: () => void;
 }
 
 function Container(
-  { className, style, children, placeholder, ...rest }: Props,
+  { className, style, children, placeholder, onClick, ...rest }: Props,
   ref: React.LegacyRef<HTMLDivElement>,
 ): JSX.Element {
   const dataNodeKey = rest['data-node-key'];
@@ -21,6 +22,7 @@ function Container(
       id={dataNodeKey}
       className={className}
       style={style}
+      onClick={onClick}
     >
       {children}
       {!Children.count(children) && placeholder}

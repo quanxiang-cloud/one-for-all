@@ -20,6 +20,7 @@ const elem: SourceElement<Props> = {
   defaultStyle: {
     display: 'inline',
   },
+  exportActions: ['onClick'],
   order: 1,
 };
 
