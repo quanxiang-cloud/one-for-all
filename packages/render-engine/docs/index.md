@@ -1,7 +1,6 @@
-
 ## 什么是渲染引擎？
 
-渲染引擎可以通过一系列的接口，将 Schema 转化为真实的 UI。
+渲染引擎可以借助一系列插件，将 Schema 转化为真实的 UI。
 
 ## 什么是 Schema？
 
@@ -68,28 +67,4 @@ which means you can use schema to describe a single page web app.
 - `functional_property`
 - `render_property`
 
-同样的，不同的 property 类型不同的特定参数，具体参数定义参考：
-
-<!-- todo generate docs -->
-
-
-Schema 描述组件具体是如何组合的。
-schema 描述的主要内容：
-  - 组件是如何组合的
-  - 传给组件的 props 是什么
-
-
-三者封装成组件，方便逻辑复用和功能迭代。
-组件作为构建 UI 的基本单元，需要对外暴露确定的接口，
-
-在单页面应用中，开发者使用 JavaScript 操作 DOM 来实现 UI
-
-现代的 web 页面使用 HTML
-
-
-
-定义了一系列的接口，通过这些接口，实现了
-
-渲染引擎采用插件的机制
-将 schema，apiSpecAdapter，和 component loader 结合
-渲染引擎最核心的功能是，实现了状态的抽象和绑定状态与组件之间的关系
+同样的，不同的 property 类型不同的特定参数。
