@@ -1,12 +1,11 @@
-import ButtonElem from './button';
-import ConfigForm from './config-form';
 import type { SourceElement } from '@ofa/page-engine';
+
+import ButtonElem from './button';
+import ConfigForm, { DEFAULT_CONFIG } from './config-form';
 
 type Props = {
   name?: string
 }
-
-const defaultConfig: Props = {};
 
 const elem: SourceElement<Props> = {
   name: 'button',
@@ -15,7 +14,7 @@ const elem: SourceElement<Props> = {
   category: 'basic',
   component: ButtonElem,
   configForm: ConfigForm,
-  defaultConfig,
+  defaultConfig: DEFAULT_CONFIG,
   order: 4,
   defaultStyle: {},
   exportActions: ['onClick'],

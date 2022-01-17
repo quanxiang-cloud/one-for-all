@@ -1,12 +1,11 @@
-import Iframe from './iframe';
-import ConfigForm from './config-form';
 import type { SourceElement } from '@ofa/page-engine';
+
+import Iframe from './iframe';
+import ConfigForm, { DEFAULT_CONFIG } from './config-form';
 
 type Props = {
   name?: string
 }
-
-const defaultConfig: Props = {};
 
 const elem: SourceElement<Props> = {
   name: 'iframe',
@@ -15,7 +14,7 @@ const elem: SourceElement<Props> = {
   category: 'advanced',
   component: Iframe,
   configForm: ConfigForm,
-  defaultConfig,
+  defaultConfig: DEFAULT_CONFIG,
   order: 3,
 };
 

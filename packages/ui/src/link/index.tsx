@@ -30,7 +30,7 @@ function Link(
       target={isBlank ? '_blank' : '_self'}
       rel='noreferrer'
     >
-      {content || '链接'}
+      {content}
     </a>
   );
 }

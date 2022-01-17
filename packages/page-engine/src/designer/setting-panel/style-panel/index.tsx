@@ -9,6 +9,7 @@ import { useCtx } from '@ofa/page-engine';
 import { Modal, Icon, Button, toast } from '@ofa/ui';
 
 import LayoutConfig from './layout-config';
+import PositionConfig from './position-config';
 import DisplayConfig from './display-config';
 import BackgroundConfig from './background-config';
 import FontConfig from './font-config';
@@ -30,7 +31,7 @@ function StylePanel({ className }: Props): JSX.Element {
   const [modalOpen, setModalOpen] = useState(false);
   const [editorVal, setEditorVal] = useState<any>({});
 
-  useEffect(()=> {
+  useEffect(() => {
     if (page.activeElemId) {
       setValues(getCurStyle());
       reset(getCurStyle());
@@ -109,8 +110,11 @@ function StylePanel({ className }: Props): JSX.Element {
         <Section title='画布' defaultExpand>
           <LayoutConfig initValues={values} register={register} setValue={setValue} />
         </Section>
-        <Section title='显示布局' defaultExpand>
+        <Section title='显示布局'>
           <DisplayConfig initValues={values} register={register} setValue={setValue} />
+        </Section>
+        <Section title='定位' defaultExpand>
+          <PositionConfig initValues={values} register={register} setValue={setValue} />
         </Section>
         <Section title='字体' defaultExpand>
           <FontConfig

@@ -6,7 +6,7 @@ import { observer } from 'mobx-react';
 import { Icon } from '@ofa/ui';
 import { useCtx, DataBind as ConfigBind } from '@ofa/page-engine';
 
-const DEFAULT_CONFIG: Props = {
+export const DEFAULT_CONFIG: Props = {
   content: '文本',
   isAllowSelect: false,
 };
@@ -26,7 +26,7 @@ function ConfigForm(): JSX.Element {
     page.updateElemProperty(activeElem.id, 'props', values);
   }, [values]);
 
-  useEffect(()=> {
+  useEffect(() => {
     const _values = getDefaultProps();
     setValues(_values);
     reset(_values);
@@ -54,7 +54,7 @@ function ConfigForm(): JSX.Element {
             rows={4}
             {...register('content', { value: values.content })}
           />
-          <ConfigBind name='content'/>
+          <ConfigBind name='content' />
         </div>
       </div>
       <div className='mb-8'>
@@ -66,7 +66,7 @@ function ConfigForm(): JSX.Element {
             <input type="checkbox" {...register('isAllowSelect', { value: values.isAllowSelect })} />
             <span className='ml-8 text-12 text-gray-900'>可选中文本</span>
           </div>
-          <ConfigBind name='isAllowSelect'/>
+          <ConfigBind name='isAllowSelect' />
         </div>
       </div>
     </form>

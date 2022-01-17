@@ -44,7 +44,7 @@ function SourceElem(props: SourceElement<any>): JSX.Element {
     <div
       className={cs(styles.sourceElem, { [styles.dragging]: isDragging })}
       ref={drag}
-      onClick={(ev)=> addNodeToCanvas()}
+      onClick={() => addNodeToCanvas()}
     >
       <div className='w-full h-40 flex items-center justify-center bg-gray-50'>
         <Icon

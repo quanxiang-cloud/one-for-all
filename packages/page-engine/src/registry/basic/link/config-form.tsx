@@ -12,7 +12,7 @@ export interface Props {
   isBlank?: boolean,
 }
 
-const DEFAULT_CONFIG: Props = {
+export const DEFAULT_CONFIG: Props = {
   content: '链接',
   linkType: 'inside',
   linkUrl: '',
@@ -70,7 +70,7 @@ function ConfigForm(): JSX.Element {
             <Select
               name='insidePage'
               options={example}
-              value={values.insidePage}
+              value={values.linkPage}
               onChange={(linkPage) => setValues({ ...values, linkPage })}
             />
           </div>

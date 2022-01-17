@@ -1,5 +1,5 @@
 import { Input } from '@ofa/ui';
-import ConfigForm, { defaultConfig } from './config-form';
+import ConfigForm, { DEFAULT_CONFIG } from './config-form';
 import type { SourceElement } from '@ofa/page-engine';
 
 type Props = {
@@ -18,7 +18,7 @@ const elem: SourceElement<Props> = {
   category: 'form',
   component: Input,
   configForm: ConfigForm,
-  defaultConfig,
+  defaultConfig: DEFAULT_CONFIG,
   order: 1,
   exportActions: ['onChange', 'onKeyDown', 'onBlur', 'onFocus'],
   defaultStyle: {

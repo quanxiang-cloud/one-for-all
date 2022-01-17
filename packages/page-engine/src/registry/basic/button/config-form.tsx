@@ -6,17 +6,18 @@ import { Select } from '@ofa/ui';
 
 import type { Props } from './button';
 
-const modifierOptions: {label: string, value: 'primary' | 'danger'}[] = [
+const modifierOptions: { label: string, value: 'primary' | 'danger' | 'default' }[] = [
   { label: '主要', value: 'primary' },
+  { label: '默认', value: 'default' },
   { label: '危险', value: 'danger' },
 ];
 
-const sizeOptions: {label: string, value: 'normal' | 'compact'}[] = [
+const sizeOptions: { label: string, value: 'normal' | 'compact' }[] = [
   { label: '正常', value: 'normal' },
   { label: '紧凑', value: 'compact' },
 ];
 
-const defaultConfig = {
+export const DEFAULT_CONFIG = {
   title: '按钮',
   modifier: 'primary',
   size: 'normal',
@@ -29,7 +30,7 @@ const defaultConfig = {
 
 function ConfigForm(): JSX.Element {
   const { page } = useCtx();
-  const [values, setValues] = useState<Props>(defaults(page.activeElemProps, defaultConfig));
+  const [values, setValues] = useState<Props>(defaults(page.activeElemProps, DEFAULT_CONFIG));
 
   useEffect(() => {
     page.updateElemProperty(page.activeElem.id, 'props', values);
@@ -42,7 +43,7 @@ function ConfigForm(): JSX.Element {
   return (
     <div>
       <div className="flex flex-col">
-        按钮名称
+        <div className='text-12 text-gray-600'>按钮名称</div>
         <div className='flex justify-between items-center gap-10'>
           <input
             name='title'
@@ -54,26 +55,26 @@ function ConfigForm(): JSX.Element {
           <ConfigBind name='title' />
         </div>
       </div>
-        按钮类型
+      <div className='mt-8 text-12 text-gray-600'>按钮类型</div>
       <div className="config-item">
         <Select
-          className="my-8 w-full mr-4 border corner-2-8-8-8 border-gray-300 focus:border-blue-600"
+          className="w-full mr-4 border corner-2-8-8-8 border-gray-300 focus:border-blue-600"
           options={modifierOptions}
           value={values.modifier}
           onChange={(value) => setValues({ ...values, modifier: value })}
         />
       </div>
-        按钮大小
+      <div className='mt-8 text-12 text-gray-600'>按钮大小</div>
       <div className="config-item">
         <Select
-          className="my-8 w-full mr-4 border corner-2-8-8-8 border-gray-300 focus:border-blue-600"
+          className="w-full mr-4 border corner-2-8-8-8 border-gray-300 focus:border-blue-600"
           options={sizeOptions}
           value={values.size}
           onChange={(value) => setValues({ ...values, size: value })}
         />
       </div>
       <div className="flex flex-col">
-        图标名称
+        <div className='mt-8 text-12 text-gray-600'>图标名称</div>
         <div className='flex justify-between items-center gap-10'>
           <input
             className="px-8 py-4 flex-1 border corner-2-8-8-8 border-gray-300 focus:border-blue-600"
@@ -82,7 +83,7 @@ function ConfigForm(): JSX.Element {
             onChange={(e) => setValues({ ...values, iconName: e.target.value })}
           />
         </div>
-        图标大小
+        <div className='mt-8 text-12 text-gray-600'>图标大小</div>
         <div className='flex justify-between items-center gap-10'>
           <input
             type='number'

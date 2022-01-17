@@ -29,12 +29,12 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
   const { backgroundColor, backgroundImage } = initValues;
 
   useEffect(() => {
-    if (backgroundImage) {
+    if (backgroundImage && !backgroundColor) {
       setFillStatus('img');
       return;
     }
 
-    if (backgroundColor) {
+    if (backgroundColor && !backgroundImage) {
       setFillStatus('color');
       return;
     }
@@ -49,10 +49,12 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
       setValue('backgroundColor', '');
       setValue('backgroundImage', '');
     }
-    // if (_value === 'color') {
-    //   setValue('backgroundColor', 'rgba(255, 255, 255, 1)');
-    //   setValue('backgroundImage', '');
-    // }
+    if (_value === 'color') {
+      setValue('backgroundImage', '');
+    }
+    if (_value === 'img') {
+      setValue('backgroundColor', '');
+    }
     setFillStatus(_value);
   }
 

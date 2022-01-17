@@ -12,7 +12,7 @@ export interface Props {
 }
 
 function Text(
-  { content = '文本', isAllowSelect, style, className, onClick, ...rest }: Props,
+  { content, isAllowSelect, style, className, onClick, ...rest }: Props,
   ref: React.LegacyRef<HTMLSpanElement>,
 ): JSX.Element {
   const dataNodeKey = rest['data-node-key'];

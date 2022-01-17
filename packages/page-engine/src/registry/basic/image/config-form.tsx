@@ -20,7 +20,7 @@ const fillOptions = [
   { label: '拉伸', value: '100% 100%' },
 ];
 
-const defaultConfig = {
+export const DEFAULT_CONFIG = {
   imageUrl: '',
   fillMode: 'cover',
   preview: false,
@@ -29,7 +29,7 @@ const defaultConfig = {
 
 function ConfigForm(): JSX.Element {
   const { page } = useCtx();
-  const [values, setValues] = useState<Props>(defaults(page.activeElemProps, defaultConfig));
+  const [values, setValues] = useState<Props>(defaults(page.activeElemProps, DEFAULT_CONFIG));
 
   useEffect(() => {
     page.updateElemProperty(page.activeElem.id, 'props', values);
@@ -50,7 +50,7 @@ function ConfigForm(): JSX.Element {
         <div className="config-item">
           <input
             type="text"
-            className="w-full h-32 my-8 px-16 truncate mr-8"
+            className="w-full h-32 my-8 mr-8 px-16 truncate border border-gray-300 corner-2-8-8-8"
             value={values.imageUrl}
             onChange={(e) => setValues({ ...values, imageUrl: e.target.value })}
           />
