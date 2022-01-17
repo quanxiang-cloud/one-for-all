@@ -50,40 +50,53 @@ export type NodeProperty<T extends Z> =
 
 export type NodeProperties<T extends Z> = Record<string, NodeProperty<T>>;
 
-type BaseNodeProperty = {
+interface BaseNodeProperty {
   type: NodePropType;
 }
 
-export type ConstantProperty = BaseNodeProperty & {
+export interface ConstantProperty extends BaseNodeProperty {
   type: NodePropType.ConstantProperty;
   value: unknown;
 }
 
-export type APIResultProperty<T> = BaseNodeProperty & {
+/**
+ * APIResultProperty represtation the API resposne
+ *
+ * Convertor is used to transform the API result before passing it to node,
+ * convertor will never be called if API request failed or the result is nullish.
+ * the signature of this function is: (state: unknown) => unknown,
+ * there is only one argument called `state`, which is the `result` in APIState
+ *
+ */
+export interface APIResultProperty<T> extends BaseNodeProperty {
   type: NodePropType.APIResultProperty;
   stateID: string;
-  // Convertor is used to transform the API result before passing it to node,
-  // convertor will never be called if API request failed or the result is nullish.
-  // the signature of this function is: (state: unknown) => unknown,
-  // there is only one argument called `state`, which is the `result` in APIState
   convertor?: StateConvertor<T>;
-  // It is a best practice to always define a fallback for API results,
-  // no matter before the API response returned or after an unexpected error has occurred.
-  //
-  // fallback should be a NOT nullish value, and will be passed to node in the following situations:
-  // - the initial state
-  // - API request failed or some business error returned
-  // - convertor throw an error when calling it with API result
-  // - convertor return `null` or `undefined`
-  //
-  // The value of fallback will not always be the same.
-  // It will be assign a new value when convertor returned a not-nullish value.
-  // If there is no convertor defined, fallback will be assigned to the latest not-nullish api result.
-  //
-  // Be Attention. fallback is NOT the fallback of API result, it is the fallback of a property passed to node.
+  /**
+   * It is a best practice to always define a fallback for API results,
+   * no matter before the API response returned or after an unexpected error has occurred.
+   *
+   * fallback should be a NOT nullish value, and will be passed to node in the following situations:
+   * - the initial state
+   * - API request failed or some business error returned
+   * - convertor throw an error when calling it with API result
+   * - convertor return `null` or `undefined`
+   *
+   * The value of fallback will not always be the same.
+   * It will be assign a new value when convertor returned a not-nullish value.
+   * If there is no convertor defined, fallback will be assigned to the latest not-nullish api result.
+   *
+   * Be Attention. fallback is NOT the fallback of API result, it is the fallback of a property passed to node.
+   */
   fallback: unknown;
 }
 
+/**
+ * Convertor is used to transform the API result before passing it to node,
+ * convertor will never be called if API request failed or the result is nullish.
+ * the signature of this function is: (state: unknown) => unknown,
+ * there is only one argument called `state`, which is the `result` in APIState
+ */
 export type StateConvertor<T> = T extends Serialized ? SerializedStateConvertor : StateConvertorFunc;
 export type SerializedStateConvertor = StateConvertExpression | StateConvertorFuncSpec;
 export type StateConvertorFunc = (v: any) => any;
@@ -113,12 +126,12 @@ export type ToProps<T> = T extends Serialized ?
   ToPropsFuncSpec :
   (state: unknown) => Record<string, unknown>;
 
-export type APILoadingProperty = BaseNodeProperty & {
+export interface APILoadingProperty extends BaseNodeProperty {
   type: NodePropType.APILoadingProperty;
   stateID: string;
 }
 
-export type SharedStateProperty<T> = BaseNodeProperty & {
+export interface SharedStateProperty<T> extends BaseNodeProperty {
   type: NodePropType.SharedStateProperty;
   stateID: string;
   fallback: unknown;
@@ -132,7 +145,7 @@ export type NodeStateProperty<T> = BaseNodeProperty & {
   convertor?: StateConvertor<T>;
 }
 
-export type FunctionalProperty<T> = BaseNodeProperty & {
+export interface FunctionalProperty<T> extends BaseNodeProperty {
   type: NodePropType.FunctionalProperty;
   func: T extends Serialized ? BaseFunctionSpec : VersatileFunc;
 }
@@ -140,7 +153,7 @@ export type FunctionalProperty<T> = BaseNodeProperty & {
 /**
  * @deprecated This type has been deprecated, please use FunctionalProperty instead
  */
-export type SharedStateMutationProperty<T> = {
+export interface SharedStateMutationProperty<T> extends BaseNodeProperty {
   type: NodePropType.SharedStateMutationProperty;
   stateID: string;
   convertor?: T extends Serialized ? BaseFunctionSpec : VersatileFunc;
@@ -149,7 +162,7 @@ export type SharedStateMutationProperty<T> = {
 /**
  * @deprecated This type has been deprecated, please use FunctionalProperty instead
  */
-export type APIInvokeProperty<T> = {
+export interface APIInvokeProperty<T> extends BaseNodeProperty {
   type: NodePropType.APIInvokeProperty;
   stateID: string;
   // the required return type is too complex
@@ -170,7 +183,7 @@ export type APIInvokeProperty<T> = {
 // <ParentComponent
 //   render={(someData, someIgnoredValue): JSX.Element => (<SomeComponent data={someData} otherProp={otherProp} />)}
 // />
-export type RenderProperty<T extends Z> = BaseNodeProperty & {
+export interface RenderProperty<T extends Z> extends BaseNodeProperty {
   type: NodePropType.RenderProperty;
   adapter: RenderPropertyAdapter<T>;
   node: SchemaNode<T>;
