@@ -18,7 +18,7 @@ const elem: SourceElement<Props> = {
   defaultConfig,
   order: 2,
   acceptChild: true,
-  exportActions: [],
+  exportActions: ['onClick'],
   defaultStyle: {},
 };
 

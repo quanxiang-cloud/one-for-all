@@ -23,6 +23,7 @@ const elem: SourceElement<Props> = {
   defaultStyle: {
     display: 'inline-block',
   },
+  exportActions: ['onChange', 'onKeyDown', 'onBlur', 'onFocus'],
 };
 
 export default elem;

@@ -5,7 +5,8 @@ import { InputProps } from '../types';
 
 function Input(props: InputProps, ref: React.LegacyRef<HTMLInputElement>): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars,unused-imports/no-unused-vars
-  const { placeholder, type, style, className, children, id, name, value, ...rest } = props;
+  const { placeholder, type, style, className, children, id, name, value,
+    onChange, onKeyDown, onBlur, onFocus, ...rest } = props;
   const normalizeProps = {};
   if (id) {
     Object.assign(normalizeProps, { id });
@@ -25,6 +26,10 @@ function Input(props: InputProps, ref: React.LegacyRef<HTMLInputElement>): JSX.E
       className={cs('py-6 min-w-120 border border-gray-300 corner-2-8-8-8', className)}
       ref={ref}
       type={type}
+      onChange={onChange}
+      onKeyDown={onKeyDown}
+      onFocus={onFocus}
+      onBlur={onBlur}
       placeholder={placeholder}
     />
   );

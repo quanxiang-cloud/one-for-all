@@ -20,6 +20,7 @@ const elem: SourceElement<Props> = {
   configForm: ConfigForm,
   defaultConfig,
   order: 1,
+  exportActions: ['onChange', 'onKeyDown', 'onBlur', 'onFocus'],
   defaultStyle: {
     display: 'inline-block',
   },
