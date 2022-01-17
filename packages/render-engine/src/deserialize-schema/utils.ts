@@ -1,66 +1,69 @@
-import { noop } from 'rxjs';
-
 import {
   BaseFunctionSpec,
   StateConvertorFunc,
   CTX,
-  SerializedStateConvertor,
   VersatileFunc,
-  Instantiated,
-  LifecycleHooks,
-  Serialized,
   RenderEngineCTX,
+  StateConvertExpression,
 } from '../types';
 
-export function instantiateConvertor(
-  serializedStateConvertor: SerializedStateConvertor,
-  ctx: CTX,
-): StateConvertorFunc | undefined {
-  // todo handle new function error
-  const renderEngineCTX: RenderEngineCTX = { apiStates: ctx.apiStates, states: ctx.states };
+export function isObject(n: unknown): boolean {
+  return Object.prototype.toString.call(n) === '[object Object]';
+}
 
-  if (serializedStateConvertor.type === 'state_convert_expression') {
-    const fn = new Function('state', `return ${serializedStateConvertor.expression}`).bind(renderEngineCTX);
+export function isFuncSpec(n: unknown): boolean {
+  if (!isObject(n) || typeof n !== 'object' || n === null) {
+    return false;
+  }
+
+  if ('type' in n && Reflect.get(n, 'type') === 'state_convert_expression') {
+    return true;
+  }
+
+  if (Object.keys(n).length === 3 && 'type' in n && 'args' in n && 'body' in n) {
+    return true;
+  }
+
+  return false;
+}
+
+function instantiateStateExpression(
+  expression: string,
+  renderEngineCTX: RenderEngineCTX,
+): StateConvertorFunc {
+  try {
+    const fn = new Function('state', `return ${expression}`).bind(renderEngineCTX);
     fn.toString = () => [
       '',
       'function wrappedStateConvertor(state) {',
-      `\treturn ${serializedStateConvertor.expression}`,
+      `\treturn ${expression}`,
       '}',
     ].join('\n');
 
     return fn;
+  } catch (error) {
+    throw new Error(
+      [
+        'failed to instantiate state convert expression:',
+        '\n',
+        expression,
+        '\n',
+        error,
+      ].join(''),
+    );
   }
-
-  if (serializedStateConvertor.type === 'state_convertor_func_spec') {
-    const fn = new Function('state', serializedStateConvertor.body).bind(renderEngineCTX);
-    fn.toString = () => [
-      '',
-      'function wrappedStateConvertor(state) {',
-      `\t${serializedStateConvertor.body}`,
-      '}',
-      '',
-    ].join('\n');
-    return fn;
-  }
-
-  return noop;
 }
 
-export function instantiateLifecycleHook(
-  { didMount, willUnmount }: LifecycleHooks<Serialized>,
+export function instantiateFuncSpec(
+  spec: BaseFunctionSpec | StateConvertExpression,
   ctx: CTX,
-): LifecycleHooks<Instantiated> {
-  return {
-    didMount: didMount ? instantiateFuncSpec(didMount, ctx) : undefined,
-    willUnmount: willUnmount ? instantiateFuncSpec(willUnmount, ctx) : undefined,
-  };
-}
-
-export function instantiateFuncSpec<T = unknown>(
-  spec: BaseFunctionSpec,
-  ctx: CTX,
-): VersatileFunc<T> {
+): VersatileFunc {
   const renderEngineCTX: RenderEngineCTX = { apiStates: ctx.apiStates, states: ctx.states };
+
+  if ('expression' in spec && spec.type === 'state_convert_expression') {
+    return instantiateStateExpression(spec.expression, renderEngineCTX);
+  }
+
   try {
     const fn = new Function(spec.args, spec.body).bind(renderEngineCTX);
     fn.toString = () => [
