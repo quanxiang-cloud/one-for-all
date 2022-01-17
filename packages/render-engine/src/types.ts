@@ -93,6 +93,7 @@ export const enum NodePropType {
    * @deprecated This type has been deprecated, please use FunctionalProperty instead
    */
   SharedStateMutationProperty = 'shared_state_mutation_property',
+  ComputedProperty = 'computed_property'
 }
 
 export type NodeProperty<T extends Z> =
@@ -104,7 +105,8 @@ export type NodeProperty<T extends Z> =
   FunctionalProperty<T> |
   SharedStateMutationProperty<T> |
   APIInvokeProperty<T> |
-  RenderProperty<T>;
+  RenderProperty<T> |
+  ComputedProperty<T>;
 
 export type PlainState<T extends Z> =
   APIResultProperty<T> |
@@ -231,6 +233,18 @@ export type RenderPropertyAdapter<T> = T extends Serialized ?
   RenderPropertyAdapterFuncSpec :
   (...args: unknown[]) => Record<string, unknown>;
 
+export interface ComputedDependency {
+  type: 'api_state' | 'shared_state' | 'node_state';
+  depID: string;
+}
+
+export interface ComputedProperty<T> {
+  type: NodePropType.ComputedProperty,
+  deps: Array<ComputedDependency>;
+  convertor: StateConvertor<T>;
+  fallback: unknown;
+}
+
 export type NodeProperties<T extends Z> = Record<string, NodeProperty<T>>;
 
 export const enum NodeType {
@@ -248,10 +262,18 @@ export type SchemaNode<T extends Z> =
   ComposedNode<T> |
   RefNode<T>;
 
+export type ShouldRenderCondition<T> =
+  APIResultProperty<T> |
+  NodeStateProperty<T> |
+  SharedStateProperty<T> |
+  ComputedProperty<T> |
+  APILoadingProperty & { revert?: boolean };
+
 export interface BaseNode<T extends Z> {
   id: React.Key;
   type: NodeType;
   props?: NodeProperties<T>;
+  shouldRender?: ShouldRenderCondition<T>;
   lifecycleHooks?: LifecycleHooks<T>;
 }
 

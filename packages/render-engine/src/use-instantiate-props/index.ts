@@ -14,6 +14,7 @@ import useFuncProps from './use-func-props';
 import useSharedStateMutationProps from './use-shared-state-mutation';
 import useInternalHookProps from './use-internal-hook-props';
 import useRenderProps from './use-render-props';
+import useComputedProps from './use-computed-props';
 
 function useInstantiateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, unknown> {
   const constantProps = useConstantProps(node);
@@ -21,6 +22,7 @@ function useInstantiateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<s
   const apiLoadingProps = useAPILoadingProps(node, ctx);
   const sharedStateProps = useSharedStateProps(node, ctx);
   const internalHookProps = useInternalHookProps(node, ctx);
+  const computedProps = useComputedProps(node, ctx);
   const funcProps = useFuncProps(node);
 
   const sharedStateMutationProps = useSharedStateMutationProps(node, ctx);
@@ -38,8 +40,9 @@ function useInstantiateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<s
       sharedStateMutationProps,
       internalHookProps,
       renderProps,
+      computedProps,
     );
-  }, [apiResultProps, sharedStateProps, apiLoadingProps]);
+  }, [apiResultProps, sharedStateProps, apiLoadingProps, computedProps]);
 }
 
 export default useInstantiateProps;
