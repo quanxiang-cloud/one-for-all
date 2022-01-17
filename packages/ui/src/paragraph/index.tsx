@@ -24,7 +24,7 @@ interface Props {
 }
 
 function Paragraph(props: Props, ref: React.LegacyRef<HTMLDivElement>): JSX.Element {
-  const { content, isAllowSelect, maxLength, style, onClick, ...rest } = props;
+  const { content = '段落文本', isAllowSelect, maxLength, style, onClick, ...rest } = props;
 
   if (Number(maxLength) > 0) {
     OVERFLOW_STYLE.WebkitLineClamp = maxLength?.toString() || 'none';
@@ -46,7 +46,7 @@ function Paragraph(props: Props, ref: React.LegacyRef<HTMLDivElement>): JSX.Elem
       }}
       onClick={onClick}
     >
-      {content || '段落文本'}
+      {content}
     </p>
   );
 }
