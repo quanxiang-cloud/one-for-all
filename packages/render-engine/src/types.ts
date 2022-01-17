@@ -7,6 +7,10 @@ export type Instantiated = 'Instantiated';
 export type Z = Serialized | Instantiated;
 export type VersatileFunc<T = unknown> = (...args: unknown[]) => T;
 
+/**
+ * BaseFunctionSpec define the fundamental shape of `function` in Schema,
+ * all function spec **MUST** extends this type.
+ */
 export interface BaseFunctionSpec {
   type: string;
   args: string;
@@ -14,15 +18,21 @@ export interface BaseFunctionSpec {
 }
 
 /**
- * Convertor is used to transform the API result before passing it to node,
- * convertor will never be called if API request failed or the result is nullish.
- * the signature of this function is: (state: unknown) => unknown,
- * there is only one argument called `state`, which is the `result` in APIState
+ * Convertor is used to transform the state, such as API Result, before passing it to node.
+ *
+ * Convertor will NOT be called if the state is nullish, for example API request failed or the result is `null`.
  */
 export type StateConvertor<T> = T extends Serialized ? SerializedStateConvertor : StateConvertorFunc;
 export type SerializedStateConvertor = StateConvertExpression | StateConvertorFuncSpec;
 export type StateConvertorFunc = (v: any) => any;
 
+/**
+ * StateConvertExpression is a simple version of StateConvertorFunc,
+ * you can use JavaScript [dot notation or the bracket notation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors)
+ * to get the value needed.
+ *
+ * In runtime, StateConvertExpression will be converted to a function with `return` statement.
+ */
 export interface StateConvertExpression {
   type: 'state_convert_expression';
   // same as JavaScript expression, with a predefined variable called `state`
@@ -44,17 +54,23 @@ export interface LifecycleHookFuncSpec extends BaseFunctionSpec {
   args: '';
 }
 
+/**
+ * LifecycleHooks provide a opportunity to executive some side-effects when node
+ * `didMount` and `willUnmount`.
+ */
 export type LifecycleHooks<T extends Z> = Partial<{
   didMount: T extends Serialized ? LifecycleHookFuncSpec : VersatileFunc;
   willUnmount: T extends Serialized ? LifecycleHookFuncSpec : VersatileFunc;
 }>;
 
-// toProps function should return Record<string, unknown>;
 export interface ToPropsFuncSpec extends BaseFunctionSpec {
   type: 'to_props_function_spec',
   args: 'state'
 }
 
+/**
+ * toProps function should return Record<string, unknown>;
+ */
 export type ToProps<T> = T extends Serialized ?
   ToPropsFuncSpec :
   (state: unknown) => Record<string, unknown>;
@@ -100,19 +116,16 @@ interface BaseNodeProperty {
   type: NodePropType;
 }
 
+/**
+ * ConstantProperty define a constant value passed to node.
+ */
 export interface ConstantProperty extends BaseNodeProperty {
   type: NodePropType.ConstantProperty;
   value: unknown;
 }
 
 /**
- * APIResultProperty represtation the API resposne
- *
- * Convertor is used to transform the API result before passing it to node,
- * convertor will never be called if API request failed or the result is nullish.
- * the signature of this function is: (state: unknown) => unknown,
- * there is only one argument called `state`, which is the `result` in APIState
- *
+ * APIResultProperty define a value converted from API response.
  */
 export interface APIResultProperty<T> extends BaseNodeProperty {
   type: NodePropType.APIResultProperty;
@@ -122,7 +135,7 @@ export interface APIResultProperty<T> extends BaseNodeProperty {
    * It is a best practice to always define a fallback for API results,
    * no matter before the API response returned or after an unexpected error has occurred.
    *
-   * fallback should be a NOT nullish value, and will be passed to node in the following situations:
+   * Fallback should NOT be a nullish value, and will be passed to node in the following situations:
    * - the initial state
    * - API request failed or some business error returned
    * - convertor throw an error when calling it with API result
@@ -137,6 +150,9 @@ export interface APIResultProperty<T> extends BaseNodeProperty {
   fallback: unknown;
 }
 
+/**
+ * APILoadingProperty define the loading status of a API request.
+ */
 export interface APILoadingProperty extends BaseNodeProperty {
   type: NodePropType.APILoadingProperty;
   stateID: string;
