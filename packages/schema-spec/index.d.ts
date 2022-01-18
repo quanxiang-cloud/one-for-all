@@ -3,13 +3,23 @@ export as namespace SchemaSpec;
 
 declare namespace SchemaSpec {
   /**
- * BaseFunctionSpec define the fundamental shape of `function` in Schema,
- * all function spec **MUST** extends this type.
- */
+   * BaseFunctionSpec define the fundamental shape of `function` in Schema,
+   * all function spec **MUST** extends this type.
+   */
   interface BaseFunctionSpec {
     type: string;
     args: string;
     body: string;
+  }
+
+  /**
+   * Convertor is used to transform the state, such as API Result, before passing it to node.
+   *
+   * Convertor will NOT be called if the state is nullish, for example API request failed or the result is `null`.
+   */
+  interface StateConvertorFuncSpec extends BaseFunctionSpec {
+    type: 'state_convertor_func_spec';
+    args: 'state';
   }
 
   /**
@@ -28,16 +38,6 @@ declare namespace SchemaSpec {
     // state.list.map((item) => `名称：${item.name}`))
     // state.foo?.bar?.baz || 'someValue'
     expression: string;
-  }
-
-  /**
-   * Convertor is used to transform the state, such as API Result, before passing it to node.
-   *
-   * Convertor will NOT be called if the state is nullish, for example API request failed or the result is `null`.
-   */
-  interface StateConvertorFuncSpec extends BaseFunctionSpec {
-    type: 'state_convertor_func_spec';
-    args: 'state';
   }
 
   interface LifecycleHookFuncSpec extends BaseFunctionSpec {

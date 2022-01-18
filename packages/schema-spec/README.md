@@ -12,7 +12,7 @@ There are some advantages of using Schema:
 - Schema is composable, you can define a reference to another Schema.
 - and Render Engine helps you to turn Schema into real UI
 
-# Can I really use schema to describe a serious web app?
+Can I really use schema to describe a serious web app?
 
 Yes, you can:
 
