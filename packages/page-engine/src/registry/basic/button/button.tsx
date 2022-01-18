@@ -5,7 +5,7 @@ import { Button } from '@ofa/ui';
 export interface Props {
   title?: string;
   size?: 'normal' | 'compact';
-  modifier?: 'primary' | 'danger';
+  modifier?: 'primary' | 'default' | 'danger';
   loading?: boolean;
   forbidden?: boolean;
   iconName?: string;

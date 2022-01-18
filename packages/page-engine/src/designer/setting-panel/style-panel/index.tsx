@@ -110,7 +110,7 @@ function StylePanel({ className }: Props): JSX.Element {
         <Section title='画布' defaultExpand>
           <LayoutConfig initValues={values} register={register} setValue={setValue} />
         </Section>
-        <Section title='显示布局'>
+        <Section title='显示布局' defaultExpand>
           <DisplayConfig initValues={values} register={register} setValue={setValue} />
         </Section>
         <Section title='定位' defaultExpand>

@@ -7,7 +7,7 @@ interface Props
   extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement> {
   size?: 'normal' | 'compact';
-  modifier?: 'primary' | 'danger';
+  modifier?: 'primary' | 'default' | 'danger';
   loading?: boolean;
   forbidden?: boolean;
   iconName?: string;
