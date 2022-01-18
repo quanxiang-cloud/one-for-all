@@ -5,7 +5,8 @@ import { toJS, reaction } from 'mobx';
 
 import { Icon, Button, Tooltip, Modal } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
-import { SchemaRender, Schema } from '@ofa/render-engine';
+import type { Schema } from '@ofa/schema-spec';
+import { SchemaRender } from '@ofa/render-engine';
 import { isDev } from '../../utils';
 
 import styles from './index.m.scss';

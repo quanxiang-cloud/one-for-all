@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import type { Schema } from '@ofa/schema-spec';
 
 import deserializeSchema from './deserialize-schema';
 import NodeRender from './node-render';
 import initCTX from './ctx';
-import type { InitProps, CTX, Schema } from './types';
+import type { InitProps, CTX } from './types';
 
 export default class RenderEngine {
   ctx: CTX;

@@ -1,20 +1,17 @@
 import { useMemo } from 'react';
 
-import {
-  ConstantProperty,
-  Instantiated,
-  NodePropType,
-  SchemaNode,
-} from '../types';
+import type { ConstantProperty } from '@ofa/schema-spec';
 
-export default function useConstantProps(node: SchemaNode<Instantiated>): Record<string, unknown> {
+import { SchemaNode } from '../types';
+
+export default function useConstantProps(node: SchemaNode): Record<string, unknown> {
   return useMemo(() => {
     if (!node.props) {
       return {};
     }
 
     return Object.entries(node.props).filter((pair): pair is [string, ConstantProperty] => {
-      return pair[1].type === NodePropType.ConstantProperty;
+      return pair[1].type === 'constant_property';
     }).reduce<Record<string, unknown>>((acc, [key, { value }]) => {
       acc[key] = value;
       return acc;

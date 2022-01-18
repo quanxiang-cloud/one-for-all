@@ -4,23 +4,22 @@ import { logger } from '@ofa/utils';
 
 import {
   CTX,
-  Instantiated,
   SharedStateMutationProperty,
-  NodePropType,
   SchemaNode,
 } from '../types';
 
 type MutateProps = Record<string, (value: unknown) => void>;
+type Pair = [string, SharedStateMutationProperty];
 
-function useSharedStateMutationProps(node: SchemaNode<Instantiated>, ctx: CTX): MutateProps {
+function useSharedStateMutationProps(node: SchemaNode, ctx: CTX): MutateProps {
   return useMemo(() => {
     if (!node.props) {
       return {};
     }
 
     return Object.entries(node.props)
-      .filter((pair): pair is [string, SharedStateMutationProperty<Instantiated>] => {
-        return pair[1].type === NodePropType.SharedStateMutationProperty;
+      .filter((pair): pair is Pair => {
+        return pair[1].type === 'shared_state_mutation_property';
       }).reduce<MutateProps>((acc, [key, { stateID, convertor }]) => {
         function mutation(state: unknown): void {
           if (typeof convertor !== 'function') {

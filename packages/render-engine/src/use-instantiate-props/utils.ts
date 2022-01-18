@@ -1,11 +1,12 @@
 import { BehaviorSubject, combineLatestWith, map, of, skip, tap } from 'rxjs';
 import { logger } from '@ofa/utils';
+import type { ComputedDependency } from '@ofa/schema-spec';
 
-import { CTX, StateConvertorFunc, ComputedDependency } from '../types';
+import { CTX, StateConvertor } from '../types';
 
 type ConvertResultParams = {
   state: unknown;
-  convertor?: StateConvertorFunc;
+  convertor?: StateConvertor;
   fallback: unknown;
   propName: string;
 };
@@ -38,7 +39,7 @@ export function convertState({ state, convertor, fallback, propName }: ConvertRe
 type GetComputedState$Props = {
   propName: string;
   deps: ComputedDependency[];
-  convertor: StateConvertorFunc;
+  convertor: StateConvertor;
   ctx: CTX;
   fallback: unknown;
 }

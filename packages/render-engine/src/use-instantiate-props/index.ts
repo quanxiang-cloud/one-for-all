@@ -1,10 +1,6 @@
 import { useMemo } from 'react';
 
-import {
-  Instantiated,
-  CTX,
-  SchemaNode,
-} from '../types';
+import { CTX, SchemaNode } from '../types';
 import useConstantProps from './use-constant-props';
 import useAPIResultProps from './use-api-result-props';
 import useAPILoadingProps from './use-api-loading-props';
@@ -16,7 +12,7 @@ import useInternalHookProps from './use-internal-hook-props';
 import useRenderProps from './use-render-props';
 import useComputedProps from './use-computed-props';
 
-function useInstantiateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, unknown> {
+function useInstantiateProps(node: SchemaNode, ctx: CTX): Record<string, unknown> {
   const constantProps = useConstantProps(node);
   const apiResultProps = useAPIResultProps(node, ctx);
   const apiLoadingProps = useAPILoadingProps(node, ctx);
@@ -42,7 +38,7 @@ function useInstantiateProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<s
       renderProps,
       computedProps,
     );
-  }, [apiResultProps, sharedStateProps, apiLoadingProps, computedProps]);
+  }, [apiResultProps, sharedStateProps, apiLoadingProps, computedProps, constantProps]);
 }
 
 export default useInstantiateProps;

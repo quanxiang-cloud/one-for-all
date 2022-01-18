@@ -1,19 +1,14 @@
 import React from 'react';
 
-import {
-  CTX,
-  Instantiated,
-  SchemaNode,
-  PlainState,
-} from '../types';
+import { CTX, SchemaNode, PlainState } from '../types';
 import NodeRender from '../node-render';
 import { useMergedPropsList } from './helpers';
 
 export type Props = {
-  iterableState: PlainState<Instantiated>;
+  iterableState: PlainState;
   loopKey: string;
   toProps: (item: unknown) => Record<string, unknown>;
-  node: SchemaNode<Instantiated>;
+  node: SchemaNode;
   ctx: CTX;
 }
 

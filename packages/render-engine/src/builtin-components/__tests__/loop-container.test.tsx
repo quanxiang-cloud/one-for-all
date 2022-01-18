@@ -1,10 +1,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { logger } from '@ofa/utils';
+import type { Schema } from '@ofa/schema-spec';
 
 import LoopContainer, { Props } from '../loop-container';
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
-import { NodePropType, NodeType, Schema } from '../../types';
 import initCTX from '../../ctx';
 import { APISpecAdapter } from '@ofa/api-spec-adapter';
 
@@ -12,14 +12,14 @@ test('LoopContainer_resolve_empty_value', () => {
   const props: Props = {
     ctx: dummyCTX,
     iterableState: {
-      type: NodePropType.SharedStateProperty,
+      type: 'shared_state_property',
       stateID: 'arr',
       fallback: [],
     },
     loopKey: 'id',
     toProps: (item) => ({ children: item }),
     node: {
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       id: 'loop-item',
       name: 'div',
       props: {},
@@ -33,7 +33,7 @@ test('LoopContainer_resolve_empty_value', () => {
 
 test('LoopContainer_should_log_error_when_iterableState_is_not_iterable', () => {
   const schema: Schema = {
-    node: { id: 'some_node', type: NodeType.HTMLNode, name: 'div', props: {} },
+    node: { id: 'some_node', type: 'html-element', name: 'div', props: {} },
     apiStateSpec: {},
     sharedStatesSpec: {},
   };
@@ -47,14 +47,14 @@ test('LoopContainer_should_log_error_when_iterableState_is_not_iterable', () => 
   const props: Props = {
     ctx: ctx,
     iterableState: {
-      type: NodePropType.SharedStateProperty,
+      type: 'shared_state_property',
       stateID: 'not_arr',
       fallback: [],
     },
     loopKey: 'id',
     toProps: (item: any) => ({ id: item.id }),
     node: {
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       id: 'loop-item',
       name: 'div',
       props: {},
@@ -69,7 +69,7 @@ test('LoopContainer_should_log_error_when_iterableState_is_not_iterable', () => 
 // todo test case about primary value iteration
 test('LoopContainer_resolve_items', () => {
   const schema: Schema = {
-    node: { id: 'some_node', type: NodeType.HTMLNode, name: 'div', props: {} },
+    node: { id: 'some_node', type: 'html-element', name: 'div', props: {} },
     apiStateSpec: {},
     sharedStatesSpec: {},
   };
@@ -83,14 +83,14 @@ test('LoopContainer_resolve_items', () => {
   const props: Props = {
     ctx: ctx,
     iterableState: {
-      type: NodePropType.SharedStateProperty,
+      type: 'shared_state_property',
       stateID: 'arr',
       fallback: [],
     },
     loopKey: 'id',
     toProps: (item: any) => ({ id: item.id }),
     node: {
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       id: 'loop-item',
       name: 'div',
       props: {},

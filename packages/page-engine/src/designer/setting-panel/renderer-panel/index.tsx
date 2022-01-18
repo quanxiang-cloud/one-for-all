@@ -8,7 +8,6 @@ import cs from 'classnames';
 
 import { Button, Icon, Tooltip, Modal, toast } from '@ofa/ui';
 import { useCtx, DataBind } from '@ofa/page-engine';
-import { NodePropType, NodeType } from '@ofa/render-engine';
 
 import Section from '../../comps/section';
 
@@ -31,12 +30,12 @@ function RendererPanel(props: Props): JSX.Element {
   useEffect(()=> {
     // todo: get cur loop node conf
     const rawNode = page.rawActiveElem;
-    if (rawNode.type === NodeType.LoopContainerNode) {
+    if (rawNode.type === 'loop-container') {
       const { iterableState, loopKey, toProps } = pick(rawNode, ['iterableState', 'loopKey', 'toProps']);
       setLoopKey(loopKey);
       setToPropsFn(get(toProps, 'body', defaultToPropsFn));
 
-      if (iterableState?.type === NodePropType.ConstantProperty) {
+      if (iterableState?.type === 'constant_property') {
         setBindConst(iterableState.value);
       }
     }
@@ -64,7 +63,7 @@ function RendererPanel(props: Props): JSX.Element {
       }
 
       page.updateCurNodeAsLoopContainer('iterableState', {
-        type: NodePropType.ConstantProperty,
+        type: 'constant_property',
         value: bindVal,
       });
 
@@ -76,8 +75,8 @@ function RendererPanel(props: Props): JSX.Element {
 
   function hasBindConst(): boolean {
     const rawNode = page.rawActiveElem;
-    if (rawNode.type === NodeType.LoopContainerNode) {
-      const isConstType = get(rawNode, 'iterableState.type') === NodePropType.ConstantProperty;
+    if (rawNode.type === 'loop-container') {
+      const isConstType = get(rawNode, 'iterableState.type') === 'constant_property';
       const val = get(rawNode, 'iterableState.value');
       if (!isConstType) {
         return false;

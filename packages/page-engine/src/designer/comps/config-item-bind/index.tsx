@@ -5,7 +5,7 @@ import { get } from 'lodash';
 
 import { Icon, Tooltip } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
-import { NodePropType } from '@ofa/render-engine';
+import type { NodePropType } from '@ofa/schema-spec';
 
 interface Props {
   name: string; // bind field name
@@ -13,15 +13,15 @@ interface Props {
   isLoopNode?: boolean;
 }
 
-const iterableStateTypes = [
-  NodePropType.SharedStateProperty,
-  NodePropType.APIResultProperty,
-  NodePropType.ConstantProperty,
+const iterableStateTypes: NodePropType[] = [
+  'shared_state_property',
+  'api_result_property',
+  'constant_property',
 ];
 
-const normalStateTypes = [
-  NodePropType.SharedStateProperty,
-  NodePropType.APIResultProperty,
+const normalStateTypes: NodePropType[] = [
+  'shared_state_property',
+  'api_result_property',
 ];
 
 function ConfigItemBind({ name, isLoopNode }: Props): JSX.Element {
@@ -45,7 +45,7 @@ function ConfigItemBind({ name, isLoopNode }: Props): JSX.Element {
     } else {
       const { fallback } = get(page.activeElem, `props.${name}`, {});
       page.updateElemProperty(page.activeElem.id, `props.${name}`, {
-        type: NodePropType.ConstantProperty,
+        type: 'constant_property',
         value: fallback,
       });
     }

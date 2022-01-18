@@ -1,0 +1,10 @@
+{
+  "entryPoints": [
+    "index.d.ts"
+  ],
+  "entryPointStrategy": "resolve",
+  "out": "docs",
+  "name": "Render Schema Specification",
+  "includeVersion": true,
+  "readme": "./README.md"
+}

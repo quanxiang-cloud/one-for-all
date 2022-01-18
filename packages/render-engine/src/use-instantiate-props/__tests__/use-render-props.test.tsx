@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { NodePropType, Instantiated, SchemaNode, NodeType } from '../../types';
+import { SchemaNode } from '../../types';
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 import CustomRender from './fixtures/custom-render';
 import NodeRender from '../../node-render';
@@ -13,21 +13,21 @@ dummyCTX.repository = {
 };
 
 test('useRenderProps_simplest_case', () => {
-  const node: SchemaNode<Instantiated> = {
+  const node: SchemaNode = {
     id: 'foo',
-    type: NodeType.ReactComponentNode,
+    type: 'react-component',
     packageName: 'testPackage',
     packageVersion: 'version',
     exportName: 'CustomRender',
     props: {
       itemRender: {
-        type: NodePropType.RenderProperty,
+        type: 'render_property',
         adapter: () => {
           return { className: 'foobar' };
         },
         node: {
           id: 'some_item',
-          type: NodeType.HTMLNode,
+          type: 'html-element',
           name: 'div',
         },
       },

@@ -2,10 +2,10 @@ import React from 'react';
 
 import NodeRender from './index';
 import { useLifecycleHook, useRefResult } from './hooks';
-import type { CTX, Instantiated, RefNode } from '../types';
+import type { CTX, RefNode } from '../types';
 
 type Props = {
-  node: RefNode<Instantiated>;
+  node: RefNode;
   ctx: CTX;
 }
 

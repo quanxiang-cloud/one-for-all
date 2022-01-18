@@ -4,7 +4,7 @@ import { logger } from '@ofa/utils';
 
 import useAPIResultProps from '../use-api-result-props';
 import StatesHubAPI from '../../ctx/states-hub-api';
-import { SchemaNode, NodePropType, Instantiated, NodeType } from '../../types';
+import { SchemaNode } from '../../types';
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 
 const apiSpecAdapter: APISpecAdapter = {
@@ -21,13 +21,13 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
     const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
-    const node: SchemaNode<Instantiated> = {
+    const node: SchemaNode = {
       id: 'some_key',
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       name: 'div',
       props: {
         foo: {
-          type: NodePropType.APIResultProperty,
+          type: 'api_result_property',
           fallback: fallback,
           stateID: 'some_api_state',
         },
@@ -44,13 +44,13 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
     const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
-    const node: SchemaNode<Instantiated> = {
+    const node: SchemaNode = {
       id: 'some_key',
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       name: 'div',
       props: {
         foo: {
-          type: NodePropType.APIResultProperty,
+          type: 'api_result_property',
           fallback: fallback,
           stateID: 'some_api_state',
         },
@@ -98,13 +98,13 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
     const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
-    const node: SchemaNode<Instantiated> = {
+    const node: SchemaNode = {
       id: 'some_key',
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       name: 'div',
       props: {
         foo: {
-          type: NodePropType.APIResultProperty,
+          type: 'api_result_property',
           fallback: fallback,
           stateID: 'some_api_state',
           convertor: (shouldThrow: unknown): unknown => {
@@ -156,13 +156,13 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
     const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
-    const node: SchemaNode<Instantiated> = {
+    const node: SchemaNode = {
       id: 'some_key',
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       name: 'div',
       props: {
         foo: {
-          type: NodePropType.APIResultProperty,
+          type: 'api_result_property',
           fallback: fallback,
           stateID: 'some_api_state',
           convertor: () => {
@@ -191,13 +191,13 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
     const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
-    const node: SchemaNode<Instantiated> = {
+    const node: SchemaNode = {
       id: 'some_key',
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       name: 'div',
       props: {
         foo: {
-          type: NodePropType.APIResultProperty,
+          type: 'api_result_property',
           fallback: fallback,
           stateID: 'some_api_state',
         },
@@ -231,13 +231,13 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
     const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
-    const node: SchemaNode<Instantiated> = {
+    const node: SchemaNode = {
       id: 'some_key',
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       name: 'div',
       props: {
         foo: {
-          type: NodePropType.APIResultProperty,
+          type: 'api_result_property',
           fallback: fallback,
           stateID: 'some_api_state',
           convertor: adapter,
@@ -258,13 +258,13 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
     const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
-    const node: SchemaNode<Instantiated> = {
+    const node: SchemaNode = {
       id: 'some_key',
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       name: 'div',
       props: {
         foo: {
-          type: NodePropType.APIResultProperty,
+          type: 'api_result_property',
           fallback: fallback,
           stateID: 'some_api_state',
           convertor: adapter,
@@ -293,13 +293,13 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
     const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
-    const node: SchemaNode<Instantiated> = {
+    const node: SchemaNode = {
       id: 'some_key',
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       name: 'div',
       props: {
         foo: {
-          type: NodePropType.APIResultProperty,
+          type: 'api_result_property',
           fallback: fallback,
           stateID: 'some_api_state',
           convertor: adapter,
@@ -327,16 +327,16 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
     const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
     dummyCTX.statesHubAPI = apiStateHub;
     const fallback = { foo: 123 };
-    const node: SchemaNode<Instantiated> = {
+    const node: SchemaNode = {
       id: 'some_key',
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       name: 'div',
       props: {
         foo: {
-          type: NodePropType.APIResultProperty,
+          type: 'api_result_property',
           fallback: fallback,
           stateID: 'some_api_state',
-          convertor: (v) => v * 2,
+          convertor: (v) => v as number * 2,
         },
       },
     };
@@ -361,18 +361,18 @@ test('useAPIResultProps_resolve_expected_value', () => {
   const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
   dummyCTX.statesHubAPI = apiStateHub;
 
-  const node: SchemaNode<Instantiated> = {
+  const node: SchemaNode = {
     id: 'some_key',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: 'div',
     props: {
       foo: {
-        type: NodePropType.APIResultProperty,
+        type: 'api_result_property',
         fallback: { foo: 'bar' },
         stateID: 'some_api_state',
       },
       bar: {
-        type: NodePropType.APIResultProperty,
+        type: 'api_result_property',
         fallback: { bar: 'baz' },
         stateID: 'another_api_state',
       },

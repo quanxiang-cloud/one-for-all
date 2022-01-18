@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 import ReactComponentNodeRender from '../react-component-node-render';
-import { Repository, NodeType, ReactComponentNode, Instantiated } from '../../types';
+import { Repository, ReactComponentNode } from '../../types';
 
 jest.mock('../../repository');
 
@@ -17,9 +17,9 @@ const repository: Repository = {
 };
 
 test('ReactComponentNodeRender_should_return_null_no_component', () => {
-  const node: ReactComponentNode<Instantiated> = {
+  const node: ReactComponentNode = {
     id: 'some_node_id',
-    type: NodeType.ReactComponentNode,
+    type: 'react-component',
     packageName: 'null',
     packageVersion: 'whatever',
     exportName: 'Foo',
@@ -33,9 +33,9 @@ test('ReactComponentNodeRender_should_return_null_no_component', () => {
 test('ReactComponentNodeRender_match_snapshots', () => {
   dummyCTX.repository = repository;
 
-  const node: ReactComponentNode<Instantiated> = {
+  const node: ReactComponentNode = {
     id: 'some_node_id',
-    type: NodeType.ReactComponentNode,
+    type: 'react-component',
     packageName: 'foo',
     packageVersion: 'whatever',
     exportName: 'Foo',
@@ -49,16 +49,16 @@ test('ReactComponentNodeRender_match_snapshots', () => {
 test('ReactComponentNodeRender_match_snapshots_with_children', () => {
   dummyCTX.repository = repository;
 
-  const node: ReactComponentNode<Instantiated> = {
+  const node: ReactComponentNode = {
     id: 'some_node_id',
-    type: NodeType.ReactComponentNode,
+    type: 'react-component',
     packageName: 'foo',
     packageVersion: 'whatever',
     exportName: 'Foo',
     children: [
       {
         id: 'span_child',
-        type: NodeType.HTMLNode,
+        type: 'html-element',
         name: 'span',
       },
     ],

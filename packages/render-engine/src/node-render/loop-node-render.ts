@@ -1,11 +1,11 @@
 import React from 'react';
 
 import LoopContainer from '../builtin-components/loop-container';
-import type { CTX, Instantiated, LoopContainerNode } from '../types';
+import type { CTX, LoopContainerNode } from '../types';
 import { useLifecycleHook } from './hooks';
 
 type Props = {
-  node: LoopContainerNode<Instantiated>;
+  node: LoopContainerNode;
   ctx: CTX;
 }
 

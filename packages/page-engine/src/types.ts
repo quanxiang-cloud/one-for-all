@@ -1,20 +1,18 @@
 import React from 'react';
-import {
-  Serialized,
+import type {
   BaseNode,
-  NodeType,
   APIStatesSpec,
   SharedStatesSpec,
   PlainState,
   LoopContainerNode,
-} from '@ofa/render-engine';
+} from '@ofa/schema-spec';
 
 export type ReactComp = React.ComponentType | React.JSXElementConstructor<any>;
 
-export interface PageNode extends BaseNode<Serialized> {
+export interface PageNode extends BaseNode {
   id: string;
   pid?: string; // only used on page-engine
-  type: NodeType.ReactComponentNode | NodeType.LoopContainerNode | NodeType.HTMLNode;
+  type: 'react-component' | 'loop-container' | 'html-element';
   label: string;
   name?: string; // for html node
   // `packageName, packageVersion, exportName` only for react comp node
@@ -67,10 +65,10 @@ export interface SchemaElements {
 }
 
 // loop node types
-export type LoopNode=LoopContainerNode<Serialized>;
+export type LoopNode=LoopContainerNode;
 
 export type LoopNodeConf={
-  iterableState: PlainState<Serialized>;
+  iterableState: PlainState;
   loopKey: string;
   toProps: string; // func body
 }

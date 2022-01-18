@@ -2,7 +2,7 @@ import { noop } from 'lodash';
 import { act, renderHook } from '@testing-library/react-hooks/pure';
 import { logger } from '@ofa/utils';
 
-import { NodePropType, Instantiated, SchemaNode, NodeType } from '../../types';
+import { SchemaNode } from '../../types';
 import StatesHubShared from '../../ctx/states-hub-shared';
 import useSharedStateProps from '../use-shared-state-props';
 
@@ -16,13 +16,13 @@ describe('useNodeStateProps_resolve_expected_value', () => {
   hub.exposeNodeState(nodeKey, someNodeInternalState);
 
   test('resolve_fallback_value_when_node_state_is_undefined', () => {
-    const node: SchemaNode<Instantiated> = {
+    const node: SchemaNode = {
       id: 'foo',
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       name: 'div',
       props: {
         anotherNodeState: {
-          type: NodePropType.NodeStateProperty,
+          type: 'node_state_property',
           nodeKey: 'some_node_key_which_does_not_exist',
           fallback: '123',
         },
@@ -36,13 +36,13 @@ describe('useNodeStateProps_resolve_expected_value', () => {
   });
 
   test('resolve_untouched_node_state_when_no_adapter', () => {
-    const node: SchemaNode<Instantiated> = {
+    const node: SchemaNode = {
       id: 'foo',
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       name: 'div',
       props: {
         anotherNodeState: {
-          type: NodePropType.NodeStateProperty,
+          type: 'node_state_property',
           nodeKey: nodeKey,
           fallback: false,
         },
@@ -56,13 +56,13 @@ describe('useNodeStateProps_resolve_expected_value', () => {
   });
 
   test('resolve_fallback_when_adapter_throw', () => {
-    const node: SchemaNode<Instantiated> = {
+    const node: SchemaNode = {
       id: 'foo',
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       name: 'div',
       props: {
         anotherNodeState: {
-          type: NodePropType.NodeStateProperty,
+          type: 'node_state_property',
           nodeKey: nodeKey,
           fallback: false,
           convertor: () => {
@@ -80,13 +80,13 @@ describe('useNodeStateProps_resolve_expected_value', () => {
   });
 
   test('resolve_fallback_when_adapter_return_undefined', () => {
-    const node: SchemaNode<Instantiated> = {
+    const node: SchemaNode = {
       id: 'foo',
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       name: 'div',
       props: {
         anotherNodeState: {
-          type: NodePropType.NodeStateProperty,
+          type: 'node_state_property',
           nodeKey: nodeKey,
           fallback: false,
           convertor: noop,
@@ -102,13 +102,13 @@ describe('useNodeStateProps_resolve_expected_value', () => {
   });
 
   test('resolve_converted_value', () => {
-    const node: SchemaNode<Instantiated> = {
+    const node: SchemaNode = {
       id: 'foo',
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       name: 'div',
       props: {
         anotherNodeState: {
-          type: NodePropType.NodeStateProperty,
+          type: 'node_state_property',
           nodeKey: nodeKey,
           fallback: false,
           convertor: () => 'bar',
@@ -128,13 +128,13 @@ test('useNodeStateProps_should_resolve_after_changed', () => {
   const hub = new StatesHubShared({});
   dummyCTX.statesHubShared = hub;
   const nodeKey = 'node_id';
-  const node: SchemaNode<Instantiated> = {
+  const node: SchemaNode = {
     id: 'foo',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: 'div',
     props: {
       anotherNodeState: {
-        type: NodePropType.NodeStateProperty,
+        type: 'node_state_property',
         nodeKey: nodeKey,
         fallback: false,
       },

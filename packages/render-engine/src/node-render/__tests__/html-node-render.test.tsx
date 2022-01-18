@@ -4,20 +4,20 @@ import { render } from '@testing-library/react';
 
 import HTMLNodeRender from '../html-node-render';
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
-import { NodeType, HTMLNode, Instantiated, NodePropType } from '../../types';
+import { HTMLNode } from '../../types';
 
 test('HTMLNodeRender_should_handle_empty_html_tag', () => {
-  const node: HTMLNode<Instantiated> = {
+  const node: HTMLNode = {
     id: 'some_node_id',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: '',
     props: {
       id: {
-        type: NodePropType.ConstantProperty,
+        type: 'constant_property',
         value: 'some_id',
       },
       className: {
-        type: NodePropType.ConstantProperty,
+        type: 'constant_property',
         value: 'foo bar',
       },
     },
@@ -30,41 +30,41 @@ test('HTMLNodeRender_should_handle_empty_html_tag', () => {
 });
 
 test('HTMLNodeRender_match_snapshots', () => {
-  const node: HTMLNode<Instantiated> = {
+  const node: HTMLNode = {
     id: 'some_node_id',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: 'div',
     props: {
       id: {
-        type: NodePropType.ConstantProperty,
+        type: 'constant_property',
         value: 'some_id',
       },
       className: {
-        type: NodePropType.ConstantProperty,
+        type: 'constant_property',
         value: 'foo bar',
       },
     },
     children: [
       {
         id: 'child_1',
-        type: NodeType.HTMLNode,
+        type: 'html-element',
         name: 'span',
         children: [
           {
             id: 'child_1',
-            type: NodeType.HTMLNode,
+            type: 'html-element',
             name: 'span',
           },
         ],
       },
       {
         id: 'child_2',
-        type: NodeType.HTMLNode,
+        type: 'html-element',
         name: 'span',
         children: [
           {
             id: 'child_1',
-            type: NodeType.HTMLNode,
+            type: 'html-element',
             name: 'span',
           },
         ],
