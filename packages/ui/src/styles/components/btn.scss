@@ -42,24 +42,48 @@
   margin-right: 8px;
 }
 
+// primary
 .btn--primary {
+  border: none;
   color: white;
-  background-color: var(--gray-700);
+  background-color: var(--blue-600);
+}
+
+.btn--primary:hover:not(.btn--forbidden) {
+  color: white;
+  background-color: var(--blue-700);
+}
+
+.btn--primary:hover:active {
+  background-color: var(--blue-800);
 }
 
 .btn--loading {
   min-height: 28px;
 }
 
-.btn--primary:hover:not(.btn--forbidden) {
-  color: white;
-  background-color: var(--gray-600);
+// default
+.btn--default {
+  border: 1px solid var(--gray-600);
+  color: var(--gray-600);
+  background-color: #FFFFFF;
 }
 
-.btn--primary:hover:active {
-  background-color: var(--gray-800);
+.btn--default:hover:not(.btn--forbidden) {
+  color: var(--gray-600);
+  border-color: var(--gray-700);
 }
 
+.btn--default:hover:active {
+  border-color: var(--gray-800);
+}
+
+// loading
+.btn--loading {
+  min-height: 28px;
+}
+
+// forbidden
 .btn--forbidden {
   cursor: not-allowed;
 }

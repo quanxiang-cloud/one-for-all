@@ -1,13 +1,11 @@
-import ConfigForm from './config-form';
-
 import { Image } from '@ofa/ui';
 import type { SourceElement } from '@ofa/page-engine';
+
+import ConfigForm, { DEFAULT_CONFIG } from './config-form';
 
 type Props = {
   name?: string
 }
-
-const defaultConfig: Props = {};
 
 const elem: SourceElement<Props> = {
   name: 'image',
@@ -16,7 +14,7 @@ const elem: SourceElement<Props> = {
   category: 'basic',
   component: Image,
   configForm: ConfigForm,
-  defaultConfig,
+  defaultConfig: DEFAULT_CONFIG,
   order: 3,
 };
 

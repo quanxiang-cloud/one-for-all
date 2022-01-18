@@ -1,13 +1,11 @@
 import { Text } from '@ofa/ui';
-
-import ConfigForm from './config-form';
 import type { SourceElement } from '@ofa/page-engine';
+
+import ConfigForm, { DEFAULT_CONFIG } from './config-form';
 
 type Props = {
   name?: string
 }
-
-const defaultConfig: Props = {};
 
 const elem: SourceElement<Props> = {
   name: 'text',
@@ -16,7 +14,7 @@ const elem: SourceElement<Props> = {
   category: 'basic',
   component: Text,
   configForm: ConfigForm,
-  defaultConfig,
+  defaultConfig: DEFAULT_CONFIG,
   defaultStyle: {
     display: 'inline',
   },

@@ -13,7 +13,7 @@ import styles from './index.m.scss';
 
 function SettingPanel(): JSX.Element {
   const { page, designer, registry } = useCtx();
-  const getAvailablePanels = useCallback(()=> {
+  const getAvailablePanels = useCallback(() => {
     const panels = [
       {
         id: 'props',
@@ -45,11 +45,14 @@ function SettingPanel(): JSX.Element {
     ]);
   }, [page.activeElem]);
 
-  useEffect(()=> {
+  useEffect(() => {
     if (page.activeElem?.exportName === 'page' && !['props', 'style'].includes(designer.activePanel)) {
       // reset to default panel
       designer.setActivePanel('props');
+      return;
     }
+
+    designer.setActivePanel('props');
   }, [page.activeElemId]);
 
   function renderPropsPanel(): JSX.Element {

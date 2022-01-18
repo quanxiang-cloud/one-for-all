@@ -4,7 +4,7 @@ import { defaults } from 'lodash';
 
 import { useCtx, DataBind as ConfigBind } from '@ofa/page-engine';
 
-const DEFAULT_CONFIG: Props = {
+export const DEFAULT_CONFIG: Props = {
   content: '段落文本',
   maxLength: 2,
   isAllowSelect: false,

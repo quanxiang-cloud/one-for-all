@@ -1,13 +1,11 @@
 import { Paragraph } from '@ofa/ui';
 
-import ConfigForm from './config-form';
+import ConfigForm, { DEFAULT_CONFIG } from './config-form';
 import type { SourceElement } from '@ofa/page-engine';
 
 type Props = {
   name?: string
 }
-
-const defaultConfig: Props = {};
 
 const elem: SourceElement<Props> = {
   name: 'para',
@@ -16,7 +14,7 @@ const elem: SourceElement<Props> = {
   category: 'basic',
   component: Paragraph,
   configForm: ConfigForm,
-  defaultConfig,
+  defaultConfig: DEFAULT_CONFIG,
   order: 2,
   exportActions: ['onClick'],
 };

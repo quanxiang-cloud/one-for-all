@@ -5,10 +5,11 @@ export const STYLE_NUMBER = [
   'marginTop', 'marginLeft', 'marginRight', 'marginBottom', 'borderTopWidth', 'borderLeftWidth',
   'borderRightWidth', 'borderBottomWidth', 'paddingTop', 'paddingLeft', 'paddingRight', 'paddingBottom',
   'borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomRightRadius', 'borderBottomLeftRadius',
+  'zIndex',
 ];
 
 const NEW_STYLES = [
-  'width', 'height', 'fontSize', 'lineHeight',
+  'width', 'height', 'fontSize', 'lineHeight', 'top', 'left', 'right', 'bottom',
 ];
 
 // 拿到样式格式化为表单所需要的格式
@@ -84,9 +85,9 @@ export function parseStyleString(value: string | number): Record<StyleKey, strin
     unit: 'px',
   };
 
-  if (value === 0 || !value || !(['string', 'number'].includes(typeof(value)))) return _value;
+  if (value === 0 || !value || !(['string', 'number'].includes(typeof (value)))) return _value;
 
-  if (typeof(value) === 'number') {
+  if (typeof (value) === 'number') {
     _value.value = value.toString();
     _value.unit = 'px';
     return _value;

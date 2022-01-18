@@ -92,8 +92,9 @@ function MarginBPadding({ classNames, title, children, setValue,
           type="text"
           className='input-number bg-transparent text-center focus:outline-none'
           style={{ backgroundColor: 'transparent' }}
+          placeholder='0'
           {...register(keywords[0], {
-            value: initValues[keywords[0]] || 0,
+            value: initValues[keywords[0]] || '',
             onBlur: (e) => handleBlur(e, keywords[0]),
           })}
         />
@@ -110,8 +111,9 @@ function MarginBPadding({ classNames, title, children, setValue,
             type="text"
             className='w-full bg-transparent text-center focus:outline-none'
             style={{ backgroundColor: 'transparent' }}
+            placeholder='0'
             {...register(keywords[1], {
-              value: initValues[keywords[1]] || 0,
+              value: initValues[keywords[1]] || '',
               onBlur: (e) => handleBlur(e, keywords[1]),
             })}
           />
@@ -122,8 +124,9 @@ function MarginBPadding({ classNames, title, children, setValue,
             type="text"
             className='w-full bg-transparent text-center focus:outline-none'
             style={{ backgroundColor: 'transparent' }}
+            placeholder='0'
             {...register(keywords[2], {
-              value: initValues[keywords[2]] || 0,
+              value: initValues[keywords[2]] || '',
               onBlur: (e) => handleBlur(e, keywords[2]),
             })}
           />
@@ -134,8 +137,9 @@ function MarginBPadding({ classNames, title, children, setValue,
           type="text"
           className='bg-transparent text-center focus:outline-none'
           style={{ backgroundColor: 'transparent' }}
+          placeholder='0'
           {...register(keywords[3], {
-            value: initValues[keywords[3]] || 0,
+            value: initValues[keywords[3]] || '',
             onBlur: (e) => handleBlur(e, keywords[3]),
           })}
         />

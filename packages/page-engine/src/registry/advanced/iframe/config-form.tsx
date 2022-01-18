@@ -16,7 +16,7 @@ export interface IframeConfigProps {
   importance?: 'auto' | 'high' | 'low';
 }
 
-const DEFAULT_CONFIG: IframeConfigProps = {
+export const DEFAULT_CONFIG: IframeConfigProps = {
   sandbox: 'allow-scripts allow-same-origin allow-forms',
   iframeName: '',
   iframeAddr: '',
@@ -62,7 +62,7 @@ function ConfigForm(): JSX.Element {
           </div>
         </label>
         <label className="flex flex-col">
-                iframe width:
+          iframe width:
           <div className='flex justify-between items-center gap-10'>
             <input
               {...register('iframeWidth', { value: values.iframeWidth })}
@@ -75,7 +75,7 @@ function ConfigForm(): JSX.Element {
         </label>
 
         <label className="flex flex-col">
-                iframe height:
+          iframe height:
           <div className='flex justify-between items-center gap-10'>
             <input
               {...register('iframeHeight', { value: values.iframeHeight })}
@@ -87,7 +87,7 @@ function ConfigForm(): JSX.Element {
           </div>
         </label>
         <label className="flex flex-col">
-                iframe name:
+          iframe name:
           <div className='flex justify-between items-center gap-10'>
             <input
               {...register('iframeName', { value: values.iframeName })}
@@ -99,7 +99,7 @@ function ConfigForm(): JSX.Element {
           </div>
         </label>
         <label className="flex flex-col">
-                iframe sandbox:
+          iframe sandbox:
           <div className='flex justify-between items-center gap-10'>
             <input
               {...register('sandbox', { value: values.sandbox })}
@@ -110,7 +110,7 @@ function ConfigForm(): JSX.Element {
           </div>
         </label>
         <label className="flex flex-col">
-                iframe allow:
+          iframe allow:
           <div className='flex justify-between items-center gap-10'>
             <input
               {...register('iframeAllow', { value: values.iframeAllow })}

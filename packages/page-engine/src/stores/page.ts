@@ -25,7 +25,7 @@ class PageStore {
   @observable activeElemId = ''
   @observable dragPos: DragPos = 'down'
   @observable schemaElements: Record<string, SchemaElements> = {}
-  @observable parentNodes: string[]=[] // canvas cur node's parents
+  @observable parentNodes: string[] = [] // canvas cur node's parents
 
   constructor() {
     makeObservable(this);
@@ -78,7 +78,7 @@ class PageStore {
     this.schema = schema || initPageSchema();
 
     // init data source when set page schema
-    runInAction(()=> {
+    runInAction(() => {
       dataSource.sharedState = dataSource.mapSharedStateSpec();
       dataSource.apiState = dataSource.mapApiStateSpec();
     });
@@ -100,7 +100,7 @@ class PageStore {
   }
 
   @action
-  appendNode = (node: Omit<PageNode, 'type'| 'id'>, target?: Omit<PageNode, 'type' | 'id'> | null, options?: AppendNodeOptions): void => {
+  appendNode = (node: Omit<PageNode, 'type' | 'id'>, target?: Omit<PageNode, 'type' | 'id'> | null, options?: AppendNodeOptions): void => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const targetId = target?.id || this.schema.node.id;
@@ -113,12 +113,7 @@ class PageStore {
       type: NodeType.ReactComponentNode,
       packageName: 'ofa-ui',
       packageVersion: 'latest',
-      props: {
-        style: {
-          type: NodePropType.ConstantProperty,
-          value: node.defaultStyle || {},
-        },
-      },
+      props: mergeAsRenderEngineProps({}, node.defaultConfig || {})
     };
 
     if (registry.acceptChild(node.exportName)) {
@@ -185,7 +180,7 @@ class PageStore {
     }
   }
 
-  getRealNode=(rawNode: PageNode): PageNode=> {
+  getRealNode = (rawNode: PageNode): PageNode => {
     return rawNode.type === NodeType.LoopContainerNode ? (rawNode as any).node : rawNode;
   }
 
@@ -296,16 +291,16 @@ class PageStore {
     }
   }
 
-  getElemBoundActions=(): string[] =>{
+  getElemBoundActions = (): string[] => {
     const elemConf = registry.getElemByType(this.activeElem?.exportName) as SourceElement<any>;
     return ['didMount', 'willUnmount'].concat(elemConf?.exportActions || []);
   }
 
   @action
-  replaceNode=(node_id: string, replaced: PageNode): void=> {
+  replaceNode = (node_id: string, replaced: PageNode): void => {
     const parent = findParent(this.schema.node, node_id);
     if (parent) {
-      const srcIdx = parent.children?.findIndex((v)=> v.id === node_id || get(v, 'node.id') === node_id) ?? -1;
+      const srcIdx = parent.children?.findIndex((v) => v.id === node_id || get(v, 'node.id') === node_id) ?? -1;
       if (srcIdx > -1) {
         parent.children?.splice(srcIdx, 1, replaced);
       }
@@ -313,7 +308,7 @@ class PageStore {
   }
 
   @action
-  setNodeAsLoopContainer=(node_id: string, loopConfig: Partial<LoopNodeConf>): void => {
+  setNodeAsLoopContainer = (node_id: string, loopConfig: Partial<LoopNodeConf>): void => {
     // wrap normal node as loop node
     const target = findNode(this.schema.node, node_id);
     if (!target) {
@@ -338,7 +333,7 @@ class PageStore {
   }
 
   @action
-  updateCurNodeAsLoopContainer=(propKey: string, confItem: any): void=> {
+  updateCurNodeAsLoopContainer = (propKey: string, confItem: any): void => {
     if (!this.rawActiveElem?.iterableState) {
       // replace current normal node to loop node
       this.setNodeAsLoopContainer(this.activeElemId, { [propKey]: confItem });
@@ -353,7 +348,7 @@ class PageStore {
   }
 
   @action
-  unsetLoopNode=(loop_node_id: string): void => {
+  unsetLoopNode = (loop_node_id: string): void => {
     // reset loop container, lift up inner node
     const loopNode = findNode(this.schema.node, loop_node_id);
     if (!loopNode) {
@@ -382,7 +377,7 @@ class PageStore {
 
   // todo: deprecate
   @action
-  setParentNodes=(node_ids: string[]): void => {
+  setParentNodes = (node_ids: string[]): void => {
     this.parentNodes = node_ids;
   }
 }

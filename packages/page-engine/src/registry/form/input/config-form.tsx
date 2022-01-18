@@ -6,7 +6,7 @@ import { useCtx, DataBind as ConfigBind } from '@ofa/page-engine';
 
 import type { InputProps } from '@ofa/ui';
 
-export const defaultConfig: InputProps = {
+export const DEFAULT_CONFIG: InputProps = {
   defaultValue: undefined,
   value: undefined, // if value undefined, input is non-controlled component
   placeholder: '请输入内容',
@@ -19,14 +19,14 @@ const inputCls = 'border border-gray-300 corner-2-8-8-8 mr-8 px-8 py-4 w-full te
 
 function ConfigForm(): JSX.Element {
   const { page } = useCtx();
-  const [values, setValues] = useState<InputProps>(defaults(page.activeElemProps, defaultConfig));
+  const [values, setValues] = useState<InputProps>(defaults(page.activeElemProps, DEFAULT_CONFIG));
 
-  useEffect(() => {
-    page.updateElemProperty(page.activeElem.id, 'props', values);
-  }, [values]);
+  // useEffect(() => {
+  //   page.updateElemProperty(page.activeElem.id, 'props', values);
+  // }, [values]);
 
   const handleChange = (name: string, value: any): void => {
-    setValues((prev)=> ({ ...prev, [name]: value }));
+    setValues((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -37,7 +37,7 @@ function ConfigForm(): JSX.Element {
           <input
             className={inputCls}
             value={values.placeholder}
-            onChange={(ev)=> handleChange('placeholder', ev.target.value)}
+            onChange={(ev) => handleChange('placeholder', ev.target.value)}
           />
           <ConfigBind name='placeholder' />
         </div>
@@ -48,7 +48,7 @@ function ConfigForm(): JSX.Element {
           <input
             className={inputCls}
             value={values.id}
-            onChange={(ev)=> handleChange('id', ev.target.value)}
+            onChange={(ev) => handleChange('id', ev.target.value)}
           />
           <ConfigBind name='id' />
         </div>
@@ -59,7 +59,7 @@ function ConfigForm(): JSX.Element {
           <input
             className={inputCls}
             value={values.name}
-            onChange={(ev)=> handleChange('name', ev.target.value)}
+            onChange={(ev) => handleChange('name', ev.target.value)}
           />
           <ConfigBind name='name' />
         </div>
@@ -75,7 +75,7 @@ function ConfigForm(): JSX.Element {
           <input
             className={inputCls}
             value={values.defaultValue}
-            onChange={(ev)=> handleChange('defaultValue', ev.target.value)}
+            onChange={(ev) => handleChange('defaultValue', ev.target.value)}
           />
           <ConfigBind name='defaultValue' />
         </div>
@@ -91,7 +91,7 @@ function ConfigForm(): JSX.Element {
           <input
             className={inputCls}
             value={values.value}
-            onChange={(ev)=> handleChange('value', ev.target.value)}
+            onChange={(ev) => handleChange('value', ev.target.value)}
           />
           <ConfigBind name='value' />
         </div>
