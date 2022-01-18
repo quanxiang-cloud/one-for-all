@@ -94,6 +94,9 @@
       "path": "./packages/ui"
     },
     {
+      "path": "./packages/schema-spec"
+    },
+    {
       "path": "./packages/page-engine"
     }
   ],

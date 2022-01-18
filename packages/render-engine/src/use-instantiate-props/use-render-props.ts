@@ -1,24 +1,21 @@
-import { logger } from '@ofa/utils';
 import React, { useMemo } from 'react';
-import { RenderPropertyAdapter } from '../types';
+import { logger } from '@ofa/utils';
+import type { ConstantProperty } from '@ofa/schema-spec';
 
 import NodeRender from '../node-render';
 import {
   CTX,
   SchemaNode,
   RenderProperty,
-  Instantiated,
-  ConstantProperty,
-  NodePropType,
 } from '../types';
 
 type Render = (...args: unknown[]) => React.ReactElement;
 type RenderProps = Record<string, Render>;
 
 function buildRender(
-  node: SchemaNode<Instantiated>,
+  node: SchemaNode,
   ctx: CTX,
-  adapter?: RenderPropertyAdapter<Instantiated>,
+  adapter?: (...args: unknown[]) => Record<string, unknown>,
 ): Render {
   return (...args: unknown[]): React.ReactElement => {
     // convert render args to constant properties for reuse of NodeRender
@@ -28,7 +25,7 @@ function buildRender(
       if (typeof customProps === 'object') {
         constantProps = Object.entries(customProps)
           .reduce<Record<string, ConstantProperty>>((acc, [key, value]) => {
-            acc[key] = { type: NodePropType.ConstantProperty, value };
+            acc[key] = { type: 'constant_property', value };
             return acc;
           }, {});
       } else {
@@ -46,11 +43,11 @@ function buildRender(
   };
 }
 
-function useRenderProps({ props }: SchemaNode<Instantiated>, ctx: CTX): RenderProps {
+function useRenderProps({ props }: SchemaNode, ctx: CTX): RenderProps {
   return useMemo(() => {
     return Object.entries(props || {})
-      .filter((pair): pair is [string, RenderProperty<Instantiated>] => {
-        return pair[1].type === NodePropType.RenderProperty;
+      .filter((pair): pair is [string, RenderProperty] => {
+        return pair[1].type === 'render_property';
       }).reduce<RenderProps>((acc, [propName, { adapter, node }]) => {
         acc[propName] = buildRender(node, ctx, adapter);
 

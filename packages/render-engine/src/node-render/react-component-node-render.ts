@@ -2,11 +2,11 @@ import React from 'react';
 
 import useInstantiateProps from '../use-instantiate-props';
 import { ChildrenRender } from './index';
-import type { CTX, Instantiated, ReactComponentNode } from '../types';
+import type { CTX, ReactComponentNode } from '../types';
 import { useLifecycleHook, useNodeComponent } from './hooks';
 
 type Props = {
-  node: ReactComponentNode<Instantiated>;
+  node: ReactComponentNode;
   ctx: CTX;
 }
 

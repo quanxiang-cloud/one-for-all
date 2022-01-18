@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks/pure';
 
-import { Instantiated, SchemaNode, NodeType } from '../../types';
+import { SchemaNode } from '../../types';
 import StatesHubShared from '../../ctx/states-hub-shared';
 import useInternalHooks from '../use-internal-hook-props';
 
@@ -11,9 +11,9 @@ test('useInternalHooks_resolve_expected_value', () => {
   dummyCTX.statesHubShared = hub;
   const nodeID = 'node_id';
   const someNodeInternalState = { foo: 'bar' };
-  const node: SchemaNode<Instantiated> = {
+  const node: SchemaNode = {
     id: nodeID,
-    type: NodeType.ReactComponentNode,
+    type: 'react-component',
     packageName: 'whatever',
     packageVersion: 'whatever',
     exportName: '',

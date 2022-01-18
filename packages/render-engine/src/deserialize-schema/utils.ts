@@ -1,10 +1,10 @@
+import type * as SchemaSpec from '@ofa/schema-spec';
+
 import {
-  BaseFunctionSpec,
-  StateConvertorFunc,
   CTX,
   VersatileFunc,
   RenderEngineCTX,
-  StateConvertExpression,
+  StateConvertor,
 } from '../types';
 
 export function isObject(n: unknown): boolean {
@@ -30,7 +30,7 @@ export function isFuncSpec(n: unknown): boolean {
 function instantiateStateExpression(
   expression: string,
   renderEngineCTX: RenderEngineCTX,
-): StateConvertorFunc {
+): StateConvertor {
   try {
     const fn = new Function('state', `return ${expression}`).bind(renderEngineCTX);
     fn.toString = () => [
@@ -55,7 +55,7 @@ function instantiateStateExpression(
 }
 
 export function instantiateFuncSpec(
-  spec: BaseFunctionSpec | StateConvertExpression,
+  spec: SchemaSpec.BaseFunctionSpec | SchemaSpec.StateConvertExpression,
   ctx: CTX,
 ): VersatileFunc {
   const renderEngineCTX: RenderEngineCTX = { apiStates: ctx.apiStates, states: ctx.states };

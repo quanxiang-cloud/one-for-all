@@ -4,21 +4,19 @@ import { BehaviorSubject, combineLatest, distinctUntilKeyChanged, map, Observabl
 import {
   APIResultProperty,
   APIState,
-  StateConvertorFunc,
-  NodePropType,
   CTX,
-  Instantiated,
   SchemaNode,
+  StateConvertor,
 } from '../types';
 import { convertState } from './utils';
 
-function useAPIResultProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, unknown> {
-  const adapters: Record<string, StateConvertorFunc | undefined> = {};
+function useAPIResultProps(node: SchemaNode, ctx: CTX): Record<string, unknown> {
+  const adapters: Record<string, StateConvertor | undefined> = {};
   const states$: Record<string, BehaviorSubject<APIState>> = {};
   const initialFallbacks: Record<string, unknown> = {};
 
-  Object.entries(node.props || {}).filter((pair): pair is [string, APIResultProperty<Instantiated>] => {
-    return pair[1].type === NodePropType.APIResultProperty;
+  Object.entries(node.props || {}).filter((pair): pair is [string, APIResultProperty] => {
+    return pair[1].type === 'api_result_property';
   }).forEach(([propName, { fallback, convertor: adapter, stateID }]) => {
     initialFallbacks[propName] = fallback;
     adapters[propName] = adapter;

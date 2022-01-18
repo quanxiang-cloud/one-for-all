@@ -1,12 +1,13 @@
 import { logger } from '@ofa/utils';
+import type * as SchemaSpec from '@ofa/schema-spec';
 
-import type { SchemaNode, Serialized, Instantiated, CTX } from '../types';
+import type { SchemaNode, CTX } from '../types';
 import deserialize from './deserialize';
 
-function deserializeSchema(node: SchemaNode<Serialized>, ctx: CTX): SchemaNode<Instantiated> | null {
+function deserializeSchema(node: SchemaSpec.SchemaNode, ctx: CTX): SchemaNode | null {
   try {
     deserialize(node, ctx);
-    return node as SchemaNode<Instantiated>;
+    return node as SchemaNode;
   } catch (error) {
     logger.error(error);
     return null;

@@ -5,12 +5,12 @@ import PathContext from './path-context';
 import RefNodeRender from './ref-node-render';
 import HTMLNodeRender from './html-node-render';
 import LoopNodeRender from './loop-node-render';
-import { CTX, InstantiatedNode, NodeType } from '../types';
+import { CTX, SchemaNode } from '../types';
 import ReactComponentNodeRender from './react-component-node-render';
 import { useShouldRender } from './hooks';
 
 type ChildrenRenderProps = {
-  nodes: InstantiatedNode[];
+  nodes: SchemaNode[];
   ctx: CTX;
 }
 
@@ -29,7 +29,7 @@ export function ChildrenRender(
 }
 
 type Props = {
-  node: InstantiatedNode;
+  node: SchemaNode;
   ctx: CTX;
 }
 
@@ -42,7 +42,7 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
     return null;
   }
 
-  if (node.type === NodeType.LoopContainerNode) {
+  if (node.type === 'loop-container') {
     return React.createElement(
       PathContext.Provider,
       { value: currentPath },
@@ -50,7 +50,7 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
     );
   }
 
-  if (node.type === NodeType.HTMLNode) {
+  if (node.type === 'html-element') {
     return React.createElement(
       PathContext.Provider,
       { value: currentPath },
@@ -58,7 +58,7 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
     );
   }
 
-  if (node.type === NodeType.ReactComponentNode) {
+  if (node.type === 'react-component') {
     return React.createElement(
       PathContext.Provider,
       { value: currentPath },
@@ -66,7 +66,7 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
     );
   }
 
-  if (node.type === NodeType.RefNode) {
+  if (node.type === 'ref-node') {
     return React.createElement(
       PathContext.Provider,
       { value: currentPath },

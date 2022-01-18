@@ -1,7 +1,6 @@
 import { get } from 'lodash';
 
 import type { PageNode } from '@ofa/page-engine';
-import { NodeType } from '@ofa/render-engine';
 
 export function findNode(tree: PageNode, node_id?: string): any {
   if (!tree || typeof tree !== 'object') {
@@ -13,7 +12,7 @@ export function findNode(tree: PageNode, node_id?: string): any {
     return tree;
   }
   // if loop node, return wrapper node
-  if (tree.type === NodeType.LoopContainerNode && get(tree, 'node.id') === node_id) {
+  if (tree.type === 'loop-container' && get(tree, 'node.id') === node_id) {
     const loopChildren = get(tree, 'node.children');
     if (loopChildren) {
       for (const child of loopChildren) {
@@ -49,10 +48,10 @@ export function removeNode(tree: PageNode, node_id: string): void {
   }
   if (tree.children) {
     const idx = tree.children.findIndex((c: any)=> {
-      if (c.type === NodeType.ReactComponentNode) {
+      if (c.type === 'react-component') {
         return c.id === node_id;
       }
-      if (c.type === NodeType.LoopContainerNode) {
+      if (c.type === 'loop-container') {
         return c.id === node_id || c.node.id === node_id;
       }
     });
@@ -74,10 +73,10 @@ export function findParent(tree: PageNode, node_id: string): PageNode | undefine
   }
 
   if (tree.children?.find((c: any)=> {
-    if (c.type === NodeType.ReactComponentNode) {
+    if (c.type === 'react-component') {
       return c.id === node_id;
     }
-    if (c.type === NodeType.LoopContainerNode) {
+    if (c.type === 'loop-container') {
       return c.id === node_id || c.node.id === node_id;
     }
   })) {

@@ -1,20 +1,20 @@
-import { NodePropType, NodeType, Schema } from '@ofa/render-engine';
+import type { Schema } from '@ofa/schema-spec';
 
 const refSchema: Schema = {
   apiStateSpec: {},
   sharedStatesSpec: {},
   node: {
     id: 'ref-container',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: 'div',
     children: [
       {
         id: 'container',
-        type: NodeType.HTMLNode,
+        type: 'html-element',
         name: 'h1',
         props: {
-          id: { type: NodePropType.ConstantProperty, value: 'ref-container' },
-          children: { type: NodePropType.ConstantProperty, value: 'Todo Demo for Render Engine' },
+          id: { type: 'constant_property', value: 'ref-container' },
+          children: { type: 'constant_property', value: 'Todo Demo for Render Engine' },
         },
       },
     ],

@@ -7,7 +7,6 @@ import { javascript } from '@codemirror/lang-javascript';
 
 import { Select, RadioGroup, Radio, Modal, Icon, Button, toast } from '@ofa/ui';
 import { PageNode, useCtx } from '@ofa/page-engine';
-import { NodePropType } from '@ofa/render-engine';
 import BindItem from './bind-item';
 
 import styles from './index.m.scss';
@@ -50,8 +49,8 @@ function EventPanel({ className }: Props): JSX.Element {
         });
       } else {
         page.updateElemProperty(page.activeElemId, `props.${curAction}`, {
-          // type: NodePropType.APIInvokeProperty,
-          type: NodePropType.FunctionalProperty,
+          // type: 'api_invoke_property',
+          type: 'functional_property',
           func: {
             type: '',
             args: '...args',
@@ -76,7 +75,7 @@ function EventPanel({ className }: Props): JSX.Element {
       return !!get(page.activeElem.lifecycleHooks, actionName);
     }
     // todo: just check type is functional property?
-    return get(elemProps, `${actionName}.type`) === NodePropType.FunctionalProperty;
+    return get(elemProps, `${actionName}.type`) === 'functional_property';
   }
 
   function renderBoundActions(): JSX.Element {

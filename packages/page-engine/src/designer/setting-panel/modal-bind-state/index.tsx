@@ -7,7 +7,6 @@ import { get } from 'lodash';
 
 import { Icon, Modal, toast, Tooltip } from '@ofa/ui';
 import { useCtx } from '@ofa/page-engine';
-import { NodePropType } from '@ofa/render-engine';
 
 import styles from './index.m.scss';
 
@@ -31,18 +30,18 @@ function ModalBindState(props: Props): JSX.Element | null {
       bindConf = get(page.activeElem, `props.${activeFieldName}`, {});
     }
 
-    if (bindConf.type === NodePropType.SharedStateProperty) {
+    if (bindConf.type === 'shared_state_property') {
       const expr = `states['${bindConf.stateID}']`;
       setStateExpr(expr);
       setConvertorExpr(get(bindConf, 'convertor.expression', ''));
     }
 
-    if (bindConf.type === NodePropType.APIResultProperty) {
+    if (bindConf.type === 'api_result_property') {
       const expr = `apiStates['${bindConf.stateID}']`;
       setStateExpr(expr);
       setConvertorExpr(get(bindConf, 'convertor.expression', ''));
     }
-    if (bindConf.type === NodePropType.SharedStateMutationProperty) {
+    if (bindConf.type === 'shared_state_mutation_property') {
       // todo
     }
   }, [page.activeElemId]);
@@ -67,7 +66,7 @@ function ModalBindState(props: Props): JSX.Element | null {
       return;
     }
 
-    const nodeType = stateExpr.includes('apiStates[') ? NodePropType.APIResultProperty : NodePropType.SharedStateProperty;
+    const nodeType = stateExpr.includes('apiStates[') ? 'api_result_property' : 'shared_state_property';
 
     if (isLoopNode) {
       const iterableState = {

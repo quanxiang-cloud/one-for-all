@@ -2,7 +2,7 @@ import { noop } from 'lodash';
 import { renderHook, act } from '@testing-library/react-hooks/pure';
 import { logger } from '@ofa/utils';
 
-import { NodePropType, Instantiated, SchemaNode, NodeType } from '../../types';
+import { SchemaNode } from '../../types';
 import useSharedStateProps from '../use-shared-state-props';
 import SharedStatesHub from '../../ctx/states-hub-shared';
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
@@ -14,13 +14,13 @@ describe('useSharedStateProps_resolve_expected_value', () => {
   dummyCTX.statesHubShared = sharedStates;
 
   test('resolve_fallback_when_state_is_undefined', () => {
-    const node: SchemaNode<Instantiated> = {
+    const node: SchemaNode = {
       id: 'foo',
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       name: 'div',
       props: {
         foo: {
-          type: NodePropType.SharedStateProperty,
+          type: 'shared_state_property',
           stateID: 'some_state_does_not_exist',
           fallback: 'foo',
         },
@@ -34,13 +34,13 @@ describe('useSharedStateProps_resolve_expected_value', () => {
   });
 
   test('resolve_current_value', () => {
-    const node: SchemaNode<Instantiated> = {
+    const node: SchemaNode = {
       id: 'foo',
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       name: 'div',
       props: {
         foo: {
-          type: NodePropType.SharedStateProperty,
+          type: 'shared_state_property',
           stateID: 'the_only_pre_defined_value',
           fallback: 'foo',
         },
@@ -55,13 +55,13 @@ describe('useSharedStateProps_resolve_expected_value', () => {
   });
 
   test('resolve_fallback_when_adapter_throw', () => {
-    const node: SchemaNode<Instantiated> = {
+    const node: SchemaNode = {
       id: 'foo',
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       name: 'div',
       props: {
         foo: {
-          type: NodePropType.SharedStateProperty,
+          type: 'shared_state_property',
           stateID: 'the_only_pre_defined_value',
           fallback: 'foo',
           convertor: () => {
@@ -80,13 +80,13 @@ describe('useSharedStateProps_resolve_expected_value', () => {
   });
 
   test('resolve_fallback_when_adapter_return_undefined', () => {
-    const node: SchemaNode<Instantiated> = {
+    const node: SchemaNode = {
       id: 'foo',
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       name: 'div',
       props: {
         foo: {
-          type: NodePropType.SharedStateProperty,
+          type: 'shared_state_property',
           stateID: 'the_only_pre_defined_value',
           fallback: 'foo',
           convertor: noop,
@@ -103,13 +103,13 @@ describe('useSharedStateProps_resolve_expected_value', () => {
   });
 
   test('resolve_converted_value', () => {
-    const node: SchemaNode<Instantiated> = {
+    const node: SchemaNode = {
       id: 'foo',
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       name: 'div',
       props: {
         foo: {
-          type: NodePropType.SharedStateProperty,
+          type: 'shared_state_property',
           stateID: 'the_only_pre_defined_value',
           fallback: 'foo',
           convertor: () => 'bar',
@@ -132,13 +132,13 @@ describe('useSharedStateProps_call_adapter_correctly', () => {
   dummyCTX.statesHubShared = sharedStates;
   const adapterMock = jest.fn();
 
-  const node: SchemaNode<Instantiated> = {
+  const node: SchemaNode = {
     id: 'foo',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: 'div',
     props: {
       foo: {
-        type: NodePropType.SharedStateProperty,
+        type: 'shared_state_property',
         stateID: 'the_only_pre_defined_value',
         fallback: 'foo',
         convertor: adapterMock,
@@ -161,13 +161,13 @@ test('useSharedStateProps_resolve_values_after_changed', () => {
   });
   dummyCTX.statesHubShared = sharedStates;
 
-  const node: SchemaNode<Instantiated> = {
+  const node: SchemaNode = {
     id: 'foo',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: 'div',
     props: {
       foo: {
-        type: NodePropType.SharedStateProperty,
+        type: 'shared_state_property',
         stateID: 'the_only_pre_defined_value',
         fallback: 'foo',
       },
@@ -203,18 +203,18 @@ test('useSharedStateProps_resolve_expected_value', () => {
   });
   dummyCTX.statesHubShared = sharedStates;
 
-  const node: SchemaNode<Instantiated> = {
+  const node: SchemaNode = {
     id: 'foo',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: 'div',
     props: {
       foo: {
-        type: NodePropType.SharedStateProperty,
+        type: 'shared_state_property',
         stateID: 'state_foo',
         fallback: 'foo',
       },
       bar: {
-        type: NodePropType.SharedStateProperty,
+        type: 'shared_state_property',
         stateID: 'state_bar',
         fallback: 'bar',
       },

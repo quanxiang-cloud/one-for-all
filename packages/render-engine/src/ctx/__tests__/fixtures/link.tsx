@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
 import { SchemaNode } from '../../..';
-import { APIInvokeProperty, APIResultProperty, Instantiated, CTX } from '../../../types';
+import { APIInvokeProperty, APIResultProperty, CTX } from '../../../types';
 import useInstantiateProps from '../../../use-instantiate-props';
 
 type Props = {
-  nodeProps: Record<string, APIInvokeProperty<Instantiated> | APIResultProperty<Instantiated>>;
+  nodeProps: Record<string, APIInvokeProperty | APIResultProperty>;
   ctx: CTX;
 }
 
 export default function Link({ nodeProps, ctx }: Props): JSX.Element {
-  const node: SchemaNode<Instantiated> = {
+  const node: SchemaNode = {
     id: 'link',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     props: nodeProps,
     name: 'div',
   };

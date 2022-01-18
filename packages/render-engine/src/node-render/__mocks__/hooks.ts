@@ -1,13 +1,11 @@
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
-import {
-  InstantiatedNode, RefLoader, CTX, Instantiated, NodePropType, NodeType, SchemaNode,
-} from '../../types';
+import { RefLoader, CTX, SchemaNode } from '../../types';
 
 export function useLifecycleHook(): void {
   return;
 }
 
-type RefResult = { refCTX: CTX; refNode: SchemaNode<Instantiated>; }
+type RefResult = { refCTX: CTX; refNode: SchemaNode; }
 type UseRefResultProps = {
   schemaID: string;
   refLoader?: RefLoader;
@@ -23,15 +21,15 @@ export function useRefResult({ schemaID } :UseRefResultProps): RefResult | undef
     refCTX: dummyCTX,
     refNode: {
       id: 'dummy',
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       name: 'div',
       props: {
         id: {
-          type: NodePropType.ConstantProperty,
+          type: 'constant_property',
           value: 'dummy',
         },
         children: {
-          type: NodePropType.ConstantProperty,
+          type: 'constant_property',
           value: 'this is dummy node',
         },
       },
@@ -39,6 +37,6 @@ export function useRefResult({ schemaID } :UseRefResultProps): RefResult | undef
   };
 }
 
-export function useShouldRender(node: InstantiatedNode, ctx: CTX): boolean {
+export function useShouldRender(node: SchemaNode, ctx: CTX): boolean {
   return true;
 }

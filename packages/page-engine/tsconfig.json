@@ -17,6 +17,9 @@
       "path": "../ui"
     },
     {
+      "path": "../schema-spec"
+    },
+    {
       "path": "../render-engine"
     }
   ]

@@ -3,15 +3,15 @@ import { render } from '@testing-library/react';
 
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 import RefNodeRender from '../ref-node-render';
-import { Instantiated, NodePropType, NodeType, RefNode } from '../../types';
+import { RefNode } from '../../types';
 
 jest.mock('../hooks');
 
 describe('RefNodeRender_return_null_and_fallback', () => {
   test('return_null_if_schema_is_null_and_fallback_is_null', () => {
-    const node: RefNode<Instantiated> = {
+    const node: RefNode = {
       id: 'some_node_id',
-      type: NodeType.RefNode,
+      type: 'ref-node',
       schemaID: 'undefined',
       fallback: undefined,
     };
@@ -21,17 +21,17 @@ describe('RefNodeRender_return_null_and_fallback', () => {
   });
 
   test('return_fallback_if_schema_is_null', () => {
-    const node: RefNode<Instantiated> = {
+    const node: RefNode = {
       id: 'some_node_id',
-      type: NodeType.RefNode,
+      type: 'ref-node',
       schemaID: 'undefined',
       fallback: {
         id: 'fallback',
-        type: NodeType.HTMLNode,
+        type: 'html-element',
         name: 'div',
         props: {
           id: {
-            type: NodePropType.ConstantProperty,
+            type: 'constant_property',
             value: 'fallback',
           },
         },
@@ -44,17 +44,17 @@ describe('RefNodeRender_return_null_and_fallback', () => {
 });
 
 test('RefNodeRender_return_ref_node', () => {
-  const node: RefNode<Instantiated> = {
+  const node: RefNode = {
     id: 'some_node_id',
-    type: NodeType.RefNode,
+    type: 'ref-node',
     schemaID: 'dummy',
     fallback: {
       id: 'fallback',
-      type: NodeType.HTMLNode,
+      type: 'html-element',
       name: 'div',
       props: {
         id: {
-          type: NodePropType.ConstantProperty,
+          type: 'constant_property',
           value: 'fallback',
         },
       },

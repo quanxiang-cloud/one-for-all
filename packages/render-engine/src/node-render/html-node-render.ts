@@ -2,13 +2,13 @@ import React, { useContext } from 'react';
 import { logger } from '@ofa/utils';
 
 import useInstantiateProps from '../use-instantiate-props';
-import type { CTX, HTMLNode, Instantiated } from '../types';
+import type { CTX, HTMLNode } from '../types';
 import { ChildrenRender } from './index';
 import { useLifecycleHook } from './hooks';
 import PathContext from './path-context';
 
 type Props = {
-  node: HTMLNode<Instantiated>;
+  node: HTMLNode;
   ctx: CTX;
 }
 
