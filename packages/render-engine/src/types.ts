@@ -5,14 +5,75 @@ import type { FetchParams, APISpecAdapter } from '@ofa/api-spec-adapter';
 export type Serialized = 'Serialized';
 export type Instantiated = 'Instantiated';
 export type Z = Serialized | Instantiated;
+export type VersatileFunc<T = unknown> = (...args: unknown[]) => T;
 
-// APIState define the type of API results from view perspective.
-// This type is inspired by [react-query](https://react-query.tanstack.com/).
-export type APIState = {
-  loading: boolean;
-  result?: unknown;
-  error?: Error;
-};
+/**
+ * BaseFunctionSpec define the fundamental shape of `function` in Schema,
+ * all function spec **MUST** extends this type.
+ */
+export interface BaseFunctionSpec {
+  type: string;
+  args: string;
+  body: string;
+}
+
+/**
+ * Convertor is used to transform the state, such as API Result, before passing it to node.
+ *
+ * Convertor will NOT be called if the state is nullish, for example API request failed or the result is `null`.
+ */
+export type StateConvertor<T> = T extends Serialized ? SerializedStateConvertor : StateConvertorFunc;
+export type SerializedStateConvertor = StateConvertExpression | StateConvertorFuncSpec;
+export type StateConvertorFunc = (v: any) => any;
+
+/**
+ * StateConvertExpression is a simple version of StateConvertorFunc,
+ * you can use JavaScript [dot notation or the bracket notation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Property_accessors)
+ * to get the value needed.
+ *
+ * In runtime, StateConvertExpression will be converted to a function with `return` statement.
+ */
+export interface StateConvertExpression {
+  type: 'state_convert_expression';
+  // same as JavaScript expression, with a predefined variable called `state`
+  // state.foo
+  // state.offset / (state.limit + state.offset)
+  // state.list.map((item) => item.name))
+  // state.list.map((item) => `名称：${item.name}`))
+  // state.foo?.bar?.baz || 'someValue'
+  expression: string;
+}
+
+export interface StateConvertorFuncSpec extends BaseFunctionSpec {
+  type: 'state_convertor_func_spec';
+  args: 'state';
+}
+
+export interface LifecycleHookFuncSpec extends BaseFunctionSpec {
+  type: 'lifecycle_hook_func_spec';
+  args: '';
+}
+
+/**
+ * LifecycleHooks provide a opportunity to executive some side-effects when node
+ * `didMount` and `willUnmount`.
+ */
+export type LifecycleHooks<T extends Z> = Partial<{
+  didMount: T extends Serialized ? LifecycleHookFuncSpec : VersatileFunc;
+  willUnmount: T extends Serialized ? LifecycleHookFuncSpec : VersatileFunc;
+}>;
+
+export interface ToPropsFuncSpec extends BaseFunctionSpec {
+  type: 'to_props_function_spec',
+  args: 'state'
+}
+
+/**
+ * toProps function should return Record<string, unknown>;
+ */
+export type ToProps<T> = T extends Serialized ?
+  ToPropsFuncSpec :
+  (state: unknown) => Record<string, unknown>;
 
 export const enum NodePropType {
   ConstantProperty = 'constant_property',
@@ -21,7 +82,8 @@ export const enum NodePropType {
   // todo api error property
   SharedStateProperty = 'shared_state_property',
   NodeStateProperty = 'node_state_property',
-
+  FunctionalProperty = 'functional_property',
+  RenderProperty = 'render_property',
   /**
    * @deprecated This type has been deprecated, please use FunctionalProperty instead
    */
@@ -31,9 +93,7 @@ export const enum NodePropType {
    * @deprecated This type has been deprecated, please use FunctionalProperty instead
    */
   SharedStateMutationProperty = 'shared_state_mutation_property',
-
-  FunctionalProperty = 'functional_property',
-  RenderProperty = 'render_property',
+  ComputedProperty = 'computed_property'
 }
 
 export type NodeProperty<T extends Z> =
@@ -45,94 +105,76 @@ export type NodeProperty<T extends Z> =
   FunctionalProperty<T> |
   SharedStateMutationProperty<T> |
   APIInvokeProperty<T> |
-  RenderProperty<T>;
-  // Array<APIInvokeProperty<T>>;
+  RenderProperty<T> |
+  ComputedProperty<T>;
 
-export type NodeProperties<T extends Z> = Record<string, NodeProperty<T>>;
+export type PlainState<T extends Z> =
+  APIResultProperty<T> |
+  SharedStateProperty<T> |
+  NodeStateProperty<T> |
+  ConstantProperty;
 
-type BaseNodeProperty = {
+interface BaseNodeProperty {
   type: NodePropType;
 }
 
-export type ConstantProperty = BaseNodeProperty & {
+/**
+ * ConstantProperty define a constant value passed to node.
+ */
+export interface ConstantProperty extends BaseNodeProperty {
   type: NodePropType.ConstantProperty;
   value: unknown;
 }
 
-export type APIResultProperty<T> = BaseNodeProperty & {
+/**
+ * APIResultProperty define a value converted from API response.
+ */
+export interface APIResultProperty<T> extends BaseNodeProperty {
   type: NodePropType.APIResultProperty;
   stateID: string;
-  // Convertor is used to transform the API result before passing it to node,
-  // convertor will never be called if API request failed or the result is nullish.
-  // the signature of this function is: (state: unknown) => unknown,
-  // there is only one argument called `state`, which is the `result` in APIState
   convertor?: StateConvertor<T>;
-  // It is a best practice to always define a fallback for API results,
-  // no matter before the API response returned or after an unexpected error has occurred.
-  //
-  // fallback should be a NOT nullish value, and will be passed to node in the following situations:
-  // - the initial state
-  // - API request failed or some business error returned
-  // - convertor throw an error when calling it with API result
-  // - convertor return `null` or `undefined`
-  //
-  // The value of fallback will not always be the same.
-  // It will be assign a new value when convertor returned a not-nullish value.
-  // If there is no convertor defined, fallback will be assigned to the latest not-nullish api result.
-  //
-  // Be Attention. fallback is NOT the fallback of API result, it is the fallback of a property passed to node.
+  /**
+   * It is a best practice to always define a fallback for API results,
+   * no matter before the API response returned or after an unexpected error has occurred.
+   *
+   * Fallback should NOT be a nullish value, and will be passed to node in the following situations:
+   * - the initial state
+   * - API request failed or some business error returned
+   * - convertor throw an error when calling it with API result
+   * - convertor return `null` or `undefined`
+   *
+   * The value of fallback will not always be the same.
+   * It will be assign a new value when convertor returned a not-nullish value.
+   * If there is no convertor defined, fallback will be assigned to the latest not-nullish api result.
+   *
+   * Be Attention. fallback is NOT the fallback of API result, it is the fallback of a property passed to node.
+   */
   fallback: unknown;
 }
 
-export type StateConvertor<T> = T extends Serialized ? SerializedStateConvertor : StateConvertorFunc;
-export type SerializedStateConvertor = StateConvertExpression | StateConvertorFuncSpec;
-export type StateConvertorFunc = (v: any) => any;
-
-export type StateConvertExpression = {
-  type: 'state_convert_expression';
-  // same as JavaScript expression, with a predefined variable called `state`
-  // state.foo
-  // state.offset / (state.limit + state.offset)
-  // state.list.map((item) => item.name))
-  // state.list.map((item) => `名称：${item.name}`))
-  // state.foo?.bar?.baz || 'someValue'
-  expression: string;
-}
-
-export type StateConvertorFuncSpec = BaseFunctionSpec & {
-  type: 'state_convertor_func_spec';
-  args: 'state';
-};
-
-// toProps function should return Record<string, unknown>;
-export type ToPropsFuncSpec = BaseFunctionSpec & {
-  type: 'to_props_function_spec',
-  args: 'state'
-};
-export type ToProps<T> = T extends Serialized ?
-  ToPropsFuncSpec :
-  (state: unknown) => Record<string, unknown>;
-
-export type APILoadingProperty = BaseNodeProperty & {
+/**
+ * APILoadingProperty define the loading status of a API request.
+ */
+export interface APILoadingProperty extends BaseNodeProperty {
   type: NodePropType.APILoadingProperty;
   stateID: string;
 }
 
-export type SharedStateProperty<T> = BaseNodeProperty & {
+export interface SharedStateProperty<T> extends BaseNodeProperty {
   type: NodePropType.SharedStateProperty;
   stateID: string;
   fallback: unknown;
   convertor?: StateConvertor<T>;
 }
 
-export type NodeStateProperty<T> = BaseNodeProperty & {
+export interface NodeStateProperty<T> extends BaseNodeProperty {
   type: NodePropType.NodeStateProperty;
   nodeKey: string;
   fallback: unknown;
   convertor?: StateConvertor<T>;
 }
 
-export type FunctionalProperty<T> = BaseNodeProperty & {
+export interface FunctionalProperty<T> extends BaseNodeProperty {
   type: NodePropType.FunctionalProperty;
   func: T extends Serialized ? BaseFunctionSpec : VersatileFunc;
 }
@@ -140,7 +182,7 @@ export type FunctionalProperty<T> = BaseNodeProperty & {
 /**
  * @deprecated This type has been deprecated, please use FunctionalProperty instead
  */
-export type SharedStateMutationProperty<T> = {
+export interface SharedStateMutationProperty<T> extends BaseNodeProperty {
   type: NodePropType.SharedStateMutationProperty;
   stateID: string;
   convertor?: T extends Serialized ? BaseFunctionSpec : VersatileFunc;
@@ -149,12 +191,19 @@ export type SharedStateMutationProperty<T> = {
 /**
  * @deprecated This type has been deprecated, please use FunctionalProperty instead
  */
-export type APIInvokeProperty<T> = {
+export interface APIInvokeProperty<T> extends BaseNodeProperty {
   type: NodePropType.APIInvokeProperty;
   stateID: string;
   // the required return type is too complex
   paramsBuilder?: ParamsBuilder<T>;
   callback?: T extends Serialized ? APIFetchCallbackSpec : APIFetchCallback;
+}
+
+export type ParamsBuilder<T> = T extends Serialized ?
+  ParamsBuilderFuncSpec : (...args: unknown[]) => FetchParams;
+
+export interface ParamsBuilderFuncSpec extends BaseFunctionSpec {
+  type: 'param_builder_func_spec';
 }
 
 // It is common to passing a component to another component,
@@ -170,36 +219,108 @@ export type APIInvokeProperty<T> = {
 // <ParentComponent
 //   render={(someData, someIgnoredValue): JSX.Element => (<SomeComponent data={someData} otherProp={otherProp} />)}
 // />
-export type RenderProperty<T extends Z> = BaseNodeProperty & {
+export interface RenderProperty<T extends Z> extends BaseNodeProperty {
   type: NodePropType.RenderProperty;
   adapter: RenderPropertyAdapter<T>;
   node: SchemaNode<T>;
 }
 
-export type RenderPropertyAdapterFuncSpec = BaseFunctionSpec & {
+export interface RenderPropertyAdapterFuncSpec extends BaseFunctionSpec {
   type: 'render_property_function_spec',
-};
+}
 
 export type RenderPropertyAdapter<T> = T extends Serialized ?
   RenderPropertyAdapterFuncSpec :
   (...args: unknown[]) => Record<string, unknown>;
 
-export type ParamsBuilder<T> = T extends Serialized ?
-  ParamsBuilderFuncSpec : (...args: unknown[]) => FetchParams;
-
-export type ParamsBuilderFuncSpec = BaseFunctionSpec & {
-  type: 'param_builder_func_spec';
+export interface ComputedDependency {
+  type: 'api_state' | 'shared_state' | 'node_state';
+  depID: string;
 }
 
-export type LifecycleHookFuncSpec = BaseFunctionSpec & {
-  type: 'lifecycle_hook_func_spec';
-  args: '';
+export interface ComputedProperty<T> {
+  type: NodePropType.ComputedProperty,
+  deps: Array<ComputedDependency>;
+  convertor: StateConvertor<T>;
+  fallback: unknown;
 }
 
-export type BaseFunctionSpec = {
-  type: string;
-  args: string;
-  body: string;
+export type NodeProperties<T extends Z> = Record<string, NodeProperty<T>>;
+
+export const enum NodeType {
+  HTMLNode = 'html-element',
+  ReactComponentNode = 'react-component',
+  LoopContainerNode = 'loop-container',
+  ComposedNode = 'composed-node',
+  RefNode = 'ref-node',
+}
+
+export type SchemaNode<T extends Z> =
+  HTMLNode<T> |
+  ReactComponentNode<T> |
+  LoopContainerNode<T> |
+  ComposedNode<T> |
+  RefNode<T>;
+
+export type ShouldRenderCondition<T> =
+  APIResultProperty<T> |
+  NodeStateProperty<T> |
+  SharedStateProperty<T> |
+  ComputedProperty<T> |
+  APILoadingProperty & { revert?: boolean };
+
+export interface BaseNode<T extends Z> {
+  id: React.Key;
+  type: NodeType;
+  props?: NodeProperties<T>;
+  shouldRender?: ShouldRenderCondition<T>;
+  lifecycleHooks?: LifecycleHooks<T>;
+}
+
+export interface HTMLNode<T extends Z> extends BaseNode<T> {
+  type: NodeType.HTMLNode;
+  name: string;
+  children?: Array<SchemaNode<T>>;
+}
+
+export interface ReactComponentNode<T extends Z> extends BaseNode<T> {
+  type: NodeType.ReactComponentNode;
+  packageName: string;
+  packageVersion: string;
+  exportName: 'default' | string;
+  supportStateExposure?: boolean;
+  // not recommend, should avoid
+  children?: Array<SchemaNode<T>>;
+}
+
+export interface LoopContainerNode<T extends Z> extends BaseNode<T> {
+  type: NodeType.LoopContainerNode;
+  // props: LoopContainerNodeProps<T>;
+  iterableState: PlainState<T>;
+  loopKey: string;
+  node: SchemaNode<T>;
+  toProps: ToProps<T>;
+}
+
+export type ComposedNodeChild<T extends Z> = SchemaNode<T> & {
+  toProps?: ToProps<T>;
+}
+
+export interface ComposedNode<T extends Z> extends BaseNode<T> {
+  type: NodeType.ComposedNode;
+  outLayer?: Omit<HTMLNode<T>, 'children'>;
+  composedState: PlainState<T>;
+  children: Array<ComposedNodeChild<T>>;
+}
+
+export interface RefNode<T extends Z> extends BaseNode<T> {
+  type: NodeType.RefNode;
+  schemaID: string;
+  fallback?: SchemaNode<T>;
+  // RefNode will inherit parent context,
+  // which means use states if not found in current context.
+  // set `orphan` to `true` to disable inheritance
+  orphan?: boolean;
 }
 
 export type FetchOption = {
@@ -240,6 +361,14 @@ export type FetchOption = {
   callback?: APIFetchCallback;
 }
 
+// APIState define the type of API results from view perspective.
+// This type is inspired by [react-query](https://react-query.tanstack.com/).
+export type APIState = {
+  loading: boolean;
+  result?: unknown;
+  error?: Error;
+};
+
 export interface StatesHubAPI {
   hasState$: (stateID: string) => boolean;
   findState$: (stateID: string) => APIState$WithActions | undefined;
@@ -248,13 +377,13 @@ export interface StatesHubAPI {
   refresh: (stateID: string) => void;
 }
 
-export type APIState$WithActions = {
+export interface APIState$WithActions {
   state$: BehaviorSubject<APIState>;
   fetch: (fetchOption: FetchOption) => void;
   refresh: () => void;
-};
+}
 
-export type APIFetchCallbackSpec = BaseFunctionSpec & {
+export interface APIFetchCallbackSpec extends BaseFunctionSpec {
   type: 'api_fetch_callback';
   args: '{ result, error }',
 }
@@ -271,12 +400,12 @@ export interface StatesHubShared {
   mutateState: (stateID: string, state: unknown) => void;
 }
 
-export type APIStateWithFetch = APIState & {
+export interface APIStateWithFetch extends APIState {
   fetch: APIFetch;
   refresh: () => void;
 }
 
-export type CTX = {
+export interface CTX {
   statesHubAPI: StatesHubAPI;
   statesHubShared: StatesHubShared;
   apiStates: Readonly<Record<string, APIStateWithFetch>>;
@@ -287,94 +416,13 @@ export type CTX = {
 
 export type RenderEngineCTX = Pick<CTX, 'states' | 'apiStates'>;
 
-export type VersatileFunc<T = unknown> = (...args: unknown[]) => T;
-
-export type LifecycleHooks<T extends Z> = Partial<{
-  didMount: T extends Serialized ? LifecycleHookFuncSpec : VersatileFunc;
-  willUnmount: T extends Serialized ? LifecycleHookFuncSpec : VersatileFunc;
-}>;
-
-export const enum NodeType {
-  HTMLNode = 'html-element',
-  ReactComponentNode = 'react-component',
-  LoopContainerNode = 'loop-container',
-  ComposedNode = 'composed-node',
-  RefNode = 'ref-node',
-}
-
-export interface BaseNode<T extends Z> {
-  id: React.Key;
-  type: NodeType;
-  props?: NodeProperties<T>;
-  lifecycleHooks?: LifecycleHooks<T>;
-}
-
-export interface HTMLNode<T extends Z> extends BaseNode<T> {
-  type: NodeType.HTMLNode;
-  name: string;
-  children?: Array<SchemaNode<T>>;
-}
-
-export interface ReactComponentNode<T extends Z> extends BaseNode<T> {
-  type: NodeType.ReactComponentNode;
-  packageName: string;
-  packageVersion: string;
-  exportName: 'default' | string;
-  supportStateExposure?: boolean;
-  // not recommend, should avoid
-  children?: Array<SchemaNode<T>>;
-}
-
-export type PlainState<T extends Z> =
-  APIResultProperty<T> |
-  SharedStateProperty<T> |
-  NodeStateProperty<T> |
-  ConstantProperty;
-
-export interface LoopContainerNode<T extends Z> extends BaseNode<T> {
-  type: NodeType.LoopContainerNode;
-  // props: LoopContainerNodeProps<T>;
-  iterableState: PlainState<T>;
-  loopKey: string;
-  node: SchemaNode<T>;
-  toProps: ToProps<T>;
-}
-
-export type ComposedNodeChild<T extends Z> = SchemaNode<T> & {
-  toProps?: ToProps<T>;
-}
-
-export interface ComposedNode<T extends Z> extends BaseNode<T> {
-  type: NodeType.ComposedNode;
-  outLayer?: Omit<HTMLNode<T>, 'children'>;
-  composedState: PlainState<T>;
-  children: Array<ComposedNodeChild<T>>;
-}
-
-export interface RefNode<T extends Z> extends BaseNode<T> {
-  type: NodeType.RefNode;
-  schemaID: string;
-  fallback?: SchemaNode<T>;
-  // RefNode will inherit parent context,
-  // which means use states if not found in current context.
-  // set `orphan` to `true` to disable inheritance
-  orphan?: boolean;
-}
-
-export type SchemaNode<T extends Z> =
-  HTMLNode<T> |
-  ReactComponentNode<T> |
-  LoopContainerNode<T> |
-  ComposedNode<T> |
-  RefNode<T>;
-
 // map of stateID and apiID
 // todo should also store builder info
 export type APIStatesSpec = Record<string, { apiID: string; [key: string]: unknown; }>;
 
 export type SharedStatesSpec = Record<string, { initial: unknown; }>;
 
-export type Schema = {
+export interface Schema {
   node: SchemaNode<Serialized>;
   apiStateSpec?: APIStatesSpec;
   sharedStatesSpec?: SharedStatesSpec;
@@ -390,7 +438,7 @@ export type Repository = Record<PackageNameVersion, Record<string, DynamicCompon
 
 export type RefLoader = (schemaID: string) => Promise<InitProps>;
 
-export type InitProps = {
+export interface InitProps {
   schema: Schema;
   apiSpecAdapter: APISpecAdapter;
   repository?: Repository;

@@ -2,8 +2,8 @@ import React, { PropsWithChildren } from 'react';
 import { render } from '@testing-library/react';
 
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
-import { Repository, NodeType, ReactComponentNode, Instantiated } from '../../types';
 import ReactComponentNodeRender from '../react-component-node-render';
+import { Repository, NodeType, ReactComponentNode, Instantiated } from '../../types';
 
 jest.mock('../../repository');
 

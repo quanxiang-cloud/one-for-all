@@ -1,8 +1,8 @@
 import React from 'react';
-import { renderHook } from '@testing-library/react-hooks/pure';
 import { logger } from '@ofa/utils';
+import { act, renderHook } from '@testing-library/react-hooks/pure';
+import { APISpecAdapter } from '@ofa/api-spec-adapter/lib/src/types';
 
-import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 import {
   ReactComponentNode,
   Instantiated,
@@ -11,8 +11,15 @@ import {
   InitProps,
   NodeType,
   Schema,
+  NodePropType,
+  HTMLNode,
+  APIStatesSpec,
 } from '../../types';
-import { useLifecycleHook, useNodeComponent, useRefResult } from '../hooks';
+import APIStatesHub from '../../ctx/states-hub-api';
+import SharedStateHub from '../../ctx/states-hub-shared';
+import SharedStatesHub from '../../ctx/states-hub-shared';
+import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
+import { useLifecycleHook, useNodeComponent, useRefResult, useShouldRender } from '../hooks';
 
 jest.mock('../../repository');
 
@@ -159,6 +166,360 @@ test('useRefResult_should_return_expected_value', async () => {
   expect(result.current?.refNode).toBeTruthy();
   expect(result.all.length).toBe(2);
   expect(logger.error).not.toBeCalled();
+
+  unmount();
+});
+
+const apiSpecAdapter: APISpecAdapter = {
+  build: () => ({ url: '/api', method: 'get' }),
+};
+const apiStateSpec: APIStatesSpec = {
+  some_api_state: { apiID: 'get:/api' },
+};
+const apiStateHub = new APIStatesHub({ apiSpecAdapter, apiStateSpec });
+
+test('useShouldRender_should_return_expected_value_according_api_loading', async () => {
+  dummyCTX.statesHubAPI = apiStateHub;
+  const node1: HTMLNode<Instantiated> = {
+    id: 'condition-render-node',
+    type: NodeType.HTMLNode,
+    name: 'div',
+    shouldRender: {
+      type: NodePropType.APILoadingProperty,
+      stateID: 'some_api_state',
+    },
+    props: {
+      id: {
+        type: NodePropType.ConstantProperty,
+        value: 'some_id',
+      },
+      className: {
+        type: NodePropType.ConstantProperty,
+        value: 'foo bar',
+      },
+    },
+  };
+  const node2: HTMLNode<Instantiated> = {
+    id: 'condition-render-node',
+    type: NodeType.HTMLNode,
+    name: 'div',
+    shouldRender: {
+      type: NodePropType.APILoadingProperty,
+      stateID: 'some_api_state',
+      revert: true,
+    },
+    props: {
+      id: {
+        type: NodePropType.ConstantProperty,
+        value: 'some_id',
+      },
+      className: {
+        type: NodePropType.ConstantProperty,
+        value: 'foo bar',
+      },
+    },
+  };
+
+  const { result: res1, unmount: unmount1 } = renderHook(() => useShouldRender(node1, dummyCTX));
+  const { result: res2, unmount: unmount2 } = renderHook(() => useShouldRender(node2, dummyCTX));
+
+  expect(res1.current).toBe(false);
+  expect(res2.current).toBe(true);
+
+  unmount1();
+  unmount2();
+});
+
+test('useShouldRender_should_return_expected_value_according_api_result', async () => {
+  dummyCTX.statesHubAPI = apiStateHub;
+  const node: HTMLNode<Instantiated> = {
+    id: 'condition-render-node',
+    type: NodeType.HTMLNode,
+    name: 'div',
+    shouldRender: {
+      type: NodePropType.APIResultProperty,
+      stateID: 'some_api_state',
+      fallback: false,
+      convertor: (v): boolean => {
+        return v.length > 4;
+      },
+    },
+    props: {
+      id: {
+        type: NodePropType.ConstantProperty,
+        value: 'some_id',
+      },
+      className: {
+        type: NodePropType.ConstantProperty,
+        value: 'foo bar',
+      },
+    },
+  };
+
+  const { result, unmount } = renderHook(() => useShouldRender(node, dummyCTX));
+
+  // fallback
+  expect(result.current).toBe(false);
+
+  // convertor
+  act(() => {
+    apiStateHub.getState$('some_api_state').next({
+      result: [0, 1, 2, 3, 4],
+      error: undefined,
+      loading: true,
+    });
+  });
+  expect(result.current).toBe(true);
+
+  act(() => {
+    apiStateHub.getState$('some_api_state').next({
+      result: [0, 1, 2],
+      error: undefined,
+      loading: true,
+    });
+  });
+  expect(result.current).toBe(false);
+
+  unmount();
+});
+
+test('useShouldRender_should_return_expected_value_according_shared_state', () => {
+  const sharedStates = new SharedStatesHub({
+    visible: { initial: false },
+  });
+  dummyCTX.statesHubShared = sharedStates;
+
+  const node: HTMLNode<Instantiated> = {
+    id: 'some_node_id',
+    type: NodeType.HTMLNode,
+    name: 'div',
+    shouldRender: {
+      type: NodePropType.SharedStateProperty,
+      stateID: 'visible',
+      fallback: true,
+      convertor: (v): boolean => {
+        return !v.condition1 || !v.condition2;
+      },
+    },
+    props: {
+      id: {
+        type: NodePropType.ConstantProperty,
+        value: 'some_id',
+      },
+      className: {
+        type: NodePropType.ConstantProperty,
+        value: 'foo bar',
+      },
+    },
+  };
+
+  expect(sharedStates.getState$('visible').value).toBe(false);
+  const { result, unmount } = renderHook(() => useShouldRender(node, dummyCTX));
+  expect(result.current).toBe(true);
+
+  act(() => {
+    sharedStates.getState$('visible').next({ condition1: true, condition2: true });
+  });
+  expect(result.current).toBe(false);
+
+  unmount();
+});
+
+test('useShouldRender_should_return_expected_value_according_node_state', () => {
+  const hub = new SharedStateHub({});
+  dummyCTX.statesHubShared = hub;
+  const nodeKey = 'node_id';
+  const someNodeInternalState = { condition1: true, condition2: false };
+  hub.exposeNodeState(nodeKey, someNodeInternalState);
+
+  const node: HTMLNode<Instantiated> = {
+    id: 'some_node_id',
+    type: NodeType.HTMLNode,
+    name: 'div',
+    shouldRender: {
+      type: NodePropType.NodeStateProperty,
+      nodeKey: nodeKey,
+      fallback: true,
+      convertor: (v): boolean => {
+        return !!v.condition1 && !!v.condition2;
+      },
+    },
+    props: {
+      id: {
+        type: NodePropType.ConstantProperty,
+        value: 'some_id',
+      },
+      className: {
+        type: NodePropType.ConstantProperty,
+        value: 'foo bar',
+      },
+    },
+  };
+
+  const { result, unmount } = renderHook(() => useShouldRender(node, dummyCTX));
+  expect(result.current).toBe(false);
+
+  act(() => {
+    hub.getNodeState$(nodeKey).next({ condition1: true, condition2: true });
+  });
+  expect(result.current).toBe(true);
+
+  unmount();
+});
+
+test('useShouldRender_should_return_expected_value_according_computed_state', () => {
+  const sharedStates = new SharedStatesHub({
+    visible: { initial: false },
+  });
+  dummyCTX.statesHubAPI = apiStateHub;
+  dummyCTX.statesHubShared = sharedStates;
+  const nodeKey = 'node_id';
+  const someNodeInternalState = false;
+  sharedStates.exposeNodeState(nodeKey, someNodeInternalState);
+
+  const node: HTMLNode<Instantiated> = {
+    id: 'some_node_id',
+    type: NodeType.HTMLNode,
+    name: 'div',
+    shouldRender: {
+      type: NodePropType.ComputedProperty,
+      deps: [
+        {
+          type: 'api_state',
+          depID: 'some_api_state',
+        },
+        {
+          type: 'node_state',
+          depID: nodeKey,
+        },
+        {
+          type: 'shared_state',
+          depID: 'visible',
+        },
+      ],
+      fallback: false,
+      convertor: () => {
+        const loading = dummyCTX.statesHubAPI.getState$('some_api_state').value.loading;
+        const sharedState = dummyCTX.statesHubShared.getState$('visible').value;
+        const nodeState = dummyCTX.statesHubShared.getNodeState$(nodeKey).value;
+
+        return loading || sharedState || nodeState;
+      },
+    },
+  };
+
+  act(() => {
+    apiStateHub.getState$('some_api_state').next({
+      result: undefined,
+      error: undefined,
+      loading: true,
+    });
+  });
+
+  expect(apiStateHub.getState$('some_api_state').value.result).toBeUndefined();
+  expect(sharedStates.getState$('visible').value).toBe(false);
+  expect(sharedStates.getNodeState$(nodeKey).value).toBe(false);
+  const { result, unmount } = renderHook(() => useShouldRender(node, dummyCTX));
+  expect(result.current).toBe(true);
+
+  act(() => {
+    apiStateHub.getState$('some_api_state').next({
+      result: { dep1: false, dep2: true },
+      error: undefined,
+      loading: false,
+    });
+  });
+  expect(result.current).toBe(false);
+
+  act(() => {
+    sharedStates.getState$('visible').next(true);
+    sharedStates.getNodeState$(nodeKey).next(false);
+  });
+  expect(result.current).toBe(true);
+
+  act(() => {
+    sharedStates.getState$('visible').next(false);
+    sharedStates.getNodeState$(nodeKey).next(true);
+  });
+  expect(result.current).toBe(true);
+
+  act(() => {
+    sharedStates.getState$('visible').next(false);
+    sharedStates.getNodeState$(nodeKey).next(false);
+  });
+  expect(result.current).toBe(false);
+
+  unmount();
+});
+
+test('useShouldRender_should_return_Init_value_according_computed_state', () => {
+  const sharedStates = new SharedStatesHub({
+    visible: { initial: false },
+  });
+  dummyCTX.statesHubAPI = apiStateHub;
+  dummyCTX.statesHubShared = sharedStates;
+  const nodeKey = 'node_id';
+  const someNodeInternalState = false;
+  sharedStates.exposeNodeState(nodeKey, someNodeInternalState);
+
+  const node: HTMLNode<Instantiated> = {
+    id: 'some_node_id',
+    type: NodeType.HTMLNode,
+    name: 'div',
+    shouldRender: {
+      type: NodePropType.ComputedProperty,
+      deps: [],
+      fallback: false,
+      convertor: () => {
+        const loading = dummyCTX.statesHubAPI.getState$('some_api_state').value.loading;
+        const sharedState = dummyCTX.statesHubShared.getState$('visible').value;
+        const nodeState = dummyCTX.statesHubShared.getNodeState$(nodeKey).value;
+
+        return loading || sharedState || nodeState;
+      },
+    },
+  };
+
+  act(() => {
+    apiStateHub.getState$('some_api_state').next({
+      result: undefined,
+      error: undefined,
+      loading: true,
+    });
+  });
+
+  expect(apiStateHub.getState$('some_api_state').value.result).toBeUndefined();
+  expect(sharedStates.getState$('visible').value).toBe(false);
+  expect(sharedStates.getNodeState$(nodeKey).value).toBe(false);
+  const { result, unmount } = renderHook(() => useShouldRender(node, dummyCTX));
+  expect(result.current).toBe(true);
+
+  act(() => {
+    apiStateHub.getState$('some_api_state').next({
+      result: { dep1: false, dep2: true },
+      error: undefined,
+      loading: false,
+    });
+  });
+  expect(result.current).toBe(true);
+
+  act(() => {
+    sharedStates.getState$('visible').next(true);
+    sharedStates.getNodeState$(nodeKey).next(false);
+  });
+  expect(result.current).toBe(true);
+
+  act(() => {
+    sharedStates.getState$('visible').next(false);
+    sharedStates.getNodeState$(nodeKey).next(true);
+  });
+  expect(result.current).toBe(true);
+
+  act(() => {
+    sharedStates.getState$('visible').next(false);
+    sharedStates.getNodeState$(nodeKey).next(false);
+  });
+  expect(result.current).toBe(true);
 
   unmount();
 });

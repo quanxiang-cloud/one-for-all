@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 import { logger } from '@ofa/utils';
 
+import PathContext from './path-context';
+import RefNodeRender from './ref-node-render';
 import HTMLNodeRender from './html-node-render';
 import LoopNodeRender from './loop-node-render';
+import { CTX, InstantiatedNode, NodeType } from '../types';
 import ReactComponentNodeRender from './react-component-node-render';
-import RefNodeRender from './ref-node-render';
-import type { CTX, InstantiatedNode } from '../types';
-import { NodeType } from '../types';
-import PathContext from './path-context';
+import { useShouldRender } from './hooks';
 
 type ChildrenRenderProps = {
   nodes: InstantiatedNode[];
@@ -36,6 +36,11 @@ type Props = {
 function NodeRender({ node, ctx }: Props): React.ReactElement | null {
   const parentPath = useContext(PathContext);
   const currentPath = `${parentPath}/${node.id}`;
+  const shouldRender = useShouldRender(node, ctx);
+
+  if (!shouldRender) {
+    return null;
+  }
 
   if (node.type === NodeType.LoopContainerNode) {
     return React.createElement(

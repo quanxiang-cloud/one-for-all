@@ -233,6 +233,98 @@ const todoAppSchema: Schema = {
         },
       },
       {
+        id: 'simple-condition-render',
+        type: NodeType.HTMLNode,
+        name: 'button',
+        shouldRender: {
+          type: NodePropType.APIResultProperty,
+          stateID: '全部待办列表',
+          fallback: false,
+          convertor: {
+            type: 'state_convertor_func_spec',
+            args: 'state',
+            body: `
+              return state.length < 4;
+            `,
+          },
+        },
+        props: {
+          children: {
+            type: NodePropType.ConstantProperty,
+            value: 'simple-condition-render-node',
+          },
+        },
+      },
+      {
+        id: 'multiple-condition-render',
+        type: NodeType.HTMLNode,
+        name: 'button',
+        shouldRender: {
+          type: NodePropType.ComputedProperty,
+          fallback: false,
+          deps: [
+            { type: 'api_state', depID: 'todoStatus' },
+            { type: 'api_state', depID: '全部待办列表' },
+          ],
+          convertor: {
+            type: 'state_convertor_func_spec',
+            args: 'state',
+            body: `
+              return this.apiStates['全部待办列表']?.result?.length > 4;
+            `,
+          },
+        },
+        props: {
+          children: {
+            type: NodePropType.ConstantProperty,
+            value: 'multiple-condition-render-node',
+          },
+        },
+      },
+      {
+        id: 'computed-property-render',
+        type: NodeType.HTMLNode,
+        name: 'button',
+        props: {
+          children: {
+            type: NodePropType.ConstantProperty,
+            value: 'AAAA',
+          },
+          test1: {
+            type: NodePropType.ComputedProperty,
+            fallback: '',
+            deps: [
+              { type: 'api_state', depID: 'todoStatus' },
+              { type: 'api_state', depID: '全部待办列表' },
+              { type: 'shared_state', depID: '' },
+              { type: 'node_state', depID: '' },
+            ],
+            convertor: {
+              type: 'state_convertor_func_spec',
+              args: 'state',
+              body: `
+                return state[1]?.result?.length;
+              `,
+            },
+          },
+          test2: {
+            type: NodePropType.ComputedProperty,
+            deps: [
+              { type: 'api_state', depID: 'todoStatus' },
+              { type: 'api_state', depID: '全部待办列表' },
+            ],
+            fallback: '',
+            convertor: {
+              type: 'state_convertor_func_spec',
+              args: 'state',
+              body: `
+                return state[1]?.result?.length;
+              `,
+            },
+          },
+        },
+      },
+      {
         id: 'todo-list-loop',
         type: NodeType.LoopContainerNode,
         props: {},

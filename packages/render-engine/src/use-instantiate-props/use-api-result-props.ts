@@ -10,7 +10,7 @@ import {
   Instantiated,
   SchemaNode,
 } from '../types';
-import convertState from './convert-state';
+import { convertState } from './utils';
 
 function useAPIResultProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, unknown> {
   const adapters: Record<string, StateConvertorFunc | undefined> = {};
