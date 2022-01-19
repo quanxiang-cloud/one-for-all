@@ -19,6 +19,7 @@ export interface PageNode extends BaseNode {
   packageName?: 'ofa-ui' | string;
   packageVersion?: 'latest' | string;
   exportName: 'page' | 'elemName' | string; // registry elem type
+  toProps?: any; // func body
   children?: Array<PageNode>
   defaultConfig?: any;
   defaultStyle?: React.CSSProperties;
@@ -71,4 +72,10 @@ export type LoopNodeConf={
   iterableState: PlainState;
   loopKey: string;
   toProps: string; // func body
+}
+
+export type ComposedNodeConf={
+  iterableState: PlainState<Serialized>;
+  loopKey: string;
+  node: PageNode;
 }

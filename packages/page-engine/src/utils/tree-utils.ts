@@ -12,7 +12,8 @@ export function findNode(tree: PageNode, node_id?: string): any {
     return tree;
   }
   // if loop node, return wrapper node
-  if (tree.type === 'loop-container' && get(tree, 'node.id') === node_id) {
+  // && get(tree, 'node.id') === node_id
+  if (tree.type === 'loop-container') {
     const loopChildren = get(tree, 'node.children');
     if (loopChildren) {
       for (const child of loopChildren) {
