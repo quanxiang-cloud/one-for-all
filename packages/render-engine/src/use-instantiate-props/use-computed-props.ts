@@ -4,17 +4,15 @@ import { BehaviorSubject, combineLatest, skip } from 'rxjs';
 import {
   CTX,
   SchemaNode,
-  Instantiated,
-  NodePropType,
   ComputedProperty,
 } from '../types';
 import { getComputedState$ } from './utils';
 
-export default function useComputedProps(node: SchemaNode<Instantiated>, ctx: CTX): Record<string, unknown> {
+export default function useComputedProps(node: SchemaNode, ctx: CTX): Record<string, unknown> {
   const states$: Record<string, BehaviorSubject<unknown>> = {};
 
-  Object.entries(node.props || {}).filter((pair): pair is [string, ComputedProperty<Instantiated>] => {
-    return pair[1].type === NodePropType.ComputedProperty;
+  Object.entries(node.props || {}).filter((pair): pair is [string, ComputedProperty] => {
+    return pair[1].type === 'computed_property';
   }).forEach(([propName, { deps, convertor, fallback }]) => {
     states$[propName] = getComputedState$({ propName, deps, convertor, ctx, fallback });
   });

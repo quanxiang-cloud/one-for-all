@@ -4,7 +4,6 @@ import { observer } from 'mobx-react';
 
 import { LoopNode, PageNode, useCtx } from '@ofa/page-engine';
 import { Icon } from '@ofa/ui';
-import { NodeType } from '@ofa/render-engine';
 
 import styles from './index.m.scss';
 
@@ -16,7 +15,7 @@ interface NodeItemProps {
 
 function NodeItem({ node: rawNode, level, onSelect }: NodeItemProps): JSX.Element {
   const { page } = useCtx();
-  const isLoopNode = rawNode.type === NodeType.LoopContainerNode;
+  const isLoopNode = rawNode.type === 'loop-container';
   const node = (isLoopNode ? (rawNode as LoopNode).node : rawNode) as PageNode;
   const hasChild = node.children && node.children.length > 0;
   const [expand, setExpand] = useState(hasChild);

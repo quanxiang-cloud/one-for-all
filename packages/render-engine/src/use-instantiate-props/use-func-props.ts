@@ -1,16 +1,16 @@
 import { logger } from '@ofa/utils';
 import { useMemo } from 'react';
 
-import { NodePropType, SchemaNode, FunctionalProperty, Instantiated, VersatileFunc } from '../types';
+import { SchemaNode, FunctionalProperty, VersatileFunc } from '../types';
 
-export default function useFuncProps(node: SchemaNode<Instantiated>): Record<string, VersatileFunc> {
+export default function useFuncProps(node: SchemaNode): Record<string, VersatileFunc> {
   return useMemo(() => {
     if (!node.props) {
       return {};
     }
 
-    return Object.entries(node.props).filter((pair): pair is [string, FunctionalProperty<Instantiated>] => {
-      return pair[1].type === NodePropType.FunctionalProperty;
+    return Object.entries(node.props).filter((pair): pair is [string, FunctionalProperty] => {
+      return pair[1].type === 'functional_property';
     }).reduce<Record<string, VersatileFunc>>((acc, [key, { func }]) => {
       acc[key] = (...args: unknown[]) => {
         try {

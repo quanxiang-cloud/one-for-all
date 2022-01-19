@@ -1,7 +1,7 @@
 import { logger } from '@ofa/utils';
 import { renderHook, act } from '@testing-library/react-hooks/pure';
 
-import { NodePropType, Instantiated, SchemaNode, NodeType } from '../../types';
+import { SchemaNode } from '../../types';
 
 import SharedStatesHub from '../../ctx/states-hub-shared';
 import useSharedStateMutationProps from '../use-shared-state-mutation';
@@ -12,13 +12,13 @@ test('useSharedStateMutationProps_resolve_raw_data_when_adapter_is_undefined', (
   const sharedStates = new SharedStatesHub({});
   dummyCTX.statesHubShared = sharedStates;
 
-  const node: SchemaNode<Instantiated> = {
+  const node: SchemaNode = {
     id: 'some_key',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: 'div',
     props: {
       onChange: {
-        type: NodePropType.SharedStateMutationProperty,
+        type: 'shared_state_mutation_property',
         stateID: 'some_value',
       },
     },
@@ -49,13 +49,13 @@ test('useSharedStateMutationProps_should_not_mutate_state_when_adapter_throw', (
     some_value: { initial: 'some_value' },
   });
   dummyCTX.statesHubShared = sharedStates;
-  const node: SchemaNode<Instantiated> = {
+  const node: SchemaNode = {
     id: 'some_key',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: 'div',
     props: {
       onChange: {
-        type: NodePropType.SharedStateMutationProperty,
+        type: 'shared_state_mutation_property',
         stateID: 'some_value',
         convertor: () => {
           throw new Error('should be handled');
@@ -81,13 +81,13 @@ test('useSharedStateMutationProps_should_resolve_adapter_returned', () => {
     some_value: { initial: 'some_value' },
   });
   dummyCTX.statesHubShared = sharedStates;
-  const node: SchemaNode<Instantiated> = {
+  const node: SchemaNode = {
     id: 'some_key',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: 'div',
     props: {
       onChange: {
-        type: NodePropType.SharedStateMutationProperty,
+        type: 'shared_state_mutation_property',
         stateID: 'some_value',
         convertor: () => 'another_value',
       },
@@ -112,13 +112,13 @@ test('useSharedStateMutationProps_should_call_adapter_correctly', () => {
   });
   dummyCTX.statesHubShared = sharedStates;
   const adapterMock = jest.fn(() => 'another_value');
-  const node: SchemaNode<Instantiated> = {
+  const node: SchemaNode = {
     id: 'some_key',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: 'div',
     props: {
       onChange: {
-        type: NodePropType.SharedStateMutationProperty,
+        type: 'shared_state_mutation_property',
         stateID: 'some_value',
         convertor: adapterMock,
       },

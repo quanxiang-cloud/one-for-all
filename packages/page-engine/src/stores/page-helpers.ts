@@ -1,7 +1,6 @@
 import { PageNode, PageSchema } from '@ofa/page-engine';
 import { toJS } from 'mobx';
 
-import { NodePropType, NodeType } from '@ofa/render-engine';
 import { elemId } from '../utils';
 
 export function deepMergeNode(node: PageNode): PageNode {
@@ -33,14 +32,14 @@ export function generateGridChildren(
     _children.push({
       id: elemId('container'),
       pid: parentId,
-      type: NodeType.ReactComponentNode,
+      type: 'react-component',
       exportName: 'container',
       packageName: 'ofa-ui',
       packageVersion: 'latest',
       label: '布局',
       props: {
         style: {
-          type: NodePropType.ConstantProperty,
+          type: 'constant_property',
           value: {
             display: 'flex',
             flexFlow: 'column nowrap',
@@ -65,14 +64,14 @@ export function initPageSchema(): PageSchema {
     node: {
       id: elemId('page'),
       pid: '',
-      type: NodeType.ReactComponentNode,
+      type: 'react-component',
       packageName: 'ofa-ui',
       packageVersion: 'latest',
       exportName: 'page',
       label: '页面',
       props: {
         style: {
-          type: NodePropType.ConstantProperty,
+          type: 'constant_property',
           value: {
             width: '100%',
             height: '100%',

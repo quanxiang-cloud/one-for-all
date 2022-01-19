@@ -1,7 +1,6 @@
 import { action, computed, makeObservable, observable, runInAction, toJS } from 'mobx';
 import { cloneDeep, defaults, get, set } from 'lodash';
 
-import { NodePropType, NodeType } from '@ofa/render-engine';
 import { LoopNode, LoopNodeConf } from '@ofa/page-engine';
 import { elemId } from '../utils';
 import { findNode, findParent, findParentId, removeNode as removeTreeNode } from '../utils/tree-utils';
@@ -43,7 +42,7 @@ class PageStore {
   @computed
   get activeElem(): any {
     const node = this.rawActiveElem;
-    if (node?.type === NodeType.LoopContainerNode) {
+    if (node?.type === 'loop-container') {
       return node.node;
     }
     return node;
@@ -71,7 +70,7 @@ class PageStore {
   @action
   setSchema = (schema: PageSchema): void => {
     // ignore html node
-    if (schema.node.type === NodeType.HTMLNode) {
+    if (schema.node.type === 'html-element') {
       return;
     }
 
@@ -110,10 +109,10 @@ class PageStore {
       id: elemId(node.exportName),
       pid: this.dragPos === 'inner' ? targetNode.id : (targetNode.pid || this.schema.node.id),
       // exportName: node.exportName,
-      type: NodeType.ReactComponentNode,
+      type: 'react-component',
       packageName: 'ofa-ui',
       packageVersion: 'latest',
-      props: mergeAsRenderEngineProps({}, node.defaultConfig || {})
+      props: mergeAsRenderEngineProps({}, node.defaultConfig || {}),
     };
 
     if (registry.acceptChild(node.exportName)) {
@@ -150,7 +149,7 @@ class PageStore {
         if (srcNode.id && options?.from !== 'source') {
           const srcParent = findNode(this.schema.node, srcNode.pid);
           if (srcParent && srcParent.children) {
-            const isLoopNode = srcNode.type === NodeType.LoopContainerNode;
+            const isLoopNode = srcNode.type === 'loop-container';
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             const srcNodeId = isLoopNode ? srcNode.node.id : srcNode.id;
@@ -181,7 +180,7 @@ class PageStore {
   }
 
   getRealNode = (rawNode: PageNode): PageNode => {
-    return rawNode.type === NodeType.LoopContainerNode ? (rawNode as any).node : rawNode;
+    return rawNode.type === 'loop-container' ? (rawNode as any).node : rawNode;
   }
 
   @action
@@ -269,7 +268,7 @@ class PageStore {
     const elem = findNode(this.schema.node, elem_id);
     if (elem) {
       let actualNode = elem;
-      if (!options?.useRawNode && elem.type === NodeType.LoopContainerNode) {
+      if (!options?.useRawNode && elem.type === 'loop-container') {
         actualNode = elem.node;
       }
 
@@ -282,7 +281,7 @@ class PageStore {
         }
       } else if (propKey === 'props.style') {
         // fixme: style bind variable
-        set(actualNode, propKey, { type: NodePropType.ConstantProperty, value: conf });
+        set(actualNode, propKey, { type: 'constant_property', value: conf });
       } else if (propKey === 'lifecycleHooks') {
         set(actualNode, propKey, transformLifecycleHooks(conf));
       } else {
@@ -317,7 +316,7 @@ class PageStore {
     const nodeCopy = cloneDeep(target);
     const loopNodeConfig = {
       id: elemId('loop-node'),
-      type: NodeType.LoopContainerNode,
+      type: 'loop-container',
       node: nodeCopy,
       loopKey: loopConfig.loopKey || 'id',
       toProps: {
@@ -354,7 +353,7 @@ class PageStore {
     if (!loopNode) {
       return;
     }
-    if (loopNode.type === NodeType.LoopContainerNode) {
+    if (loopNode.type === 'loop-container') {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const innerNode = (loopNode as LoopNode).node;

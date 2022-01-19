@@ -2,7 +2,6 @@ import React from 'react';
 import { defaults, flow, get, identity } from 'lodash';
 
 import { LoopNode, PageNode } from '@ofa/page-engine';
-import { NodeType } from '@ofa/render-engine';
 // import Elem from '@ofa/page-engine/core/elem';
 // import { toJS } from 'mobx';
 import { mapRawProps } from '../utils/schema-adapter';
@@ -18,7 +17,7 @@ import { isDev } from '../utils';
 //
 //   let node;
 //
-//   if (schema.type === NodeType.LoopContainerNode) {
+//   if (schema.type === 'loop-container') {
 //     node = (schema as LoopNode).node as PageNode;
 //   } else {
 //     node = schema;
@@ -36,14 +35,14 @@ import { isDev } from '../utils';
 
 export function transformType(schema: PageNode | LoopNode): string | React.ComponentType {
   const { type } = schema;
-  if (type === NodeType.ReactComponentNode) {
+  if (type === 'react-component') {
     return registry.elementMap?.[schema.exportName]?.component || type;
   }
-  if (type === NodeType.LoopContainerNode) {
+  if (type === 'loop-container') {
     const nodeType = get(schema, 'node.exportName');
     return registry.elementMap[nodeType]?.component;
   }
-  if (type === NodeType.HTMLNode) {
+  if (type === 'html-element') {
     return schema.name || 'div';
   }
   return 'div';
@@ -60,7 +59,7 @@ export function mergeProps(schema: PageNode): Record<string, any> {
   const elemProps = defaults({}, mapRawProps(schema.props || {}), elemConf?.defaultConfig);
 
   // patch certain elem props
-  if (schema.type === NodeType.ReactComponentNode) {
+  if (schema.type === 'react-component') {
     // add placeholder to page elem
     if (schema.exportName === 'page' && !schema.children?.length) {
       Object.assign(elemProps, { placeholder: React.createElement(PagePlaceholder) });

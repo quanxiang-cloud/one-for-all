@@ -2,16 +2,13 @@ import React from 'react';
 import { logger } from '@ofa/utils';
 import { act, renderHook } from '@testing-library/react-hooks/pure';
 import { APISpecAdapter } from '@ofa/api-spec-adapter/lib/src/types';
+import type { Schema } from '@ofa/schema-spec';
 
 import {
   ReactComponentNode,
-  Instantiated,
   Repository,
   RefLoader,
   InitProps,
-  NodeType,
-  Schema,
-  NodePropType,
   HTMLNode,
   APIStatesSpec,
 } from '../../types';
@@ -32,7 +29,7 @@ function wait(timeSecond: number): Promise<boolean> {
 }
 
 test('useNodeComponent_should_return_null', async () => {
-  const node: Pick<ReactComponentNode<Instantiated>, 'packageName' | 'packageVersion' | 'exportName'> = {
+  const node: Pick<ReactComponentNode, 'packageName' | 'packageVersion' | 'exportName'> = {
     packageName: 'null',
     packageVersion: 'whatever',
     exportName: 'Foo',
@@ -49,7 +46,7 @@ test('useNodeComponent_should_return_null', async () => {
 });
 
 test('useNodeComponent_should_return_dummy_component', async () => {
-  const node: Pick<ReactComponentNode<Instantiated>, 'packageName' | 'packageVersion' | 'exportName'> = {
+  const node: Pick<ReactComponentNode, 'packageName' | 'packageVersion' | 'exportName'> = {
     packageName: 'foo',
     packageVersion: 'whatever',
     exportName: 'Foo',
@@ -67,7 +64,7 @@ test('useNodeComponent_should_return_dummy_component', async () => {
 
 test('useNodeComponent_should_return_component_in_repository', () => {
   const dummyComponent = (): JSX.Element => (<div />);
-  const node: Pick<ReactComponentNode<Instantiated>, 'packageName' | 'packageVersion' | 'exportName'> = {
+  const node: Pick<ReactComponentNode, 'packageName' | 'packageVersion' | 'exportName'> = {
     packageName: 'foo',
     packageVersion: 'whatever',
     exportName: 'Foo',
@@ -99,7 +96,7 @@ test('useLifecycleHook_should_be_called', () => {
 const DUMMY_SCHEMA: Schema = {
   apiStateSpec: {},
   sharedStatesSpec: {},
-  node: { id: 'dummy', type: NodeType.HTMLNode, name: 'div' },
+  node: { id: 'dummy', type: 'html-element', name: 'div' },
 };
 
 describe('useRefResult_should_return_undefined', () => {
@@ -180,41 +177,41 @@ const apiStateHub = new APIStatesHub({ apiSpecAdapter, apiStateSpec });
 
 test('useShouldRender_should_return_expected_value_according_api_loading', async () => {
   dummyCTX.statesHubAPI = apiStateHub;
-  const node1: HTMLNode<Instantiated> = {
+  const node1: HTMLNode = {
     id: 'condition-render-node',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: 'div',
     shouldRender: {
-      type: NodePropType.APILoadingProperty,
+      type: 'api_loading_property',
       stateID: 'some_api_state',
     },
     props: {
       id: {
-        type: NodePropType.ConstantProperty,
+        type: 'constant_property',
         value: 'some_id',
       },
       className: {
-        type: NodePropType.ConstantProperty,
+        type: 'constant_property',
         value: 'foo bar',
       },
     },
   };
-  const node2: HTMLNode<Instantiated> = {
+  const node2: HTMLNode = {
     id: 'condition-render-node',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: 'div',
     shouldRender: {
-      type: NodePropType.APILoadingProperty,
+      type: 'api_loading_property',
       stateID: 'some_api_state',
       revert: true,
     },
     props: {
       id: {
-        type: NodePropType.ConstantProperty,
+        type: 'constant_property',
         value: 'some_id',
       },
       className: {
-        type: NodePropType.ConstantProperty,
+        type: 'constant_property',
         value: 'foo bar',
       },
     },
@@ -232,25 +229,25 @@ test('useShouldRender_should_return_expected_value_according_api_loading', async
 
 test('useShouldRender_should_return_expected_value_according_api_result', async () => {
   dummyCTX.statesHubAPI = apiStateHub;
-  const node: HTMLNode<Instantiated> = {
+  const node: HTMLNode = {
     id: 'condition-render-node',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: 'div',
     shouldRender: {
-      type: NodePropType.APIResultProperty,
+      type: 'api_result_property',
       stateID: 'some_api_state',
       fallback: false,
       convertor: (v): boolean => {
-        return v.length > 4;
+        return (v as Array<any>).length > 4;
       },
     },
     props: {
       id: {
-        type: NodePropType.ConstantProperty,
+        type: 'constant_property',
         value: 'some_id',
       },
       className: {
-        type: NodePropType.ConstantProperty,
+        type: 'constant_property',
         value: 'foo bar',
       },
     },
@@ -289,25 +286,25 @@ test('useShouldRender_should_return_expected_value_according_shared_state', () =
   });
   dummyCTX.statesHubShared = sharedStates;
 
-  const node: HTMLNode<Instantiated> = {
+  const node: HTMLNode = {
     id: 'some_node_id',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: 'div',
     shouldRender: {
-      type: NodePropType.SharedStateProperty,
+      type: 'shared_state_property',
       stateID: 'visible',
       fallback: true,
-      convertor: (v): boolean => {
+      convertor: (v: any): boolean => {
         return !v.condition1 || !v.condition2;
       },
     },
     props: {
       id: {
-        type: NodePropType.ConstantProperty,
+        type: 'constant_property',
         value: 'some_id',
       },
       className: {
-        type: NodePropType.ConstantProperty,
+        type: 'constant_property',
         value: 'foo bar',
       },
     },
@@ -332,25 +329,25 @@ test('useShouldRender_should_return_expected_value_according_node_state', () => 
   const someNodeInternalState = { condition1: true, condition2: false };
   hub.exposeNodeState(nodeKey, someNodeInternalState);
 
-  const node: HTMLNode<Instantiated> = {
+  const node: HTMLNode = {
     id: 'some_node_id',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: 'div',
     shouldRender: {
-      type: NodePropType.NodeStateProperty,
+      type: 'node_state_property',
       nodeKey: nodeKey,
       fallback: true,
-      convertor: (v): boolean => {
+      convertor: (v: any): boolean => {
         return !!v.condition1 && !!v.condition2;
       },
     },
     props: {
       id: {
-        type: NodePropType.ConstantProperty,
+        type: 'constant_property',
         value: 'some_id',
       },
       className: {
-        type: NodePropType.ConstantProperty,
+        type: 'constant_property',
         value: 'foo bar',
       },
     },
@@ -377,12 +374,12 @@ test('useShouldRender_should_return_expected_value_according_computed_state', ()
   const someNodeInternalState = false;
   sharedStates.exposeNodeState(nodeKey, someNodeInternalState);
 
-  const node: HTMLNode<Instantiated> = {
+  const node: HTMLNode = {
     id: 'some_node_id',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: 'div',
     shouldRender: {
-      type: NodePropType.ComputedProperty,
+      type: 'computed_property',
       deps: [
         {
           type: 'api_state',
@@ -462,12 +459,12 @@ test('useShouldRender_should_return_Init_value_according_computed_state', () => 
   const someNodeInternalState = false;
   sharedStates.exposeNodeState(nodeKey, someNodeInternalState);
 
-  const node: HTMLNode<Instantiated> = {
+  const node: HTMLNode = {
     id: 'some_node_id',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: 'div',
     shouldRender: {
-      type: NodePropType.ComputedProperty,
+      type: 'computed_property',
       deps: [],
       fallback: false,
       convertor: () => {

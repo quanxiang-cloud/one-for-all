@@ -7,7 +7,6 @@ import { observer } from 'mobx-react';
 
 import { Icon } from '@ofa/ui';
 import { PageNode, useCtx, DragPos, LoopNode } from '@ofa/page-engine';
-import { NodeType } from '@ofa/render-engine';
 
 import { mapRawProps } from '../utils/schema-adapter';
 import { elemId } from '../utils';
@@ -25,7 +24,7 @@ function NodeRender({ schema }: Props): JSX.Element | null {
   }
 
   let node : any;
-  if (schema.type === NodeType.LoopContainerNode) {
+  if (schema.type === 'loop-container') {
     node = (schema as unknown as LoopNode).node as PageNode;
   } else {
     node = schema;
@@ -127,7 +126,7 @@ function NodeRender({ schema }: Props): JSX.Element | null {
     const elemProps = defaults({}, mapRawProps(schema.props || {}), elemConf?.defaultConfig);
 
     // patch certain elem's props
-    if (schema.type === NodeType.ReactComponentNode) {
+    if (schema.type === 'react-component') {
       // add placeholder to page elem
       if (schema.exportName === 'page' && !schema.children?.length) {
         Object.assign(elemProps, { placeholder: (
@@ -174,14 +173,14 @@ function NodeRender({ schema }: Props): JSX.Element | null {
 
   function transformType(schema: PageNode | LoopNode): string | React.ComponentType {
     const { type } = schema;
-    if (type === NodeType.ReactComponentNode) {
+    if (type === 'react-component') {
       return registry.elementMap?.[schema.exportName]?.component || type;
     }
-    if (type === NodeType.LoopContainerNode) {
+    if (type === 'loop-container') {
       const nodeType = get(schema, 'node.exportName');
       return registry.elementMap[nodeType]?.component;
     }
-    if (type === NodeType.HTMLNode) {
+    if (type === 'html-element') {
       return schema.name || 'div';
     }
     return 'div';

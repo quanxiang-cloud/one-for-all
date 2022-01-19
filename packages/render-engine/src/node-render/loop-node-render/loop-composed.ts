@@ -1,0 +1,62 @@
+import React from 'react';
+
+import {
+  CTX,
+  PlainState,
+  ComposedNode,
+  ComposedNodeChild,
+} from '../../types';
+import { getAppropriateKey, useIterable, useComposedPropsSpec } from './helpers';
+import NodeRender from '../index';
+import OutLayerRender from './out-layer-render';
+
+type ComposedChildRenderProps = {
+  node: ComposedNodeChild;
+  composedState: unknown;
+  ctx: CTX;
+  index: number;
+}
+
+function ComposedChildRender(
+  { node, composedState, ctx, index }: ComposedChildRenderProps,
+): React.ReactElement {
+  const propSpec = useComposedPropsSpec(composedState, node.toProps, index, node.props);
+  const _node = Object.assign({}, node, { props: propSpec });
+  return React.createElement(NodeRender, { node: _node, ctx });
+}
+
+export type Props = {
+  iterableState: PlainState;
+  loopKey: string;
+  node: ComposedNode;
+  ctx: CTX;
+}
+
+function LoopComposed({ iterableState, loopKey, node, ctx }: Props): React.ReactElement | null {
+  const iterable = useIterable(iterableState, ctx);
+
+  if (!iterable) {
+    return null;
+  }
+
+  return React.createElement(
+    React.Fragment,
+    null,
+    iterable.map((composedState, index) => {
+      const key = getAppropriateKey(composedState, loopKey, index);
+
+      return React.createElement(
+        OutLayerRender,
+        { key, outLayer: node.outLayer, ctx },
+        node.children.map((composedChild, index): React.ReactElement => {
+          return React.createElement(
+            ComposedChildRender,
+            { node: composedChild, composedState, ctx, index, key: composedChild.id },
+          );
+        }),
+      );
+    }),
+  );
+}
+
+export default LoopComposed;

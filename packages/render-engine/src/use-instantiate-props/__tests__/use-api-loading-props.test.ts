@@ -3,7 +3,7 @@ import type { APISpecAdapter } from '@ofa/api-spec-adapter';
 
 import useAPILoadingProps from '../use-api-loading-props';
 import StatesHubAPI from '../../ctx/states-hub-api';
-import { SchemaNode, NodePropType, Instantiated, NodeType } from '../../types';
+import { SchemaNode } from '../../types';
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 
 const apiSpecAdapter: APISpecAdapter = {
@@ -18,13 +18,13 @@ test('useAPILoadingProps_resolve_expected_values', () => {
   const apiStateHub = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: stateIDMap });
   dummyCTX.statesHubAPI = apiStateHub;
 
-  const node: SchemaNode<Instantiated> = {
+  const node: SchemaNode = {
     id: 'some_key',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: 'div',
     props: {
       loading: {
-        type: NodePropType.APILoadingProperty,
+        type: 'api_loading_property',
         stateID: 'some_api_state',
       },
     },

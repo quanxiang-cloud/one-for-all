@@ -1,10 +1,10 @@
 import { logger } from '@ofa/utils';
 import { renderHook } from '@testing-library/react-hooks/pure';
 
-import StatesHubAPI from '../../ctx/states-hub-api';
-import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
+import StatesHubAPI from '../../../ctx/states-hub-api';
+import dummyCTX from '../../../ctx/__tests__/fixtures/dummy-ctx';
 import { useIterable } from '../helpers';
-import { Instantiated, PlainState, NodePropType } from '../..';
+import { PlainState } from '../../..';
 
 const dummyStatesHubAPI = new StatesHubAPI({
   apiSpecAdapter: { build: () => ({ url: '', method: '' }) },
@@ -17,19 +17,19 @@ test('useIterable_should_return_null_if_state_is_not_iterable', () => {
   dummyCTX.statesHubShared.exposeNodeState('not_arr_node', {});
   dummyCTX.statesHubAPI.getState$('not_array_result').next({ result: {}, loading: false, error: undefined });
 
-  const iterableStates: Array<PlainState<Instantiated>> = [
+  const iterableStates: Array<PlainState> = [
     {
-      type: NodePropType.SharedStateProperty,
+      type: 'shared_state_property',
       stateID: 'not_arr',
       fallback: [],
     },
     {
-      type: NodePropType.NodeStateProperty,
+      type: 'node_state_property',
       nodeKey: 'not_arr_node',
       fallback: [],
     },
     {
-      type: NodePropType.APIResultProperty,
+      type: 'api_result_property',
       stateID: 'not_array_result',
       fallback: [],
     },

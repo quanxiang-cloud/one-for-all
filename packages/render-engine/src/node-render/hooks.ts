@@ -6,20 +6,17 @@ import PathContext from './path-context';
 import initCTX from '../ctx';
 import deserializeSchema from '../deserialize-schema';
 import useInstantiateProps from '../use-instantiate-props';
-import { NodeType, NodePropType } from '../types';
 import type {
   CTX,
   RefLoader,
-  SchemaNode,
   Repository,
-  Instantiated,
   LifecycleHooks,
   DynamicComponent,
-  InstantiatedNode,
+  SchemaNode,
   ReactComponentNode,
 } from '../types';
 
-export function useLifecycleHook({ didMount, willUnmount }: LifecycleHooks<Instantiated>): void {
+export function useLifecycleHook({ didMount, willUnmount }: LifecycleHooks): void {
   useEffect(() => {
     if (didMount) {
       didMount();
@@ -32,7 +29,7 @@ export function useLifecycleHook({ didMount, willUnmount }: LifecycleHooks<Insta
 }
 
 export function useNodeComponent(
-  node: Pick<ReactComponentNode<Instantiated>, 'packageName' | 'packageVersion' | 'exportName'>,
+  node: Pick<ReactComponentNode, 'packageName' | 'packageVersion' | 'exportName'>,
   repository?: Repository,
 ): DynamicComponent | null {
   const [lazyLoadedComponent, setComponent] = useState<DynamicComponent | null>(null);
@@ -75,7 +72,7 @@ export function useNodeComponent(
   return lazyLoadedComponent;
 }
 
-type RefResult = { refCTX: CTX; refNode: SchemaNode<Instantiated>; }
+type RefResult = { refCTX: CTX; refNode: SchemaNode; }
 type UseRefResultProps = {
   schemaID: string;
   refLoader?: RefLoader;
@@ -131,11 +128,11 @@ export function useRefResult(
   return result;
 }
 
-export function useShouldRender(node: InstantiatedNode, ctx: CTX): boolean {
+export function useShouldRender(node: SchemaNode, ctx: CTX): boolean {
   const condition = node.shouldRender;
-  const placeholderNode: SchemaNode<Instantiated> = {
+  const placeholderNode: SchemaNode = {
     id: 'placeholder-node',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: 'div',
     props: condition ? { shouldRender: condition } : undefined,
   };
@@ -146,7 +143,7 @@ export function useShouldRender(node: InstantiatedNode, ctx: CTX): boolean {
     return true;
   }
 
-  if (condition.type === NodePropType.APILoadingProperty) {
+  if (condition.type === 'api_loading_property') {
     return condition.revert ? !shouldRender : !!shouldRender;
   }
 

@@ -2,22 +2,21 @@ import React from 'react';
 
 import {
   CTX,
-  Instantiated,
   SchemaNode,
   PlainState,
-} from '../types';
-import NodeRender from '../node-render';
+} from '../../types';
+import NodeRender from '..';
 import { useMergedPropsList } from './helpers';
 
 export type Props = {
-  iterableState: PlainState<Instantiated>;
+  iterableState: PlainState;
   loopKey: string;
   toProps: (item: unknown) => Record<string, unknown>;
-  node: SchemaNode<Instantiated>;
+  node: SchemaNode;
   ctx: CTX;
 }
 
-function LoopContainer({ iterableState, loopKey, node, ctx, toProps }: Props): React.ReactElement | null {
+function LoopIndividual({ iterableState, loopKey, node, ctx, toProps }: Props): React.ReactElement | null {
   const mergedPropsList = useMergedPropsList({
     iterableState,
     toProps,
@@ -41,4 +40,4 @@ function LoopContainer({ iterableState, loopKey, node, ctx, toProps }: Props): R
   );
 }
 
-export default LoopContainer;
+export default LoopIndividual;

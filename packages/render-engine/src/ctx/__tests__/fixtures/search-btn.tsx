@@ -1,9 +1,9 @@
 import React from 'react';
-import { APIInvokeProperty, APIResultProperty, Instantiated, CTX } from '../../../types';
+import { APIInvokeProperty, APIResultProperty, CTX } from '../../../types';
 import useInstantiateProps from '../../../use-instantiate-props';
 
 type Props = {
-  nodeProps: Record<string, APIInvokeProperty<Instantiated> | APIResultProperty<Instantiated>>;
+  nodeProps: Record<string, APIInvokeProperty | APIResultProperty>;
   ctx: CTX
 }
 

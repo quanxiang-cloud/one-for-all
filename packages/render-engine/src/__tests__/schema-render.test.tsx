@@ -1,16 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { render } from '@testing-library/react';
 import { APISpecAdapter } from '@ofa/api-spec-adapter';
+import type * as SchemaSpec from '@ofa/schema-spec';
 
 import SchemaRender from '../schema-render';
-import { Schema, NodeType, RenderEngineCTX } from '../types';
+import { RenderEngineCTX } from '../types';
 
-const schema: Schema = {
+const schema: SchemaSpec.Schema = {
   apiStateSpec: {},
   sharedStatesSpec: {},
   node: {
     id: 'id',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: 'div',
   },
 };

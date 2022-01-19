@@ -1,24 +1,21 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { logger } from '@ofa/utils';
+import type { ConstantProperty } from '@ofa/schema-spec';
 
 import {
-  ConstantProperty,
   CTX,
-  Instantiated,
-  NodePropType,
   SchemaNode,
   PlainState,
   NodeProperties,
-  NodeType,
-} from '../types';
-import PathContext from '../node-render/path-context';
-import useInstantiateProps from '../use-instantiate-props';
+} from '../../types';
+import PathContext from '../path-context';
+import useInstantiateProps from '../../use-instantiate-props';
 
-export function useIterable(iterableState: PlainState<Instantiated>, ctx: CTX): Array<unknown> | null {
+export function useIterable(iterableState: PlainState, ctx: CTX): Array<unknown> | null {
   const currentPath = useContext(PathContext);
 
-  const dummyNode: SchemaNode<Instantiated> = {
-    type: NodeType.HTMLNode,
+  const dummyNode: SchemaNode = {
+    type: 'html-element',
     id: 'dummyLoopContainer',
     name: 'div',
     props: { iterable: iterableState },
@@ -91,9 +88,9 @@ export function tryToProps(
 }
 
 type UseMergedPropsListParams = {
-  iterableState: PlainState<Instantiated>;
+  iterableState: PlainState;
   toProps: (item: unknown) => Record<string, unknown>;
-  otherProps?: NodeProperties<Instantiated>;
+  otherProps?: NodeProperties;
   ctx: CTX;
   loopKey: string;
 }
@@ -102,7 +99,7 @@ type UseMergedPropsListParams = {
 // each `props` merged iterableState and otherProps
 export function useMergedPropsList(
   { iterableState, toProps, otherProps, ctx, loopKey }: UseMergedPropsListParams,
-): Array<[React.Key, NodeProperties<Instantiated>]> | null {
+): Array<[React.Key, NodeProperties]> | null {
   const iterable = useIterable(iterableState, ctx);
   const currentPath = useContext(PathContext);
 
@@ -110,7 +107,7 @@ export function useMergedPropsList(
     return null;
   }
 
-  return iterable.map<[React.Key, NodeProperties<Instantiated>] | null>((item, index) => {
+  return iterable.map<[React.Key, NodeProperties] | null>((item, index) => {
     const convertedProps = tryToProps(item, index, toProps, currentPath);
     if (!convertedProps) {
       return null;
@@ -119,7 +116,7 @@ export function useMergedPropsList(
     // convert iterable to constant property spec for reuse of NodeRender
     const constProps = Object.entries(convertedProps)
       .reduce<Record<string, ConstantProperty>>((constProps, [propName, value]) => {
-        constProps[propName] = { type: NodePropType.ConstantProperty, value };
+        constProps[propName] = { type: 'constant_property', value };
 
         return constProps;
       }, {});
@@ -128,5 +125,28 @@ export function useMergedPropsList(
       getAppropriateKey(item, loopKey, index),
       Object.assign({}, otherProps, constProps),
     ];
-  }).filter((pair): pair is [React.Key, NodeProperties<Instantiated>] => !!pair);
+  }).filter((pair): pair is [React.Key, NodeProperties] => !!pair);
+}
+
+export function useComposedPropsSpec(
+  composedState: unknown,
+  toProps: (state: unknown) => Record<string, unknown>,
+  index: number,
+  otherProps?: NodeProperties,
+): NodeProperties {
+  const currentPath = useContext(PathContext);
+
+  return useMemo(() => {
+    const composedProps = tryToProps(composedState, index, toProps, currentPath);
+    const composedPropsSpec = Object.entries(composedProps || {})
+      .reduce<Record<string, ConstantProperty>>((acc, [key, value]) => {
+        acc[key] = {
+          type: 'constant_property',
+          value,
+        };
+        return acc;
+      }, {});
+
+    return Object.assign(composedPropsSpec, otherProps);
+  }, [composedState, otherProps]);
 }

@@ -1,4 +1,4 @@
-import { NodePropType, NodeType, Schema } from '@ofa/render-engine';
+import type { Schema } from '@ofa/schema-spec';
 
 const todoAppSchema: Schema = {
   apiStateSpec: {
@@ -15,7 +15,7 @@ const todoAppSchema: Schema = {
   },
   node: {
     id: 'container',
-    type: NodeType.HTMLNode,
+    type: 'html-element',
     name: 'div',
     lifecycleHooks: {
       didMount: {
@@ -25,9 +25,9 @@ const todoAppSchema: Schema = {
       },
     },
     props: {
-      id: { type: NodePropType.ConstantProperty, value: 'container' },
+      id: { type: 'constant_property', value: 'container' },
       style: {
-        type: NodePropType.ConstantProperty,
+        type: 'constant_property',
         value: {
           width: '500px',
           margin: 'auto',
@@ -41,16 +41,16 @@ const todoAppSchema: Schema = {
     children: [
       {
         id: 'ref-schema',
-        type: NodeType.RefNode,
+        type: 'ref-node',
         schemaID: 'whatever',
       },
       {
         id: 'todo-input-html-element',
-        type: NodeType.HTMLNode,
+        type: 'html-element',
         name: 'div',
         props: {
           style: {
-            type: NodePropType.ConstantProperty,
+            type: 'constant_property',
             value: {
               display: 'flex',
               justifyContent: 'space-between',
@@ -61,15 +61,15 @@ const todoAppSchema: Schema = {
         children: [
           {
             id: 'todo-input',
-            type: NodeType.HTMLNode,
+            type: 'html-element',
             name: 'input',
             props: {
-              type: { type: NodePropType.ConstantProperty, value: 'input' },
-              name: { type: NodePropType.ConstantProperty, value: 'title' },
-              placeholder: { type: NodePropType.ConstantProperty, value: 'What do you want to do?' },
-              autoComplete: { type: NodePropType.ConstantProperty, value: 'off' },
+              type: { type: 'constant_property', value: 'input' },
+              name: { type: 'constant_property', value: 'title' },
+              placeholder: { type: 'constant_property', value: 'What do you want to do?' },
+              autoComplete: { type: 'constant_property', value: 'off' },
               style: {
-                type: NodePropType.ConstantProperty,
+                type: 'constant_property',
                 value: {
                   width: '200px',
                   padding: '16px',
@@ -81,7 +81,7 @@ const todoAppSchema: Schema = {
                 },
               },
               onChange: {
-                type: NodePropType.FunctionalProperty,
+                type: 'functional_property',
                 func: {
                   type: 'raw',
                   args: 'e',
@@ -94,19 +94,19 @@ const todoAppSchema: Schema = {
           },
           {
             id: 'add-todo-btn',
-            type: NodeType.HTMLNode,
+            type: 'html-element',
             name: 'button',
             props: {
               children: {
-                type: NodePropType.ConstantProperty,
+                type: 'constant_property',
                 value: 'New Todo By Using sharedState',
               },
               style: {
-                type: NodePropType.ConstantProperty,
+                type: 'constant_property',
                 value: { width: '180px', textAlign: 'center', textTransform: 'capitalize' },
               },
               onClick: {
-                type: NodePropType.FunctionalProperty,
+                type: 'functional_property',
                 func: {
                   type: 'raw',
                   args: '',
@@ -126,12 +126,12 @@ const todoAppSchema: Schema = {
       },
       {
         id: 'todo-input-form',
-        type: NodeType.HTMLNode,
+        type: 'html-element',
         name: 'div',
         props: {
-          id: { type: NodePropType.ConstantProperty, value: 'todo-input-form' },
+          id: { type: 'constant_property', value: 'todo-input-form' },
           style: {
-            type: NodePropType.ConstantProperty,
+            type: 'constant_property',
             value: {
               display: 'flex',
               justifyContent: 'space-between',
@@ -141,14 +141,14 @@ const todoAppSchema: Schema = {
         children: [
           {
             id: 'fancy-input',
-            type: NodeType.ReactComponentNode,
+            type: 'react-component',
             packageName: 'todo-app',
             exportName: 'TodoInput',
             packageVersion: 'whatever',
             supportStateExposure: true,
             props: {
               onEnter: {
-                type: NodePropType.APIInvokeProperty,
+                type: 'api_invoke_property',
                 stateID: '新建待办',
                 paramsBuilder: {
                   type: 'param_builder_func_spec',
@@ -165,20 +165,20 @@ const todoAppSchema: Schema = {
           },
           {
             id: 'add-todo-btn',
-            type: NodeType.HTMLNode,
+            type: 'html-element',
             name: 'button',
             props: {
-              type: { type: NodePropType.ConstantProperty, value: 'submit' },
+              type: { type: 'constant_property', value: 'submit' },
               children: {
-                type: NodePropType.ConstantProperty,
+                type: 'constant_property',
                 value: 'New Todo by using NodeState',
               },
               style: {
-                type: NodePropType.ConstantProperty,
+                type: 'constant_property',
                 value: { width: '180px', textAlign: 'center', textTransform: 'capitalize' },
               },
               onClick: {
-                type: NodePropType.FunctionalProperty,
+                type: 'functional_property',
                 func: {
                   type: 'raw',
                   args: '',
@@ -197,12 +197,12 @@ const todoAppSchema: Schema = {
       },
       {
         id: 'word_count',
-        type: NodeType.HTMLNode,
+        type: 'html-element',
         name: 'p',
         props: {
           children: {
             // fancy-input
-            type: NodePropType.NodeStateProperty,
+            type: 'node_state_property',
             nodeKey: 'fancy-input',
             // todo replace by $ele-input-xhfsf-todo-input.value
             fallback: 'abv dev',
@@ -215,15 +215,15 @@ const todoAppSchema: Schema = {
       },
       {
         id: 'refresh-todos',
-        type: NodeType.HTMLNode,
+        type: 'html-element',
         name: 'button',
         props: {
           children: {
-            type: NodePropType.ConstantProperty,
+            type: 'constant_property',
             value: 'refresh',
           },
           onClick: {
-            type: NodePropType.FunctionalProperty,
+            type: 'functional_property',
             func: {
               type: 'raw',
               args: '',
@@ -234,10 +234,10 @@ const todoAppSchema: Schema = {
       },
       {
         id: 'simple-condition-render',
-        type: NodeType.HTMLNode,
+        type: 'html-element',
         name: 'button',
         shouldRender: {
-          type: NodePropType.APIResultProperty,
+          type: 'api_result_property',
           stateID: '全部待办列表',
           fallback: false,
           convertor: {
@@ -250,17 +250,17 @@ const todoAppSchema: Schema = {
         },
         props: {
           children: {
-            type: NodePropType.ConstantProperty,
+            type: 'constant_property',
             value: 'simple-condition-render-node',
           },
         },
       },
       {
         id: 'multiple-condition-render',
-        type: NodeType.HTMLNode,
+        type: 'html-element',
         name: 'button',
         shouldRender: {
-          type: NodePropType.ComputedProperty,
+          type: 'computed_property',
           fallback: false,
           deps: [
             { type: 'api_state', depID: 'todoStatus' },
@@ -276,22 +276,22 @@ const todoAppSchema: Schema = {
         },
         props: {
           children: {
-            type: NodePropType.ConstantProperty,
+            type: 'constant_property',
             value: 'multiple-condition-render-node',
           },
         },
       },
       {
         id: 'computed-property-render',
-        type: NodeType.HTMLNode,
+        type: 'html-element',
         name: 'button',
         props: {
           children: {
-            type: NodePropType.ConstantProperty,
+            type: 'constant_property',
             value: 'AAAA',
           },
           test1: {
-            type: NodePropType.ComputedProperty,
+            type: 'computed_property',
             fallback: '',
             deps: [
               { type: 'api_state', depID: 'todoStatus' },
@@ -308,7 +308,7 @@ const todoAppSchema: Schema = {
             },
           },
           test2: {
-            type: NodePropType.ComputedProperty,
+            type: 'computed_property',
             deps: [
               { type: 'api_state', depID: 'todoStatus' },
               { type: 'api_state', depID: '全部待办列表' },
@@ -326,11 +326,11 @@ const todoAppSchema: Schema = {
       },
       {
         id: 'todo-list-loop',
-        type: NodeType.LoopContainerNode,
+        type: 'loop-container',
         props: {},
         loopKey: 'id',
         iterableState: {
-          type: NodePropType.APIResultProperty,
+          type: 'api_result_property',
           stateID: '全部待办列表',
           fallback: [],
           convertor: {
@@ -344,14 +344,14 @@ const todoAppSchema: Schema = {
           body: 'return { todo: state };',
         },
         node: {
-          type: NodeType.ReactComponentNode,
+          type: 'react-component',
           id: 'todo-item',
           packageName: 'todo-app',
           packageVersion: 'whatever',
           exportName: 'TodoItem',
           props: {
             onToggleTodo: {
-              type: NodePropType.APIInvokeProperty,
+              type: 'api_invoke_property',
               stateID: '更新待办',
               // template: ${data.foo}
               paramsBuilder: {
@@ -372,7 +372,7 @@ const todoAppSchema: Schema = {
               },
             },
             onDeleteTodo: {
-              type: NodePropType.APIInvokeProperty,
+              type: 'api_invoke_property',
               stateID: '删除待办',
               paramsBuilder: {
                 type: 'param_builder_func_spec',
@@ -394,14 +394,86 @@ const todoAppSchema: Schema = {
         },
       },
       {
+        id: 'todo-list-loop',
+        type: 'loop-container',
+        props: {},
+        loopKey: 'id',
+        iterableState: {
+          type: 'api_result_property',
+          stateID: '全部待办列表',
+          fallback: [],
+          convertor: {
+            type: 'state_convert_expression',
+            expression: 'state',
+          },
+        },
+        node: {
+          id: 'compose-node-container',
+          type: 'composed-node',
+          outLayer: {
+            id: 'todo-item-outLayer',
+            type: 'html-element',
+            name: 'div',
+          },
+          children: [
+            {
+              id: 'todo-toggle',
+              type: 'html-element',
+              name: 'input',
+              toProps: {
+                type: 'to_props_function_spec',
+                args: 'state',
+                body: `
+                  return {
+                    'data-id': state.id,
+                    checked: state.status === "working" ? false : true, 
+                  }`,
+              },
+              props: {
+                type: {
+                  type: 'constant_property',
+                  value: 'checkbox',
+                },
+                onChange: {
+                  type: 'functional_property',
+                  func: {
+                    type: 'raw',
+                    args: 'e',
+                    body: `
+                      this.apiStates['更新待办'].fetch(
+                        { params: { todoId: e.target.dataset.id } },
+                        () => this.apiStates["全部待办列表"].refresh()
+                      )`,
+                  },
+                },
+              },
+            },
+            {
+              id: 'todo-title',
+              type: 'html-element',
+              name: 'span',
+              toProps: {
+                type: 'to_props_function_spec',
+                args: 'state',
+                body: `
+                  return { 
+                    children: state.title,
+                  }
+                `,
+              },
+            },
+          ],
+        },
+      },
+      {
         id: 'todo-filter',
-        type: NodeType.ReactComponentNode,
+        type: 'react-component',
         packageName: 'todo-app',
         exportName: 'TodoFilter',
         packageVersion: 'whatever',
         props: {
           all: {
-            type: NodePropType.APIResultProperty,
+            type: 'api_result_property',
             stateID: 'todoStatus',
             fallback: 0,
             convertor: {
@@ -413,7 +485,7 @@ const todoAppSchema: Schema = {
             },
           },
           working: {
-            type: NodePropType.APIResultProperty,
+            type: 'api_result_property',
             stateID: 'todoStatus',
             fallback: 0,
             convertor: {
@@ -425,7 +497,7 @@ const todoAppSchema: Schema = {
             },
           },
           done: {
-            type: NodePropType.APIResultProperty,
+            type: 'api_result_property',
             stateID: 'todoStatus',
             fallback: 0,
             convertor: {
@@ -437,7 +509,7 @@ const todoAppSchema: Schema = {
             },
           },
           onToggleStatus: {
-            type: NodePropType.APIInvokeProperty,
+            type: 'api_invoke_property',
             stateID: '全部待办列表',
             paramsBuilder: {
               type: 'param_builder_func_spec',
@@ -448,7 +520,7 @@ const todoAppSchema: Schema = {
             },
           },
           onFetchStatus: {
-            type: NodePropType.APIInvokeProperty,
+            type: 'api_invoke_property',
             stateID: 'todoStatus',
           },
         },

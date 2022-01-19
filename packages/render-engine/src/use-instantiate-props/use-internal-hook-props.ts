@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 
-import { Instantiated, SchemaNode, CTX, VersatileFunc } from '../types';
+import { SchemaNode, CTX, VersatileFunc } from '../types';
 
 type InternalHookProps = Record<string, VersatileFunc | undefined>;
 
 // todo give this hook a better name
-function useInternalHookProps(node: SchemaNode<Instantiated>, ctx: CTX): InternalHookProps {
+function useInternalHookProps(node: SchemaNode, ctx: CTX): InternalHookProps {
   return useMemo(() => {
     if ('supportStateExposure' in node && node.supportStateExposure) {
       return {
