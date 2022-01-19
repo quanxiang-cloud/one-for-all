@@ -141,22 +141,33 @@ export interface ReactComponentNode extends
   children?: Array<SchemaNode>;
 }
 
-export interface LoopContainerNode extends BaseNode, Pick<SchemaSpec.LoopContainerNode, 'loopKey'> {
+export interface IndividualLoopContainer extends BaseNode, Pick<SchemaSpec.LoopContainerNode, 'loopKey'> {
   type: 'loop-container';
   iterableState: PlainState;
   node: SchemaNode;
   toProps: ToProps;
 }
 
-export type ComposedNodeChild = SchemaNode & {
-  toProps?: ToProps;
+export interface ComposedNodeLoopContainer extends BaseNode, Pick<SchemaSpec.LoopContainerNode, 'loopKey'> {
+  type: 'loop-container';
+  iterableState: PlainState;
+  node: ComposedNode;
 }
 
+export type LoopContainerNode = IndividualLoopContainer | ComposedNodeLoopContainer;
+
+export type ComposedNodeChild = SchemaNode & {
+  toProps: ToProps;
+}
+
+export type ComposeOutLayer =
+  Omit<HTMLNode, 'children'> |
+  Omit<ReactComponentNode, 'children'>;
+
 export interface ComposedNode extends BaseNode {
-  type: 'composed-node';
-  outLayer?: Omit<HTMLNode, 'children'>;
-  composedState: PlainState;
-  children: Array<ComposedNodeChild>;
+    type: 'composed-node';
+    outLayer?: ComposeOutLayer;
+    children: Array<ComposedNodeChild>;
 }
 
 export interface RefNode extends BaseNode, Pick<SchemaSpec.RefNode, 'schemaID' | 'orphan'> {

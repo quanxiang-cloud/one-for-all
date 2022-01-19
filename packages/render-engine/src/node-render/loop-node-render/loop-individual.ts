@@ -1,7 +1,11 @@
 import React from 'react';
 
-import { CTX, SchemaNode, PlainState } from '../types';
-import NodeRender from '../node-render';
+import {
+  CTX,
+  SchemaNode,
+  PlainState,
+} from '../../types';
+import NodeRender from '..';
 import { useMergedPropsList } from './helpers';
 
 export type Props = {
@@ -12,7 +16,7 @@ export type Props = {
   ctx: CTX;
 }
 
-function LoopContainer({ iterableState, loopKey, node, ctx, toProps }: Props): React.ReactElement | null {
+function LoopIndividual({ iterableState, loopKey, node, ctx, toProps }: Props): React.ReactElement | null {
   const mergedPropsList = useMergedPropsList({
     iterableState,
     toProps,
@@ -36,4 +40,4 @@ function LoopContainer({ iterableState, loopKey, node, ctx, toProps }: Props): R
   );
 }
 
-export default LoopContainer;
+export default LoopIndividual;

@@ -242,7 +242,6 @@ declare namespace SchemaSpec {
     HTMLNode |
     ReactComponentNode |
     LoopContainerNode |
-    ComposedNode |
     RefNode;
 
   type ShouldRenderCondition =
@@ -276,22 +275,34 @@ declare namespace SchemaSpec {
     children?: Array<SchemaNode>;
   }
 
-  interface LoopContainerNode extends BaseNode {
+  interface IndividualLoopContainer extends BaseNode {
     type: 'loop-container';
-    iterableState: PlainState;
     loopKey: string;
+    iterableState: PlainState;
     node: SchemaNode;
     toProps: ToProps;
   }
 
-  type ComposedNodeChild = SchemaNode & {
-    toProps?: ToProps;
+  interface ComposedNodeLoopContainer extends BaseNode {
+    type: 'loop-container';
+    loopKey: string;
+    iterableState: PlainState;
+    node: ComposedNode;
   }
+
+  type LoopContainerNode = IndividualLoopContainer | ComposedNodeLoopContainer;
+
+  type ComposedNodeChild = SchemaNode & {
+    toProps: ToProps;
+  }
+
+  type ComposeOutLayer =
+    Omit<HTMLNode, 'children'> |
+    Omit<ReactComponentNode, 'children'>;
 
   interface ComposedNode extends BaseNode {
     type: 'composed-node';
-    outLayer?: Omit<HTMLNode, 'children'>;
-    composedState: PlainState;
+    outLayer?: ComposeOutLayer;
     children: Array<ComposedNodeChild>;
   }
 
