@@ -48,6 +48,10 @@ function useSharedStateProps(node: SchemaNode, ctx: CTX): Record<string, unknown
   });
 
   useEffect(() => {
+    if (!Object.keys(states$).length) {
+      return;
+    }
+
     const results$ = Object.entries(states$)
       .reduce<Record<string, Observable<unknown>>>((acc, [key, state$]) => {
         acc[key] = state$.pipe(
