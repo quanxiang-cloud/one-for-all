@@ -75,7 +75,7 @@ export type LoopNodeConf={
 }
 
 export type ComposedNodeConf={
-  iterableState: PlainState<Serialized>;
+  iterableState: PlainState;
   loopKey: string;
   node: PageNode;
 }
