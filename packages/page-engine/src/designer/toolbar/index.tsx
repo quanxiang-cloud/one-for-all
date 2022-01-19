@@ -159,7 +159,7 @@ function Toolbar({ docLink = '', hideTestPreview }: Props): JSX.Element {
         <Divider />
         <Button iconName='preview' onClick={handlePreview}>预览</Button>
         <Divider />
-        <Button iconName='save' onClick={handleSave} className={styles.btnSave}>保存</Button>
+        <Button iconName='save' modifier='primary' onClick={handleSave} className={styles.btnSave}>保存</Button>
         <Button iconName='save' modifier='primary' onClick={saveAndExit}>保存并退出</Button>
       </div>
       {openTestPreview && (
