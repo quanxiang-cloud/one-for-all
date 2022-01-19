@@ -35,15 +35,13 @@ class PageStore {
     if (!this.activeElemId) {
       return null;
     }
-    console.log(toJS(this.schema.node));
-    console.log(this.activeElemId);
+
     return findNode(this.schema.node, this.activeElemId);
   }
 
   @computed
   get activeElem(): any {
     const node = this.rawActiveElem;
-    console.log('node', toJS(node));
     if (node?.type === 'loop-container') {
       return node.node;
     }
