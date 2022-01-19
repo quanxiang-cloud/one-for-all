@@ -36,7 +36,7 @@ const tasks = [
     id: 22,
     title: 'kk',
     description: 'password',
-    status: 'working',
+    status: 'done',
     create_date: '2017-12-24T00:00:00.000Z',
   },
 ];
