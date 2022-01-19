@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { logger } from '@ofa/utils';
 import type { ConstantProperty } from '@ofa/schema-spec';
 
@@ -7,9 +7,9 @@ import {
   SchemaNode,
   PlainState,
   NodeProperties,
-} from '../types';
-import PathContext from '../node-render/path-context';
-import useInstantiateProps from '../use-instantiate-props';
+} from '../../types';
+import PathContext from '../path-context';
+import useInstantiateProps from '../../use-instantiate-props';
 
 export function useIterable(iterableState: PlainState, ctx: CTX): Array<unknown> | null {
   const currentPath = useContext(PathContext);
@@ -126,4 +126,27 @@ export function useMergedPropsList(
       Object.assign({}, otherProps, constProps),
     ];
   }).filter((pair): pair is [React.Key, NodeProperties] => !!pair);
+}
+
+export function useComposedPropsSpec(
+  composedState: unknown,
+  toProps: (state: unknown) => Record<string, unknown>,
+  index: number,
+  otherProps?: NodeProperties,
+): NodeProperties {
+  const currentPath = useContext(PathContext);
+
+  return useMemo(() => {
+    const composedProps = tryToProps(composedState, index, toProps, currentPath);
+    const composedPropsSpec = Object.entries(composedProps || {})
+      .reduce<Record<string, ConstantProperty>>((acc, [key, value]) => {
+        acc[key] = {
+          type: 'constant_property',
+          value,
+        };
+        return acc;
+      }, {});
+
+    return Object.assign(composedPropsSpec, otherProps);
+  }, [composedState, otherProps]);
 }

@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoopContainer_resolve_empty_value 1`] = `<div />`;
+
+exports[`LoopContainer_resolve_items 1`] = `
+<div>
+  <div
+    id="abc"
+  />
+  <div
+    id="def"
+  />
+</div>
+`;
+
+exports[`LoopNode_with_HTMLOutLayer_composedNode 1`] = `
+<div>
+  <div
+    id="111"
+  >
+    <input
+      type="checkbox"
+    />
+    <div
+      name="kk"
+    >
+      kkk
+    </div>
+  </div>
+  <div
+    id="111"
+  >
+    <input
+      type="checkbox"
+    />
+    <div
+      name="mm"
+    >
+      kkk
+    </div>
+  </div>
+</div>
+`;
+
+exports[`LoopNode_with_ReactOutLayer_composedNode 1`] = `
+<div>
+  <div
+    id="some_dummy_component"
+  />
+</div>
+`;
+
+exports[`LoopNode_with_ordinaryNode_HTMLNode 1`] = `
+<div>
+  <div
+    id="abc"
+  >
+    kk
+  </div>
+  <div
+    id="def"
+  >
+    mm
+  </div>
+</div>
+`;
+
+exports[`LoopNode_with_ordinaryNode_ReactNode 1`] = `
+<div>
+  <div
+    id="some_dummy_component"
+  />
+  <div
+    id="some_dummy_component"
+  />
+</div>
+`;

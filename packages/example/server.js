@@ -32,6 +32,13 @@ const tasks = [
     status: 'working',
     create_date: '2017-12-24T00:00:00.000Z',
   },
+  {
+    id: 22,
+    title: 'kk',
+    description: 'password',
+    status: 'working',
+    create_date: '2017-12-24T00:00:00.000Z',
+  },
 ];
 
 // list todos
@@ -88,7 +95,12 @@ app.put('/todos/:todoId', (req, res) => {
     return;
   }
 
-  tasks.splice(index, 1, req.body);
+  tasks.forEach((task, index) => {
+    if (task.id === todoID) {
+      tasks.splice(index, 1, { ...task, status: task.status === 'done' ? 'working' : 'done' });
+    }
+  });
+
   res.status(200);
   res.send();
 });

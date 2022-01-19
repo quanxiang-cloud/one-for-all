@@ -394,6 +394,78 @@ const todoAppSchema: Schema = {
         },
       },
       {
+        id: 'todo-list-loop',
+        type: 'loop-container',
+        props: {},
+        loopKey: 'id',
+        iterableState: {
+          type: 'api_result_property',
+          stateID: '全部待办列表',
+          fallback: [],
+          convertor: {
+            type: 'state_convert_expression',
+            expression: 'state',
+          },
+        },
+        node: {
+          id: 'compose-node-container',
+          type: 'composed-node',
+          outLayer: {
+            id: 'todo-item-outLayer',
+            type: 'html-element',
+            name: 'div',
+          },
+          children: [
+            {
+              id: 'todo-toggle',
+              type: 'html-element',
+              name: 'input',
+              toProps: {
+                type: 'to_props_function_spec',
+                args: 'state',
+                body: `
+                  return {
+                    'data-id': state.id,
+                    checked: state.status === "working" ? false : true, 
+                  }`,
+              },
+              props: {
+                type: {
+                  type: 'constant_property',
+                  value: 'checkbox',
+                },
+                onChange: {
+                  type: 'functional_property',
+                  func: {
+                    type: 'raw',
+                    args: 'e',
+                    body: `
+                      this.apiStates['更新待办'].fetch(
+                        { params: { todoId: e.target.dataset.id } },
+                        () => this.apiStates["全部待办列表"].refresh()
+                      )`,
+                  },
+                },
+              },
+            },
+            {
+              id: 'todo-title',
+              type: 'html-element',
+              name: 'span',
+              toProps: {
+                type: 'to_props_function_spec',
+                args: 'state',
+                body: `
+                  return { 
+                    children: state.title,
+                  }
+                `,
+              },
+            },
+          ],
+        },
+      },
+      {
         id: 'todo-filter',
         type: 'react-component',
         packageName: 'todo-app',
