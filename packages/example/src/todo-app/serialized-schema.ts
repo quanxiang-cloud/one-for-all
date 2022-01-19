@@ -394,7 +394,7 @@ const todoAppSchema: Schema = {
         },
       },
       {
-        id: 'todo-list-loop',
+        id: 'todo-list-loop-composedNode',
         type: 'loop-container',
         props: {},
         loopKey: 'id',
@@ -430,6 +430,10 @@ const todoAppSchema: Schema = {
                   }`,
               },
               props: {
+                checked: {
+                  type: 'constant_property',
+                  value: true,
+                },
                 type: {
                   type: 'constant_property',
                   value: 'checkbox',
