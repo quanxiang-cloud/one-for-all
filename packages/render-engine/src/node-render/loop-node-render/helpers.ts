@@ -147,6 +147,6 @@ export function useComposedPropsSpec(
         return acc;
       }, {});
 
-    return Object.assign(composedPropsSpec, otherProps);
+    return Object.assign(otherProps, composedPropsSpec);
   }, [composedState, otherProps]);
 }
