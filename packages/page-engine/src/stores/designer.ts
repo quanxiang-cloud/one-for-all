@@ -14,18 +14,20 @@ class DesignerStore {
   @observable activeFieldName='' // 当前要绑定变量的字段的name
   @observable modalBindRenderOpen=false
   @observable isLoopNode=false; // 当前节点需标记为loop node
+  @observable modalComponentNodeOpen=false // componentNode的配置
+  @observable isComponentNode=false // 当前节点需标记为component node
 
   constructor() {
     makeObservable(this);
   }
 
   @action
-  setActiveGroup = (group: string) => {
+  setActiveGroup = (group: string): void => {
     this.activeGroup = group;
   }
 
   @action
-  setPanelOpen = (open: boolean) => {
+  setPanelOpen = (open: boolean): void => {
     this.panelOpen = open;
     if (!open) {
       this.setPanelPinned(false);
@@ -33,11 +35,11 @@ class DesignerStore {
   }
 
   @action
-  setPanelPinned = (pin: boolean) => {
+  setPanelPinned = (pin: boolean): void => {
     this.panelPinned = pin;
   }
 
-  checkPanel = () => {
+  checkPanel = (): void => {
     if (!this.panelPinned) {
       this.setPanelOpen(false);
     }
@@ -59,14 +61,14 @@ class DesignerStore {
   }
 
   @action
-  openDataBinding=(fieldName: string, isLoopNode?: boolean)=> {
+  openDataBinding=(fieldName: string, isLoopNode?: boolean): void => {
     this.modalBindStateOpen = true;
     this.activeFieldName = fieldName;
     this.isLoopNode = !!isLoopNode;
   }
 
   @action
-  setModalBindRender=(open:boolean)=> {
+  setModalBindRender=(open:boolean): void => {
     this.modalBindRenderOpen = open;
   }
 
@@ -79,6 +81,19 @@ class DesignerStore {
     this.vdoms = {};
     this.activeFieldName = '';
     this.isLoopNode = false;
+  }
+
+  // composedNode
+  @action
+  setModalComponentNodeOpen=(open: boolean): void=> {
+    this.modalComponentNodeOpen = open;
+  }
+
+  @action
+  openComponentNodeBinding=(fieldName: string, isComponentNode?: boolean): void => {
+    this.modalComponentNodeOpen = true;
+    this.activeFieldName = fieldName;
+    this.isComponentNode = !!isComponentNode;
   }
 }
 

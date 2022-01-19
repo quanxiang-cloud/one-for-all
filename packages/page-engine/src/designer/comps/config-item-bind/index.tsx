@@ -51,6 +51,15 @@ function ConfigItemBind({ name, isLoopNode }: Props): JSX.Element {
     }
   }
 
+  function handleChecked(): void {
+    const { exportName } = page.activeElem;
+    if (exportName === 'container') {
+      designer.openComponentNodeBinding(name, isLoopNode);
+    } else {
+      designer.openDataBinding(name, isLoopNode);
+    }
+  }
+
   return (
     <div className='inline-flex items-center'>
       <Tooltip position='top' label={bound ? '编辑绑定' : '绑定变量'}>
@@ -58,7 +67,7 @@ function ConfigItemBind({ name, isLoopNode }: Props): JSX.Element {
           name="code"
           color="gray"
           clickable
-          onClick={()=> designer.openDataBinding(name, isLoopNode)}
+          onClick={handleChecked}
           className={cs('mr-8', bound ? 'bg-blue-200' : '')}
         />
       </Tooltip>

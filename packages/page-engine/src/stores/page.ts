@@ -1,7 +1,7 @@
 import { action, computed, makeObservable, observable, runInAction, toJS } from 'mobx';
 import { cloneDeep, defaults, get, set } from 'lodash';
 
-import { LoopNode, LoopNodeConf } from '@ofa/page-engine';
+import { LoopNode, LoopNodeConf, ComposedNodeConf } from '@ofa/page-engine';
 import { elemId } from '../utils';
 import { findNode, findParent, findParentId, removeNode as removeTreeNode } from '../utils/tree-utils';
 import registry from './registry';
@@ -279,12 +279,24 @@ class PageStore {
         if (actualNode.exportName === 'grid') {
           set(actualNode, 'children', generateGridChildren(actualNode, actualNode.id, conf).children);
         }
+        if (actualNode.type === 'composed-node') {
+          set(actualNode.outLayer, propKey, mergeAsRenderEngineProps(toJS(this.activeElem?.props), conf));
+        }
       } else if (propKey === 'props.style') {
         // fixme: style bind variable
+        if (actualNode.type === 'composed-node') {
+          set(actualNode.outLayer, 'props.style', { type: 'constant_property', value: conf });
+        }
         set(actualNode, propKey, { type: 'constant_property', value: conf });
       } else if (propKey === 'lifecycleHooks') {
+        if (actualNode.type === 'composed-node') {
+          set(actualNode.outLayer, 'lifecycleHooks', transformLifecycleHooks(conf));
+        }
         set(actualNode, propKey, transformLifecycleHooks(conf));
       } else {
+        if (actualNode.type === 'composed-node') {
+          set(actualNode.outLayer, propKey, conf);
+        }
         set(actualNode, propKey, conf);
       }
     }
@@ -378,6 +390,37 @@ class PageStore {
   @action
   setParentNodes = (node_ids: string[]): void => {
     this.parentNodes = node_ids;
+  }
+
+  @action
+  setNodeAsComposedNode = (node_id: string, composedConfig: Partial<ComposedNodeConf>): void => {
+    // wrap normal node as loop node
+    const target = findNode(this.schema.node, node_id);
+    if (!target) {
+      return;
+    }
+    // const nodeCopy = cloneDeep(target);
+    const composedNodeConfig = {
+      id: elemId('loop-node'),
+      props: {},
+      type: 'loop-container',
+      // node: nodeCopy,
+      loopKey: composedConfig.loopKey || 'id',
+      iterableState: composedConfig.iterableState || {},
+      node: composedConfig.node || {},
+    };
+
+    // console.log('set loop node: ', loopNodeConfig);
+    this.replaceNode(node_id, composedNodeConfig as any);
+  }
+
+  @action
+  updateCurNodeAsComposedNode = (propKey: string, confItem: any): void => {
+    // if (!this.rawActiveElem) {
+    //   // replace current normal node to loop node
+    //   this.setNodeAsComposedNode(this.activeElemId, confItem);
+    // }
+    this.setNodeAsComposedNode(this.activeElemId, confItem);
   }
 }
 

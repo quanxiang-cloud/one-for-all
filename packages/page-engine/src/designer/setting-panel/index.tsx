@@ -8,6 +8,7 @@ import StylePanel from './style-panel';
 import EventPanel from './event-panel';
 import RendererPanel from './renderer-panel';
 import ModalBindState from './modal-bind-state';
+import ModalComponentNode from './modal-component-node';
 
 import styles from './index.m.scss';
 
@@ -97,6 +98,7 @@ function SettingPanel(): JSX.Element {
     <div className={styles.panel}>
       {renderCont()}
       {designer.modalBindStateOpen && <ModalBindState />}
+      {designer.modalComponentNodeOpen && <ModalComponentNode />}
     </div>
   );
 }
