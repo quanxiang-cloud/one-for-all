@@ -46,6 +46,14 @@ declare namespace SchemaSpec {
   }
 
   /**
+   * toProps function should return Record<string, unknown>;
+   */
+  interface ToPropsFuncSpec extends BaseFunctionSpec {
+    type: 'to_props_function_spec',
+    args: 'state'
+  }
+
+  /**
    * LifecycleHooks provide a opportunity to executive some side-effects when node
    * `didMount` and `willUnmount`.
    */
@@ -54,15 +62,23 @@ declare namespace SchemaSpec {
     willUnmount: LifecycleHookFuncSpec;
   }>;
 
-  interface ToPropsFuncSpec extends BaseFunctionSpec {
-    type: 'to_props_function_spec',
-    args: 'state'
-  }
-
   /**
-   * toProps function should return Record<string, unknown>;
+   * It is a best practice to always define a fallback for API results,
+   * no matter before the API response returned or after an unexpected error has occurred.
+   *
+   * Fallback should NOT be a nullish value, and will be passed to node in the following situations:
+   * - the initial state
+   * - API request failed or some business error returned
+   * - convertor throw an error when calling it with API result
+   * - convertor return `null` or `undefined`
+   *
+   * The value of fallback will not always be the same.
+   * It will be assign a new value when convertor returned a not-nullish value.
+   * If there is no convertor defined, fallback will be assigned to the latest not-nullish api result.
+   *
+   * Be Attention. fallback is **NOT** the fallback of API result, it is the fallback of a property passed to node.
    */
-  type ToProps = ToPropsFuncSpec;
+  type Fallback = unknown;
 
   type NodePropType =
     'constant_property' |
@@ -119,23 +135,7 @@ declare namespace SchemaSpec {
     type: 'api_result_property';
     stateID: string;
     convertor?: StateConvertExpression | StateConvertorFuncSpec;
-    /**
-     * It is a best practice to always define a fallback for API results,
-     * no matter before the API response returned or after an unexpected error has occurred.
-     *
-     * Fallback should NOT be a nullish value, and will be passed to node in the following situations:
-     * - the initial state
-     * - API request failed or some business error returned
-     * - convertor throw an error when calling it with API result
-     * - convertor return `null` or `undefined`
-     *
-     * The value of fallback will not always be the same.
-     * It will be assign a new value when convertor returned a not-nullish value.
-     * If there is no convertor defined, fallback will be assigned to the latest not-nullish api result.
-     *
-     * Be Attention. fallback is NOT the fallback of API result, it is the fallback of a property passed to node.
-     */
-    fallback: unknown;
+    fallback: Fallback;
   }
 
   /**
@@ -149,14 +149,14 @@ declare namespace SchemaSpec {
   interface SharedStateProperty extends BaseNodeProperty {
     type: 'shared_state_property';
     stateID: string;
-    fallback: unknown;
+    fallback: Fallback;
     convertor?: StateConvertExpression | StateConvertorFuncSpec;
   }
 
   interface NodeStateProperty extends BaseNodeProperty {
     type: 'node_state_property';
     nodeKey: string;
-    fallback: unknown;
+    fallback: Fallback;
     convertor?: StateConvertExpression | StateConvertorFuncSpec;
   }
 
@@ -209,12 +209,10 @@ declare namespace SchemaSpec {
   // />
   interface RenderProperty extends BaseNodeProperty {
     type: 'render_property';
-    adapter: RenderPropertyAdapterFuncSpec;
     node: SchemaNode;
-  }
-
-  interface RenderPropertyAdapterFuncSpec extends BaseFunctionSpec {
-    type: 'render_property_function_spec',
+    adapter: BaseFunctionSpec & {
+      type: 'render_property_function_spec',
+    };
   }
 
   interface ComputedDependency {
@@ -231,25 +229,19 @@ declare namespace SchemaSpec {
 
   type NodeProperties = Record<string, NodeProperty>;
 
-  type NodeType =
-    'html-element' |
-    'react-component' |
-    'loop-container' |
-    'composed-node' |
-    'ref-node';
-
-  type SchemaNode =
-    HTMLNode |
-    ReactComponentNode |
-    LoopContainerNode |
-    RefNode;
-
   type ShouldRenderCondition =
     APIResultProperty |
     NodeStateProperty |
     SharedStateProperty |
     ComputedProperty |
     APILoadingProperty & { revert?: boolean };
+
+  type NodeType =
+    'html-element' |
+    'react-component' |
+    'loop-container' |
+    'composed-node' |
+    'ref-node';
 
   interface BaseNode {
     id: string | number;
@@ -259,6 +251,12 @@ declare namespace SchemaSpec {
     shouldRender?: ShouldRenderCondition;
     lifecycleHooks?: LifecycleHooks;
   }
+
+  type SchemaNode =
+    HTMLNode |
+    ReactComponentNode |
+    LoopContainerNode |
+    RefNode;
 
   interface HTMLNode extends BaseNode {
     type: 'html-element';
@@ -281,7 +279,7 @@ declare namespace SchemaSpec {
     loopKey: string;
     iterableState: PlainState;
     node: SchemaNode;
-    toProps: ToProps;
+    toProps: ToPropsFuncSpec;
   }
 
   interface ComposedNodeLoopContainer extends BaseNode {
@@ -294,7 +292,7 @@ declare namespace SchemaSpec {
   type LoopContainerNode = IndividualLoopContainer | ComposedNodeLoopContainer;
 
   type ComposedNodeChild = SchemaNode & {
-    toProps: ToProps;
+    toProps: ToPropsFuncSpec;
   }
 
   type ComposeOutLayer =
@@ -319,11 +317,11 @@ declare namespace SchemaSpec {
 
   // APIState define the type of API results from view perspective.
   // This type is inspired by [react-query](https://react-query.tanstack.com/).
-  type APIState = {
+  interface APIState {
     loading: boolean;
     result?: unknown;
     error?: Error;
-  };
+  }
 
   // map of stateID and apiID
   // todo should also store builder info
@@ -337,4 +335,3 @@ declare namespace SchemaSpec {
     sharedStatesSpec?: SharedStatesSpec;
   }
 }
-
