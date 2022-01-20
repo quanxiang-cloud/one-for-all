@@ -253,6 +253,7 @@ declare namespace SchemaSpec {
 
   interface BaseNode {
     id: string | number;
+    label?: string;
     type: NodeType;
     props?: NodeProperties;
     shouldRender?: ShouldRenderCondition;
