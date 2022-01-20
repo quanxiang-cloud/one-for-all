@@ -1,6 +1,6 @@
 {
   "name": "@ofa/render-engine",
-  "version": "0.10.1",
+  "version": "0.10.2",
   "license": "Apache-2.0",
   "type": "module",
   "main": "dist/index.js",
