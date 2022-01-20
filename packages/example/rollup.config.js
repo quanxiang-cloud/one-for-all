@@ -20,7 +20,7 @@ const commonPlugins = [
     // All options are optional
     include: /\.[jt]sx?$/, // default, inferred from `loaders` option
     exclude: /node_modules/, // default
-    sourceMap: false, // default
+    sourceMap: true,
     minify: process.env.NODE_ENV === 'production',
     target: 'es2017', // default, or 'es20XX', 'esnext'
     jsx: 'transform', // default, or 'preserve'
@@ -49,7 +49,8 @@ export default [
     input: 'src/todo-app/components/index.ts',
     output: {
       file: 'dist/todo-app/todo-components.js',
-      format: 'system'
+      format: 'system',
+      sourcemap: 'inline',
     },
 
     external: ['react', 'react-dom', /@ofa\/.*/],
@@ -60,7 +61,8 @@ export default [
     input: 'src/todo-app/index.ts',
     output: {
       file: 'dist/todo-app/index.js',
-      format: 'system'
+      format: 'system',
+      sourcemap: 'inline',
     },
 
     external: ['react', 'react-dom', /@ofa\/.*/],
