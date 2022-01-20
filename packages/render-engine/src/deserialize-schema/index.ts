@@ -6,8 +6,9 @@ import deserialize from './deserialize';
 
 function deserializeSchema(node: SchemaSpec.SchemaNode, ctx: CTX): SchemaNode | null {
   try {
-    deserialize(node, ctx);
-    return node as SchemaNode;
+    const _node = JSON.parse(JSON.stringify(node));
+    deserialize(_node, ctx);
+    return _node as SchemaNode;
   } catch (error) {
     logger.error(error);
     return null;
