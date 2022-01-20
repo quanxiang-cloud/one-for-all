@@ -36,8 +36,10 @@ function ModalComponentNode(): JSX.Element {
       });
       setSelectOptions(_selectOptions);
       setNodeChildren(_nodeChildren);
-      setSelectValue(_selectOptions[0].value || '');
-      setToPropsValue(_nodeChildren[0].toProps.body || '');
+      if (_selectOptions.length > 0) {
+        setSelectValue(_selectOptions[0].value || '');
+        setToPropsValue(_nodeChildren[0].toProps.body || '');
+      }
     }
   }, []);
 

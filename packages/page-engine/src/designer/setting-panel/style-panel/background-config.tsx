@@ -3,7 +3,7 @@ import { UseFormRegister, FieldValues } from 'react-hook-form';
 import { ColorResult } from 'react-color';
 import cs from 'classnames';
 
-import { RadioButtonGroup, Icon, ColorPicker } from '@ofa/ui';
+import { RadioButtonGroup, Icon, ColorPicker, Tooltip } from '@ofa/ui';
 
 const { formatRgba }: any = ColorPicker;
 
@@ -114,9 +114,25 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
     if (_value === 'none') {
       setValue('backgroundColor', '');
       setValue('backgroundImage', '');
+      setValue('backgroundPosition', '');
+      setValue('backgroundSize', '');
+      setValue('backgroundAttachment', '');
+      setValue('backgroundRepeat', '');
+      setRepeatStatus('repeat');
+      setAttachmentStatus('scroll');
+      setSizeValue('');
+      setPositionValue({ x: '', y: '' });
     }
     if (_value === 'color') {
       setValue('backgroundImage', '');
+      setValue('backgroundPosition', '');
+      setValue('backgroundSize', '');
+      setValue('backgroundAttachment', '');
+      setValue('backgroundRepeat', '');
+      setRepeatStatus('repeat');
+      setAttachmentStatus('scroll');
+      setSizeValue('');
+      setPositionValue({ x: '', y: '' });
     }
     if (_value === 'img') {
       setValue('backgroundColor', '');
@@ -157,6 +173,7 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
       y,
     });
     setValue('backgroundPosition', place);
+    onFormChange();
   }
 
   function handlePositionChange(e: React.ChangeEvent<HTMLInputElement>, place: 'x' | 'y'): void {
@@ -239,10 +256,12 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
       )}
       {fillStatus === 'img' && (
         <>
-          <input type="hidden" {...register('backgroundPosition', { value: backgroundPosition || '' })} />
-          <input type="hidden" {...register('backgroundSize', { value: backgroundSize || '' })} />
-          <input type="hidden" {...register('backgroundRepeat', { value: backgroundRepeat || '' })} />
-          <input type="hidden" {...register('backgroundAttachment', { value: backgroundAttachment || '' })} />
+          {/*
+            <input type="hidden" {...register('backgroundPosition', { value: backgroundPosition || '' })} />
+            <input type="hidden" {...register('backgroundSize', { value: backgroundSize || '' })} />
+            <input type="hidden" {...register('backgroundRepeat', { value: backgroundRepeat || '' })} />
+            <input type="hidden" {...register('backgroundAttachment', { value: backgroundAttachment || '' })} />
+          */}
           <div className='mt-8'>
             <div className='text-12 text-gray-600'>图片地址</div>
             <div className='flex items-center justify-between'>
@@ -269,171 +288,218 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
               <Icon name='code' color='gray' />
             </div>
           </div>
-          <div className='mt-8'>
-            <div className='text-12 text-gray-600'>定位</div>
-            <div className='p-4 flex items-center justify-between border border-gray-300 rounded-4'>
-              <div className='relative' style={{ width: 70, height: 70 }}>
-                <span
-                  className={cs('p-2 absolute top-0 left-0 cursor-pointer',
-                    { 'bg-gray-300': checkedValue === 'leftTop' })}
-                  onClick={() => handlePosition(POSITION_VALUES['leftTop'])}
-                >
-                  <Icon name="code" color='gray' />
-                </span>
-                <span
-                  className={cs('p-2 absolute top-0 left-2/4 -ml-10 cursor-pointer',
-                    { 'bg-gray-300': checkedValue === 'centerTop' })}
-                  onClick={() => handlePosition(POSITION_VALUES['centerTop'])}
-                >
-                  <Icon name="code" color='gray' />
-                </span>
-                <span
-                  className={cs('p-2 absolute top-0 right-0 cursor-pointer',
-                    { 'bg-gray-300': checkedValue === 'rightTop' })}
-                  onClick={() => handlePosition(POSITION_VALUES['rightTop'])}
-                >
-                  <Icon name="code" color='gray' />
-                </span>
-                <span
-                  className={cs('p-2 absolute top-2/4 left-0 -mt-10 cursor-pointer',
-                    { 'bg-gray-300': checkedValue === 'leftCenter' })}
-                  onClick={() => handlePosition(POSITION_VALUES['leftCenter'])}
-                >
-                  <Icon name="code" color='gray' />
-                </span>
-                <span
-                  className={cs('p-2 absolute top-2/4 left-2/4 -mt-10 -ml-10',
-                    { 'bg-gray-300': checkedValue === 'center' })}
-                  onClick={() => handlePosition(POSITION_VALUES['center'])}
-                >
-                  <Icon name="code" color='gray' />
-                </span>
-                <span
-                  className={cs('p-2 absolute top-2/4 right-0 -mt-10 cursor-pointer',
-                    { 'bg-gray-300': checkedValue === 'rightCenter' })}
-                  onClick={() => handlePosition(POSITION_VALUES['rightCenter'])}
-                >
-                  <Icon name="code" color='gray' />
-                </span>
-                <span
-                  className={cs('p-2 absolute bottom-0 left-0 cursor-pointer',
-                    { 'bg-gray-300': checkedValue === 'leftBottom' })}
-                  onClick={() => handlePosition(POSITION_VALUES['leftBottom'])}
-                >
-                  <Icon name="code" color='gray'/>
-                </span>
-                <span
-                  className={cs('p-2 absolute bottom-0 left-2/4 -ml-10 cursor-pointer',
-                    { 'bg-gray-300': checkedValue === 'centerBottom' })}
-                  onClick={() => handlePosition(POSITION_VALUES['centerBottom'])}
-                >
-                  <Icon name="code" color='gray' />
-                </span>
-                <span
-                  className={cs('p-2 absolute bottom-0 right-0 cursor-pointer',
-                    { 'bg-gray-300': checkedValue === 'rightBottom' })}
-                  onClick={() => handlePosition(POSITION_VALUES['rightBottom'])}
-                >
-                  <Icon name="code" color='gray' />
-                </span>
-              </div>
-              <div className='ml-10 flex flex-col'>
-                <div className='flex items-center'>
-                  <Icon name="code" color="gray" className='mr-8' />
-                  <div className='relative '>
-                    <input
-                      type="number"
-                      placeholder='0'
-                      className='px-8 py-6 w-full border border-gray-300 corner-2-8-8-8'
-                      value={positionValue.x}
-                      onChange={(e) => handlePositionChange(e, 'x')}
-                    />
-                    <div className='px-4 absolute bg-gray-100 top-2
-                    bottom-2 right-4 flex items-center'>%</div>
+          {backgroundImage && (
+            <>
+              <div className='mt-8'>
+                <div className='p-4 flex items-center justify-between border border-gray-300 rounded-4'>
+                  <div className='relative' style={{ width: 70, height: 70 }}>
+                    <span
+                      className={cs('p-2 absolute top-0 left-0 cursor-pointer',
+                        { 'bg-gray-300': checkedValue === 'leftTop' })}
+                      onClick={() => handlePosition(POSITION_VALUES['leftTop'])}
+                    >
+                      <Tooltip position='top' label='左上'>
+                        <Icon name="left-top" color='gray' />
+                      </Tooltip>
+                    </span>
+                    <span
+                      className={cs('p-2 absolute top-0 -ml-10 cursor-pointer',
+                        { 'bg-gray-300': checkedValue === 'centerTop' })}
+                      style={{ left: '50%' }}
+                      onClick={() => handlePosition(POSITION_VALUES['centerTop'])}
+                    >
+                      <Tooltip position='top' label='中上'>
+                        <Icon name="center-top" color='gray' />
+                      </Tooltip>
+                    </span>
+                    <span
+                      className={cs('p-2 absolute top-0 right-0 cursor-pointer',
+                        { 'bg-gray-300': checkedValue === 'rightTop' })}
+                      onClick={() => handlePosition(POSITION_VALUES['rightTop'])}
+                    >
+                      <Tooltip position='top' label='右上'>
+                        <Icon name="right-top" color='gray' />
+                      </Tooltip>
+                    </span>
+                    <span
+                      className={cs('p-2 absolute left-0 -mt-10 cursor-pointer',
+                        { 'bg-gray-300': checkedValue === 'leftCenter' })}
+                      style={{ top: '50%' }}
+                      onClick={() => handlePosition(POSITION_VALUES['leftCenter'])}
+                    >
+                      <Tooltip position='top' label='左中'>
+                        <Icon name="left-center" color='gray' />
+                      </Tooltip>
+                    </span>
+                    <span
+                      className={cs('p-2 absolute -mt-10 -ml-10 cursor-pointer',
+                        { 'bg-gray-300': checkedValue === 'center' })}
+                      style={{ top: '50%', left: '50%' }}
+                      onClick={() => handlePosition(POSITION_VALUES['center'])}
+                    >
+                      <Tooltip position='top' label='中心'>
+                        <Icon name="center-center" color='gray' />
+                      </Tooltip>
+                    </span>
+                    <span
+                      className={cs('p-2 absolute right-0 -mt-10 cursor-pointer',
+                        { 'bg-gray-300': checkedValue === 'rightCenter' })}
+                      style={{ top: '50%' }}
+                      onClick={() => handlePosition(POSITION_VALUES['rightCenter'])}
+                    >
+                      <Tooltip position='top' label='右中'>
+                        <Icon name="right-center" color='gray' />
+                      </Tooltip>
+                    </span>
+                    <span
+                      className={cs('p-2 absolute bottom-0 left-0 cursor-pointer',
+                        { 'bg-gray-300': checkedValue === 'leftBottom' })}
+                      onClick={() => handlePosition(POSITION_VALUES['leftBottom'])}
+                    >
+                      <Tooltip position='top' label='左下'>
+                        <Icon name="left-bottom" color='gray'/>
+                      </Tooltip>
+                    </span>
+                    <span
+                      className={cs('p-2 absolute bottom-0 left-2/4 -ml-10 cursor-pointer',
+                        { 'bg-gray-300': checkedValue === 'centerBottom' })}
+                      style={{ left: '50%' }}
+                      onClick={() => handlePosition(POSITION_VALUES['centerBottom'])}
+                    >
+                      <Tooltip position='top' label='中下'>
+                        <Icon name="center-bottom" color='gray' />
+                      </Tooltip>
+                    </span>
+                    <span
+                      className={cs('p-2 absolute bottom-0 right-0 cursor-pointer',
+                        { 'bg-gray-300': checkedValue === 'rightBottom' })}
+                      onClick={() => handlePosition(POSITION_VALUES['rightBottom'])}
+                    >
+                      <Tooltip position='top' label='右下'>
+                        <Icon name="right-bottom" color='gray' />
+                      </Tooltip>
+                    </span>
                   </div>
-                </div>
-                <div className='mt-4 flex items-center'>
-                  <Icon name="code" color="gray" className='mr-8' />
-                  <div className='relative '>
-                    <input
-                      type="number"
-                      placeholder='0'
-                      value={positionValue.y}
-                      className='px-8 py-6 w-full border border-gray-300 corner-2-8-8-8'
-                      onChange={(e) => handlePositionChange(e, 'y')}
-                    />
-                    <div className='px-4 absolute bg-gray-100 top-2
+                  <div className='ml-10 flex flex-col flex-1'>
+                    <div className='flex items-center'>
+                      <div className='mr-8 flex items-center'>
+                        <Icon name="row-deviation" color="gray" className='mr-4' />
+                        <span className='text-12 text-gray-400 whitespace-nowrap'>横向偏移</span>
+                      </div>
+                      <div className='relative '>
+                        <input
+                          type="number"
+                          placeholder='0'
+                          className='px-8 py-6 w-full border border-gray-300 corner-2-8-8-8'
+                          value={positionValue.x}
+                          onChange={(e) => handlePositionChange(e, 'x')}
+                        />
+                        <div className='px-4 absolute bg-gray-100 top-2
                     bottom-2 right-4 flex items-center'>%</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className='mt-8'>
-            <div className='text-12 text-gray-600'>大小</div>
-            <div className='p-4 flex items-center justify-between border border-gray-300 rounded-4'>
-              <div className='flex items-center whitespace-nowrap border border-gray-300 rounded-2'>
-                <div
-                  onClick={() => handleSizeChange('cover')}
-                  className={cs('px-10 py-2 border-r border-gray-300 cursor-pointer',
-                    { 'bg-gray-300': sizeValue === 'cover' })}>
-                  <Icon name="code" color='gray' />
-                </div>
-                <div
-                  onClick={() => handleSizeChange('contain')}
-                  className={cs('px-10 py-2 cursor-pointer',
-                    { 'bg-gray-300': sizeValue === 'contain' })}>
-                  <Icon name="code" color='gray' />
-                </div>
-              </div>
-              <div className='ml-10 flex flex-col'>
-                <div className='flex items-center'>
-                  <Icon name="code" color="gray" className='mr-8' />
-                  <div className='relative '>
-                    <input
-                      type="number"
-                      placeholder='auto'
-                      className='px-8 py-6 w-full border border-gray-300 corner-2-8-8-8'
-                      value={sizeValue.x || ''}
-                      onChange={(e) => handleSizeInputChange(e, 'x')}
-                    />
-                    <div className='px-4 absolute bg-gray-100 top-2
+                      </div>
+                    </div>
+                    <div className='mt-4 flex items-center'>
+                      <div className='mr-8 flex items-center'>
+                        <Icon name="col-deviation" color="gray" className='mr-4' />
+                        <span className='text-12 text-gray-400 whitespace-nowrap'>横向偏移</span>
+                      </div>
+                      <div className='relative '>
+                        <input
+                          type="number"
+                          placeholder='0'
+                          value={positionValue.y}
+                          className='px-8 py-6 w-full border border-gray-300 corner-2-8-8-8'
+                          onChange={(e) => handlePositionChange(e, 'y')}
+                        />
+                        <div className='px-4 absolute bg-gray-100 top-2
                     bottom-2 right-4 flex items-center'>%</div>
-                  </div>
-                </div>
-                <div className='mt-4 flex items-center'>
-                  <Icon name="code" color="gray" className='mr-8' />
-                  <div className='relative '>
-                    <input
-                      type="number"
-                      placeholder='auto'
-                      className='px-8 py-6 w-full border border-gray-300 corner-2-8-8-8'
-                      value={sizeValue.y || ''}
-                      onChange={(e) => handleSizeInputChange(e, 'y')}
-                    />
-                    <div className='px-4 absolute bg-gray-100 top-2
-                    bottom-2 right-4 flex items-center'>%</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div className='mt-8'>
-            <div className='text-12 text-gray-600'>平铺</div>
-            <RadioButtonGroup
-              listData={REPEAT_LIST as []}
-              onChange={(val) => handleRepeatChange(val)}
-              currentValue={repeatStatus}
-            />
-          </div>
-          <div className='mt-8'>
-            <div className='text-12 text-gray-600'>固定</div>
-            <RadioButtonGroup
-              listData={ATTACHMENT_LIST as []}
-              onChange={(val) => handleAttachmentChange(val)}
-              currentValue={attachmentStatus}
-            />
-          </div>
+              <div className='mt-8'>
+                <div className='text-12 text-gray-600'>大小</div>
+                <div className='p-4 flex items-center justify-between border border-gray-300 rounded-4'>
+                  <div className='flex flex-col items-center '>
+                    <div
+                      onClick={() => handleSizeChange('cover')}
+                      className={cs('px-8 py-2 flex items-center border',
+                        'bg-gray-50 rounded-4 cursor-pointer',
+                        {
+                          'border-blue-600': sizeValue === 'cover',
+                          'border-gray-300': sizeValue !== 'cover',
+                        })}>
+                      <Icon name="size-image" color='gray' className='mr-8' />
+                      <span className='text-12 text-gray-400 whitespace-nowrap'>覆盖</span>
+                    </div>
+                    <div
+                      onClick={() => handleSizeChange('contain')}
+                      className={cs('px-8 py-2 flex items-center border',
+                        'bg-gray-50 rounded-4 cursor-pointer mt-8',
+                        {
+                          'border-blue-600': sizeValue === 'contain',
+                          'border-gray-300': sizeValue !== 'contain',
+                        })}>
+                      <Icon name="size-image" color='gray' className='mr-8' />
+                      <span className='text-12 text-gray-400 whitespace-nowrap'>适合</span>
+                    </div>
+                  </div>
+                  <div className='ml-10 flex flex-col'>
+                    <div className='flex items-center'>
+                      <div className='mr-8 flex items-center'>
+                        <Icon name="size-width" color="gray" className='mr-4' />
+                        <span className='text-12 text-gray-400 whitespace-nowrap'>宽度</span>
+                      </div>
+                      <div className='relative '>
+                        <input
+                          type="number"
+                          placeholder='auto'
+                          className='px-8 py-6 w-full border border-gray-300 corner-2-8-8-8'
+                          value={sizeValue.x || ''}
+                          onChange={(e) => handleSizeInputChange(e, 'x')}
+                        />
+                        <div className='px-4 absolute bg-gray-100 top-2
+                    bottom-2 right-4 flex items-center'>%</div>
+                      </div>
+                    </div>
+                    <div className='mt-4 flex items-center'>
+                      <div className='mr-8 flex items-center'>
+                        <Icon name="size-height" color="gray" className='mr-4' />
+                        <span className='text-12 text-gray-400 whitespace-nowrap'>宽度</span>
+                      </div>
+                      <div className='relative '>
+                        <input
+                          type="number"
+                          placeholder='auto'
+                          className='px-8 py-6 w-full border border-gray-300 corner-2-8-8-8'
+                          value={sizeValue.y || ''}
+                          onChange={(e) => handleSizeInputChange(e, 'y')}
+                        />
+                        <div className='px-4 absolute bg-gray-100 top-2
+                    bottom-2 right-4 flex items-center'>%</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className='mt-8'>
+                <div className='text-12 text-gray-600'>平铺</div>
+                <RadioButtonGroup
+                  listData={REPEAT_LIST as []}
+                  onChange={(val) => handleRepeatChange(val)}
+                  currentValue={repeatStatus}
+                />
+              </div>
+              <div className='mt-8'>
+                <div className='text-12 text-gray-600'>固定</div>
+                <RadioButtonGroup
+                  listData={ATTACHMENT_LIST as []}
+                  onChange={(val) => handleAttachmentChange(val)}
+                  currentValue={attachmentStatus}
+                />
+              </div>
+            </>)}
         </>
       )}
     </div>
