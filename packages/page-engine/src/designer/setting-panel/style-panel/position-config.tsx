@@ -109,6 +109,7 @@ function PositionConfig({ initValues, register, setValue }: Props): JSX.Element 
             <div className='text-12 text-gray-600'>层级</div>
             <input
               type="number"
+              placeholder="0"
               className='mr-8 px-8 py-6 w-full border border-gray-300 corner-2-8-8-8'
               {...register('zIndex', { value: initValues['zIndex'] || '' })}
             />

@@ -110,14 +110,14 @@ function FontConfig({ initValues, register, setValue, onFormChange }: Props): JS
         <div className='flex items-center'>
           <span className='px-8 text-12 text-gray-400 whitespace-nowrap'>颜色</span>
           <input readOnly type="hidden" {...register('color', {
-            value: color || '#000000',
+            value: color || '',
           })} />
           <ColorPicker
-            value={color as string || '#000000'}
+            value={color as string || ''}
             onChange={handleColorChange}
           />
           <span className='ml-8 text-12 text-gray-900'>
-            {color || '#000000'}
+            {color || ''}
           </span>
         </div>
         {/* <div className='mx-8 w-1 h-20 border-left bg-gray-200'></div>
