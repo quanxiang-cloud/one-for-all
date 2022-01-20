@@ -2,7 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import App from './app';
+import { worker } from '../mocks/browser';
 
+// worker.start({ serviceWorker: { url: '/mockServiceWorker.js' } });
+worker.start();
 const appRoot = document.querySelector('#root');
 
 if (!appRoot) {
