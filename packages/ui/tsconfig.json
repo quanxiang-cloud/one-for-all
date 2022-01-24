@@ -3,7 +3,7 @@
   "compilerOptions": {
     "outDir": "lib",
     "rootDir": ".",
-    "module": "esnext"
+    "module": "system"
   },
   "include": [
     "src/**/*",

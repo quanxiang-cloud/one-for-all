@@ -1,4 +1,4 @@
-import type { SourceElement } from '@ofa/page-engine';
+import type { SourceElement } from '../../../index';
 
 import Iframe from './iframe';
 import ConfigForm, { DEFAULT_CONFIG } from './config-form';

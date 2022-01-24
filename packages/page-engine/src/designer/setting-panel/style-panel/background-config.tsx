@@ -3,7 +3,7 @@ import { UseFormRegister, FieldValues } from 'react-hook-form';
 import { ColorResult } from 'react-color';
 import cs from 'classnames';
 
-import { RadioButtonGroup, Icon, ColorPicker, Tooltip } from '@ofa/ui';
+import { RadioButtonGroup, Icon, ColorPicker, Tooltip } from '@one-for-all/ui';
 
 const { formatRgba }: any = ColorPicker;
 

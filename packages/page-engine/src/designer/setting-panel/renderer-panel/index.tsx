@@ -6,8 +6,8 @@ import { pick, get } from 'lodash';
 import { useUpdateEffect } from 'react-use';
 import cs from 'classnames';
 
-import { Button, Icon, Tooltip, Modal, toast } from '@ofa/ui';
-import { useCtx, DataBind } from '@ofa/page-engine';
+import { Button, Icon, Tooltip, Modal, toast } from '@one-for-all/ui';
+import { useCtx, DataBind } from '../../../index';
 
 import Section from '../../comps/section';
 

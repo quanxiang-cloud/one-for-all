@@ -1,5 +1,5 @@
 {
-  "name": "@ofa/example",
+  "name": "@one-for-all/example",
   "version": "0.0.1",
   "license": "Apache-2.0",
   "main": "index.ts",
@@ -27,7 +27,7 @@
     "@typescript-eslint/parser": "^4.29.0",
     "comment-json": "^4.1.0",
     "cors": "^2.8.5",
-    "esbuild": "^0.13.8",
+    "esbuild": "0.14.13",
     "eslint": "^7.32.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-react": "^7.24.0",

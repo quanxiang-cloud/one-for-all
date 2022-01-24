@@ -1,8 +1,8 @@
 import React from 'react';
 import { defaults, flow, get, identity } from 'lodash';
 
-import { LoopNode, PageNode } from '@ofa/page-engine';
-// import Elem from '@ofa/page-engine/core/elem';
+import { LoopNode, PageNode } from '../index';
+// import Elem from '../index/core/elem';
 // import { toJS } from 'mobx';
 import { mapRawProps } from '../utils/schema-adapter';
 import registry from '../stores/registry';

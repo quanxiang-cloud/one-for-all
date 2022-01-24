@@ -1,5 +1,5 @@
 import React from 'react';
-import { logger } from '@ofa/utils';
+import { logger } from '@one-for-all/utils';
 import { render } from '@testing-library/react';
 
 import HTMLNodeRender from '../html-node-render';

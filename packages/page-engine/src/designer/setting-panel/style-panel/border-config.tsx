@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { UseFormRegister, FieldValues } from 'react-hook-form';
 
-import { RadioButtonGroup, Icon } from '@ofa/ui';
+import { RadioButtonGroup, Icon } from '@one-for-all/ui';
 
 type LabelValue = {
   label: string;

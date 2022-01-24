@@ -5,8 +5,8 @@ import { defaults, flow, get, identity } from 'lodash';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
 
-import { Icon } from '@ofa/ui';
-import { PageNode, useCtx, DragPos, LoopNode } from '@ofa/page-engine';
+import { Icon } from '@one-for-all/ui';
+import { PageNode, useCtx, DragPos, LoopNode } from '../index';
 
 import { mapRawProps } from '../utils/schema-adapter';
 import { elemId } from '../utils';

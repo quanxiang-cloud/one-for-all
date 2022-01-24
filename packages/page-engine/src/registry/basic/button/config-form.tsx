@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { defaults, noop } from 'lodash';
 
-import { useCtx, DataBind as ConfigBind } from '@ofa/page-engine';
-import { Select } from '@ofa/ui';
+import { useCtx, DataBind as ConfigBind } from '../../../index';
+import { Select } from '@one-for-all/ui';
 
 import type { Props } from './button';
 

@@ -1,4 +1,4 @@
-import { logger } from '@ofa/utils';
+import { logger } from '@one-for-all/utils';
 import { renderHook, act } from '@testing-library/react-hooks/pure';
 
 import { SchemaNode } from '../../types';

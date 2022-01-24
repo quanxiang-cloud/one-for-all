@@ -2,6 +2,6 @@ import base from '../../jest.base.config.js';
 
 export default {
   ...base,
-  name: '@ofa/api-spec-adapter',
+  name: '@one-for-all/api-spec-adapter',
   displayName: 'Request Builder Open API',
 };

@@ -42,7 +42,7 @@ const commonPlugins = [
   }),
 ];
 
-const externals = ['react', 'react-dom', "lodash", /@ofa\/.*/];
+const externals = ['react', 'react-dom', "lodash", /@one-for-all\/.*/];
 
 export default [
   {
@@ -53,7 +53,7 @@ export default [
       sourcemap: 'inline',
     },
 
-    external: ['react', 'react-dom', /@ofa\/.*/],
+    external: ['react', 'react-dom', /@one-for-all\/.*/],
 
     plugins: commonPlugins,
   },
@@ -65,7 +65,7 @@ export default [
       sourcemap: 'inline',
     },
 
-    external: ['react', 'react-dom', /@ofa\/.*/],
+    external: ['react', 'react-dom', /@one-for-all\/.*/],
 
     plugins: commonPlugins,
   },

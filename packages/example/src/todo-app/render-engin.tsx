@@ -1,6 +1,6 @@
 import React from 'react';
-import { RefLoader, Repository, SchemaRender } from '@ofa/render-engine';
-import { SwaggerSpecAdapter } from '@ofa/api-spec-adapter';
+import { RefLoader, Repository, SchemaRender } from '@one-for-all/render-engine';
+import { SwaggerSpecAdapter } from '@one-for-all/api-spec-adapter';
 
 import schema from './serialized-schema';
 import refSchema from './ref-schema';

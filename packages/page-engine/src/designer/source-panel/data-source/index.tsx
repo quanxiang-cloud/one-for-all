@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Tab } from '@ofa/ui';
+import { Tab } from '@one-for-all/ui';
 
 import SharedState from './shared-state';
 import ApiState from './api-state';

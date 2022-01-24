@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { logger } from '@ofa/utils';
+import { logger } from '@one-for-all/utils';
 
 import {
   CTX,

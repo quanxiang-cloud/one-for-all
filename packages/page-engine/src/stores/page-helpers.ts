@@ -1,4 +1,4 @@
-import { PageNode, PageSchema } from '@ofa/page-engine';
+import { PageNode, PageSchema } from '../index';
 import { toJS } from 'mobx';
 
 import { elemId } from '../utils';

@@ -1,5 +1,5 @@
-import { Image } from '@ofa/ui';
-import type { SourceElement } from '@ofa/page-engine';
+import { Image } from '@one-for-all/ui';
+import type { SourceElement } from '../../../index';
 
 import ConfigForm, { DEFAULT_CONFIG } from './config-form';
 

@@ -86,7 +86,7 @@ dist/web/index.js
 dist/mobile/index.js
 
 import map
-@ofa/ui@1.0.0: dist/web/index.js
-@ofa/ui@1.0.0: dist/mobile/index.js
+@one-for-all/ui@1.0.0: dist/web/index.js
+@one-for-all/ui@1.0.0: dist/mobile/index.js
 
 ``

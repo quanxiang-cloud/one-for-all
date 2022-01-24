@@ -1,4 +1,4 @@
-import { logger } from '@ofa/utils';
+import { logger } from '@one-for-all/utils';
 import { useMemo } from 'react';
 
 import { SchemaNode, FunctionalProperty, VersatileFunc } from '../types';

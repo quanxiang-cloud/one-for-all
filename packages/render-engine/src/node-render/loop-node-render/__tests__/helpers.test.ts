@@ -1,4 +1,4 @@
-import { logger } from '@ofa/utils';
+import { logger } from '@one-for-all/utils';
 import { renderHook } from '@testing-library/react-hooks/pure';
 
 import StatesHubAPI from '../../../ctx/states-hub-api';

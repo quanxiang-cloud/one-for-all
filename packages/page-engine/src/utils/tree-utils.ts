@@ -1,6 +1,6 @@
 import { get } from 'lodash';
 
-import type { PageNode } from '@ofa/page-engine';
+import type { PageNode } from '../types';
 
 export function findNode(tree: PageNode, node_id?: string): any {
   if (!tree || typeof tree !== 'object') {

@@ -1,7 +1,7 @@
 import { action, computed, makeObservable, observable, runInAction, toJS } from 'mobx';
 import { cloneDeep, defaults, get, set } from 'lodash';
 
-import { LoopNode, LoopNodeConf, ComposedNodeConf } from '@ofa/page-engine';
+import { LoopNode, LoopNodeConf, ComposedNodeConf } from '../index';
 import { elemId } from '../utils';
 import { findNode, findParent, findParentId, removeNode as removeTreeNode } from '../utils/tree-utils';
 import registry from './registry';

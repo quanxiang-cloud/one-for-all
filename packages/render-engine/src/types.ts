@@ -1,7 +1,7 @@
 import React from 'react';
 import type { BehaviorSubject } from 'rxjs';
-import type { FetchParams, APISpecAdapter } from '@ofa/api-spec-adapter';
-import type * as SchemaSpec from '@ofa/schema-spec';
+import type { FetchParams, APISpecAdapter } from '@one-for-all/api-spec-adapter';
+import type * as SchemaSpec from '@one-for-all/schema-spec';
 
 export type VersatileFunc<T = unknown> = (...args: unknown[]) => T;
 

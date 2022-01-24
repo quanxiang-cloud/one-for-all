@@ -1,6 +1,6 @@
 import { noop } from 'lodash';
 import { act, renderHook } from '@testing-library/react-hooks/pure';
-import { logger } from '@ofa/utils';
+import { logger } from '@one-for-all/utils';
 
 import { SchemaNode } from '../../types';
 import StatesHubShared from '../../ctx/states-hub-shared';

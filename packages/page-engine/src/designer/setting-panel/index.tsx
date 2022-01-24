@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect } from 'react';
 import { observer } from 'mobx-react';
 
-import { Tab } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine';
+import { Tab } from '@one-for-all/ui';
+import { useCtx } from '../../index';
 
 import StylePanel from './style-panel';
 import EventPanel from './event-panel';

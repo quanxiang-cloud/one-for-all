@@ -5,8 +5,8 @@ import { observer } from 'mobx-react';
 import { pickBy } from 'lodash';
 import { useUpdateEffect, useDebounce } from 'react-use';
 
-import { Search, Icon, Tooltip, Modal, toast } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine';
+import { Search, Icon, Tooltip, Modal, toast } from '@one-for-all/ui';
+import { useCtx } from '../../../../index';
 
 import VarItem from './var-item';
 

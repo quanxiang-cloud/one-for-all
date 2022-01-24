@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 
-import { useCtx } from '@ofa/page-engine';
-import { RadioButtonGroup } from '@ofa/ui';
+import { useCtx } from '../../../index';
+import { RadioButtonGroup } from '@one-for-all/ui';
 
 import TreeView from './tree-view';
 

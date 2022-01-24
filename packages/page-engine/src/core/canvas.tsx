@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import { useDrop } from 'react-dnd';
 import { toJS } from 'mobx';
 
-import { PageSchema, useCtx } from '@ofa/page-engine';
+import { PageSchema, useCtx } from '../index';
 
 import { ElementInfo } from '../types';
 import NodeRender from './node-render';

@@ -1,8 +1,8 @@
 import React from 'react';
-import { logger } from '@ofa/utils';
+import { logger } from '@one-for-all/utils';
 import { act, renderHook } from '@testing-library/react-hooks/pure';
-import { APISpecAdapter } from '@ofa/api-spec-adapter/lib/src/types';
-import type { Schema } from '@ofa/schema-spec';
+import { APISpecAdapter } from '@one-for-all/api-spec-adapter/lib/src/types';
+import type { Schema } from '@one-for-all/schema-spec';
 
 import {
   ReactComponentNode,

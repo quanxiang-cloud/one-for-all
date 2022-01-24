@@ -1,6 +1,6 @@
 import React, { useContext, useMemo } from 'react';
-import { logger } from '@ofa/utils';
-import type { ConstantProperty } from '@ofa/schema-spec';
+import { logger } from '@one-for-all/utils';
+import type { ConstantProperty } from '@one-for-all/schema-spec';
 
 import {
   CTX,

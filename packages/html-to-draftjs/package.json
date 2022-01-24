@@ -1,5 +1,5 @@
 {
-  "name": "@ofa/html-to-draftjs",
+  "name": "@one-for-all/html-to-draftjs",
   "version": "1.14.7",
   "main": "index.js",
   "license": "MIT",

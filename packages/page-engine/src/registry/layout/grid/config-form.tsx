@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { defaults } from 'lodash';
 
-import { Select, GridProps } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine';
+import { Select, GridProps } from '@one-for-all/ui';
+import { useCtx } from '../../../index';
 
 export const defaultConfig: GridProps = {
   colRatio: '12:9:3',

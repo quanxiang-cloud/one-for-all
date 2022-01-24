@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { render } from '@testing-library/react';
-import { APISpecAdapter } from '@ofa/api-spec-adapter';
-import type * as SchemaSpec from '@ofa/schema-spec';
+import { APISpecAdapter } from '@one-for-all/api-spec-adapter';
+import type * as SchemaSpec from '@one-for-all/schema-spec';
 
 import SchemaRender from '../schema-render';
 import { RenderEngineCTX } from '../types';

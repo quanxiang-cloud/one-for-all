@@ -2,7 +2,7 @@ import React, { useState, useEffect, HTMLAttributeReferrerPolicy } from 'react';
 import { useForm } from 'react-hook-form';
 import { defaults } from 'lodash';
 
-import { useCtx, DataBind as ConfigBind } from '@ofa/page-engine';
+import { useCtx, DataBind as ConfigBind } from '../../../index';
 
 export interface IframeConfigProps {
   sandbox?: string;

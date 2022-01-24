@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import cs from 'classnames';
 import { UseFormRegister, FieldValues } from 'react-hook-form';
 
-import { Icon } from '@ofa/ui';
+import { Icon } from '@one-for-all/ui';
 
 interface Props {
   classNames?: string;

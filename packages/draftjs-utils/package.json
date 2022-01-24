@@ -1,5 +1,5 @@
 {
-  "name": "@ofa/draftjs-utils",
+  "name": "@one-for-all/draftjs-utils",
   "version": "0.10.2",
   "main": "index.js",
   "license": "MIT",

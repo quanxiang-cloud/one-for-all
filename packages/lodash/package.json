@@ -1,5 +1,5 @@
 {
-  "name": "@ofa/lodash",
+  "name": "@one-for-all/lodash",
   "version": "4.17.21",
   "description": "Repo/project to create a systemjs bundle of lodash",
   "main": "index.js",

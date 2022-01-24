@@ -5,7 +5,7 @@ import type {
   SharedStatesSpec,
   PlainState,
   LoopContainerNode,
-} from '@ofa/schema-spec';
+} from '@one-for-all/schema-spec';
 
 export type ReactComp = React.ComponentType | React.JSXElementConstructor<any>;
 

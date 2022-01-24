@@ -3,7 +3,7 @@
     /* Basic Options */
     // "incremental": true,                   /* Enable incremental compilation */
     "target": "es6" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019' or 'ESNEXT'. */,
-    "module": "es2015" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */,
+    "module": "system" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */,
     "lib": [
       "dom",
       "es5",
@@ -45,24 +45,10 @@
     /* Module Resolution Options */
     "moduleResolution": "node" /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */,
     "baseUrl": "." /* Base directory to resolve non-absolute module names. */,
-     "paths": {
-       "@ofa/*": [
-         "packages/*/src"
-       ],
-       "@ofa/ui": [
-         "packages/qxp-ui/src"
-       ],
-       "@ofa/page-engine": [
-         "packages/page-engine/src"
-       ],
-       "@ofa/page-engine/*": [
-         "packages/page-engine/src/*"
-       ],
-     } /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */,
+    // "paths": { }, /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
     // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
     "typeRoots": [
-      "types",
-      "node_modules/@types",
+      "common/temp/node_modules/@types"
     ] /* List of folders to include type definitions from. */,
     // "types": [] /* Type declaration files to be included in compilation. */,
     "allowSyntheticDefaultImports": true /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */,
@@ -78,28 +64,9 @@
     "experimentalDecorators": true /* Enables experimental support for ES7 decorators. */,
     // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
     /* Advanced Options */
-    "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
+    "forceConsistentCasingInFileNames": true, /* Disallow inconsistently-cased references to the same file. */
+    "skipLibCheck": true
   },
-  "references": [
-    {
-      "path": "./packages/render-engine"
-    },
-    {
-      "path": "./packages/api-spec-adapter"
-    },
-    {
-      "path": "./packages/utils"
-    },
-    {
-      "path": "./packages/ui"
-    },
-    {
-      "path": "./packages/schema-spec"
-    },
-    {
-      "path": "./packages/page-engine"
-    }
-  ],
   "plugins": [
     {
       "name":  "typescript-plugin-css-modules",

@@ -3,9 +3,9 @@ import { observer } from 'mobx-react';
 import cs from 'classnames';
 import { get } from 'lodash';
 
-import { Icon, Tooltip } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine';
-import type { NodePropType } from '@ofa/schema-spec';
+import { Icon, Tooltip } from '@one-for-all/ui';
+import { useCtx } from '../../../index';
+import type { NodePropType } from '@one-for-all/schema-spec';
 
 interface Props {
   name: string; // bind field name

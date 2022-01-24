@@ -1,18 +1,18 @@
 {
-  "name": "@ofa/schema-spec",
-  "version": "0.10.0",
+  "name": "@one-for-all/schema-spec",
+  "version": "0.10.1",
   "license": "Apache-2.0",
   "type": "module",
   "module": "lib",
-  "types": "index.d.ts",
+  "types": "src/index.d.ts",
   "scripts": {
-    "build": "rm -rf lib & tsc --build tsconfig.json",
+    "build": "echo 'no need to build'",
     "bundle": "echo 'no need to bundle this package'",
     "prepack": "yarn run build",
     "docs": "typedoc"
   },
   "devDependencies": {
     "typedoc": "^0.22.10",
-    "typescript": "^4.4.4"
+    "typescript": "4.5.5"
   }
 }

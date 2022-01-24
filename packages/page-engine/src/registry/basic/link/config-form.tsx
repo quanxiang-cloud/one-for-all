@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { defaults } from 'lodash';
 
-import { useCtx, DataBind as ConfigBind } from '@ofa/page-engine';
-import { Radio, RadioGroup, Select } from '@ofa/ui';
+import { useCtx, DataBind as ConfigBind } from '../../../index';
+import { Radio, RadioGroup, Select } from '@one-for-all/ui';
 
 export interface Props {
   content: string,

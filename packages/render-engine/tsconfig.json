@@ -3,13 +3,8 @@
   "compilerOptions": {
     "outDir": "lib",
     "rootDir": ".",
-    "module": "ESNext"
+    "module": "system"
   },
   "include": ["src/**/*"],
-  "exclude": ["**/__tests__", "**/__mocks__"],
-  "references": [
-    { "path": "../utils"},
-    { "path": "../api-spec-adapter"},
-    { "path": "../schema-spec"}
-  ]
+  "exclude": ["**/__tests__", "**/__mocks__"]
 }

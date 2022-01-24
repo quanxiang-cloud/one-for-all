@@ -1,7 +1,7 @@
 import { BehaviorSubject, Subject, noop } from 'rxjs';
 import { map, filter, share, skip, delay } from 'rxjs/operators';
-import type { APISpecAdapter, FetchParams } from '@ofa/api-spec-adapter';
-import { logger } from '@ofa/utils';
+import type { APISpecAdapter, FetchParams } from '@one-for-all/api-spec-adapter';
+import { logger } from '@one-for-all/utils';
 
 import type { StatesHubAPI, APIState, APIStatesSpec, FetchOption, APIState$WithActions } from '../types';
 import getResponseState$, { initialState } from './http/response';

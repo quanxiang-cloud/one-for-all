@@ -1,4 +1,4 @@
-import type { ConstantProperty } from '@ofa/schema-spec';
+import type { ConstantProperty } from '@one-for-all/schema-spec';
 
 import { SchemaNode } from '../types';
 

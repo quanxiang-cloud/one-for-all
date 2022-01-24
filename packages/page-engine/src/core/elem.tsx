@@ -3,11 +3,11 @@ import cs from 'classnames';
 import { useDrag, useDrop, DragPreviewImage } from 'react-dnd';
 import { observer } from 'mobx-react';
 
-import { Icon } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine';
+import { Icon } from '@one-for-all/ui';
+import { useCtx } from '../index';
 import { encode } from '../utils/base64';
 import { elemId } from '../utils';
-import type { PageNode, DragPos } from '@ofa/page-engine';
+import type { PageNode, DragPos } from '../index';
 
 import styles from './index.m.scss';
 

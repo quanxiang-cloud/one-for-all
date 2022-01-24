@@ -1,4 +1,4 @@
-import type { APIStatesSpec, NodeProperty, SharedStatesSpec } from '@ofa/schema-spec';
+import type { APIStatesSpec, NodeProperty, SharedStatesSpec } from '@one-for-all/schema-spec';
 
 import { mapValues, mergeWith, noop } from 'lodash';
 

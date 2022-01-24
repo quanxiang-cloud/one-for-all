@@ -6,8 +6,8 @@ import cs from 'classnames';
 import { toJS } from 'mobx';
 import { get } from 'lodash';
 
-import { Modal, Icon, Tooltip, toast } from '@ofa/ui';
-import { useCtx, PageNode } from '@ofa/page-engine';
+import { Modal, Icon, Tooltip, toast } from '@one-for-all/ui';
+import { useCtx, PageNode } from '../../../index';
 
 type LabelValue = {
   label: string;

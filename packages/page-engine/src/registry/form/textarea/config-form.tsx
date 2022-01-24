@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { defaults } from 'lodash';
 
-import { TextareaProps } from '@ofa/ui';
-import { useCtx, DataBind as ConfigBind } from '@ofa/page-engine';
+import { TextareaProps } from '@one-for-all/ui';
+import { useCtx, DataBind as ConfigBind } from '../../../index';
 
 interface configProps {
   name: string;

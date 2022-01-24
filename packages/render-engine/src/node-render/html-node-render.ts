@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { logger } from '@ofa/utils';
+import { logger } from '@one-for-all/utils';
 
 import useInstantiateProps from '../use-instantiate-props';
 import type { CTX, HTMLNode } from '../types';

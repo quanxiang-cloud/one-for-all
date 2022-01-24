@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-import { Designer } from '@ofa/page-engine';
-import { toast } from '@ofa/ui';
+import { Designer } from '@one-for-all/page-engine';
+import { toast } from '@one-for-all/ui';
 
 function App(): JSX.Element {
   function onSave(page_schema: any, options?: any): void {

@@ -11,7 +11,7 @@ const packages = readdirSync(basePath).filter((name) => {
 });
 
 const mapper = packages.reduce((mapper, name) => {
-  mapper[`@ofa/${name}`] = path.join(basePath, name, 'src');
+  mapper[`@one-for-all/${name}`] = path.join(basePath, name, 'src');
   return mapper;
 }, {});
 

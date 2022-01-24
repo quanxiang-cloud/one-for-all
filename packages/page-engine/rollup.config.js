@@ -15,14 +15,14 @@ export default {
   input: 'src/index.ts',
   output: getOutput(packageJSON.name, packageJSON.version),
 
-  external: ['react', 'react-dom', 'react-is', 'lodash', /@ofa\/.+/],
+  external: ['react', 'react-dom', 'react-is', 'lodash', /@one-for-all\/.+/],
 
   plugins: [
     // peerDepsExternal(),
     typescriptPaths(),
     // alias({
     //   entries: {
-    //     '@ofa/page-engine': path.resolve(__dirname, './lib/src/'),
+    //     '@one-for-all/page-engine': path.resolve(__dirname, './lib/src/'),
     //   },
     // }),
     resolve({

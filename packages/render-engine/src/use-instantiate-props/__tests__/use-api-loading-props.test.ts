@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react-hooks/pure';
-import type { APISpecAdapter } from '@ofa/api-spec-adapter';
+import type { APISpecAdapter } from '@one-for-all/api-spec-adapter';
 
 import useAPILoadingProps from '../use-api-loading-props';
 import StatesHubAPI from '../../ctx/states-hub-api';

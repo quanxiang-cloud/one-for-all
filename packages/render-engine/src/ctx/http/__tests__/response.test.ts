@@ -1,6 +1,6 @@
 import mockXHR, { sequence } from 'xhr-mock';
 import { Observable, Subject } from 'rxjs';
-import { APISpecAdapter } from '@ofa/api-spec-adapter';
+import { APISpecAdapter } from '@one-for-all/api-spec-adapter';
 
 // import petStoreSpec from '../../spec-interpreter/__tests__/fixtures/petstore-spec';
 // import SpecInterpreter from '../../spec-interpreter';

@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState, useImperativeHandle } from 'react';
 import { observer } from 'mobx-react';
 
-import { useCtx } from '@ofa/page-engine';
-import { Icon, Popper } from '@ofa/ui';
+import { useCtx } from '../index';
+import { Icon, Popper } from '@one-for-all/ui';
 
 interface Props {
   className?: string;

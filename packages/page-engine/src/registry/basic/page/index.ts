@@ -1,6 +1,6 @@
-import { Page } from '@ofa/ui';
+import { Page } from '@one-for-all/ui';
 import ConfigForm from './config-form';
-import type { SourceElement } from '@ofa/page-engine';
+import type { SourceElement } from '../../../index';
 
 type Props = {
   name?: string
