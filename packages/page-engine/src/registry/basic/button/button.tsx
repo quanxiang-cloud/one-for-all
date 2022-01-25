@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from '@ofa/ui';
 
 export interface Props {
+  id?: string;
   title?: string;
   size?: 'normal' | 'compact';
   modifier?: 'primary' | 'default' | 'danger';

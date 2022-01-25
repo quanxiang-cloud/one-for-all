@@ -36,6 +36,18 @@ function ConfigForm(): JSX.Element {
   return (
     <form>
       <div className='mb-8'>
+        <label className='mr-4 text-12 text-gray-600'>ID</label>
+        <div className='mb-8 flex items-center justify-between'>
+          <input
+            type="text"
+            className='mr-8 px-8 py-4 w-full border corner-2-8-8-8 border-gray-300 focus:border-blue-600'
+            value={values.id || ''}
+            onChange={(e) => setValues({ ...values, id: e.target.value })}
+          />
+          <ConfigBind name='id' />
+        </div>
+      </div>
+      <div className='mb-8'>
         <p className='text-12 text-gray-600'>内容</p>
         <div className='flex items-center'>
           <input

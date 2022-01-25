@@ -2,8 +2,9 @@ import React from 'react';
 import cs from 'classnames';
 
 export interface Props {
-  content: string,
-  isAllowSelect: boolean,
+  id?: string;
+  content?: string,
+  isAllowSelect?: boolean,
   className?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode;
@@ -12,7 +13,7 @@ export interface Props {
 }
 
 function Text(
-  { content, isAllowSelect, style, className, onClick, ...rest }: Props,
+  { id, content, isAllowSelect, style, className, onClick, ...rest }: Props,
   ref: React.LegacyRef<HTMLSpanElement>,
 ): JSX.Element {
   const dataNodeKey = rest['data-node-key'];
@@ -21,7 +22,7 @@ function Text(
     <span
       data-node-key={dataNodeKey}
       ref={ref}
-      id={dataNodeKey}
+      id={id}
       style={style}
       className={cs({
         'user-select': isAllowSelect ? 'none' : 'auto',
