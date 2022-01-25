@@ -1,9 +1,9 @@
 import esbuild from 'rollup-plugin-esbuild';
 import resolve from '@rollup/plugin-node-resolve';
 
-import typescriptPaths from '../../scripts/rollup-plugin-typescript-paths';
+import typescriptPaths from '../../common/config/rollup/rollup-plugin-typescript-paths';
+import getOutput from '../../common/config/rollup/get-common-output';
 import packageJSON from './package.json';
-import getOutput from '../../scripts/get-common-output';
 
 export default {
   input: 'src/index.ts',

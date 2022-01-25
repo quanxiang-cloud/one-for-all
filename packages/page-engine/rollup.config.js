@@ -7,8 +7,8 @@ import styles from 'rollup-plugin-styles';
 // import path from 'path'
 import replace from '@rollup/plugin-replace'
 
-import typescriptPaths from '../../scripts/rollup-plugin-typescript-paths';
-import getOutput from '../../scripts/get-common-output';
+import typescriptPaths from '../../common/config/rollup/rollup-plugin-typescript-paths';
+import getOutput from '../../common/config/rollup/get-common-output';
 import packageJSON from './package.json';
 
 export default {
