@@ -1,4 +1,4 @@
-import { noop } from 'lodash';
+import { noop } from 'rxjs';
 import { act, renderHook } from '@testing-library/react-hooks/pure';
 import { logger } from '@one-for-all/utils';
 

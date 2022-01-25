@@ -3,7 +3,7 @@
   "compilerOptions": {
     "outDir": "lib",
     "rootDir": ".",
-    "module": "system"
+    "module": "ESNext"
   },
   "include": ["src/**/*"],
   "exclude": ["**/__tests__", "**/__mocks__"]

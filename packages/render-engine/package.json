@@ -3,7 +3,6 @@
   "version": "0.10.2",
   "license": "Apache-2.0",
   "type": "module",
-  "main": "dist/index.js",
   "module": "lib",
   "types": "lib/src/index.d.ts",
   "scripts": {
@@ -31,9 +30,9 @@
     "@testing-library/react-hooks": "^7.0.1",
     "@tsconfig/recommended": "^1.0.1",
     "@types/jest": "27.4.0",
-    "@types/systemjs": "^6.1.1",
     "@types/react": "~17.0.38",
     "@types/react-dom": "^17.0.11",
+    "@types/systemjs": "^6.1.1",
     "@typescript-eslint/parser": "5.10.1",
     "esbuild": "0.14.13",
     "eslint": "8.7.0",
@@ -43,6 +42,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "ts-jest": "^27.0.7",
     "tsconfig-paths-jest": "^0.0.1",
+    "tslib": "~2.3.1",
     "typescript": "4.5.5",
     "xhr-mock": "^2.5.1"
   }

@@ -35,6 +35,7 @@ specifiers:
   eslint-config-google: ^0.14.0
   eslint-plugin-react: ^7.24.0
   eslint-plugin-unused-imports: ^2.0.0
+  glob: ~7.2.0
   jest: 27.4.7
   lodash: ^4.17.21
   mkdirp: ~1.0.4
@@ -104,6 +105,7 @@ dependencies:
   eslint-config-google: 0.14.0_eslint@8.7.0
   eslint-plugin-react: 7.28.0_eslint@8.7.0
   eslint-plugin-unused-imports: 2.0.0_1bf9cdc08e57589c8efe570eceb1a5db
+  glob: 7.2.0
   jest: 27.4.7
   lodash: 4.17.21
   mkdirp: 1.0.4
@@ -6877,7 +6879,7 @@ packages:
     dev: false
 
   file:projects/render-engine.tgz:
-    resolution: {integrity: sha512-T/gNBV5tXOf2wzcJmOH4G+dmCmgVilF5qqiCA9EWNo7OvtnZAjUXAIQOoErMv+W8S6lyjjbZJfeUlWelLnsCJA==, tarball: file:projects/render-engine.tgz}
+    resolution: {integrity: sha512-QDbz9viNTm1Lkz2lNac+v59BqMCMAnaDxkKtqbaUWzmVDkbxFUNawPPyvgOHiQfooPuxMGgDkMIRtpHLQv+CyA==, tarball: file:projects/render-engine.tgz}
     name: '@rush-temp/render-engine'
     version: 0.0.0
     dependencies:
@@ -6902,6 +6904,7 @@ packages:
       rxjs: 7.5.2
       ts-jest: 27.1.3_effded2df8a93c83cd1feded045c1535
       tsconfig-paths-jest: 0.0.1
+      tslib: 2.3.1
       typescript: 4.5.5
       xhr-mock: 2.5.1
     transitivePeerDependencies:
