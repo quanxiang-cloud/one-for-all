@@ -16,6 +16,7 @@
     "build:icons": "node scripts/build-icons.js",
     "prebundle": "yarn run clean && yarn run build && yarn run build:icons",
     "bundle": "rollup -c",
+    "pack": "yarn pack",
     "bundle:watch": "rollup -c -w",
     "clean": "rm -rf dist lib",
     "lint": "eslint src/**/*.ts --fix",

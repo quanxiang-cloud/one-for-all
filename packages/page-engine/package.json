@@ -18,6 +18,7 @@
     "bundle": "rollup -c",
     "clean": "rm -rf dist lib",
     "lint": "eslint src/**/*.ts --fix",
+    "pack": "yarn pack",
     "test": "jest",
     "type-check": "tsc --noEmit --skipLibCheck --pretty -w"
   },

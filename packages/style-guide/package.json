@@ -4,7 +4,8 @@
   "license": "Apache-2.0",
   "module": "lib",
   "scripts": {
-    "bundle": "rm -rf dist & rollup -c rollup.config.js"
+    "bundle": "rm -rf dist & rollup -c rollup.config.js",
+    "pack": "yarn pack"
   },
   "dependencies": {
     "postcss-import": "^14.0.2"

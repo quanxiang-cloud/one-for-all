@@ -11,6 +11,7 @@
   "scripts": {
     "build": "rm -rf lib & tsc --build tsconfig.json",
     "bundle": "rm -rf dist & rollup -c rollup.config.js",
+    "pack": "yarn pack",
     "test": "jest",
     "updateSnapshot": "jest --updateSnapshot"
   },

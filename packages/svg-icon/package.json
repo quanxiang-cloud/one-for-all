@@ -8,6 +8,7 @@
     "clean": "rm -rf dist lib",
     "prebundle": "yarn run clean && yarn run build && yarn run build:icons && yarn run copy:assets",
     "build": "tsc --build tsconfig.json",
+    "pack": "yarn pack",
     "bundle": "rollup -c",
     "preview:icons": "node scripts/preview-icons.js",
     "copy:assets": "mkdir -p ../../dist/images && cp -R ../svg-icon/dist/images/* ../../dist/images",

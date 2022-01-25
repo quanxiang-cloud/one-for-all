@@ -8,6 +8,7 @@
   "scripts": {
     "build": "echo 'no need to build'",
     "bundle": "echo 'no need to bundle this package'",
+    "pack": "yarn pack",
     "prepack": "yarn run build",
     "docs": "typedoc"
   },

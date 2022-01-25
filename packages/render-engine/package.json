@@ -11,6 +11,7 @@
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts --fix",
     "prepack": "yarn run build",
+    "pack": "yarn pack",
     "test": "jest",
     "test:coverage": "jest --collectCoverage",
     "updateSnapshot": "jest --updateSnapshot"
