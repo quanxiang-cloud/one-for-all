@@ -37,6 +37,7 @@ specifiers:
   eslint-plugin-unused-imports: ^2.0.0
   jest: 27.4.7
   lodash: ^4.17.21
+  mkdirp: ~1.0.4
   mobx: ^6.3.8
   mobx-react: ^7.2.1
   nanoid: ^3.1.30
@@ -105,6 +106,7 @@ dependencies:
   eslint-plugin-unused-imports: 2.0.0_1bf9cdc08e57589c8efe570eceb1a5db
   jest: 27.4.7
   lodash: 4.17.21
+  mkdirp: 1.0.4
   mobx: 6.3.13
   mobx-react: 7.2.1_96b0034b8b6bfac1b4cc60715db17f02
   nanoid: 3.2.0
@@ -4577,6 +4579,12 @@ packages:
       minimist: 1.2.5
     dev: false
 
+  /mkdirp/1.0.4:
+    resolution: {integrity: sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==}
+    engines: {node: '>=10'}
+    hasBin: true
+    dev: false
+
   /mobx-react-lite/3.2.3_96b0034b8b6bfac1b4cc60715db17f02:
     resolution: {integrity: sha512-7exWp1FV0M9dP08H9PIeHlJqDw4IdkQVRMfLYaZFMmlbzSS6ZU6p/kx392KN+rVf81hH3IQYewvRGQ70oiwmbw==}
     peerDependencies:
@@ -6822,7 +6830,7 @@ packages:
     dev: false
 
   file:projects/page-engine.tgz_esbuild@0.14.13:
-    resolution: {integrity: sha512-yQ0J0WGQax0JogEf1GOp4y2mk7Y1rUg9jGVrma6Upa7ttWH8KOArw/qNg+jEMgavoe1BHqWGnoYC/WFWUcjoIg==, tarball: file:projects/page-engine.tgz}
+    resolution: {integrity: sha512-jduXCV3RWLA20pWzYXRq5wmsyBr1xPkLSe0hyAJAYY/w/q2pkT2QtuP57IrzBNG79izOqqwRpjswiJGPnlvYRA==, tarball: file:projects/page-engine.tgz}
     id: file:projects/page-engine.tgz
     name: '@rush-temp/page-engine'
     version: 0.0.0
@@ -6919,7 +6927,7 @@ packages:
     dev: false
 
   file:projects/ui.tgz_esbuild@0.14.13:
-    resolution: {integrity: sha512-barO6/Eq+YFU1L++Y7zerWiZvi/0WCHHYfjsdJW+Uon5xYkpvoge3pLgLtXVnJQ+elz8PruuQYUt/WErgpvLWg==, tarball: file:projects/ui.tgz}
+    resolution: {integrity: sha512-lv/VVQZZ1BKz6yACRuHQ9dJpj9YXOvIgyexpQYGSFCoZW4UGxengzPNyxTkWyq7JKSokzRvV0GtHRptd0pto8Q==, tarball: file:projects/ui.tgz}
     id: file:projects/ui.tgz
     name: '@rush-temp/ui'
     version: 0.0.0
@@ -6934,7 +6942,9 @@ packages:
       '@types/styled-components': 5.1.21
       autoprefixer: 10.4.2_postcss@8.4.5
       classnames: 2.3.1
+      glob: 7.2.0
       lodash: 4.17.21
+      mkdirp: 1.0.4
       nanoid: 3.2.0
       postcss: 8.4.5
       postcss-import: 14.0.2_postcss@8.4.5

@@ -5,27 +5,26 @@ import { javascript } from '@codemirror/lang-javascript';
 import { pick, get } from 'lodash';
 import { useUpdateEffect } from 'react-use';
 import cs from 'classnames';
+import { toJS } from 'mobx';
 
 import { Button, Icon, Tooltip, Modal, toast } from '@one-for-all/ui';
-import { useCtx, DataBind } from '../../../index';
+import { useCtx, DataBind, PageNode } from '../../../index';
 
 import Section from '../../comps/section';
+import { elemId } from '../../../utils';
 
 import styles from './index.m.scss';
-
-interface Props {
-  className?: string;
-}
 
 const defaultToPropsFn = 'return state';
 const defaultLoopKey = 'id';
 
-function RendererPanel(props: Props): JSX.Element {
+function RendererPanel(): JSX.Element {
   const { page } = useCtx();
   const [toPropsFn, setToPropsFn] = useState(defaultToPropsFn);
   const [loopKey, setLoopKey] = useState(defaultLoopKey);
   const [modalBindConstOpen, setModalBindConstOpen] = useState(false);
   const [bindConst, setBindConst] = useState('null'); // 绑定的常量循环数据
+  const [isComposed, setIsComposed] = useState(false);
 
   useEffect(()=> {
     // todo: get cur loop node conf
@@ -34,6 +33,7 @@ function RendererPanel(props: Props): JSX.Element {
       const { iterableState, loopKey, toProps } = pick(rawNode, ['iterableState', 'loopKey', 'toProps']);
       setLoopKey(loopKey);
       setToPropsFn(get(toProps, 'body', defaultToPropsFn));
+      setIsComposed(rawNode.node && rawNode.node.type === 'composed-node');
 
       if (iterableState?.type === 'constant_property') {
         setBindConst(iterableState.value);
@@ -62,10 +62,43 @@ function RendererPanel(props: Props): JSX.Element {
         return;
       }
 
-      page.updateCurNodeAsLoopContainer('iterableState', {
-        type: 'constant_property',
-        value: bindVal,
-      });
+      const { exportName, children } = page.activeElem;
+      const isComposedNode = (children || []).every((item: PageNode) => item.type === 'react-component');
+      if (exportName === 'container' && isComposedNode) {
+        const newChildren = (children || []).map((child: PageNode) => {
+          const { type, args, body } = child.toProps || {};
+          child.toProps = {
+            type: type || 'to_props_function_spec',
+            args: args || 'state',
+            body: body || 'return {}',
+          };
+          return child;
+        });
+        const iterableState = {
+          type: 'constant_property',
+          value: bindVal,
+        };
+
+        const node = toJS(page.activeElem);
+        const _node = { ...node };
+        delete _node.children;
+
+        page.updateCurNodeAsComposedNode('iterableState', {
+          iterableState,
+          node: {
+            id: elemId('composed-node'),
+            type: 'composed-node',
+            outLayer: { ..._node },
+            children: newChildren,
+          },
+        });
+      } else {
+        console.log('没有走这里吗');
+        page.updateCurNodeAsLoopContainer('iterableState', {
+          type: 'constant_property',
+          value: bindVal,
+        });
+      }
 
       setModalBindConstOpen(false);
     } catch (err: any) {
@@ -117,7 +150,7 @@ function RendererPanel(props: Props): JSX.Element {
                 >
                   {hasBindConst() ? '已绑定常量数据' : '绑定常量数据'}
                 </Button>
-                <DataBind name='loop-node' isLoopNode />
+                <DataBind name='loop-node' isLoopNode isComposedNode={isComposed} />
               </div>
             </div>
             <div className='mb-8'>

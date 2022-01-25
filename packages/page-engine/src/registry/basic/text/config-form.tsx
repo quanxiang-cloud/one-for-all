@@ -45,6 +45,18 @@ function ConfigForm(): JSX.Element {
     <form onChange={handleFormChange}>
       <div className='mb-8'>
         <div className='mb-4 flex items-center'>
+          <label className='mr-4 text-12 text-gray-600'>ID</label>
+        </div>
+        <div className='mb-8 flex items-center justify-between'>
+          <input
+            type="text"
+            className='mr-8 px-8 py-4 w-full border corner-2-8-8-8 border-gray-300 focus:border-blue-600'
+            {...register('id', { value: values.id || '' })} />
+          <ConfigBind name='id' />
+        </div>
+      </div>
+      <div className='mb-8'>
+        <div className='mb-4 flex items-center'>
           <label htmlFor="content" className='mr-4 text-12 text-gray-600'>文本内容</label>
           <Icon name="info" color="gray" />
         </div>
