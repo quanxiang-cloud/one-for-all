@@ -7,6 +7,7 @@ import { Select, Icon, Button } from '@ofa/ui';
 import './style.scss';
 
 interface Props {
+  id?: string;
   className?: string;
   imageUrl?: string;
   fillMode?: string;
@@ -45,6 +46,18 @@ function ConfigForm(): JSX.Element {
 
   return (
     <>
+      <div className='mb-8'>
+        <label className='mr-4 text-12 text-gray-600'>ID</label>
+        <div className='flex items-center justify-between'>
+          <input
+            type="text"
+            className='mr-8 px-8 py-4 w-full border corner-2-8-8-8 border-gray-300 focus:border-blue-600'
+            value={values.id}
+            onChange={(e) => setValues({ ...values, id: e.target.value })}
+          />
+          <ConfigBind name='id' />
+        </div>
+      </div>
       <div>
         图片填充
         <div className="config-item">

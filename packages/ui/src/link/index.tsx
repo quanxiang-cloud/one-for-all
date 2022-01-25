@@ -2,6 +2,7 @@ import React from 'react';
 import cs from 'classnames';
 
 export interface Props {
+  id?: string;
   content: string,
   linkType: 'outside' | 'inside',
   linkUrl?: string,
@@ -14,7 +15,7 @@ export interface Props {
 }
 
 function Link(
-  { content, linkType, linkUrl, linkPage, isBlank, className, style, ...rest }: Props,
+  { id, content, linkType, linkUrl, linkPage, isBlank, className, style, ...rest }: Props,
   ref: React.LegacyRef<HTMLAnchorElement>,
 ): JSX.Element {
   const dataNodeKey = rest['data-node-key'] || '';
@@ -22,7 +23,7 @@ function Link(
   return (
     <a
       data-node-key={dataNodeKey}
-      id={dataNodeKey}
+      id={id}
       ref={ref}
       style={style}
       href={linkType === 'outside' ? linkUrl : linkPage}

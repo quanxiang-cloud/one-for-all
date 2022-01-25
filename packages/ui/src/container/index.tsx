@@ -1,6 +1,7 @@
 import React, { Children } from 'react';
 
 interface Props {
+  id?: string;
   className?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode;
@@ -10,7 +11,7 @@ interface Props {
 }
 
 function Container(
-  { className, style, children, placeholder, onClick, ...rest }: Props,
+  { id, className, style, children, placeholder, onClick, ...rest }: Props,
   ref: React.LegacyRef<HTMLDivElement>,
 ): JSX.Element {
   const dataNodeKey = rest['data-node-key'];
@@ -19,7 +20,7 @@ function Container(
     <div
       data-node-key={dataNodeKey}
       ref={ref}
-      id={dataNodeKey}
+      id={id}
       className={className}
       style={style}
       onClick={onClick}

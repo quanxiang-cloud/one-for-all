@@ -12,6 +12,7 @@ const OVERFLOW_STYLE: React.CSSProperties = {
 };
 
 interface Props {
+  id?: string;
   className?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode;
@@ -24,7 +25,7 @@ interface Props {
 }
 
 function Paragraph(props: Props, ref: React.LegacyRef<HTMLDivElement>): JSX.Element {
-  const { content, isAllowSelect, maxLength, style, onClick, ...rest } = props;
+  const { id, content, isAllowSelect, maxLength, style, onClick, ...rest } = props;
 
   if (Number(maxLength) > 0) {
     OVERFLOW_STYLE.WebkitLineClamp = maxLength?.toString() || 'none';
@@ -35,7 +36,7 @@ function Paragraph(props: Props, ref: React.LegacyRef<HTMLDivElement>): JSX.Elem
   return (
     <p
       data-node-key={dataNodeKey}
-      id={dataNodeKey}
+      id={id}
       ref={ref}
       className={cs({
         'user-select': isAllowSelect ? 'none' : 'auto',

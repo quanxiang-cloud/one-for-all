@@ -10,6 +10,7 @@ interface Props extends IframeConfigProps {
 }
 
 function Iframe({
+  id,
   className,
   iframeName,
   iframeAddr,
@@ -28,7 +29,7 @@ function Iframe({
     return (
       <div
         data-node-key={dataNodeKey}
-        id={dataNodeKey}
+        id={id}
         ref={ref}
         style={style}
         className="bg-gray-200 h-200 flex justify-center items-center text-20"
@@ -41,7 +42,7 @@ function Iframe({
   return (
     <iframe
       data-node-key={dataNodeKey}
-      id={dataNodeKey}
+      id={id}
       style={style}
       ref={ref}
       allow={iframeAllow}

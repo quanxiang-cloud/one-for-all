@@ -20,6 +20,7 @@ interface Props
 
 function Button(
   {
+    id,
     children,
     iconName,
     className,
@@ -42,7 +43,7 @@ function Button(
   return (
     <button
       data-node-key={dataNodeKey}
-      id={dataNodeKey}
+      id={id}
       onClick={onClick}
       type={type}
       ref={ref}
