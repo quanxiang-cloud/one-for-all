@@ -478,6 +478,10 @@
       "projectFolder": "packages/schema-spec"
     },
     {
+      "packageName": "@one-for-all/style-guide",
+      "projectFolder": "packages/style-guide"
+    },
+    {
       "packageName": "@one-for-all/ui",
       "projectFolder": "packages/ui"
     },

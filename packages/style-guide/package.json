@@ -5,7 +5,8 @@
   "module": "lib",
   "scripts": {
     "bundle": "rm -rf dist & rollup -c rollup.config.js",
-    "pack": "yarn pack"
+    "pack": "yarn pack",
+    "build": "echo todo add build script"
   },
   "dependencies": {
     "postcss-import": "^14.0.2"
@@ -13,15 +14,15 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
     "@tsconfig/recommended": "^1.0.1",
-    "@typescript-eslint/eslint-plugin": "^4.29.0",
-    "@typescript-eslint/parser": "^4.29.0",
-    "autoprefixer": "^10.4.0",
+    "@typescript-eslint/eslint-plugin": "5.10.0",
+    "@typescript-eslint/parser": "5.10.1",
+    "autoprefixer": "10.4.2",
     "cssnano": "^5.0.12",
-    "esbuild": "^0.13.14",
-    "eslint": "^7.32.0",
+    "esbuild": "0.14.13",
+    "eslint": "8.7.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-unused-imports": "^1.1.5",
-    "postcss": "^8.4.4",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "postcss": "8.4.5",
     "rollup": "2.66.0",
     "rollup-plugin-esbuild": "^4.6.0",
     "rollup-plugin-import-css": "^3.0.2",
