@@ -12,11 +12,9 @@ export type ReactComp = React.ComponentType | React.JSXElementConstructor<any>;
 export interface PageNode extends BaseNode {
   id: string;
   pid?: string; // only used on page-engine
-  type: 'react-component' | 'loop-container' | 'html-element' | 'composed-node';
+  type: 'react-component' | 'loop-container' | 'html-element';
   label: string;
   name?: string; // for html node
-  node?: PageNode,
-  outLayer?: PageNode,
   // `packageName, packageVersion, exportName` only for react comp node
   packageName?: 'ofa-ui' | string;
   packageVersion?: 'latest' | string;

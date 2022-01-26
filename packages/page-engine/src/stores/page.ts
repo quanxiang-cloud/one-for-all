@@ -1,11 +1,9 @@
 import { action, computed, makeObservable, observable, runInAction, toJS } from 'mobx';
-import { cloneDeep, defaults, divide, get, set } from 'lodash';
+import { cloneDeep, defaults, get, set } from 'lodash';
 
 import { LoopNode, LoopNodeConf, ComposedNodeConf } from '@ofa/page-engine';
 import { elemId } from '../utils';
-import { findNode, findParent, findParentXx, findParentId,
-  removeNode as removeTreeNode, copyNode as copyTreeNode,
-  replaceNode as replaceTreeNode } from '../utils/tree-utils';
+import { findNode, findParent, findParentId, removeNode as removeTreeNode } from '../utils/tree-utils';
 import registry from './registry';
 import dataSource from './data-source';
 import type { DragPos, PageNode, PageSchema, SchemaElements, SourceElement } from '../types';
@@ -38,27 +36,16 @@ class PageStore {
       return null;
     }
 
-    return findNode(this.schema.node, this.activeElemId, true);
+    return findNode(this.schema.node, this.activeElemId);
   }
 
   @computed
   get activeElem(): any {
-    // const node = this.rawActiveElem;
-    // if (node?.type === 'loop-container') {
-    //   if (node.node.type === 'composed-node') {
-    //     const { outLayer, children = [] } = node.node;
-    //     if (outLayer && (outLayer.id === this.activeElemId)) {
-    //       return outLayer;
-    //     }
-
-    //     const currentNode = children.find((item: PageNode) => item.id === this.activeElemId);
-    //     return currentNode;
-    //   }
-
-    //   return node.node;
-    // }
-    // return node;
-    return findNode(this.schema.node, this.activeElemId);
+    const node = this.rawActiveElem;
+    if (node?.type === 'loop-container') {
+      return node.node;
+    }
+    return node;
   }
 
   @computed
@@ -260,28 +247,14 @@ class PageStore {
 
   @action
   copyNode = (id: string): void => {
-    const srcNode = findNode(this.schema.node, this.activeElemId, true);
-
-    if (srcNode.type === 'loop-container') {
-      if (srcNode.node && srcNode.node.type === 'composed-node') {
-        const { children, outLayer } = srcNode.node;
-        if (outLayer.id !== id) {
-          let _oldNode = {} as PageNode;
-          (children || []).map((child: PageNode) => {
-            if (child.id === id) {
-              _oldNode = child;
-            }
-            return child;
-          });
-          if (_oldNode.id) {
-            copyTreeNode(this.schema.node, id, deepMergeNode(_oldNode));
-            return;
-          }
-        }
+    const parent = findParent(this.schema.node, id);
+    const srcNode = findNode(this.schema.node, id);
+    if (parent && parent.children) {
+      const srcIdx = parent.children.indexOf(srcNode);
+      if (srcIdx > -1) {
+        parent.children.splice(srcIdx, 0, deepMergeNode(srcNode));
       }
     }
-
-    copyTreeNode(this.schema.node, id, deepMergeNode(srcNode));
   }
 
   @action
@@ -296,19 +269,7 @@ class PageStore {
     if (elem) {
       let actualNode = elem;
       if (!options?.useRawNode && elem.type === 'loop-container') {
-        // support composed-node
-        if (elem.node.type === 'composed-node') {
-          const { outLayer, children } = elem.node;
-          if (outLayer && outLayer.id === this.activeElemId) {
-            actualNode = outLayer;
-          }
-
-          if (children) {
-            actualNode = children.find((item: PageNode) => item.id === this.activeElemId);
-          }
-        } else {
-          actualNode = elem.node;
-        }
+        actualNode = elem.node;
       }
 
       // console.log('update node props: ', elem_id, toJS(actualNode), propKey, conf);
@@ -318,12 +279,24 @@ class PageStore {
         if (actualNode.exportName === 'grid') {
           set(actualNode, 'children', generateGridChildren(actualNode, actualNode.id, conf).children);
         }
+        if (actualNode.type === 'composed-node') {
+          set(actualNode.outLayer, propKey, mergeAsRenderEngineProps(toJS(this.activeElem?.props), conf));
+        }
       } else if (propKey === 'props.style') {
         // fixme: style bind variable
+        if (actualNode.type === 'composed-node') {
+          set(actualNode.outLayer, 'props.style', { type: 'constant_property', value: conf });
+        }
         set(actualNode, propKey, { type: 'constant_property', value: conf });
       } else if (propKey === 'lifecycleHooks') {
+        if (actualNode.type === 'composed-node') {
+          set(actualNode.outLayer, 'lifecycleHooks', transformLifecycleHooks(conf));
+        }
         set(actualNode, propKey, transformLifecycleHooks(conf));
       } else {
+        if (actualNode.type === 'composed-node') {
+          set(actualNode.outLayer, propKey, conf);
+        }
         set(actualNode, propKey, conf);
       }
     }
@@ -336,36 +309,13 @@ class PageStore {
 
   @action
   replaceNode = (node_id: string, replaced: PageNode): void => {
-    // const parent = findParent(this.schema.node, node_id);
-    // if (parent) {
-    //   const srcIdx = parent.children?.findIndex((v) => v.id === node_id || get(v, 'node.id') === node_id) ?? -1;
-    //   console.log(srcIdx);
-    //   if (srcIdx > -1) {
-    //     parent.children?.splice(srcIdx, 1, replaced);
-    //   }
-    // }
-    const srcNode = findNode(this.schema.node, this.activeElemId, true);
-
-    if (srcNode.type === 'loop-container') {
-      if (srcNode.node && srcNode.node.type === 'composed-node') {
-        const { children, outLayer } = srcNode.node;
-        if (outLayer.id !== node_id) {
-          let _oldNode = {} as PageNode;
-          (children || []).map((child: PageNode) => {
-            if (child.id === node_id) {
-              _oldNode = child;
-            }
-            return child;
-          });
-          if (_oldNode.id) {
-            replaceTreeNode(this.schema.node, node_id, replaced);
-            return;
-          }
-        }
+    const parent = findParent(this.schema.node, node_id);
+    if (parent) {
+      const srcIdx = parent.children?.findIndex((v) => v.id === node_id || get(v, 'node.id') === node_id) ?? -1;
+      if (srcIdx > -1) {
+        parent.children?.splice(srcIdx, 1, replaced);
       }
     }
-
-    replaceTreeNode(this.schema.node, node_id, replaced);
   }
 
   @action
@@ -411,7 +361,7 @@ class PageStore {
   @action
   unsetLoopNode = (loop_node_id: string): void => {
     // reset loop container, lift up inner node
-    const loopNode = findNode(this.schema.node, loop_node_id, true);
+    const loopNode = findNode(this.schema.node, loop_node_id);
     if (!loopNode) {
       return;
     }
@@ -460,46 +410,17 @@ class PageStore {
       node: composedConfig.node || {},
     };
 
-    // console.log('set loop node: ', composedNodeConfig);
+    // console.log('set loop node: ', loopNodeConfig);
     this.replaceNode(node_id, composedNodeConfig as any);
   }
 
   @action
   updateCurNodeAsComposedNode = (propKey: string, confItem: any): void => {
-    // if (!this.rawActiveElem.iterableState) {
+    // if (!this.rawActiveElem) {
     //   // replace current normal node to loop node
     //   this.setNodeAsComposedNode(this.activeElemId, confItem);
-    // } else {
-    //   // todo: update
-    //   this.updateElemProperty(this.activeElemId, propKey, propKey === 'toProps' ? {
-    //     args: 'state',
-    //     body: confItem || 'return state',
-    //     type: 'to_props_function_spec',
-    //   } : confItem, { useRawNode: true });
     // }
     this.setNodeAsComposedNode(this.activeElemId, confItem);
-  }
-
-  @action
-  unsetComposedNode = (loop_node_id: string): void => {
-    // reset loop container, lift up inner node
-    const composedNode = findNode(this.schema.node, loop_node_id, true);
-    if (!composedNode) {
-      return;
-    }
-    if (composedNode.type === 'loop-container') {
-      const { node } = composedNode;
-      if (node) {
-        const { outLayer, children } = node as PageNode;
-        if (outLayer) {
-          const newNode = { ...outLayer };
-          newNode.children = children;
-          this.replaceNode(loop_node_id, newNode as PageNode);
-        }
-      }
-      // const innerNode = (loopNode as LoopNode).node;
-      // this.replaceNode(loop_node_id, innerNode as PageNode);
-    }
   }
 }
 

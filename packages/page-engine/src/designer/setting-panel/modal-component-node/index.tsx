@@ -9,8 +9,6 @@ import { get } from 'lodash';
 import { Modal, Icon, Tooltip, toast } from '@ofa/ui';
 import { useCtx, PageNode } from '@ofa/page-engine';
 
-import { elemId } from '../../../utils';
-
 type LabelValue = {
   label: string;
   value: string;
@@ -18,7 +16,7 @@ type LabelValue = {
 
 function ModalComponentNode(): JSX.Element {
   const { designer, dataSource, page } = useCtx();
-  const [selected, setSelected] = useState<{ name: string, conf: string } | null>(null);
+  const [selected, setSelected] = useState<{name: string, conf: string} | null>(null);
   const [nodeChildren, setNodeChildren] = useState<PageNode[]>([]);
   const [stateExpr, setStateExpr] = useState(''); // 绑定变量的表达式
   const [selectValue, setSelectValue] = useState('');
@@ -29,7 +27,7 @@ function ModalComponentNode(): JSX.Element {
 
   useEffect(() => {
     if (page.activeElem) {
-      const _nodeChildren = initialComposedNodeChildren(toJS(page.rawActiveElem || {}));
+      const _nodeChildren = initialComposedNodeChildren(toJS(page.activeElem || {}));
       const _selectOptions = _nodeChildren.map((item) => {
         return ({
           label: item.label,
@@ -45,7 +43,7 @@ function ModalComponentNode(): JSX.Element {
     }
   }, []);
 
-  useEffect(() => {
+  useEffect(()=> {
     let bindConf;
     if (isComponentNode) {
       // todo: get loop node iterableState bind value
@@ -71,25 +69,15 @@ function ModalComponentNode(): JSX.Element {
   }, [page.activeElemId]);
 
   function initialComposedNodeChildren(node: PageNode): Array<PageNode> {
-    let newChildren: PageNode[] = [];
-    let _children = [];
-    if (node.type === 'loop-container') {
-      const { children = [] } = node && node.node as PageNode;
-      _children = [...children];
-    } else {
-      _children = node.children || [];
-    }
-    if (_children) {
-      newChildren = (_children || []).map((child: PageNode) => {
-        const { type, args, body } = child.toProps || {};
-        child.toProps = {
-          type: type || 'to_props_function_spec',
-          args: args || 'state',
-          body: body || 'return {}',
-        };
-        return child;
-      });
-    }
+    const newChildren = (node.children || []).map((child) => {
+      const { type, args, body } = child.toProps || {};
+      child.toProps = {
+        type: type || 'to_props_function_spec',
+        args: args || 'state',
+        body: body || 'return {}',
+      };
+      return child;
+    });
 
     return newChildren;
   }
@@ -133,7 +121,8 @@ function ModalComponentNode(): JSX.Element {
     page.updateCurNodeAsComposedNode('iterableState', {
       iterableState,
       node: {
-        id: elemId('composed-node'),
+        ...node,
+        id: node.id,
         type: 'composed-node',
         outLayer: { ..._node },
         children: _nodeChildren,
@@ -170,7 +159,7 @@ function ModalComponentNode(): JSX.Element {
   return (
     <Modal
       title="设置循环规则"
-      onClose={() => setModalComponentNodeOpen(false)}
+      onClose={()=> setModalComponentNodeOpen(false)}
       footerBtns={[
         {
           key: 'close',
@@ -189,7 +178,7 @@ function ModalComponentNode(): JSX.Element {
     >
       <div className='grid h-full' style={{ gridTemplateColumns: '212px 1fr' }}>
         <div className='bg-gray-50 border'>
-          {Object.entries(dataSource.sharedState).map(([name, conf]) => {
+          {Object.entries(dataSource.sharedState).map(([name, conf])=> {
             const checked = selected?.name === name || stateExpr.includes(`['${name}']`);
             return (
               <div
@@ -198,7 +187,7 @@ function ModalComponentNode(): JSX.Element {
                   'cursor-pointer px-16 py-4 hover:bg-gray-200', {
                     'bg-gray-200': checked,
                   })}
-                onClick={() => {
+                onClick={()=> {
                   setSelected({ name, conf });
                   setStateExpr(`states['${name}']`);
                 }}
@@ -211,7 +200,7 @@ function ModalComponentNode(): JSX.Element {
               </div>
             );
           })}
-          {Object.entries(dataSource.apiState).map(([name, conf]) => {
+          {Object.entries(dataSource.apiState).map(([name, conf])=> {
             const checked = selected?.name === name || stateExpr.includes(`['${name}']`);
             return (
               <div
@@ -220,7 +209,7 @@ function ModalComponentNode(): JSX.Element {
                   'cursor-pointer px-16 py-4 hover:bg-gray-200', {
                     'bg-gray-200': checked,
                   })}
-                onClick={() => {
+                onClick={()=> {
                   setSelected({ name, conf });
                   setStateExpr(`apiStates['${name}']`);
                 }}

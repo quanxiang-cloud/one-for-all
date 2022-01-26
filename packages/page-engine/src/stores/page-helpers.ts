@@ -5,31 +5,6 @@ import { elemId } from '../utils';
 
 export function deepMergeNode(node: PageNode): PageNode {
   const target = toJS(node);
-  // support loop-container
-  if (target.type === 'loop-container') {
-    Object.assign(target, { id: elemId('loop-node') });
-
-    if (target.node) {
-      // composed-node
-      if (target.node.type === 'composed-node') {
-        Object.assign(target.node, { id: elemId('composed-node') });
-        if (target.node.outLayer) {
-          target.node.outLayer = deepMergeNode(target.node.outLayer);
-        }
-
-        if (target.node.children) {
-          target.node.children = target.node.children.map(deepMergeNode);
-        }
-
-        return target;
-      }
-
-      target.node = deepMergeNode(target.node);
-    }
-
-    return target;
-  }
-
   Object.assign(target, { id: elemId(node.exportName) });
   if (target.children) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

@@ -11,7 +11,6 @@ interface Props {
   name: string; // bind field name
   className?: string;
   isLoopNode?: boolean;
-  isComposedNode?: boolean;
 }
 
 const iterableStateTypes: NodePropType[] = [
@@ -25,7 +24,7 @@ const normalStateTypes: NodePropType[] = [
   'api_result_property',
 ];
 
-function ConfigItemBind({ name, isLoopNode, isComposedNode }: Props): JSX.Element {
+function ConfigItemBind({ name, isLoopNode }: Props): JSX.Element {
   const { designer, page } = useCtx();
   let bound;
   if (isLoopNode) {
@@ -40,11 +39,9 @@ function ConfigItemBind({ name, isLoopNode, isComposedNode }: Props): JSX.Elemen
   }
 
   function handleUnbind(): void {
-    if (isLoopNode && !isComposedNode) {
+    if (isLoopNode) {
       // replace loop node with inner normal node, detach iterable state prop
       page.unsetLoopNode(page.activeElemId);
-    } else if (isComposedNode) {
-      page.unsetComposedNode(page.activeElemId);
     } else {
       const { fallback } = get(page.activeElem, `props.${name}`, {});
       page.updateElemProperty(page.activeElem.id, `props.${name}`, {
