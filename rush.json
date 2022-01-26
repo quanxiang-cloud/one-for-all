@@ -466,6 +466,10 @@
       "projectFolder": "packages/example"
     },
     {
+      "packageName": "@one-for-all/icon",
+      "projectFolder": "packages/icon"
+    },
+    {
       "packageName": "@one-for-all/page-engine",
       "projectFolder": "packages/page-engine"
     },
