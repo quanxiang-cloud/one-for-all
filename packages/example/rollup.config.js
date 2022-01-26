@@ -1,5 +1,4 @@
 import commonjs from '@rollup/plugin-commonjs';
-import sucrase from '@rollup/plugin-sucrase';
 import styles from 'rollup-plugin-styles';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import esbuild from 'rollup-plugin-esbuild';

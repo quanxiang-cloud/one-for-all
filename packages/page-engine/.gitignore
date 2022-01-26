@@ -4,3 +4,4 @@ node_modules/
 src/mock-schema/
 
 /dev-issues.md
+build
