@@ -3,7 +3,10 @@
   "compilerOptions": {
     "outDir": "lib",
     "rootDir": ".",
-    "module": "ESNext"
+    "module": "ESNext",
+    // "typeRoots": [
+    //   "node_modules/@types",
+    // ], /* List of folders to include type definitions from. */
   },
   "include": ["src/**/*"],
   "exclude": ["**/__tests__", "**/__mocks__"]

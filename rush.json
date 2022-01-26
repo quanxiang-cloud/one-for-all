@@ -462,6 +462,10 @@
       "projectFolder": "packages/api-spec-adapter"
     },
     {
+      "packageName": "@one-for-all/example",
+      "projectFolder": "packages/example"
+    },
+    {
       "packageName": "@one-for-all/page-engine",
       "projectFolder": "packages/page-engine"
     },
