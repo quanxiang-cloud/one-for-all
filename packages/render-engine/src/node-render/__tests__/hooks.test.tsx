@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom';
 import React from 'react';
 import { logger } from '@one-for-all/utils';
 import { act, renderHook } from '@testing-library/react-hooks/pure';
