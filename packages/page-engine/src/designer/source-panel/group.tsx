@@ -20,7 +20,8 @@ function Group(props: GroupProps): JSX.Element {
       className={cs('flex flex-col items-center mb-20 cursor-pointer', {
         [styles.active]: props.active,
       }, styles.group, props.className)}
-      onMouseOver={props.onHover}
+      // onMouseOver={props.onHover}
+      onClick={props.onHover}
     >
       <Icon name={props.icon} color='gray' clickable changeable />
       <p className='text-gray-600 text-10'>{props.label}</p>

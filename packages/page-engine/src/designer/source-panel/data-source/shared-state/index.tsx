@@ -11,11 +11,7 @@ import FormAddVal from './form-add-val';
 
 import styles from '../index.m.scss';
 
-interface Props {
-  className?: string;
-}
-
-function SharedState(props: Props): JSX.Element {
+function SharedState(): JSX.Element {
   const { dataSource } = useCtx();
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');

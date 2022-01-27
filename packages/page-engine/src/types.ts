@@ -15,12 +15,13 @@ export interface PageNode extends BaseNode {
   type: 'react-component' | 'loop-container' | 'html-element';
   label: string;
   name?: string; // for html node
+  props?: any;
   // `packageName, packageVersion, exportName` only for react comp node
   packageName?: 'ofa-ui' | string;
   packageVersion?: 'latest' | string;
   exportName: 'page' | 'elemName' | string; // registry elem type
   toProps?: any; // func body
-  children?: Array<PageNode>
+  children?: Array<PageNode>;
   defaultConfig?: any;
   defaultStyle?: React.CSSProperties;
 }

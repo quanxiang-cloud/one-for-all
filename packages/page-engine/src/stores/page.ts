@@ -105,14 +105,18 @@ class PageStore {
     const targetId = target?.id || this.schema.node.id;
     const targetNode = findNode(this.schema.node, targetId);
 
+    const componentId = elemId(node.exportName);
     const params: Partial<PageNode> = {
-      id: elemId(node.exportName),
+      id: componentId,
       pid: this.dragPos === 'inner' ? targetNode.id : (targetNode.pid || this.schema.node.id),
       // exportName: node.exportName,
       type: 'react-component',
       packageName: 'ofa-ui',
       packageVersion: 'latest',
-      props: mergeAsRenderEngineProps({}, node.defaultConfig || {}),
+      props: mergeAsRenderEngineProps({}, {
+        id: componentId, // Default mount ID
+        ...(node.defaultConfig || {}),
+      }),
     };
 
     if (registry.acceptChild(node.exportName)) {
@@ -265,19 +269,32 @@ class PageStore {
 
   @action
   updateElemProperty = (elem_id: string, propKey: string, conf: any, options?: Record<string, any>): void => {
-    const elem = findNode(this.schema.node, elem_id);
+    const elem = findNode(this.schema.node, elem_id, true);
+    console.log('propKey', propKey);
     if (elem) {
       let actualNode = elem;
       if (!options?.useRawNode && elem.type === 'loop-container') {
-        actualNode = elem.node;
+        // support composed-node
+        if (elem.node.type === 'composed-node') {
+          const { outLayer, children } = toJS(elem.node);
+          if (outLayer && outLayer.id === this.activeElemId) {
+            actualNode = outLayer;
+          }
+
+          if (children && outLayer.id !== this.activeElemId) {
+            actualNode = children.find((item: PageNode) => item.id === this.activeElemId);
+          }
+        } else {
+          actualNode = toJS(elem.node);
+        }
       }
 
       // console.log('update node props: ', elem_id, toJS(actualNode), propKey, conf);
 
       if (propKey === 'props') {
         set(actualNode, propKey, mergeAsRenderEngineProps(toJS(this.activeElem?.props), conf));
-        if (actualNode.exportName === 'grid') {
-          set(actualNode, 'children', generateGridChildren(actualNode, actualNode.id, conf).children);
+        if (actualNode.exportName && actualNode.exportName === 'grid') {
+          set(actualNode, 'children', generateGridChildren(toJS(actualNode), actualNode.id, conf).children);
         }
         if (actualNode.type === 'composed-node') {
           set(actualNode.outLayer, propKey, mergeAsRenderEngineProps(toJS(this.activeElem?.props), conf));

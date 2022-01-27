@@ -23,38 +23,55 @@ export function generateGridChildren(
   const { defaultConfig, children } = target;
   const { colRatio = '12' } = conf || defaultConfig;
   const scaleArray: string[] = colRatio.split(':');
-  if (children?.length === scaleArray.length) {
-    return target;
+
+  const childrenLength = children?.length || 0;
+  let newChildren: PageNode[] = [...(children || [])];
+
+  if (childrenLength > scaleArray.length) {
+    newChildren = newChildren.slice(0, scaleArray.length);
   }
 
-  const _children: any[] = [];
-  scaleArray.map((item) => {
-    _children.push({
-      id: elemId('container'),
-      pid: parentId,
-      type: 'react-component',
-      exportName: 'container',
-      packageName: 'ofa-ui',
-      packageVersion: 'latest',
-      label: '布局',
-      props: {
-        style: {
-          type: 'constant_property',
-          value: {
-            display: 'flex',
-            flexFlow: 'column nowrap',
-            justifyContent: 'flex-start',
-            alignItems: 'stretch',
-            gridArea: `span 1 / span ${item} / auto / auto`,
-            minWidth: 'auto',
+  if (childrenLength < scaleArray.length) {
+    const _array: PageNode[] = [];
+    for (let i = 0; i < (scaleArray.length - childrenLength); (i = i + 1)) {
+      _array.push({
+        id: elemId('container'),
+        pid: parentId,
+        type: 'react-component',
+        exportName: 'container',
+        packageName: 'ofa-ui',
+        packageVersion: 'latest',
+        label: '布局',
+        props: {
+          style: {
+            type: 'constant_property',
+            value: {
+              display: 'flex',
+              flexFlow: 'column nowrap',
+              justifyContent: 'flex-start',
+              alignItems: 'stretch',
+              gridArea: 'span 1 / span 1 / auto / auto',
+              minWidth: 'auto',
+            },
           },
         },
-      },
-      children: [],
-    });
+        children: [],
+      });
+    }
+
+    newChildren = newChildren.concat(_array);
+  }
+
+  newChildren = newChildren.map((child, index) => {
+    const scale = Number(scaleArray[index]) >= 12 ? 12 : Number(scaleArray[index]);
+    child.props.style.value = {
+      ...(child.props.style.value || {}),
+      gridArea: `span 1 / span ${scale === 0 ? 1 : scale } / auto / auto`,
+    };
+    return child;
   });
 
-  target.children = _children;
+  target.children = newChildren;
 
   return target;
 }

@@ -59,6 +59,19 @@ function FormAddVal(props: Props): JSX.Element | null {
       toast.error('非法的变量名');
       return false;
     }
+
+    let isHave = false;
+    Object.keys(dataSource.sharedState).forEach((key) => {
+      if (key === val) {
+        isHave = true;
+      }
+    });
+
+    if (isHave) {
+      toast.error('变量名重复');
+      return false;
+    }
+
     return true;
   }
 
@@ -118,6 +131,7 @@ function FormAddVal(props: Props): JSX.Element | null {
           <p>描述</p>
           <textarea
             placeholder='选填（不超过100字符）'
+            maxLength={100}
             className={cs('textarea', styles.textarea)}
             value={curSharedVal.desc}
             onChange={(ev)=> {

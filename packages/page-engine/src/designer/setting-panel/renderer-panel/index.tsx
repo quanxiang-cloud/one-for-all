@@ -5,22 +5,20 @@ import { javascript } from '@codemirror/lang-javascript';
 import { pick, get } from 'lodash';
 import { useUpdateEffect } from 'react-use';
 import cs from 'classnames';
+import { toJS } from 'mobx';
 
 import { Button, Icon, Tooltip, Modal, toast } from '@ofa/ui';
-import { useCtx, DataBind } from '@ofa/page-engine';
+import { useCtx, DataBind, PageNode } from '@ofa/page-engine';
+import { elemId } from '@ofa/page-engine/utils';
 
 import Section from '../../comps/section';
 
 import styles from './index.m.scss';
 
-interface Props {
-  className?: string;
-}
-
 const defaultToPropsFn = 'return state';
 const defaultLoopKey = 'id';
 
-function RendererPanel(props: Props): JSX.Element {
+function RendererPanel(): JSX.Element {
   const { page } = useCtx();
   const [toPropsFn, setToPropsFn] = useState(defaultToPropsFn);
   const [loopKey, setLoopKey] = useState(defaultLoopKey);
@@ -62,10 +60,42 @@ function RendererPanel(props: Props): JSX.Element {
         return;
       }
 
-      page.updateCurNodeAsLoopContainer('iterableState', {
-        type: 'constant_property',
-        value: bindVal,
-      });
+      const { exportName, children } = page.activeElem;
+      const isComposedNode = (children || []).every((item: PageNode) => item.type === 'react-component');
+      if (exportName === 'container' && isComposedNode) {
+        const newChildren = (children || []).map((child: PageNode) => {
+          const { type, args, body } = child.toProps || {};
+          child.toProps = {
+            type: type || 'to_props_function_spec',
+            args: args || 'state',
+            body: body || 'return {}',
+          };
+          return child;
+        });
+        const iterableState = {
+          type: 'constant_property',
+          value: bindVal,
+        };
+
+        const node = toJS(page.activeElem);
+        const _node = { ...node };
+        delete _node.children;
+
+        page.updateCurNodeAsComposedNode('iterableState', {
+          iterableState,
+          node: {
+            id: elemId('composed-node'),
+            type: 'composed-node',
+            outLayer: { ..._node },
+            children: newChildren,
+          },
+        });
+      } else {
+        page.updateCurNodeAsLoopContainer('iterableState', {
+          type: 'constant_property',
+          value: bindVal,
+        });
+      }
 
       setModalBindConstOpen(false);
     } catch (err: any) {

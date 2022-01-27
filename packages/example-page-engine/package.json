@@ -18,7 +18,8 @@
     "copy:assets": "mkdir -p ../../dist/images && cp -R ../ui/{assets,dist}/images/* ../../dist/images",
     "dev": "webpack serve --progress",
     "type-check": "tsc --noEmit --skipLibCheck --pretty -w",
-    "prod": "yarn run build && node server.js"
+    "prod": "yarn run build && node server.js",
+    "server": "node server"
   },
   "publishConfig": {
     "registry": ""

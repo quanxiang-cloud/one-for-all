@@ -292,9 +292,9 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
             <>
               <div className='mt-8'>
                 <div className='p-4 flex items-center justify-between border border-gray-300 rounded-4'>
-                  <div className='relative' style={{ width: 70, height: 70 }}>
+                  <div className='flex items-center flex-wrap' style={{ width: 70, height: 70 }}>
                     <span
-                      className={cs('p-2 absolute top-0 left-0 cursor-pointer',
+                      className={cs('p-2 cursor-pointer',
                         { 'bg-gray-300': checkedValue === 'leftTop' })}
                       onClick={() => handlePosition(POSITION_VALUES['leftTop'])}
                     >
@@ -303,7 +303,7 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
                       </Tooltip>
                     </span>
                     <span
-                      className={cs('p-2 absolute top-0 -ml-10 cursor-pointer',
+                      className={cs('p-2 cursor-pointer',
                         { 'bg-gray-300': checkedValue === 'centerTop' })}
                       style={{ left: '50%' }}
                       onClick={() => handlePosition(POSITION_VALUES['centerTop'])}
@@ -313,7 +313,7 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
                       </Tooltip>
                     </span>
                     <span
-                      className={cs('p-2 absolute top-0 right-0 cursor-pointer',
+                      className={cs('p-2 cursor-pointer',
                         { 'bg-gray-300': checkedValue === 'rightTop' })}
                       onClick={() => handlePosition(POSITION_VALUES['rightTop'])}
                     >
@@ -322,7 +322,7 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
                       </Tooltip>
                     </span>
                     <span
-                      className={cs('p-2 absolute left-0 -mt-10 cursor-pointer',
+                      className={cs('p-2 cursor-pointer',
                         { 'bg-gray-300': checkedValue === 'leftCenter' })}
                       style={{ top: '50%' }}
                       onClick={() => handlePosition(POSITION_VALUES['leftCenter'])}
@@ -332,7 +332,7 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
                       </Tooltip>
                     </span>
                     <span
-                      className={cs('p-2 absolute -mt-10 -ml-10 cursor-pointer',
+                      className={cs('p-2 cursor-pointer',
                         { 'bg-gray-300': checkedValue === 'center' })}
                       style={{ top: '50%', left: '50%' }}
                       onClick={() => handlePosition(POSITION_VALUES['center'])}
@@ -342,7 +342,7 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
                       </Tooltip>
                     </span>
                     <span
-                      className={cs('p-2 absolute right-0 -mt-10 cursor-pointer',
+                      className={cs('p-2 cursor-pointer',
                         { 'bg-gray-300': checkedValue === 'rightCenter' })}
                       style={{ top: '50%' }}
                       onClick={() => handlePosition(POSITION_VALUES['rightCenter'])}
@@ -352,7 +352,7 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
                       </Tooltip>
                     </span>
                     <span
-                      className={cs('p-2 absolute bottom-0 left-0 cursor-pointer',
+                      className={cs('p-2 cursor-pointer',
                         { 'bg-gray-300': checkedValue === 'leftBottom' })}
                       onClick={() => handlePosition(POSITION_VALUES['leftBottom'])}
                     >
@@ -361,7 +361,7 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
                       </Tooltip>
                     </span>
                     <span
-                      className={cs('p-2 absolute bottom-0 left-2/4 -ml-10 cursor-pointer',
+                      className={cs('p-2 cursor-pointer',
                         { 'bg-gray-300': checkedValue === 'centerBottom' })}
                       style={{ left: '50%' }}
                       onClick={() => handlePosition(POSITION_VALUES['centerBottom'])}
@@ -371,7 +371,7 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
                       </Tooltip>
                     </span>
                     <span
-                      className={cs('p-2 absolute bottom-0 right-0 cursor-pointer',
+                      className={cs('p-2 cursor-pointer',
                         { 'bg-gray-300': checkedValue === 'rightBottom' })}
                       onClick={() => handlePosition(POSITION_VALUES['rightBottom'])}
                     >
@@ -394,8 +394,10 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
                           value={positionValue.x}
                           onChange={(e) => handlePositionChange(e, 'x')}
                         />
-                        <div className='px-4 absolute bg-gray-100 top-2
-                    bottom-2 right-4 flex items-center'>%</div>
+                        <div
+                          className='px-4 absolute bg-gray-100 top-2 flex items-center'
+                          style={{ bottom: 2, right: 4 }}
+                        >%</div>
                       </div>
                     </div>
                     <div className='mt-4 flex items-center'>
@@ -411,8 +413,10 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
                           className='px-8 py-6 w-full border border-gray-300 corner-2-8-8-8'
                           onChange={(e) => handlePositionChange(e, 'y')}
                         />
-                        <div className='px-4 absolute bg-gray-100 top-2
-                    bottom-2 right-4 flex items-center'>%</div>
+                        <div
+                          className='px-4 absolute bg-gray-100 top-2 flex items-center'
+                          style={{ bottom: 2, right: 4 }}
+                        >%</div>
                       </div>
                     </div>
                   </div>
@@ -459,8 +463,9 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
                           value={sizeValue.x || ''}
                           onChange={(e) => handleSizeInputChange(e, 'x')}
                         />
-                        <div className='px-4 absolute bg-gray-100 top-2
-                    bottom-2 right-4 flex items-center'>%</div>
+                        <div
+                          className='px-4 absolute bg-gray-100 top-2 flex items-center'
+                          style={{ bottom: 2, right: 4 }}>%</div>
                       </div>
                     </div>
                     <div className='mt-4 flex items-center'>
@@ -476,8 +481,9 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
                           value={sizeValue.y || ''}
                           onChange={(e) => handleSizeInputChange(e, 'y')}
                         />
-                        <div className='px-4 absolute bg-gray-100 top-2
-                    bottom-2 right-4 flex items-center'>%</div>
+                        <div
+                          className='px-4 absolute bg-gray-100 top-2 flex items-center'
+                          style={{ bottom: 2, right: 4 }}>%</div>
                       </div>
                     </div>
                   </div>

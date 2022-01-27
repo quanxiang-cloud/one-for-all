@@ -20,13 +20,13 @@ export const DEFAULT_CONFIG: TextareaProps = {
 
 const CONFIG_ITEMS: configProps[] = [
   {
-    name: 'placeholder',
-    msg: '占位符',
+    name: 'id',
+    msg: 'ID',
     type: 'text',
   },
   {
-    name: 'id',
-    msg: 'ID',
+    name: 'placeholder',
+    msg: '占位符',
     type: 'text',
   },
   {
