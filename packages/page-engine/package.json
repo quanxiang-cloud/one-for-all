@@ -21,7 +21,7 @@
     "lint": "eslint src/**/*.ts --fix",
     "pack": "yarn pack",
     "test": "jest",
-    "start": "run-p server",
+    "start": "run-p server watch",
     "watch": "webpack --watch",
     "server": "http-server",
     "type-check": "tsc --noEmit --skipLibCheck --pretty -w"
