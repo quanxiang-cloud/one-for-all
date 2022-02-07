@@ -7,8 +7,8 @@ import { useUpdateEffect } from 'react-use';
 import cs from 'classnames';
 import { toJS } from 'mobx';
 
-import { Button, Icon, Tooltip, Modal, toast } from '@one-for-all/ui';
-import { useCtx, DataBind, PageNode } from '../../../index';
+import { Button, Icon, Tooltip, Modal, toast } from '@ofa/ui';
+import { useCtx, DataBind, PageNode } from '@ofa/page-engine';
 
 import Section from '../../comps/section';
 import { elemId } from '../../../utils';
@@ -93,7 +93,6 @@ function RendererPanel(): JSX.Element {
           },
         });
       } else {
-        console.log('没有走这里吗');
         page.updateCurNodeAsLoopContainer('iterableState', {
           type: 'constant_property',
           value: bindVal,

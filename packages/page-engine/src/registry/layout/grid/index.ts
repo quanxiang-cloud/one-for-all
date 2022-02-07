@@ -1,6 +1,6 @@
-import { Grid, GridProps } from '@one-for-all/ui';
-import ConfigForm, { defaultConfig } from './config-form';
-import type { SourceElement } from '../../../index';
+import { Grid, GridProps } from '@ofa/ui';
+import ConfigForm, { DEFAULT_CONFIG } from './config-form';
+import type { SourceElement } from '@ofa/page-engine';
 
 const elem: SourceElement<GridProps> = {
   name: 'grid',
@@ -10,7 +10,7 @@ const elem: SourceElement<GridProps> = {
   component: Grid,
   configForm: ConfigForm,
   // toProps: (x: any)=> x,  // 默认configForm 返回的values 作为 组件的props
-  defaultConfig,
+  defaultConfig: DEFAULT_CONFIG,
   order: 1,
   acceptChild: true,
   exportActions: [],

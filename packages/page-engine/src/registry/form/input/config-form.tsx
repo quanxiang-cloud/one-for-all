@@ -21,9 +21,9 @@ function ConfigForm(): JSX.Element {
   const { page } = useCtx();
   const [values, setValues] = useState<InputProps>(defaults(page.activeElemProps, DEFAULT_CONFIG));
 
-  // useEffect(() => {
-  //   page.updateElemProperty(page.activeElem.id, 'props', values);
-  // }, [values]);
+  useEffect(() => {
+    page.updateElemProperty(page.activeElem.id, 'props', values);
+  }, [values]);
 
   const handleChange = (name: string, value: any): void => {
     setValues((prev) => ({ ...prev, [name]: value }));
@@ -31,17 +31,6 @@ function ConfigForm(): JSX.Element {
 
   return (
     <>
-      <div className='mb-8'>
-        <p>占位符</p>
-        <div className='flex items-center'>
-          <input
-            className={inputCls}
-            value={values.placeholder}
-            onChange={(ev) => handleChange('placeholder', ev.target.value)}
-          />
-          <ConfigBind name='placeholder' />
-        </div>
-      </div>
       <div className='mb-8'>
         <p>ID</p>
         <div className='flex items-center'>
@@ -51,6 +40,17 @@ function ConfigForm(): JSX.Element {
             onChange={(ev) => handleChange('id', ev.target.value)}
           />
           <ConfigBind name='id' />
+        </div>
+      </div>
+      <div className='mb-8'>
+        <p>占位符</p>
+        <div className='flex items-center'>
+          <input
+            className={inputCls}
+            value={values.placeholder}
+            onChange={(ev) => handleChange('placeholder', ev.target.value)}
+          />
+          <ConfigBind name='placeholder' />
         </div>
       </div>
       <div className='mb-8'>

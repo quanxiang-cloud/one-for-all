@@ -1,9 +1,9 @@
 import { action, computed, makeObservable, observable, runInAction, toJS } from 'mobx';
-import { cloneDeep, defaults, divide, get, set } from 'lodash';
+import { cloneDeep, defaults, set } from 'lodash';
 
 import { LoopNode, LoopNodeConf, ComposedNodeConf } from '../index';
 import { elemId } from '../utils';
-import { findNode, findParent, findParentXx, findParentId,
+import { findNode, findParentId,
   removeNode as removeTreeNode, copyNode as copyTreeNode,
   replaceNode as replaceTreeNode } from '../utils/tree-utils';
 import registry from './registry';
@@ -118,14 +118,18 @@ class PageStore {
     const targetId = target?.id || this.schema.node.id;
     const targetNode = findNode(this.schema.node, targetId);
 
+    const componentId = elemId(node.exportName);
     const params: Partial<PageNode> = {
-      id: elemId(node.exportName),
+      id: componentId,
       pid: this.dragPos === 'inner' ? targetNode.id : (targetNode.pid || this.schema.node.id),
       // exportName: node.exportName,
       type: 'react-component',
       packageName: 'ofa-ui',
       packageVersion: 'latest',
-      props: mergeAsRenderEngineProps({}, node.defaultConfig || {}),
+      props: mergeAsRenderEngineProps({}, {
+        id: componentId, // Default mount ID
+        ...(node.defaultConfig || {}),
+      }),
     };
 
     if (registry.acceptChild(node.exportName)) {
@@ -292,22 +296,22 @@ class PageStore {
 
   @action
   updateElemProperty = (elem_id: string, propKey: string, conf: any, options?: Record<string, any>): void => {
-    const elem = findNode(this.schema.node, elem_id);
+    const elem = findNode(this.schema.node, elem_id, true);
     if (elem) {
       let actualNode = elem;
       if (!options?.useRawNode && elem.type === 'loop-container') {
         // support composed-node
         if (elem.node.type === 'composed-node') {
-          const { outLayer, children } = elem.node;
+          const { outLayer, children } = toJS(elem.node);
           if (outLayer && outLayer.id === this.activeElemId) {
             actualNode = outLayer;
           }
 
-          if (children) {
+          if (children && outLayer.id !== this.activeElemId) {
             actualNode = children.find((item: PageNode) => item.id === this.activeElemId);
           }
         } else {
-          actualNode = elem.node;
+          actualNode = toJS(elem.node);
         }
       }
 
@@ -315,8 +319,8 @@ class PageStore {
 
       if (propKey === 'props') {
         set(actualNode, propKey, mergeAsRenderEngineProps(toJS(this.activeElem?.props), conf));
-        if (actualNode.exportName === 'grid') {
-          set(actualNode, 'children', generateGridChildren(actualNode, actualNode.id, conf).children);
+        if (actualNode.exportName && actualNode.exportName === 'grid') {
+          set(actualNode, 'children', generateGridChildren(toJS(actualNode), actualNode.id, conf).children);
         }
       } else if (propKey === 'props.style') {
         // fixme: style bind variable

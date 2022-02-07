@@ -4,7 +4,8 @@ import { GridProps } from '../types';
 
 const DefaultStyles: React.CSSProperties = {
   display: 'grid',
-  gap: '16px',
+  columnGap: '16px',
+  rowGap: '16px',
   gridTemplateColumns: 'repeat(12, 1fr)',
   placeItems: 'stretch',
   gridAutoRows: 'auto',
@@ -12,7 +13,7 @@ const DefaultStyles: React.CSSProperties = {
 };
 
 function Grid(
-  { className, style, children, ...rest }: GridProps,
+  { className, style, children, colGap, rowGap, ...rest }: GridProps,
   ref: React.LegacyRef<HTMLDivElement>,
 ): JSX.Element {
   const dataNodeKey = rest['data-node-key'] || '';
@@ -23,7 +24,7 @@ function Grid(
       id={dataNodeKey}
       ref={ref}
       className={className}
-      style={{ ...DefaultStyles, ...style }}
+      style={{ ...DefaultStyles, columnGap: colGap, rowGap, ...style }}
     >
       {children}
     </div>

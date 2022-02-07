@@ -15,6 +15,7 @@ export interface PageNode extends BaseNode {
   type: 'react-component' | 'loop-container' | 'html-element' | 'composed-node';
   label: string;
   name?: string; // for html node
+  props?: any;
   node?: PageNode,
   outLayer?: PageNode,
   // `packageName, packageVersion, exportName` only for react comp node
@@ -22,7 +23,7 @@ export interface PageNode extends BaseNode {
   packageVersion?: 'latest' | string;
   exportName: 'page' | 'elemName' | string; // registry elem type
   toProps?: any; // func body
-  children?: Array<PageNode>
+  children?: Array<PageNode>;
   defaultConfig?: any;
   defaultStyle?: React.CSSProperties;
 }

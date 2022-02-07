@@ -3,6 +3,7 @@ import { DetailedHTMLProps, InputHTMLAttributes, TextareaHTMLAttributes } from '
 export interface GridProps {
   colRatio: string; // 列比例
   colGap: string; // 列间距
+  rowGap: string; // 行间距
   className?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode;

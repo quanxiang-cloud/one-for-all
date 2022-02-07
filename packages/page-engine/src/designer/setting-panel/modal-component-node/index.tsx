@@ -249,24 +249,25 @@ function ModalComponentNode(): JSX.Element {
               onChange={setStateExpr}
             />
           </div>
-          <div className='mt-8'>
-            <div className='flex items-center'>
-              <span>当前组件：</span>
-              <select value={selectValue} onChange={handleComponentChange}>
-                {selectOptions.map((item) => {
-                  return (
-                    <option key={item.value} value={item.value}>{item.label}</option>
-                  );
-                })}
-              </select>
-            </div>
-            <Editor
-              value={toPropsValue}
-              height="200px"
-              extensions={[javascript()]}
-              onChange={handleChildrenPropsChange}
-            />
-            {/* <Select
+          {selectOptions.length > 0 && (
+            <div className='mt-8'>
+              <div className='flex items-center'>
+                <span>当前组件：</span>
+                <select value={selectValue} onChange={handleComponentChange}>
+                  {selectOptions.map((item) => {
+                    return (
+                      <option key={item.value} value={item.value}>{item.label}</option>
+                    );
+                  })}
+                </select>
+              </div>
+              <Editor
+                value={toPropsValue}
+                height="200px"
+                extensions={[javascript()]}
+                onChange={handleChildrenPropsChange}
+              />
+              {/* <Select
               className="my-8 w-full mr-4"
               // options={selectOptions}
               options={[
@@ -276,7 +277,8 @@ function ModalComponentNode(): JSX.Element {
               // onChange={(value) => setValues({ ...values, fillMode: value })}
             /> */}
 
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </Modal>

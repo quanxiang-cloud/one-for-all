@@ -26,6 +26,19 @@ const DIRECTION_LIST: Record<string, string | JSX.Element>[] = [
     <Icon name="direction_column-reverse" color='gray' /></Tooltip>) },
 ];
 
+const WRAP_LIST: Record<string, string | JSX.Element>[] = [
+  { value: 'nowrap', label: (<Tooltip position='top' label='Wrap:nowrap'>
+    <Icon name="direction_row" color='gray' /></Tooltip>) },
+  { value: 'wrap', label: (<Tooltip position='top' label='Wrap:wrap'>
+    <Icon name="direction_column" color='gray' /></Tooltip>) },
+  { value: 'wrap-reverse', label: (<Tooltip position='top' label='Wrap:wrap-reverse'>
+    <Icon name="direction_row-reverse" color='gray' /></Tooltip>) },
+  { value: 'initial', label: (<Tooltip position='top' label='Wrap:initial'>
+    <Icon name="direction_column-reverse" color='gray' /></Tooltip>) },
+  { value: 'inherit', label: (<Tooltip position='top' label='Wrap:inherit'>
+    <Icon name="direction_column-reverse" color='gray' /></Tooltip>) },
+];
+
 const DISPLAY_ICONS: Record<string, string[]> = {
   row: ['row_align_flex-start', 'row_align_center', 'row_align_flex-end',
     'row_align_stretch', 'row_align_baseline', 'row_justify_flex-start', 'row_justify_center',
@@ -52,6 +65,7 @@ function DisplayConfig({ initValues, register, setValue }: Props): JSX.Element {
   const [flexValue, setFlexValue] = useState({
     display: 'block',
     flexDirection: 'row',
+    flexWrap: 'nowrap',
     alignItems: '',
     justifyContent: '',
   });
@@ -67,13 +81,14 @@ function DisplayConfig({ initValues, register, setValue }: Props): JSX.Element {
   }, [display, flexDirection, alignItems, justifyContent]);
 
   function handleFlexChange(value: string | number | boolean, key: 'display' | 'flexDirection' |
-   'alignItems' | 'justifyContent'): void {
+   'alignItems' | 'justifyContent' | 'flexWrap'): void {
     const _value = value as string;
     if (flexValue[key] === _value) return;
     if (key === 'display' && value !== 'flex') {
       setValue('flexDirection', '');
       setValue('alignItems', '');
       setValue('justifyContent', '');
+      setValue('flexWrap', 'nowrap');
     }
     setValue(key, _value);
     setFlexValue({
@@ -134,6 +149,14 @@ function DisplayConfig({ initValues, register, setValue }: Props): JSX.Element {
               listData={DIRECTION_LIST as []}
               onChange={(val) => handleFlexChange(val, 'flexDirection')}
               currentValue={flexValue['flexDirection']}
+            />
+          </div>
+          <div className='mt-4'>
+            <RadioButtonGroup
+              className='w-full'
+              listData={WRAP_LIST as []}
+              onChange={(val) => handleFlexChange(val, 'flexWrap')}
+              currentValue={flexValue['flexWrap']}
             />
           </div>
           <div className='mt-4'>

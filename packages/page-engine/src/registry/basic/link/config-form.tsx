@@ -23,7 +23,8 @@ export const DEFAULT_CONFIG: Props = {
 function ConfigForm(): JSX.Element {
   const { page } = useCtx();
   const [values, setValues] = useState(defaults(page.activeElemProps, DEFAULT_CONFIG));
-  const example = [{ label: '示例页面', value: '#' }];
+  // todo: remove
+  // const example = [{ label: '示例页面', value: '#' }];
 
   useEffect(() => {
     page.updateElemProperty(page.activeElem.id, 'props', values);
@@ -81,7 +82,7 @@ function ConfigForm(): JSX.Element {
             <p className='mr-4 text-12 text-gray-600'>选择页面</p>
             <Select
               name='insidePage'
-              options={example}
+              options={[]}
               value={values.linkPage}
               onChange={(linkPage) => setValues({ ...values, linkPage })}
             />
@@ -107,8 +108,8 @@ function ConfigForm(): JSX.Element {
             type="checkbox"
             className='w-full h-32 my-4 px-8 mr-4'
             style={{ width: 15 }}
-            value={values.isBlank}
-            onChange={(ev) => setValues({ ...values, isBlank: ev.target.value })}
+            checked={values.isBlank}
+            onChange={(ev) => setValues({ ...values, isBlank: ev.target.checked })}
           />
           <span className='ml-8 text-12 text-gray-900 whitespace-nowrap'>新开页面</span>
         </div>

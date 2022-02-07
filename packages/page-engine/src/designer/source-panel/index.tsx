@@ -25,12 +25,12 @@ function SourcePanel(): JSX.Element {
     store.setPanelOpen(true);
   }, 200), []);
 
-  useEffect(() => {
-    document.addEventListener('mouseover', hoverDoc);
-    return () => {
-      document.removeEventListener('mouseover', hoverDoc);
-    };
-  }, []);
+  // useEffect(() => {
+  //   document.addEventListener('mouseover', hoverDoc);
+  //   return () => {
+  //     document.removeEventListener('mouseover', hoverDoc);
+  //   };
+  // }, []);
 
   function handleClickOutside(ev: any): void {
     if (!panelRef.current?.contains(ev.target) && !store.panelPinned) {
