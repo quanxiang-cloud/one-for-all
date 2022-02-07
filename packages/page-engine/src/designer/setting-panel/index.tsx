@@ -87,7 +87,8 @@ function SettingPanel(): JSX.Element {
           className={styles.tabs}
           contentClassName={styles.tabCont}
           items={getAvailablePanels()}
-          currentKey={designer.activePanel}
+          // currentKey={designer.activePanel}
+          currentKey={'renderer'}
           onChange={designer.setActivePanel}
         />
       </>

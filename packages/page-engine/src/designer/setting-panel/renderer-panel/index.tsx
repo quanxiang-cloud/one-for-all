@@ -7,9 +7,9 @@ import { useUpdateEffect } from 'react-use';
 import cs from 'classnames';
 import { toJS } from 'mobx';
 
-import { Button, Icon, Tooltip, Modal, toast } from '@one-for-all/ui';
+import { Button, Icon, Tooltip, Modal, toast } from '@ofa/ui';
+import { useCtx, DataBind, PageNode } from '@ofa/page-engine';
 
-import { useCtx, DataBind, PageNode } from '../../../index';
 import Section from '../../comps/section';
 import { elemId } from '../../../utils';
 

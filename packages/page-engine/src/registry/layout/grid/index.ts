@@ -1,7 +1,6 @@
-import { Grid, GridProps } from '@one-for-all/ui';
-
+import { Grid, GridProps } from '@ofa/ui';
 import ConfigForm, { DEFAULT_CONFIG } from './config-form';
-import type { SourceElement } from '../../../index';
+import type { SourceElement } from '@ofa/page-engine';
 
 const elem: SourceElement<GridProps> = {
   name: 'grid',
