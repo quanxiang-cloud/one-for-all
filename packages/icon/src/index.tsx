@@ -30,7 +30,7 @@ function Icon(
       ref={ref}
       data-name={name}
       style={_style}
-      className={cs('svg-icon', className)}
+      className={cs('ofa-svg-icon', className)}
     >
       <use xlinkHref={`${svgHash}#${name}`} />
     </svg>
