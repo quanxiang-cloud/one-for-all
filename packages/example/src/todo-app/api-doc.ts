@@ -1,4 +1,4 @@
-import { Spec } from '@ofa/api-spec-adapter';
+import { Spec } from '@one-for-all/api-spec-adapter';
 
 const todoSpec: Spec = {
   swagger: '3.0.0',

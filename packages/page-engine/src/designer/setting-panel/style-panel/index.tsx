@@ -5,8 +5,8 @@ import { observer } from 'mobx-react';
 import Editor from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 
-import { useCtx } from '@ofa/page-engine';
-import { Modal, Icon, Button, toast } from '@ofa/ui';
+import { useCtx } from '../../../index';
+import { Modal, Icon, Button, toast } from '@one-for-all/ui';
 
 import LayoutConfig from './layout-config';
 import PositionConfig from './position-config';

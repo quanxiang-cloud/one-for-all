@@ -1,5 +1,5 @@
 module.exports = {
   ...require('../../jest.base.config'),
-  name: '@ofa/utils',
+  name: '@one-for-all/utils',
   displayName: 'OFA Utils',
 };

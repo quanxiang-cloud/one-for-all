@@ -5,6 +5,7 @@ import Icon from '../icon';
 import './style.scss';
 
 interface Props {
+  id?: string;
   className?: string;
   imageUrl?: string;
   fillMode?: string;
@@ -15,7 +16,7 @@ interface Props {
 }
 
 function Image(props: Props, ref: React.LegacyRef<HTMLDivElement>): JSX.Element {
-  const { imageUrl, fillMode, preview, closeOnMaskClick, style, ...rest } = props;
+  const { id, imageUrl, fillMode, preview, closeOnMaskClick, style, ...rest } = props;
   const [imgPreview, setImgPreview] = useState(false);
 
   const dataNodeKey = rest['data-node-key'];
@@ -24,7 +25,7 @@ function Image(props: Props, ref: React.LegacyRef<HTMLDivElement>): JSX.Element 
     <>
       <div
         data-node-key={dataNodeKey}
-        id={dataNodeKey}
+        id={id}
         ref={ref}
         className="img"
         style={{

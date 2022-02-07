@@ -5,15 +5,15 @@ import commonjs from "@rollup/plugin-commonjs";
 import styles from 'rollup-plugin-styles';
 import replace from '@rollup/plugin-replace'
 
-import typescriptPaths from '../../scripts/rollup-plugin-typescript-paths';
-import getOutput from '../../scripts/get-common-output';
+import typescriptPaths from '../../common/config/rollup/rollup-plugin-typescript-paths';
+import getOutput from '../../common/config/rollup/get-common-output';
 import packageJSON from './package.json';
 
 export default {
   input: 'src/index.ts',
   output: getOutput(packageJSON.name, packageJSON.version),
 
-  external: ['react', 'react-dom', 'react-is', 'lodash', /@ofa\/.*/],
+  external: ['react', 'react-dom', 'react-is', 'lodash', /@one-for-all\/.*/],
 
   plugins: [
     // peerDepsExternal(),

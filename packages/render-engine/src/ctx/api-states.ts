@@ -1,4 +1,4 @@
-import { FetchParams } from '@ofa/api-spec-adapter';
+import { FetchParams } from '@one-for-all/api-spec-adapter';
 import { APIFetchCallback } from '..';
 import { APIStateWithFetch, APIState, StatesHubAPI } from '../types';
 

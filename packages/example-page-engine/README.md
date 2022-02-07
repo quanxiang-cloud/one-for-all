@@ -1,4 +1,4 @@
-# `@ofa/example-page-engine`
+# `@one-for-all/example-page-engine`
 
 ## Usage
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BehaviorSubject, combineLatest, distinctUntilKeyChanged, map, Observable, skip } from 'rxjs';
-import type { APILoadingProperty } from '@ofa/schema-spec';
+import type { APILoadingProperty } from '@one-for-all/schema-spec';
 
 import {
   APIState,

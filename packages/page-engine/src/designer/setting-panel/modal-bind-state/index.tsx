@@ -5,8 +5,8 @@ import Editor from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { get } from 'lodash';
 
-import { Icon, Modal, toast, Tooltip } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine';
+import { Icon, Modal, toast, Tooltip } from '@one-for-all/ui';
+import { useCtx } from '../../../index';
 
 import styles from './index.m.scss';
 

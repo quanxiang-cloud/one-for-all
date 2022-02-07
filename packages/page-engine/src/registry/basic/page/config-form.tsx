@@ -4,8 +4,8 @@ import Editor from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import { get } from 'lodash';
 
-import { Icon, Modal, toast } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine';
+import { Icon, Modal, toast } from '@one-for-all/ui';
+import { useCtx } from '../../../index';
 
 import Section from '../../../designer/comps/section';
 import BindItem from './bind-item';

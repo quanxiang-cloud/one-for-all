@@ -1,6 +1,6 @@
 import { BehaviorSubject, combineLatestWith, map, of, skip, tap } from 'rxjs';
-import { logger } from '@ofa/utils';
-import type { ComputedDependency } from '@ofa/schema-spec';
+import { logger } from '@one-for-all/utils';
+import type { ComputedDependency } from '@one-for-all/schema-spec';
 
 import { CTX, StateConvertor } from '../types';
 

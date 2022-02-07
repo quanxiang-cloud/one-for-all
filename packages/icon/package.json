@@ -1,5 +1,5 @@
 {
-  "name": "@ofa/icon",
+  "name": "@one-for-all/icon",
   "version": "0.2.14",
   "description": "Headless svg icon component",
   "license": "Apache-2.0",
@@ -8,6 +8,7 @@
     "clean": "rm -rf dist lib",
     "prebundle": "yarn run clean && yarn run build && yarn run build:icons && yarn run copy:assets",
     "build": "tsc --build tsconfig.json",
+    "pack": "yarn pack",
     "bundle": "rollup -c",
     "preview:icons": "node scripts/preview-icons.js",
     "copy:assets": "mkdir -p ../../dist/images && cp -R ../svg-icon/dist/images/* ../../dist/images",
@@ -18,13 +19,14 @@
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rollup/plugin-replace": "^3.0.0",
-    "@types/classnames": "^2.3.1",
     "@types/styled-components": "^5.1.16",
-    "rollup": "^2.60.2",
+    "rollup": "2.66.0",
     "rollup-plugin-esbuild": "^4.6.0",
-    "svg-spreact": "1.3.2"
+    "svg-spreact": "1.3.1"
   },
   "dependencies": {
-    "classnames": "^2.3.1"
+    "classnames": "^2.3.1",
+    "@types/react": "~17.0.38",
+    "react": "^17.0.2"
   }
 }

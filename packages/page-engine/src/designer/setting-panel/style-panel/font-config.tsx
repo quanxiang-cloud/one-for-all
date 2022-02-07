@@ -2,7 +2,7 @@ import React from 'react';
 import { UseFormRegister, FieldValues } from 'react-hook-form';
 import { ColorResult } from 'react-color';
 
-import { ColorPicker, Select } from '@ofa/ui';
+import { ColorPicker, Select } from '@one-for-all/ui';
 
 const FONT_WEIGHT_OPTIONS: Record<'label' | 'value', string | number>[] = [
   { label: '100', value: 100 },

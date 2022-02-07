@@ -1,6 +1,6 @@
 import mockXHR from 'xhr-mock';
-import type { APISpecAdapter, AjaxConfig } from '@ofa/api-spec-adapter';
-import { logger } from '@ofa/utils';
+import type { APISpecAdapter, AjaxConfig } from '@one-for-all/api-spec-adapter';
+import { logger } from '@one-for-all/utils';
 
 import StatesHubAPI from '../states-hub-api';
 import { initialState } from '../http/response';

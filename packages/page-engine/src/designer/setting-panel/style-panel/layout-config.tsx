@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { UseFormRegister, FieldValues, UseFormSetValue } from 'react-hook-form';
 
-import { Icon } from '@ofa/ui';
+import { Icon } from '@one-for-all/ui';
 
 import MarginBPadding from './margin-b-padding';
 

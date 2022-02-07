@@ -5,8 +5,8 @@ import { defaults, flow, get, identity } from 'lodash';
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react';
 
-import { Icon } from '@ofa/ui';
-import { PageNode, useCtx, DragPos, LoopNode } from '@ofa/page-engine';
+import { Icon } from '@one-for-all/ui';
+import { PageNode, useCtx, DragPos, LoopNode } from '../index';
 
 import { mapRawProps } from '../utils/schema-adapter';
 import { elemId } from '../utils';
@@ -23,9 +23,28 @@ function NodeRender({ schema }: Props): JSX.Element | null {
     return null;
   }
 
-  let node : any;
+  // console.log('schema', toJS(schema));
+
+  let node: any;
   if (schema.type === 'loop-container') {
     node = (schema as unknown as LoopNode).node as PageNode;
+    // support composed-node
+    if (node.type === 'composed-node') {
+      if (node.outLayer) {
+        node = {
+          ...toJS(node.outLayer),
+          children: toJS(node.children),
+        };
+      } else {
+        return (
+          React.createElement(
+            React.Fragment,
+            null,
+            ...([].concat(node.children as any))
+              .map((child, idx) => <NodeRender key={node.id + idx} schema={child} />))
+        );
+      }
+    }
   } else {
     node = schema;
   }
@@ -82,7 +101,7 @@ function NodeRender({ schema }: Props): JSX.Element | null {
           left: hoverDOMLeft,
           right: hoverDOMRight,
         }: any =
-        boxRef.current && boxRef.current.getBoundingClientRect();
+          boxRef.current && boxRef.current.getBoundingClientRect();
 
         const hoverMiddleY = (hoverDOMBottom - hoverDOMTop) / 2;
         const hoverMiddleX = (hoverDOMRight - hoverDOMLeft) / 2;
@@ -129,24 +148,28 @@ function NodeRender({ schema }: Props): JSX.Element | null {
     if (schema.type === 'react-component') {
       // add placeholder to page elem
       if (schema.exportName === 'page' && !schema.children?.length) {
-        Object.assign(elemProps, { placeholder: (
-          <div className='flex flex-col items-center justify-center absolute w-full h-full'>
-            <Icon name='pg-engine-empty' size={120} />
-            <p className='text-gray-400 text-12'>开始构建页面，从左侧 组件库或模版库 面板中拖入元素</p>
-          </div>
-        ) });
+        Object.assign(elemProps, {
+          placeholder: (
+            <div className='flex flex-col items-center justify-center absolute w-full h-full'>
+              <Icon name='pg-engine-empty' size={120} />
+              <p className='text-gray-400 text-12'>开始构建页面，从左侧 组件库或模版库 面板中拖入元素</p>
+            </div>
+          ),
+        });
       }
 
       // add placeholder to container elem
       if (schema.exportName === 'container' && !schema.children?.length) {
-        Object.assign(elemProps, { placeholder: (
-          <div
-            style={{ minHeight: 60 }}
-            className='bg-gray-100 border border-dashed flex items-center justify-center'
-          >
+        Object.assign(elemProps, {
+          placeholder: (
+            <div
+              style={{ minHeight: 60 }}
+              className='bg-gray-100 border border-dashed flex items-center justify-center'
+            >
               拖拽组件或模板到这里
-          </div>
-        ) });
+            </div>
+          ),
+        });
       }
     }
 
@@ -183,6 +206,7 @@ function NodeRender({ schema }: Props): JSX.Element | null {
     if (type === 'html-element') {
       return schema.name || 'div';
     }
+
     return 'div';
   }
 

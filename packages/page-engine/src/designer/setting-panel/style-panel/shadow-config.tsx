@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { UseFormRegister, FieldValues } from 'react-hook-form';
 import { ColorResult } from 'react-color';
 
-import { ColorPicker } from '@ofa/ui';
+import { ColorPicker } from '@one-for-all/ui';
 
 const { formatRgba }: any = ColorPicker;
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { logger } from '@ofa/utils';
+import { logger } from '@one-for-all/utils';
 
 import LoopIndividual from './loop-individual';
 import LoopComposed from './loop-composed';

@@ -1,5 +1,5 @@
 {
-  "name": "@ofa/example-page-engine",
+  "name": "@one-for-all/example-page-engine",
   "version": "0.1.0",
   "private": true,
   "description": "example for page engine",
@@ -28,7 +28,7 @@
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rollup/plugin-sucrase": "^4.0.1",
-    "autoprefixer": "^10.4.0",
+    "autoprefixer": "10.4.2",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "css-loader": "^6.5.1",
@@ -53,6 +53,6 @@
     "webpack-notifier": "^1.14.1"
   },
   "dependencies": {
-    "@ofa/page-engine": "*"
+    "@one-for-all/page-engine": "*"
   }
 }

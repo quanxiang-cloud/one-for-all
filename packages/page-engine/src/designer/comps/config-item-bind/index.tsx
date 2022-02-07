@@ -3,14 +3,15 @@ import { observer } from 'mobx-react';
 import cs from 'classnames';
 import { get } from 'lodash';
 
-import { Icon, Tooltip } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine';
-import type { NodePropType } from '@ofa/schema-spec';
+import { Icon, Tooltip } from '@one-for-all/ui';
+import { useCtx } from '../../../index';
+import type { NodePropType } from '@one-for-all/schema-spec';
 
 interface Props {
   name: string; // bind field name
   className?: string;
   isLoopNode?: boolean;
+  isComposedNode?: boolean;
 }
 
 const iterableStateTypes: NodePropType[] = [
@@ -24,7 +25,7 @@ const normalStateTypes: NodePropType[] = [
   'api_result_property',
 ];
 
-function ConfigItemBind({ name, isLoopNode }: Props): JSX.Element {
+function ConfigItemBind({ name, isLoopNode, isComposedNode }: Props): JSX.Element {
   const { designer, page } = useCtx();
   let bound;
   if (isLoopNode) {
@@ -39,9 +40,11 @@ function ConfigItemBind({ name, isLoopNode }: Props): JSX.Element {
   }
 
   function handleUnbind(): void {
-    if (isLoopNode) {
+    if (isLoopNode && !isComposedNode) {
       // replace loop node with inner normal node, detach iterable state prop
       page.unsetLoopNode(page.activeElemId);
+    } else if (isComposedNode) {
+      page.unsetComposedNode(page.activeElemId);
     } else {
       const { fallback } = get(page.activeElem, `props.${name}`, {});
       page.updateElemProperty(page.activeElem.id, `props.${name}`, {

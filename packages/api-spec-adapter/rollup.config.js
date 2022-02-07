@@ -1,15 +1,15 @@
 import esbuild from 'rollup-plugin-esbuild';
 import resolve from '@rollup/plugin-node-resolve';
 
-import typescriptPaths from '../../scripts/rollup-plugin-typescript-paths';
-import getOutput from '../../scripts/get-common-output';
+import typescriptPaths from '../../common/config/rollup/rollup-plugin-typescript-paths';
+import getOutput from '../../common/config/rollup/get-common-output';
 import packageJSON from './package.json';
 
 export default {
   input: 'src/index.ts',
   output: getOutput(packageJSON.name, packageJSON.version),
 
-  external: ['rxjs', /@ofa\/.*/, /rxjs\/.*/],
+  external: ['rxjs', /@one-for-all\/.*/, /rxjs\/.*/],
 
   plugins: [
     typescriptPaths(),

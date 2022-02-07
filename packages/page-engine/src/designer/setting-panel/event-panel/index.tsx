@@ -5,8 +5,8 @@ import { get } from 'lodash';
 import Editor from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 
-import { Select, RadioGroup, Radio, Modal, Icon, Button, toast } from '@ofa/ui';
-import { PageNode, useCtx } from '@ofa/page-engine';
+import { Select, RadioGroup, Radio, Modal, Icon, Button, toast } from '@one-for-all/ui';
+import { PageNode, useCtx } from '../../../index';
 import BindItem from './bind-item';
 
 import styles from './index.m.scss';

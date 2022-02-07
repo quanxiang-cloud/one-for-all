@@ -1,6 +1,6 @@
 import Paginator from './paginator';
 import ConfigForm from './config-form';
-import type { SourceElement } from '@ofa/page-engine';
+import type { SourceElement } from '../../../index';
 
 type Props = {
   name?: string

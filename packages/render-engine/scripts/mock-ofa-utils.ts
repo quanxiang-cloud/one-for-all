@@ -3,7 +3,7 @@ const mockLog = jest.fn();
 const mockWarn = jest.fn();
 const mockVerbose = jest.fn();
 
-jest.mock('@ofa/utils', () => {
+jest.mock('@one-for-all/utils', () => {
   return {
     logger: {
       error: mockError,

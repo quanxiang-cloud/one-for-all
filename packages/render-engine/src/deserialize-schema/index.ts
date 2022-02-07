@@ -1,5 +1,5 @@
-import { logger } from '@ofa/utils';
-import type * as SchemaSpec from '@ofa/schema-spec';
+import { logger } from '@one-for-all/utils';
+import type * as SchemaSpec from '@one-for-all/schema-spec';
 
 import type { SchemaNode, CTX } from '../types';
 import deserialize from './deserialize';

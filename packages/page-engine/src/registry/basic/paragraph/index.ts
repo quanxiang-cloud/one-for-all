@@ -1,7 +1,7 @@
-import { Paragraph } from '@ofa/ui';
+import { Paragraph } from '@one-for-all/ui';
 
 import ConfigForm, { DEFAULT_CONFIG } from './config-form';
-import type { SourceElement } from '@ofa/page-engine';
+import type { SourceElement } from '../../../index';
 
 type Props = {
   name?: string

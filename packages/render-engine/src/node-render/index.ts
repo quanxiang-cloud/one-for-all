@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { logger } from '@ofa/utils';
+import { logger } from '@one-for-all/utils';
 
 import PathContext from './path-context';
 import RefNodeRender from './ref-node-render';

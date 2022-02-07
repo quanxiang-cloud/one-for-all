@@ -5,17 +5,19 @@ import type {
   SharedStatesSpec,
   PlainState,
   LoopContainerNode,
-} from '@ofa/schema-spec';
+} from '@one-for-all/schema-spec';
 
 export type ReactComp = React.ComponentType | React.JSXElementConstructor<any>;
 
 export interface PageNode extends BaseNode {
   id: string;
   pid?: string; // only used on page-engine
-  type: 'react-component' | 'loop-container' | 'html-element';
+  type: 'react-component' | 'loop-container' | 'html-element' | 'composed-node';
   label: string;
   name?: string; // for html node
   props?: any;
+  node?: PageNode,
+  outLayer?: PageNode,
   // `packageName, packageVersion, exportName` only for react comp node
   packageName?: 'ofa-ui' | string;
   packageVersion?: 'latest' | string;

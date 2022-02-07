@@ -1,6 +1,6 @@
-import { noop } from 'lodash';
+import { noop } from 'rxjs';
 import { renderHook, act } from '@testing-library/react-hooks/pure';
-import { logger } from '@ofa/utils';
+import { logger } from '@one-for-all/utils';
 
 import { SchemaNode } from '../../types';
 import useSharedStateProps from '../use-shared-state-props';

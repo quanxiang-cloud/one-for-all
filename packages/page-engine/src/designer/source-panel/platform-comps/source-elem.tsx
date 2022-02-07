@@ -3,8 +3,8 @@ import { useDrag } from 'react-dnd';
 import cs from 'classnames';
 import { toJS } from 'mobx';
 
-import { Icon } from '@ofa/ui';
-import { useCtx, SourceElement } from '@ofa/page-engine';
+import { Icon } from '@one-for-all/ui';
+import { useCtx, SourceElement } from '../../../index';
 
 import styles from './index.m.scss';
 

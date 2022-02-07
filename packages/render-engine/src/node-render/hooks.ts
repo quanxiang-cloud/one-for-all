@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { logger } from '@ofa/utils';
+import { logger } from '@one-for-all/utils';
 
 import { importComponent } from '../repository';
 import PathContext from './path-context';

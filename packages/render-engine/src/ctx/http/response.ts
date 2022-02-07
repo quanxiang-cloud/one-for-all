@@ -1,4 +1,4 @@
-import { ResponseAdapter } from '@ofa/api-spec-adapter';
+import { ResponseAdapter } from '@one-for-all/api-spec-adapter';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { AjaxConfig } from 'rxjs/ajax';
 import { map, filter } from 'rxjs/operators';

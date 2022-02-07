@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "lib",
     "rootDir": ".",
-    "module": "esnext",
+    "module": "ESNext",
+    "baseUrl": ".",
     "skipLibCheck": true
   },
   "include": [
@@ -11,16 +12,5 @@
   ],
   "exclude": [
     "**/__tests__"
-  ],
-  "references": [
-    {
-      "path": "../ui"
-    },
-    {
-      "path": "../schema-spec"
-    },
-    {
-      "path": "../render-engine"
-    }
   ]
 }

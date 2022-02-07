@@ -3,8 +3,8 @@ import cs from 'classnames';
 import { observer } from 'mobx-react';
 import { debounce } from 'lodash';
 
-import { Panel } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine';
+import { Panel } from '@one-for-all/ui';
+import { useCtx } from '../../index';
 
 import Group from './group';
 import { groups, panelTitle } from './config';

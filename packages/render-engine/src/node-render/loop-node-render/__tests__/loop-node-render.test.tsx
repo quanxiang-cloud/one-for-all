@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 import { render } from '@testing-library/react';
-import { logger } from '@ofa/utils';
-import { APISpecAdapter } from '@ofa/api-spec-adapter';
+import { logger } from '@one-for-all/utils';
+import { APISpecAdapter } from '@one-for-all/api-spec-adapter';
 
 import dummyCTX from '../../../ctx/__tests__/fixtures/dummy-ctx';
 import { LoopContainerNode, Repository } from '../../../types';

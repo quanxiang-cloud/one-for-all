@@ -1,5 +1,5 @@
 {
-  "name": "@ofa/rxjs",
+  "name": "@one-for-all/rxjs",
   "version": "7.4.0",
   "description": "Repo to test esm-bundle's automatic publishing",
   "license": "Apache-2.0",
@@ -18,9 +18,9 @@
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@testing-library/jest-dom": "^5.14.1",
-    "@types/jest": "^27.0.2",
+    "@types/jest": "27.4.0",
     "jest": "^27.3.1",
-    "rollup": "^2.58.3",
+    "rollup": "2.66.0",
     "rollup-plugin-terser": "^7.0.2",
     "rxjs": "^7.4.0"
   },

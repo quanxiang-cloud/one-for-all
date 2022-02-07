@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { FetchParams } from '@ofa/api-spec-adapter';
-import { logger } from '@ofa/utils';
+import { FetchParams } from '@one-for-all/api-spec-adapter';
+import { logger } from '@one-for-all/utils';
 
 import { APIInvokeProperty, CTX, SchemaNode } from '../types';
 

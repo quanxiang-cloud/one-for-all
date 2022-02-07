@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 
-import { LoopNode, PageNode, useCtx } from '@ofa/page-engine';
-import { Icon } from '@ofa/ui';
+import { LoopNode, PageNode, useCtx } from '../../../index';
+import { Icon } from '@one-for-all/ui';
 
 import styles from './index.m.scss';
 

@@ -1,4 +1,4 @@
-import { logger } from '@ofa/utils';
+import { logger } from '@one-for-all/utils';
 import SharedStateHub from './states-hub-shared';
 
 function getSharedStates(statesHubShared: SharedStateHub): Record<string, unknown> {

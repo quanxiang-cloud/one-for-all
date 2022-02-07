@@ -2,8 +2,8 @@ import React, { useMemo, useState } from 'react';
 import cs from 'classnames';
 import { observer } from 'mobx-react';
 
-import { Icon } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine';
+import { Icon } from '@one-for-all/ui';
+import { useCtx } from '../../../../index';
 
 import styles from '../index.m.scss';
 

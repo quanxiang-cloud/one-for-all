@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import type { Schema } from '@ofa/schema-spec';
+import type { Schema } from '@one-for-all/schema-spec';
 
 import deserializeSchema from './deserialize-schema';
 import NodeRender from './node-render';

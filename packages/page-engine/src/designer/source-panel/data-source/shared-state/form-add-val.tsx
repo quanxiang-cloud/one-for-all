@@ -6,8 +6,8 @@ import { useForm } from 'react-hook-form';
 import { observer } from 'mobx-react';
 import { toJS } from 'mobx';
 
-import { useCtx } from '@ofa/page-engine';
-import { Modal, toast } from '@ofa/ui';
+import { useCtx } from '../../../../index';
+import { Modal, toast } from '@one-for-all/ui';
 
 import styles from '../index.m.scss';
 

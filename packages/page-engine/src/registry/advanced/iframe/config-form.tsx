@@ -2,9 +2,10 @@ import React, { useState, useEffect, HTMLAttributeReferrerPolicy } from 'react';
 import { useForm } from 'react-hook-form';
 import { defaults } from 'lodash';
 
-import { useCtx, DataBind as ConfigBind } from '@ofa/page-engine';
+import { useCtx, DataBind as ConfigBind } from '../../../index';
 
 export interface IframeConfigProps {
+  id?: string;
   sandbox?: string;
   iframeName?: string;
   iframeAddr?: string;
@@ -50,23 +51,34 @@ function ConfigForm(): JSX.Element {
       <form
         className='flex flex-col gap-10'
         onChange={handleFormChange}>
+        <div>
+          <label className='mr-4 text-12 text-gray-600'>ID</label>
+          <div className='flex items-center justify-between'>
+            <input
+              type="text"
+              className='mr-8 px-8 py-4 w-full border corner-2-8-8-8 border-gray-300 focus:border-blue-600'
+              {...register('id', { value: values.id })}
+            />
+            <ConfigBind name='id' />
+          </div>
+        </div>
         <label className="flex flex-col">
           Iframe 地址:
           <div className='flex justify-between items-center gap-10'>
             <input
               {...register('iframeAddr', { value: values.iframeAddr })}
-              className="px-8 py-4 flex-1"
+              className='mr-8 px-8 py-4 w-full border corner-2-8-8-8 border-gray-300 focus:border-blue-600'
               placeholder="请填写"
             />
             <ConfigBind name='iframeAddr' />
           </div>
         </label>
         <label className="flex flex-col">
-          iframe width:
+          iframe 宽度:
           <div className='flex justify-between items-center gap-10'>
             <input
               {...register('iframeWidth', { value: values.iframeWidth })}
-              className="px-8 py-4 flex-1"
+              className='mr-8 px-8 py-4 w-full border corner-2-8-8-8 border-gray-300 focus:border-blue-600'
               placeholder="请填写"
               value={values.iframeWidth}
             />
@@ -75,11 +87,11 @@ function ConfigForm(): JSX.Element {
         </label>
 
         <label className="flex flex-col">
-          iframe height:
+          iframe 高度:
           <div className='flex justify-between items-center gap-10'>
             <input
               {...register('iframeHeight', { value: values.iframeHeight })}
-              className="px-8 py-4 flex-1"
+              className='mr-8 px-8 py-4 w-full border corner-2-8-8-8 border-gray-300 focus:border-blue-600'
               placeholder="请填写"
               value={values.iframeHeight}
             />
@@ -87,11 +99,11 @@ function ConfigForm(): JSX.Element {
           </div>
         </label>
         <label className="flex flex-col">
-          iframe name:
+          iframe 名称:
           <div className='flex justify-between items-center gap-10'>
             <input
               {...register('iframeName', { value: values.iframeName })}
-              className="px-8 py-4 flex-1"
+              className='mr-8 px-8 py-4 w-full border corner-2-8-8-8 border-gray-300 focus:border-blue-600'
               placeholder="请填写"
               value={values.iframeName}
             />
@@ -99,22 +111,22 @@ function ConfigForm(): JSX.Element {
           </div>
         </label>
         <label className="flex flex-col">
-          iframe sandbox:
+          iframe 额外限制:
           <div className='flex justify-between items-center gap-10'>
             <input
               {...register('sandbox', { value: values.sandbox })}
-              className="px-8 py-4 flex-1"
+              className='mr-8 px-8 py-4 w-full border corner-2-8-8-8 border-gray-300 focus:border-blue-600'
               placeholder="请填写"
             />
             <ConfigBind name='sandbox' />
           </div>
         </label>
         <label className="flex flex-col">
-          iframe allow:
+          iframe 允许范围:
           <div className='flex justify-between items-center gap-10'>
             <input
               {...register('iframeAllow', { value: values.iframeAllow })}
-              className="px-8 py-4 flex-1"
+              className='mr-8 px-8 py-4 w-full border corner-2-8-8-8 border-gray-300 focus:border-blue-600'
               placeholder="请填写"
             />
             <ConfigBind name='iframeAllow' />
@@ -132,7 +144,7 @@ function ConfigForm(): JSX.Element {
           <ConfigBind name='allowFullscreen' />
         </label>
         <label className="flex flex-col">
-          iframe referrer policy:
+          iframe 推荐配置:
           <div className='flex justify-between items-center gap-10'>
             <select
               {...register('referrerPolicy')}

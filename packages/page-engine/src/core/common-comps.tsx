@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Icon } from '@ofa/ui';
+import { Icon } from '@one-for-all/ui';
 
 import styles from './index.m.scss';
 

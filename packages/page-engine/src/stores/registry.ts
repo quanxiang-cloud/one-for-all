@@ -1,7 +1,7 @@
-import { observable, computed, action, makeObservable } from 'mobx';
+import { observable, computed, action, makeObservable, toJS } from 'mobx';
 import { mapValues } from 'lodash';
 
-import type { Category, SourceElement } from '@ofa/page-engine';
+import type { Category, SourceElement } from '../index';
 import * as builtInElems from '../registry/elements';
 
 const defaultElements = mapValues(builtInElems, (group) => {

@@ -1,4 +1,4 @@
-import type * as SchemaSpec from '@ofa/schema-spec';
+import type * as SchemaSpec from '@one-for-all/schema-spec';
 
 import {
   CTX,

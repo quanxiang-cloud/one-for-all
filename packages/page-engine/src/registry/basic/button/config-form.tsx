@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { defaults, noop } from 'lodash';
 
-import { useCtx, DataBind as ConfigBind } from '@ofa/page-engine';
-import { Select } from '@ofa/ui';
+import { useCtx, DataBind as ConfigBind } from '../../../index';
+import { Select } from '@one-for-all/ui';
 
 import type { Props } from './button';
 
@@ -43,6 +43,18 @@ function ConfigForm(): JSX.Element {
   return (
     <div>
       <div className="flex flex-col">
+        <div className='mb-8'>
+          <label className='mr-4 text-12 text-gray-600'>ID</label>
+          <div className='mb-8 flex items-center justify-between'>
+            <input
+              type="text"
+              className='mr-8 px-8 py-4 w-full border corner-2-8-8-8 border-gray-300 focus:border-blue-600'
+              value={values.id || ''}
+              onChange={(e) => setValues((prev) => ({ ...prev, id: e.target.value }))}
+            />
+            <ConfigBind name='id' />
+          </div>
+        </div>
         <div className='text-12 text-gray-600'>按钮名称</div>
         <div className='flex justify-between items-center gap-10'>
           <input

@@ -9,9 +9,9 @@ import { toJS } from 'mobx';
 
 import { Button, Icon, Tooltip, Modal, toast } from '@ofa/ui';
 import { useCtx, DataBind, PageNode } from '@ofa/page-engine';
-import { elemId } from '@ofa/page-engine/utils';
 
 import Section from '../../comps/section';
+import { elemId } from '../../../utils';
 
 import styles from './index.m.scss';
 
@@ -24,6 +24,7 @@ function RendererPanel(): JSX.Element {
   const [loopKey, setLoopKey] = useState(defaultLoopKey);
   const [modalBindConstOpen, setModalBindConstOpen] = useState(false);
   const [bindConst, setBindConst] = useState('null'); // 绑定的常量循环数据
+  const [isComposed, setIsComposed] = useState(false);
 
   useEffect(()=> {
     // todo: get cur loop node conf
@@ -32,6 +33,7 @@ function RendererPanel(): JSX.Element {
       const { iterableState, loopKey, toProps } = pick(rawNode, ['iterableState', 'loopKey', 'toProps']);
       setLoopKey(loopKey);
       setToPropsFn(get(toProps, 'body', defaultToPropsFn));
+      setIsComposed(rawNode.node && rawNode.node.type === 'composed-node');
 
       if (iterableState?.type === 'constant_property') {
         setBindConst(iterableState.value);
@@ -147,7 +149,7 @@ function RendererPanel(): JSX.Element {
                 >
                   {hasBindConst() ? '已绑定常量数据' : '绑定常量数据'}
                 </Button>
-                <DataBind name='loop-node' isLoopNode />
+                <DataBind name='loop-node' isLoopNode isComposedNode={isComposed} />
               </div>
             </div>
             <div className='mb-8'>

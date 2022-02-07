@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Icon, Tooltip } from '@ofa/ui';
+import { Icon, Tooltip } from '@one-for-all/ui';
 
 import styles from './index.m.scss';
 

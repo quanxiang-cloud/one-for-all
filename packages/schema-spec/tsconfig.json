@@ -5,5 +5,7 @@
     "rootDir": ".",
     "module": "ESNext"
   },
-  "include": ["./index.d.ts"]
+  "include": [
+    "src/**/*"
+  ],
 }

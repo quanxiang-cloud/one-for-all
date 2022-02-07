@@ -1,7 +1,7 @@
 import { observable, action, computed, toJS, makeObservable } from 'mobx';
 import { get, set } from 'lodash';
 
-import { toast } from '@ofa/ui';
+import { toast } from '@one-for-all/ui';
 
 import pageStore from './page';
 import { mapShareState, mapApiState } from '../utils/schema-adapter';

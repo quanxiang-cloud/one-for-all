@@ -1,4 +1,4 @@
-import type { Schema } from '@ofa/schema-spec';
+import type { Schema } from '@one-for-all/schema-spec';
 
 const refSchema: Schema = {
   apiStateSpec: {},
