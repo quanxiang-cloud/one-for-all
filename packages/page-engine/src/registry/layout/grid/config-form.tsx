@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import cs from 'classnames';
 import { defaults } from 'lodash';
 
-import { Select, GridProps, Icon } from '@ofa/ui';
-import { useCtx } from '@ofa/page-engine';
+import { Select, GridProps, Icon } from '@one-for-all/ui';
+
+import { useCtx } from '../../../index';
 
 export const DEFAULT_CONFIG: GridProps = {
   colRatio: '12:9:3',

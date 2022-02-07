@@ -11,7 +11,6 @@ export const DEFAULT_CONFIG: InputProps = {
   value: undefined, // if value undefined, input is non-controlled component
   placeholder: '请输入内容',
   type: 'text',
-  id: '',
   name: '',
 };
 
