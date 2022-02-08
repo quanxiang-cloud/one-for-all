@@ -23,6 +23,7 @@ export default function TodoInput({ onEnter, __exposeState }: Props): JSX.Elemen
     if (e.key === 'Enter') {
       // setLoading(true);
       onEnter(value);
+      setValue('');
       __exposeState(value);
     }
   }

@@ -23,9 +23,15 @@ const tasks: Todo[] = [
 ];
 
 const handle_GET_todos = rest.get('/todos', (req, res, ctx) => {
-  return res(
-    ctx.json(tasks),
-  );
+  if (req.url.searchParams.get('status') === 'working') {
+    return res(ctx.json(tasks.filter(({ status }) => status === 'working')));
+  }
+
+  if (req.url.searchParams.get('status') === 'done') {
+    return res(ctx.json(tasks.filter(({ status }) => status === 'done')));
+  }
+
+  return res(ctx.json(tasks));
 });
 
 const handle_GET_todoStatus = rest.get('/todo_status', (req, res, ctx) => {

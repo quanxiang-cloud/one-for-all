@@ -2,7 +2,7 @@ import type { Schema } from '@one-for-all/schema-spec';
 
 const todoAppSchema: Schema = {
   apiStateSpec: {
-    新建待办: { apiID: 'post:/todos' },
+    postTodo: { apiID: 'post:/todos' },
     全部待办列表: { apiID: 'get:/todos' },
     更新待办: { apiID: 'put:/todos/{todoId}' },
     todoStatus: { apiID: 'get:/todo_status' },
@@ -45,22 +45,12 @@ const todoAppSchema: Schema = {
         schemaID: 'whatever',
       },
       {
-        id: 'todo-input-form',
+        id: 'todo-input-container',
         type: 'html-element',
         name: 'div',
-        props: {
-          id: { type: 'constant_property', value: 'todo-input-form' },
-          style: {
-            type: 'constant_property',
-            value: {
-              display: 'flex',
-              justifyContent: 'space-between',
-            },
-          },
-        },
         children: [
           {
-            id: 'fancy-input',
+            id: 'todo-input',
             type: 'react-component',
             packageName: 'todo-app',
             exportName: 'TodoInput',
@@ -68,46 +58,19 @@ const todoAppSchema: Schema = {
             supportStateExposure: true,
             props: {
               onEnter: {
-                type: 'api_invoke_property',
-                stateID: '新建待办',
-                paramsBuilder: {
-                  type: 'param_builder_func_spec',
-                  args: 'value',
-                  body: 'return { body: { title: value } }',
-                },
-                callback: {
-                  type: 'api_fetch_callback',
-                  args: '{ result, error }',
-                  body: 'this.apiStates["全部待办列表"].refresh()',
-                },
-              },
-            },
-          },
-          {
-            id: 'add-todo-btn',
-            type: 'html-element',
-            name: 'button',
-            props: {
-              type: { type: 'constant_property', value: 'submit' },
-              children: {
-                type: 'constant_property',
-                value: 'New Todo by using NodeState',
-              },
-              style: {
-                type: 'constant_property',
-                value: { width: '180px', textAlign: 'center', textTransform: 'capitalize' },
-              },
-              onClick: {
                 type: 'functional_property',
                 func: {
                   type: 'raw',
-                  args: '',
+                  args: 'value',
                   body: `
-                    const inputValue = this.states['$fancy-input'];
-                    this.apiStates['新建待办'].fetch({ body: { title: inputValue } }, () => {
-                      this.apiStates['全部待办列表'].refresh();
-                      this.apiStates.todoStatus.fetch();
-                    });
+                    const title = value.trim();
+                    if (!title) {
+                      return;
+                    }
+
+                    this.apiStates.postTodo.fetch({ body: { title }}, () => {
+                      this.apiStates["全部待办列表"].refresh();
+                    })
                   `,
                 },
               },
@@ -115,43 +78,42 @@ const todoAppSchema: Schema = {
           },
         ],
       },
-      {
-        id: 'word_count',
-        type: 'html-element',
-        name: 'p',
-        props: {
-          children: {
-            // fancy-input
-            type: 'node_state_property',
-            nodeKey: 'fancy-input',
-            // todo replace by $ele-input-xhfsf-todo-input.value
-            fallback: 'abv dev',
-            convertor: {
-              type: 'state_convert_expression',
-              expression: '`you have input ${state.split(\' \').length} words`',
-            },
-          },
-        },
-      },
-      {
-        id: 'refresh-todos',
-        type: 'html-element',
-        name: 'button',
-        props: {
-          children: {
-            type: 'constant_property',
-            value: 'refresh',
-          },
-          onClick: {
-            type: 'functional_property',
-            func: {
-              type: 'raw',
-              args: '',
-              body: 'this.apiStates[\'全部待办列表\'].fetch();',
-            },
-          },
-        },
-      },
+      // {
+      //   id: 'word_count',
+      //   type: 'html-element',
+      //   name: 'p',
+      //   props: {
+      //     children: {
+      //       type: 'node_state_property',
+      //       nodeKey: 'todo-input',
+      //       // todo replace by $ele-input-xhfsf-todo-input.value
+      //       fallback: 'abv dev',
+      //       convertor: {
+      //         type: 'state_convert_expression',
+      //         expression: '`you have input ${state.split(\' \').length} words`',
+      //       },
+      //     },
+      //   },
+      // },
+      // {
+      //   id: 'refresh-todos',
+      //   type: 'html-element',
+      //   name: 'button',
+      //   props: {
+      //     children: {
+      //       type: 'constant_property',
+      //       value: 'refresh',
+      //     },
+      //     onClick: {
+      //       type: 'functional_property',
+      //       func: {
+      //         type: 'raw',
+      //         args: '',
+      //         body: 'this.apiStates[\'全部待办列表\'].fetch();',
+      //       },
+      //     },
+      //   },
+      // },
       {
         id: 'todo-list-loop-composedNode',
         type: 'loop-container',
@@ -173,6 +135,14 @@ const todoAppSchema: Schema = {
             id: 'todo-item-outLayer',
             type: 'html-element',
             name: 'div',
+            props: {
+              style: {
+                type: 'constant_property',
+                value: {
+                  marginBottom: '8px',
+                },
+              },
+            },
           },
           children: [
             {
@@ -277,37 +247,37 @@ const todoAppSchema: Schema = {
         props: {
           all: {
             type: 'api_result_property',
-            stateID: 'todoStatus',
+            stateID: '全部待办列表',
             fallback: 0,
             convertor: {
               type: 'state_convertor_func_spec',
               args: 'state',
               body: `
-                return state?.all || 0;
+                return state.length;
               `,
             },
           },
           working: {
             type: 'api_result_property',
-            stateID: 'todoStatus',
+            stateID: '全部待办列表',
             fallback: 0,
             convertor: {
               type: 'state_convertor_func_spec',
               args: 'state',
               body: `
-                return state?.working || 0;
+                return state.filter(({ status }) => status === 'working').length
               `,
             },
           },
           done: {
             type: 'api_result_property',
-            stateID: 'todoStatus',
+            stateID: '全部待办列表',
             fallback: 0,
             convertor: {
               type: 'state_convertor_func_spec',
               args: 'state',
               body: `
-                return state?.done || 0;
+                return state.filter(({ status }) => status === 'done').length
               `,
             },
           },
