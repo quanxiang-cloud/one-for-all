@@ -43,8 +43,7 @@
     "react-dnd-html5-backend": "^14.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.20.4",
-    "react-use": "^17.3.2",
-    "@one-for-all/icon": "0.2.14"
+    "react-use": "^17.3.2"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.8",
