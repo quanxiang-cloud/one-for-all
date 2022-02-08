@@ -246,42 +246,6 @@ const todoAppSchema: Schema = {
         exportName: 'TodoFilter',
         packageVersion: 'whatever',
         props: {
-          all: {
-            type: 'api_result_property',
-            stateID: '全部待办列表',
-            fallback: 0,
-            convertor: {
-              type: 'state_convertor_func_spec',
-              args: 'state',
-              body: `
-                return state.length;
-              `,
-            },
-          },
-          working: {
-            type: 'api_result_property',
-            stateID: '全部待办列表',
-            fallback: 0,
-            convertor: {
-              type: 'state_convertor_func_spec',
-              args: 'state',
-              body: `
-                return state.filter(({ status }) => status === 'working').length
-              `,
-            },
-          },
-          done: {
-            type: 'api_result_property',
-            stateID: '全部待办列表',
-            fallback: 0,
-            convertor: {
-              type: 'state_convertor_func_spec',
-              args: 'state',
-              body: `
-                return state.filter(({ status }) => status === 'done').length
-              `,
-            },
-          },
           onToggleStatus: {
             type: 'api_invoke_property',
             stateID: '全部待办列表',
