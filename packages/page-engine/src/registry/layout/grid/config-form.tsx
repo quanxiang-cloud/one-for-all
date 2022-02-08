@@ -15,14 +15,14 @@ export const DEFAULT_CONFIG: GridProps = {
 const DEFAULT_SCALE = ['12', '6:6', '3:9', '9:3', '4:4:4', '3:6:3', '3:3:3:3', '2:2:2:2:2:2'];
 
 const DEFAULT_LIST = [
-  { id: 1, value: '12', url: '/dist/images/grid-12.png' },
-  { id: 2, value: '6:6', url: '/dist/images/grid-6-6.png' },
-  { id: 3, value: '3:9', url: '/dist/images/grid-3-9.png' },
-  { id: 4, value: '9:3', url: '/dist/images/grid-9-3.png' },
-  { id: 5, value: '4:4:4', url: '/dist/images/grid-3-4.png' },
-  { id: 6, value: '3:6:3', url: '/dist/images/grid-3-6-3.png' },
-  { id: 7, value: '3:3:3:3', url: '/dist/images/grid-4-3.png' },
-  { id: 8, value: '2:2:2:2:2:2', url: '/dist/images/grid-6-2.png' },
+  { id: 1, value: '12', icon: 'grid-12' },
+  { id: 2, value: '6:6', icon: 'grid-6-6' },
+  { id: 3, value: '3:9', icon: 'grid-3-9' },
+  { id: 4, value: '9:3', icon: 'grid-9-3' },
+  { id: 5, value: '4:4:4', icon: 'grid-4-4-4' },
+  { id: 6, value: '3:6:3', icon: 'grid-3-6-3' },
+  { id: 7, value: '3:3:3:3', icon: 'grid-4-3' },
+  { id: 8, value: '2:2:2:2:2:2', icon: 'grid-6-2' },
 ];
 
 const gaps = ['8px', '12px', '16px', '20px'].map((value) => ({ label: value, value }));
@@ -61,10 +61,7 @@ function ConfigForm(): JSX.Element {
                   'border-blue-600': item.value === values.colRatio,
                 })}
                 style={{ width: 60, height: 36 }}>
-                <div
-                  style={{ width: 52, height: 28,
-                    backgroundImage: `url(${item.url})`, backgroundSize: '100%' }}
-                ></div>
+                <Icon name={item.icon} style={{ width: 52, height: 28 }} />
               </li>
             );
           })}
@@ -87,7 +84,7 @@ function ConfigForm(): JSX.Element {
           placeholder="0"
           className='mr-8 px-8 py-6 w-full border border-gray-300 corner-2-8-8-8'
           value={values.colRatio}
-          onChange={(e) => setValues((prev) => ({ ...prev, colRatio: e.target.value }))}
+          onChange={(e) => setValues((prev: GridProps) => ({ ...prev, colRatio: e.target.value }))}
         />
         {/* <Select
           name='colRatio'
@@ -102,7 +99,7 @@ function ConfigForm(): JSX.Element {
           name='colGap'
           options={gaps}
           value={values.colGap}
-          onChange={(colGap: string) => setValues((prev) => ({ ...prev, colGap }))}
+          onChange={(colGap: string) => setValues((prev: GridProps) => ({ ...prev, colGap }))}
         />
       </div>
       <div>
@@ -111,7 +108,7 @@ function ConfigForm(): JSX.Element {
           name='rowGap'
           options={gaps}
           value={values.rowGap}
-          onChange={(rowGap: string) => setValues((prev) => ({ ...prev, rowGap }))}
+          onChange={(rowGap: string) => setValues((prev: GridProps) => ({ ...prev, rowGap }))}
         />
       </div>
     </form>
