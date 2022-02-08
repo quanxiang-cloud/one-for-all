@@ -9,6 +9,7 @@ const OVERFLOW_STYLE: React.CSSProperties = {
   // English(Auto wrap)
   wordWrap: 'break-word',
   wordBreak: 'break-all',
+  whiteSpace: 'pre',
 };
 
 interface Props {

@@ -459,6 +459,7 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
                         <input
                           type="number"
                           placeholder='auto'
+                          min={0}
                           className='px-8 py-6 w-full border border-gray-300 corner-2-8-8-8'
                           value={sizeValue.x || ''}
                           onChange={(e) => handleSizeInputChange(e, 'x')}
@@ -476,6 +477,7 @@ function BackgroundConfig({ initValues, register, setValue, onFormChange }: Prop
                       <div className='relative '>
                         <input
                           type="number"
+                          min={0}
                           placeholder='auto'
                           className='px-8 py-6 w-full border border-gray-300 corner-2-8-8-8'
                           value={sizeValue.y || ''}

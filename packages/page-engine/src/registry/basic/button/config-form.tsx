@@ -61,6 +61,7 @@ function ConfigForm(): JSX.Element {
             name='title'
             className="px-8 py-4 flex-1 border corner-2-8-8-8 border-gray-300 focus:border-blue-600"
             placeholder="请填写"
+            maxLength={30}
             value={values.title || ''}
             onChange={(e) => setValues((prev) => ({ ...prev, title: e.target.value }))}
           />
