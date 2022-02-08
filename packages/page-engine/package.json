@@ -76,6 +76,7 @@
     "tslib": "2.3.1",
     "webpack": "^5.65.0",
     "webpack-cli": "^4.9.1",
-    "webpack-notifier": "^1.14.1"
+    "webpack-notifier": "^1.14.1",
+    "webpack-dev-server": "~4.7.4"
   }
 }

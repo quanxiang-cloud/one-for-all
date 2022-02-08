@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-import { Designer } from './src';
+import { Designer } from '../src';
 import { toast } from '@one-for-all/ui';
 
 function App(): JSX.Element {
