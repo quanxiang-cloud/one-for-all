@@ -33,8 +33,9 @@ const todoAppSchema: Schema = {
           margin: 'auto',
           marginTop: '100px',
           padding: '20px',
-          borderRadius: '12px',
-          boxShadow: '5px 5px 20px rgba(0, 0, 0, 0.2)',
+          borderRadius: '2px',
+          // boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px',
+          boxShadow: 'blue 0px 0px 0px 2px inset, rgb(255, 255, 255) 10px -10px 0px -3px, rgb(31, 193, 27) 10px -10px, rgb(255, 255, 255) 20px -20px 0px -3px, rgb(255, 217, 19) 20px -20px, rgb(255, 255, 255) 30px -30px 0px -3px, rgb(255, 156, 85) 30px -30px, rgb(255, 255, 255) 40px -40px 0px -3px, rgb(255, 85, 85) 40px -40px'
         },
       },
     },

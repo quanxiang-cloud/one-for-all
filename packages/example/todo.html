@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Render Engine Demo</title>
   <script type="systemjs-importmap">
     {
       "imports": {
-        "react": "/pkg/react/dist/react.17.0.1.js",
-        "react-dom": "/pkg/react-dom/dist/react-dom.17.0.1.js",
-        "rxjs/ajax": "/pkg/rxjs/dist/@ofa/rxjs@7.4.0/rxjs-ajax.js",
-        "rxjs/fetch": "/pkg/rxjs/dist/@ofa/rxjs@7.4.0/rxjs-fetch.js",
-        "rxjs/operators": "/pkg/rxjs/dist/@ofa/rxjs@7.4.0/rxjs-operators.js",
-        "rxjs/shared": "/pkg/rxjs/dist/@ofa/rxjs@7.4.0/rxjs-shared.js",
-        "rxjs/testing": "/pkg/rxjs/dist/@ofa/rxjs@7.4.0/rxjs-testing.js",
-        "rxjs/websocket": "/pkg/rxjs/dist/@ofa/rxjs@7.4.0/rxjs-websocket.js",
-        "rxjs": "/pkg/rxjs/dist/@ofa/rxjs@7.4.0/rxjs.js"
+        "react": "http://ofapkg.pek3b.qingstor.com/react@17.0.1/react.17.0.1.min.js",
+        "react-dom": "https://ofapkg.pek3b.qingstor.com/react-dom@17.0.1/react-dom.17.0.1.min.js",
+        "rxjs/ajax": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-ajax.min.js",
+        "rxjs/fetch": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-fetch.min.js",
+        "rxjs/operators": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-operators.min.js",
+        "rxjs/shared": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-shared.min.js",
+        "rxjs/testing": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-testing.min.js",
+        "rxjs/websocket": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-websocket.min.js",
+        "rxjs": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs.min.js"
       }
     }
   </script>
@@ -23,17 +23,15 @@
     {
       "imports": {
         "todo-app": "/dist/todo-app/todo-components.js",
-        "@one-for-all/render-engine": "/pkg/render-engine/dist/@one-for-all/render-engine@latest/index.js",
-        "@one-for-all/api-spec-adapter": "/pkg/api-spec-adapter/dist/@one-for-all/api-spec-adapter@latest/index.js",
-        "@one-for-all/utils": "/pkg/utils/dist/@one-for-all/utils@latest/index.js",
-        "@one-for-all/ui": "/pkg/ui/dist/@one-for-all/ui@latest/index.js"
+        "@one-for-all/api-spec-adapter": "https://ofapkg.pek3b.qingstor.com/@one-for-all/api-spec-adapter@0.3.3/index.min.js",
+        "@one-for-all/render-engine": "https://ofapkg.pek3b.qingstor.com/@one-for-all/render-engine@0.10.2/index.min.js",
+        "@one-for-all/utils": "https://ofapkg.pek3b.qingstor.com/@one-for-all/utils@0.1.0/index.min.js",
+        "@one-for-all/ui": "https://ofapkg.pek3b.qingstor.com/@one-for-all/ui@0.2.15/index.min.js"
       }
     }
   </script>
-  <!-- <script src="/externals/system.min.js"></script> -->
   <script src="/externals/system.6.10.3.js"></script>
   <script defer src="/externals/adoptedStyleSheets.min.js"></script>
-  <!-- <script src="/dist/core/systemjs-hooks/resolve.js"></script> -->
   <script>
     (function () {
       const endsWithFileExtension = /\/?\.[a-zA-Z]{2,}$/;

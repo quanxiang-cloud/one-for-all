@@ -14,7 +14,19 @@ const refSchema: Schema = {
         name: 'h1',
         props: {
           id: { type: 'constant_property', value: 'ref-container' },
-          children: { type: 'constant_property', value: 'Todo Demo for Render Engine' },
+          children: { type: 'constant_property', value: 'todos' },
+          style: {
+            type: 'constant_property',
+            value: {
+              fontSize: '100px',
+              fontWeight: '100',
+              textAlign: 'center',
+              color: 'rgba(175, 47, 47, 0.15)',
+              WebkitTextRendering: 'optimizeLegibility',
+              MozTextRendering: 'optimizeLegibility',
+              textRendering: 'optimizeLegibility'
+            }
+          }
         },
       },
     ],
