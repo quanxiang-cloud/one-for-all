@@ -69,6 +69,10 @@ function ConfigForm(): JSX.Element {
     page.updateElemProperty(page.activeElem.id, 'props', values);
   }, [values]);
 
+  useEffect(() => {
+    setValues(page.activeElemProps);
+  }, [page.activeElemId]);
+
   const handleChange = (name: string, value: any): void => {
     setValues((prev)=> ({ ...prev, [name]: value }));
   };
