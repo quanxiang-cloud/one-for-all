@@ -3,8 +3,7 @@ import cs from 'classnames';
 import { observer } from 'mobx-react';
 import { toJS, reaction } from 'mobx';
 
-import { Button, Tooltip, Modal } from '@one-for-all/ui';
-import Icon from '@one-for-all/icon'
+import { Icon, Button, Tooltip, Modal } from '@one-for-all/ui';
 import { useCtx } from '../../index';
 import type { Schema } from '@one-for-all/schema-spec';
 import { SchemaRender } from '@one-for-all/render-engine';

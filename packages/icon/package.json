@@ -4,12 +4,11 @@
   "description": "Headless svg icon component",
   "license": "Apache-2.0",
   "module": "lib/src/index.js",
-  "type": "module",
   "main": "dist/index.js",
   "types": "lib/src/index.d.ts",
   "scripts": {
     "clean": "rm -rf dist lib",
-    "build": "yarn run clean && yarn run bundle && yarn run build:icons && yarn run copy:assets && tsc --build tsconfig.json",
+    "build": "tsc --build tsconfig.json",
     "pack": "yarn pack",
     "bundle": "rollup -c",
     "preview:icons": "node scripts/preview-icons.js",
@@ -24,7 +23,7 @@
     "@types/styled-components": "^5.1.16",
     "rollup": "2.66.0",
     "rollup-plugin-esbuild": "^4.6.0",
-    "svg-spreact": "1.3.2"
+    "svg-spreact": "1.3.1"
   },
   "dependencies": {
     "classnames": "^2.3.1",

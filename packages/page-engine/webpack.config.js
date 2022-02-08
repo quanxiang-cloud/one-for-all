@@ -35,7 +35,7 @@ export default {
     ],
     alias: {
       '@one-for-all/ui': path.resolve(__dirname, '../ui/src/index.ts'),
-      '@one-for-all/icon': path.resolve(__dirname, '../icon/src/index.tsx'),
+      // '@one-for-all/icon': path.resolve(__dirname, '../icon/src/index.tsx'),
       '@one-for-all/render-engine': path.resolve(__dirname, '../render-engine/src/index.ts'),
       '@one-for-all/utils': path.resolve(__dirname, '../utils/src/index.ts')
     },
