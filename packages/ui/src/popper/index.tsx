@@ -74,9 +74,8 @@ export default class Popper2 extends React.Component<Props, State> {
 
     if (popVisible !== prevPopVisible) {
       this.props.onVisibilityChange?.(popVisible);
+      popVisible && this.createPopperInstance();
     }
-
-    this.createPopperInstance();
   }
 
   componentWillUnmount(): void {

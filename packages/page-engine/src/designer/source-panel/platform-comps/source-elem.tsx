@@ -9,7 +9,7 @@ import { useCtx, SourceElement } from '../../../index';
 import styles from './index.m.scss';
 
 function SourceElem(props: SourceElement<any>): JSX.Element {
-  const { page, registry } = useCtx();
+  const { page, registry, designer } = useCtx();
   const compName = props.name.toLowerCase();
 
   function addNodeToCanvas(target?: any): void {
@@ -23,6 +23,8 @@ function SourceElem(props: SourceElement<any>): JSX.Element {
         ...defaultStyle,
       },
     }, target, { from: 'source' });
+    designer.setActiveGroup('');
+    designer.setPanelOpen(false);
   }
 
   const [{ isDragging }, drag] = useDrag(() => ({
