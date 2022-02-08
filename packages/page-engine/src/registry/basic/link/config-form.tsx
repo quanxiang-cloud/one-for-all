@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { defaults } from 'lodash';
 
 import { useCtx, DataBind as ConfigBind } from '../../../index';
-import { Radio, RadioGroup, Select } from '@one-for-all/ui';
+// import { Radio, RadioGroup, Select } from '@one-for-all/ui';
 
 export interface Props {
   content: string,
@@ -14,7 +14,7 @@ export interface Props {
 
 export const DEFAULT_CONFIG: Props = {
   content: '链接',
-  linkType: 'inside',
+  linkType: 'outside',
   linkUrl: '',
   linkPage: '',
   isBlank: false,
@@ -60,7 +60,7 @@ function ConfigForm(): JSX.Element {
           <ConfigBind name='content' />
         </div>
       </div>
-      <div className='mb-8'>
+      {/* <div className='mb-8'>
         <p className='text-12 text-gray-600'>链接类型</p>
         <div className='flex items-center'>
           <RadioGroup
@@ -75,8 +75,8 @@ function ConfigForm(): JSX.Element {
             <Radio label='外部链接' value='outside' defaultChecked={values.linkType === 'outside'} />
           </RadioGroup>
         </div>
-      </div>
-      {
+      </div> */}
+      {/* {
         values.linkType === 'inside' ? (
           <div className='mb-8'>
             <p className='mr-4 text-12 text-gray-600'>选择页面</p>
@@ -87,21 +87,21 @@ function ConfigForm(): JSX.Element {
               onChange={(linkPage) => setValues({ ...values, linkPage })}
             />
           </div>
-        ) : (
-          <div className='mb-8'>
-            <p className='mr-4 text-12 text-gray-600'>链接地址</p>
-            <div className='flex items-center'>
-              <input
-                className='w-full h-32 my-4 px-8 mr-8 border
-                  corner-2-8-8-8 border-gray-300 focus:border-blue-600'
-                value={values.linkUrl}
-                onChange={(ev) => setValues({ ...values, linkUrl: ev.target.value })}
-              />
-              <ConfigBind name='linkUrl' />
-            </div>
-          </div>
-        )
-      }
+        ) : ( */}
+      <div className='mb-8'>
+        <p className='mr-4 text-12 text-gray-600'>链接地址</p>
+        <div className='flex items-center'>
+          <input
+            className='w-full h-32 my-4 px-8 mr-8 border
+                corner-2-8-8-8 border-gray-300 focus:border-blue-600'
+            value={values.linkUrl}
+            onChange={(ev) => setValues({ ...values, linkUrl: ev.target.value })}
+          />
+          <ConfigBind name='linkUrl' />
+        </div>
+      </div>
+      {/* )
+      } */}
       <div className='mb-8 flex items-center justify-between'>
         <div className='w-full flex items-center'>
           <input
