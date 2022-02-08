@@ -11,11 +11,12 @@
     "start": "run-p build:watch server"
   },
   "dependencies": {
+    "@one-for-all/api-spec-adapter": "0.3.3",
+    "@one-for-all/render-engine": "0.10.2",
+    "@one-for-all/schema-spec": "0.10.1",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "@one-for-all/render-engine": "0.10.2",
-    "@one-for-all/api-spec-adapter": "0.3.3"
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
