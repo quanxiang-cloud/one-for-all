@@ -11,7 +11,7 @@ export default {
   input: 'src/index.tsx',
   output: getOutput(packageJSON.name, packageJSON.version),
 
-  external: ['react', 'react-is', /@ofa\/.*/],
+  external: ['react', 'react-is', /@one-for-all\/.*/],
 
   plugins: [
     typescriptPaths(),

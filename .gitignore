@@ -68,3 +68,8 @@ common/autoinstallers/*/.npmrc
 .heft
 packages/*/dist
 packages/*/lib
+
+#jetbrains
+.idea/
+
+/dist/

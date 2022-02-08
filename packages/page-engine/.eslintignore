@@ -5,6 +5,5 @@ scripts/*
 jest.*.js
 rollup.*.js
 
-/colors.js
+/*.cjs
 /*.config.js
-
