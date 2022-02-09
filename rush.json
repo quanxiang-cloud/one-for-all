@@ -466,6 +466,10 @@
       "projectFolder": "packages/example"
     },
     {
+      "packageName": "@one-for-all/formula",
+      "projectFolder": "packages/formula"
+    },
+    {
       "packageName": "@one-for-all/icon",
       "projectFolder": "packages/icon"
     },

@@ -1,0 +1,260 @@
+VARIABLES:
+  one: 1
+  two: 2
+  three: 3
+  four: 4
+  five: 5
+  one_str: '1'
+  two_str: '2'
+  three_str: '3'
+  four_str: '4'
+  five_str: '5'
+  field_6Vwi1Eds: 20
+  arr_number:
+    - 3
+    - 2
+    - 1
+  obj_field:
+    label: 'foo'
+    value: 1
+    arr_number:
+      - 3
+      - 2
+      - 1
+    arr_object:
+      - label: 'foo'
+        value: 3
+      - label: 'bar'
+        value: 2
+      - label: 'baz'
+        value: 1
+
+TEST_CASES:
+  - formula: 'arr_number.[0] + 1'
+    result: 4
+
+  - formula: 'obj_field.value + 1'
+    result: 2
+
+  - formula: 'obj_field.arr_number.[0] + 1'
+    result: 4
+
+  - formula: 'obj_field.arr_object.[0].value + 1'
+    result: 4
+
+  - formula: '1 + 2'
+    result: 3
+
+  - formula: '1 + -2'
+    result: -1
+
+  - formula: '1 - 2'
+    result: -1
+
+  - formula: '1 * 2'
+    result: 2
+
+  - formula: '1 / 2'
+    result: 0.5
+
+  - formula: '1 % 2'
+    result: 1
+
+  - formula: '1 + 1 % 2'
+    result: 2
+
+  - formula: '1 % 1 + 2'
+    result: 2
+
+  - formula: '1 % 1 + 2 + 3'
+    result: 5
+
+  - formula: '1 % 1 * 2 + 3'
+    result: 3
+
+  - formula: '1 % 1 * 2 / 3'
+    result: 0
+
+  - formula: '1 - 1 * 2 / 3'
+    result: 0.3333
+
+  - formula: '1 < 1 * 2 / 3'
+    result: false
+
+  - formula: '1 < 1 > 2 / 3'
+    result: false
+
+  - formula: '(1 + 2)'
+    result: 3
+
+  - formula: '(1 + 2) * 6'
+    result: 18
+
+  - formula: '(1 + 2) * 6 < 7'
+    result: false
+
+  - formula: '(1 % 2) + 6 < 7'
+    result: false
+
+  - formula: '(1 % 2) + one < 7'
+    result: true
+
+  - formula: '(1 % two) + one < 7'
+    result: true
+
+  - formula: '(three % two) + one < 7'
+    result: true
+
+  - formula: 'sum(1, 2, 3)'
+    result: 6
+
+  - formula: 'sum(1, 2, three)'
+    result: 6
+
+  - formula: 'sum(1, 2, three) + 1'
+    result: 7
+
+  - formula: 'sum(1, 2, three) * 1'
+    result: 6
+
+  - formula: 'sum(1, 2, three) * average(1, 2, three)'
+    result: 12
+
+  - formula: 'sum(1, 3, three) + average(1, 3, three)'
+    result: 9.3333
+
+  - formula: '1 <= 2'
+    result: true
+
+  - formula: '1 < 2'
+    result: true
+
+  - formula: '2 >= 1'
+    result: true
+
+  - formula: '2 > 1'
+    result: true
+
+  - formula: '1 == 1'
+    result: true
+
+  - formula: '1 != 2'
+    result: true
+
+  - formula: '1 ∈ {1, 2 , 3, 4}'
+    result: true
+
+  - formula: '1 ∉ {1, 2 , 3, 4}'
+    result: false
+
+  - formula: '1 ∈ {"1", 2 , 3, 4}'
+    result: false
+
+  - formula: '1 ∉ {"1", 2 , 3, 4}'
+    result: true
+
+  - formula: '1 == 2 || 1 < 2'
+    result: true
+
+  - formula: '1 == 2 && 1 < 2'
+    result: false
+
+  - formula: '(1 == 2 || 1 < 2) && 1 != 2'
+    result: true
+
+  - formula: '(1 == 2 && 1 < 2) || 1 != 2'
+    result: true
+
+  - formula: '1 <= 2'
+    result: true
+
+  - formula: '1 < 2'
+    result: true
+
+  - formula: '2 >= 1'
+    result: true
+
+  - formula: '2 > 1'
+    result: true
+
+  - formula: '1 == 1'
+    result: true
+
+  - formula: '1 != 2'
+    result: true
+
+  - formula: '1 ∈ {1, 2 , 3, 4}'
+    result: true
+
+  - formula: '1 ∉ {1, 2 , 3, 4}'
+    result: false
+
+  - formula: '1 ∈ {"1", 2 , 3, 4}'
+    result: false
+
+  - formula: '1 ∉ {"1", 2 , 3, 4}'
+    result: true
+
+  - formula: '1 == 2 || 1 < 2'
+    result: true
+
+  - formula: '1 == 2 && 1 < 2'
+    result: false
+
+  - formula: '(1 == 2 || 1 < 2) && 1 != 2'
+    result: true
+
+  - formula: '(one == two && one < two) || one != two'
+    result: true
+
+  - formula: '(1 == 2 && 1 < 2) || (1 == 2 && 1 < 2)'
+    result: false
+
+  - formula: '(1 == 2 && 1 < 2) || (1 == 2 && 1 < 2) && (1 == 2 && 1 < 2)'
+    result: false
+
+  - formula: '(1 == 2 && 1 < 2) || (1 == 2 && 1 < 2) || (1 == 2 || 1 < 2)'
+    result: true
+
+  - formula: '(one == two || one < 22) && (3 == 4 || 3 < 4) || (five == 6 && 5 < 6)'
+    result: true
+
+  - formula: '(one_str ∈ {1, two_str, 3, 4} || two ∈ {1, two, 3, 4}) && "3" ∈ {1, 2, 3, 4}'
+    result: false
+    variables: VARIABLES
+
+  - formula: 'sum(1, 3, three) + average(1, 3, three)'
+    result: 9.3333
+
+  - formula: 'three'
+    result: 3
+
+  - formula: 'max(three - 8, 0)'
+    result: 0
+
+  - formula: 'max(three - 5, 0) * 8 * 18'
+    result: 0
+
+  - formula: 'max(field_6Vwi1Eds - 5, 0) * 8 * 18'
+    result: 2160
+
+  - formula: 'min(field_6Vwi1Eds - 5, 20)'
+    result: 15
+
+  - formula: 'abs(field_6Vwi1Eds)'
+    result: 20
+
+  - formula: 'abs(-20)'
+    result: 20
+
+  - formula: 'abs(+20 + 30)'
+    result: 50
+
+  - formula: 'abs(-20 + 30)'
+    result: 10
+
+  - formula: 'floor(20.5)'
+    result: 20
+
+  - formula: 'ceil(19.4)'
+    result: 20

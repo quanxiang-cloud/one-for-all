@@ -1,0 +1,2199 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`expect AST shape match 1`] = `
+Object {
+  "left": Object {
+    "name": "arr_number.[0]",
+    "type": "Variable",
+  },
+  "operator": "+",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 2`] = `
+Object {
+  "left": Object {
+    "name": "obj_field.value",
+    "type": "Variable",
+  },
+  "operator": "+",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 3`] = `
+Object {
+  "left": Object {
+    "name": "obj_field.arr_number.[0]",
+    "type": "Variable",
+  },
+  "operator": "+",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 4`] = `
+Object {
+  "left": Object {
+    "name": "obj_field.arr_object.[0].value",
+    "type": "Variable",
+  },
+  "operator": "+",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 5`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "+",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "2",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 6`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "+",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "-2",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 7`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "-",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "2",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 8`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "*",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "2",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 9`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "/",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "2",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 10`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "%",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "2",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 11`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "+",
+  "right": Object {
+    "left": Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    "operator": "%",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    "type": "BinaryExpression",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 12`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    "operator": "%",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    "type": "BinaryExpression",
+  },
+  "operator": "+",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "2",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 13`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "%",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "type": "BinaryExpression",
+    },
+    "operator": "+",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    "type": "BinaryExpression",
+  },
+  "operator": "+",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "3",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 14`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "%",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "type": "BinaryExpression",
+    },
+    "operator": "*",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    "type": "BinaryExpression",
+  },
+  "operator": "+",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "3",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 15`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "%",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "type": "BinaryExpression",
+    },
+    "operator": "*",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    "type": "BinaryExpression",
+  },
+  "operator": "/",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "3",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 16`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "-",
+  "right": Object {
+    "left": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "*",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      "type": "BinaryExpression",
+    },
+    "operator": "/",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "3",
+    },
+    "type": "BinaryExpression",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 17`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "<",
+  "right": Object {
+    "left": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "*",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      "type": "BinaryExpression",
+    },
+    "operator": "/",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "3",
+    },
+    "type": "BinaryExpression",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 18`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    "operator": "<",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    "type": "BinaryExpression",
+  },
+  "operator": ">",
+  "right": Object {
+    "left": Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    "operator": "/",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "3",
+    },
+    "type": "BinaryExpression",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 19`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "+",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "2",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 20`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    "operator": "+",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    "type": "BinaryExpression",
+  },
+  "operator": "*",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "6",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 21`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "+",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      "type": "BinaryExpression",
+    },
+    "operator": "*",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "6",
+    },
+    "type": "BinaryExpression",
+  },
+  "operator": "<",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "7",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 22`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "%",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      "type": "BinaryExpression",
+    },
+    "operator": "+",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "6",
+    },
+    "type": "BinaryExpression",
+  },
+  "operator": "<",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "7",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 23`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "%",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      "type": "BinaryExpression",
+    },
+    "operator": "+",
+    "right": Object {
+      "name": "one",
+      "type": "Variable",
+    },
+    "type": "BinaryExpression",
+  },
+  "operator": "<",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "7",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 24`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "%",
+      "right": Object {
+        "name": "two",
+        "type": "Variable",
+      },
+      "type": "BinaryExpression",
+    },
+    "operator": "+",
+    "right": Object {
+      "name": "one",
+      "type": "Variable",
+    },
+    "type": "BinaryExpression",
+  },
+  "operator": "<",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "7",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 25`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "left": Object {
+        "name": "three",
+        "type": "Variable",
+      },
+      "operator": "%",
+      "right": Object {
+        "name": "two",
+        "type": "Variable",
+      },
+      "type": "BinaryExpression",
+    },
+    "operator": "+",
+    "right": Object {
+      "name": "one",
+      "type": "Variable",
+    },
+    "type": "BinaryExpression",
+  },
+  "operator": "<",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "7",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 26`] = `
+Object {
+  "funcName": "sum",
+  "params": Array [
+    Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "3",
+    },
+  ],
+  "type": "MathFunctionExpression",
+}
+`;
+
+exports[`expect AST shape match 27`] = `
+Object {
+  "funcName": "sum",
+  "params": Array [
+    Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    Object {
+      "name": "three",
+      "type": "Variable",
+    },
+  ],
+  "type": "MathFunctionExpression",
+}
+`;
+
+exports[`expect AST shape match 28`] = `
+Object {
+  "left": Object {
+    "funcName": "sum",
+    "params": Array [
+      Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      Object {
+        "name": "three",
+        "type": "Variable",
+      },
+    ],
+    "type": "MathFunctionExpression",
+  },
+  "operator": "+",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 29`] = `
+Object {
+  "left": Object {
+    "funcName": "sum",
+    "params": Array [
+      Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      Object {
+        "name": "three",
+        "type": "Variable",
+      },
+    ],
+    "type": "MathFunctionExpression",
+  },
+  "operator": "*",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 30`] = `
+Object {
+  "left": Object {
+    "funcName": "sum",
+    "params": Array [
+      Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      Object {
+        "name": "three",
+        "type": "Variable",
+      },
+    ],
+    "type": "MathFunctionExpression",
+  },
+  "operator": "*",
+  "right": Object {
+    "funcName": "average",
+    "params": Array [
+      Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      Object {
+        "name": "three",
+        "type": "Variable",
+      },
+    ],
+    "type": "MathFunctionExpression",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 31`] = `
+Object {
+  "left": Object {
+    "funcName": "sum",
+    "params": Array [
+      Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      Object {
+        "type": "NumberLiteral",
+        "value": "3",
+      },
+      Object {
+        "name": "three",
+        "type": "Variable",
+      },
+    ],
+    "type": "MathFunctionExpression",
+  },
+  "operator": "+",
+  "right": Object {
+    "funcName": "average",
+    "params": Array [
+      Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      Object {
+        "type": "NumberLiteral",
+        "value": "3",
+      },
+      Object {
+        "name": "three",
+        "type": "Variable",
+      },
+    ],
+    "type": "MathFunctionExpression",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 32`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "<=",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "2",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 33`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "<",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "2",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 34`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "2",
+  },
+  "operator": ">=",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 35`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "2",
+  },
+  "operator": ">",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 36`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "==",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 37`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "!=",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "2",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 38`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "∈",
+  "right": Array [
+    Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "3",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "4",
+    },
+  ],
+  "type": "CollectionExpression",
+}
+`;
+
+exports[`expect AST shape match 39`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "∉",
+  "right": Array [
+    Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "3",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "4",
+    },
+  ],
+  "type": "CollectionExpression",
+}
+`;
+
+exports[`expect AST shape match 40`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "∈",
+  "right": Array [
+    Object {
+      "type": "StringLiteral",
+      "value": "1",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "3",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "4",
+    },
+  ],
+  "type": "CollectionExpression",
+}
+`;
+
+exports[`expect AST shape match 41`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "∉",
+  "right": Array [
+    Object {
+      "type": "StringLiteral",
+      "value": "1",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "3",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "4",
+    },
+  ],
+  "type": "CollectionExpression",
+}
+`;
+
+exports[`expect AST shape match 42`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    "operator": "==",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    "type": "BinaryExpression",
+  },
+  "operator": "||",
+  "right": Object {
+    "left": Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    "operator": "<",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    "type": "BinaryExpression",
+  },
+  "type": "LogicalExpression",
+}
+`;
+
+exports[`expect AST shape match 43`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    "operator": "==",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    "type": "BinaryExpression",
+  },
+  "operator": "&&",
+  "right": Object {
+    "left": Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    "operator": "<",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    "type": "BinaryExpression",
+  },
+  "type": "LogicalExpression",
+}
+`;
+
+exports[`expect AST shape match 44`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "==",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      "type": "BinaryExpression",
+    },
+    "operator": "||",
+    "right": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "<",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      "type": "BinaryExpression",
+    },
+    "type": "LogicalExpression",
+  },
+  "operator": "&&",
+  "right": Object {
+    "left": Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    "operator": "!=",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    "type": "BinaryExpression",
+  },
+  "type": "LogicalExpression",
+}
+`;
+
+exports[`expect AST shape match 45`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "==",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      "type": "BinaryExpression",
+    },
+    "operator": "&&",
+    "right": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "<",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      "type": "BinaryExpression",
+    },
+    "type": "LogicalExpression",
+  },
+  "operator": "||",
+  "right": Object {
+    "left": Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    "operator": "!=",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    "type": "BinaryExpression",
+  },
+  "type": "LogicalExpression",
+}
+`;
+
+exports[`expect AST shape match 46`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "<=",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "2",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 47`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "<",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "2",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 48`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "2",
+  },
+  "operator": ">=",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 49`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "2",
+  },
+  "operator": ">",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 50`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "==",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 51`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "!=",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "2",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 52`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "∈",
+  "right": Array [
+    Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "3",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "4",
+    },
+  ],
+  "type": "CollectionExpression",
+}
+`;
+
+exports[`expect AST shape match 53`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "∉",
+  "right": Array [
+    Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "3",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "4",
+    },
+  ],
+  "type": "CollectionExpression",
+}
+`;
+
+exports[`expect AST shape match 54`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "∈",
+  "right": Array [
+    Object {
+      "type": "StringLiteral",
+      "value": "1",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "3",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "4",
+    },
+  ],
+  "type": "CollectionExpression",
+}
+`;
+
+exports[`expect AST shape match 55`] = `
+Object {
+  "left": Object {
+    "type": "NumberLiteral",
+    "value": "1",
+  },
+  "operator": "∉",
+  "right": Array [
+    Object {
+      "type": "StringLiteral",
+      "value": "1",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "3",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "4",
+    },
+  ],
+  "type": "CollectionExpression",
+}
+`;
+
+exports[`expect AST shape match 56`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    "operator": "==",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    "type": "BinaryExpression",
+  },
+  "operator": "||",
+  "right": Object {
+    "left": Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    "operator": "<",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    "type": "BinaryExpression",
+  },
+  "type": "LogicalExpression",
+}
+`;
+
+exports[`expect AST shape match 57`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    "operator": "==",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    "type": "BinaryExpression",
+  },
+  "operator": "&&",
+  "right": Object {
+    "left": Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    "operator": "<",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    "type": "BinaryExpression",
+  },
+  "type": "LogicalExpression",
+}
+`;
+
+exports[`expect AST shape match 58`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "==",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      "type": "BinaryExpression",
+    },
+    "operator": "||",
+    "right": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "<",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      "type": "BinaryExpression",
+    },
+    "type": "LogicalExpression",
+  },
+  "operator": "&&",
+  "right": Object {
+    "left": Object {
+      "type": "NumberLiteral",
+      "value": "1",
+    },
+    "operator": "!=",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "2",
+    },
+    "type": "BinaryExpression",
+  },
+  "type": "LogicalExpression",
+}
+`;
+
+exports[`expect AST shape match 59`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "left": Object {
+        "name": "one",
+        "type": "Variable",
+      },
+      "operator": "==",
+      "right": Object {
+        "name": "two",
+        "type": "Variable",
+      },
+      "type": "BinaryExpression",
+    },
+    "operator": "&&",
+    "right": Object {
+      "left": Object {
+        "name": "one",
+        "type": "Variable",
+      },
+      "operator": "<",
+      "right": Object {
+        "name": "two",
+        "type": "Variable",
+      },
+      "type": "BinaryExpression",
+    },
+    "type": "LogicalExpression",
+  },
+  "operator": "||",
+  "right": Object {
+    "left": Object {
+      "name": "one",
+      "type": "Variable",
+    },
+    "operator": "!=",
+    "right": Object {
+      "name": "two",
+      "type": "Variable",
+    },
+    "type": "BinaryExpression",
+  },
+  "type": "LogicalExpression",
+}
+`;
+
+exports[`expect AST shape match 60`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "==",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      "type": "BinaryExpression",
+    },
+    "operator": "&&",
+    "right": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "<",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      "type": "BinaryExpression",
+    },
+    "type": "LogicalExpression",
+  },
+  "operator": "||",
+  "right": Object {
+    "left": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "==",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      "type": "BinaryExpression",
+    },
+    "operator": "&&",
+    "right": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "<",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      "type": "BinaryExpression",
+    },
+    "type": "LogicalExpression",
+  },
+  "type": "LogicalExpression",
+}
+`;
+
+exports[`expect AST shape match 61`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "left": Object {
+        "left": Object {
+          "type": "NumberLiteral",
+          "value": "1",
+        },
+        "operator": "==",
+        "right": Object {
+          "type": "NumberLiteral",
+          "value": "2",
+        },
+        "type": "BinaryExpression",
+      },
+      "operator": "&&",
+      "right": Object {
+        "left": Object {
+          "type": "NumberLiteral",
+          "value": "1",
+        },
+        "operator": "<",
+        "right": Object {
+          "type": "NumberLiteral",
+          "value": "2",
+        },
+        "type": "BinaryExpression",
+      },
+      "type": "LogicalExpression",
+    },
+    "operator": "||",
+    "right": Object {
+      "left": Object {
+        "left": Object {
+          "type": "NumberLiteral",
+          "value": "1",
+        },
+        "operator": "==",
+        "right": Object {
+          "type": "NumberLiteral",
+          "value": "2",
+        },
+        "type": "BinaryExpression",
+      },
+      "operator": "&&",
+      "right": Object {
+        "left": Object {
+          "type": "NumberLiteral",
+          "value": "1",
+        },
+        "operator": "<",
+        "right": Object {
+          "type": "NumberLiteral",
+          "value": "2",
+        },
+        "type": "BinaryExpression",
+      },
+      "type": "LogicalExpression",
+    },
+    "type": "LogicalExpression",
+  },
+  "operator": "&&",
+  "right": Object {
+    "left": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "==",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      "type": "BinaryExpression",
+    },
+    "operator": "&&",
+    "right": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "<",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      "type": "BinaryExpression",
+    },
+    "type": "LogicalExpression",
+  },
+  "type": "LogicalExpression",
+}
+`;
+
+exports[`expect AST shape match 62`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "left": Object {
+        "left": Object {
+          "type": "NumberLiteral",
+          "value": "1",
+        },
+        "operator": "==",
+        "right": Object {
+          "type": "NumberLiteral",
+          "value": "2",
+        },
+        "type": "BinaryExpression",
+      },
+      "operator": "&&",
+      "right": Object {
+        "left": Object {
+          "type": "NumberLiteral",
+          "value": "1",
+        },
+        "operator": "<",
+        "right": Object {
+          "type": "NumberLiteral",
+          "value": "2",
+        },
+        "type": "BinaryExpression",
+      },
+      "type": "LogicalExpression",
+    },
+    "operator": "||",
+    "right": Object {
+      "left": Object {
+        "left": Object {
+          "type": "NumberLiteral",
+          "value": "1",
+        },
+        "operator": "==",
+        "right": Object {
+          "type": "NumberLiteral",
+          "value": "2",
+        },
+        "type": "BinaryExpression",
+      },
+      "operator": "&&",
+      "right": Object {
+        "left": Object {
+          "type": "NumberLiteral",
+          "value": "1",
+        },
+        "operator": "<",
+        "right": Object {
+          "type": "NumberLiteral",
+          "value": "2",
+        },
+        "type": "BinaryExpression",
+      },
+      "type": "LogicalExpression",
+    },
+    "type": "LogicalExpression",
+  },
+  "operator": "||",
+  "right": Object {
+    "left": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "==",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      "type": "BinaryExpression",
+    },
+    "operator": "||",
+    "right": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      "operator": "<",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      "type": "BinaryExpression",
+    },
+    "type": "LogicalExpression",
+  },
+  "type": "LogicalExpression",
+}
+`;
+
+exports[`expect AST shape match 63`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "left": Object {
+        "left": Object {
+          "name": "one",
+          "type": "Variable",
+        },
+        "operator": "==",
+        "right": Object {
+          "name": "two",
+          "type": "Variable",
+        },
+        "type": "BinaryExpression",
+      },
+      "operator": "||",
+      "right": Object {
+        "left": Object {
+          "name": "one",
+          "type": "Variable",
+        },
+        "operator": "<",
+        "right": Object {
+          "type": "NumberLiteral",
+          "value": "22",
+        },
+        "type": "BinaryExpression",
+      },
+      "type": "LogicalExpression",
+    },
+    "operator": "&&",
+    "right": Object {
+      "left": Object {
+        "left": Object {
+          "type": "NumberLiteral",
+          "value": "3",
+        },
+        "operator": "==",
+        "right": Object {
+          "type": "NumberLiteral",
+          "value": "4",
+        },
+        "type": "BinaryExpression",
+      },
+      "operator": "||",
+      "right": Object {
+        "left": Object {
+          "type": "NumberLiteral",
+          "value": "3",
+        },
+        "operator": "<",
+        "right": Object {
+          "type": "NumberLiteral",
+          "value": "4",
+        },
+        "type": "BinaryExpression",
+      },
+      "type": "LogicalExpression",
+    },
+    "type": "LogicalExpression",
+  },
+  "operator": "||",
+  "right": Object {
+    "left": Object {
+      "left": Object {
+        "name": "five",
+        "type": "Variable",
+      },
+      "operator": "==",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "6",
+      },
+      "type": "BinaryExpression",
+    },
+    "operator": "&&",
+    "right": Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "5",
+      },
+      "operator": "<",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "6",
+      },
+      "type": "BinaryExpression",
+    },
+    "type": "LogicalExpression",
+  },
+  "type": "LogicalExpression",
+}
+`;
+
+exports[`expect AST shape match 64`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "left": Object {
+        "name": "one_str",
+        "type": "Variable",
+      },
+      "operator": "∈",
+      "right": Array [
+        Object {
+          "type": "NumberLiteral",
+          "value": "1",
+        },
+        Object {
+          "name": "two_str",
+          "type": "Variable",
+        },
+        Object {
+          "type": "NumberLiteral",
+          "value": "3",
+        },
+        Object {
+          "type": "NumberLiteral",
+          "value": "4",
+        },
+      ],
+      "type": "CollectionExpression",
+    },
+    "operator": "||",
+    "right": Object {
+      "left": Object {
+        "name": "two",
+        "type": "Variable",
+      },
+      "operator": "∈",
+      "right": Array [
+        Object {
+          "type": "NumberLiteral",
+          "value": "1",
+        },
+        Object {
+          "name": "two",
+          "type": "Variable",
+        },
+        Object {
+          "type": "NumberLiteral",
+          "value": "3",
+        },
+        Object {
+          "type": "NumberLiteral",
+          "value": "4",
+        },
+      ],
+      "type": "CollectionExpression",
+    },
+    "type": "LogicalExpression",
+  },
+  "operator": "&&",
+  "right": Object {
+    "left": Object {
+      "type": "StringLiteral",
+      "value": "3",
+    },
+    "operator": "∈",
+    "right": Array [
+      Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      Object {
+        "type": "NumberLiteral",
+        "value": "2",
+      },
+      Object {
+        "type": "NumberLiteral",
+        "value": "3",
+      },
+      Object {
+        "type": "NumberLiteral",
+        "value": "4",
+      },
+    ],
+    "type": "CollectionExpression",
+  },
+  "type": "LogicalExpression",
+}
+`;
+
+exports[`expect AST shape match 65`] = `
+Object {
+  "left": Object {
+    "funcName": "sum",
+    "params": Array [
+      Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      Object {
+        "type": "NumberLiteral",
+        "value": "3",
+      },
+      Object {
+        "name": "three",
+        "type": "Variable",
+      },
+    ],
+    "type": "MathFunctionExpression",
+  },
+  "operator": "+",
+  "right": Object {
+    "funcName": "average",
+    "params": Array [
+      Object {
+        "type": "NumberLiteral",
+        "value": "1",
+      },
+      Object {
+        "type": "NumberLiteral",
+        "value": "3",
+      },
+      Object {
+        "name": "three",
+        "type": "Variable",
+      },
+    ],
+    "type": "MathFunctionExpression",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 66`] = `
+Object {
+  "name": "three",
+  "type": "Variable",
+}
+`;
+
+exports[`expect AST shape match 67`] = `
+Object {
+  "funcName": "max",
+  "params": Array [
+    Object {
+      "left": Object {
+        "name": "three",
+        "type": "Variable",
+      },
+      "operator": "-",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "8",
+      },
+      "type": "BinaryExpression",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "0",
+    },
+  ],
+  "type": "MathFunctionExpression",
+}
+`;
+
+exports[`expect AST shape match 68`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "funcName": "max",
+      "params": Array [
+        Object {
+          "left": Object {
+            "name": "three",
+            "type": "Variable",
+          },
+          "operator": "-",
+          "right": Object {
+            "type": "NumberLiteral",
+            "value": "5",
+          },
+          "type": "BinaryExpression",
+        },
+        Object {
+          "type": "NumberLiteral",
+          "value": "0",
+        },
+      ],
+      "type": "MathFunctionExpression",
+    },
+    "operator": "*",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "8",
+    },
+    "type": "BinaryExpression",
+  },
+  "operator": "*",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "18",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 69`] = `
+Object {
+  "left": Object {
+    "left": Object {
+      "funcName": "max",
+      "params": Array [
+        Object {
+          "left": Object {
+            "name": "field_6Vwi1Eds",
+            "type": "Variable",
+          },
+          "operator": "-",
+          "right": Object {
+            "type": "NumberLiteral",
+            "value": "5",
+          },
+          "type": "BinaryExpression",
+        },
+        Object {
+          "type": "NumberLiteral",
+          "value": "0",
+        },
+      ],
+      "type": "MathFunctionExpression",
+    },
+    "operator": "*",
+    "right": Object {
+      "type": "NumberLiteral",
+      "value": "8",
+    },
+    "type": "BinaryExpression",
+  },
+  "operator": "*",
+  "right": Object {
+    "type": "NumberLiteral",
+    "value": "18",
+  },
+  "type": "BinaryExpression",
+}
+`;
+
+exports[`expect AST shape match 70`] = `
+Object {
+  "funcName": "min",
+  "params": Array [
+    Object {
+      "left": Object {
+        "name": "field_6Vwi1Eds",
+        "type": "Variable",
+      },
+      "operator": "-",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "5",
+      },
+      "type": "BinaryExpression",
+    },
+    Object {
+      "type": "NumberLiteral",
+      "value": "20",
+    },
+  ],
+  "type": "MathFunctionExpression",
+}
+`;
+
+exports[`expect AST shape match 71`] = `
+Object {
+  "funcName": "abs",
+  "params": Array [
+    Object {
+      "name": "field_6Vwi1Eds",
+      "type": "Variable",
+    },
+  ],
+  "type": "MathFunctionExpression",
+}
+`;
+
+exports[`expect AST shape match 72`] = `
+Object {
+  "funcName": "abs",
+  "params": Array [
+    Object {
+      "type": "NumberLiteral",
+      "value": "-20",
+    },
+  ],
+  "type": "MathFunctionExpression",
+}
+`;
+
+exports[`expect AST shape match 73`] = `
+Object {
+  "funcName": "abs",
+  "params": Array [
+    Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "20",
+      },
+      "operator": "+",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "30",
+      },
+      "type": "BinaryExpression",
+    },
+  ],
+  "type": "MathFunctionExpression",
+}
+`;
+
+exports[`expect AST shape match 74`] = `
+Object {
+  "funcName": "abs",
+  "params": Array [
+    Object {
+      "left": Object {
+        "type": "NumberLiteral",
+        "value": "-20",
+      },
+      "operator": "+",
+      "right": Object {
+        "type": "NumberLiteral",
+        "value": "30",
+      },
+      "type": "BinaryExpression",
+    },
+  ],
+  "type": "MathFunctionExpression",
+}
+`;
+
+exports[`expect AST shape match 75`] = `
+Object {
+  "funcName": "floor",
+  "params": Array [
+    Object {
+      "type": "NumberLiteral",
+      "value": "20.5",
+    },
+  ],
+  "type": "MathFunctionExpression",
+}
+`;
+
+exports[`expect AST shape match 76`] = `
+Object {
+  "funcName": "ceil",
+  "params": Array [
+    Object {
+      "type": "NumberLiteral",
+      "value": "19.4",
+    },
+  ],
+  "type": "MathFunctionExpression",
+}
+`;
