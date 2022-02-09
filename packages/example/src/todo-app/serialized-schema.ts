@@ -79,42 +79,6 @@ const todoAppSchema: Schema = {
           },
         ],
       },
-      // {
-      //   id: 'word_count',
-      //   type: 'html-element',
-      //   name: 'p',
-      //   props: {
-      //     children: {
-      //       type: 'node_state_property',
-      //       nodeKey: 'todo-input',
-      //       // todo replace by $ele-input-xhfsf-todo-input.value
-      //       fallback: 'abv dev',
-      //       convertor: {
-      //         type: 'state_convert_expression',
-      //         expression: '`you have input ${state.split(\' \').length} words`',
-      //       },
-      //     },
-      //   },
-      // },
-      // {
-      //   id: 'refresh-todos',
-      //   type: 'html-element',
-      //   name: 'button',
-      //   props: {
-      //     children: {
-      //       type: 'constant_property',
-      //       value: 'refresh',
-      //     },
-      //     onClick: {
-      //       type: 'functional_property',
-      //       func: {
-      //         type: 'raw',
-      //         args: '',
-      //         body: 'this.apiStates[\'全部待办列表\'].fetch();',
-      //       },
-      //     },
-      //   },
-      // },
       {
         id: 'todo-list-loop-composedNode',
         type: 'loop-container',
@@ -240,29 +204,63 @@ const todoAppSchema: Schema = {
         },
       },
       {
-        id: 'todo-filter',
-        type: 'react-component',
-        packageName: 'todo-app',
-        exportName: 'TodoFilter',
-        packageVersion: 'whatever',
+        id: 'footer',
+        type: 'html-element',
+        name: 'div',
         props: {
-          onToggleStatus: {
-            type: 'api_invoke_property',
-            stateID: '全部待办列表',
-            paramsBuilder: {
-              type: 'param_builder_func_spec',
-              args: 'status',
-              body: `
-                return { params: { status } };
-              `,
+          style: {
+            type: 'constant_property',
+            value: {
+              paddingTop: '16px',
+              borderTop: '1px solid #eee',
+              display: 'flex',
+              justifyContent: 'space-between'
             },
           },
-          onFetchStatus: {
-            type: 'api_invoke_property',
-            stateID: 'todoStatus',
-          },
         },
-      },
+        children: [
+          {
+            id: 'todo-filter',
+            type: 'react-component',
+            packageName: 'todo-app',
+            exportName: 'TodoFilter',
+            packageVersion: 'whatever',
+            props: {
+              onToggleStatus: {
+                type: 'api_invoke_property',
+                stateID: '全部待办列表',
+                paramsBuilder: {
+                  type: 'param_builder_func_spec',
+                  args: 'status',
+                  body: `
+                return { params: { status } };
+              `,
+                },
+              },
+              onFetchStatus: {
+                type: 'api_invoke_property',
+                stateID: 'todoStatus',
+              },
+            },
+          },
+          // {
+          //   id: 'todo-count',
+          //   type: 'html-element',
+          //   name: 'span',
+          //   props: {
+          //     children: {
+          //       type: 'api_result_property',
+          //       stateID: '全部待办列表',
+          //       fallback: '',
+          //       convertor: {
+          //         type: 'state_convert_expression',
+          //         expression: '`共 ${state.length} 条记录`'
+          //       }
+          //     }
+          //   }
+          // }
+        ]
+      }
     ],
   },
 };
