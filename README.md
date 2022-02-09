@@ -2,7 +2,7 @@
 
 # Start
 
-This project use (Rush)[https://rushjs.io/] as monorepo manager, you should install it first.
+This project use [Rush](https://rushjs.io/) as monorepo manager, you should install it first.
 
 ```
 npm install -g @microsoft/rush
@@ -17,5 +17,3 @@ rush update
 then you can cd into some package and run test or start command.
 
 ## Contribution guide
-
-This project is original inspired by https://github.com/esm-bundle.
