@@ -8,6 +8,7 @@
     "build:watch": "rollup -c rollup.config.js -w",
     "bundle": "echo example bundle done",
     "server": "http-server",
+    "pack": "",
     "start": "run-p build:watch server"
   },
   "dependencies": {
