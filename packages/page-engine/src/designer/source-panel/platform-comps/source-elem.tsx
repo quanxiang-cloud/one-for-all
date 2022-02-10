@@ -23,8 +23,7 @@ function SourceElem(props: SourceElement<any>): JSX.Element {
         ...defaultStyle,
       },
     }, target, { from: 'source' });
-    designer.setActiveGroup('');
-    designer.setPanelOpen(false);
+    !designer.panelPinned && designer.setPanelOpen(false);
   }
 
   const [{ isDragging }, drag] = useDrag(() => ({

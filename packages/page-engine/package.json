@@ -13,8 +13,8 @@
     "lib"
   ],
   "scripts": {
-    "build": "tsc --build tsconfig.json",
-    "prebundle": "yarn run clean && yarn run build",
+    "build": "yarn run clean && yarn run tsc && yarn run bundle",
+    "tsc": "tsc --build tsconfig.json",
     "bundle": "rollup -c",
     "clean": "rm -rf dist lib",
     "dev": "webpack serve --progress",
@@ -24,7 +24,7 @@
     "test": "jest",
     "start": "run-p server watch",
     "watch": "webpack --watch",
-    "server": "http-server",
+    "server": "http-server --cors='*'",
     "type-check": "tsc --noEmit --skipLibCheck --pretty -w"
   },
   "dependencies": {

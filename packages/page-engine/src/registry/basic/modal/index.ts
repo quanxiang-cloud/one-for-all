@@ -1,4 +1,4 @@
-import Dialog from './dialog';
+import Dialog from './dialog'
 import ConfigForm from './config-form';
 import type { SourceElement } from '../../../index';
 
@@ -9,14 +9,17 @@ type Props = {
 const defaultConfig: Props = {};
 
 const elem: SourceElement<Props> = {
-  name: 'dialog',
-  icon: 'apps',
-  label: '对话框',
+  name: 'modal',
+  icon: 'grid-12',
+  label: '模态框',
   category: 'basic',
   component: Dialog,
   configForm: ConfigForm,
   defaultConfig,
-  order: 5,
+  order: 9,
+  acceptChild: true,
+  exportActions: ['onClose', 'onOpen', 'onCancel', 'onSubmit'],
+  defaultStyle: {},
 };
 
 export default elem;

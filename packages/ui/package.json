@@ -13,6 +13,7 @@
   ],
   "scripts": {
     "build": "yarn run clean && yarn run bundle && tsc --build tsconfig.json && yarn run copy:assets",
+    "tsc": "tsc --build tsconfig.json",
     "build:icons": "node scripts/build-icons.js",
     "prebundle": "yarn run clean && yarn run build:icons",
     "bundle": "rollup -c",

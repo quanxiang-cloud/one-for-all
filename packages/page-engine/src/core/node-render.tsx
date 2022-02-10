@@ -146,6 +146,15 @@ function NodeRender({ schema }: Props): JSX.Element | null {
 
     // patch certain elem's props
     if (schema.type === 'react-component') {
+      const containerPlaceholder=(
+        <div
+          style={{ minHeight: 60 }}
+          className='bg-gray-100 border border-dashed flex items-center justify-center'
+        >
+          拖拽组件或模板到这里
+        </div>
+      )
+
       // add placeholder to page elem
       if (schema.exportName === 'page' && !schema.children?.length) {
         Object.assign(elemProps, {
@@ -161,14 +170,13 @@ function NodeRender({ schema }: Props): JSX.Element | null {
       // add placeholder to container elem
       if (schema.exportName === 'container' && !schema.children?.length) {
         Object.assign(elemProps, {
-          placeholder: (
-            <div
-              style={{ minHeight: 60 }}
-              className='bg-gray-100 border border-dashed flex items-center justify-center'
-            >
-              拖拽组件或模板到这里
-            </div>
-          ),
+          placeholder: containerPlaceholder,
+        });
+      }
+
+      if(schema.exportName === 'modal' && !schema.children?.length) {
+        Object.assign(elemProps, {
+          placeholder: containerPlaceholder,
         });
       }
     }

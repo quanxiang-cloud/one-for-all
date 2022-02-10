@@ -19,18 +19,18 @@ function SourcePanel(): JSX.Element {
   const { designer: store } = useCtx();
   const { activeGroup, panelPinned, panelOpen } = store;
   const panelRef = useRef<HTMLDivElement>(null);
-  const hoverDoc = useCallback(debounce(handleClickOutside, 200), []);
+  const hoverDoc = useCallback(debounce(handleClickOutside, 100), []);
   const hoverGroup = useCallback(debounce((name: string)=> {
     store.setActiveGroup(name);
     store.setPanelOpen(true);
   }, 200), []);
 
-  // useEffect(() => {
-  //   document.addEventListener('mouseover', hoverDoc);
-  //   return () => {
-  //     document.removeEventListener('mouseover', hoverDoc);
-  //   };
-  // }, []);
+  useEffect(() => {
+    document.addEventListener('click', hoverDoc);
+    return () => {
+      document.removeEventListener('click', hoverDoc);
+    };
+  }, []);
 
   function handleClickOutside(ev: any): void {
     if (!panelRef.current?.contains(ev.target) && !store.panelPinned) {

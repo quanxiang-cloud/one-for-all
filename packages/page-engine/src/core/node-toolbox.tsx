@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useImperativeHandle } from 'react';
+import React, { useEffect, useRef, useState, useImperativeHandle, useLayoutEffect } from 'react';
 import { observer } from 'mobx-react';
 
 import { useCtx } from '../index';
@@ -11,6 +11,7 @@ interface Props {
 function NodeToolbox(props: Props, ref: any): JSX.Element {
   const popperRef = useRef<Popper>(null);
   const reference = useRef<any>(null);
+  const toolboxRef=useRef<HTMLDivElement>(null)
   const { page, designer } = useCtx();
   const [seat, setSeat] = useState({
     width: 0,
@@ -62,9 +63,13 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
   function getTransformX(): string {
     const { element } = page.schemaElements[page.activeElemId];
     if (element) {
-      const { width } = element.getBoundingClientRect();
-      const canvasWid = (document.querySelector('.pge-canvas') as Element).getBoundingClientRect().width;
-      if (Math.abs(canvasWid - width) < 100) {
+      const { right } = element.getBoundingClientRect();
+      const {right: canvasRight} = (document.querySelector('.pge-canvas') as Element).getBoundingClientRect();
+      let toolboxWid=120;
+      if(toolboxRef.current){
+        toolboxWid=parseInt(window.getComputedStyle(toolboxRef.current).width)
+      }
+      if (right + toolboxWid >= canvasRight) {
         return 'translateX(0)';
       }
       return 'translateX(100%)';
@@ -136,6 +141,7 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
             }}>
               <div
                 className='h-20 border border-black flex absolute z-10'
+                ref={toolboxRef}
                 // @ts-ignore
                 style={Object.assign({ right: '0', pointerEvents: 'all', transform: getTransformX() },
                   page.activeElem?.exportName === 'page' ? { top: 0 } : { bottom: '-22px' })}
