@@ -1,5 +1,4 @@
 import React from 'react';
-import cs from 'classnames';
 
 import svgHash from './svg-hash';
 
@@ -14,7 +13,7 @@ function Icon(
   {
     name,
     size = 16,
-    className,
+    className = '',
     style,
   }: IconProps,
   ref?: React.Ref<SVGSVGElement>,
@@ -30,7 +29,7 @@ function Icon(
       ref={ref}
       data-name={name}
       style={_style}
-      className={cs('ofa-svg-icon', className)}
+      className={'ofa-svg-icon ' + className}
     >
       <use xlinkHref={`${svgHash}#${name}`} />
     </svg>
