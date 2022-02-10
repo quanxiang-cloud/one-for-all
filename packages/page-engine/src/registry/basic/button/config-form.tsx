@@ -17,9 +17,16 @@ const sizeOptions: { label: string, value: 'normal' | 'compact' }[] = [
   { label: '紧凑', value: 'compact' },
 ];
 
+const typeOptions: { label: string, value: 'button' | 'submit' | 'reset' }[] = [
+  { label: '按钮', value: 'button' },
+  { label: '提交', value: 'submit' },
+  { label: '重置', value: 'reset' },
+]
+
 export const DEFAULT_CONFIG = {
   title: '按钮',
   modifier: 'primary',
+  type: 'button',
   size: 'normal',
   iconSize: 12,
   iconName: '',
@@ -75,6 +82,15 @@ function ConfigForm(): JSX.Element {
           options={modifierOptions}
           value={values.modifier}
           onChange={(value) => setValues({ ...values, modifier: value })}
+        />
+      </div>
+      <div className='mt-8 text-12 text-gray-600'>按钮功能</div>
+      <div className="config-item">
+        <Select
+          className="w-full mr-4 border corner-2-8-8-8 border-gray-300 focus:border-blue-600"
+          options={typeOptions}
+          value={values.type}
+          onChange={(value) => setValues({ ...values, type: value })}
         />
       </div>
       <div className='mt-8 text-12 text-gray-600'>按钮大小</div>

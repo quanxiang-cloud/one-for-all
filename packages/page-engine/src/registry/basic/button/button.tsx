@@ -5,6 +5,7 @@ import { Button } from '@one-for-all/ui';
 export interface Props {
   id?: string;
   title?: string;
+  type?: 'button' | 'submit' | 'reset';
   size?: 'normal' | 'compact';
   modifier?: 'primary' | 'default' | 'danger';
   loading?: boolean;
