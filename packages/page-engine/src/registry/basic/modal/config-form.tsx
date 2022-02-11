@@ -4,15 +4,15 @@ import { defaults, noop } from 'lodash';
 import { useCtx, DataBind as ConfigBind } from '../../../index';
 import { Select, Icon, Button, Toggle } from '@one-for-all/ui';
 
-// type Callback=(...args: any[])=> void;
+type Callback = (...args: any[]) => void;
 
 export interface Props {
   title: string;
   isOpen: boolean;
   id?: string;
-  // onClose?: Callback;
-  // onCancel?: Callback;
-  // onConfirm?: Callback;
+  onClose?: Callback;
+  onCancel?: Callback;
+  onConfirm?: Callback;
   children?: React.ReactNode;
   className?: string;
   width?: number | string;

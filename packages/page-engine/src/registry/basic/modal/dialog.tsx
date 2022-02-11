@@ -18,14 +18,14 @@ function Dialog({children, hideFooter, okIconName, okText, cancelIconName, cance
         {
           key: 'close',
           iconName: cancelIconName,
-          onClick: noop,
+          onClick: rest.onCancel || noop,
           text: cancelText,
         },
         {
           key: 'check',
           iconName: okIconName,
           modifier: 'primary',
-          onClick: noop,
+          onClick: rest.onConfirm || noop,
           text: okText,
         },
       ]}

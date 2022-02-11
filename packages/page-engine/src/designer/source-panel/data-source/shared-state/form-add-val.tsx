@@ -59,19 +59,6 @@ function FormAddVal(props: Props): JSX.Element | null {
       toast.error('非法的变量名');
       return false;
     }
-
-    let isHave = false;
-    Object.keys(dataSource.sharedState).forEach((key) => {
-      if (key === val) {
-        isHave = true;
-      }
-    });
-
-    if (isHave) {
-      toast.error('变量名重复');
-      return false;
-    }
-
     return true;
   }
 
