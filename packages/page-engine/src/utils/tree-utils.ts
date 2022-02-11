@@ -1,5 +1,4 @@
 import { get } from 'lodash';
-import { toJS } from 'mobx';
 
 import type { PageNode } from '../types';
 
@@ -106,6 +105,15 @@ export function removeNode(tree: PageNode, node_id: string): void {
     });
 
     if (idx > -1) {
+      // The scale needs to be updated to delete sub components of the layout container
+      if (tree.exportName === 'grid') {
+        const { colRatio } = tree.props;
+        if (colRatio && colRatio.value) {
+          const scaleArray: string[] = colRatio.value.split(':');
+          scaleArray.splice(idx, 1);
+          tree.props.colRatio = { type: 'constant_property', value: scaleArray.join(':') };
+        }
+      }
       tree.children.splice(idx, 1);
     } else {
       tree.children.forEach((c: any)=> {
@@ -248,7 +256,6 @@ export function findParent(tree: PageNode, node_id: string): PageNode | undefine
           return outLayer.id === node_id;
         }
         if (children) {
-          console.log('走了');
           return findParent(c.node, node_id);
         }
       }

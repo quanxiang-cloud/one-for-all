@@ -5,7 +5,6 @@ import { toJS } from 'mobx';
 
 import { Icon } from '@one-for-all/ui';
 import { useCtx, SourceElement } from '../../../index';
-import {isDev} from '../../../utils'
 
 import styles from './index.m.scss';
 

@@ -16,6 +16,7 @@ class DesignerStore {
   @observable isLoopNode=false; // 当前节点需标记为loop node
   @observable modalComponentNodeOpen=false // componentNode的配置
   @observable isComponentNode=false // 当前节点需标记为component node
+  @observable imageUrl='' // 上传的图片链接
 
   constructor() {
     makeObservable(this);
@@ -94,6 +95,11 @@ class DesignerStore {
     this.modalComponentNodeOpen = true;
     this.activeFieldName = fieldName;
     this.isComponentNode = !!isComponentNode;
+  }
+
+  @action
+  setUploadImage(url: string): void {
+    this.imageUrl = url;
   }
 }
 

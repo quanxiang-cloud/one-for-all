@@ -6,7 +6,7 @@ import { useCtx, DataBind as ConfigBind } from '../../../index';
 
 export const DEFAULT_CONFIG: Props = {
   content: '段落文本',
-  maxLength: 2,
+  maxLength: 5,
   isAllowSelect: false,
   isAllowSpace: false,
 };
