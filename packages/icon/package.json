@@ -16,10 +16,6 @@
     "preview:icons": "node scripts/preview-icons.js"
   },
   "dependencies": {
-    "@types/react": "~17.0.38",
-    "classnames": "^2.3.1",
-    "glob": "~7.2.0",
-    "mkdirp": "~1.0.4",
     "react": "^17.0.2"
   },
   "devDependencies": {
@@ -29,6 +25,9 @@
     "@types/styled-components": "^5.1.16",
     "rollup": "2.66.0",
     "rollup-plugin-esbuild": "^4.6.0",
-    "svg-spreact": "1.3.1"
+    "svg-spreact": "1.3.2",
+    "@types/react": "~17.0.38",
+    "glob": "~7.2.0",
+    "mkdirp": "~1.0.4"
   }
 }
