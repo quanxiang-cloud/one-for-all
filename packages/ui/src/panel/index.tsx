@@ -47,11 +47,11 @@ function Panel({
         ...style,
       }}
     >
-      <div className={cs('flex justify-between items-center px-8 py-8 bg-white w-full', styles.header)}>
+      <div className={cs('flex justify-between items-center px-8 py-8', styles.header)}>
         <div className={styles.title}>{title}</div>
         <div className={cs('inline-flex items-center', styles.actions)}>
           {pinnable && (
-            <div className={cs(styles.actionPin, { [styles.pinned]: pinned })}>
+            <div className={cs(styles.actionPin, {[styles.pinned]: pinned})}>
               <Icon
                 name='push_pin'
                 clickable

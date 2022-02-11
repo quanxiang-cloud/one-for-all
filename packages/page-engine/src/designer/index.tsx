@@ -9,7 +9,6 @@ import Toolbar from './toolbar';
 import SourcePanel from './source-panel';
 import SettingPanel from './setting-panel';
 import Canvas from '../core/canvas';
-// import IFrameDemo from '../core/iframe-demo';
 import Ctx from '../ctx';
 import stores from '../stores';
 import type { PageNode } from '../types';
@@ -40,9 +39,10 @@ function Designer({ className, onSave, docLink, hideTestPreview }: Props): JSX.E
     });
 
     if (isDev()) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      window._ctx = stores;
+      Object.assign(window, {
+        _ctx: stores,
+        __isDev__: true
+      })
     }
 
     return () => {
@@ -65,7 +65,6 @@ function Designer({ className, onSave, docLink, hideTestPreview }: Props): JSX.E
           })}>
             <SourcePanel />
             <Canvas className={cs('my-8', styles.canvas)} />
-            {/* <IFrameDemo /> */}
             <SettingPanel />
           </div>
         </div>

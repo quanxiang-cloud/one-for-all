@@ -6,13 +6,12 @@ import { observer } from 'mobx-react';
 import { useCtx, DataBind as ConfigBind } from '../../../index';
 
 export const DEFAULT_CONFIG: Props = {
-  content: '文本',
-  isAllowSelect: false,
+
 };
 
 export interface Props {
-  content?: string;
-  isAllowSelect?: boolean;
+  // content?: string;
+  // isAllowSelect?: boolean;
 }
 
 function ConfigForm(): JSX.Element {

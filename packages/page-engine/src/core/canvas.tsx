@@ -21,7 +21,7 @@ interface Props {
 }
 
 function Canvas({ schema, className }: Props): JSX.Element {
-  const { page, registry, dataSource } = useCtx();
+  const { page, registry, dataSource, designer } = useCtx();
   const toolRef = useRef<any>();
 
   const [{ isOver }, drop] = useDrop(() => ({
@@ -79,6 +79,7 @@ function Canvas({ schema, className }: Props): JSX.Element {
     // because some elem may has children, like container
     const elemId = (e.target as Element)?.closest('[data-node-key]')?.getAttribute('data-node-key') || '';
     elemId && page.setActiveElemId(elemId);
+    !designer.panelPinned && designer.setPanelOpen(false);
   }
 
   return (

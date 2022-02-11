@@ -5,6 +5,7 @@ import { toJS } from 'mobx';
 
 import { Icon } from '@one-for-all/ui';
 import { useCtx, SourceElement } from '../../../index';
+import {isDev} from '../../../utils'
 
 import styles from './index.m.scss';
 
@@ -23,8 +24,7 @@ function SourceElem(props: SourceElement<any>): JSX.Element {
         ...defaultStyle,
       },
     }, target, { from: 'source' });
-    designer.setActiveGroup('');
-    designer.setPanelOpen(false);
+    !designer.panelPinned && designer.setPanelOpen(false);
   }
 
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -36,7 +36,7 @@ function SourceElem(props: SourceElement<any>): JSX.Element {
     end: (item, monitor) => {
       const targetNode: any = monitor.getDropResult();
       if (targetNode?.exportName) {
-        // console.log('[source-elem] dropped %o onto: %o, pos: %s', item, targetNode, page.dragPos);
+        window.__isDev__ && console.log('[source-elem] dropped %o onto: %o, pos: %s', item, targetNode, page.dragPos);
         addNodeToCanvas(targetNode);
       }
     },

@@ -4,15 +4,14 @@ import Image from './image';
 import Button from './button';
 import Paragraph from './paragraph';
 import Link from './link';
+import Modal from './modal'
 
 export {
   Page,
   Text,
   Image,
   Button,
-  // Divider,
   Paragraph,
-  // Dialog,
-  // List,
+  Modal,
   Link,
 };

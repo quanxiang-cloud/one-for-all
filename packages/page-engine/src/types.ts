@@ -26,6 +26,7 @@ export interface PageNode extends BaseNode {
   children?: Array<PageNode>;
   defaultConfig?: any;
   defaultStyle?: React.CSSProperties;
+  disableActions?: boolean;
 }
 
 export interface PageSchema {

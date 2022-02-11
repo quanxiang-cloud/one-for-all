@@ -1,3 +1,5 @@
+$headerHeight: 44px;
+
 .panel {
   position: absolute;
   left: 0;
@@ -20,6 +22,7 @@
   .header {
     position: sticky;
     top: 0;
+    height: $headerHeight;
 
     > .title {
       font-weight: 600;
@@ -39,5 +42,10 @@
         }
       }
     }
+  }
+
+  .body {
+    height: calc(100% - #{$headerHeight});
+    overflow: auto;
   }
 }

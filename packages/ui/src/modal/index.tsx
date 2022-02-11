@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import styled, { createGlobalStyle, keyframes, css } from 'styled-components';
 import cs from 'classnames';
+import { pick } from 'lodash';
 
 import Icon from '../icon';
 import Button from '../button';
@@ -24,12 +25,16 @@ interface Props {
   width?: number | string;
   height?: number | string;
   className?: string;
-  children?: React.ReactNode
+  controlled?: boolean;
+  isOpen?: boolean;
+  wrapStyle?: React.CSSProperties;
+  children?: React.ReactNode;
   onClose?: () => void;
-  footerBtns?: FooterBtnProps[]
+  footerBtns?: FooterBtnProps[];
+  'data-node-key'?: string; // used in page-engine
 }
 
-export default function Modal({
+function Modal({
   title,
   fullscreen,
   className,
@@ -38,52 +43,62 @@ export default function Modal({
   children,
   onClose,
   footerBtns = [],
-}: Props): JSX.Element {
-  const [element] = useState(document.createElement('div'));
+  isOpen=true,
+  controlled,
+  wrapStyle,
+  ...rest
+}: Props, ref: React.LegacyRef<HTMLDivElement>): JSX.Element {
+  const [target] = useState(document.createElement('div'));
 
   useEffect(() => {
-    document.body.append(element);
-    return () => {
-      document.body.removeChild(element);
-    };
+    if(!controlled){
+      document.body.append(target);
+      return () => {
+        document.body.removeChild(target);
+      };
+    }
   }, []);
 
   const renderFooter = () : React.ReactNode => {
     if (!footerBtns.length) {
       return null;
-    } else {
-      return (
-        <Footer>
-          {
-            footerBtns.map(({
-              className = '',
-              text,
-              key,
-              onClick,
-              ...restProps
-            }) => (
-              <Button
-                {...restProps}
-                key={key}
-                className={
-                  cs(className, 'mr-20')
-                }
-                onClick={(e) => onClick(key, e)}
-              >
-                {text}
-              </Button>
-            ))
-          }
-        </Footer>
-      );
     }
+    return (
+      <Footer>
+        {
+          footerBtns.map(({
+            className = '',
+            text,
+            key,
+            onClick,
+            ...restProps
+          }) => (
+            <Button
+              {...restProps}
+              key={key}
+              className={
+                cs(className, 'mr-20')
+              }
+              onClick={(e) => onClick(key, e)}
+            >
+              {text}
+            </Button>
+          ))
+        }
+      </Footer>
+    );
   };
 
-  return createPortal(
-    <Wrap className={className}>
+  const modal=(
+    <Wrap className={className} style={wrapStyle} isOpen={isOpen}>
       <GlobalStyle />
       <Mask />
-      <InnerWrap width={width} height={height} fullscreen={fullscreen}>
+      <InnerWrap
+        width={width}
+        height={height}
+        fullscreen={fullscreen}
+        {...(controlled ? pick(rest, ['data-node-key', 'ref', 'draggable']) : {})}
+      >
         <Header>
           <div className='md-header-left'>
             <div className='md-title'>{title}</div>
@@ -97,9 +112,13 @@ export default function Modal({
         </Body>
         {renderFooter()}
       </InnerWrap>
-    </Wrap>,
-    element,
-  );
+    </Wrap>
+  )
+
+  if(controlled){
+    return modal;
+  }
+  return createPortal(modal, target);
 }
 
 const GlobalStyle = createGlobalStyle`
@@ -185,8 +204,8 @@ const InnerWrap = styled.div<{
 }>`
   display: flex;
   flex-direction: column;
-  width: ${(props) => typeof props.width === 'number' ? props.width + 'px' : props.width};
-  height: ${(props) => typeof props.height === 'number' ? props.height + 'px' : props.height};
+  width: ${({width}) => !isNaN(parseInt(width as any)) ? parseInt(width as any) + 'px' : width};
+  height: ${({height}) => !isNaN(parseInt(height as any)) ? parseInt(height as any) + 'px' : height};
   ${(props) => props.width === 'auto' ? 'min-width: 632px' : ''};
   background: white;
   ${({ fullscreen }) => fullscreen ? css`
@@ -204,7 +223,9 @@ const InnerWrap = styled.div<{
   animation: ${scaleAnimation} 0.3s;
 `;
 
-const Wrap = styled.div`
+const Wrap = styled.div<{
+  isOpen?: boolean
+}>`
   position: fixed;
   width: 100vw;
   height: 100vh;
@@ -212,7 +233,7 @@ const Wrap = styled.div`
   left: 0;
   right: 0;
   top: 0;
-  display: flex;
+  display: ${({isOpen})=> isOpen ? 'flex' : 'none'};
   align-items: center;
   transition: opacity .1s;
   justify-content: center;
@@ -226,3 +247,5 @@ const Wrap = styled.div`
     height: 100%;
   }
 `;
+
+export default React.forwardRef(Modal)

@@ -1,6 +1,6 @@
 %isOver {
   background-color: var(--blue-400);
-  opacity: .5;
+  //opacity: .5;
 }
 
 .page {
@@ -14,7 +14,7 @@
 
   &.isOver {
     @extend %isOver;
-    opacity: .2;
+    opacity: 0.5;
   }
 }
 
@@ -65,7 +65,7 @@
   }
 
   &.dragging {
-    opacity: .5;
+    @extend %isOver;
     cursor: move;
   }
 
@@ -75,7 +75,6 @@
 
   &.draggingInner {
     @extend %isOver;
-    opacity: .2;
   }
 
   &.draggingDown {
