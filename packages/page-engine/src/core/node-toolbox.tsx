@@ -11,7 +11,7 @@ interface Props {
 function NodeToolbox(props: Props, ref: any): JSX.Element {
   const popperRef = useRef<Popper>(null);
   const reference = useRef<any>(null);
-  const toolboxRef=useRef<HTMLDivElement>(null)
+  const toolbarEle = useRef<HTMLDivElement>(null);
   const { page, designer } = useCtx();
   const [seat, setSeat] = useState({
     width: 0,
@@ -38,17 +38,18 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
   useLayoutEffect(()=> {
     // fix modal toolbox not checked, delay when modal display completely
     setTimeout(computedPlace, 500);
-  }, [page.activeElemProps])
+  }, [page.activeElemProps]);
 
   function handleElementPosition(ele: Element): void {
     if (ele) {
       const { x, y, width, height } = ele.getBoundingClientRect();
-      const _p: DOMRect = (document.querySelector('.pge-canvas') as HTMLDivElement).getBoundingClientRect();
+      const _p = (document.querySelector('.pge-canvas') as HTMLDivElement);
+      const params = _p.getBoundingClientRect();
       setSeat({
-        width,
-        height,
-        x: x - _p.x,
-        y: y - _p.y,
+        width: Math.max(width, ele.scrollWidth),
+        height: Math.max(height, ele.scrollHeight),
+        x: x - params.x + _p.scrollLeft,
+        y: y - params.y + _p.scrollTop,
       });
     }
   }
@@ -61,21 +62,46 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
     handleElementPosition(elementInfo && elementInfo.element);
   }
 
-  function getTransformX(): string {
-    const { element } = page.schemaElements[page.activeElemId];
-    if (element) {
-      const { right } = element.getBoundingClientRect();
-      const {right: canvasRight} = (document.querySelector('.pge-canvas') as Element).getBoundingClientRect();
-      let toolboxWid=120;
-      if(toolboxRef.current){
-        toolboxWid=parseInt(window.getComputedStyle(toolboxRef.current).width)
+  // function getTransformX(): string {
+  //   const { element } = page.schemaElements[page.activeElemId];
+  //   if (element) {
+  //     const { right } = element.getBoundingClientRect();
+  //     const { right: canvasRight } = (document.querySelector('.pge-canvas') as Element).getBoundingClientRect();
+  //     let toolboxWid = 120;
+  //     if (toolbarEle.current) {
+  //       toolboxWid = parseInt(window.getComputedStyle(toolbarEle.current).width);
+  //     }
+  //     if (right + toolboxWid >= canvasRight) {
+  //       return 'translateX(0)';
+  //     }
+  //     return 'translateX(100%)';
+  //   }
+  //   return 'translateX(0)';
+  // }
+
+  function calcToolbarPosition(): React.CSSProperties {
+    let defaultPosition: React.CSSProperties = { right: '-2px', top: '-22px' };
+    if (toolbarEle.current) {
+      const toolbarPosition = toolbarEle.current.getBoundingClientRect();
+      const { element } = page.schemaElements[page.activeElemId];
+      const canvas = (document.querySelector('.pge-canvas') as Element).getBoundingClientRect();
+      if (element) {
+        const elementDomReact = element.getBoundingClientRect();
+        if (elementDomReact.width < toolbarPosition.width) {
+          defaultPosition = { ...defaultPosition, left: '-2px', right: undefined };
+        }
+
+        if (Math.abs(elementDomReact.y - canvas.y) < toolbarPosition.height) {
+          defaultPosition = { ...defaultPosition, bottom: '-22px', top: undefined };
+        }
+
+        if (page.activeElemId.indexOf('page') >= 0) {
+          defaultPosition = { ...defaultPosition, right: '1px', top: '1px', left: undefined };
+        }
       }
-      if (right + toolboxWid >= canvasRight) {
-        return 'translateX(0)';
-      }
-      return 'translateX(100%)';
     }
-    return 'translateX(0)';
+
+    return defaultPosition;
   }
 
   function renderParents(): JSX.Element {
@@ -131,25 +157,24 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
       {
         page.activeElemId && (
           <>
-            <div style={{
-              width,
-              height,
-              border: '1px solid #197aff',
-              transform: `translate3d(${x}px, ${y}px, 0px)`,
-              zIndex: 10,
-              pointerEvents: 'none',
-              willChange: 'width, height, transform',
-            }}>
+            <div
+              style={{
+                width,
+                height,
+                border: '1px solid #197aff',
+                transform: `translate3d(${x}px, ${y}px, 0px)`,
+                zIndex: 10,
+                pointerEvents: 'none',
+                willChange: 'width, height, transform',
+              }}>
               <div
+                ref={toolbarEle}
                 className='h-20 border border-black flex absolute z-10'
-                ref={toolboxRef}
-                // @ts-ignore
-                style={Object.assign({ right: '0', pointerEvents: 'all', transform: getTransformX() },
-                  page.activeElem?.exportName === 'page' ? { top: 0 } : { bottom: '-22px' })}
+                style={Object.assign({ right: '0', pointerEvents: 'all', ...calcToolbarPosition() })}
               >
                 <div
                   // bg-gradient-to-r from-blue-500 to-blue-600
-                  className='mr-4 px-4 flex items-center rounded-2 cursor-pointer'
+                  className='px-4 flex items-center rounded-2 cursor-pointer'
                   style={{ backgroundColor: '#006cff', borderRadius: 2 }}
                   ref={reference}
                 >

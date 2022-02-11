@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { defaults, isEmpty } from 'lodash';
 
 import { useCtx, DataBind as ConfigBind } from '../../../index';
-import { Select, Icon, Button } from '@one-for-all/ui';
+import { Select, Icon, Button, Popper } from '@one-for-all/ui';
 
 import './style.scss';
 
@@ -29,8 +29,10 @@ export const DEFAULT_CONFIG = {
 };
 
 function ConfigForm(): JSX.Element {
-  const { page } = useCtx();
+  const { page, designer } = useCtx();
   const [values, setValues] = useState<Props>(defaults(page.activeElemProps, DEFAULT_CONFIG));
+  const popperRef = useRef<Popper>(null);
+  const reference = useRef<any>(null);
 
   useEffect(() => {
     page.updateElemProperty(page.activeElem.id, 'props', values);
@@ -43,6 +45,17 @@ function ConfigForm(): JSX.Element {
   useEffect(() => {
     setValues(page.activeElemProps);
   }, [page.activeElemId]);
+
+  useEffect(() => {
+    if (designer.imageUrl) {
+      popperRef.current?.close();
+      setValues({
+        ...values,
+        imageUrl: designer.imageUrl,
+      });
+      designer.setUploadImage('');
+    }
+  }, [designer.imageUrl]);
 
   return (
     <>
@@ -61,12 +74,19 @@ function ConfigForm(): JSX.Element {
       <div>
         图片填充
         <div className="config-item">
-          <input
-            type="text"
-            className="w-full h-32 my-8 mr-8 px-16 truncate border border-gray-300 corner-2-8-8-8"
-            value={values.imageUrl}
-            onChange={(e) => setValues({ ...values, imageUrl: e.target.value })}
-          />
+          <div className='mr-8 flex-1 relative'>
+            <input
+              type="text"
+              className="w-full h-32 my-8 px-16 truncate border border-gray-300 corner-2-8-8-8"
+              value={values.imageUrl}
+              onChange={(e) => setValues({ ...values, imageUrl: e.target.value })}
+            />
+            <div
+              ref={reference}
+              className='absolute cursor-pointer'
+              style={{ top: 15, right: 5 }}
+            ><Icon name='upload_file' /></div>
+          </div>
           <ConfigBind name='imageUrl' />
         </div>
         填充方式
@@ -113,6 +133,17 @@ function ConfigForm(): JSX.Element {
           <ConfigBind name='closeOnMaskClick' />
         </div>
       </div>
+      <Popper ref={popperRef} reference={reference} trigger="click">
+        <div
+          className='p-10 bg-white border-2 border-gray-100'
+          style={{ width: 400, height: 200 }}
+        >
+          <div className='w-full h-full flex items-center
+            justify-center border border-dashed border-gray-100'>
+            {designer.vdoms.uploadImage}
+          </div>
+        </div>
+      </Popper>
     </>
   );
 }

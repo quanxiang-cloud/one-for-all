@@ -10,6 +10,7 @@ import { PageNode, useCtx, DragPos, LoopNode } from '../index';
 
 import { mapRawProps } from '../utils/schema-adapter';
 import { elemId } from '../utils';
+import { parseStyleString } from '../config/utils';
 import { encode } from '../utils/base64';
 
 import styles from './index.m.scss';
@@ -160,13 +161,24 @@ function NodeRender({ schema }: Props): JSX.Element | null {
 
       // add placeholder to container elem
       if (schema.exportName === 'container' && !schema.children?.length) {
+        // Dynamically set the placeholder style according to the width, height and background
+        const _style = schema.props.style || { type: 'constant_property', value: {} };
+        const { width, height, backgroundColor, backgroundImage } = _style.value;
+        const widthValue = parseStyleString(width);
+        const heightValue = parseStyleString(height);
         Object.assign(elemProps, {
           placeholder: (
             <div
-              style={{ minHeight: 60 }}
-              className='border border-dashed flex items-center justify-center'
+              className={cs('border border-dashed flex items-center justify-center', {
+                'bg-gray-100': !backgroundColor && !backgroundImage,
+              })}
+              style={{ minHeight: (heightValue.value && Number(heightValue.value) < 60 &&
+                heightValue.unit === 'px') ? Number(heightValue.value) : 60,
+              backgroundColor: backgroundColor,
+              backgroundImage: backgroundImage }}
             >
-              拖拽组件或模板到这里
+              {(widthValue.value && Number(widthValue.value) < 60 && widthValue.unit === 'px') ?
+                '' : '拖拽组件或模板到这里'}
             </div>
           ),
         });

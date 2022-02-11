@@ -56,20 +56,20 @@ function ConfigForm(): JSX.Element {
               <li
                 key={item.id}
                 onClick={() => handleChangeLayout(item.value)}
-                className={cs('m-3 p-3 border rounded-4 cursor-pointer', {
+                className={cs('border rounded-4 cursor-pointer', {
                   'border-gray-300': item.value !== values.colRatio,
                   'border-blue-600': item.value === values.colRatio,
                 })}
-                style={{ width: 60, height: 36 }}>
+                style={{ width: 60, height: 36, margin: 3, padding: 3 }}>
                 <Icon name={item.icon} style={{ width: 52, height: 28 }} />
               </li>
             );
           })}
           {!DEFAULT_SCALE.includes(values.colRatio) && (
             <li
-              className='m-3 p-3 flex flex-col items-center border border-dashed
+              className='flex flex-col items-center border border-dashed
               rounded-4 cursor-pointer border-blue-600'
-              style={{ width: 60 }}
+              style={{ width: 60, margin: 3, padding: 3 }}
             >
               <Icon name="edit_road"/>
               <span className='text-12 text-gray-600'>自定义</span>

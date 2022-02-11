@@ -59,14 +59,15 @@ export function generateGridChildren(
   if (childrenLength < scaleArray.length) {
     const _array: PageNode[] = [];
     for (let i = 0; i < (scaleArray.length - childrenLength); (i = i + 1)) {
+      const elementId = elemId('container');
       _array.push({
-        id: elemId('container'),
+        id: elementId,
         pid: parentId,
         type: 'react-component',
         exportName: 'container',
         packageName: 'ofa-ui',
         packageVersion: 'latest',
-        label: '布局',
+        label: '容器',
         props: {
           style: {
             type: 'constant_property',
@@ -78,6 +79,10 @@ export function generateGridChildren(
               gridArea: 'span 1 / span 1 / auto / auto',
               minWidth: 'auto',
             },
+          },
+          id: {
+            type: 'constant_property',
+            value: elementId,
           },
         },
         children: [],

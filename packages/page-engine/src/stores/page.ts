@@ -138,9 +138,9 @@ class PageStore {
       if (node.exportName === 'grid') {
         params.children = generateGridChildren(node, params.id || '').children;
       }
-      if(node.exportName === 'modal'){
+      if (node.exportName === 'modal') {
         // fill modal body with container component, so it can accept other elements
-        params.children=[{
+        params.children = [{
           id: elemId('container'),
           pid: params.id,
           type: 'react-component',
@@ -151,7 +151,7 @@ class PageStore {
           props: {},
           disableActions: true,
           children: [],
-        }]
+        }];
       }
     }
 
@@ -170,7 +170,7 @@ class PageStore {
       window.__isDev__ && console.log('append node: ', toJS(srcNode), toJS(targetNode), this.dragPos);
 
       if (this.dragPos === 'up') {
-        if(options?.from === 'source'){
+        if (options?.from === 'source') {
           targetNode?.children?.unshift(Object.assign(srcNode, { pid: targetNode.id }));
           return;
         }
@@ -210,7 +210,7 @@ class PageStore {
       }
 
       if (this.dragPos === 'down') {
-        if(options?.from === 'source'){
+        if (options?.from === 'source') {
           targetNode?.children?.push(Object.assign(srcNode, { pid: targetNode.id }));
           return;
         }
