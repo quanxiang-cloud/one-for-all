@@ -86,7 +86,7 @@ specifiers:
   sass-loader: ~12.4.0
   style-loader: ~3.3.1
   styled-components: ^5.3.3
-  svg-spreact: 1.3.1
+  svg-spreact: 1.3.2
   tailwindcss: ^2.2.19
   ts-jest: ^27.0.7
   ts-loader: ~9.2.6
@@ -188,7 +188,7 @@ dependencies:
   sass-loader: 12.4.0_sass@1.49.0+webpack@5.67.0
   style-loader: 3.3.1_webpack@5.67.0
   styled-components: 5.3.3_281a4fa50a045c9112baf635f3bc27a7
-  svg-spreact: 1.3.1
+  svg-spreact: 1.3.2
   tailwindcss: 2.2.19_ef48b3b8837f8a23677bffe8f9cd866d
   ts-jest: 27.1.3_effded2df8a93c83cd1feded045c1535
   ts-loader: 9.2.6_typescript@4.5.5+webpack@5.67.0
@@ -1275,6 +1275,11 @@ packages:
   /@tootallnate/once/1.1.2:
     resolution: {integrity: sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==}
     engines: {node: '>= 6'}
+    dev: false
+
+  /@trysound/sax/0.1.1:
+    resolution: {integrity: sha512-Z6DoceYb/1xSg5+e+ZlPZ9v0N16ZvZ+wYMraFue4HYrE4ttONKtsvruIRf6t9TBR0YvSOfi1hUU0fJfBLCDYow==}
+    engines: {node: '>=10.13.0'}
     dev: false
 
   /@trysound/sax/0.2.0:
@@ -7734,18 +7739,6 @@ packages:
       react: 17.0.2
     dev: false
 
-  /react-dom/16.13.1_react@16.13.1:
-    resolution: {integrity: sha512-81PIMmVLnCNLO/fFOQxdQkvEq/+Hfpv24XNJfpyZhTRfO0QcmQIF/PgCa1zCOj2w1hrn12MFLyaJ/G0+Mxtfag==}
-    peerDependencies:
-      react: ^16.13.1
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
-      prop-types: 15.8.1
-      react: 16.13.1
-      scheduler: 0.19.1
-    dev: false
-
   /react-dom/17.0.2_react@17.0.2:
     resolution: {integrity: sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA==}
     peerDependencies:
@@ -7832,15 +7825,6 @@ packages:
       throttle-debounce: 3.0.1
       ts-easing: 0.2.0
       tslib: 2.3.1
-    dev: false
-
-  /react/16.13.1:
-    resolution: {integrity: sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w==}
-    engines: {node: '>=0.10.0'}
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
-      prop-types: 15.8.1
     dev: false
 
   /react/17.0.2:
@@ -8274,13 +8258,6 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       xmlchars: 2.2.0
-    dev: false
-
-  /scheduler/0.19.1:
-    resolution: {integrity: sha512-n/zwRWRYSUj0/3g/otKDRPMh6qv2SYMWNq85IEa8iZyAv8od9zDYpGSnpBEjNgcMNq6Scbu5KfIPxNF72R/2EA==}
-    dependencies:
-      loose-envify: 1.4.0
-      object-assign: 4.1.1
     dev: false
 
   /scheduler/0.20.2:
@@ -8887,15 +8864,15 @@ packages:
     engines: {node: '>= 0.4'}
     dev: false
 
-  /svg-spreact/1.3.1:
-    resolution: {integrity: sha512-KTbQGllq0Jp5nCzrjKeTuJDIptCApmNVBsBZTREK3WvklsL2SVK5RKN9sWbo5hrEy1R+qWRUziHXj/yLXsaK7A==}
+  /svg-spreact/1.3.2:
+    resolution: {integrity: sha512-23kPbFi1q5jMjBFhiZKRg7hkOrYpjST4wIg7Gpw/mkCbgkVyUsYdMRxU8XIcpCUn9VMbtOliZWybivXfN1KgYA==}
     engines: {node: '>=8'}
     dependencies:
       pretty: 2.0.0
-      react: 16.13.1
-      react-dom: 16.13.1_react@16.13.1
-      svgo: 1.3.2
-      svgson: 4.1.0
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      svgo: 2.4.0
+      svgson: 5.2.1
     dev: false
 
   /svgo/1.3.2:
@@ -8919,6 +8896,20 @@ packages:
       util.promisify: 1.0.1
     dev: false
 
+  /svgo/2.4.0:
+    resolution: {integrity: sha512-W25S1UUm9Lm9VnE0TvCzL7aso/NCzDEaXLaElCUO/KaVitw0+IBicSVfM1L1c0YHK5TOFh73yQ2naCpVHEQ/OQ==}
+    engines: {node: '>=10.13.0'}
+    hasBin: true
+    dependencies:
+      '@trysound/sax': 0.1.1
+      colorette: 1.4.0
+      commander: 7.2.0
+      css-select: 4.2.1
+      css-tree: 1.1.3
+      csso: 4.2.0
+      stable: 0.1.8
+    dev: false
+
   /svgo/2.8.0:
     resolution: {integrity: sha512-+N/Q9kV1+F+UeWYoSiULYo4xYSDQlTgb+ayMobAXPwMnLvop7oxKMo9OzIrX5x3eS4L4f2UHhc9axXwY8DpChg==}
     engines: {node: '>=10.13.0'}
@@ -8933,8 +8924,8 @@ packages:
       stable: 0.1.8
     dev: false
 
-  /svgson/4.1.0:
-    resolution: {integrity: sha512-DodISxHtdLKUghDYA+PGK4Qq350+CbBAkdvGLkBFSmWd9WKSg4dijgjB1IiRPTmsUCd+a7KYe+ILHtklYgQyzQ==}
+  /svgson/5.2.1:
+    resolution: {integrity: sha512-nbM6QuyZiKzQ0Uo51VDta93YJAr96ikyT40PsgJRrzynOGsOlnmJ6zAK5hUFyE5gnxcg7yuOPUWbUlmV9K0+Dg==}
     dependencies:
       deep-rename-keys: 0.2.1
       omit-deep: 0.3.0
@@ -10016,7 +10007,7 @@ packages:
     dev: false
 
   file:projects/icon.tgz_esbuild@0.14.13:
-    resolution: {integrity: sha512-3U9jHrxG6cX4SlP91xFjKflg39g6vOxfz74MNFy+Osy2Kt0CPCNKk+25PqaJLzPuWFKz+w2lxznKg47r7or2MQ==, tarball: file:projects/icon.tgz}
+    resolution: {integrity: sha512-OFKBW7FR7C8RqVbPBT8Qhe13mI77wbhz+HctpKwiI2RpZxA2RI3zbhK02u5rHlPF9dLaFMrhOY9O+JDzRzRWBQ==, tarball: file:projects/icon.tgz}
     id: file:projects/icon.tgz
     name: '@rush-temp/icon'
     version: 0.0.0
@@ -10033,7 +10024,7 @@ packages:
       react: 17.0.2
       rollup: 2.66.0
       rollup-plugin-esbuild: 4.8.2_esbuild@0.14.13+rollup@2.66.0
-      svg-spreact: 1.3.1
+      svg-spreact: 1.3.2
     transitivePeerDependencies:
       - esbuild
       - supports-color
@@ -10198,7 +10189,7 @@ packages:
     dev: false
 
   file:projects/ui.tgz_esbuild@0.14.13:
-    resolution: {integrity: sha512-80lrPtPuvPG7kDudDTCV1eYj/9tLNwRcW0C+jSNnjjCtrA11Cx8X2QadSrnsF20RYtVwhOdXo2wnHnrbrmrI4g==, tarball: file:projects/ui.tgz}
+    resolution: {integrity: sha512-zNKda7bEcNXvb7wRgR+Nz0exRwmxiSG2MHWlgoLYx3HcHQDS2H3qwrIxWJ/P+iLt0phvpwiMrvlpEIib3QNAjQ==, tarball: file:projects/ui.tgz}
     id: file:projects/ui.tgz
     name: '@rush-temp/ui'
     version: 0.0.0
@@ -10232,7 +10223,7 @@ packages:
       rollup-plugin-terser: 7.0.2_rollup@2.66.0
       sass: 1.49.0
       styled-components: 5.3.3_281a4fa50a045c9112baf635f3bc27a7
-      svg-spreact: 1.3.1
+      svg-spreact: 1.3.2
       tailwindcss: 2.2.19_ef48b3b8837f8a23677bffe8f9cd866d
       tslib: 2.3.1
     transitivePeerDependencies:
