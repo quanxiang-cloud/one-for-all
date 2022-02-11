@@ -39,9 +39,10 @@ function Designer({ className, onSave, docLink, hideTestPreview }: Props): JSX.E
     });
 
     if (isDev()) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      window._ctx = stores;
+      Object.assign(window, {
+        _ctx: stores,
+        __isDev__: true
+      })
     }
 
     return () => {

@@ -9886,7 +9886,7 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-RAGXMy4lwy9kTlpav7ueUcnxIOgd8EGfEQylf6mpgJyZ5pgEIETmJtX2mENEkswTd46+pmyG84g+alJu6yF4sA==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-q2csTgiXTDkaFBdZmzph1f7fdVJx4yj8tX4sHi4F/oCTEJ4EWg1/sp4EFDUxBJvK4yy9jJwVslqmTkGgffANxw==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
@@ -9949,7 +9949,7 @@ packages:
     dev: false
 
   file:projects/page-engine.tgz_esbuild@0.14.13+typescript@4.5.5:
-    resolution: {integrity: sha512-DvywQqJL6zvBi8a8dEHzyzRH6H6g8FGWaoDj8Twr2HmMmFchStsEctC5nfgB2sVJpr6KNqrNuK0p79kPyZtyrw==, tarball: file:projects/page-engine.tgz}
+    resolution: {integrity: sha512-cHNxxf1WEah3vxFedCjzGh5dbaEPPjGaKEhYEt6104kLE/a0eim2OkHsgb+v1nN3dYZCdHJEWy7+Rm03j23/nA==, tarball: file:projects/page-engine.tgz}
     id: file:projects/page-engine.tgz
     name: '@rush-temp/page-engine'
     version: 0.0.0
@@ -10107,7 +10107,7 @@ packages:
     dev: false
 
   file:projects/ui.tgz_esbuild@0.14.13:
-    resolution: {integrity: sha512-lv/VVQZZ1BKz6yACRuHQ9dJpj9YXOvIgyexpQYGSFCoZW4UGxengzPNyxTkWyq7JKSokzRvV0GtHRptd0pto8Q==, tarball: file:projects/ui.tgz}
+    resolution: {integrity: sha512-80lrPtPuvPG7kDudDTCV1eYj/9tLNwRcW0C+jSNnjjCtrA11Cx8X2QadSrnsF20RYtVwhOdXo2wnHnrbrmrI4g==, tarball: file:projects/ui.tgz}
     id: file:projects/ui.tgz
     name: '@rush-temp/ui'
     version: 0.0.0
@@ -10116,6 +10116,7 @@ packages:
       '@rollup/plugin-commonjs': 21.0.1_rollup@2.66.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
       '@rollup/plugin-replace': 3.0.1_rollup@2.66.0
+      '@types/lodash': 4.14.178
       '@types/react': 17.0.38
       '@types/react-color': 3.0.6
       '@types/react-dom': 17.0.11

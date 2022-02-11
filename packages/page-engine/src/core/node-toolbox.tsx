@@ -57,7 +57,7 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
     if (!page.activeElemId) return;
 
     const elementInfo = page.schemaElements[page.activeElemId];
-    handleElementPosition(elementInfo.element);
+    handleElementPosition(elementInfo && elementInfo.element);
   }
 
   function getTransformX(): string {
@@ -158,7 +158,7 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
                   </span>
                 </div>
                 <div className='px-4 flex items-center justify-around corner-0-0-4-4 bg-white'>
-                  {page.activeElem?.exportName !== 'page' && (
+                  {page.activeElem?.exportName !== 'page' && !page.activeElem?.disableActions && (
                     <>
                       <Icon
                         name='content_copy'

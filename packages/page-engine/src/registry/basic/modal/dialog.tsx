@@ -1,15 +1,15 @@
-import React, { useLayoutEffect, useState, Children } from 'react';
+import React, { useState, Children } from 'react';
+
 import { Modal } from '@one-for-all/ui'
 
 interface Props {
   className?: string;
-  placeholder?: React.ReactNode;
   children?: React.ReactNode;
 }
 
-function Dialog({children, placeholder, ...rest}: Props) {
+function Dialog({children, ...rest}: Props) {
   // todo: move isOpen to upper state, or controlled by config form
-  const [isOpen, setOpen]=useState(true)
+  const [isOpen, setOpen] = useState(true)
 
   return (
     <Modal
@@ -21,7 +21,9 @@ function Dialog({children, placeholder, ...rest}: Props) {
         height: '100%',
         zIndex: 1
       }}
-      onClose={()=> setOpen(false)}
+      onClose={() => {
+        setOpen(false)
+      }}
       footerBtns={[
         {
           key: 'close',
@@ -35,7 +37,7 @@ function Dialog({children, placeholder, ...rest}: Props) {
           key: 'check',
           iconName: 'check',
           modifier: 'primary',
-          onClick: ()=>{
+          onClick: () => {
             console.log('on submit modal')
           },
           text: '确定',
@@ -43,7 +45,7 @@ function Dialog({children, placeholder, ...rest}: Props) {
       ]}
       {...rest}
     >
-      {placeholder || children}
+      {children}
     </Modal>
   );
 }

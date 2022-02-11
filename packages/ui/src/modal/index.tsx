@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import styled, { createGlobalStyle, keyframes, css } from 'styled-components';
 import cs from 'classnames';
+import { pick } from 'lodash';
 
 import Icon from '../icon';
 import Button from '../button';
@@ -47,7 +48,7 @@ function Modal({
   wrapStyle,
   ...rest
 }: Props, ref: React.LegacyRef<HTMLDivElement>): JSX.Element {
-  const target = document.createElement('div');
+  const [target] = useState(document.createElement('div'));
 
   useEffect(() => {
     if(!controlled){
@@ -96,7 +97,7 @@ function Modal({
         width={width}
         height={height}
         fullscreen={fullscreen}
-        data-node-key={rest['data-node-key']}
+        {...(controlled ? pick(rest, ['data-node-key', 'ref', 'draggable']) : {})}
       >
         <Header>
           <div className='md-header-left'>
@@ -203,8 +204,8 @@ const InnerWrap = styled.div<{
 }>`
   display: flex;
   flex-direction: column;
-  width: ${(props) => typeof props.width === 'number' ? props.width + 'px' : props.width};
-  height: ${(props) => typeof props.height === 'number' ? props.height + 'px' : props.height};
+  width: ${({width}) => !isNaN(parseInt(width as any)) ? parseInt(width as any) + 'px' : width};
+  height: ${({height}) => !isNaN(parseInt(height as any)) ? parseInt(height as any) + 'px' : height};
   ${(props) => props.width === 'auto' ? 'min-width: 632px' : ''};
   background: white;
   ${({ fullscreen }) => fullscreen ? css`

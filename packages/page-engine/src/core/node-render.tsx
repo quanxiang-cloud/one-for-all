@@ -68,7 +68,7 @@ function NodeRender({ schema }: Props): JSX.Element | null {
     end: (item, monitor) => {
       const targetNode: any = monitor.getDropResult();
       if (targetNode?.exportName) {
-        // console.log('[elem] dropped %o onto: %o', item, targetNode);
+        window.__isDev__ && console.log('[elem] dropped %o onto: %o, pos: %s', item, targetNode, page.dragPos);
         page.appendNode(item, targetNode);
       }
     },
@@ -146,15 +146,6 @@ function NodeRender({ schema }: Props): JSX.Element | null {
 
     // patch certain elem's props
     if (schema.type === 'react-component') {
-      const containerPlaceholder=(
-        <div
-          style={{ minHeight: 60 }}
-          className='bg-gray-100 border border-dashed flex items-center justify-center'
-        >
-          拖拽组件或模板到这里
-        </div>
-      )
-
       // add placeholder to page elem
       if (schema.exportName === 'page' && !schema.children?.length) {
         Object.assign(elemProps, {
@@ -170,13 +161,14 @@ function NodeRender({ schema }: Props): JSX.Element | null {
       // add placeholder to container elem
       if (schema.exportName === 'container' && !schema.children?.length) {
         Object.assign(elemProps, {
-          placeholder: containerPlaceholder,
-        });
-      }
-
-      if(schema.exportName === 'modal' && !schema.children?.length) {
-        Object.assign(elemProps, {
-          placeholder: containerPlaceholder,
+          placeholder: (
+            <div
+              style={{ minHeight: 60 }}
+              className='border border-dashed flex items-center justify-center'
+            >
+              拖拽组件或模板到这里
+            </div>
+          ),
         });
       }
     }
@@ -187,7 +179,7 @@ function NodeRender({ schema }: Props): JSX.Element | null {
       className: cs(styles.elem, {
         [styles.isPage]: exportName === 'page',
         [styles.dragging]: isDragging,
-        // [styles.isOver]: isOver,
+        [styles.isOver]: isOver,
         [styles.selected]: page.activeElemId === id,
         [styles.draggingUp]: isOver && page.dragPos === 'up',
         [styles.draggingInner]: isOver && page.dragPos === 'inner',
@@ -225,8 +217,7 @@ function NodeRender({ schema }: Props): JSX.Element | null {
         React.createElement(
           transformType(node),
           schemaToProps(toJS(node)),
-          ...([].concat(node.children as any))
-            .map((child, idx) => <NodeRender key={node.id + idx} schema={child} />))
+          ...(node.children || []).filter(Boolean).map((child: any, idx: number) => <NodeRender key={node.id + idx} schema={child} />))
       }
     </>
   );

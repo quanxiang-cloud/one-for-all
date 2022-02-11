@@ -1,12 +1,6 @@
 import Dialog from './dialog'
-import ConfigForm from './config-form';
+import ConfigForm, {defaultConfig, Props} from './config-form';
 import type { SourceElement } from '../../../index';
-
-type Props = {
-  name?: string
-}
-
-const defaultConfig: Props = {};
 
 const elem: SourceElement<Props> = {
   name: 'modal',
@@ -18,7 +12,7 @@ const elem: SourceElement<Props> = {
   defaultConfig,
   order: 9,
   acceptChild: true,
-  exportActions: ['onClose', 'onOpen', 'onCancel', 'onSubmit'],
+  exportActions: ['onClose', 'onCancel', 'onConfirm'],
   defaultStyle: {},
 };
 
