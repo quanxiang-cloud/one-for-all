@@ -1,11 +1,9 @@
-## 什么是渲染引擎？
-
-渲染引擎可以借助一系列插件，将 Schema 转化为真实的 UI。
-
 ## 什么是 Schema？
 
 Schema is the description of a web page, which not only contain the layouts and elements in it, but also business logic,
 which means you can use schema to describe a single page web app.
+
+## 为什么要用 Schema 来描述页面逻辑
 
 ## 渲染引擎支持的接口
 

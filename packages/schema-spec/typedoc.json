@@ -1,9 +1,9 @@
 {
   "entryPoints": [
-    "index.d.ts"
+    "src/index.d.ts"
   ],
   "entryPointStrategy": "resolve",
-  "out": "docs",
+  "out": "docs/api",
   "name": "Render Schema Specification",
   "includeVersion": true,
   "readme": "./README.md"
