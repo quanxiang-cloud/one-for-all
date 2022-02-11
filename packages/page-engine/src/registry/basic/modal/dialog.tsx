@@ -1,46 +1,32 @@
 import React, { useState, Children } from 'react';
+import {noop} from 'lodash'
 
 import { Modal } from '@one-for-all/ui'
+import {Props as ConfigProps} from './config-form';
 
-interface Props {
-  className?: string;
-  children?: React.ReactNode;
-}
-
-function Dialog({children, ...rest}: Props) {
-  // todo: move isOpen to upper state, or controlled by config form
-  const [isOpen, setOpen] = useState(true)
-
+function Dialog({children, hideFooter, okIconName, okText, cancelIconName, cancelText, ...rest}: ConfigProps) {
   return (
     <Modal
       controlled
-      isOpen={isOpen}
       wrapStyle={{
         position: 'absolute',
         width: '100%',
         height: '100%',
         zIndex: 1
       }}
-      onClose={() => {
-        setOpen(false)
-      }}
-      footerBtns={[
+      footerBtns={hideFooter ? [] : [
         {
           key: 'close',
-          iconName: 'close',
-          onClick: () => {
-            console.log('on cancel modal')
-          },
-          text: '取消',
+          iconName: cancelIconName,
+          onClick: noop,
+          text: cancelText,
         },
         {
           key: 'check',
-          iconName: 'check',
+          iconName: okIconName,
           modifier: 'primary',
-          onClick: () => {
-            console.log('on submit modal')
-          },
-          text: '确定',
+          onClick: noop,
+          text: okText,
         },
       ]}
       {...rest}

@@ -31,13 +31,14 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
     window.addEventListener('resize', computedPlace);
   }, []);
 
-  useEffect(()=> {
+  useLayoutEffect(()=> {
     computedPlace();
-  }, [designer.panelPinned]);
+  }, [designer.panelPinned, page.activeElemId]);
 
-  useEffect(() => {
-    computedPlace();
-  }, [page.activeElemId]);
+  useLayoutEffect(()=> {
+    // fix modal toolbox not checked, delay when modal display completely
+    setTimeout(computedPlace, 500);
+  }, [page.activeElemProps])
 
   function handleElementPosition(ele: Element): void {
     if (ele) {

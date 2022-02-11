@@ -4,20 +4,25 @@ import { defaults, noop } from 'lodash';
 import { useCtx, DataBind as ConfigBind } from '../../../index';
 import { Select, Icon, Button, Toggle } from '@one-for-all/ui';
 
-type Callback=(...args: any[])=> void;
+// type Callback=(...args: any[])=> void;
 
 export interface Props {
   title: string;
   isOpen: boolean;
   id?: string;
-  // onClose moved into event panel
-  onClose?: Callback;
-  onCancel?: Callback;
-  onConfirm?: Callback;
+  // onClose?: Callback;
+  // onCancel?: Callback;
+  // onConfirm?: Callback;
+  children?: React.ReactNode;
   className?: string;
   width?: number | string;
   height?: number | string;
   fullscreen?: boolean;
+  hideFooter?: boolean;
+  cancelText?: string;
+  cancelIconName?: string;
+  okText?: string;
+  okIconName?: string;
 }
 
 export const defaultConfig: Props={
@@ -26,6 +31,11 @@ export const defaultConfig: Props={
   width: 'auto',
   height: 'auto',
   fullscreen: false,
+  hideFooter: false,
+  cancelText: '取消',
+  cancelIconName: 'close',
+  okText: '确定',
+  okIconName: 'check'
 }
 
 function ConfigForm(props: Props): JSX.Element {
@@ -95,19 +105,78 @@ function ConfigForm(props: Props): JSX.Element {
         </div>
       </div>
       <div className='mb-8'>
-        <label className='mr-4 text-12 text-gray-600'>是否全屏</label>
-        <div className='flex items-center justify-between'>
-          <Toggle defaultChecked={values.fullscreen} onChange={(fullscreen)=>  setValues({ ...values, fullscreen })}/>
-          <ConfigBind name='fullscreen' />
-        </div>
-      </div>
-      <div className='mb-8'>
         <label className='mr-4 text-12 text-gray-600'>显示对话框</label>
         <div className='flex items-center justify-between'>
           <Toggle defaultChecked={values.isOpen} onChange={(isOpen)=>  setValues({ ...values, isOpen })}/>
           <ConfigBind name='isOpen' />
         </div>
       </div>
+      <div className='mb-8'>
+        <label className='mr-4 text-12 text-gray-600'>全屏显示</label>
+        <div className='flex items-center justify-between'>
+          <Toggle defaultChecked={values.fullscreen} onChange={(fullscreen)=>  setValues({ ...values, fullscreen })}/>
+          <ConfigBind name='fullscreen' />
+        </div>
+      </div>
+      <div className='mb-8'>
+        <label className='mr-4 text-12 text-gray-600'>隐藏底部</label>
+        <div className='flex items-center justify-between'>
+          <Toggle defaultChecked={values.hideFooter} onChange={(hideFooter)=>  setValues({ ...values, hideFooter })}/>
+          <ConfigBind name='hideFooter' />
+        </div>
+      </div>
+      {!values.hideFooter && (
+        <>
+          <div className='mb-8'>
+            <label className='mr-4 text-12 text-gray-600'>cancel 文本</label>
+            <div className='flex items-center justify-between'>
+              <input
+                type="text"
+                className='mr-8 px-8 py-4 w-full border corner-2-8-8-8 border-gray-300 focus:border-blue-600'
+                value={values.cancelText}
+                onChange={(e) => handleChange(e, 'cancelText')}
+              />
+              <ConfigBind name='cancelText' />
+            </div>
+          </div>
+          <div className='mb-8'>
+            <label className='mr-4 text-12 text-gray-600'>cancel 图标</label>
+            <div className='flex items-center justify-between'>
+              <input
+                type="text"
+                className='mr-8 px-8 py-4 w-full border corner-2-8-8-8 border-gray-300 focus:border-blue-600'
+                value={values.cancelIconName}
+                onChange={(e) => handleChange(e, 'cancelIconName')}
+              />
+              <ConfigBind name='cancelIconName' />
+            </div>
+          </div>
+          <div className='mb-8'>
+            <label className='mr-4 text-12 text-gray-600'>confirm 文本</label>
+            <div className='flex items-center justify-between'>
+              <input
+                type="text"
+                className='mr-8 px-8 py-4 w-full border corner-2-8-8-8 border-gray-300 focus:border-blue-600'
+                value={values.okText}
+                onChange={(e) => handleChange(e, 'okText')}
+              />
+              <ConfigBind name='okText' />
+            </div>
+          </div>
+          <div className='mb-8'>
+            <label className='mr-4 text-12 text-gray-600'>confirm 图标</label>
+            <div className='flex items-center justify-between'>
+              <input
+                type="text"
+                className='mr-8 px-8 py-4 w-full border corner-2-8-8-8 border-gray-300 focus:border-blue-600'
+                value={values.okIconName}
+                onChange={(e) => handleChange(e, 'okIconName')}
+              />
+              <ConfigBind name='okIconName' />
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }
