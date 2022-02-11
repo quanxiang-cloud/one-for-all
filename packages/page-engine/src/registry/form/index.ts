@@ -1,3 +1,4 @@
+import Form from './form';
 import Input from './input';
 import Textarea from './textarea';
 // import Select from './select';
@@ -7,6 +8,7 @@ import Textarea from './textarea';
 // import DatePicker from './date';
 
 export {
+  Form,
   Input,
   Textarea,
   // Select,
