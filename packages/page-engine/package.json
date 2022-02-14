@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@codemirror/lang-javascript": "^0.19.3",
-    "@one-for-all/render-engine": "0.10.2",
+    "@one-for-all/render-engine": "0.11.0",
     "@one-for-all/schema-spec": "0.10.1",
     "@one-for-all/ui": "0.2.17",
     "@uiw/react-codemirror": "~4.2.0",
