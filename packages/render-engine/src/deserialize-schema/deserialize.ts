@@ -1,7 +1,7 @@
-import { CTX } from '../types';
+import { RenderEngineCTX } from '../types';
 import { instantiateFuncSpec, isObject, isFuncSpec } from './utils';
 
-function deserialize(n: unknown, ctx: CTX): void {
+function deserialize(n: unknown, ctx: RenderEngineCTX): void {
   if (!isObject(n) || typeof n !== 'object' || n === null) {
     return;
   }

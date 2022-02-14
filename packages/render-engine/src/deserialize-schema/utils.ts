@@ -1,9 +1,8 @@
 import type * as SchemaSpec from '@one-for-all/schema-spec';
 
 import {
-  CTX,
-  VersatileFunc,
   RenderEngineCTX,
+  VersatileFunc,
   StateConvertor,
 } from '../types';
 
@@ -56,16 +55,14 @@ function instantiateStateExpression(
 
 export function instantiateFuncSpec(
   spec: SchemaSpec.BaseFunctionSpec | SchemaSpec.StateConvertExpression,
-  ctx: CTX,
+  ctx: RenderEngineCTX,
 ): VersatileFunc {
-  const renderEngineCTX: RenderEngineCTX = { apiStates: ctx.apiStates, states: ctx.states };
-
   if ('expression' in spec && spec.type === 'state_convert_expression') {
-    return instantiateStateExpression(spec.expression, renderEngineCTX);
+    return instantiateStateExpression(spec.expression, ctx);
   }
 
   try {
-    const fn = new Function(spec.args, spec.body).bind(renderEngineCTX);
+    const fn = new Function(spec.args, spec.body).bind(ctx);
     fn.toString = () => [
       '',
       `function wrappedFunc(${spec.args}) {`,
