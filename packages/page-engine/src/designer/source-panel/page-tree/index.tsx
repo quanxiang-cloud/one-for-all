@@ -6,7 +6,7 @@ import { RadioButtonGroup } from '@one-for-all/ui';
 
 import TreeView from './tree-view';
 
-import styles from './index.m.scss';
+import './index.scss';
 
 type Mode='tree' | 'code' | string
 
@@ -15,8 +15,9 @@ function PageTree(): JSX.Element {
   const [mode, setMode] = useState<Mode>('tree');
 
   return (
-    <div className={styles.pageTree}>
+    <div className="page-tree grid">
       <RadioButtonGroup
+        className='sticky right-0'
         listData={[
           { label: '大纲视图', value: 'tree' },
           { label: '源码视图', value: 'code' },

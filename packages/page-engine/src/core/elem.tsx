@@ -98,15 +98,6 @@ function Elem({ node, className, children }: Props): JSX.Element {
     }),
   }), [page.activeElemId, page.dragPos, page.schema]);
 
-  function svgPreviewImg(title: string): string {
-    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='100' height='20'>
-    <rect width='100' height='20' fill='#888' opacity='0.5'></rect>
-    <text x='10' y='15' style='font-family: Roboto, sans-serif;font-size: 12px; fill: #000; text-align: center'>${title}</text>
-    </svg>`;
-
-    return `data:image/svg+xml;base64,${encode(svg)}`;
-  }
-
   drag(drop(boxRef));
 
   return (
@@ -157,3 +148,12 @@ function Elem({ node, className, children }: Props): JSX.Element {
 }
 
 export default observer(Elem);
+
+export function svgPreviewImg(title: string): string {
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='100' height='20'>
+  <rect width='100' height='20' fill='#888' opacity='0.5'></rect>
+  <text x='10' y='15' style='font-family: Roboto, sans-serif;font-size: 12px; fill: #000; text-align: center'>${title}</text>
+  </svg>`;
+
+  return `data:image/svg+xml;base64,${encode(svg)}`;
+}

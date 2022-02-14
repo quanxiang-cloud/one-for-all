@@ -246,6 +246,9 @@ class PageStore {
         if (targetIdx === 0) {
           targetParent.children.unshift(newNode);
         } else {
+          if ((srcParent.id === targetParent.id) && (srcIdx < targetIdx)) { // src node removed, targetIdx should be subtract 1
+            targetIdx -= 1;
+          }
           targetParent.children.splice(targetIdx, 0, newNode);
         }
       }
@@ -273,14 +276,17 @@ class PageStore {
     }
 
     if (targetParent && targetParent.children) {
-      targetIdx = targetParent.children.findIndex((v: PageNode) => v.id === target.id);
-      if (srcIdx > -1 && targetIdx > -1) {
-        // remove node in src parent
-        srcParent.children.splice(srcIdx, 1);
+      targetIdx = targetParent.children.findIndex((v: PageNode) => v.id === target.id) + 1;
+      // remove node in src parent
+      srcParent.children.splice(srcIdx, 1);
 
-        // add node in target parent, double check node pid
+      // if two node have same parent, target index will dec 1 refer to sequence
+      if (srcIdx > -1 && targetIdx > -1) {
+        if ((srcParent.id === targetParent.id) && (targetIdx > srcIdx)) {
+          targetIdx -= 1;
+        }
         set(node, 'pid', targetParent.id);
-        targetParent.children.splice(targetIdx + 1, 0, Object.assign(rawNode, { pid: targetParent.id }));
+        targetParent.children.splice(targetIdx, 0, Object.assign(rawNode, { pid: targetParent.id }));
       }
     }
   }
