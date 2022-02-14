@@ -83,8 +83,7 @@ function Toolbar({ docLink = '', hideTestPreview }: Props): JSX.Element {
     return (
       <SchemaRender
         schema={schema as Schema}
-        apiSpecAdapter={{} as any}
-        repository={repository as any}
+        plugins={{ repository: repository as any }}
       />
     );
   }

@@ -21,10 +21,10 @@ const repository: Repository = {
 const refLoader: RefLoader = () => {
   return Promise.resolve({
     schema: refSchema,
-    apiSpecAdapter,
+    plugins: { apiSpecAdapter },
   });
 };
 
 export default function RenderByEngine(): JSX.Element {
-  return React.createElement(SchemaRender, { schema, apiSpecAdapter, repository, refLoader });
+  return React.createElement(SchemaRender, { schema, plugins: { apiSpecAdapter, repository, refLoader } });
 }

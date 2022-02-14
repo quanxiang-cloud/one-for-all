@@ -103,13 +103,18 @@ export function useRefResult(
 
     let unMounting = false;
 
-    refLoader(schemaID).then((initProps) => {
+    refLoader(schemaID).then(({ schema, plugins }) => {
       if (unMounting) {
         return;
       }
 
-      const refCTX = initCTX(initProps, orphan ? undefined : ctx);
-      const instantiatedNode = deserializeSchema(initProps.schema.node, refCTX);
+      const refCTX = initCTX({
+        plugins,
+        apiStateSpec: schema.apiStateSpec,
+        sharedStatesSpec: schema.sharedStatesSpec,
+        parentCTX: orphan ? undefined : ctx,
+      });
+      const instantiatedNode = deserializeSchema(schema.node, refCTX);
       if (!instantiatedNode) {
         // TODO: paint error
         return;

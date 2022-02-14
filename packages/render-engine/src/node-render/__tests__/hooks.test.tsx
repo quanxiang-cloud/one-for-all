@@ -9,7 +9,6 @@ import {
   ReactComponentNode,
   Repository,
   RefLoader,
-  InitProps,
   HTMLNode,
   APIStatesSpec,
 } from '../../types';
@@ -129,7 +128,7 @@ describe('useRefResult_should_return_undefined', () => {
 test('useRefResult_should_catch_promise_reject', async () => {
   const schemaID = 'some_id';
   const err = new Error('some error happens');
-  const refLoader: RefLoader = (): Promise<InitProps> => {
+  const refLoader: RefLoader = (): Promise<any> => {
     return Promise.reject(err);
   };
 
@@ -147,10 +146,12 @@ test('useRefResult_should_catch_promise_reject', async () => {
 
 test('useRefResult_should_return_expected_value', async () => {
   const schemaID = 'some_id';
-  const refLoader: RefLoader = (): Promise<InitProps> => {
+  const refLoader: RefLoader = () => {
     return Promise.resolve({
       schema: DUMMY_SCHEMA,
-      apiSpecAdapter: { build: () => ({ url: '', method: '' }) },
+      plugins: {
+        apiSpecAdapter: { build: () => ({ url: '', method: '' }) },
+      },
     });
   };
 

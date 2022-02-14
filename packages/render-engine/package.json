@@ -1,6 +1,6 @@
 {
   "name": "@one-for-all/render-engine",
-  "version": "0.10.2",
+  "version": "0.11.0",
   "license": "Apache-2.0",
   "type": "module",
   "module": "lib",

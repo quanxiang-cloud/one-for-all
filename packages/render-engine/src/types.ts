@@ -281,11 +281,10 @@ export type DynamicComponent = React.FC<any> | React.ComponentClass<unknown>;
 type PackageNameVersion = string;
 export type Repository = Record<PackageNameVersion, Record<string, DynamicComponent>>;
 
-export type RefLoader = (schemaID: string) => Promise<InitProps>;
+export type RefLoader = (schemaID: string) => Promise<{ schema: SchemaSpec.Schema; plugins?: Plugins; }>;
 
-export interface InitProps {
-  schema: SchemaSpec.Schema;
-  apiSpecAdapter: APISpecAdapter;
+export type Plugins = {
+  apiSpecAdapter?: APISpecAdapter;
   repository?: Repository;
   refLoader?: RefLoader;
 }

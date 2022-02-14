@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@codemirror/lang-javascript': ^0.19.3
+  '@one-for-all/ui': 0.2.17
   '@popperjs/core': ^2.11.0
   '@rollup/plugin-alias': ^3.1.8
   '@rollup/plugin-commonjs': ^21.0.1
@@ -104,6 +105,7 @@ specifiers:
 
 dependencies:
   '@codemirror/lang-javascript': 0.19.6
+  '@one-for-all/ui': 0.2.17
   '@popperjs/core': 2.11.2
   '@rollup/plugin-alias': 3.1.9_rollup@2.66.0
   '@rollup/plugin-commonjs': 21.0.1_rollup@2.66.0
@@ -1092,6 +1094,21 @@ packages:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
+    dev: false
+
+  /@one-for-all/ui/0.2.17:
+    resolution: {integrity: sha512-S3f/LQt/Cmb5BrLvmfh3WFoF2FH/8/MxxXIr69ns7M60/pi5myHRf43rBS6R44G5dnfengDLxgnCe3Zc7NviOw==}
+    dependencies:
+      '@popperjs/core': 2.11.2
+      classnames: 2.3.1
+      lodash: 4.17.21
+      nanoid: 3.2.0
+      react: 17.0.2
+      react-color: 2.19.3_react@17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      react-is: 17.0.2
+      react-popper: 2.2.5_4d48938cec404f33c7375aa6b453941c
+      styled-components: 5.3.3_281a4fa50a045c9112baf635f3bc27a7
     dev: false
 
   /@open-draft/until/1.0.3:
@@ -9939,7 +9956,7 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-q2csTgiXTDkaFBdZmzph1f7fdVJx4yj8tX4sHi4F/oCTEJ4EWg1/sp4EFDUxBJvK4yy9jJwVslqmTkGgffANxw==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-HehmYyeCazCkj8blmYOs3TNQuU04KXZ+Zh5s8XqfBrgPWXmiV5/9WIiNbPTWsi7XSxYHmJ/NTesb+VdUizWJAw==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
@@ -10031,12 +10048,13 @@ packages:
     dev: false
 
   file:projects/page-engine.tgz_56d4fa32eefa0755765f75fcf202a158:
-    resolution: {integrity: sha512-cHNxxf1WEah3vxFedCjzGh5dbaEPPjGaKEhYEt6104kLE/a0eim2OkHsgb+v1nN3dYZCdHJEWy7+Rm03j23/nA==, tarball: file:projects/page-engine.tgz}
+    resolution: {integrity: sha512-W100K9+SpCdsjO5/MiucmON9lUH23q8RPLYwWTt/91wL2faF/DUEem2d8Ac71wDvxYiNlearGUGw5q5u4JY6Kg==, tarball: file:projects/page-engine.tgz}
     id: file:projects/page-engine.tgz
     name: '@rush-temp/page-engine'
     version: 0.0.0
     dependencies:
       '@codemirror/lang-javascript': 0.19.6
+      '@one-for-all/ui': 0.2.17
       '@rollup/plugin-alias': 3.1.9_rollup@2.66.0
       '@rollup/plugin-commonjs': 21.0.1_rollup@2.66.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0

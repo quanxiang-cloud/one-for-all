@@ -12,11 +12,10 @@
     "lib"
   ],
   "scripts": {
-    "build": "yarn run clean && yarn run bundle && tsc --build tsconfig.json && yarn run copy:assets",
+    "build": "yarn run clean && tsc --build tsconfig.json && yarn run build:icons && yarn run copy:assets",
     "tsc": "tsc --build tsconfig.json",
     "build:icons": "node scripts/build-icons.js",
-    "prebundle": "yarn run clean && yarn run build:icons",
-    "bundle": "rollup -c",
+    "bundle": "yarn run build && rollup -c",
     "copy:assets": "mkdir -p ../../dist/images && cp -R dist/images/* ../../dist/images",
     "pack": "yarn pack",
     "bundle:watch": "rollup -c -w",

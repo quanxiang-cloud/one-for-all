@@ -2,14 +2,28 @@ import StatesHubAPI from './states-hub-api';
 import StatesHubShared from './states-hub-shared';
 import getAPIStates from './api-states';
 import getSharedStates from './shared-states';
-import type { CTX, InitProps } from '../types';
+import type { CTX, Plugins } from '../types';
+import { APIStatesSpec, SharedStatesSpec } from 'packages/schema-spec/src';
+import type { APISpecAdapter } from '@one-for-all/api-spec-adapter';
 
-function initCTX({ schema, apiSpecAdapter, repository, refLoader }: InitProps, parentCTX?: CTX): CTX {
+const dummyAPISpecAdapter: APISpecAdapter = {
+  build: () => ({ url: '/api', method: 'get' }),
+};
+
+type Params = {
+  apiStateSpec?: APIStatesSpec;
+  sharedStatesSpec?: SharedStatesSpec;
+  parentCTX?: CTX;
+  plugins?: Plugins;
+}
+
+function initCTX({ apiStateSpec, sharedStatesSpec, parentCTX, plugins }: Params): CTX {
+  const { apiSpecAdapter, repository, refLoader } = plugins || {};
   const statesHubAPI = new StatesHubAPI(
-    { apiSpecAdapter, apiStateSpec: schema.apiStateSpec || {} },
+    { apiSpecAdapter: apiSpecAdapter || dummyAPISpecAdapter, apiStateSpec: apiStateSpec || {} },
     parentCTX?.statesHubAPI,
   );
-  const statesHubShared = new StatesHubShared(schema.sharedStatesSpec || {}, parentCTX?.statesHubShared);
+  const statesHubShared = new StatesHubShared(sharedStatesSpec || {}, parentCTX?.statesHubShared);
   const ctx: CTX = {
     statesHubAPI: statesHubAPI,
     statesHubShared: statesHubShared,
