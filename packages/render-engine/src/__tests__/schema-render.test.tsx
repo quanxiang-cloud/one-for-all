@@ -34,7 +34,7 @@ function Dummy(): JSX.Element {
 
   return (
     <>
-      <SchemaRender ref={ref} schema={schema} apiSpecAdapter={dummyAdapter} />
+      <SchemaRender ref={ref} schema={schema} plugins={{ apiSpecAdapter: dummyAdapter }} />
       {state && (<div jest-id="state" />)}
     </>
   );

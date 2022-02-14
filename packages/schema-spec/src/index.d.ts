@@ -325,7 +325,7 @@ declare namespace SchemaSpec {
 
   // map of stateID and apiID
   // todo should also store builder info
-  type APIStatesSpec = Record<string, { apiID: string;[key: string]: unknown; }>;
+  type APIStatesSpec = Record<string, { apiID: string; [key: string]: unknown; }>;
 
   type SharedStatesSpec = Record<string, { initial: unknown; }>;
 
