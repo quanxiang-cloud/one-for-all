@@ -10,6 +10,7 @@
   ],
   "scripts": {
     "build": "tsc",
+    "bundle": "",
     "compile": "nearleyc ./src/grammar.ne --out ./src/grammar.ts",
     "prepublish": "yarn run build",
     "publish": "tsc",
