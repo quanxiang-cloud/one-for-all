@@ -1,0 +1,16 @@
+.tree-view {
+  font-size: 12px;
+  .tree-node {
+    min-width: 100px;
+    height: 32px;
+  }
+}
+
+.page-tree-node-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  pointer-events: none;
+  border: 1px solid #2196F3;
+}
