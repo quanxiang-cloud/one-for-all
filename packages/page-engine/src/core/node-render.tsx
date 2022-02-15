@@ -11,7 +11,7 @@ import { PageNode, useCtx, DragPos, LoopNode } from '../index';
 import { mapRawProps } from '../utils/schema-adapter';
 import { elemId } from '../utils';
 import { parseStyleString } from '../config/utils';
-import { encode } from '../utils/base64';
+import { svgPreviewImg } from './helpers';
 
 import styles from './index.m.scss';
 
@@ -23,8 +23,6 @@ function NodeRender({ schema }: Props): JSX.Element | null {
   if (typeof schema !== 'object' || !schema) {
     return null;
   }
-
-  // console.log('schema', toJS(schema));
 
   let node: any;
   if (schema.type === 'loop-container') {
@@ -128,16 +126,6 @@ function NodeRender({ schema }: Props): JSX.Element | null {
     }),
   }), [page.activeElemId, page.dragPos, page.schema]);
 
-  function svgPreviewImg(title: string): string {
-    const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='100' height='20'>
-    <rect width='100' height='20' fill='#888' opacity='0.5'></rect>
-    <text x='10' y='15' style='font-family: Roboto, sans-serif;font-size: 12px; fill: #000; text-align: center'>${title}</text>
-    </svg>`;
-
-    return `data:image/svg+xml;base64,${encode(svg)}`;
-  }
-
-  // todo: refine
   drag(drop(boxRef));
 
   function mergeProps(schema: PageNode): Record<string, any> {
@@ -189,7 +177,6 @@ function NodeRender({ schema }: Props): JSX.Element | null {
       'data-node-key': schema.id,
       ref: boxRef,
       className: cs(styles.elem, {
-        [styles.isPage]: exportName === 'page',
         [styles.dragging]: isDragging,
         [styles.isOver]: isOver,
         [styles.selected]: page.activeElemId === id,

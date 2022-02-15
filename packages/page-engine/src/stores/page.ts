@@ -170,10 +170,6 @@ class PageStore {
       window.__isDev__ && console.log('append node: ', toJS(srcNode), toJS(targetNode), this.dragPos);
 
       if (this.dragPos === 'up') {
-        if (options?.from === 'source') {
-          targetNode?.children?.unshift(Object.assign(srcNode, { pid: targetNode.id }));
-          return;
-        }
         this.insertBefore(srcNode as PageNode, targetNode);
         return;
       }
@@ -210,10 +206,6 @@ class PageStore {
       }
 
       if (this.dragPos === 'down') {
-        if (options?.from === 'source') {
-          targetNode?.children?.push(Object.assign(srcNode, { pid: targetNode.id }));
-          return;
-        }
         this.insertAfter(srcNode as PageNode, targetNode);
       }
     }

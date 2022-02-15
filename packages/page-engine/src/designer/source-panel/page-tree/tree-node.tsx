@@ -5,7 +5,7 @@ import cs from 'classnames';
 import { toJS } from 'mobx';
 
 import { Icon } from '@one-for-all/ui';
-import { svgPreviewImg } from '../../../core/elem';
+import { svgPreviewImg } from '../../../core/helpers';
 import { PageNode, LoopNode, useCtx } from '../../../index';
 import { COMPONENT_ICON_MAP } from './tree-view';
 
@@ -79,7 +79,7 @@ function TreeNode({
 
       // 计算拖拽对象在垂直方向的余数，用于判断放置位置是在目标的前方还是后方
       const positionIndex = (initSourceClientOffset.y - clientOffset.y) % 32; // 32 is tree node height 32px
-      
+
       // 计算放置的位置
       // 如果为0 （0无法参与计算）或者 满足一定条件
       // 拖拽的方向不同，positionIndex的判断 根据符号而改变

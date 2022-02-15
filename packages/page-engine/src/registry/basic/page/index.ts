@@ -19,8 +19,7 @@ const elem: SourceElement<Props> = {
   hidden: true,
   acceptChild: true,
   defaultStyle: {
-    width: '100%',
-    height: '100%',
+    // width: '100%',
   },
 };
 

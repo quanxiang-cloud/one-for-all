@@ -2,36 +2,12 @@ import React from 'react';
 import { defaults, flow, get, identity } from 'lodash';
 
 import { LoopNode, PageNode } from '../index';
-// import Elem from '../index/core/elem';
-// import { toJS } from 'mobx';
 import { mapRawProps } from '../utils/schema-adapter';
 import registry from '../stores/registry';
 import page from '../stores/page';
 import { PagePlaceholder, ContainerPlaceholder } from './common-comps';
 import { isDev } from '../utils';
-
-// function renderNode(schema: PageNode | LoopNode, level = 0): JSX.Element | null | undefined {
-//   if (typeof schema !== 'object' || schema === null) {
-//     return null;
-//   }
-//
-//   let node;
-//
-//   if (schema.type === 'loop-container') {
-//     node = (schema as LoopNode).node as PageNode;
-//   } else {
-//     node = schema;
-//   }
-//
-//   return (
-//     <Elem node={node}>
-//       {
-//         React.createElement(transformType(node), schemaToProps(toJS(node)), ...([].concat(node.children as any))
-//           .map((child) => renderNode(child, level + 1)))
-//       }
-//       </Elem>
-//   );
-// }
+import { encode } from "../utils/base64";
 
 export function transformType(schema: PageNode | LoopNode): string | React.ComponentType {
   const { type } = schema;
@@ -83,4 +59,13 @@ export function loadDevEnvPageSchema() {
     }
     storedSchema && page.setSchema(storedSchema as any);
   }
+}
+
+export function svgPreviewImg(title: string): string {
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='100' height='20'>
+    <rect width='100' height='20' fill='#888' opacity='0.5'></rect>
+    <text x='10' y='15' style='font-family: Roboto, sans-serif;font-size: 12px; fill: #000; text-align: center'>${title}</text>
+    </svg>`;
+
+  return `data:image/svg+xml;base64,${encode(svg)}`;
 }
