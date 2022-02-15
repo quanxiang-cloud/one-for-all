@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import {
   CTX,
@@ -9,6 +9,7 @@ import {
 import { getAppropriateKey, useIterable, useComposedPropsSpec } from './helpers';
 import NodeRender from '../index';
 import OutLayerRender from './out-layer-render';
+import PathContext from '../path-context';
 
 type ComposedChildRenderProps = {
   node: ComposedNodeChild;
@@ -33,6 +34,7 @@ export type Props = {
 }
 
 function LoopComposed({ iterableState, loopKey, node, ctx }: Props): React.ReactElement | null {
+  const parentPath = useContext(PathContext);
   const iterable = useIterable(iterableState, ctx);
 
   if (!iterable) {
@@ -46,14 +48,18 @@ function LoopComposed({ iterableState, loopKey, node, ctx }: Props): React.React
       const key = getAppropriateKey(composedState, loopKey, index);
 
       return React.createElement(
-        OutLayerRender,
-        { key, outLayer: node.outLayer, ctx },
-        node.children.map((composedChild, index): React.ReactElement => {
-          return React.createElement(
-            ComposedChildRender,
-            { node: composedChild, composedState, ctx, index, key: composedChild.id },
-          );
-        }),
+        PathContext.Provider,
+        { value: `${parentPath}/${index}`, key: index },
+        React.createElement(
+          OutLayerRender,
+          { key, outLayer: node.outLayer, ctx },
+          node.children.map((composedChild, index): React.ReactElement => {
+            return React.createElement(
+              ComposedChildRender,
+              { node: composedChild, composedState, ctx, index, key: composedChild.id },
+            );
+          }),
+        )
       );
     }),
   );

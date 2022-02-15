@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import {
   CTX,
@@ -7,6 +7,7 @@ import {
 } from '../../types';
 import NodeRender from '..';
 import { useMergedPropsList } from './helpers';
+import PathContext from '../path-context';
 
 export type Props = {
   iterableState: PlainState;
@@ -17,6 +18,7 @@ export type Props = {
 }
 
 function LoopIndividual({ iterableState, loopKey, node, ctx, toProps }: Props): React.ReactElement | null {
+  const parentPath = useContext(PathContext);
   const mergedPropsList = useMergedPropsList({
     iterableState,
     toProps,
@@ -32,10 +34,14 @@ function LoopIndividual({ iterableState, loopKey, node, ctx, toProps }: Props): 
   return React.createElement(
     React.Fragment,
     null,
-    mergedPropsList.map(([key, props]): React.ReactElement => {
+    mergedPropsList.map(([key, props], index): React.ReactElement => {
       const newNode = Object.assign({}, node, { props });
 
-      return React.createElement(NodeRender, { key, node: newNode, ctx });
+      return React.createElement(
+        PathContext.Provider,
+        { value: `${parentPath}/${index}`, key },
+        React.createElement(NodeRender, { key, node: newNode, ctx })
+      );
     }),
   );
 }
