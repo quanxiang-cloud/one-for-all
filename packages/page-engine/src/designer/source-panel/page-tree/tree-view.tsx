@@ -6,7 +6,7 @@ import { PageNode, useCtx } from '../../../index';
 import DropIndicator, { DropIndicatorHandles } from './drop-indicator';
 import type { DropResult, DragMoveProps } from './tree-node'
 import TreeNode from './tree-node';
-import { findNode } from 'src/utils/tree-utils';
+import { findNode } from '../../../utils/tree-utils';
 
 
 export const COMPONENT_ICON_MAP: Record<string, string> = {
