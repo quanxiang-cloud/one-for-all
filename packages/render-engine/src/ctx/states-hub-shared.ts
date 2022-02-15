@@ -61,13 +61,13 @@ export default class Hub implements StatesHubShared {
     this.getState$(stateID).next(state);
   }
 
-  getNodeState$(nodeKey: string): BehaviorSubject<unknown> {
-    const stateID = `$${nodeKey}`;
+  getNodeState$(nodePath: string): BehaviorSubject<unknown> {
+    const stateID = `$${nodePath}`;
     return this.getState$(stateID);
   }
 
-  exposeNodeState(nodeKey: React.Key, state: unknown): void {
-    const stateID = `$${nodeKey}`;
+  exposeNodeState(nodePath: string, state: unknown): void {
+    const stateID = `$${nodePath}`;
     if (this.cache[stateID]) {
       this.cache[stateID].next(state);
       return;

@@ -328,8 +328,9 @@ test('useShouldRender_should_return_expected_value_according_node_state', () => 
   const hub = new SharedStateHub({});
   dummyCTX.statesHubShared = hub;
   const nodeKey = 'node_id';
+  const nodePath = `ROOT/${nodeKey}`;
   const someNodeInternalState = { condition1: true, condition2: false };
-  hub.exposeNodeState(nodeKey, someNodeInternalState);
+  hub.exposeNodeState(nodePath, someNodeInternalState);
 
   const node: HTMLNode = {
     id: 'some_node_id',
@@ -337,7 +338,7 @@ test('useShouldRender_should_return_expected_value_according_node_state', () => 
     name: 'div',
     shouldRender: {
       type: 'node_state_property',
-      nodeKey: nodeKey,
+      nodePath: nodePath,
       fallback: true,
       convertor: (v: any): boolean => {
         return !!v.condition1 && !!v.condition2;
@@ -359,7 +360,7 @@ test('useShouldRender_should_return_expected_value_according_node_state', () => 
   expect(result.current).toBe(false);
 
   act(() => {
-    hub.getNodeState$(nodeKey).next({ condition1: true, condition2: true });
+    hub.getNodeState$(nodePath).next({ condition1: true, condition2: true });
   });
   expect(result.current).toBe(true);
 
@@ -373,8 +374,9 @@ test('useShouldRender_should_return_expected_value_according_computed_state', ()
   dummyCTX.statesHubAPI = apiStateHub;
   dummyCTX.statesHubShared = sharedStates;
   const nodeKey = 'node_id';
+  const nodePath = `ROOT/${nodeKey}`;
   const someNodeInternalState = false;
-  sharedStates.exposeNodeState(nodeKey, someNodeInternalState);
+  sharedStates.exposeNodeState(nodePath, someNodeInternalState);
 
   const node: HTMLNode = {
     id: 'some_node_id',
@@ -389,7 +391,7 @@ test('useShouldRender_should_return_expected_value_according_computed_state', ()
         },
         {
           type: 'node_state',
-          depID: nodeKey,
+          depID: nodePath,
         },
         {
           type: 'shared_state',
@@ -400,7 +402,7 @@ test('useShouldRender_should_return_expected_value_according_computed_state', ()
       convertor: () => {
         const loading = dummyCTX.statesHubAPI.getState$('some_api_state').value.loading;
         const sharedState = dummyCTX.statesHubShared.getState$('visible').value;
-        const nodeState = dummyCTX.statesHubShared.getNodeState$(nodeKey).value;
+        const nodeState = dummyCTX.statesHubShared.getNodeState$(nodePath).value;
 
         return loading || sharedState || nodeState;
       },
@@ -417,7 +419,7 @@ test('useShouldRender_should_return_expected_value_according_computed_state', ()
 
   expect(apiStateHub.getState$('some_api_state').value.result).toBeUndefined();
   expect(sharedStates.getState$('visible').value).toBe(false);
-  expect(sharedStates.getNodeState$(nodeKey).value).toBe(false);
+  expect(sharedStates.getNodeState$(nodePath).value).toBe(false);
   const { result, unmount } = renderHook(() => useShouldRender(node, dummyCTX));
   expect(result.current).toBe(true);
 
@@ -432,19 +434,19 @@ test('useShouldRender_should_return_expected_value_according_computed_state', ()
 
   act(() => {
     sharedStates.getState$('visible').next(true);
-    sharedStates.getNodeState$(nodeKey).next(false);
+    sharedStates.getNodeState$(nodePath).next(false);
   });
   expect(result.current).toBe(true);
 
   act(() => {
     sharedStates.getState$('visible').next(false);
-    sharedStates.getNodeState$(nodeKey).next(true);
+    sharedStates.getNodeState$(nodePath).next(true);
   });
   expect(result.current).toBe(true);
 
   act(() => {
     sharedStates.getState$('visible').next(false);
-    sharedStates.getNodeState$(nodeKey).next(false);
+    sharedStates.getNodeState$(nodePath).next(false);
   });
   expect(result.current).toBe(false);
 
@@ -458,8 +460,9 @@ test('useShouldRender_should_return_Init_value_according_computed_state', () => 
   dummyCTX.statesHubAPI = apiStateHub;
   dummyCTX.statesHubShared = sharedStates;
   const nodeKey = 'node_id';
+  const nodePath = `ROOT/${nodeKey}`;
   const someNodeInternalState = false;
-  sharedStates.exposeNodeState(nodeKey, someNodeInternalState);
+  sharedStates.exposeNodeState(nodePath, someNodeInternalState);
 
   const node: HTMLNode = {
     id: 'some_node_id',
@@ -472,7 +475,7 @@ test('useShouldRender_should_return_Init_value_according_computed_state', () => 
       convertor: () => {
         const loading = dummyCTX.statesHubAPI.getState$('some_api_state').value.loading;
         const sharedState = dummyCTX.statesHubShared.getState$('visible').value;
-        const nodeState = dummyCTX.statesHubShared.getNodeState$(nodeKey).value;
+        const nodeState = dummyCTX.statesHubShared.getNodeState$(nodePath).value;
 
         return loading || sharedState || nodeState;
       },
@@ -489,7 +492,7 @@ test('useShouldRender_should_return_Init_value_according_computed_state', () => 
 
   expect(apiStateHub.getState$('some_api_state').value.result).toBeUndefined();
   expect(sharedStates.getState$('visible').value).toBe(false);
-  expect(sharedStates.getNodeState$(nodeKey).value).toBe(false);
+  expect(sharedStates.getNodeState$(nodePath).value).toBe(false);
   const { result, unmount } = renderHook(() => useShouldRender(node, dummyCTX));
   expect(result.current).toBe(true);
 
@@ -504,19 +507,19 @@ test('useShouldRender_should_return_Init_value_according_computed_state', () => 
 
   act(() => {
     sharedStates.getState$('visible').next(true);
-    sharedStates.getNodeState$(nodeKey).next(false);
+    sharedStates.getNodeState$(nodePath).next(false);
   });
   expect(result.current).toBe(true);
 
   act(() => {
     sharedStates.getState$('visible').next(false);
-    sharedStates.getNodeState$(nodeKey).next(true);
+    sharedStates.getNodeState$(nodePath).next(true);
   });
   expect(result.current).toBe(true);
 
   act(() => {
     sharedStates.getState$('visible').next(false);
-    sharedStates.getNodeState$(nodeKey).next(false);
+    sharedStates.getNodeState$(nodePath).next(false);
   });
   expect(result.current).toBe(true);
 

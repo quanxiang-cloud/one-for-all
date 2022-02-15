@@ -23,7 +23,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
       props: {
         anotherNodeState: {
           type: 'node_state_property',
-          nodeKey: 'some_node_key_which_does_not_exist',
+          nodePath: 'some_node_key_which_does_not_exist',
           fallback: '123',
         },
       },
@@ -43,7 +43,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
       props: {
         anotherNodeState: {
           type: 'node_state_property',
-          nodeKey: nodeKey,
+          nodePath: nodeKey,
           fallback: false,
         },
       },
@@ -63,7 +63,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
       props: {
         anotherNodeState: {
           type: 'node_state_property',
-          nodeKey: nodeKey,
+          nodePath: nodeKey,
           fallback: false,
           convertor: () => {
             throw new Error('should be handled');
@@ -87,7 +87,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
       props: {
         anotherNodeState: {
           type: 'node_state_property',
-          nodeKey: nodeKey,
+          nodePath: nodeKey,
           fallback: false,
           convertor: noop,
         },
@@ -109,7 +109,7 @@ describe('useNodeStateProps_resolve_expected_value', () => {
       props: {
         anotherNodeState: {
           type: 'node_state_property',
-          nodeKey: nodeKey,
+          nodePath: nodeKey,
           fallback: false,
           convertor: () => 'bar',
         },
@@ -135,7 +135,7 @@ test('useNodeStateProps_should_resolve_after_changed', () => {
     props: {
       anotherNodeState: {
         type: 'node_state_property',
-        nodeKey: nodeKey,
+        nodePath: nodeKey,
         fallback: false,
       },
     },

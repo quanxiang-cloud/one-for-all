@@ -1,4 +1,5 @@
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
+import PathContext from '../node-render/path-context';
 
 import { SchemaNode, CTX, VersatileFunc } from '../types';
 
@@ -6,11 +7,12 @@ type InternalHookProps = Record<string, VersatileFunc | undefined>;
 
 // todo give this hook a better name
 function useInternalHookProps(node: SchemaNode, ctx: CTX): InternalHookProps {
+  const parentPath = useContext(PathContext);
   return useMemo(() => {
     if ('supportStateExposure' in node && node.supportStateExposure) {
       return {
         __exposeState: (state: unknown): void => {
-          ctx.statesHubShared.exposeNodeState(node.id, state);
+          ctx.statesHubShared.exposeNodeState(`${parentPath}/${node.id}`, state);
         },
       };
     }

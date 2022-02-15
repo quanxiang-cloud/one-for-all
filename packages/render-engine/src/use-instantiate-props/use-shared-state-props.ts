@@ -25,7 +25,7 @@ function useSharedStateProps(node: SchemaNode, ctx: CTX): Record<string, unknown
       states$[key] = ctx.statesHubShared.getState$(propSpec.stateID);
       convertors[key] = propSpec.convertor;
     } else {
-      states$[key] = ctx.statesHubShared.getNodeState$(propSpec.nodeKey);
+      states$[key] = ctx.statesHubShared.getNodeState$(propSpec.nodePath);
       convertors[key] = propSpec.convertor;
     }
 

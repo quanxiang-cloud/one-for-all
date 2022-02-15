@@ -25,7 +25,7 @@ test('useIterable_should_return_null_if_state_is_not_iterable', () => {
     },
     {
       type: 'node_state_property',
-      nodeKey: 'not_arr_node',
+      nodePath: 'not_arr_node',
       fallback: [],
     },
     {

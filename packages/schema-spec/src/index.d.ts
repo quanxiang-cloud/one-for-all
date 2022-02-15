@@ -155,7 +155,9 @@ declare namespace SchemaSpec {
 
   interface NodeStateProperty extends BaseNodeProperty {
     type: 'node_state_property';
-    nodeKey: string;
+    // starts with ROOT/xx
+    // eg: ROOT/node_id_1/node_id_2/5/node_id_3
+    nodePath: string;
     fallback: Fallback;
     convertor?: StateConvertExpression | StateConvertorFuncSpec;
   }
