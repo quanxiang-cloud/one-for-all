@@ -21,6 +21,8 @@ export const COMPONENT_ICON_MAP: Record<string, string> = {
   container: 'border_all',
   iframe: 'ballot',
   input: 'text_fields',
+  form: 'article',
+  modal: 'featured_video'
 }
 
 function TreeView(): JSX.Element {
@@ -36,7 +38,7 @@ function TreeView(): JSX.Element {
 
   const dropIndicatorRef = useRef<DropIndicatorHandles>(null);
 
-  function handleSelect(node: PageNode): void {
+  function handleSelect(node: PageNode): void {    
     page.setActiveElemId(node.id);
   }
 
@@ -145,7 +147,7 @@ function TreeView(): JSX.Element {
   return (
     <div
       ref={drop}
-      className="mt-8 tree-view relative"
+      className="mt-8 relative outline-draggable-tree-view"
       onMouseLeave={() => dropIndicatorRef.current?.clearIndicatorState()}
     >
       <DropIndicator ref={dropIndicatorRef} rowHeight={32} indent={16} />

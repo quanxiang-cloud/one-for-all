@@ -175,7 +175,7 @@ function TreeNode({
         })}
       >
         <div
-          className={cs('flex items-center cursor-pointer pr-5 tree-node')}
+          className={cs('flex items-center cursor-pointer pr-5 outline-draggable-tree-node')}
           onClick={() => {
             onSelect?.(node);
           }}

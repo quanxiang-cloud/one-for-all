@@ -56,7 +56,7 @@ ref: React.Ref<DropIndicatorHandles> | undefined): JSX.Element {
           borderWidth: indicatorState.type === 'between' ? 1 : 2,
         }}
         hidden={indicatorState.type === 'none'}
-        className={classNames('page-tree-node-indicator',
+        className={classNames('outline-tree-node-indicator',
           {
             [`${dropOverClassName}`]: indicatorState.type === 'over',
             [`${dropBetweenClassName}`]: indicatorState.type === 'between',

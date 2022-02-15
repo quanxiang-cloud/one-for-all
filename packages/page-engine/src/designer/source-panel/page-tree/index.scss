@@ -1,12 +1,12 @@
-.tree-view {
+.outline-draggable-tree-view {
   font-size: 12px;
-  .tree-node {
+  .outline-draggable-tree-node {
     min-width: 100px;
     height: 32px;
   }
 }
 
-.page-tree-node-indicator {
+.outline-tree-node-indicator {
   position: absolute;
   top: 0;
   left: 0;
