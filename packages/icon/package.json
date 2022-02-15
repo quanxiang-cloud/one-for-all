@@ -1,9 +1,10 @@
 {
   "name": "@one-for-all/icon",
-  "version": "0.2.14",
+  "version": "0.2.15",
   "description": "Headless svg icon component",
   "license": "Apache-2.0",
   "module": "lib",
+  "types": "lib/src/index.d.ts",
   "scripts": {
     "build": "tsc --build tsconfig.json",
     "build:icons": "node scripts/build-icons.js",
