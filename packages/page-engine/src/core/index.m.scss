@@ -6,10 +6,7 @@
 .page {
   position: relative;
   width: 100%;
-  height: 100%;
   padding: 4px;
-  top: 0;
-  left: 0;
   overflow: auto;
 
   &.isOver {
@@ -21,15 +18,6 @@
 .elem {
   //position: relative;
   //margin-bottom: 2px;
-
-  &.isPage {
-    height: 100%;
-
-    >.toolbar {
-      top: 20px;
-      transform: translateY(-100%);
-    }
-  }
 
   >.toolbar {
     position: absolute;
