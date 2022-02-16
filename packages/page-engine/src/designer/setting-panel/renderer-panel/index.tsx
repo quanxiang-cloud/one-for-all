@@ -7,7 +7,7 @@ import { useUpdateEffect } from 'react-use';
 import cs from 'classnames';
 import { toJS } from 'mobx';
 
-import { Button, Icon, Tooltip, Modal, toast } from '@one-for-all/ui';
+import { Button, Icon, Tooltip, Modal, toast, Toggle } from '@one-for-all/ui';
 
 import { useCtx, DataBind, PageNode } from '../../../index';
 import Section from '../../comps/section';
@@ -127,17 +127,12 @@ function RendererPanel(): JSX.Element {
   return (
     <>
       <div className={styles.renderPanel}>
-        {/* <Section title='条件展示' defaultExpand>*/}
-        {/*  <div className='flex items-center justify-between'>*/}
-        {/*    <Toggle*/}
-        {/*      defaultChecked*/}
-        {/*      onChange={(checked: boolean)=> {*/}
-        {/*        // todo: render-engine not implement shouldRender prop*/}
-        {/*      }}*/}
-        {/*    />*/}
-        {/*    <BindItem name='shouldRender' />*/}
-        {/*  </div>*/}
-        {/* </Section>*/}
+        <Section title='条件展示' defaultExpand>
+         <div className='flex items-center justify-between'>
+           <label>绑定变量</label>
+           <DataBind name='shouldRender' isRootProps/>
+         </div>
+        </Section>
         <Section title='循环展示' defaultExpand>
           <form className='flex flex-col'>
             <div className='mb-8'>

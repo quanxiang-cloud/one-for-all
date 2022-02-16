@@ -10,6 +10,7 @@ import type { NodePropType } from '@one-for-all/schema-spec';
 interface Props {
   name: string; // bind field name
   className?: string;
+  isRootProps?: boolean;
   isLoopNode?: boolean;
   isComposedNode?: boolean;
 }
@@ -25,7 +26,7 @@ const normalStateTypes: NodePropType[] = [
   'api_result_property',
 ];
 
-function ConfigItemBind({ name, isLoopNode, isComposedNode }: Props): JSX.Element {
+function ConfigItemBind({ name, isRootProps, isLoopNode, isComposedNode }: Props): JSX.Element {
   const { designer, page } = useCtx();
   let bound;
   if (isLoopNode) {
@@ -35,7 +36,8 @@ function ConfigItemBind({ name, isLoopNode, isComposedNode }: Props): JSX.Elemen
     const iterType = get(page.rawActiveElem, 'iterableState.type');
     bound = iterableStateTypes.includes(iterType);
   } else {
-    const propType = get(page.activeElem, `props.${name}.type`);
+    const typePath = isRootProps ? `${name}.type` : `props.${name}.type`;
+    const propType = get(page.activeElem, typePath);
     bound = normalStateTypes.includes(propType);
   }
 
@@ -46,8 +48,9 @@ function ConfigItemBind({ name, isLoopNode, isComposedNode }: Props): JSX.Elemen
     } else if (isComposedNode) {
       page.unsetComposedNode(page.activeElemId);
     } else {
-      const { fallback } = get(page.activeElem, `props.${name}`, {});
-      page.updateElemProperty(page.activeElem.id, `props.${name}`, {
+      const propPath = isRootProps ? name : `props.${name}`;
+      const { fallback } = get(page.activeElem, propPath, {});
+      page.updateElemProperty(page.activeElem.id, propPath, {
         type: 'constant_property',
         value: fallback,
       });
@@ -59,7 +62,7 @@ function ConfigItemBind({ name, isLoopNode, isComposedNode }: Props): JSX.Elemen
     if (exportName === 'container') {
       designer.openComponentNodeBinding(name, isLoopNode);
     } else {
-      designer.openDataBinding(name, isLoopNode);
+      designer.openDataBinding(name, isLoopNode, isRootProps);
     }
   }
 
