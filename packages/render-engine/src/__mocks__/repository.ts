@@ -6,7 +6,7 @@ type ImportComponentParams = {
   packageName: string;
   version: string;
   exportName?: string;
-}
+};
 
 const dummyComponent = (): JSX.Element => React.createElement('div');
 

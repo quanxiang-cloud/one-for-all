@@ -43,7 +43,8 @@ export function useNodeComponent(
       return;
     }
 
-    importComponent({
+    // eslint-disable-next-line no-void
+    void importComponent({
       packageName: node.packageName,
       version: node.packageVersion,
       exportName: node.exportName,
@@ -72,8 +73,11 @@ export function useNodeComponent(
   return lazyLoadedComponent;
 }
 
-type RefResult = { refCTX: CTX; refNode: SchemaNode; }
-type UseRefResultProps = {
+interface RefResult {
+  refCTX: CTX;
+  refNode: SchemaNode;
+}
+interface UseRefResultProps {
   schemaID: string;
   refLoader?: RefLoader;
   orphan?: boolean;
@@ -103,27 +107,29 @@ export function useRefResult(
 
     let unMounting = false;
 
-    refLoader(schemaID).then(({ schema, plugins }) => {
-      if (unMounting) {
-        return;
-      }
+    refLoader(schemaID)
+      .then(({ schema, plugins }) => {
+        if (unMounting) {
+          return;
+        }
 
-      const refCTX = initCTX({
-        plugins,
-        apiStateSpec: schema.apiStateSpec,
-        sharedStatesSpec: schema.sharedStatesSpec,
-        parentCTX: orphan ? undefined : ctx,
+        const refCTX = initCTX({
+          plugins,
+          apiStateSpec: schema.apiStateSpec,
+          sharedStatesSpec: schema.sharedStatesSpec,
+          parentCTX: orphan ? undefined : ctx,
+        });
+        const instantiatedNode = deserializeSchema(schema.node, refCTX);
+        if (!instantiatedNode) {
+          // TODO: paint error
+          return;
+        }
+
+        setResult({ refCTX, refNode: instantiatedNode });
+      })
+      .catch((err) => {
+        logger.error(err);
       });
-      const instantiatedNode = deserializeSchema(schema.node, refCTX);
-      if (!instantiatedNode) {
-        // TODO: paint error
-        return;
-      }
-
-      setResult({ refCTX, refNode: instantiatedNode });
-    }).catch((err) => {
-      logger.error(err);
-    });
 
     return () => {
       unMounting = true;

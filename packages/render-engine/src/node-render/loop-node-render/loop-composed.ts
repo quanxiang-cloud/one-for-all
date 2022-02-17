@@ -1,32 +1,30 @@
 import React, { useContext } from 'react';
 
-import {
-  CTX,
-  PlainState,
-  ComposedNode,
-  ComposedNodeChild,
-} from '../../types';
+import { CTX, PlainState, ComposedNode, ComposedNodeChild } from '../../types';
 import { getAppropriateKey, useIterable, useComposedPropsSpec } from './helpers';
 import NodeRender from '../index';
 import OutLayerRender from './out-layer-render';
 import PathContext from '../path-context';
 
-type ComposedChildRenderProps = {
+interface ComposedChildRenderProps {
   node: ComposedNodeChild;
   composedState: unknown;
   ctx: CTX;
   index: number;
 }
 
-function ComposedChildRender(
-  { node, composedState, ctx, index }: ComposedChildRenderProps,
-): React.ReactElement {
+function ComposedChildRender({
+  node,
+  composedState,
+  ctx,
+  index,
+}: ComposedChildRenderProps): React.ReactElement {
   const propSpec = useComposedPropsSpec(composedState, node.toProps, index, node.props);
   const _node = Object.assign({}, node, { props: propSpec });
   return React.createElement(NodeRender, { node: _node, ctx });
 }
 
-export type Props = {
+export interface Props {
   iterableState: PlainState;
   loopKey: string;
   node: ComposedNode;
@@ -54,12 +52,15 @@ function LoopComposed({ iterableState, loopKey, node, ctx }: Props): React.React
           OutLayerRender,
           { key, outLayer: node.outLayer, ctx },
           node.children.map((composedChild, index): React.ReactElement => {
-            return React.createElement(
-              ComposedChildRender,
-              { node: composedChild, composedState, ctx, index, key: composedChild.id },
-            );
+            return React.createElement(ComposedChildRender, {
+              node: composedChild,
+              composedState,
+              ctx,
+              index,
+              key: composedChild.id,
+            });
           }),
-        )
+        ),
       );
     }),
   );

@@ -2,12 +2,7 @@ import React, { useContext, useMemo } from 'react';
 import { logger } from '@one-for-all/utils';
 import type { ConstantProperty } from '@one-for-all/schema-spec';
 
-import {
-  CTX,
-  SchemaNode,
-  PlainState,
-  NodeProperties,
-} from '../../types';
+import { CTX, SchemaNode, PlainState, NodeProperties } from '../../types';
 import PathContext from '../path-context';
 import useInstantiateProps from '../../use-instantiate-props';
 
@@ -87,7 +82,7 @@ export function tryToProps(
   }
 }
 
-type UseMergedPropsListParams = {
+interface UseMergedPropsListParams {
   iterableState: PlainState;
   toProps: (item: unknown) => Record<string, unknown>;
   otherProps?: NodeProperties;
@@ -97,9 +92,13 @@ type UseMergedPropsListParams = {
 
 // useMergedPropsList return a list of `props` and `key` which could be used for iteration,
 // each `props` merged iterableState and otherProps
-export function useMergedPropsList(
-  { iterableState, toProps, otherProps, ctx, loopKey }: UseMergedPropsListParams,
-): Array<[React.Key, NodeProperties]> | null {
+export function useMergedPropsList({
+  iterableState,
+  toProps,
+  otherProps,
+  ctx,
+  loopKey,
+}: UseMergedPropsListParams): Array<[React.Key, NodeProperties]> | null {
   const iterable = useIterable(iterableState, ctx);
   const currentPath = useContext(PathContext);
 
@@ -107,25 +106,26 @@ export function useMergedPropsList(
     return null;
   }
 
-  return iterable.map<[React.Key, NodeProperties] | null>((item, index) => {
-    const convertedProps = tryToProps(item, index, toProps, currentPath);
-    if (!convertedProps) {
-      return null;
-    }
+  return iterable
+    .map<[React.Key, NodeProperties] | null>((item, index) => {
+      const convertedProps = tryToProps(item, index, toProps, currentPath);
+      if (!convertedProps) {
+        return null;
+      }
 
-    // convert iterable to constant property spec for reuse of NodeRender
-    const constProps = Object.entries(convertedProps)
-      .reduce<Record<string, ConstantProperty>>((constProps, [propName, value]) => {
-        constProps[propName] = { type: 'constant_property', value };
+      // convert iterable to constant property spec for reuse of NodeRender
+      const constProps = Object.entries(convertedProps).reduce<Record<string, ConstantProperty>>(
+        (constProps, [propName, value]) => {
+          constProps[propName] = { type: 'constant_property', value };
 
-        return constProps;
-      }, {});
+          return constProps;
+        },
+        {},
+      );
 
-    return [
-      getAppropriateKey(item, loopKey, index),
-      Object.assign({}, otherProps, constProps),
-    ];
-  }).filter((pair): pair is [React.Key, NodeProperties] => !!pair);
+      return [getAppropriateKey(item, loopKey, index), Object.assign({}, otherProps, constProps)];
+    })
+    .filter((pair): pair is [React.Key, NodeProperties] => !!pair);
 }
 
 export function useComposedPropsSpec(
@@ -138,14 +138,16 @@ export function useComposedPropsSpec(
 
   return useMemo(() => {
     const composedProps = tryToProps(composedState, index, toProps, currentPath);
-    const composedPropsSpec = Object.entries(composedProps || {})
-      .reduce<Record<string, ConstantProperty>>((acc, [key, value]) => {
+    const composedPropsSpec = Object.entries(composedProps || {}).reduce<Record<string, ConstantProperty>>(
+      (acc, [key, value]) => {
         acc[key] = {
           type: 'constant_property',
           value,
         };
         return acc;
-      }, {});
+      },
+      {},
+    );
 
     return Object.assign({}, otherProps, composedPropsSpec);
   }, [composedState, otherProps]);

@@ -3,14 +3,14 @@ import StatesHubShared from './states-hub-shared';
 import getAPIStates from './api-states';
 import getSharedStates from './shared-states';
 import type { CTX, Plugins } from '../types';
-import { APIStatesSpec, SharedStatesSpec } from 'packages/schema-spec/src';
+import { APIStatesSpec, SharedStatesSpec } from '@one-for-all/schema-spec';
 import type { APISpecAdapter } from '@one-for-all/api-spec-adapter';
 
 const dummyAPISpecAdapter: APISpecAdapter = {
   build: () => ({ url: '/api', method: 'get' }),
 };
 
-type Params = {
+interface Params {
   apiStateSpec?: APIStatesSpec;
   sharedStatesSpec?: SharedStatesSpec;
   parentCTX?: CTX;

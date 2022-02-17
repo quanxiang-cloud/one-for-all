@@ -5,7 +5,7 @@ import { ChildrenRender } from './index';
 import type { CTX, ReactComponentNode } from '../types';
 import { useLifecycleHook, useNodeComponent } from './hooks';
 
-type Props = {
+interface Props {
   node: ReactComponentNode;
   ctx: CTX;
 }
@@ -23,12 +23,10 @@ function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | nu
     return React.createElement(nodeComponent, props);
   }
 
-  return (
-    React.createElement(
-      nodeComponent,
-      props,
-      React.createElement(ChildrenRender, { nodes: node.children || [], ctx }),
-    )
+  return React.createElement(
+    nodeComponent,
+    props,
+    React.createElement(ChildrenRender, { nodes: node.children || [], ctx }),
   );
 }
 

@@ -1,10 +1,6 @@
 import type * as SchemaSpec from '@one-for-all/schema-spec';
 
-import {
-  RenderEngineCTX,
-  VersatileFunc,
-  StateConvertor,
-} from '../types';
+import { RenderEngineCTX, VersatileFunc, StateConvertor } from '../types';
 
 export function isObject(n: unknown): boolean {
   return Object.prototype.toString.call(n) === '[object Object]';
@@ -26,29 +22,17 @@ export function isFuncSpec(n: unknown): boolean {
   return false;
 }
 
-function instantiateStateExpression(
-  expression: string,
-  renderEngineCTX: RenderEngineCTX,
-): StateConvertor {
+function instantiateStateExpression(expression: string, renderEngineCTX: RenderEngineCTX): StateConvertor {
   try {
+    // eslint-disable-next-line no-new-func
     const fn = new Function('state', `return ${expression}`).bind(renderEngineCTX);
-    fn.toString = () => [
-      '',
-      'function wrappedStateConvertor(state) {',
-      `\treturn ${expression}`,
-      '}',
-    ].join('\n');
+    fn.toString = () =>
+      ['', 'function wrappedStateConvertor(state) {', `\treturn ${expression}`, '}'].join('\n');
 
     return fn;
   } catch (error) {
     throw new Error(
-      [
-        'failed to instantiate state convert expression:',
-        '\n',
-        expression,
-        '\n',
-        error,
-      ].join(''),
+      ['failed to instantiate state convert expression:', '\n', expression, '\n', error].join(''),
     );
   }
 }
@@ -62,14 +46,9 @@ export function instantiateFuncSpec(
   }
 
   try {
+    // eslint-disable-next-line no-new-func
     const fn = new Function(spec.args, spec.body).bind(ctx);
-    fn.toString = () => [
-      '',
-      `function wrappedFunc(${spec.args}) {`,
-      `\t${spec.body}`,
-      '}',
-      '',
-    ].join('\n');
+    fn.toString = () => ['', `function wrappedFunc(${spec.args}) {`, `\t${spec.body}`, '}', ''].join('\n');
     return fn;
   } catch (error) {
     throw new Error(

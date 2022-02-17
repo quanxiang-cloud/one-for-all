@@ -7,9 +7,13 @@ type Props = PropsWithChildren<{
 }>;
 
 function RenderPath({ id, children }: Props): JSX.Element {
-  const parentPath = useContext(PathContext)
+  const parentPath = useContext(PathContext);
 
-  return (<div id={id} data-path={parentPath}>{children}</div>);
+  return (
+    <div id={id} data-path={parentPath}>
+      {children}
+    </div>
+  );
 }
 
 const repository: Repository = {

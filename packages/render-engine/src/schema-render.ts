@@ -6,12 +6,15 @@ import NodeRender from './node-render';
 import deserializeSchema from './deserialize-schema';
 import type { Plugins, RenderEngineCTX } from './types';
 
-type Props = {
+interface Props {
   schema: Schema;
   plugins?: Plugins;
 }
 
-function SchemaRender({ schema, plugins }: Props, ref: React.Ref<RenderEngineCTX>): React.ReactElement | null {
+function SchemaRender(
+  { schema, plugins }: Props,
+  ref: React.Ref<RenderEngineCTX>,
+): React.ReactElement | null {
   const ctx = initCTX({
     plugins,
     apiStateSpec: schema.apiStateSpec,

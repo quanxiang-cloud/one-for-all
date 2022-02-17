@@ -26,7 +26,7 @@ enum HttpMethods {
 
 export const METHODS = Object.values(HttpMethods);
 
-export type FetchParams = Partial<{ params: Record<string, any>; body: any; }>;
+export type FetchParams = Partial<{ params: Record<string, any>; body: any }>;
 
 // copy from https://github.com/ReactiveX/rxjs/blob/c2b3e88b9c2dbb9965833ca130b60d6466ef9552/src/internal/ajax/types.ts#L82
 /**

@@ -12,22 +12,24 @@ export default function useAPIInvokeProps(node: SchemaNode, ctx: CTX): APICallPr
       return {};
     }
 
-    return Object.entries(node.props).filter((pair): pair is [string, APIInvokeProperty] => {
-      return pair[1].type === 'api_invoke_property';
-    }).reduce<APICallProps>((acc, [propName, { stateID, paramsBuilder, callback }]) => {
-      logger.warn('hook useAPIInvokeProps has been deprecated, please use hook useFuncProps instead');
+    return Object.entries(node.props)
+      .filter((pair): pair is [string, APIInvokeProperty] => {
+        return pair[1].type === 'api_invoke_property';
+      })
+      .reduce<APICallProps>((acc, [propName, { stateID, paramsBuilder, callback }]) => {
+        logger.warn('hook useAPIInvokeProps has been deprecated, please use hook useFuncProps instead');
 
-      function handleAction(...args: unknown[]): void {
-        try {
-          const fetchParams: FetchParams = paramsBuilder?.(...args) || {};
-          ctx.apiStates[stateID].fetch(fetchParams, callback);
-        } catch (error) {
-          logger.log('failed to run convertor or run action:', error);
+        function handleAction(...args: unknown[]): void {
+          try {
+            const fetchParams: FetchParams = paramsBuilder?.(...args) || {};
+            ctx.apiStates[stateID].fetch(fetchParams, callback);
+          } catch (error) {
+            logger.log('failed to run convertor or run action:', error);
+          }
         }
-      }
 
-      acc[propName] = handleAction;
-      return acc;
-    }, {});
+        acc[propName] = handleAction;
+        return acc;
+      }, {});
   }, []);
 }

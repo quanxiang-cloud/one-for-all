@@ -27,22 +27,22 @@ export type LifecycleHooks = Partial<{
 export type ToProps = (state: unknown) => Record<string, unknown>;
 
 export type NodeProperty =
-  SchemaSpec.ConstantProperty |
-  APIResultProperty |
-  SchemaSpec.APILoadingProperty |
-  SharedStateProperty |
-  NodeStateProperty |
-  FunctionalProperty |
-  SharedStateMutationProperty |
-  APIInvokeProperty |
-  RenderProperty |
-  ComputedProperty;
+  | SchemaSpec.ConstantProperty
+  | APIResultProperty
+  | SchemaSpec.APILoadingProperty
+  | SharedStateProperty
+  | NodeStateProperty
+  | FunctionalProperty
+  | SharedStateMutationProperty
+  | APIInvokeProperty
+  | RenderProperty
+  | ComputedProperty;
 
 export type PlainState =
-  APIResultProperty |
-  SharedStateProperty |
-  NodeStateProperty |
-  SchemaSpec.ConstantProperty;
+  | APIResultProperty
+  | SharedStateProperty
+  | NodeStateProperty
+  | SchemaSpec.ConstantProperty;
 
 /**
  * APIResultProperty define a value converted from API response.
@@ -66,9 +66,8 @@ export interface FunctionalProperty extends Omit<SchemaSpec.FunctionalProperty, 
 /**
  * @deprecated This type has been deprecated, please use FunctionalProperty instead
  */
-export interface SharedStateMutationProperty extends Omit<
-  SchemaSpec.SharedStateMutationProperty, 'convertor'
-> {
+export interface SharedStateMutationProperty
+  extends Omit<SchemaSpec.SharedStateMutationProperty, 'convertor'> {
   convertor?: VersatileFunc;
 }
 
@@ -105,19 +104,14 @@ export interface ComputedProperty extends Omit<SchemaSpec.ComputedProperty, 'con
 
 export type NodeProperties = Record<string, NodeProperty>;
 
-export type SchemaNode =
-  HTMLNode |
-  ReactComponentNode |
-  LoopContainerNode |
-  ComposedNode |
-  RefNode;
+export type SchemaNode = HTMLNode | ReactComponentNode | LoopContainerNode | ComposedNode | RefNode;
 
 export type ShouldRenderCondition =
-  APIResultProperty |
-  NodeStateProperty |
-  SharedStateProperty |
-  ComputedProperty |
-  SchemaSpec.APILoadingProperty & { revert?: boolean };
+  | APIResultProperty
+  | NodeStateProperty
+  | SharedStateProperty
+  | ComputedProperty
+  | (SchemaSpec.APILoadingProperty & { revert?: boolean });
 
 export interface BaseNode extends Omit<SchemaSpec.BaseNode, 'props' | 'shouldRender' | 'lifecycleHooks'> {
   props?: NodeProperties;
@@ -130,13 +124,12 @@ export interface HTMLNode extends BaseNode, Pick<SchemaSpec.HTMLNode, 'name'> {
   children?: Array<SchemaNode>;
 }
 
-export interface ReactComponentNode extends
-  BaseNode,
-  Pick<
-    SchemaSpec.ReactComponentNode,
-    'packageName' | 'packageVersion' | 'exportName' | 'supportStateExposure'
-  >
-{
+export interface ReactComponentNode
+  extends BaseNode,
+    Pick<
+      SchemaSpec.ReactComponentNode,
+      'packageName' | 'packageVersion' | 'exportName' | 'supportStateExposure'
+    > {
   type: 'react-component';
   children?: Array<SchemaNode>;
 }
@@ -158,16 +151,14 @@ export type LoopContainerNode = IndividualLoopContainer | ComposedNodeLoopContai
 
 export type ComposedNodeChild = SchemaNode & {
   toProps: ToProps;
-}
+};
 
-export type ComposeOutLayer =
-  Omit<HTMLNode, 'children'> |
-  Omit<ReactComponentNode, 'children'>;
+export type ComposeOutLayer = Omit<HTMLNode, 'children'> | Omit<ReactComponentNode, 'children'>;
 
 export interface ComposedNode extends BaseNode {
-    type: 'composed-node';
-    outLayer?: ComposeOutLayer;
-    children: Array<ComposedNodeChild>;
+  type: 'composed-node';
+  outLayer?: ComposeOutLayer;
+  children: Array<ComposedNodeChild>;
 }
 
 export interface RefNode extends BaseNode, Pick<SchemaSpec.RefNode, 'schemaID' | 'orphan'> {
@@ -175,7 +166,7 @@ export interface RefNode extends BaseNode, Pick<SchemaSpec.RefNode, 'schemaID' |
   fallback?: SchemaNode;
 }
 
-export type FetchOption = {
+export interface FetchOption {
   params?: FetchParams;
   // Callback is the hook for performing side effect after an API request.
   //
@@ -215,11 +206,11 @@ export type FetchOption = {
 
 // APIState define the type of API results from view perspective.
 // This type is inspired by [react-query](https://react-query.tanstack.com/).
-export type APIState = {
+export interface APIState {
   loading: boolean;
   result?: unknown;
   error?: Error;
-};
+}
 
 export interface StatesHubAPI {
   hasState$: (stateID: string) => boolean;
@@ -265,9 +256,9 @@ export type RenderEngineCTX = Pick<CTX, 'states' | 'apiStates'>;
 
 // map of stateID and apiID
 // todo should also store builder info
-export type APIStatesSpec = Record<string, { apiID: string; [key: string]: unknown; }>;
+export type APIStatesSpec = Record<string, { apiID: string; [key: string]: unknown }>;
 
-export type SharedStatesSpec = Record<string, { initial: unknown; }>;
+export type SharedStatesSpec = Record<string, { initial: unknown }>;
 
 export interface Schema {
   node: SchemaNode;
@@ -281,9 +272,9 @@ export type DynamicComponent = React.FC<any> | React.ComponentClass<unknown>;
 type PackageNameVersion = string;
 export type Repository = Record<PackageNameVersion, Record<string, DynamicComponent>>;
 
-export type RefLoader = (schemaID: string) => Promise<{ schema: SchemaSpec.Schema; plugins?: Plugins; }>;
+export type RefLoader = (schemaID: string) => Promise<{ schema: SchemaSpec.Schema; plugins?: Plugins }>;
 
-export type Plugins = {
+export interface Plugins {
   apiSpecAdapter?: APISpecAdapter;
   repository?: Repository;
   refLoader?: RefLoader;

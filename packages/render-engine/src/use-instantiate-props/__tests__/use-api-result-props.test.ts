@@ -336,7 +336,7 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
           type: 'api_result_property',
           fallback: fallback,
           stateID: 'some_api_state',
-          convertor: (v) => v as number * 2,
+          convertor: (v) => (v as number) * 2,
         },
       },
     };

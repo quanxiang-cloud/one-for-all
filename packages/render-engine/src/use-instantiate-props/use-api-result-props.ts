@@ -1,13 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { BehaviorSubject, combineLatest, distinctUntilKeyChanged, map, Observable, skip, tap } from 'rxjs';
 
-import {
-  APIResultProperty,
-  APIState,
-  CTX,
-  SchemaNode,
-  StateConvertor,
-} from '../types';
+import { APIResultProperty, APIState, CTX, SchemaNode, StateConvertor } from '../types';
 import { convertState } from './utils';
 
 function useAPIResultProps(node: SchemaNode, ctx: CTX): Record<string, unknown> {
@@ -15,13 +9,15 @@ function useAPIResultProps(node: SchemaNode, ctx: CTX): Record<string, unknown> 
   const states$: Record<string, BehaviorSubject<APIState>> = {};
   const initialFallbacks: Record<string, unknown> = {};
 
-  Object.entries(node.props || {}).filter((pair): pair is [string, APIResultProperty] => {
-    return pair[1].type === 'api_result_property';
-  }).forEach(([propName, { fallback, convertor: adapter, stateID }]) => {
-    initialFallbacks[propName] = fallback;
-    adapters[propName] = adapter;
-    states$[propName] = ctx.statesHubAPI.getState$(stateID);
-  });
+  Object.entries(node.props || {})
+    .filter((pair): pair is [string, APIResultProperty] => {
+      return pair[1].type === 'api_result_property';
+    })
+    .forEach(([propName, { fallback, convertor: adapter, stateID }]) => {
+      initialFallbacks[propName] = fallback;
+      adapters[propName] = adapter;
+      states$[propName] = ctx.statesHubAPI.getState$(stateID);
+    });
 
   const fallbacksRef = useRef<Record<string, unknown>>(initialFallbacks);
 
@@ -39,8 +35,8 @@ function useAPIResultProps(node: SchemaNode, ctx: CTX): Record<string, unknown> 
   });
 
   useEffect(() => {
-    const results$ = Object.entries(states$)
-      .reduce<Record<string, Observable<unknown>>>((acc, [key, state$]) => {
+    const results$ = Object.entries(states$).reduce<Record<string, Observable<unknown>>>(
+      (acc, [key, state$]) => {
         acc[key] = state$.pipe(
           distinctUntilKeyChanged('result'),
           map(({ result }) => {
@@ -51,15 +47,17 @@ function useAPIResultProps(node: SchemaNode, ctx: CTX): Record<string, unknown> 
               propName: key,
             });
           }),
-          tap((result) => fallbacksRef.current[key] = result),
+          tap((result) => {
+            fallbacksRef.current[key] = result;
+          }),
         );
 
         return acc;
-      }, {});
+      },
+      {},
+    );
 
-    const subscription = combineLatest(results$).pipe(
-      skip(1),
-    ).subscribe(setState);
+    const subscription = combineLatest(results$).pipe(skip(1)).subscribe(setState);
 
     return () => subscription.unsubscribe();
   }, []);

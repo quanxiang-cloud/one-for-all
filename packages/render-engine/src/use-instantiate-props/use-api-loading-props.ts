@@ -2,20 +2,18 @@ import { useEffect, useState } from 'react';
 import { BehaviorSubject, combineLatest, distinctUntilKeyChanged, map, Observable, skip } from 'rxjs';
 import type { APILoadingProperty } from '@one-for-all/schema-spec';
 
-import {
-  APIState,
-  CTX,
-  SchemaNode,
-} from '../types';
+import { APIState, CTX, SchemaNode } from '../types';
 
 function useAPILoadingProps(node: SchemaNode, ctx: CTX): Record<string, unknown> {
   const states$: Record<string, BehaviorSubject<APIState>> = {};
 
-  Object.entries(node.props || {}).filter((pair): pair is [string, APILoadingProperty] => {
-    return pair[1].type === 'api_loading_property';
-  }).forEach(([propName, { stateID }]) => {
-    states$[propName] = ctx.statesHubAPI.getState$(stateID);
-  });
+  Object.entries(node.props || {})
+    .filter((pair): pair is [string, APILoadingProperty] => {
+      return pair[1].type === 'api_loading_property';
+    })
+    .forEach(([propName, { stateID }]) => {
+      states$[propName] = ctx.statesHubAPI.getState$(stateID);
+    });
 
   const [state, setState] = useState<Record<string, unknown>>(() => {
     return Object.entries(states$).reduce<Record<string, unknown>>((acc, [key, state$]) => {
@@ -26,8 +24,8 @@ function useAPILoadingProps(node: SchemaNode, ctx: CTX): Record<string, unknown>
   });
 
   useEffect(() => {
-    const results$ = Object.entries(states$)
-      .reduce<Record<string, Observable<unknown>>>((acc, [key, state$]) => {
+    const results$ = Object.entries(states$).reduce<Record<string, Observable<unknown>>>(
+      (acc, [key, state$]) => {
         acc[key] = state$.pipe(
           skip(1),
           distinctUntilKeyChanged('loading'),
@@ -35,7 +33,9 @@ function useAPILoadingProps(node: SchemaNode, ctx: CTX): Record<string, unknown>
         );
 
         return acc;
-      }, {});
+      },
+      {},
+    );
 
     const subscription = combineLatest(results$).subscribe(setState);
 

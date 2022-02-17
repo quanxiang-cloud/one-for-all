@@ -6,7 +6,7 @@ import LoopComposed from './loop-composed';
 import type { CTX, LoopContainerNode } from '../../types';
 import { useLifecycleHook } from '../hooks';
 
-type Props = {
+interface Props {
   node: LoopContainerNode;
   ctx: CTX;
 }
