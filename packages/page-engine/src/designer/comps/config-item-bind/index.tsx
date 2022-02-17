@@ -13,6 +13,7 @@ interface Props {
   isRootProps?: boolean;
   isLoopNode?: boolean;
   isComposedNode?: boolean;
+  unBind?: () => void;
 }
 
 const iterableStateTypes: NodePropType[] = [
@@ -26,7 +27,7 @@ const normalStateTypes: NodePropType[] = [
   'api_result_property',
 ];
 
-function ConfigItemBind({ name, isRootProps, isLoopNode, isComposedNode }: Props): JSX.Element {
+function ConfigItemBind({ name, isRootProps, isLoopNode, isComposedNode, unBind }: Props): JSX.Element {
   const { designer, page } = useCtx();
   let bound;
   if (isLoopNode) {
@@ -59,7 +60,7 @@ function ConfigItemBind({ name, isRootProps, isLoopNode, isComposedNode }: Props
 
   function handleChecked(): void {
     const { exportName } = page.activeElem;
-    if (exportName === 'container') {
+    if (exportName === 'container' && isLoopNode) {
       designer.openComponentNodeBinding(name, isLoopNode);
     } else {
       designer.openDataBinding(name, isLoopNode, isRootProps);
@@ -82,7 +83,7 @@ function ConfigItemBind({ name, isRootProps, isLoopNode, isComposedNode }: Props
           <Icon
             name='link'
             clickable
-            onClick={handleUnbind}
+            onClick={unBind ? unBind : handleUnbind}
           />
         </Tooltip>
       )}

@@ -7,7 +7,7 @@ import { useUpdateEffect } from 'react-use';
 import cs from 'classnames';
 import { toJS } from 'mobx';
 
-import { Button, Icon, Tooltip, Modal, toast, Toggle } from '@one-for-all/ui';
+import { Button, Icon, Tooltip, Modal, toast } from '@one-for-all/ui';
 
 import { useCtx, DataBind, PageNode } from '../../../index';
 import Section from '../../comps/section';
@@ -130,7 +130,12 @@ function RendererPanel(): JSX.Element {
         <Section title='条件展示' defaultExpand>
          <div className='flex items-center justify-between'>
            <label>绑定变量</label>
-           <DataBind name='shouldRender' isRootProps/>
+           <DataBind name='shouldRender' unBind={() => {
+             page.updateElemProperty(page.activeElem.id, 'shouldRender', {
+               type: 'constant_property',
+               value: true
+             })
+           }} isRootProps/>
          </div>
         </Section>
         <Section title='循环展示' defaultExpand>

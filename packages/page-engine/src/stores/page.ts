@@ -323,7 +323,7 @@ class PageStore {
       if (!options?.useRawNode && elem.type === 'loop-container') {
         // support composed-node
         if (elem.node.type === 'composed-node') {
-          const { outLayer, children } = toJS(elem.node);
+          const { outLayer, children } = elem.node;
           if (outLayer && outLayer.id === this.activeElemId) {
             actualNode = outLayer;
           }
@@ -332,7 +332,7 @@ class PageStore {
             actualNode = children.find((item: PageNode) => item.id === this.activeElemId);
           }
         } else {
-          actualNode = toJS(elem.node);
+          actualNode = elem.node;
         }
       }
 
