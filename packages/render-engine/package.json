@@ -26,6 +26,9 @@
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.0.6",
+    "@rushstack/eslint-config": "2.5.1",
+    "@rushstack/heft": "0.44.2",
+    "@rushstack/heft-web-rig": "~0.9.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@testing-library/react-hooks": "^7.0.1",
