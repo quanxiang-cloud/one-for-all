@@ -1,15 +1,11 @@
 import React, { useContext } from 'react';
 
-import {
-  CTX,
-  SchemaNode,
-  PlainState,
-} from '../../types';
+import { CTX, SchemaNode, PlainState } from '../../types';
 import NodeRender from '..';
 import { useMergedPropsList } from './helpers';
 import PathContext from '../path-context';
 
-export type Props = {
+export interface Props {
   iterableState: PlainState;
   loopKey: string;
   toProps: (item: unknown) => Record<string, unknown>;
@@ -40,7 +36,7 @@ function LoopIndividual({ iterableState, loopKey, node, ctx, toProps }: Props): 
       return React.createElement(
         PathContext.Provider,
         { value: `${parentPath}/${index}`, key },
-        React.createElement(NodeRender, { key, node: newNode, ctx })
+        React.createElement(NodeRender, { key, node: newNode, ctx }),
       );
     }),
   );

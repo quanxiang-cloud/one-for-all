@@ -4,12 +4,12 @@ import type { ComputedDependency } from '@one-for-all/schema-spec';
 
 import { CTX, StateConvertor } from '../types';
 
-type ConvertResultParams = {
+interface ConvertResultParams {
   state: unknown;
   convertor?: StateConvertor;
   fallback: unknown;
   propName: string;
-};
+}
 
 export function convertState({ state, convertor, fallback, propName }: ConvertResultParams): unknown {
   if (convertor && state !== undefined) {
@@ -24,7 +24,8 @@ export function convertState({ state, convertor, fallback, propName }: ConvertRe
         '\n',
         convertor.toString(),
         '\n',
-        'So return fallback instead, fallback:', fallback,
+        'So return fallback instead, fallback:',
+        fallback,
         '\n',
         '\n',
         error,
@@ -36,7 +37,7 @@ export function convertState({ state, convertor, fallback, propName }: ConvertRe
   return state ?? fallback;
 }
 
-type GetComputedState$Props = {
+interface GetComputedState$Props {
   propName: string;
   deps: ComputedDependency[];
   convertor: StateConvertor;
@@ -44,9 +45,13 @@ type GetComputedState$Props = {
   fallback: unknown;
 }
 
-export function getComputedState$(
-  { propName, deps, convertor, ctx, fallback }: GetComputedState$Props,
-): BehaviorSubject<unknown> {
+export function getComputedState$({
+  propName,
+  deps,
+  convertor,
+  ctx,
+  fallback,
+}: GetComputedState$Props): BehaviorSubject<unknown> {
   let _fallback = fallback;
   const deps$ = deps.map<BehaviorSubject<unknown>>(({ type, depID }) => {
     if (type === 'api_state') {
@@ -60,26 +65,32 @@ export function getComputedState$(
     return ctx.statesHubShared.getState$(depID);
   });
   const initialDeps = deps$.map((dep$) => dep$.value);
-  const state$ = new BehaviorSubject(convertState({
-    state: initialDeps,
-    convertor: convertor,
-    fallback: fallback,
-    propName,
-  }));
-
-  of(true).pipe(
-    combineLatestWith(deps$),
-    map((_, ..._dep) => {
-      return convertState({
-        state: _dep,
-        convertor: convertor,
-        fallback: _fallback,
-        propName,
-      });
+  const state$ = new BehaviorSubject(
+    convertState({
+      state: initialDeps,
+      convertor: convertor,
+      fallback: fallback,
+      propName,
     }),
-    skip(1),
-    tap((state) => _fallback = state),
-  ).subscribe((state) => state$.next(state));
+  );
+
+  of(true)
+    .pipe(
+      combineLatestWith(deps$),
+      map((_, ..._dep) => {
+        return convertState({
+          state: _dep,
+          convertor: convertor,
+          fallback: _fallback,
+          propName,
+        });
+      }),
+      skip(1),
+      tap((state) => {
+        _fallback = state;
+      }),
+    )
+    .subscribe((state) => state$.next(state));
 
   return state$;
 }

@@ -1,27 +1,25 @@
-import React from 'react';
 import { logger } from '@one-for-all/utils';
 import { BehaviorSubject } from 'rxjs';
 
-import {
-  StatesHubShared,
-  SharedStatesSpec,
-} from '../types';
+import { StatesHubShared, SharedStatesSpec } from '../types';
 
 export default class Hub implements StatesHubShared {
-  cache: Record<string, BehaviorSubject<unknown>>;
-  parentHub?: StatesHubShared = undefined;
+  public cache: Record<string, BehaviorSubject<unknown>>;
+  public parentHub?: StatesHubShared = undefined;
 
-  constructor(spec: SharedStatesSpec, parentHub?: StatesHubShared) {
+  public constructor(spec: SharedStatesSpec, parentHub?: StatesHubShared) {
     this.parentHub = parentHub;
-    this.cache = Object.entries(spec)
-      .reduce<Record<string, BehaviorSubject<unknown>>>((acc, [stateID, { initial }]) => {
+    this.cache = Object.entries(spec).reduce<Record<string, BehaviorSubject<unknown>>>(
+      (acc, [stateID, { initial }]) => {
         acc[stateID] = new BehaviorSubject(initial);
 
         return acc;
-      }, {});
+      },
+      {},
+    );
   }
 
-  hasState$(stateID: string): boolean {
+  public hasState$(stateID: string): boolean {
     if (this.cache[stateID]) {
       return true;
     }
@@ -29,11 +27,11 @@ export default class Hub implements StatesHubShared {
     return !!this.parentHub?.hasState$(stateID);
   }
 
-  createState$(stateID: string, initialValue?: unknown): void {
+  private _createState$(stateID: string, initialValue?: unknown): void {
     this.cache[stateID] = new BehaviorSubject(initialValue);
   }
 
-  findState$(stateID: string): BehaviorSubject<unknown> | undefined {
+  public findState$(stateID: string): BehaviorSubject<unknown> | undefined {
     if (this.cache[stateID]) {
       return this.cache[stateID];
     }
@@ -41,18 +39,18 @@ export default class Hub implements StatesHubShared {
     return this.parentHub?.findState$(stateID);
   }
 
-  getState$(stateID: string): BehaviorSubject<unknown> {
+  public getState$(stateID: string): BehaviorSubject<unknown> {
     const state$ = this.findState$(stateID);
     if (state$) {
       return state$;
     }
 
-    this.createState$(stateID);
+    this._createState$(stateID);
 
     return this.cache[stateID];
   }
 
-  mutateState(stateID: string, state: unknown): void {
+  public mutateState(stateID: string, state: unknown): void {
     if (stateID.startsWith('$')) {
       logger.warn('shared stateID can not starts with $, this action will be ignored');
       return;
@@ -61,18 +59,18 @@ export default class Hub implements StatesHubShared {
     this.getState$(stateID).next(state);
   }
 
-  getNodeState$(nodePath: string): BehaviorSubject<unknown> {
+  public getNodeState$(nodePath: string): BehaviorSubject<unknown> {
     const stateID = `$${nodePath}`;
     return this.getState$(stateID);
   }
 
-  exposeNodeState(nodePath: string, state: unknown): void {
+  public exposeNodeState(nodePath: string, state: unknown): void {
     const stateID = `$${nodePath}`;
     if (this.cache[stateID]) {
       this.cache[stateID].next(state);
       return;
     }
 
-    this.createState$(stateID, state);
+    this._createState$(stateID, state);
   }
 }

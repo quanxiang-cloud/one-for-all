@@ -1,4 +1,5 @@
-import '@testing-library/jest-dom';
+jest.mock('../../repository');
+
 import React, { PropsWithChildren } from 'react';
 import { render } from '@testing-library/react';
 
@@ -6,10 +7,8 @@ import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 import ReactComponentNodeRender from '../react-component-node-render';
 import { Repository, ReactComponentNode } from '../../types';
 
-jest.mock('../../repository');
-
 const dummyComponent: React.FC<PropsWithChildren<unknown>> = ({ children }): JSX.Element => {
-  return (<div id="some_dummy_component" >{children}</div>);
+  return <div id="some_dummy_component">{children}</div>;
 };
 const repository: Repository = {
   'foo@whatever': {
@@ -42,7 +41,7 @@ test('ReactComponentNodeRender_match_snapshots', () => {
     exportName: 'Foo',
   };
 
-  const { container } = render((<ReactComponentNodeRender node={node} ctx={dummyCTX} />));
+  const { container } = render(<ReactComponentNodeRender node={node} ctx={dummyCTX} />);
 
   expect(container).toMatchSnapshot();
 });
@@ -65,7 +64,7 @@ test('ReactComponentNodeRender_match_snapshots_with_children', () => {
     ],
   };
 
-  const { container } = render((<ReactComponentNodeRender node={node} ctx={dummyCTX} />));
+  const { container } = render(<ReactComponentNodeRender node={node} ctx={dummyCTX} />);
 
   expect(container).toMatchSnapshot();
 });

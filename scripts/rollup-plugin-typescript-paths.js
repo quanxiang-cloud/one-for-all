@@ -2,7 +2,11 @@ import { join } from 'path';
 import { findConfigFile, nodeModuleNameResolver, sys } from 'typescript';
 import { parse as JsonParse } from 'comment-json';
 
-export const typescriptPaths = ({ tsConfigPath = findConfigFile('./', sys.fileExists), absolute = true, transform, } = {}) => {
+export const typescriptPaths = ({
+  tsConfigPath = findConfigFile('./', sys.fileExists),
+  absolute = true,
+  transform,
+} = {}) => {
   const { compilerOptions, outDir } = getTsConfig(tsConfigPath);
   return {
     name: 'resolve-typescript-paths',
@@ -10,7 +14,9 @@ export const typescriptPaths = ({ tsConfigPath = findConfigFile('./', sys.fileEx
       if (typeof importer === 'undefined' || importee.startsWith('\0') || !compilerOptions.paths) {
         return null;
       }
-      const hasMatchingPath = Object.keys(compilerOptions.paths).some(path => new RegExp(path.replace('*', '\\w*')).test(importee));
+      const hasMatchingPath = Object.keys(compilerOptions.paths).some((path) =>
+        new RegExp(path.replace('*', '\\w*')).test(importee),
+      );
       if (!hasMatchingPath) {
         return null;
       }

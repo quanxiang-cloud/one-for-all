@@ -9,14 +9,15 @@ import { CTX, SchemaNode } from '../types';
 import ReactComponentNodeRender from './react-component-node-render';
 import { useShouldRender } from './hooks';
 
-type ChildrenRenderProps = {
+interface ChildrenRenderProps {
   nodes: SchemaNode[];
   ctx: CTX;
 }
 
-export function ChildrenRender(
-  { nodes, ctx }: ChildrenRenderProps,
-): React.FunctionComponentElement<Record<string, unknown>> | null {
+export function ChildrenRender({
+  nodes,
+  ctx,
+}: ChildrenRenderProps): React.FunctionComponentElement<Record<string, unknown>> | null {
   if (!nodes.length) {
     return null;
   }
@@ -28,7 +29,7 @@ export function ChildrenRender(
   );
 }
 
-type Props = {
+interface Props {
   node: SchemaNode;
   ctx: CTX;
 }

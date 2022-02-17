@@ -35,13 +35,13 @@ function Dummy(): JSX.Element {
   return (
     <>
       <SchemaRender ref={ref} schema={schema} plugins={{ apiSpecAdapter: dummyAdapter }} />
-      {state && (<div jest-id="state" />)}
+      {state && <div jest-id="state" />}
     </>
   );
 }
 
 test('SchemaRender_should_return_expected_ref', () => {
-  const { container } = render((<Dummy />));
+  const { container } = render(<Dummy />);
 
   expect(container.querySelector('[jest-id="state"]')).toBeTruthy();
 });

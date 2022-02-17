@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import React from 'react';
 import { logger } from '@one-for-all/utils';
 import { render } from '@testing-library/react';
@@ -24,7 +23,7 @@ test('HTMLNodeRender_should_handle_empty_html_tag', () => {
     },
   };
 
-  const { container } = render((<HTMLNodeRender node={node} ctx={dummyCTX} />));
+  const { container } = render(<HTMLNodeRender node={node} ctx={dummyCTX} />);
 
   expect(logger.error).toBeCalled();
   expect(container).toMatchSnapshot();
@@ -72,7 +71,7 @@ test('HTMLNodeRender_match_snapshots', () => {
       },
     ],
   };
-  const { container } = render((<HTMLNodeRender node={node} ctx={dummyCTX} />));
+  const { container } = render(<HTMLNodeRender node={node} ctx={dummyCTX} />);
 
   expect(container).toMatchSnapshot();
 });

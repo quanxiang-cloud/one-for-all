@@ -27,23 +27,27 @@ function getResponseState$(
   const state$ = new BehaviorSubject<APIState>(initialState);
   const response$ = http(request$);
 
-  response$.pipe(
-    map(({ result, error }) => ({ result, error, loading: false })),
-    map<APIState, APIState>((apiState) => {
-      if (!responseAdapter) {
-        return apiState;
-      }
+  response$
+    .pipe(
+      map(({ result, error }) => ({ result, error, loading: false })),
+      map<APIState, APIState>((apiState) => {
+        if (!responseAdapter) {
+          return apiState;
+        }
 
-      const transformed = responseAdapter({ body: apiState.result, error: apiState.error });
+        const transformed = responseAdapter({ body: apiState.result, error: apiState.error });
 
-      return { ...transformed, loading: apiState.loading };
-    }),
-  ).subscribe(state$);
+        return { ...transformed, loading: apiState.loading };
+      }),
+    )
+    .subscribe(state$);
 
-  request$.pipe(
-    filter(() => state$.getValue().loading === false),
-    map(() => ({ ...state$.getValue(), loading: true })),
-  ).subscribe(state$);
+  request$
+    .pipe(
+      filter(() => state$.getValue().loading === false),
+      map(() => ({ ...state$.getValue(), loading: true })),
+    )
+    .subscribe(state$);
 
   return state$;
 }

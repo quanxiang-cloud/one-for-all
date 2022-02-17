@@ -1,24 +1,17 @@
-import '@testing-library/jest-dom';
+jest.mock('../../repository');
+
 import React from 'react';
 import { logger } from '@one-for-all/utils';
 import { act, renderHook } from '@testing-library/react-hooks/pure';
 import { APISpecAdapter } from '@one-for-all/api-spec-adapter/lib/src/types';
 import type { Schema } from '@one-for-all/schema-spec';
 
-import {
-  ReactComponentNode,
-  Repository,
-  RefLoader,
-  HTMLNode,
-  APIStatesSpec,
-} from '../../types';
+import { ReactComponentNode, Repository, RefLoader, HTMLNode, APIStatesSpec } from '../../types';
 import APIStatesHub from '../../ctx/states-hub-api';
 import SharedStateHub from '../../ctx/states-hub-shared';
 import SharedStatesHub from '../../ctx/states-hub-shared';
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 import { useLifecycleHook, useNodeComponent, useRefResult, useShouldRender } from '../hooks';
-
-jest.mock('../../repository');
 
 function wait(timeSecond: number): Promise<boolean> {
   return new Promise((resolve) => {
@@ -63,7 +56,7 @@ test('useNodeComponent_should_return_dummy_component', async () => {
 });
 
 test('useNodeComponent_should_return_component_in_repository', () => {
-  const dummyComponent = (): JSX.Element => (<div />);
+  const dummyComponent = (): JSX.Element => <div />;
   const node: Pick<ReactComponentNode, 'packageName' | 'packageVersion' | 'exportName'> = {
     packageName: 'foo',
     packageVersion: 'whatever',
@@ -155,9 +148,9 @@ test('useRefResult_should_return_expected_value', async () => {
     });
   };
 
-  const {
-    result, unmount, waitForValueToChange,
-  } = renderHook(() => useRefResult({ schemaID, refLoader }, dummyCTX));
+  const { result, unmount, waitForValueToChange } = renderHook(() =>
+    useRefResult({ schemaID, refLoader }, dummyCTX),
+  );
 
   await waitForValueToChange(() => result.current);
 

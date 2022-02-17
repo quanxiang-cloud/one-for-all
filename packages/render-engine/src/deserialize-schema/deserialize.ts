@@ -18,10 +18,14 @@ function deserialize(n: unknown, ctx: RenderEngineCTX): void {
     }
 
     if (Array.isArray(v)) {
-      Reflect.set(n, key, v.map((_v) => {
-        deserialize(_v, ctx);
-        return _v;
-      }));
+      Reflect.set(
+        n,
+        key,
+        v.map((_v) => {
+          deserialize(_v, ctx);
+          return _v;
+        }),
+      );
       return;
     }
   });

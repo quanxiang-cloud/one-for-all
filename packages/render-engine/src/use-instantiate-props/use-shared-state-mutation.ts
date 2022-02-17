@@ -2,11 +2,7 @@ import { useMemo } from 'react';
 
 import { logger } from '@one-for-all/utils';
 
-import {
-  CTX,
-  SharedStateMutationProperty,
-  SchemaNode,
-} from '../types';
+import { CTX, SharedStateMutationProperty, SchemaNode } from '../types';
 
 type MutateProps = Record<string, (value: unknown) => void>;
 type Pair = [string, SharedStateMutationProperty];
@@ -20,7 +16,8 @@ function useSharedStateMutationProps(node: SchemaNode, ctx: CTX): MutateProps {
     return Object.entries(node.props)
       .filter((pair): pair is Pair => {
         return pair[1].type === 'shared_state_mutation_property';
-      }).reduce<MutateProps>((acc, [key, { stateID, convertor }]) => {
+      })
+      .reduce<MutateProps>((acc, [key, { stateID, convertor }]) => {
         function mutation(state: unknown): void {
           if (typeof convertor !== 'function') {
             ctx.statesHubShared.mutateState(stateID, state);

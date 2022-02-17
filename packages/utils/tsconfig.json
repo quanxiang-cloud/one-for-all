@@ -7,5 +7,5 @@
     "module": "es2015"
   },
   "include": ["src/**/*"],
-  "exclude": ["**/__tests__"],
+  "exclude": ["**/__tests__"]
 }

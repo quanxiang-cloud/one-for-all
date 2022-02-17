@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import React from 'react';
 import { render } from '@testing-library/react';
 
@@ -35,7 +34,7 @@ test('useRenderProps_simplest_case', () => {
     },
   };
 
-  const { container } = render((<NodeRender node={node} ctx={dummyCTX} />));
+  const { container } = render(<NodeRender node={node} ctx={dummyCTX} />);
 
   expect(container).toMatchSnapshot();
 });

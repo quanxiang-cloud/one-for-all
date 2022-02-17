@@ -4,7 +4,7 @@ import NodeRender from './index';
 import { useLifecycleHook, useRefResult } from './hooks';
 import type { CTX, RefNode } from '../types';
 
-type Props = {
+interface Props {
   node: RefNode;
   ctx: CTX;
 }

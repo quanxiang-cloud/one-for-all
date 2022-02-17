@@ -63,11 +63,14 @@ describe('response_state_table', () => {
 
   test('data_and_error_state_should_be_expected', async () => {
     const mockRes = { data: { id: 'abc-123' } };
-    mockXHR.get(/.*/, sequence([
-      { status: 404, body: JSON.stringify(mockRes) },
-      { status: 200, body: JSON.stringify(mockRes) },
-      { status: 404, body: JSON.stringify(mockRes) },
-    ]));
+    mockXHR.get(
+      /.*/,
+      sequence([
+        { status: 404, body: JSON.stringify(mockRes) },
+        { status: 200, body: JSON.stringify(mockRes) },
+        { status: 404, body: JSON.stringify(mockRes) },
+      ]),
+    );
 
     const request$ = new Subject<AjaxConfig>();
     const response$ = getResponseState$(request$, apiSpecAdapter.responseAdapter);
@@ -88,9 +91,7 @@ describe('response_state_table', () => {
     request$.next({ url: '/api/foo', method: 'get' });
     await wait(1);
 
-    expect(dataList).toEqual([
-      undefined, undefined, undefined, undefined, mockRes, mockRes, undefined,
-    ]);
+    expect(dataList).toEqual([undefined, undefined, undefined, undefined, mockRes, mockRes, undefined]);
     expect(errorList).toMatchObject([undefined, undefined, {}, {}, undefined, undefined, {}]);
   });
 });

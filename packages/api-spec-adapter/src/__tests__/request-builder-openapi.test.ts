@@ -2,7 +2,7 @@ import spec from './fixtures/petstore-spec';
 import SwaggerSpecAdapter from '../adapter-swagger';
 import { FetchParams } from '../types';
 
-const actions: Array<{ path: string; method: string; fetchParams?: FetchParams; }> = [
+const actions: Array<{ path: string; method: string; fetchParams?: FetchParams }> = [
   {
     path: '/pet',
     method: 'post',

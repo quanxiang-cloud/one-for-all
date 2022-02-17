@@ -10,7 +10,7 @@ import LoopNodeRender from '..';
 import LoopContainer, { Props } from '../loop-individual';
 
 const dummyComponent: React.FC<PropsWithChildren<unknown>> = (): JSX.Element => {
-  return (<div id="some_dummy_component" ></div>);
+  return <div id="some_dummy_component"></div>;
 };
 const repository: Repository = {
   'foo@whatever': {
@@ -36,7 +36,7 @@ test('LoopContainer_resolve_empty_value', () => {
     },
   };
 
-  const { container } = render((<LoopContainer {...props} />));
+  const { container } = render(<LoopContainer {...props} />);
 
   expect(container).toMatchSnapshot();
 });
@@ -75,7 +75,7 @@ test('LoopContainer_should_log_error_when_iterableState_is_not_iterable', () => 
     },
   };
 
-  render((<LoopContainer {...props} />));
+  render(<LoopContainer {...props} />);
 
   expect(logger.error).toBeCalled();
 });
@@ -115,7 +115,7 @@ test('LoopContainer_resolve_items', () => {
     },
   };
 
-  const { container } = render((<LoopContainer {...props} />));
+  const { container } = render(<LoopContainer {...props} />);
 
   expect(container).toMatchSnapshot();
 });
@@ -178,7 +178,7 @@ test('LoopNode_with_ReactOutLayer_composedNode', () => {
             },
           },
           toProps: (item: any) => {
-            return ({ key: item.id });
+            return { key: item.id };
           },
         },
         {
@@ -192,14 +192,14 @@ test('LoopNode_with_ReactOutLayer_composedNode', () => {
             },
           },
           toProps: (item: any) => {
-            return ({ name: item.title });
+            return { name: item.title };
           },
         },
       ],
     },
   };
 
-  const { container } = render((<LoopNodeRender node={loopNode} ctx={ctx} />));
+  const { container } = render(<LoopNodeRender node={loopNode} ctx={ctx} />);
 
   expect(container).toMatchSnapshot();
 });
@@ -266,7 +266,7 @@ test('LoopNode_with_HTMLOutLayer_composedNode', () => {
             },
           },
           toProps: (item: any) => {
-            return ({ key: item.id });
+            return { key: item.id };
           },
         },
         {
@@ -280,14 +280,14 @@ test('LoopNode_with_HTMLOutLayer_composedNode', () => {
             },
           },
           toProps: (item: any) => {
-            return ({ name: item.title });
+            return { name: item.title };
           },
         },
       ],
     },
   };
 
-  const { container } = render((<LoopNodeRender node={loopNode} ctx={ctx} />));
+  const { container } = render(<LoopNodeRender node={loopNode} ctx={ctx} />);
 
   expect(container).toMatchSnapshot();
 });
@@ -336,7 +336,7 @@ test('LoopNode_with_ordinaryNode_HTMLNode', () => {
     },
   };
 
-  const { container } = render((<LoopNodeRender node={loopNode} ctx={ctx} />));
+  const { container } = render(<LoopNodeRender node={loopNode} ctx={ctx} />);
 
   expect(container).toMatchSnapshot();
 });
@@ -387,7 +387,7 @@ test('LoopNode_with_ordinaryNode_ReactNode', () => {
     },
   };
 
-  const { container } = render((<LoopNodeRender node={loopNode} ctx={ctx} />));
+  const { container } = render(<LoopNodeRender node={loopNode} ctx={ctx} />);
 
   expect(container).toMatchSnapshot();
 });

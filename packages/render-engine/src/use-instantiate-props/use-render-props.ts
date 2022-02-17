@@ -3,11 +3,7 @@ import { logger } from '@one-for-all/utils';
 import type { ConstantProperty } from '@one-for-all/schema-spec';
 
 import NodeRender from '../node-render';
-import {
-  CTX,
-  SchemaNode,
-  RenderProperty,
-} from '../types';
+import { CTX, SchemaNode, RenderProperty } from '../types';
 
 type Render = (...args: unknown[]) => React.ReactElement;
 type RenderProps = Record<string, Render>;
@@ -23,11 +19,13 @@ function buildRender(
     try {
       const customProps = adapter?.(...args) || {};
       if (typeof customProps === 'object') {
-        constantProps = Object.entries(customProps)
-          .reduce<Record<string, ConstantProperty>>((acc, [key, value]) => {
+        constantProps = Object.entries(customProps).reduce<Record<string, ConstantProperty>>(
+          (acc, [key, value]) => {
             acc[key] = { type: 'constant_property', value };
             return acc;
-          }, {});
+          },
+          {},
+        );
       } else {
         // todo optimize this message
         logger.error('toProps result is no Object');
@@ -48,7 +46,8 @@ function useRenderProps({ props }: SchemaNode, ctx: CTX): RenderProps {
     return Object.entries(props || {})
       .filter((pair): pair is [string, RenderProperty] => {
         return pair[1].type === 'render_property';
-      }).reduce<RenderProps>((acc, [propName, { adapter, node }]) => {
+      })
+      .reduce<RenderProps>((acc, [propName, { adapter, node }]) => {
         acc[propName] = buildRender(node, ctx, adapter);
 
         return acc;

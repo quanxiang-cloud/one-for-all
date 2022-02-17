@@ -17,10 +17,7 @@ function sendRequest(ajaxRequest: AjaxConfig): Response$ {
 }
 
 export default function http(request$: Observable<AjaxConfig>): Response$ {
-  const response$: Response$ = request$.pipe(
-    switchMap(sendRequest),
-    share(),
-  );
+  const response$: Response$ = request$.pipe(switchMap(sendRequest), share());
 
   return response$;
 }

@@ -1,4 +1,5 @@
-import '@testing-library/jest-dom';
+jest.mock('../../repository');
+
 import React, { PropsWithChildren } from 'react';
 import { render } from '@testing-library/react';
 
@@ -7,10 +8,8 @@ import NodeRender from '../index';
 import { SchemaNode, Repository, ReactComponentNode } from '../../types';
 import renderPathRepository from './fixtures/render-path';
 
-jest.mock('../../repository');
-
 const dummyComponent: React.FC<PropsWithChildren<unknown>> = ({ children }): JSX.Element => {
-  return (<div id="some_dummy_component" >{children}</div>);
+  return <div id="some_dummy_component">{children}</div>;
 };
 const repository: Repository = {
   'foo@whatever': {
@@ -18,15 +17,7 @@ const repository: Repository = {
   },
 };
 
-const list = [
-  { id: 'a' },
-  { id: 'b' },
-  { id: 'c' },
-  { id: 'd' },
-  { id: 'e' },
-  { id: 'f' },
-  { id: 'g' },
-]
+const list = [{ id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' }, { id: 'e' }, { id: 'f' }, { id: 'g' }];
 
 test('node_path_match_expect_value', () => {
   dummyCTX.statesHubShared.getState$('list').next(list);
@@ -39,8 +30,8 @@ test('node_path_match_expect_value', () => {
     props: {
       'data-path': {
         type: 'constant_property',
-        value: 'root'
-      }
+        value: 'root',
+      },
     },
     children: [
       {
@@ -50,8 +41,8 @@ test('node_path_match_expect_value', () => {
         props: {
           'data-path': {
             type: 'constant_property',
-            value: 'root/level-1'
-          }
+            value: 'root/level-1',
+          },
         },
         children: [
           {
@@ -61,8 +52,8 @@ test('node_path_match_expect_value', () => {
             props: {
               'data-path': {
                 type: 'constant_property',
-                value: 'root/level-1/level-3'
-              }
+                value: 'root/level-1/level-3',
+              },
             },
             children: [
               {
@@ -110,6 +101,6 @@ test('node_path_match_expect_value', () => {
     ],
   };
 
-  const { container } = render((<NodeRender node={node} ctx={dummyCTX} />));
+  const { container } = render(<NodeRender node={node} ctx={dummyCTX} />);
   expect(container).toMatchSnapshot();
 });

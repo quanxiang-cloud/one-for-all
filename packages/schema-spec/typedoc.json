@@ -1,7 +1,5 @@
 {
-  "entryPoints": [
-    "src/index.d.ts"
-  ],
+  "entryPoints": ["src/index.d.ts"],
   "entryPointStrategy": "resolve",
   "out": "docs/api",
   "name": "Render Schema Specification",

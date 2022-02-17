@@ -49,8 +49,8 @@ declare namespace SchemaSpec {
    * toProps function should return Record<string, unknown>;
    */
   interface ToPropsFuncSpec extends BaseFunctionSpec {
-    type: 'to_props_function_spec',
-    args: 'state'
+    type: 'to_props_function_spec';
+    args: 'state';
   }
 
   /**
@@ -81,40 +81,36 @@ declare namespace SchemaSpec {
   type Fallback = unknown;
 
   type NodePropType =
-    'constant_property' |
-    'api_result_property' |
-    'api_loading_property' |
-    'shared_state_property' |
-    'node_state_property' |
-    'functional_property' |
-    'render_property' |
-    'computed_property' |
+    | 'constant_property'
+    | 'api_result_property'
+    | 'api_loading_property'
+    | 'shared_state_property'
+    | 'node_state_property'
+    | 'functional_property'
+    | 'render_property'
+    | 'computed_property'
     /**
      * @deprecated This type has been deprecated, please use FunctionalProperty instead
      */
-    'api_invoke_property' |
+    | 'api_invoke_property'
     /**
      * @deprecated This type has been deprecated, please use FunctionalProperty instead
      */
-    'shared_state_mutation_property';
+    | 'shared_state_mutation_property';
 
   type NodeProperty =
-    ConstantProperty |
-    APIResultProperty |
-    APILoadingProperty |
-    SharedStateProperty |
-    NodeStateProperty |
-    FunctionalProperty |
-    SharedStateMutationProperty |
-    APIInvokeProperty |
-    RenderProperty |
-    ComputedProperty;
+    | ConstantProperty
+    | APIResultProperty
+    | APILoadingProperty
+    | SharedStateProperty
+    | NodeStateProperty
+    | FunctionalProperty
+    | SharedStateMutationProperty
+    | APIInvokeProperty
+    | RenderProperty
+    | ComputedProperty;
 
-  type PlainState =
-    APIResultProperty |
-    SharedStateProperty |
-    NodeStateProperty |
-    ConstantProperty;
+  type PlainState = APIResultProperty | SharedStateProperty | NodeStateProperty | ConstantProperty;
 
   interface BaseNodeProperty {
     type: NodePropType;
@@ -189,7 +185,7 @@ declare namespace SchemaSpec {
 
   interface APIFetchCallback extends BaseFunctionSpec {
     type: 'api_fetch_callback';
-    args: '{ result, error }',
+    args: '{ result, error }';
   }
 
   interface ParamsBuilderFuncSpec extends BaseFunctionSpec {
@@ -213,7 +209,7 @@ declare namespace SchemaSpec {
     type: 'render_property';
     node: SchemaNode;
     adapter: BaseFunctionSpec & {
-      type: 'render_property_function_spec',
+      type: 'render_property_function_spec';
     };
   }
 
@@ -223,7 +219,7 @@ declare namespace SchemaSpec {
   }
 
   interface ComputedProperty {
-    type: 'computed_property',
+    type: 'computed_property';
     deps: Array<ComputedDependency>;
     convertor: StateConvertExpression | StateConvertorFuncSpec;
     fallback: unknown;
@@ -232,18 +228,13 @@ declare namespace SchemaSpec {
   type NodeProperties = Record<string, NodeProperty>;
 
   type ShouldRenderCondition =
-    APIResultProperty |
-    NodeStateProperty |
-    SharedStateProperty |
-    ComputedProperty |
-    APILoadingProperty & { revert?: boolean };
+    | APIResultProperty
+    | NodeStateProperty
+    | SharedStateProperty
+    | ComputedProperty
+    | (APILoadingProperty & { revert?: boolean });
 
-  type NodeType =
-    'html-element' |
-    'react-component' |
-    'loop-container' |
-    'composed-node' |
-    'ref-node';
+  type NodeType = 'html-element' | 'react-component' | 'loop-container' | 'composed-node' | 'ref-node';
 
   interface BaseNode {
     id: string | number;
@@ -254,11 +245,7 @@ declare namespace SchemaSpec {
     lifecycleHooks?: LifecycleHooks;
   }
 
-  type SchemaNode =
-    HTMLNode |
-    ReactComponentNode |
-    LoopContainerNode |
-    RefNode;
+  type SchemaNode = HTMLNode | ReactComponentNode | LoopContainerNode | RefNode;
 
   interface HTMLNode extends BaseNode {
     type: 'html-element';
@@ -295,11 +282,9 @@ declare namespace SchemaSpec {
 
   type ComposedNodeChild = SchemaNode & {
     toProps: ToPropsFuncSpec;
-  }
+  };
 
-  type ComposeOutLayer =
-    Omit<HTMLNode, 'children'> |
-    Omit<ReactComponentNode, 'children'>;
+  type ComposeOutLayer = Omit<HTMLNode, 'children'> | Omit<ReactComponentNode, 'children'>;
 
   interface ComposedNode extends BaseNode {
     type: 'composed-node';
@@ -327,9 +312,9 @@ declare namespace SchemaSpec {
 
   // map of stateID and apiID
   // todo should also store builder info
-  type APIStatesSpec = Record<string, { apiID: string; [key: string]: unknown; }>;
+  type APIStatesSpec = Record<string, { apiID: string; [key: string]: unknown }>;
 
-  type SharedStatesSpec = Record<string, { initial: unknown; }>;
+  type SharedStatesSpec = Record<string, { initial: unknown }>;
 
   interface Schema {
     node: SchemaNode;

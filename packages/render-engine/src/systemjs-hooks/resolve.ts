@@ -1,4 +1,4 @@
-(function() {
+(function () {
   const endsWithFileExtension = /\/?\.[a-zA-Z]{2,}$/;
   const originalResolve = System.constructor.prototype.resolve;
 

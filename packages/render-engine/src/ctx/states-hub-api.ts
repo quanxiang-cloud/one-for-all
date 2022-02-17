@@ -8,7 +8,7 @@ import getResponseState$, { initialState } from './http/response';
 
 type Cache = Record<string, APIState$WithActions>;
 
-type Props = {
+interface Props {
   apiSpecAdapter: APISpecAdapter;
   apiStateSpec: APIStatesSpec;
 }
@@ -32,15 +32,17 @@ function initState(apiID: string, apiSpecAdapter: APISpecAdapter): APIState$With
   const apiState$ = getResponseState$(request$, apiSpecAdapter.responseAdapter);
 
   // execute fetch callback after new `result` emitted from apiState$
-  apiState$.pipe(
-    skip(1),
-    filter(({ loading }) => !loading),
-    // because this subscription is happened before than view's,
-    // so delay `callback` execution to next frame.
-    delay(10),
-  ).subscribe((state) => {
-    _latestFetchOption?.callback?.(state);
-  });
+  apiState$
+    .pipe(
+      skip(1),
+      filter(({ loading }) => !loading),
+      // because this subscription is happened before than view's,
+      // so delay `callback` execution to next frame.
+      delay(10),
+    )
+    .subscribe((state) => {
+      _latestFetchOption?.callback?.(state);
+    });
 
   return {
     state$: apiState$,
@@ -95,10 +97,12 @@ export default class Hub implements StatesHubAPI {
       return state$;
     }
 
-    logger.error([
-      `can't find api state: ${stateID}, please check apiStateSpec or parent schema.`,
-      'In order to prevent UI crash, a dummyState$ will be returned.',
-    ].join(' '));
+    logger.error(
+      [
+        `can't find api state: ${stateID}, please check apiStateSpec or parent schema.`,
+        'In order to prevent UI crash, a dummyState$ will be returned.',
+      ].join(' '),
+    );
 
     return dummyState$WithAction.state$;
   }
@@ -110,10 +114,12 @@ export default class Hub implements StatesHubAPI {
       return;
     }
 
-    logger.error([
-      `can't find api state: ${stateID}, please check apiStateSpec or parent schema,`,
-      'this fetch action will be ignored.',
-    ].join(' '));
+    logger.error(
+      [
+        `can't find api state: ${stateID}, please check apiStateSpec or parent schema,`,
+        'this fetch action will be ignored.',
+      ].join(' '),
+    );
   }
 
   refresh(stateID: string): void {
@@ -123,9 +129,11 @@ export default class Hub implements StatesHubAPI {
       return;
     }
 
-    logger.error([
-      `can't find api state: ${stateID}, please check apiStateSpec or parent schema,`,
-      'this refresh action will be ignored.',
-    ].join(' '));
+    logger.error(
+      [
+        `can't find api state: ${stateID}, please check apiStateSpec or parent schema,`,
+        'this refresh action will be ignored.',
+      ].join(' '),
+    );
   }
 }

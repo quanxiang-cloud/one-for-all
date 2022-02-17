@@ -1,6 +1,6 @@
 import { join } from '../utils';
 
-const cases: Array<{ segments: string[]; result: string; }> = [
+const cases: Array<{ segments: string[]; result: string }> = [
   {
     segments: ['', 'abc'],
     result: '/abc',

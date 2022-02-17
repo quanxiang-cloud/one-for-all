@@ -7,7 +7,7 @@ import { ChildrenRender } from './index';
 import { useLifecycleHook } from './hooks';
 import PathContext from './path-context';
 
-type Props = {
+interface Props {
   node: HTMLNode;
   ctx: CTX;
 }

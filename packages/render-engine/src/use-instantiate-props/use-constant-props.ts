@@ -7,10 +7,12 @@ export default function useConstantProps(node: SchemaNode): Record<string, unkno
     return {};
   }
 
-  return Object.entries(node.props).filter((pair): pair is [string, ConstantProperty] => {
-    return pair[1].type === 'constant_property';
-  }).reduce<Record<string, unknown>>((acc, [key, { value }]) => {
-    acc[key] = value;
-    return acc;
-  }, {});
+  return Object.entries(node.props)
+    .filter((pair): pair is [string, ConstantProperty] => {
+      return pair[1].type === 'constant_property';
+    })
+    .reduce<Record<string, unknown>>((acc, [key, { value }]) => {
+      acc[key] = value;
+      return acc;
+    }, {});
 }

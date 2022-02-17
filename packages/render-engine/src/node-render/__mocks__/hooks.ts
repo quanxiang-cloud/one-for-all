@@ -5,14 +5,14 @@ export function useLifecycleHook(): void {
   return;
 }
 
-type RefResult = { refCTX: CTX; refNode: SchemaNode; }
+type RefResult = { refCTX: CTX; refNode: SchemaNode };
 type UseRefResultProps = {
   schemaID: string;
   refLoader?: RefLoader;
   orphan?: boolean;
-}
+};
 
-export function useRefResult({ schemaID } :UseRefResultProps): RefResult | undefined {
+export function useRefResult({ schemaID }: UseRefResultProps): RefResult | undefined {
   if (schemaID === 'undefined') {
     return;
   }
