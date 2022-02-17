@@ -7,7 +7,6 @@ import { toJS } from 'mobx';
 import { Icon } from '@one-for-all/ui';
 import { svgPreviewImg } from '../../../core/helpers';
 import { PageNode, LoopNode, useCtx } from '../../../index';
-import { COMPONENT_ICON_MAP } from './tree-view';
 
 export interface NodeItemProps {
   node: PageNode | LoopNode;
@@ -17,13 +16,13 @@ export interface NodeItemProps {
   onSelect?: (node: PageNode) => void;
   onDragMove?: (dragMoveData: DragMoveProps) => void
   onDragEnd?: (targetNode: PageNode, currentNode: PageNode) => void;
-  onDelete?: (node: PageNode) => void;
+  nodeContentRender?: (node: PageNode) => React.ReactNode;
 }
 
 export type DropResult = {
   currentDragNode: PageNode;
   targetDropNode: PageNode;
-  position: 'before' | 'after' | string;
+  position: 'before' | 'after' | 'inner' | string;
   dropIndent: number;
 }
 
@@ -37,7 +36,7 @@ export type DragMoveProps = {
 }
 
 function TreeNode({
-  node: rawNode, level, onSelect, onDragMove, onDragEnd, onDelete, canNodeDrop, canNodeDrag
+  node: rawNode, level, onSelect, onDragMove, onDragEnd, canNodeDrop, canNodeDrag, nodeContentRender
 }: NodeItemProps): JSX.Element {
   const { page } = useCtx();
   const treeNodeRef = useRef<HTMLDivElement>(null);
@@ -153,14 +152,28 @@ function TreeNode({
         level={level + 1}
         onSelect={onSelect}
         onDragMove={onDragMove}
-        onDelete={onDelete}
         canNodeDrop={canNodeDrop}
         canNodeDrag={canNodeDrag}
+        nodeContentRender={nodeContentRender}
       />
     ))
   }, [toJS(node)])
 
   drop(drag(treeNodeRef));
+
+  function nodePrefixIconRender(): React.ReactNode {
+    if (!node.children || !node.children?.length) return;
+    return (
+      <Icon
+        size={16}
+        clickable
+        className="box-content flex-shrink-0"
+        name={expand ? 'expand_more' : 'expand_less'}
+        onClick={() => setExpand(!expand)}
+        color="gray"
+      />
+    )
+  }
 
   return (
     <>
@@ -169,7 +182,7 @@ function TreeNode({
         ref={treeNodeRef}
         style={{ paddingLeft: (16 * level) }}
         key={node.id}
-        className={cs('grid group hover:bg-gray-200 duration-100 flex-shrink-0', {
+        className={cs('grid group hover:bg-gray-200 duration-100 flex-shrink-0 box-content', {
           'bg-gray-200': page.activeElemId === node.id,
           'opacity-30': !canDrop && item,
         })}
@@ -180,40 +193,8 @@ function TreeNode({
             onSelect?.(node);
           }}
         >
-          {
-            node.children && (
-              <Icon
-                size={16}
-                clickable
-                name={expand ? 'expand_more' : 'expand_less'}
-                onClick={() => setExpand(!expand)}
-                color="gray"
-              />
-            )
-          }
-          <Icon
-            size={16}
-            clickable
-            color="gray"
-            name={COMPONENT_ICON_MAP[node.exportName]}
-            className="pr-2 flex-shrink-0 box-content"
-          />
-          <span className='flex-1 flex-shrink-0 truncate'>{node.label}</span>
-          {
-            node.exportName !== 'page' && (
-              <Icon
-                clickable
-                size={18}
-                color="gray"
-                name="delete"
-                className="opacity-0 group-hover:opacity-100 ml-10 flex-shrink-0 box-content sticky right-0"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onDelete?.(node);
-                }}
-              />
-            )
-          }
+          {nodePrefixIconRender()}
+          {nodeContentRender ? nodeContentRender?.(node) : node.label}
         </div>
       </div>
       {childrenRender()}
