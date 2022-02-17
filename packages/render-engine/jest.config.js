@@ -4,5 +4,5 @@ export default {
   ...base,
   name: '@one-for-all/render-engine',
   displayName: 'Render Engine',
-  setupFilesAfterEnv: ['./scripts/mock-ofa-utils.ts'].concat(base.setupFilesAfterEnv),
+  setupFilesAfterEnv: ['./config/mock-ofa-utils.js'].concat(base.setupFilesAfterEnv),
 };
