@@ -47,7 +47,6 @@ function Image(props: Props, ref: React.LegacyRef<HTMLDivElement>): JSX.Element 
       {imgPreview && (
         <div className="img-mask" onClick={() => closeOnMaskClick && setImgPreview(false)}>
           <div className="flex justify-between text-white">
-            <div>{imageUrl}</div>
             <Icon name="close" clickable onClick={() => setImgPreview(false)} />
           </div>
           {imageUrl && <img onClick={(e) => e.stopPropagation()} className="large-img" src={imageUrl} />}
