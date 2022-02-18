@@ -1,4 +1,4 @@
-import { LogicalFormula, MathFunctionExpression } from "./type";
+import { LogicalFormula, MathFunctionExpression } from './type';
 
 function findInMathExpression(expression: MathFunctionExpression, found: Set<string>): Set<string> {
   expression.params.forEach((param) => {
@@ -27,10 +27,7 @@ function findVariables(logicalFormula: LogicalFormula, found: Set<string>): Set<
     findInMathExpression(logicalFormula, found);
   }
 
-  if (
-    logicalFormula.type === 'LogicalExpression' ||
-    logicalFormula.type === 'BinaryExpression'
-  ) {
+  if (logicalFormula.type === 'LogicalExpression' || logicalFormula.type === 'BinaryExpression') {
     findVariables(logicalFormula.left, found);
     findVariables(logicalFormula.right, found);
   }
@@ -47,4 +44,4 @@ function findVariables(logicalFormula: LogicalFormula, found: Set<string>): Set<
 
 export default (logicalFormula: LogicalFormula) => {
   return findVariables(logicalFormula, new Set<string>());
-}
+};

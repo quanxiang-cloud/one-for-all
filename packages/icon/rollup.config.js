@@ -1,7 +1,7 @@
 import esbuild from 'rollup-plugin-esbuild';
 import resolve from '@rollup/plugin-node-resolve';
-import commonjs from "@rollup/plugin-commonjs";
-import replace from '@rollup/plugin-replace'
+import commonjs from '@rollup/plugin-commonjs';
+import replace from '@rollup/plugin-replace';
 
 import typescriptPaths from '../../common/config/rollup/rollup-plugin-typescript-paths';
 import getOutput from '../../common/config/rollup/get-common-output';
@@ -23,7 +23,7 @@ export default {
     commonjs(),
     replace({
       preventAssignment: true,
-      'process.env.NODE_ENV': JSON.stringify('production')
+      'process.env.NODE_ENV': JSON.stringify('production'),
     }),
     esbuild({
       // All options are optional
@@ -37,5 +37,5 @@ export default {
         __VERSION__: '"x.y.z"',
       },
     }),
-  ]
+  ],
 };

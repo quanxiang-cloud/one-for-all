@@ -1,19 +1,19 @@
-import { Token } from "moo";
+import { Token } from 'moo';
 export function tokenStart(token: Token) {
   return {
     line: token.line,
-    col: token.col - 1
+    col: token.col - 1,
   };
 }
 
 export function tokenEnd(token: Token) {
-  const lastNewLine = token.text.lastIndexOf("\n");
+  const lastNewLine = token.text.lastIndexOf('\n');
   if (lastNewLine !== -1) {
-    throw new Error("Unsupported case: token with line breaks");
+    throw new Error('Unsupported case: token with line breaks');
   }
   return {
     line: token.line,
-    col: token.col + token.text.length - 1
+    col: token.col + token.text.length - 1,
   };
 }
 
@@ -58,7 +58,7 @@ export function convertLogicalExpression([left, , operator, , right]: Array<Toke
     type: 'LogicalExpression',
     left,
     operator: operator.value,
-    right
+    right,
   };
 }
 
@@ -67,7 +67,7 @@ export function convertBinaryExpression([left, , operator, , right]: Array<Token
     type: 'BinaryExpression',
     left,
     operator,
-    right
+    right,
   };
 }
 

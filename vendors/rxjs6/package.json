@@ -10,16 +10,13 @@
   ],
   "main": "dist",
   "scripts": {
-    "build": "rm -rf dist & rollup -c rollup.config.js",
+    "build": "",
     "bundle": "rm -rf dist & rollup -c rollup.config.js",
     "prepublishOnly": "yarn build"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "20.0.0",
+    "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
-    "@testing-library/jest-dom": "^5.14.1",
-    "@types/jest": "27.4.0",
-    "jest": "^27.3.1",
     "rollup": "2.66.0",
     "rollup-plugin-terser": "^7.0.2",
     "rxjs": "6.6.7"

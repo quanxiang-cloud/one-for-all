@@ -47,7 +47,7 @@ function generateHash(value) {
   return cryptoCreate.digest('hex');
 }
 
-const generateSprite = async function() {
+const generateSprite = async function () {
   try {
     const svgStr = await getSprite();
     const hash = generateHash(svgStr);

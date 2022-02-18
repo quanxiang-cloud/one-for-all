@@ -25,7 +25,7 @@ test('ReactComponentNodeRender_should_return_null_no_component', () => {
     exportName: 'Foo',
   };
 
-  const { container } = render((<ReactComponentNodeRender node={node} ctx={dummyCTX} />));
+  const { container } = render(<ReactComponentNodeRender node={node} ctx={dummyCTX} />);
 
   expect(container).toBeEmptyDOMElement();
 });

@@ -4,15 +4,8 @@
     "outDir": "lib",
     "rootDir": ".",
     "module": "esnext",
-    "typeRoots": [
-      "node_modules/@types",
-    ], /* List of folders to include type definitions from. */
+    "typeRoots": ["node_modules/@types"] /* List of folders to include type definitions from. */
   },
-  "include": [
-    "src/**/*",
-    "./types.d.ts",
-  ],
-  "exclude": [
-    "**/__tests__"
-  ]
+  "include": ["src/**/*", "./types.d.ts"],
+  "exclude": ["**/__tests__"]
 }

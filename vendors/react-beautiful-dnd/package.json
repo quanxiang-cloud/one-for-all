@@ -4,12 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "bundle": "rm -rf dist & rollup -c"
+    "bundle": "rm -rf dist & rollup -c",
+    "build": ""
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "react-beautiful-dnd": "^13.1.0",
-    "rollup": "^2.58.3"
+    "rollup": "2.66.0"
   }
 }

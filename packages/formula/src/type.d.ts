@@ -5,17 +5,17 @@ type LogicalOperator = '||' | '&&';
 type StringLiteral = {
   type: 'StringLiteral';
   value: string;
-}
+};
 
 export type NumberLiteral = {
   type: 'NumberLiteral';
   value: number;
-}
+};
 
 export type Variable = {
   type: 'Variable';
   name: string;
-}
+};
 
 export type ParameterList = Array<StringLiteral | NumberLiteral | Variable>;
 
@@ -24,38 +24,43 @@ export type CollectionExpression = {
   left: StringLiteral | NumberLiteral | Variable;
   operator: CollectionOperator;
   right: ParameterList;
-}
+};
 
 export type MathFunctionExpression = {
   type: 'MathFunctionExpression';
   funcName: string;
   params: Array<MathFunctionExpression | NumberLiteral | Variable | BinaryExpression>;
-}
+};
 
-export type BinaryOperand = NumberLiteral | StringLiteral | Variable | BinaryExpression | MathFunctionExpression;
+export type BinaryOperand =
+  | NumberLiteral
+  | StringLiteral
+  | Variable
+  | BinaryExpression
+  | MathFunctionExpression;
 
 export type BinaryExpression = {
   type: 'BinaryExpression';
   left: BinaryOperand;
   operator: BinaryOperator;
   right: BinaryOperand;
-}
+};
 
 export type LogicalExpression = {
   type: 'LogicalExpression';
   left: LogicalExpression | BinaryExpression | CollectionExpression;
   operator: LogicalOperator;
   right: LogicalExpression | BinaryExpression | CollectionExpression;
-}
+};
 
 export type LogicalFormula =
-  LogicalExpression |
-  BinaryExpression |
-  CollectionExpression |
-  MathFunctionExpression |
-  NumberLiteral |
-  StringLiteral |
-  Variable;
+  | LogicalExpression
+  | BinaryExpression
+  | CollectionExpression
+  | MathFunctionExpression
+  | NumberLiteral
+  | StringLiteral
+  | Variable;
 
 export type Variables = Record<string, any>;
 
@@ -64,7 +69,7 @@ export type ResolveLogicalExpression = {
   operator: LogicalOperator;
   right: LogicalFormula;
   variables: Variables;
-}
+};
 
 export type ResolvedValue = boolean | string | number;
 

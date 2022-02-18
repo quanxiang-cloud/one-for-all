@@ -1,15 +1,16 @@
 {
-  "name": "@one-for-all/quill",
-  "version": "1.3.6",
+  "name": "@one-for-all/ramda",
+  "version": "0.27.1",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "bundle": "rm -rf dist & rollup -c"
+    "bundle": "rm -rf dist & rollup -c",
+    "build": ""
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
-    "quill": "^1.3.6",
-    "rollup": "^2.58.3"
+    "ramda": "^0.27.1",
+    "rollup": "2.66.0"
   }
 }

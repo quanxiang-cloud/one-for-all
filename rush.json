@@ -493,6 +493,83 @@
     {
       "packageName": "@one-for-all/utils",
       "projectFolder": "packages/utils"
+    },
+
+    // vendors
+    {
+      "packageName": "@one-for-all/draft-js",
+      "projectFolder": "vendors/draft-js",
+      "shouldPublish": false
+    },
+    // {
+    //   "packageName": "@one-for-all/draftjs-utils",
+    //   "projectFolder": "vendors/draftjs-utils",
+    //   "shouldPublish": false
+    // },
+    // {
+    //   "packageName": "@one-for-all/html-to-draftjs",
+    //   "projectFolder": "vendors/html-to-draftjs",
+    //   "shouldPublish": false
+    // },
+    {
+      "packageName": "@one-for-all/jszip",
+      "projectFolder": "vendors/jszip",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@one-for-all/lodash",
+      "projectFolder": "vendors/lodash",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@one-for-all/quill",
+      "projectFolder": "vendors/quill",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@one-for-all/ramda",
+      "projectFolder": "vendors/ramda",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@one-for-all/react",
+      "projectFolder": "vendors/react",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@one-for-all/react-beautiful-dnd",
+      "projectFolder": "vendors/react-beautiful-dnd",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@one-for-all/react-dnd",
+      "projectFolder": "vendors/react-dnd",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@one-for-all/react-dom",
+      "projectFolder": "vendors/react-dom",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@one-for-all/react-flow-renderer",
+      "projectFolder": "vendors/react-flow-renderer",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@one-for-all/rxjs",
+      "projectFolder": "vendors/rxjs",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@one-for-all/rxjs6",
+      "projectFolder": "vendors/rxjs6",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@one-for-all/xlsx",
+      "projectFolder": "vendors/xlsx",
+      "shouldPublish": false
     }
   ]
 }

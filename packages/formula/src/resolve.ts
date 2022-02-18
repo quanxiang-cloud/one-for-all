@@ -1,4 +1,4 @@
-import { getValue } from "./get-value";
+import { getValue } from './get-value';
 import {
   BinaryExpression,
   BinaryOperand,
@@ -14,9 +14,14 @@ import {
   StringLiteral,
   Variable,
   Variables,
-} from "./type";
+} from './type';
 
-function resolveLogicalExpression({ left, right, operator, variables }: ResolveLogicalExpression): ResolvedValue {
+function resolveLogicalExpression({
+  left,
+  right,
+  operator,
+  variables,
+}: ResolveLogicalExpression): ResolvedValue {
   if (operator === '&&') {
     return resolve(left, variables) && resolve(right, variables);
   }
@@ -28,10 +33,12 @@ type ResolveBinaryExpression = {
   left: BinaryOperand;
   operator: BinaryOperator;
   right: BinaryOperand;
+};
 
-}
-
-function resolveBinaryExpression({ left, right, operator }: ResolveBinaryExpression, variables: Variables): ResolvedValue {
+function resolveBinaryExpression(
+  { left, right, operator }: ResolveBinaryExpression,
+  variables: Variables,
+): ResolvedValue {
   const resolvedLeft = resolveBinaryOperand(left, variables);
   const resolvedRight = resolveBinaryOperand(right, variables);
 
@@ -71,7 +78,10 @@ function resolveBinaryOperand(operand: BinaryOperand, variables: Variables) {
   return resolveOperand(operand, variables);
 }
 
-function resolveMathFunctionExpression({ funcName, params }: MathFunctionExpression, variables: Variables): number {
+function resolveMathFunctionExpression(
+  { funcName, params }: MathFunctionExpression,
+  variables: Variables,
+): number {
   const resolvedParams = params.map((param) => resolveOperand(param, variables)) as Array<number>;
   if (funcName === 'sum') {
     return resolvedParams.reduce((sum, current) => {
@@ -80,9 +90,10 @@ function resolveMathFunctionExpression({ funcName, params }: MathFunctionExpress
   }
 
   if (funcName === 'average') {
-    const result = resolvedParams.reduce((sum, current) => {
-      return sum + current;
-    }) / resolvedParams.length;
+    const result =
+      resolvedParams.reduce((sum, current) => {
+        return sum + current;
+      }) / resolvedParams.length;
     return Number(result);
   }
 
@@ -118,7 +129,10 @@ function resolveMathFunctionExpression({ funcName, params }: MathFunctionExpress
   throw new Error(`unrecognized function name: ${funcName}`);
 }
 
-function resolveOperand(operand: StringLiteral | NumberLiteral | Variable | BinaryExpression | MathFunctionExpression, variables: Variables) {
+function resolveOperand(
+  operand: StringLiteral | NumberLiteral | Variable | BinaryExpression | MathFunctionExpression,
+  variables: Variables,
+) {
   if (operand.type === 'Variable') {
     return getValue(variables, operand.name);
   }
@@ -128,7 +142,7 @@ function resolveOperand(operand: StringLiteral | NumberLiteral | Variable | Bina
   }
 
   if (operand.type === 'MathFunctionExpression') {
-    return resolveMathFunctionExpression(operand, variables)
+    return resolveMathFunctionExpression(operand, variables);
   }
 
   if (operand.type === 'BinaryExpression') {
@@ -143,16 +157,21 @@ type ResolveCollectionExpression = {
   operator: CollectionOperator;
   right: ParameterList;
   variables: Variables;
-}
+};
 
-function resolveCollectionExpression({ left, right, operator, variables }: ResolveCollectionExpression): boolean {
+function resolveCollectionExpression({
+  left,
+  right,
+  operator,
+  variables,
+}: ResolveCollectionExpression): boolean {
   const leftValue = resolveOperand(left, variables);
   const rightValues = right.map((parameter) => {
     return resolveOperand(parameter, variables);
   });
 
   if (operator === '∈') {
-    return rightValues.includes(leftValue)
+    return rightValues.includes(leftValue);
   }
 
   if (operator === '∉') {
@@ -203,11 +222,11 @@ function resolve(logicalFormula: LogicalFormula, variables: Variables): Resolved
   throw new Error('unrecognized logicalFormula type: ${logicalFormula.type}');
 }
 
-export default function(logicalFormula: LogicalFormula, variables: Variables): ResolvedValue {
+export default function (logicalFormula: LogicalFormula, variables: Variables): ResolvedValue {
   const result = resolve(logicalFormula, variables);
   // 保留 4 位小数
   if (typeof result === 'number') {
-    return Math.round(result * 10000) / 10000
+    return Math.round(result * 10000) / 10000;
   }
 
   return result;

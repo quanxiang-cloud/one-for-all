@@ -10,12 +10,7 @@ interface IconProps {
 }
 
 function Icon(
-  {
-    name,
-    size = 16,
-    className = '',
-    style,
-  }: IconProps,
+  { name, size = 16, className = '', style }: IconProps,
   ref?: React.Ref<SVGSVGElement>,
 ): JSX.Element {
   const _style: React.CSSProperties = {
@@ -25,12 +20,7 @@ function Icon(
   };
 
   return (
-    <svg
-      ref={ref}
-      data-name={name}
-      style={_style}
-      className={'ofa-svg-icon ' + className}
-    >
+    <svg ref={ref} data-name={name} style={_style} className={'ofa-svg-icon ' + className}>
       <use xlinkHref={`${svgHash}#${name}`} />
     </svg>
   );

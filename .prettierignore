@@ -104,31 +104,12 @@ lib
 # Prettier reformats code blocks inside Markdown, which affects rendered output
 *.md
 
-# ignore all package source temporary
-# packages/api-spec-adapter
-packages/draft-js
-packages/draftjs-utils
-packages/example
-packages/formula
-packages/html-to-draftjs
-packages/icon
-packages/jszip
-packages/lodash
-packages/page-engine
-packages/quill
-packages/ramda
-packages/react
-packages/react-beautiful-dnd
-packages/react-dnd
-packages/react-dom
-packages/react-flow-renderer
-# packages/render-engine
 packages/render-engine/docs
-packages/rxjs
-packages/rxjs6
-# packages/schema-spec
+packages/example
+packages/page-engine
 packages/schema-spec/docs
 packages/style-guide
 packages/ui
-# packages/utils
-packages/xlsx
+
+# ignore all vendor packages
+vendors/

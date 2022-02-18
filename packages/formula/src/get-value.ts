@@ -9,7 +9,7 @@ export function getValue(variables: Variables, path: string): string | number | 
     if (result) {
       value = value[parseInt(result[1])];
     } else {
-      value = value[fragment]
+      value = value[fragment];
     }
 
     if (value === undefined || value === null) {

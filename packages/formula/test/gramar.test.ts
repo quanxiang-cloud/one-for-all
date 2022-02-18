@@ -3,7 +3,7 @@ import { parse, resolve } from '../src';
 
 test('expect AST shape match', () => {
   pairsExpectToMatch.forEach(({ formula }) => {
-    expect(parse(formula)).toMatchSnapshot()
+    expect(parse(formula)).toMatchSnapshot();
   });
 });
 
@@ -14,11 +14,11 @@ test('expect correct formula result', () => {
       console.log({ formula, result, variables });
       expect(resolvedResult).toBe(result);
     }
-  })
+  });
 });
 
 test('expect throw on invalid formula', () => {
   invalidFormulas.forEach((formula) => {
     expect(() => parse(formula)).toThrow();
-  })
+  });
 });

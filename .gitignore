@@ -66,8 +66,11 @@ common/autoinstallers/*/.npmrc
 
 # Heft
 .heft
+
 packages/*/dist
 packages/*/lib
+vendors/*/dist
+vendors/*/lib
 
 #jetbrains
 .idea/

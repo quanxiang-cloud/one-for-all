@@ -45,8 +45,8 @@ const plugins = {
   },
   removeAttributesBySelector: {
     selectors: [
-      { selector: '[fill = \'none\']', attributes: 'fill' },
-      { selector: '[fill = \'#94A3B8\']', attributes: 'fill' },
+      { selector: "[fill = 'none']", attributes: 'fill' },
+      { selector: "[fill = '#94A3B8']", attributes: 'fill' },
     ],
   },
 };

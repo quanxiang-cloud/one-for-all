@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "bundle": "rm -rf dist & rollup -c"
+    "bundle": "rm -rf dist & rollup -c",
+    "build": ""
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
