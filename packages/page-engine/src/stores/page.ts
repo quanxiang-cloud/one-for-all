@@ -116,12 +116,38 @@ class PageStore {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const targetId = target?.id || this.schema.node.id;
-    const targetNode = findNode(this.schema.node, targetId);
+    const targetNode = findNode(this.schema.node, targetId, true);
+    let targetRealNode = targetNode;
+    let loopType = '';
+
+    if (targetNode.type === 'loop-container') {
+      if (targetNode.node && targetNode.node.type === 'composed-node') {
+        const { children, outLayer } = targetNode.node;
+        if (outLayer.id !== targetId) {
+          (children || []).forEach((child: PageNode) => {
+            if (child.id === targetId) {
+              loopType = 'composed-node';
+              targetRealNode = child;
+            }
+          });
+        }
+
+        if (outLayer.id === targetId) {
+          loopType = 'composed-node';
+          targetRealNode = outLayer;
+        }
+      } else {
+        if (targetNode.node.id === targetId) {
+          loopType = 'loop-container';
+          targetRealNode = targetNode.node;
+        }
+      }
+    }
 
     const componentId = elemId(node.exportName);
     const params: Partial<PageNode> = {
       id: componentId,
-      pid: this.dragPos === 'inner' ? targetNode.id : (targetNode.pid || this.schema.node.id),
+      pid: this.dragPos === 'inner' ? targetRealNode.id : (targetRealNode.pid || this.schema.node.id),
       // exportName: node.exportName,
       type: 'react-component',
       packageName: 'ofa-ui',
@@ -166,6 +192,14 @@ class PageStore {
       srcNode = cloneDeep(foundNode);
     }
 
+    if (loopType === 'composed-node') {
+      srcNode.toProps = {
+        type: 'to_props_function_spec',
+        args: 'state',
+        body: 'return {}',
+      };
+    }
+
     if (targetNode) {
       window.__isDev__ && console.log('append node: ', toJS(srcNode), toJS(targetNode), this.dragPos);
 
@@ -175,9 +209,9 @@ class PageStore {
       }
 
       if (this.dragPos === 'inner') {
-        if (!targetNode.children) {
-          return;
-        }
+        // if (!targetNode.children) {
+        //   return;
+        // }
         if (srcNode.id && options?.from !== 'source') {
           const srcParent = findNode(this.schema.node, srcNode.pid);
           if (srcParent && srcParent.children) {
@@ -200,8 +234,15 @@ class PageStore {
           }
         } else {
           // from source panel
-          targetNode?.children?.push(Object.assign(srcNode, { pid: targetNode.id }));
+          if (loopType === 'composed-node') {
+            targetNode?.node.children?.push(Object.assign(srcNode, { pid: targetRealNode.id }));
+            return;
+          }
+          if (targetNode?.children) {
+            targetNode?.children?.push(Object.assign(srcNode, { pid: targetNode.id }));
+          }
         }
+
         return;
       }
 
@@ -212,7 +253,16 @@ class PageStore {
   }
 
   getRealNode = (rawNode: PageNode): PageNode => {
-    return rawNode.type === 'loop-container' ? (rawNode as any).node : rawNode;
+    // return rawNode.type === 'loop-container' ? (rawNode as any).node : rawNode;
+    if (rawNode.type === 'loop-container') {
+      const { node } = rawNode;
+      if (node && node.type === 'composed-node') {
+        return node?.outLayer || ({} as PageNode);
+      }
+
+      return node as PageNode;
+    }
+    return rawNode;
   }
 
   @action
@@ -255,6 +305,7 @@ class PageStore {
     let srcIdx = -1; // node in src parent idx
     let targetIdx = -1; // node in target parant idx
 
+    // 复制元素的拖动
     if (srcParent && srcParent.children) {
       srcIdx = srcParent.children.findIndex((v: PageNode) => v.id === node.id || v.id === rawNode.id);
     }
@@ -323,7 +374,7 @@ class PageStore {
       if (!options?.useRawNode && elem.type === 'loop-container') {
         // support composed-node
         if (elem.node.type === 'composed-node') {
-          const { outLayer, children } = toJS(elem.node);
+          const { outLayer, children } = elem.node;
           if (outLayer && outLayer.id === this.activeElemId) {
             actualNode = outLayer;
           }
@@ -332,7 +383,7 @@ class PageStore {
             actualNode = children.find((item: PageNode) => item.id === this.activeElemId);
           }
         } else {
-          actualNode = toJS(elem.node);
+          actualNode = elem.node;
         }
       }
 

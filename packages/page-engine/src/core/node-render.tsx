@@ -151,8 +151,7 @@ function NodeRender({ schema }: Props): JSX.Element | null {
       if (schema.exportName === 'container' && !schema.children?.length) {
         // Dynamically set the placeholder style according to the width, height and background
         const _style = schema.props.style || { type: 'constant_property', value: {} };
-        const { width, height, backgroundColor, backgroundImage } = _style.value;
-        const widthValue = parseStyleString(width);
+        const { height, backgroundColor, backgroundImage } = _style.value;
         const heightValue = parseStyleString(height);
         Object.assign(elemProps, {
           placeholder: (
@@ -165,7 +164,7 @@ function NodeRender({ schema }: Props): JSX.Element | null {
               backgroundColor: backgroundColor,
               backgroundImage: backgroundImage }}
             >
-              {(widthValue.value && Number(widthValue.value) < 60 && widthValue.unit === 'px') ?
+              {(heightValue.value && Number(heightValue.value) < 60 && heightValue.unit === 'px') ?
                 '' : '拖拽组件或模板到这里'}
             </div>
           ),
