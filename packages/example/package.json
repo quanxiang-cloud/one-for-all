@@ -15,9 +15,13 @@
     "@one-for-all/api-spec-adapter": "0.3.3",
     "@one-for-all/render-engine": "0.13.1",
     "@one-for-all/schema-spec": "0.12.1",
+    "@one-for-all/page-engine-v2": "1.0.0",
+    "@one-for-all/page-engine": "0.8.3",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "@one-for-all/ramda": "~0.27.1",
+    "ramda": "^0.27.1"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
@@ -43,6 +47,8 @@
     "rollup-plugin-esbuild": "^4.6.0",
     "rollup-plugin-styles": "^3.14.1",
     "sass": "^1.44.0",
-    "typescript": "4.5.5"
+    "typescript": "4.5.5",
+    "@types/ramda": "~0.28.0",
+    "tslib": "2.3.1"
   }
 }

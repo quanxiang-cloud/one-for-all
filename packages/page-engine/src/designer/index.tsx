@@ -17,7 +17,7 @@ import { isDev } from '../utils';
 import styles from './index.m.scss';
 
 interface Props {
-  onSave: (page_schema: PageNode) => void;
+  onSave?: (page_schema: PageNode) => void;
   vdoms?: Record<string, React.ReactNode>; // 委托给外部渲染的vdom节点
   className?: string;
   docLink?: string; // 帮助文档链接

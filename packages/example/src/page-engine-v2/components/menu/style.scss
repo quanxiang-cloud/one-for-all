@@ -1,0 +1,54 @@
+$ibc: #dcdfe6;
+
+.page-engine-layer-block__menu {
+  background-color: white;
+  border-right: solid 1px $ibc;
+  height: 100%;
+  padding: 10px;
+  display: flex;
+  flex-flow: row nowrap;
+
+  .page-engine-layer-block__menu-outline {
+    margin-left: 10px;
+  }
+
+  .page-engine-layer-block__menu-components-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 1px solid $ibc;
+    margin-bottom: 10px;
+    position: relative;
+    height: 50px;
+    overflow: hidden;
+    transition: all 0.1s ease-in-out;
+
+    &:hover {
+      border-color: lightblue;
+      cursor: move;
+    }
+
+    &:active {
+      cursor: grabbing;
+    }
+
+    &:after {
+      position: absolute;
+      inset: 0;
+      content: '';
+    }
+
+    .page-engine-layer-block__menu-components-item__name {
+      white-space: nowrap;
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      background-color: lightblue;
+      color: white;
+      font-size: 12px;
+      line-height: 1em;
+      padding: 2px;
+    }
+  }
+}

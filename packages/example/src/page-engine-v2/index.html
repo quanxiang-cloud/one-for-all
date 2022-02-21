@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>page engine example</title>
+  <script type="systemjs-importmap">
+    {
+      "imports": {
+        "react": "/pkg/react/dist/react.17.0.1.js",
+        "react-dom": "/pkg/react-dom/dist/react-dom.17.0.1.js",
+        "rxjs": "/pkg/rxjs/dist/@one-for-all/rxjs@7.4.0/rxjs.min.js"
+      }
+    }
+  </script>
+  <script type="systemjs-importmap">
+    {
+      "imports": {
+        "@one-for-all/page-engine-v2": "/pkg/page-engine-v2/dist/@one-for-all/page-engine-v2@latest/index.js",
+        "@one-for-all/ui": "/pkg/ui/dist/@one-for-all/ui@latest/index.js",
+        "ramda": "/pkg/ramda/dist/@one-for-all/ramda@latest/index.js",
+        "@one-for-all/example@0.0.1": "/pkg/example/dist/page-engine-v2/index.js"
+      }
+    }
+  </script>
+  <!-- <script src="/externals/system.min.js"></script> -->
+  <script src="/externals/system.6.10.3.js"></script>
+  <script defer src="/externals/adoptedStyleSheets.min.js"></script>
+  <!-- <script src="/dist/core/systemjs-hooks/resolve.js"></script> -->
+  <script>
+    (function () {
+      const endsWithFileExtension = /\/?\.[a-zA-Z]{2,}$/;
+      const originalResolve = System.constructor.prototype.resolve;
+
+      System.constructor.prototype.resolve = (id, parent) => {
+        // apply original resolve to make sure importmaps are resolved first
+        const url = originalResolve.apply(System, [id, parent]);
+        // append .js file extension if url is missing a file extension
+        return endsWithFileExtension.test(url) ? url : url + ".js";
+      };
+
+      System.import('/pkg/react/dist/react.17.0.1.js').then(React => window.React = React)
+
+      // fixme: react throw process not defined
+      if(!window.process){
+        window.process={env: {NODE_ENV: 'development'}}
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="systemjs-module" src="/dist/page-engine-v2/index.js"></script>
+</body>
+</html>

@@ -89,5 +89,27 @@ export default [
         copyOnce: true
       })
     ]
+  },
+
+  // builde for page engine v2
+  {
+    input: 'src/page-engine-v2/index.tsx',
+    output: {
+      file: 'dist/page-engine-v2/index.js',
+      format: 'system'
+    },
+
+    external: externals.concat('ramda'),
+
+    plugins: [
+      ...commonPlugins,
+      copy({
+        targets: [
+          { src: path.resolve(__dirname, '../ui/dist/images/**/*'), dest: 'dist/images' },
+          { src: path.resolve(__dirname, '../ui/assets/images/**/*'), dest: 'dist/images' },
+        ],
+        copyOnce: true
+      })
+    ]
   }
 ];

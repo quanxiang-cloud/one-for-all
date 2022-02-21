@@ -1,0 +1,22 @@
+$ibc: #dcdfe6;
+
+.page-engine-layer-block__canvas {
+  box-sizing: border-box;
+  background-color: #f6f6f6;
+  height: 100%;
+  @apply overflow-hidden flex flex-col;
+
+  .page-engine-layer-block__canvas-toolbar {
+    padding: 30px;
+    border-bottom: 1px solid $ibc;
+  }
+
+  .page-engine-layer-block__canvas-container {
+    padding: 20px;
+    background-color: white;
+    @apply flex-1 overflow-auto;
+    &>div {
+      display: unset;
+    }
+  }
+}
