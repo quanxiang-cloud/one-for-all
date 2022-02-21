@@ -25,7 +25,7 @@ function DropIndicator({
   dropOverClassName,
   dropBetweenClassName,
 }: DropIndicatorProps,
-ref: React.Ref<DropIndicatorHandles> | undefined): JSX.Element {
+  ref: React.Ref<DropIndicatorHandles> | undefined): JSX.Element {
   const [indicatorState, setIndicatorState] = useState<DropIndicatorState>({
     type: 'none',
     index: 0,
@@ -50,9 +50,9 @@ ref: React.Ref<DropIndicatorHandles> | undefined): JSX.Element {
     <div title={indicatorState.depth.toString()}>
       <div
         style={{
-          width: `calc(100% - ${(indicatorState.depth ) * indent}px)`,
+          marginLeft: `${(indicatorState.depth) * indent}px`,
           height: indicatorState.type === 'over' ? rowHeight : 0,
-          transform: `translate(${indicatorState.depth * indent}px, ${offset}px)`,
+          transform: `translate(0px, ${offset}px)`,
           borderWidth: indicatorState.type === 'between' ? 1 : 2,
         }}
         hidden={indicatorState.type === 'none'}

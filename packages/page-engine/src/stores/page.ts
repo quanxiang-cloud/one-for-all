@@ -526,6 +526,12 @@ class PageStore {
       // this.replaceNode(loop_node_id, innerNode as PageNode);
     }
   }
+
+  @action
+  // 判断节点的父节点是否为布局容器类型（grid）
+  isLayoutContainerNode = (node: PageNode): boolean => {
+    return findNode(this.schema.node, node.pid)?.exportName === 'grid'
+  }
 }
 
 export default new PageStore();
