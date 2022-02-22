@@ -11271,7 +11271,7 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-VP97Sbq22Oyjv9l2ki27SXTcqZBE3R5hR0YpVEyJA5Qr634qvmsmC2DqfiJSMVr5NsgDMuE3Z4JiJJNFLiO/DA==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-KPw3LuSHVQzhX7WaoujgVp4r4kG2L+nWwfUrnfsPb1sTGCTorpXkF/xH6IeuOV47Jx7+WuJs1BVlW1eAMWNVaQ==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
@@ -11388,7 +11388,7 @@ packages:
     dev: false
 
   file:projects/page-engine.tgz_56d4fa32eefa0755765f75fcf202a158:
-    resolution: {integrity: sha512-8JayKdVsvemlSkjjjs3Z6e/froLY7x7e57ZbNrLR+oAMHr/3PkwCCnupCQ2WLB+zZq8TgtMztyI636YJbI+OKA==, tarball: file:projects/page-engine.tgz}
+    resolution: {integrity: sha512-2WSdsU/FwwVUFVamAGeO5A9yxr7XI3lWsE71stf5wL5aN9dqLvqzJulBIMPTVkHei1oUeob89HZ6z52dtaPlrw==, tarball: file:projects/page-engine.tgz}
     id: file:projects/page-engine.tgz
     name: '@rush-temp/page-engine'
     version: 0.0.0
@@ -11567,7 +11567,7 @@ packages:
     dev: false
 
   file:projects/render-engine.tgz_@types+jest@27.4.0:
-    resolution: {integrity: sha512-7hbeW/Pp+VSV0v7SR3fXcdFlwWr9IJRrePYZLR3towHCo0aX4yL6TBJfZOZXKnUGk49Lle/4NUMDvMj4tlO11w==, tarball: file:projects/render-engine.tgz}
+    resolution: {integrity: sha512-Atx0cKY8OeoofXPUjcdc1BXT0UOz3Wg3GLU2SSDI5w4OzjgjRZaYV3DK3iqlmm5YvTFsvui7D51PJW26sPuHAQ==, tarball: file:projects/render-engine.tgz}
     id: file:projects/render-engine.tgz
     name: '@rush-temp/render-engine'
     version: 0.0.0
@@ -11593,6 +11593,7 @@ packages:
       pretty-format: 27.4.6
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
+      react-jsx-parser: 1.29.0_react-dom@17.0.2+react@17.0.2
       rollup: 2.66.0
       rollup-plugin-esbuild: 4.8.2_esbuild@0.14.13+rollup@2.66.0
       rollup-plugin-terser: 7.0.2_rollup@2.66.0
