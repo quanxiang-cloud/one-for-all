@@ -104,7 +104,7 @@ export interface ComputedProperty extends Omit<SchemaSpec.ComputedProperty, 'con
 
 export type NodeProperties = Record<string, NodeProperty>;
 
-export type SchemaNode = HTMLNode | ReactComponentNode | LoopContainerNode | ComposedNode | RefNode;
+export type SchemaNode = HTMLNode | ReactComponentNode | LoopContainerNode | ComposedNode | RefNode | JSXNode;
 
 export type ShouldRenderCondition =
   | APIResultProperty
@@ -164,6 +164,10 @@ export interface ComposedNode extends BaseNode {
 export interface RefNode extends BaseNode, Pick<SchemaSpec.RefNode, 'schemaID' | 'orphan'> {
   type: 'ref-node';
   fallback?: SchemaNode;
+}
+
+export interface JSXNode extends BaseNode, Pick<SchemaSpec.JSXNode, 'jsx'> {
+  type: 'jsx-node';
 }
 
 export interface FetchOption {

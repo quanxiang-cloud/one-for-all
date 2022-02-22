@@ -29,6 +29,22 @@ const refSchema: Schema = {
           }
         },
       },
+      {
+        id: 'jsx-node',
+        type: 'jsx-node',
+        props: {
+          count: {
+            type: 'api_result_property',
+            stateID: '全部待办列表',
+            fallback: 0,
+            convertor: {
+              type: 'state_convert_expression',
+              expression: 'state.length'
+            }
+          }
+        },
+        jsx: `<p style={{ textAlign: 'right' }}>current list count: {count}</p>`
+      }
     ],
   },
 };
