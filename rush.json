@@ -557,6 +557,11 @@
       "shouldPublish": false
     },
     {
+      "packageName": "@one-for-all/react-jsx-parser",
+      "projectFolder": "vendors/react-jsx-parser",
+      "shouldPublish": false
+    },
+    {
       "packageName": "@one-for-all/rxjs",
       "projectFolder": "vendors/rxjs",
       "shouldPublish": false

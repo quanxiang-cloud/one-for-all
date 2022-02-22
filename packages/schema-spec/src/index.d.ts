@@ -234,7 +234,13 @@ declare namespace SchemaSpec {
     | ComputedProperty
     | (APILoadingProperty & { revert?: boolean });
 
-  type NodeType = 'html-element' | 'react-component' | 'loop-container' | 'composed-node' | 'ref-node';
+  type NodeType =
+    | 'html-element'
+    | 'react-component'
+    | 'loop-container'
+    | 'composed-node'
+    | 'ref-node'
+    | 'jsx-node';
 
   interface BaseNode {
     id: string | number;
@@ -245,7 +251,7 @@ declare namespace SchemaSpec {
     lifecycleHooks?: LifecycleHooks;
   }
 
-  type SchemaNode = HTMLNode | ReactComponentNode | LoopContainerNode | RefNode;
+  type SchemaNode = HTMLNode | ReactComponentNode | LoopContainerNode | RefNode | JSXNode;
 
   interface HTMLNode extends BaseNode {
     type: 'html-element';
@@ -300,6 +306,11 @@ declare namespace SchemaSpec {
     // which means use states if not found in current context.
     // set `orphan` to `true` to disable inheritance
     orphan?: boolean;
+  }
+
+  interface JSXNode extends BaseNode {
+    type: 'jsx-node';
+    jsx: string;
   }
 
   // APIState define the type of API results from view perspective.

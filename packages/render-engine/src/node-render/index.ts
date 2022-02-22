@@ -5,8 +5,9 @@ import PathContext from './path-context';
 import RefNodeRender from './ref-node-render';
 import HTMLNodeRender from './html-node-render';
 import LoopNodeRender from './loop-node-render';
-import { CTX, SchemaNode } from '../types';
 import ReactComponentNodeRender from './react-component-node-render';
+import JSXNodeRender from './jsx-node-render';
+import { CTX, SchemaNode } from '../types';
 import { useShouldRender } from './hooks';
 
 interface ChildrenRenderProps {
@@ -72,6 +73,14 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
       PathContext.Provider,
       { value: currentPath },
       React.createElement(RefNodeRender, { node, ctx }),
+    );
+  }
+
+  if (node.type === 'jsx-node') {
+    return React.createElement(
+      PathContext.Provider,
+      { value: currentPath },
+      React.createElement(JSXNodeRender, { node, ctx }),
     );
   }
 
