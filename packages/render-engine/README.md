@@ -3,6 +3,8 @@
 Use [Schema](https://github.com/quanxiang-cloud/one-for-all/blob/main/packages/schema-spec/src/index.d.ts) to describe your web page logic,
 then use Render Engine to make it into real UI.
 
+[中文文档](docs/zh/index.md)
+
 ## Get Start
 
 Install render engine use npm or yarn:
@@ -24,6 +26,7 @@ function Demo() {
 }
 
 ```
+
 ## Example
 
 please checkout our [example repo](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/example) for more.
