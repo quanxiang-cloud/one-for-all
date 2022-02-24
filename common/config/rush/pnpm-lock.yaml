@@ -140,7 +140,7 @@ dependencies:
   '@rush-temp/icon': file:projects/icon.tgz_esbuild@0.14.13
   '@rush-temp/jszip': file:projects/jszip.tgz
   '@rush-temp/lodash': file:projects/lodash.tgz_rollup@2.66.0
-  '@rush-temp/page-engine': file:projects/page-engine.tgz_56d4fa32eefa0755765f75fcf202a158
+  '@rush-temp/page-engine': file:projects/page-engine.tgz_f1db27541b51b520ad4ef7d7df039c22
   '@rush-temp/quill': file:projects/quill.tgz
   '@rush-temp/ramda': file:projects/ramda.tgz
   '@rush-temp/react': file:projects/react.tgz_rollup@2.66.0
@@ -1179,21 +1179,6 @@ packages:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
-    dev: false
-
-  /@one-for-all/ui/0.2.17:
-    resolution: {integrity: sha512-S3f/LQt/Cmb5BrLvmfh3WFoF2FH/8/MxxXIr69ns7M60/pi5myHRf43rBS6R44G5dnfengDLxgnCe3Zc7NviOw==}
-    dependencies:
-      '@popperjs/core': 2.11.2
-      classnames: 2.3.1
-      lodash: 4.17.21
-      nanoid: 3.2.0
-      react: 17.0.2
-      react-color: 2.19.3_react@17.0.2
-      react-dom: 17.0.2_react@17.0.2
-      react-is: 17.0.2
-      react-popper: 2.2.5_4d48938cec404f33c7375aa6b453941c
-      styled-components: 5.3.3_281a4fa50a045c9112baf635f3bc27a7
     dev: false
 
   /@open-draft/until/1.0.3:
@@ -12953,18 +12938,18 @@ packages:
       - rollup
     dev: false
 
-  file:projects/page-engine.tgz_56d4fa32eefa0755765f75fcf202a158:
-    resolution: {integrity: sha512-8JayKdVsvemlSkjjjs3Z6e/froLY7x7e57ZbNrLR+oAMHr/3PkwCCnupCQ2WLB+zZq8TgtMztyI636YJbI+OKA==, tarball: file:projects/page-engine.tgz}
+  file:projects/page-engine.tgz_f1db27541b51b520ad4ef7d7df039c22:
+    resolution: {integrity: sha512-LERuAC0inNZ0XuyYwAI6FQkOlmfbH7ip9slvC+EMkByPTZkq1fTj1UNGkFRb2+KbhyABPwpBRwaun+oEbbBl8Q==, tarball: file:projects/page-engine.tgz}
     id: file:projects/page-engine.tgz
     name: '@rush-temp/page-engine'
     version: 0.0.0
     dependencies:
       '@codemirror/lang-javascript': 0.19.6
-      '@one-for-all/ui': 0.2.17
       '@rollup/plugin-alias': 3.1.9_rollup@2.66.0
       '@rollup/plugin-commonjs': 21.0.1_rollup@2.66.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
       '@rollup/plugin-replace': 3.0.1_rollup@2.66.0
+      '@rushstack/eslint-config': 2.5.1_eslint@8.7.0+typescript@4.5.5
       '@types/lodash': 4.14.178
       '@types/react': 17.0.38
       '@types/react-color': 3.0.6
@@ -12973,6 +12958,7 @@ packages:
       autoprefixer: 10.4.2_postcss@8.4.5
       classnames: 2.3.1
       css-loader: 6.5.1_webpack@5.68.0
+      eslint: 8.7.0
       html-webpack-plugin: 5.5.0_webpack@5.68.0
       http-server: 14.1.0
       lodash: 4.17.21
@@ -13001,6 +12987,7 @@ packages:
       ts-loader: 9.2.6_typescript@4.5.5+webpack@5.68.0
       tsconfig-paths-webpack-plugin: 3.5.2
       tslib: 2.3.1
+      typescript: 4.5.5
       webpack: 5.68.0_f9b71e6e9044338f0cacc94c1b95cabe
       webpack-cli: 4.9.2_19108610e47e80b101fe97b50133aa84
       webpack-dev-server: 4.7.4_webpack-cli@4.9.2+webpack@5.68.0
@@ -13021,7 +13008,6 @@ packages:
       - react-native
       - supports-color
       - ts-node
-      - typescript
       - uglify-js
       - utf-8-validate
       - webpack-bundle-analyzer

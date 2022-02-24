@@ -22,11 +22,11 @@ module.exports = {
         },
       },
     ],
-    indent: ['error', 2],
-    quotes: ['error', 'single'],
-    semi: ['error', 'always'],
-    'space-infix-ops': ['error', { 'int32Hint': false }],
-    'arrow-parens': ['error', 'always'],
-    'no-multi-spaces': 'error'
+    // indent: ['error', 2],
+    // quotes: ['error', 'single'],
+    // semi: ['error', 'always'],
+    // 'space-infix-ops': ['error', { 'int32Hint': false }],
+    // 'arrow-parens': ['error', 'always'],
+    // 'no-multi-spaces': 'error'
   },
 };
