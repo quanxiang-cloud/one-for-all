@@ -16,7 +16,7 @@ interface Props {
 
 function ModalBindState(props: Props): JSX.Element | null {
   const { designer, dataSource, page } = useCtx();
-  const { setModalBindStateOpen, activeFieldName, isLoopNode } = designer;
+  const { setModalBindStateOpen, activeFieldName, isLoopNode, isRootProps } = designer;
   const [selected, setSelected] = useState<{name: string, conf: string} | null>(null);
   const [stateExpr, setStateExpr] = useState(''); // 绑定变量的表达式
   const [convertorExpr, setConvertorExpr] = useState('state'); // 绑定变量的convertor表达式
@@ -27,7 +27,8 @@ function ModalBindState(props: Props): JSX.Element | null {
       // todo: get loop node iterableState bind value
       bindConf = get(page.rawActiveElem, 'iterableState', {});
     } else {
-      bindConf = get(page.activeElem, `props.${activeFieldName}`, {});
+      const propPath = isRootProps ? activeFieldName : `props.${activeFieldName}`;
+      bindConf = get(page.activeElem, propPath, {});
     }
 
     if (bindConf.type === 'shared_state_property') {
@@ -80,8 +81,9 @@ function ModalBindState(props: Props): JSX.Element | null {
       };
       page.updateCurNodeAsLoopContainer('iterableState', iterableState);
     } else {
-      const fallbackVal = page.activeElemProps[activeFieldName]?.value;
-      page.updateElemProperty(page.activeElem.id, `props.${activeFieldName}`, {
+      const propPath = isRootProps ? activeFieldName : `props.${activeFieldName}`;
+      const fallbackVal = get(page.activeElem, propPath + '.value')
+      page.updateElemProperty(page.activeElem.id, propPath, {
         type: nodeType,
         stateID: match[1],
         fallback: fallbackVal,

@@ -127,17 +127,21 @@ function RendererPanel(): JSX.Element {
   return (
     <>
       <div className={styles.renderPanel}>
-        {/* <Section title='条件展示' defaultExpand>*/}
-        {/*  <div className='flex items-center justify-between'>*/}
-        {/*    <Toggle*/}
-        {/*      defaultChecked*/}
-        {/*      onChange={(checked: boolean)=> {*/}
-        {/*        // todo: render-engine not implement shouldRender prop*/}
-        {/*      }}*/}
-        {/*    />*/}
-        {/*    <BindItem name='shouldRender' />*/}
-        {/*  </div>*/}
-        {/* </Section>*/}
+        <Section title='条件展示' defaultExpand>
+         <div className='flex items-center justify-between'>
+           <label>绑定变量</label>
+           <DataBind
+              name='shouldRender'
+              unBind={() => {
+                page.updateElemProperty(page.activeElem.id, 'shouldRender', {
+                  type: 'constant_property',
+                  value: true,
+                });
+              }}
+              isRootProps
+            />
+         </div>
+        </Section>
         <Section title='循环展示' defaultExpand>
           <form className='flex flex-col'>
             <div className='mb-8'>

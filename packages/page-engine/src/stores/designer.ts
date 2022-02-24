@@ -17,6 +17,7 @@ class DesignerStore {
   @observable modalComponentNodeOpen=false // componentNode的配置
   @observable isComponentNode=false // 当前节点需标记为component node
   @observable imageUrl='' // 上传的图片链接
+  @observable isRootProps=false //需要更新的属性是否是根属性
 
   constructor() {
     makeObservable(this);
@@ -62,10 +63,11 @@ class DesignerStore {
   }
 
   @action
-  openDataBinding=(fieldName: string, isLoopNode?: boolean): void => {
+  openDataBinding=(fieldName: string, isLoopNode?: boolean, isRootProps?: boolean): void => {
     this.modalBindStateOpen = true;
     this.activeFieldName = fieldName;
     this.isLoopNode = !!isLoopNode;
+    this.isRootProps = !!isRootProps;
   }
 
   @action
