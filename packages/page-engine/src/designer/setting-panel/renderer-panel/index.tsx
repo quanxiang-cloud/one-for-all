@@ -130,12 +130,16 @@ function RendererPanel(): JSX.Element {
         <Section title='条件展示' defaultExpand>
          <div className='flex items-center justify-between'>
            <label>绑定变量</label>
-           <DataBind name='shouldRender' unBind={() => {
-             page.updateElemProperty(page.activeElem.id, 'shouldRender', {
-               type: 'constant_property',
-               value: true
-             })
-           }} isRootProps/>
+           <DataBind
+              name='shouldRender'
+              unBind={() => {
+                page.updateElemProperty(page.activeElem.id, 'shouldRender', {
+                  type: 'constant_property',
+                  value: true,
+                });
+              }}
+              isRootProps
+            />
          </div>
         </Section>
         <Section title='循环展示' defaultExpand>
