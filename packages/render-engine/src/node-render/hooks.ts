@@ -36,7 +36,7 @@ export function useNodeComponent(
   const currentPath = useContext(PathContext);
 
   useEffect(() => {
-    let unMounting = true;
+    let unMounting = false;
     const packageNameVersion = `${node.packageName}@${node.packageVersion}`;
     if (repository?.[packageNameVersion]?.[node.exportName || 'default']) {
       setComponent(() => repository?.[packageNameVersion]?.[node.exportName || 'default']);
@@ -49,7 +49,7 @@ export function useNodeComponent(
       version: node.packageVersion,
       exportName: node.exportName,
     }).then((comp) => {
-      if (!unMounting) {
+      if (unMounting) {
         return;
       }
 
@@ -66,7 +66,7 @@ export function useNodeComponent(
     });
 
     return () => {
-      unMounting = false;
+      unMounting = true;
     };
   }, []);
 

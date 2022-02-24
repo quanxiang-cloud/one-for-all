@@ -116,6 +116,8 @@ function ConfigForm(): JSX.Element {
         <div className='flex justify-between items-center gap-10'>
           <input
             type='number'
+            min="0"
+            step='1'
             className="px-8 py-4 flex-1 border corner-2-8-8-8 border-gray-300 focus:border-blue-600"
             placeholder="请填写"
             value={values.iconSize}

@@ -1,8 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { defaults, isEmpty } from 'lodash';
+import { defaults } from 'lodash';
+import { observer } from 'mobx-react';
+
+import { Select, Icon, Button, Popper } from '@one-for-all/ui';
 
 import { useCtx, DataBind as ConfigBind } from '../../../index';
-import { Select, Icon, Button, Popper } from '@one-for-all/ui';
 
 import './style.scss';
 
@@ -148,4 +150,4 @@ function ConfigForm(): JSX.Element {
   );
 }
 
-export default ConfigForm;
+export default observer(ConfigForm);
