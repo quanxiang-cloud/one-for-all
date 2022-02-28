@@ -1,9 +1,10 @@
 {
   "name": "@one-for-all/render-engine",
-  "version": "0.13.1",
+  "version": "0.13.2",
   "license": "Apache-2.0",
   "type": "module",
   "module": "lib",
+  "main": "lib/src/index.js",
   "types": "lib/src/index.d.ts",
   "scripts": {
     "build": "heft build --clean",
