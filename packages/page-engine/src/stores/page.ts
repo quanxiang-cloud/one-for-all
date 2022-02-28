@@ -14,10 +14,9 @@ import { initPageSchema, deepMergeNode, generateGridChildren } from './page-help
 
 type Mode = 'design' | 'preview'
 
-type AppendNodeOptions = {
-  renewId?: boolean;
+interface AppendNodeOptions {
   from?: 'source' | 'canvas';
-  [key: string]: any
+  [key: string]: any;
 }
 
 class PageStore {
@@ -113,9 +112,12 @@ class PageStore {
 
   @action
   appendNode = (node: Omit<PageNode, 'type' | 'id'>, target?: Omit<PageNode, 'type' | 'id'> | null, options?: AppendNodeOptions): void => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const targetId = target?.id || this.schema.node.id;
+    const pageId=this.schema.node.id;
+    const origSrcId=(node as PageNode)?.id;
+    const targetId = (target as PageNode)?.id || this.activeElemId || pageId;
+    if(targetId === origSrcId){
+      return;
+    }
     const targetNode = findNode(this.schema.node, targetId, true);
     let targetRealNode = targetNode;
     let loopType = '';
@@ -144,11 +146,23 @@ class PageStore {
       }
     }
 
-    const componentId = elemId(node.exportName);
+    if(options?.from === 'source'){
+      // when click source panel elem, if target can accept child, append src node
+      if(registry.acceptChild(targetRealNode.exportName)){
+        this.dragPos = 'inner';
+      } else {
+        this.dragPos = 'down';
+      }
+    } else {
+      if(this.dragPos === 'inner' && !registry.acceptChild(targetRealNode.exportName)){
+        return;
+      }
+    }
+
+    const componentId = origSrcId || elemId(node.exportName);
     const params: Partial<PageNode> = {
       id: componentId,
-      pid: this.dragPos === 'inner' ? targetRealNode.id : (targetRealNode.pid || this.schema.node.id),
-      // exportName: node.exportName,
+      pid: this.dragPos === 'inner' ? targetRealNode.id : (targetRealNode.pid || pageId),
       type: 'react-component',
       packageName: 'ofa-ui',
       packageVersion: 'latest',
@@ -181,15 +195,12 @@ class PageStore {
       }
     }
 
-    let srcNode = defaults(node, params);
-    if (options?.renewId) {
-      Object.assign(srcNode, { id: elemId(srcNode.exportName) });
-    }
+    let srcNode = defaults({}, node, params);
 
     // check if srcNode already in page
-    const foundNode = findNode(this.schema.node, srcNode.id);
+    const foundNode = findNode(this.schema.node, origSrcId || srcNode.id);
     if (foundNode) {
-      srcNode = cloneDeep(foundNode);
+      srcNode = defaults(cloneDeep(foundNode), params);
     }
 
     if (loopType === 'composed-node') {
@@ -204,14 +215,11 @@ class PageStore {
       window.__isDev__ && console.log('append node: ', toJS(srcNode), toJS(targetNode), this.dragPos);
 
       if (this.dragPos === 'up') {
-        this.insertBefore(srcNode as PageNode, targetNode);
+        this.insertBefore(srcNode as PageNode, targetNode, options);
         return;
       }
 
       if (this.dragPos === 'inner') {
-        // if (!targetNode.children) {
-        //   return;
-        // }
         if (srcNode.id && options?.from !== 'source') {
           const srcParent = findNode(this.schema.node, srcNode.pid);
           if (srcParent && srcParent.children) {
@@ -247,7 +255,7 @@ class PageStore {
       }
 
       if (this.dragPos === 'down') {
-        this.insertAfter(srcNode as PageNode, targetNode);
+        this.insertAfter(srcNode as PageNode, targetNode, options);
       }
     }
   }
@@ -266,7 +274,7 @@ class PageStore {
   }
 
   @action
-  insertBefore = (rawNode: PageNode, target: PageNode): void => {
+  insertBefore = (rawNode: PageNode, target: PageNode, options?: AppendNodeOptions): void => {
     const node = this.getRealNode(rawNode);
     const srcParent = findNode(this.schema.node, node.pid);
     const targetParent = findNode(this.schema.node, target.pid);
@@ -298,38 +306,32 @@ class PageStore {
   }
 
   @action
-  insertAfter = (rawNode: PageNode, target: PageNode): void => {
+  insertAfter = (rawNode: PageNode, target: PageNode, options?: AppendNodeOptions): void => {
     const node = this.getRealNode(rawNode);
     const srcParent = findNode(this.schema.node, node.pid);
     const targetParent = findNode(this.schema.node, target.pid);
     let srcIdx = -1; // node in src parent idx
-    let targetIdx = -1; // node in target parant idx
+    let targetIdx = -1; // node in target parent idx
 
     // 复制元素的拖动
     if (srcParent && srcParent.children) {
       srcIdx = srcParent.children.findIndex((v: PageNode) => v.id === node.id || v.id === rawNode.id);
     }
 
-    if (!target.pid) {
-      removeTreeNode(this.schema.node, node.id);
-      // append to page
-      set(node, 'pid', targetParent.id);
-      targetParent.children.push(Object.assign(rawNode, { pid: targetParent.id }));
-      return;
-    }
-
     if (targetParent && targetParent.children) {
-      targetIdx = targetParent.children.findIndex((v: PageNode) => v.id === target.id) + 1;
-      // remove node in src parent
-      srcParent.children.splice(srcIdx, 1);
+      targetIdx = targetParent.children.findIndex((v: PageNode) => v.id === target.id);
 
-      // if two node have same parent, target index will dec 1 refer to sequence
-      if (srcIdx > -1 && targetIdx > -1) {
-        if ((srcParent.id === targetParent.id) && (targetIdx > srcIdx)) {
-          targetIdx -= 1;
-        }
-        set(node, 'pid', targetParent.id);
-        targetParent.children.splice(targetIdx, 0, Object.assign(rawNode, { pid: targetParent.id }));
+      // remove node in src parent
+      if(srcIdx > -1) {
+        srcParent.children.splice(srcIdx, 1);
+      }
+
+      const targetNode=Object.assign({}, rawNode, {pid: targetParent.id});
+      set(node, 'pid', targetParent.id);
+      if(targetIdx > -1){
+        targetParent.children.splice(targetIdx + 1, 0, targetNode);
+      } else {
+        targetParent.children.push(targetNode);
       }
     }
   }
