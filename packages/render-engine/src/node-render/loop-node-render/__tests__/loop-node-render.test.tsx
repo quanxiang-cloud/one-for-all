@@ -160,7 +160,7 @@ test('LoopNode_with_ReactOutLayer_composedNode', () => {
         packageVersion: 'whatever',
         exportName: 'Foo',
       },
-      children: [
+      nodes: [
         {
           id: 'todo-toggle',
           type: 'html-element',
@@ -248,7 +248,7 @@ test('LoopNode_with_HTMLOutLayer_composedNode', () => {
           },
         },
       },
-      children: [
+      nodes: [
         {
           id: 'todo-toggle',
           type: 'html-element',
