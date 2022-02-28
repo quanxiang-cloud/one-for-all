@@ -1,21 +1,34 @@
-## 什么是 Schema？
+# Overview
 
-Schema is the description of a web page, which not only contain the layouts and elements in it, but also business logic,
-which means you can use schema to describe a single page web app.
+Schema 是一个 tree 结构的 JSON 数据，Schema 是页面结构和行为的描述文件，Schema 是一套与
+实现无关的标准。
+
+我们可以使用 Schema 来完整的表示前端业务，例如定义一个 table，此 table 的数据来自某
+个 API 的 response，再比如定义一个简单的 [Todo App](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/example/src/todo-app)。
+
+Schema 是渲染引擎和页面引擎对接的共同语言。以 Schema 作为标准，我们可以分别独立开发渲染引擎
+和页面引擎，两者之间没有耦合。
 
 ## 为什么要用 Schema 来描述页面逻辑
 
-## 渲染引擎支持的接口
+总体来说使用 Schema 和渲染引擎来构建前端业务有一下几点优势：
 
-- apiSpecAdapter: 用于将用户的各种输入转换成 API 请求参数
-- componentLoader: 用于提供渲染引擎构建 UI 的组件
-- refLoader: 用于实现 Schema Compose
+- 上手难度低，学习 Schema 的成本要远远低于学习 React 或者 Vue 等前端 framework
+- 修改成本低，Schema 其实是属于数据的一部分，修改 Schema 后并不需要重新构建
+- 复制成本低，在 CURD 的场景中，借助 Schema 加渲染引擎的模式，可以快速的构建相似逻辑的前端业务
+- 定制开发容易，可是使用 Schema 自己自由组合前端的业务逻辑，充分满足客户的定制化需求
+- 实现真正的动态开发，可以根据业务需要，按需开发
 
-在浏览器中实现 UI 离不开 HTML、JavaScript 和 CSS 三者的组合。
-在现代前端开发中，我们将可复用业务逻辑封装成组件，也就是把 HTML、JavaScript 和 CSS 三者封装在一起后对外暴露特定的接口，
+# Node type 和 Property type
+
+在浏览器中实现 UI 离不开 HTML、JavaScript 和 CSS 三者的组合。在现代前端开发中，我们将可复
+用业务逻辑封装成组件，也就是把 HTML、JavaScript 和 CSS 三者封装在一起后对外暴露特定的接口，
 然后通过组件的组合就构建出了完整的前端 UI。
 
-我们都数据 Tree 这种数据结构，Schema 就是 Tree 结构。在 Schema 中，一个节点 Node 有下列比较重要的属性：
+Schema 是一个 tree 结构的 JSON 数据，正如 DOM 结构一样，节点有不同的类型，每个节点可以指定
+渲染所必须的 Properties。
+
+在 Schema 中，一个节点 Node 有下列比较重要的属性：
 
 - id, 节点的唯一标识
 - type, 表示节点的类型，例如 `html-element` `react-component` 等

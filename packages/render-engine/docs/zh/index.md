@@ -1,4 +1,4 @@
-# 渲染引擎
+# Overview
 
 渲染引擎的核心功能是解析 Schema，根据 Schema 来渲染出实际的 UI。
 
@@ -7,8 +7,14 @@ Schema 是一个 tree 结构的 JSON，tree 中的节点有不同的类型，每
 
 ## Install
 
-```
+你可以使用 yarn 或者 npm 安装渲染引擎。
+
+```bash
 npm install @one-for-all/render-engine
+
+# or
+
+yarn add @one-for-all/render-engine
 ```
 
 ## Motivation
