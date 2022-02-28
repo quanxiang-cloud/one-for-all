@@ -14,9 +14,9 @@ import { initPageSchema, deepMergeNode, generateGridChildren } from './page-help
 
 type Mode = 'design' | 'preview'
 
-type AppendNodeOptions = {
+interface AppendNodeOptions {
   from?: 'source' | 'canvas';
-  [key: string]: any
+  [key: string]: any;
 }
 
 class PageStore {
@@ -114,7 +114,7 @@ class PageStore {
   appendNode = (node: Omit<PageNode, 'type' | 'id'>, target?: Omit<PageNode, 'type' | 'id'> | null, options?: AppendNodeOptions): void => {
     const pageId=this.schema.node.id;
     const origSrcId=(node as PageNode)?.id;
-    let targetId = (target as PageNode)?.id || this.activeElemId || pageId;
+    const targetId = (target as PageNode)?.id || this.activeElemId || pageId;
     if(targetId === origSrcId){
       return;
     }
@@ -146,8 +146,17 @@ class PageStore {
       }
     }
 
-    if(this.dragPos === 'inner' && !registry.acceptChild(targetRealNode.exportName)){
-      return;
+    if(options?.from === 'source'){
+      // when click source panel elem, if target can accept child, append src node
+      if(registry.acceptChild(targetRealNode.exportName)){
+        this.dragPos = 'inner';
+      } else {
+        this.dragPos = 'down';
+      }
+    } else {
+      if(this.dragPos === 'inner' && !registry.acceptChild(targetRealNode.exportName)){
+        return;
+      }
     }
 
     const componentId = origSrcId || elemId(node.exportName);
