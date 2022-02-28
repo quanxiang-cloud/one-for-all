@@ -6,16 +6,16 @@ import Table from './table';
 // import MultiSelect from './multi-select';
 // import Radio from './radio';
 // import Checkbox from './checkbox';
-// import DatePicker from './date';
+import DatePicker from './date';
 
 export {
   Form,
   Input,
   Textarea,
   Table,
+  DatePicker,
   // Select,
   // MultiSelect,
   // Radio,
   // Checkbox,
-  // DatePicker,
 };
