@@ -158,7 +158,8 @@ export type ComposeOutLayer = Omit<HTMLNode, 'children'> | Omit<ReactComponentNo
 export interface ComposedNode extends BaseNode {
   type: 'composed-node';
   outLayer?: ComposeOutLayer;
-  children: Array<ComposedNodeChild>;
+  children?: Array<ComposedNodeChild>;
+  nodes: Array<ComposedNodeChild>;
 }
 
 export interface RefNode extends BaseNode, Pick<SchemaSpec.RefNode, 'schemaID' | 'orphan'> {

@@ -295,7 +295,11 @@ declare namespace SchemaSpec {
   interface ComposedNode extends BaseNode {
     type: 'composed-node';
     outLayer?: ComposeOutLayer;
+    /**
+     * @deprecated use nodes instead
+     */
     children: Array<ComposedNodeChild>;
+    nodes: Array<ComposedNodeChild>;
   }
 
   interface RefNode extends BaseNode {
