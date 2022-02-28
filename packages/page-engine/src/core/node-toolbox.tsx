@@ -83,7 +83,7 @@ function NodeToolbox(props: Props, ref: any): JSX.Element {
     let defaultPosition: React.CSSProperties = { right: '-2px', top: '-22px' };
     if (toolbarEle.current) {
       const toolbarPosition = toolbarEle.current.getBoundingClientRect();
-      const { element } = page.schemaElements[page.activeElemId];
+      const { element } = page.schemaElements[page.activeElemId] || {};
       const canvas = (document.querySelector('.pge-canvas') as Element).getBoundingClientRect();
       if (element) {
         const elementDomReact = element.getBoundingClientRect();

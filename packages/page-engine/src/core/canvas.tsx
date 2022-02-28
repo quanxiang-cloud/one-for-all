@@ -31,7 +31,7 @@ function Canvas({ schema, className }: Props): JSX.Element {
         return;
       }
       console.log('dropped %o onto canvas: ', item);
-      page.appendNode(item, null, { renewId: true });
+      page.appendNode(item, null);
     },
     collect: (monitor) => ({
       isOver: monitor.isOver({ shallow: true }),
