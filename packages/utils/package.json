@@ -8,6 +8,7 @@
   "types": "lib/src/index.d.ts",
   "files": [
     "lib",
+    "src",
     "tsconfig.json"
   ],
   "scripts": {
