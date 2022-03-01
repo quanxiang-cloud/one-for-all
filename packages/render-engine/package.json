@@ -26,7 +26,7 @@
   "dependencies": {
     "@one-for-all/api-spec-adapter": "0.3.3",
     "@one-for-all/schema-spec": "0.12.1",
-    "@one-for-all/utils": "0.1.0",
+    "@one-for-all/utils": "0.1.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-jsx-parser": "1.29.0",
