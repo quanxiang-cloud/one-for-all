@@ -3,11 +3,13 @@
   "version": "0.13.3",
   "license": "Apache-2.0",
   "type": "module",
-  "module": "lib/src/index.js",
-  "types": "lib/src/index.d.ts",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
   "files": [
     "lib",
     "src",
+    "tsconfig.json",
+    "README.md",
     "!**/__tests__",
     "!**/__mocks__"
   ],
