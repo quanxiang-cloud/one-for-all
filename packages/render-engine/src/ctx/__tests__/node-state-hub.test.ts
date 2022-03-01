@@ -15,3 +15,14 @@ test('node_state_hub_resolve_expected_value', () => {
   hub.exposeNodeState('some_node_id', 'another_value');
   expect(hub.getNodeState$('some_node_id').value).toEqual('another_value');
 });
+
+test('node_state_hub_resolve_obj_value', () => {
+  const hub = new NodeStateHub({});
+  const func = jest.fn();
+
+  hub.exposeNodeState('some_node_id', func);
+  const getFunc = hub.getNodeState$('some_node_id').value;
+  (getFunc as Function)();
+
+  expect(func).toHaveBeenCalled();
+})

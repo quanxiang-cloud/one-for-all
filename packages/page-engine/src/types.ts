@@ -18,6 +18,7 @@ export interface PageNode extends BaseNode {
   props?: any;
   node?: PageNode,
   outLayer?: PageNode,
+  supportStateExposure?: boolean;
   // `packageName, packageVersion, exportName` only for react comp node
   packageName?: 'ofa-ui' | string;
   packageVersion?: 'latest' | string;
