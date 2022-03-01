@@ -13,6 +13,8 @@ export type ColData = {
   id: string;
   key: string;
   label: string;
+  fixed?: boolean;
+  width?: number;
 };
 
 export type RowData = {
@@ -26,14 +28,18 @@ export const DEFAULT_CONFIG: Props = {
       id: `col-${nanoid(8)}`,
       key: "",
       label: "第1列",
+      fixed: false,
+      width: 100,
     },
   ],
   rows: [],
+  hasBorder: true,
 };
 
 export interface Props {
   cols?: ColData[];
   rows?: RowData[][];
+  hasBorder?: boolean;
 }
 
 function ConfigForm(): JSX.Element {
@@ -60,10 +66,13 @@ function ConfigForm(): JSX.Element {
           id: `col-${nanoid(8)}`,
           key: "",
           label: `第${values.cols.length + 1}列`,
+          fixed: false,
+          width: 100,
         },
       ],
     });
   }
+
   function deleteCol(index: number): void {
     if (values.cols.length <= 1) {
       return;
@@ -73,7 +82,8 @@ function ConfigForm(): JSX.Element {
       ...values,
     });
   }
-  function handleColChange(key: string, index: number, value: string): void {
+
+  function handleColChange(key: string, index: number, value: string | boolean): void {
     const cols = cloneDeep(values.cols)
     cols[index][key] = value;
     setValues({
@@ -126,46 +136,61 @@ function ConfigForm(): JSX.Element {
           </div>
         </div>
         <div className="mb-8">
+          <div className="mb-4 flex items-center">
+            <label className="mr-4 text-12 text-gray-600">单元格边框</label>
+            <input type="checkbox" name="border" checked={values.hasBorder} onChange={(e) => {
+              setValues({
+                ...values,
+                hasBorder: !values.hasBorder,
+              })
+            }}/>
+          </div>
+        </div>
+        <div className="mb-8">
           <div className="mb-4 flex items-center justify-between">
             <label className="mr-4 text-12 text-gray-600">列配置</label>
             <ConfigBind name="cols" />
           </div>
           <div className="mb-8">
-            <div className="grid grid-cols-2 gap-4 mr-32">
+            <div className="grid grid-cols-4 gap-4">
               <label>key</label>
-              <label>label</label>
+              <label>名称</label>
+              <label>宽度</label>
+              <label>固定</label>
             </div>
             {values.cols.map((col: ColData, index: number) => (
               <div
                 className="mb-8 flex items-center justify-between"
                 key={col.id}
               >
-                <div className="w-full mr-8 inline-grid grid-cols-2 gap-4">
+                <div className="w-full grid grid-cols-4 gap-4">
                   <input
                     type="text"
                     className="px-8 py-4 w-full border corner-2-8-8-8 border-gray-300 focus:border-blue-600"
                     value={col.key}
-                    onChange={(e) =>
-                      handleColChange("key", index, e.target.value)
-                    }
+                    onChange={(e) => handleColChange("key", index, e.target.value)}
                   />
                   <input
                     type="text"
                     className="px-8 py-4 w-full border corner-2-8-8-8 border-gray-300 focus:border-blue-600"
                     value={col.label}
-                    onChange={(e) =>
-                      handleColChange("label", index, e.target.value)
-                    }
+                    onChange={(e) => handleColChange("label", index, e.target.value)}
                   />
-                </div>
-                <div className="inline-flex items-center">
-                  <Icon
-                    className="mr-8"
-                    clickable
-                    name="delete"
-                    disabled={values.cols.length <= 1}
-                    onClick={() => deleteCol(index)}
-                  ></Icon>
+                  <input
+                    type="text"
+                    className="px-8 py-4 w-full border corner-2-8-8-8 border-gray-300 focus:border-blue-600"
+                    value={col.width}
+                    onChange={(e) => handleColChange("width", index, e.target.value)}
+                  />
+                  <div className="inline-flex items-center justify-around">
+                    <input type="checkbox" className="mr-8" checked={col.fixed} onChange={(e) => handleColChange("fixed", index, !col.fixed)} />
+                    <Icon
+                      clickable
+                      name="delete"
+                      disabled={values.cols.length <= 1}
+                      onClick={() => deleteCol(index)}
+                    ></Icon>
+                  </div>
                 </div>
               </div>
             ))}
