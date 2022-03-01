@@ -1,6 +1,6 @@
 {
   "name": "@one-for-all/render-engine",
-  "version": "0.13.4",
+  "version": "0.13.5",
   "license": "Apache-2.0",
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
