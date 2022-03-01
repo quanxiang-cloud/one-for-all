@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@codemirror/lang-javascript': ^0.19.3
+  '@one-for-all/render-engine': 0.13.1
   '@popperjs/core': ^2.11.0
   '@rollup/plugin-alias': ^3.1.8
   '@rollup/plugin-commonjs': ^21.0.1
@@ -129,6 +130,7 @@ specifiers:
 
 dependencies:
   '@codemirror/lang-javascript': 0.19.6
+  '@one-for-all/render-engine': 0.13.1
   '@popperjs/core': 2.11.2
   '@rollup/plugin-alias': 3.1.9_rollup@2.66.0
   '@rollup/plugin-commonjs': 21.0.1_rollup@2.66.0
@@ -1155,6 +1157,30 @@ packages:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
+    dev: false
+
+  /@one-for-all/api-spec-adapter/0.3.3:
+    resolution: {integrity: sha512-ovc5lcweofbJ1KRN+y1E+IReR4T0E6vgS4Uq1+6VMbA7UAk+6gSRgQnvFecR7Di01Bgj8Ofex4mBhE3gKSPurQ==}
+    dev: false
+
+  /@one-for-all/render-engine/0.13.1:
+    resolution: {integrity: sha512-4iBJVJxFlyrex5h+8xWHgZ5z8xQYi+pWL+mg1Y8ORV3ESCJ+ih3aXs0+BHjf1plxVWVxDvnzuAAoJufZq3mIDQ==}
+    dependencies:
+      '@one-for-all/api-spec-adapter': 0.3.3
+      '@one-for-all/schema-spec': 0.12.1
+      '@one-for-all/utils': 0.1.0
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      react-jsx-parser: 1.29.0_react-dom@17.0.2+react@17.0.2
+      rxjs: 7.5.2
+    dev: false
+
+  /@one-for-all/schema-spec/0.12.1:
+    resolution: {integrity: sha512-edIP7bYERa7a3/zU4MFi4PlX7BW6VuPqSE2XO7KAceFv5JGogIObih6feIDQDjHAkvRIMrYHt7RBjvqO+DpZpg==}
+    dev: false
+
+  /@one-for-all/utils/0.1.0:
+    resolution: {integrity: sha512-u0DJ6Z6T3FwnXPxaDnYjJF3AFoQC9VyqRz8a1+1cjb51PP9jgzJrTrVVdtdmx+uWdLJJsoKFZQBMJ9S0D++GGw==}
     dev: false
 
   /@open-draft/until/1.0.3:
@@ -11256,10 +11282,11 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-KPw3LuSHVQzhX7WaoujgVp4r4kG2L+nWwfUrnfsPb1sTGCTorpXkF/xH6IeuOV47Jx7+WuJs1BVlW1eAMWNVaQ==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-QToBzWCHBgv6yKIEpn2D90CKpe3nnr5OkOZ4t2MbBMlioteRUo1dVf4Z4nT3TsqJ4GHmYPRYu+kZsVtuZR1IUA==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
+      '@one-for-all/render-engine': 0.13.1
       '@rollup/plugin-commonjs': 21.0.1_rollup@2.66.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
       '@rollup/plugin-sucrase': 4.0.2_rollup@2.66.0
@@ -11373,12 +11400,13 @@ packages:
     dev: false
 
   file:projects/page-engine.tgz_f1db27541b51b520ad4ef7d7df039c22:
-    resolution: {integrity: sha512-LERuAC0inNZ0XuyYwAI6FQkOlmfbH7ip9slvC+EMkByPTZkq1fTj1UNGkFRb2+KbhyABPwpBRwaun+oEbbBl8Q==, tarball: file:projects/page-engine.tgz}
+    resolution: {integrity: sha512-Kf61hEJx7EPDrbYJM5u79Y9xf1vQbkROVtMHleMtQD9GWsMZIshetoNk/BTivlgSmIWtyrU/2UQgTcIF99DfAw==, tarball: file:projects/page-engine.tgz}
     id: file:projects/page-engine.tgz
     name: '@rush-temp/page-engine'
     version: 0.0.0
     dependencies:
       '@codemirror/lang-javascript': 0.19.6
+      '@one-for-all/render-engine': 0.13.1
       '@rollup/plugin-alias': 3.1.9_rollup@2.66.0
       '@rollup/plugin-commonjs': 21.0.1_rollup@2.66.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
@@ -11553,7 +11581,7 @@ packages:
     dev: false
 
   file:projects/render-engine.tgz_@types+jest@27.4.0:
-    resolution: {integrity: sha512-Atx0cKY8OeoofXPUjcdc1BXT0UOz3Wg3GLU2SSDI5w4OzjgjRZaYV3DK3iqlmm5YvTFsvui7D51PJW26sPuHAQ==, tarball: file:projects/render-engine.tgz}
+    resolution: {integrity: sha512-gZBHk4l97xXWLOCMXGAMhWRWtNfl4kFXvaY+Fo+BkNPHkoZ2/3E3FEREPHi0raSRAKlMFe0+QPPdZYihkHL8WA==, tarball: file:projects/render-engine.tgz}
     id: file:projects/render-engine.tgz
     name: '@rush-temp/render-engine'
     version: 0.0.0
