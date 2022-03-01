@@ -3,16 +3,24 @@ import React, {
   ForwardedRef,
   forwardRef,
   PropsWithChildren,
-  FormEvent,
   Children,
+  ReactNode,
+  useRef,
+  useImperativeHandle,
+  useEffect,
 } from "react";
 
+interface ExposeType {
+  submit: () => void;
+}
 interface Props {
   className?: string;
   style?: CSSProperties;
   name?: string;
+  placeholder?: ReactNode;
   "data-node-key"?: string;
-  onSubmit?: (val: any, e: FormEvent) => void;
+  onSubmit?: (val: any) => void;
+  __exposeState?: (prop: ExposeType) => void;
 }
 
 function serializeForm(formElement: HTMLFormElement): Record<string, any> {
@@ -29,24 +37,27 @@ function serializeForm(formElement: HTMLFormElement): Record<string, any> {
 }
 
 function Form(
-  { children, onSubmit, ...rest }: PropsWithChildren<Props>,
+  { children, placeholder, onSubmit, __exposeState, ...rest }: PropsWithChildren<Props>,
   ref: ForwardedRef<HTMLFormElement>
 ) {
-  function handleSumit(e: FormEvent): void {
-    e.preventDefault();
-    const data = serializeForm(e.nativeEvent.target as HTMLFormElement);
-    onSubmit && onSubmit(data, e);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useImperativeHandle(ref, () => formRef.current as HTMLFormElement);
+  useEffect(() => {
+    __exposeState?.({
+      submit: formSubmit
+    });
+  }, [])
+
+  function formSubmit() {
+    const data = serializeForm(formRef.current as HTMLFormElement);
+    onSubmit?.(data);
   }
 
   return (
-    <form {...rest} onSubmit={handleSumit} ref={ref}>
+    <form {...rest} ref={formRef}>
       {children}
-      {!Children.count(children) && <div
-        style={{ minHeight: 60 }}
-        className="bg-gray-100 border border-dashed flex items-center justify-center"
-      >
-        拖拽表单控件到这里
-      </div>}
+      {!Children.count(children) && placeholder}
     </form>
   );
 }

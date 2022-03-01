@@ -12,6 +12,7 @@ import { Button, Icon, Tooltip, Modal, toast } from '@one-for-all/ui';
 import { useCtx, DataBind, PageNode } from '../../../index';
 import Section from '../../comps/section';
 import { elemId } from '../../../utils';
+import { mapRawProps } from '../../../utils/schema-adapter';
 
 import styles from './index.m.scss';
 
@@ -29,16 +30,20 @@ function RendererPanel(): JSX.Element {
   useEffect(()=> {
     // todo: get cur loop node conf
     const rawNode = page.rawActiveElem;
+    const rawPropsKeys = Object.keys(mapRawProps(rawNode.props)).join(',');
+    const toProps = rawNode.toProps
+    setToPropsFn(get(toProps, 'body', `//${rawPropsKeys}\n${defaultToPropsFn}`));
+
     if (rawNode.type === 'loop-container') {
-      const { iterableState, loopKey, toProps } = pick(rawNode, ['iterableState', 'loopKey', 'toProps']);
+      const { iterableState, loopKey } = pick(rawNode, ['iterableState', 'loopKey']);
       setLoopKey(loopKey);
-      setToPropsFn(get(toProps, 'body', defaultToPropsFn));
       setIsComposed(rawNode.node && rawNode.node.type === 'composed-node');
 
       if (iterableState?.type === 'constant_property') {
         setBindConst(iterableState.value);
       }
     }
+    
   }, [page.activeElemId]);
 
   useUpdateEffect(()=> {
@@ -66,11 +71,12 @@ function RendererPanel(): JSX.Element {
       const isComposedNode = (children || []).every((item: PageNode) => item.type === 'react-component');
       if (exportName === 'container' && isComposedNode) {
         const newChildren = (children || []).map((child: PageNode) => {
+          const rawPropsKeys = Object.keys(mapRawProps(child.props)).join(',');
           const { type, args, body } = child.toProps || {};
           child.toProps = {
             type: type || 'to_props_function_spec',
             args: args || 'state',
-            body: body || 'return {}',
+            body: body || `// ${rawPropsKeys} \nreturn {}`,
           };
           return child;
         });

@@ -163,6 +163,7 @@ class PageStore {
     const params: Partial<PageNode> = {
       id: componentId,
       pid: this.dragPos === 'inner' ? targetRealNode.id : (targetRealNode.pid || pageId),
+      supportStateExposure: true,
       type: 'react-component',
       packageName: 'ofa-ui',
       packageVersion: 'latest',
@@ -204,10 +205,11 @@ class PageStore {
     }
 
     if (loopType === 'composed-node') {
+      const rawPropsKeys = Object.keys(mapRawProps(srcNode.props)).join(',');
       srcNode.toProps = {
         type: 'to_props_function_spec',
         args: 'state',
-        body: 'return {}',
+        body: `//${rawPropsKeys}\nreturn {}`,
       };
     }
 

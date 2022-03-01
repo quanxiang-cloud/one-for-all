@@ -10,6 +10,7 @@ import { Modal, Icon, Tooltip, toast } from '@one-for-all/ui';
 import { useCtx, PageNode } from '../../../index';
 
 import { elemId } from '../../../utils';
+import { mapRawProps } from '../../../utils/schema-adapter';
 
 type LabelValue = {
   label: string;
@@ -81,11 +82,12 @@ function ModalComponentNode(): JSX.Element {
     }
     if (_children) {
       newChildren = (_children || []).map((child: PageNode) => {
+        const rawPropsKeys = Object.keys(mapRawProps(child.props)).join(',');
         const { type, args, body } = child.toProps || {};
         child.toProps = {
           type: type || 'to_props_function_spec',
           args: args || 'state',
-          body: body || 'return {}',
+          body: body || `//${rawPropsKeys}\nreturn {}`,
         };
         return child;
       });
