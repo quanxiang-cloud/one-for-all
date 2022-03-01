@@ -1,0 +1,26 @@
+:root {
+  --pull-refresh-head-height: .5rem;
+}
+
+.ofa-pull-refresh {
+  overflow: hidden;
+  user-select: none;
+
+  &__track {
+    position: relative;
+    height: 100%;
+    transition-property: transform;
+  }
+
+  &__head {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: var(--pull-refresh-head-height);
+    overflow: hidden;
+    text-align: center;
+    transform: translateY(-100%);
+    display: flex;
+    justify-content: center;
+  }
+}

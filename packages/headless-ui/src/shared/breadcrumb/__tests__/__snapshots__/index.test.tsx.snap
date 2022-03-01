@@ -1,0 +1,216 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Breadcrumb active test 1`] = `
+<div>
+  <div
+    class="ofa-breadcrumb"
+  >
+    <div
+      class="ofa-breadcrumb-item"
+    >
+      <a
+        class="ofa-breadcrumb-link"
+        href="/test1"
+      >
+        segment1
+      </a>
+      <span
+        class="ofa-breadcrumb-separator"
+      >
+        /
+      </span>
+    </div>
+    <div
+      class="ofa-breadcrumb-item"
+    >
+      <a
+        class="ofa-breadcrumb-link"
+        href="/test2"
+      >
+        segment2
+      </a>
+      <span
+        class="ofa-breadcrumb-separator"
+      >
+        /
+      </span>
+    </div>
+    <div
+      class="ofa-breadcrumb-item activeClass"
+    >
+      <span
+        class="ofa-breadcrumb-link"
+      >
+        segment3
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Breadcrumb props test 1`] = `
+<div>
+  <div
+    class="ofa-breadcrumb breadcrumb-test"
+    style="color: blue;"
+  >
+    <div
+      class="ofa-breadcrumb-item segment-test"
+      style="font-size: 20px;"
+    >
+      <a
+        class="ofa-breadcrumb-link"
+        href="/test1"
+      >
+        segment1
+      </a>
+      <span
+        class="ofa-breadcrumb-separator"
+      >
+        /
+      </span>
+    </div>
+    <div
+      class="ofa-breadcrumb-item segment-test"
+      style="font-size: 20px;"
+    >
+      <a
+        class="ofa-breadcrumb-link"
+        href="/test2"
+      >
+        segment2
+      </a>
+      <span
+        class="ofa-breadcrumb-separator"
+      >
+        /
+      </span>
+    </div>
+    <div
+      class="ofa-breadcrumb-item segment-test activeClass"
+      style="font-size: 20px;"
+    >
+      <span
+        class="ofa-breadcrumb-link"
+      >
+        segment3
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Breadcrumb segmentRender event test 1`] = `
+<div>
+  <div
+    class="ofa-breadcrumb"
+  >
+    <div
+      class="ofa-breadcrumb-item"
+    >
+      <div>
+        <svg
+          class="ofa-svg-icon "
+          data-name="star"
+          style="width: 16px; height: 16px;"
+        >
+          <use
+            xlink:href="/dist/images/sprite-137db0aa0124f9675ced9fff276d1044.svg#star"
+          />
+        </svg>
+        segment1
+      </div>
+      <span
+        class="ofa-breadcrumb-separator"
+      >
+        /
+      </span>
+    </div>
+    <div
+      class="ofa-breadcrumb-item"
+    >
+      <div>
+        <svg
+          class="ofa-svg-icon "
+          data-name="star"
+          style="width: 16px; height: 16px;"
+        >
+          <use
+            xlink:href="/dist/images/sprite-137db0aa0124f9675ced9fff276d1044.svg#star"
+          />
+        </svg>
+        segment2
+      </div>
+      <span
+        class="ofa-breadcrumb-separator"
+      >
+        /
+      </span>
+    </div>
+    <div
+      class="ofa-breadcrumb-item activeClass"
+    >
+      <div>
+        <svg
+          class="ofa-svg-icon "
+          data-name="star"
+          style="width: 16px; height: 16px;"
+        >
+          <use
+            xlink:href="/dist/images/sprite-137db0aa0124f9675ced9fff276d1044.svg#star"
+          />
+        </svg>
+        segment3
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Breadcrumb separator test 1`] = `
+<div>
+  <div
+    class="ofa-breadcrumb"
+  >
+    <div
+      class="ofa-breadcrumb-item"
+    >
+      <a
+        class="ofa-breadcrumb-link"
+        href="/test1"
+      >
+        segment1
+      </a>
+      <span
+        class="ofa-breadcrumb-separator"
+      >
+        &gt;
+      </span>
+    </div>
+    <div
+      class="ofa-breadcrumb-item"
+    >
+      <a
+        class="ofa-breadcrumb-link"
+        href="/test2"
+      >
+        segment2
+      </a>
+      <span
+        class="ofa-breadcrumb-separator"
+      >
+        &gt;
+      </span>
+    </div>
+    <div
+      class="ofa-breadcrumb-item activeClass"
+    >
+      <span
+        class="ofa-breadcrumb-link"
+      >
+        segment3
+      </span>
+    </div>
+  </div>
+</div>
+`;

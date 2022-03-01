@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Divider component test 1`] = `
+<div>
+  <div
+    class="ofa-divider test-divider-props"
+    style="height: 30px; width: 10px; background-color: blue;"
+  />
+</div>
+`;
+
+exports[`Divider component test 2`] = `
+<div>
+  <div
+    class="ofa-divider test-divider-props"
+    style="width: 30px; height: 20px; background-color: red;"
+  />
+</div>
+`;

@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Input should support maxLength 1`] = `
+<DocumentFragment>
+  <input
+    class="ofa-input"
+    maxlength="3"
+    value=""
+  />
+</DocumentFragment>
+`;

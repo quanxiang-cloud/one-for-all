@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Radio should render label 1`] = `
+<DocumentFragment>
+  <label
+    class="ofa-radio-wrapper"
+  >
+    <span
+      class="ofa-radio-item"
+    >
+      <input
+        style="display: none;"
+        type="radio"
+        value="test1"
+      />
+      <span
+        class="ofa-radio-icon"
+      />
+    </span>
+    <span
+      class="ofa-radio-label"
+    >
+      test1
+    </span>
+  </label>
+</DocumentFragment>
+`;
+
+exports[`RadioGroup should render by options 1`] = `
+<DocumentFragment>
+  <div
+    class=""
+  >
+    <label
+      class="ofa-radio-wrapper ofa-radio-wrapper__checked"
+    >
+      <span
+        class="ofa-radio-item"
+      >
+        <input
+          checked=""
+          style="display: none;"
+          type="radio"
+          value="1"
+        />
+        <span
+          class="ofa-radio-icon"
+        />
+      </span>
+      <span
+        class="ofa-radio-label"
+      >
+        test1
+      </span>
+    </label>
+    <label
+      class="ofa-radio-wrapper"
+    >
+      <span
+        class="ofa-radio-item"
+      >
+        <input
+          style="display: none;"
+          type="radio"
+          value="2"
+        />
+        <span
+          class="ofa-radio-icon"
+        />
+      </span>
+      <span
+        class="ofa-radio-label"
+      >
+        test2
+      </span>
+    </label>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`RadioGroup should render label group 1`] = `
+<DocumentFragment>
+  <div
+    class=""
+  >
+    <label
+      class="ofa-radio-wrapper ofa-radio-wrapper__checked"
+    >
+      <span
+        class="ofa-radio-item"
+      >
+        <input
+          style="display: none;"
+          type="radio"
+          value="1"
+        />
+        <span
+          class="ofa-radio-icon"
+        />
+      </span>
+      <span
+        class="ofa-radio-label"
+      >
+        1
+      </span>
+    </label>
+    <label
+      class="ofa-radio-wrapper"
+    >
+      <span
+        class="ofa-radio-item"
+      >
+        <input
+          style="display: none;"
+          type="radio"
+          value="2"
+        />
+        <span
+          class="ofa-radio-icon"
+        />
+      </span>
+      <span
+        class="ofa-radio-label"
+      >
+        2
+      </span>
+    </label>
+    <label
+      class="ofa-radio-wrapper"
+    >
+      <span
+        class="ofa-radio-item"
+      >
+        <input
+          style="display: none;"
+          type="radio"
+          value="3"
+        />
+        <span
+          class="ofa-radio-icon"
+        />
+      </span>
+      <span
+        class="ofa-radio-label"
+      >
+        3
+      </span>
+    </label>
+  </div>
+</DocumentFragment>
+`;

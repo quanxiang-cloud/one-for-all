@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tag delete event test 1`] = `
+<div>
+  <span
+    class="ofa-tag test-ref"
+  >
+    Tag delete function Test
+    <span
+      class="ofa-tag-delete-icon"
+    >
+      <svg
+        class="ofa-svg-icon "
+        data-name="close"
+        style="width: 15px; height: 15px;"
+      >
+        <use
+          xlink:href="/dist/images/sprite-137db0aa0124f9675ced9fff276d1044.svg#close"
+        />
+      </svg>
+    </span>
+  </span>
+</div>
+`;
+
+exports[`Tag props test 1`] = `
+<div>
+  <span
+    class="ofa-tag test-component ofa-tag--primary"
+    style="background-color: blue; width: 10%; height: 30px;"
+  >
+    Tag normal props test
+  </span>
+</div>
+`;
