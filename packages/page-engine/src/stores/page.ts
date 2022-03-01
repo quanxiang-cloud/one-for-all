@@ -204,10 +204,11 @@ class PageStore {
     }
 
     if (loopType === 'composed-node') {
+      const rawPropsKeys = Object.keys(mapRawProps(srcNode.props)).join(',');
       srcNode.toProps = {
         type: 'to_props_function_spec',
         args: 'state',
-        body: 'return {}',
+        body: `//${rawPropsKeys}\nreturn {}`,
       };
     }
 
