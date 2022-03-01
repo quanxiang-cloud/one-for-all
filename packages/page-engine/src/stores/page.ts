@@ -163,6 +163,7 @@ class PageStore {
     const params: Partial<PageNode> = {
       id: componentId,
       pid: this.dragPos === 'inner' ? targetRealNode.id : (targetRealNode.pid || pageId),
+      supportStateExposure: true,
       type: 'react-component',
       packageName: 'ofa-ui',
       packageVersion: 'latest',

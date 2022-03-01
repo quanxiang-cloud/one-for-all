@@ -19,6 +19,11 @@ interface Props {
   schema: PageNode,
 }
 
+const COMP_WITH_PLACEHOLDER: Record<string, string> = {
+  container: '拖拽组件或模版到这里',
+  form: '拖拽表单组件到这里',
+}
+
 function NodeRender({ schema }: Props): JSX.Element | null {
   if (typeof schema !== 'object' || !schema) {
     return null;
@@ -148,7 +153,7 @@ function NodeRender({ schema }: Props): JSX.Element | null {
       }
 
       // add placeholder to container elem
-      if (schema.exportName === 'container' && !schema.children?.length) {
+      if (COMP_WITH_PLACEHOLDER[schema.exportName] && !schema.children?.length) {
         // Dynamically set the placeholder style according to the width, height and background
         const _style = schema.props.style || { type: 'constant_property', value: {} };
         const { height, backgroundColor, backgroundImage } = _style.value;
@@ -165,7 +170,7 @@ function NodeRender({ schema }: Props): JSX.Element | null {
               backgroundImage: backgroundImage }}
             >
               {(heightValue.value && Number(heightValue.value) < 60 && heightValue.unit === 'px') ?
-                '' : '拖拽组件或模板到这里'}
+                '' : COMP_WITH_PLACEHOLDER[schema.exportName]}
             </div>
           ),
         });
