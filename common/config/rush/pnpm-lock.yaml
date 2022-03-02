@@ -6949,6 +6949,10 @@ packages:
     resolution: {integrity: sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==}
     dev: false
 
+  /mitt/3.0.0:
+    resolution: {integrity: sha512-7dX2/10ITVyqh4aOSVI9gdape+t9l2/8QxHrFmUXu4EEUpdlxl6RudZUPZoc+zuY2hk1j7XxVroIVIan/pD/SQ==}
+    dev: false
+
   /mkdirp/0.5.5:
     resolution: {integrity: sha512-NKmAlESf6jMGym1++R0Ra7wvhV+wFW63FaSOFPwRahvea0gMUcGUhVeAg/0BC0wiv9ih5NYPB1Wn1UEI1/L+xQ==}
     hasBin: true
@@ -11400,7 +11404,7 @@ packages:
     dev: false
 
   file:projects/page-engine.tgz_f1db27541b51b520ad4ef7d7df039c22:
-    resolution: {integrity: sha512-Kf61hEJx7EPDrbYJM5u79Y9xf1vQbkROVtMHleMtQD9GWsMZIshetoNk/BTivlgSmIWtyrU/2UQgTcIF99DfAw==, tarball: file:projects/page-engine.tgz}
+    resolution: {integrity: sha512-fkNzOka8SS/dLS1OE5wmmpJGXthinGoj+/kOV6GAjZCkw8z9PmT1d/X0cMhoOiW5lSq/0Jbwmk+q8VyGSLbZ6g==, tarball: file:projects/page-engine.tgz}
     id: file:projects/page-engine.tgz
     name: '@rush-temp/page-engine'
     version: 0.0.0
@@ -11424,6 +11428,7 @@ packages:
       html-webpack-plugin: 5.5.0_webpack@5.68.0
       http-server: 14.1.0
       lodash: 4.17.21
+      mitt: 3.0.0
       mobx: 6.3.13
       mobx-react: 7.2.1_96b0034b8b6bfac1b4cc60715db17f02
       nanoid: 3.2.0
