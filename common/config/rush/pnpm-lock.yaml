@@ -10,6 +10,7 @@ specifiers:
   '@rollup/plugin-replace': ^3.0.0
   '@rush-temp/api-spec-adapter': file:./projects/api-spec-adapter.tgz
   '@rush-temp/draft-js': file:./projects/draft-js.tgz
+  '@rush-temp/elkjs': file:./projects/elkjs.tgz
   '@rush-temp/example': file:./projects/example.tgz
   '@rush-temp/formula': file:./projects/formula.tgz
   '@rush-temp/icon': file:./projects/icon.tgz
@@ -60,6 +61,7 @@ specifiers:
   css-loader: ~6.5.1
   cssnano: ^5.0.12
   draft-js: ^0.11.7
+  elkjs: ^0.7.3-dev
   esbuild: 0.14.13
   eslint: 8.7.0
   eslint-config-google: ^0.14.0
@@ -138,6 +140,7 @@ dependencies:
   '@rollup/plugin-replace': 3.0.1_rollup@2.66.0
   '@rush-temp/api-spec-adapter': file:projects/api-spec-adapter.tgz
   '@rush-temp/draft-js': file:projects/draft-js.tgz_react-dom@17.0.2+react@17.0.2
+  '@rush-temp/elkjs': file:projects/elkjs.tgz_rollup@2.66.0
   '@rush-temp/example': file:projects/example.tgz
   '@rush-temp/formula': file:projects/formula.tgz_esbuild@0.14.13
   '@rush-temp/icon': file:projects/icon.tgz_esbuild@0.14.13
@@ -188,6 +191,7 @@ dependencies:
   css-loader: 6.5.1_webpack@5.67.0
   cssnano: 5.0.16_postcss@8.4.5
   draft-js: 0.11.7_react-dom@17.0.2+react@17.0.2
+  elkjs: 0.7.3-dev
   esbuild: 0.14.13
   eslint: 8.7.0
   eslint-config-google: 0.14.0_eslint@8.7.0
@@ -4185,6 +4189,10 @@ packages:
 
   /electron-to-chromium/1.4.52:
     resolution: {integrity: sha512-JGkh8HEh5PnVrhU4HbpyyO0O791dVY6k7AdqfDeqbcRMeoGxtNHWT77deR2nhvbLe4dKpxjlDEvdEwrvRLGu2Q==}
+    dev: false
+
+  /elkjs/0.7.3-dev:
+    resolution: {integrity: sha512-r8rOEyewdpEk60xfxzLjJBgZqdxr+RVBEPam71vF76h+15OF9zkI88HV7WzYl15eqTr0vRo2EwgX0Y8phFXGxQ==}
     dev: false
 
   /emittery/0.8.1:
@@ -11279,6 +11287,22 @@ packages:
       - encoding
       - react
       - react-dom
+    dev: false
+
+  file:projects/elkjs.tgz_rollup@2.66.0:
+    resolution: {integrity: sha512-sOAYqhkYOA7Bp/hGp9MZiDSrjALuvTEudpHoQx4yf3nCIBJzBqroaWnSIfHVE692sMMvL9nuyVRzpzxyOkcs/A==, tarball: file:projects/elkjs.tgz}
+    id: file:projects/elkjs.tgz
+    name: '@rush-temp/elkjs'
+    version: 0.0.0
+    dependencies:
+      '@rollup/plugin-commonjs': 21.0.1_rollup@2.66.0
+      '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
+      '@rollup/plugin-replace': 3.0.1_rollup@2.66.0
+      elkjs: 0.7.3-dev
+      rollup-plugin-terser: 7.0.2_rollup@2.66.0
+    transitivePeerDependencies:
+      - acorn
+      - rollup
     dev: false
 
   file:projects/example.tgz:

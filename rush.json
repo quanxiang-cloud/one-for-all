@@ -575,6 +575,11 @@
       "packageName": "@one-for-all/xlsx",
       "projectFolder": "vendors/xlsx",
       "shouldPublish": false
+    },
+    {
+      "packageName": "@one-for-all/elkjs",
+      "projectFolder": "vendors/elkjs",
+      "shouldPublish": false
     }
   ]
 }
