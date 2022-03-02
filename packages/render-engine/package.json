@@ -1,10 +1,17 @@
 {
   "name": "@one-for-all/render-engine",
-  "version": "0.13.3",
+  "version": "0.13.5",
   "license": "Apache-2.0",
-  "type": "module",
-  "module": "lib/src/index.js",
-  "types": "lib/src/index.d.ts",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "src",
+    "tsconfig.json",
+    "README.md",
+    "!**/__tests__",
+    "!**/__mocks__"
+  ],
   "scripts": {
     "build": "heft build --clean",
     "bundle": "rm -rf dist && rollup -c rollup.config.js",
@@ -19,7 +26,7 @@
   "dependencies": {
     "@one-for-all/api-spec-adapter": "0.3.3",
     "@one-for-all/schema-spec": "0.12.1",
-    "@one-for-all/utils": "0.1.0",
+    "@one-for-all/utils": "0.1.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-jsx-parser": "1.29.0",

@@ -73,6 +73,7 @@ specifiers:
   jszip: ^3.7.1
   lodash: ^4.17.21
   lodash-es: 4.17.21
+  mitt: ~3.0.0
   mkdirp: ~1.0.4
   mobx: ^6.3.8
   mobx-react: ^7.2.1
@@ -201,6 +202,7 @@ dependencies:
   jszip: 3.7.1
   lodash: 4.17.21
   lodash-es: 4.17.21
+  mitt: 3.0.0
   mkdirp: 1.0.4
   mobx: 6.3.13
   mobx-react: 7.2.1_96b0034b8b6bfac1b4cc60715db17f02
@@ -11586,7 +11588,7 @@ packages:
     dev: false
 
   file:projects/render-engine.tgz_@types+jest@27.4.0:
-    resolution: {integrity: sha512-gZBHk4l97xXWLOCMXGAMhWRWtNfl4kFXvaY+Fo+BkNPHkoZ2/3E3FEREPHi0raSRAKlMFe0+QPPdZYihkHL8WA==, tarball: file:projects/render-engine.tgz}
+    resolution: {integrity: sha512-L/Ii3yBqfVyXeIwEaXr7mWk29ZSUoLKH1KLuoiXQTL1vd2Xx6H7y+tgCiUprzloLY9Tj/S0xKjCrPW0Zo0mI/A==, tarball: file:projects/render-engine.tgz}
     id: file:projects/render-engine.tgz
     name: '@rush-temp/render-engine'
     version: 0.0.0

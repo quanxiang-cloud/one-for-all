@@ -17,6 +17,7 @@ function useReactJSXParser(): React.Component<TProps> | null {
 
   useEffect(() => {
     let unMounting = false;
+    // todo change 'react-jsx-parser' as plugin
     System.import('react-jsx-parser').then((module) => {
       if (unMounting) {
         return;

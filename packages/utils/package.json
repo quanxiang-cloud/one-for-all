@@ -1,13 +1,16 @@
 {
   "name": "@one-for-all/utils",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "license": "Apache-2.0",
   "author": "",
-  "main": "lib/src/index.js",
   "module": "lib/src/index.js",
-  "type": "module",
   "types": "lib/src/index.d.ts",
+  "files": [
+    "lib",
+    "src",
+    "tsconfig.json"
+  ],
   "scripts": {
     "build": "rm -rf lib & tsc --build tsconfig.json",
     "bundle": "rm -rf dist & rollup -c rollup.config.js",

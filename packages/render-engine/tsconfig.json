@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "lib",
-    "rootDir": ".",
+    "rootDir": "src",
     "module": "ESNext",
     "typeRoots": ["node_modules/@types"] /* List of folders to include type definitions from. */
   },
