@@ -1,0 +1,145 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Checkbox should render label 1`] = `
+<DocumentFragment>
+  <label
+    class="ofa-checkbox-wrapper"
+  >
+    <span
+      class="ofa-checkbox-item"
+    >
+      <input
+        style="display: none;"
+        type="checkbox"
+      />
+      <span
+        class="ofa-checkbox-icon"
+      />
+    </span>
+    <span
+      class="ofa-checkbox-label"
+    >
+      test1
+    </span>
+  </label>
+</DocumentFragment>
+`;
+
+exports[`CheckboxGroup should render by options 1`] = `
+<DocumentFragment>
+  <div
+    class=""
+  >
+    <label
+      class="ofa-checkbox-wrapper ofa-checkbox-wrapper__checked"
+    >
+      <span
+        class="ofa-checkbox-item"
+      >
+        <input
+          checked=""
+          style="display: none;"
+          type="checkbox"
+        />
+        <span
+          class="ofa-checkbox-icon"
+        />
+      </span>
+      <span
+        class="ofa-checkbox-label"
+      >
+        test1
+      </span>
+    </label>
+    <label
+      class="ofa-checkbox-wrapper"
+    >
+      <span
+        class="ofa-checkbox-item"
+      >
+        <input
+          style="display: none;"
+          type="checkbox"
+        />
+        <span
+          class="ofa-checkbox-icon"
+        />
+      </span>
+      <span
+        class="ofa-checkbox-label"
+      >
+        test2
+      </span>
+    </label>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`CheckboxGroup should render label group 1`] = `
+<DocumentFragment>
+  <div
+    class=""
+  >
+    <label
+      class="ofa-checkbox-wrapper ofa-checkbox-wrapper__checked"
+    >
+      <span
+        class="ofa-checkbox-item"
+      >
+        <input
+          style="display: none;"
+          type="checkbox"
+        />
+        <span
+          class="ofa-checkbox-icon"
+        />
+      </span>
+      <span
+        class="ofa-checkbox-label"
+      >
+        1
+      </span>
+    </label>
+    <label
+      class="ofa-checkbox-wrapper ofa-checkbox-wrapper__checked"
+    >
+      <span
+        class="ofa-checkbox-item"
+      >
+        <input
+          style="display: none;"
+          type="checkbox"
+        />
+        <span
+          class="ofa-checkbox-icon"
+        />
+      </span>
+      <span
+        class="ofa-checkbox-label"
+      >
+        2
+      </span>
+    </label>
+    <label
+      class="ofa-checkbox-wrapper"
+    >
+      <span
+        class="ofa-checkbox-item"
+      >
+        <input
+          style="display: none;"
+          type="checkbox"
+        />
+        <span
+          class="ofa-checkbox-icon"
+        />
+      </span>
+      <span
+        class="ofa-checkbox-label"
+      >
+        3
+      </span>
+    </label>
+  </div>
+</DocumentFragment>
+`;

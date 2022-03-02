@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Switch switch with checked and onText 1`] = `
+<DocumentFragment>
+  <label
+    class="ofa-switch ofa-switch-checked"
+  >
+    <span
+      class="ofa-switch-text ofa-switch-text-checked"
+    >
+      开
+    </span>
+  </label>
+</DocumentFragment>
+`;
+
+exports[`Switch switch with false checked and offText 1`] = `
+<DocumentFragment>
+  <label
+    class="ofa-switch"
+  >
+    <span
+      class="ofa-switch-text"
+    >
+      关
+    </span>
+  </label>
+</DocumentFragment>
+`;
+
+exports[`Switch switch without anything 1`] = `
+<DocumentFragment>
+  <label
+    class="ofa-switch"
+  >
+    <span
+      class="ofa-switch-text"
+    />
+  </label>
+</DocumentFragment>
+`;

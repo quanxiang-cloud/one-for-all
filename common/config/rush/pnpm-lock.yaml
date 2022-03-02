@@ -13,6 +13,7 @@ specifiers:
   '@rush-temp/elkjs': file:./projects/elkjs.tgz
   '@rush-temp/example': file:./projects/example.tgz
   '@rush-temp/formula': file:./projects/formula.tgz
+  '@rush-temp/headless-ui': file:./projects/headless-ui.tgz
   '@rush-temp/icon': file:./projects/icon.tgz
   '@rush-temp/jszip': file:./projects/jszip.tgz
   '@rush-temp/lodash': file:./projects/lodash.tgz
@@ -71,6 +72,7 @@ specifiers:
   html-webpack-plugin: ^5.5.0
   http-server: ^14.1.0
   jest: 27.4.7
+  jest-css-modules: ~2.1.0
   jest-diff: ~27.4.6
   jszip: ^3.7.1
   lodash: ^4.17.21
@@ -143,6 +145,7 @@ dependencies:
   '@rush-temp/elkjs': file:projects/elkjs.tgz
   '@rush-temp/example': file:projects/example.tgz
   '@rush-temp/formula': file:projects/formula.tgz_esbuild@0.14.13
+  '@rush-temp/headless-ui': file:projects/headless-ui.tgz_esbuild@0.14.13
   '@rush-temp/icon': file:projects/icon.tgz_esbuild@0.14.13
   '@rush-temp/jszip': file:projects/jszip.tgz
   '@rush-temp/lodash': file:projects/lodash.tgz_rollup@2.66.0
@@ -201,6 +204,7 @@ dependencies:
   html-webpack-plugin: 5.5.0_webpack@5.67.0
   http-server: 14.1.0
   jest: 27.4.7
+  jest-css-modules: 2.1.0
   jest-diff: 27.4.6
   jszip: 3.7.1
   lodash: 4.17.21
@@ -5229,6 +5233,10 @@ packages:
     resolution: {integrity: sha512-9Qn4yBxelxoh2Ow62nP+Ka/kMnOXRi8BXnRaUwezLNhqelnN49xKz4F/dPP8OYLxLxq6JDtZb2i9XznUQbNPTg==}
     dev: false
 
+  /harmony-reflect/1.6.2:
+    resolution: {integrity: sha512-HIp/n38R9kQjDEziXyDTuW3vvoxxyxjxFzXLrBr18uB47GnSt+G9D29fqrpM5ZkspMcPICud3XsBJQ4Y2URg8g==}
+    dev: false
+
   /has-bigints/1.0.1:
     resolution: {integrity: sha512-LSBS2LjbNBTf6287JEbEzvJgftkF5qFkmCo9hDRpAzKhUOlJ+hx8dd4USs00SgsUNwc4617J9ki5YtEClM2ffA==}
     dev: false
@@ -5538,6 +5546,13 @@ packages:
       postcss: ^8.1.0
     dependencies:
       postcss: 8.4.5
+    dev: false
+
+  /identity-obj-proxy/3.0.0:
+    resolution: {integrity: sha1-lNK9qWCERT7zb7xarsN+D3nx/BQ=}
+    engines: {node: '>=4'}
+    dependencies:
+      harmony-reflect: 1.6.2
     dev: false
 
   /ieee754/1.2.1:
@@ -6113,6 +6128,12 @@ packages:
       - canvas
       - supports-color
       - utf-8-validate
+    dev: false
+
+  /jest-css-modules/2.1.0:
+    resolution: {integrity: sha512-my3Scnt6l2tOll/eGwNZeh1KLAFkNzdl4MyZRdpl46GO6/93JcKKdTjNqK6Nokg8A8rT84MFLOpY1pzqKBEqMw==}
+    dependencies:
+      identity-obj-proxy: 3.0.0
     dev: false
 
   /jest-diff/27.4.6:
@@ -11364,6 +11385,54 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - babel-jest
+      - bufferutil
+      - canvas
+      - esbuild
+      - node-notifier
+      - supports-color
+      - ts-node
+      - utf-8-validate
+    dev: false
+
+  file:projects/headless-ui.tgz_esbuild@0.14.13:
+    resolution: {integrity: sha512-05fWPgGGTq/0L0ioivVfcZhQ/ELS5AWFRAV+AzVw6+WTp7m3ZQNlyx7d4aBu7KTo+XUIUpfagpbVIVya0JukYQ==, tarball: file:projects/headless-ui.tgz}
+    id: file:projects/headless-ui.tgz
+    name: '@rush-temp/headless-ui'
+    version: 0.0.0
+    dependencies:
+      '@popperjs/core': 2.11.2
+      '@rollup/plugin-commonjs': 21.0.1_rollup@2.66.0
+      '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
+      '@rollup/plugin-replace': 3.0.1_rollup@2.66.0
+      '@testing-library/jest-dom': 5.16.1
+      '@testing-library/react': 12.1.2_react-dom@17.0.2+react@17.0.2
+      '@types/lodash': 4.14.178
+      '@types/react': 17.0.38
+      '@types/react-color': 3.0.6
+      '@types/react-dom': 17.0.11
+      '@types/styled-components': 5.1.21
+      classnames: 2.3.1
+      glob: 7.2.0
+      jest: 27.4.7
+      jest-css-modules: 2.1.0
+      lodash: 4.17.21
+      mkdirp: 1.0.4
+      nanoid: 3.2.0
+      react: 17.0.2
+      react-color: 2.19.3_react@17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      react-is: 17.0.2
+      react-popper: 2.2.5_4d48938cec404f33c7375aa6b453941c
+      rollup: 2.66.0
+      rollup-plugin-esbuild: 4.8.2_esbuild@0.14.13+rollup@2.66.0
+      rollup-plugin-peer-deps-external: 2.2.4_rollup@2.66.0
+      rollup-plugin-styles: 3.14.1_rollup@2.66.0
+      rollup-plugin-terser: 7.0.2_rollup@2.66.0
+      sass: 1.49.7
+      styled-components: 5.3.3_281a4fa50a045c9112baf635f3bc27a7
+      tslib: 2.3.1
+    transitivePeerDependencies:
+      - acorn
       - bufferutil
       - canvas
       - esbuild

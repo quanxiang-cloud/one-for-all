@@ -1,0 +1,21 @@
+@layer components {
+  .dropdown-options {
+    min-width: 90px;
+    max-width: 500px;
+    max-height: 300px;
+    /* todo this should be defined as a variable */
+    box-shadow: 0px 8px 24px 4px rgba(148, 163, 184, 0.25);
+
+    @apply py-16 rounded-12 bg-white overflow-y-auto;
+  }
+
+  .dropdown-options__option {
+    @apply flex items-center justify-between px-16 h-36 cursor-pointer select-none font-medium hover:bg-gray-100 text-12;
+  }
+
+  .dropdown-trigger {
+    min-width: 90px;
+    max-width: 500px;
+    @apply flex items-center justify-between h-32 px-16 border corner-2-8-8-8 bg-white cursor-pointer select-none;
+  }
+}

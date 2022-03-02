@@ -1,0 +1,22 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "lib",
+    "rootDir": ".",
+    "module": "system"
+  },
+  "references": [
+    {
+      "path": "../icon"
+    }
+  ],
+  "include": [
+    "src/**/*",
+    "./global.d.ts",
+    "./types.d.ts",
+  ],
+  "exclude": [
+    "src/**/__tests__/*",
+    "src/**/__test__/*"
+  ]
+}
