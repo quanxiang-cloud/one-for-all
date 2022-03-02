@@ -494,6 +494,10 @@
       "packageName": "@one-for-all/utils",
       "projectFolder": "packages/utils"
     },
+    {
+      "packageName": "@one-for-all/headless-ui",
+      "projectFolder": "packages/headless-ui"
+    },
 
     // vendors
     {
