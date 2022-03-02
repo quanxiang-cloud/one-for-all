@@ -8,7 +8,7 @@ type Props = {
 
 const elem: SourceElement<Props> = {
   name: 'table',
-  icon: 'apps',
+  icon: 'border_all',
   label: '表格',
   category: 'form',
   component: Table,

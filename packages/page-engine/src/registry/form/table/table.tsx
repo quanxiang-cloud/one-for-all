@@ -48,7 +48,7 @@ function Table(
             </td>
           );
         });
-        return <tr className='qxp-table-tr' key={`row${index}`}>{renderContent}</tr>;
+        return <tr className='ofa-table-tr' key={`row${index}`}>{renderContent}</tr>;
       });
     } catch (e: any) {
       return [];
@@ -56,8 +56,8 @@ function Table(
   };
 
   return (
-    <div className={cs("qxp-table-wrapper", "relative", className)} {...rest} ref={ref}>
-      <div className={cs('qxp-table', className, `qxp-table-middle`)}>
+    <div className={cs("ofa-table-wrapper", "relative", className)} {...rest} ref={ref}>
+      <div className={cs('ofa-table', className, `ofa-table-middle`)}>
         <table
           className={cs("table-fixed", "border-collapse", className)}
         >
@@ -70,7 +70,7 @@ function Table(
             }
           </colgroup>
           <thead>
-            <tr className='qxp-table-tr'>{renderHead()}</tr>
+            <tr className='ofa-table-tr'>{renderHead()}</tr>
           </thead>
           <tbody>{renderRows()}</tbody>
         </table>
