@@ -47,13 +47,9 @@ function Toolbar({ docLink = '', hideTestPreview }: Props): JSX.Element {
     return dispose;
   }, []);
 
-  // useEffect(()=> {
-  //   console.log('cur page schema: ', historyList);
-  // }, [historyList]);
-
   function handleSave(): void {
     const pageSchema = toJS(page.schema);
-    isDev() && console.log('save page schema: ', pageSchema);
+    window.__isDev__ && console.log('save page schema: ', pageSchema);
     ctx.onSave?.(pageSchema);
   }
 
@@ -64,7 +60,7 @@ function Toolbar({ docLink = '', hideTestPreview }: Props): JSX.Element {
 
   function handlePreview(): void {
     const renderSchema = toJS(page.schema);
-    isDev() && console.log('preview render schema: ', renderSchema);
+    window.__isDev__ && console.log('preview render schema: ', renderSchema);
     ctx.onSave?.(renderSchema, { draft: true, silent: true });
     // open new page
     const aElem = document.createElement('a');
@@ -78,7 +74,7 @@ function Toolbar({ docLink = '', hideTestPreview }: Props): JSX.Element {
 
   function renderSchemaRender(): JSX.Element {
     const schema = toJS(page.schema);
-    isDev() && console.log('preview page schema: ', schema);
+    window.__isDev__ && console.log('preview page schema: ', schema);
 
     return (
       <SchemaRender
@@ -147,7 +143,7 @@ function Toolbar({ docLink = '', hideTestPreview }: Props): JSX.Element {
             <Icon name='help_doc' color='gray' clickable/>
           </a>
         </Tooltip>
-        {isDev() && !hideTestPreview && (
+        {window.__isDev__ && !hideTestPreview && (
           <>
             <Divider />
             <Tooltip position='top' label='测试预览'>

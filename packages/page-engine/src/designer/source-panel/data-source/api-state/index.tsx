@@ -40,7 +40,6 @@ function ApiState(props: Props): JSX.Element {
   }, [debouncedSearch]);
 
   function onSubmit(data: any): void {
-    // console.log('save api state: ', data, curApiId);
     if (!curApiId) {
       toast.error('请选择一个平台 API');
       return;
@@ -89,7 +88,7 @@ function ApiState(props: Props): JSX.Element {
       {modalOpen && (
         <Modal
           title='选择平台 API'
-          width={1234}
+          width={800}
           onClose={() => setModalOpen(false)}
           footerBtns={[
             {
@@ -124,34 +123,35 @@ function ApiState(props: Props): JSX.Element {
               });
             }}
           >
-            <div className='flex justify-between items-center'>
-              <div className='flex flex-col mb-24'>
-                <p className='text-12 text-gray-600'>API变量名称</p>
-                <input
-                  type="text"
-                  className={cs('input', styles.input, { [styles.error]: errors.name })}
-                  maxLength={20}
-                  defaultValue={curApiState ? curApiState.name : ''}
-                  {...register('name', {
-                    shouldUnregister: true,
-                    validate: (val) => {
-                      if (!val) {
-                        toast.error('请填写变量名');
-                        return false;
-                      }
-                      if (!/^[\u4e00-\u9fa5_a-zA-Z0-9\-\s]+$/.test(val)) {
-                        toast.error('非法的变量名');
-                        return false;
-                      }
-                      return true;
-                    },
-                  })}
-                />
-                <p className='text-12 text-gray-600'>不超过 20 字符，支持字母、数字、下划线、中文，名称不可重复。</p>
-              </div>
+            <div className='mb-24'>
+              <p className='text-12 text-gray-600'>API变量名称</p>
+              <input
+                type="text"
+                style={{width: '259px'}}
+                className={cs('input', styles.input, { [styles.error]: errors.name })}
+                maxLength={20}
+                defaultValue={curApiState ? curApiState.name : ''}
+                {...register('name', {
+                  shouldUnregister: true,
+                  validate: (val) => {
+                    if (!val) {
+                      toast.error('请填写变量名');
+                      return false;
+                    }
+                    if (!/^[\u4e00-\u9fa5_a-zA-Z0-9\-\s]+$/.test(val)) {
+                      toast.error('非法的变量名');
+                      return false;
+                    }
+                    return true;
+                  },
+                })}
+              />
+              <p className='text-12 text-gray-600'>不超过 20 字符，支持字母、数字、下划线、中文，名称不可重复。</p>
+            </div>
+            <div>
               {ctx.designer.vdoms.platformApis}
             </div>
-            <div className={cs('flex flex-col justify-center items-center', styles.apiState)}>
+            <div className='hidden'>
               {ctx.designer.vdoms.apiStateDetail}
             </div>
           </form>

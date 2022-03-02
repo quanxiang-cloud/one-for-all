@@ -4,6 +4,7 @@ import { get, set } from 'lodash';
 import { toast } from '@one-for-all/ui';
 
 import pageStore from './page';
+import eventBus from './event-bus';
 import { mapShareState, mapApiState } from '../utils/schema-adapter';
 
 export type SharedVal={
@@ -28,7 +29,7 @@ class DataSource {
   @observable modalOpen = false
   @observable curSharedStateKey = ''
   @observable curApiStateKey = ''
-  @observable curApiId: any = null // 当前选中的平台api id，以 `method: api_path` 描述
+  @observable curApiId = '' // 当前选中的平台api id，以 `method: api_path` 描述
 
   @observable
   curSharedVal=defaultSharedVal; // editing shared val
@@ -151,6 +152,9 @@ class DataSource {
     toast.success('新增API变量成功');
     this.setModalOpen(false);
     this.curApiStateKey = '';
+    this.curApiId = '';
+    // clear api path
+    eventBus.emit('clear:api-path');
 
     // auto save api state
     this.saveApiStateToPage();
@@ -172,7 +176,7 @@ class DataSource {
     this.modalOpen = false;
     this.curSharedStateKey = '';
     this.curApiStateKey = '';
-    this.curApiId = null;
+    this.curApiId = '';
     this.curSharedVal = { ...defaultSharedVal };
   }
 }

@@ -20,10 +20,10 @@ function SourcePanel(): JSX.Element {
   const { activeGroup, panelPinned, panelOpen } = store;
   const panelRef = useRef<HTMLDivElement>(null);
   const hoverDoc = useCallback(debounce(handleClickOutside, 100), []);
-  const hoverGroup = useCallback(debounce((name: string)=> {
+  const hoverGroup = useCallback((name: string)=> {
     store.setActiveGroup(name);
     store.setPanelOpen(true);
-  }, 200), []);
+  }, []);
 
   useEffect(() => {
     document.addEventListener('click', hoverDoc);
