@@ -1,17 +1,16 @@
-import deserialize from '../deserialize';
+import instatiateFuncSpec from '../instantiate';
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 
 test('deserialize_keep_n_unchanged', () => {
   const n = { foo: 'bar', bar: 123 };
   const _n = Object.assign({}, n);
-  deserialize(n, dummyCTX);
 
-  expect(n).toStrictEqual(_n);
+  expect(instatiateFuncSpec(n, dummyCTX)).toStrictEqual(_n);
 });
 
 test('deserialize_instantiate_function', () => {
   const n = { fn: { type: '', args: '', body: '' } };
-  deserialize(n, dummyCTX);
+  instatiateFuncSpec(n, dummyCTX);
 
   expect(typeof n.fn).toBe('function');
 });
@@ -28,7 +27,7 @@ test('deserialize_return_expected_value', () => {
     ],
   };
 
-  deserialize(n, dummyCTX);
+  instatiateFuncSpec(n, dummyCTX);
 
   expect(typeof n.fn1).toBe('function');
   // @ts-ignore

@@ -1,6 +1,6 @@
 import type * as SchemaSpec from '@one-for-all/schema-spec';
 
-import { RenderEngineCTX, VersatileFunc, StateConvertor } from '../types';
+import { VersatileFunc, StateConvertor } from '../types';
 
 export function isObject(n: unknown): boolean {
   return Object.prototype.toString.call(n) === '[object Object]';
@@ -22,10 +22,10 @@ export function isFuncSpec(n: unknown): boolean {
   return false;
 }
 
-function instantiateStateExpression(expression: string, renderEngineCTX: RenderEngineCTX): StateConvertor {
+function instantiateStateExpression(expression: string, ctx: unknown): StateConvertor {
   try {
     // eslint-disable-next-line no-new-func
-    const fn = new Function('state', `return ${expression}`).bind(renderEngineCTX);
+    const fn = new Function('state', `return ${expression}`).bind(ctx);
     fn.toString = () =>
       ['', 'function wrappedStateConvertor(state) {', `\treturn ${expression}`, '}'].join('\n');
 
@@ -39,7 +39,7 @@ function instantiateStateExpression(expression: string, renderEngineCTX: RenderE
 
 export function instantiateFuncSpec(
   spec: SchemaSpec.BaseFunctionSpec | SchemaSpec.StateConvertExpression,
-  ctx: RenderEngineCTX,
+  ctx: unknown,
 ): VersatileFunc {
   if ('expression' in spec && spec.type === 'state_convert_expression') {
     return instantiateStateExpression(spec.expression, ctx);

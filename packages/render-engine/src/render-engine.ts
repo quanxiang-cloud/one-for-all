@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import type { Schema } from '@one-for-all/schema-spec';
 
-import deserializeSchema from './deserialize-schema';
+import deserialize from './deserialize';
 import NodeRender from './node-render';
 import initCTX from './ctx';
 import type { Plugins, CTX, SchemaNode, RenderEngineCTX } from './types';
@@ -21,7 +21,7 @@ export default class RenderEngine {
       sharedStatesSpec: schema.sharedStatesSpec,
     });
 
-    this.node = deserializeSchema(this.schema.node, this.ctx);
+    this.node = deserialize(this.schema.node, this.ctx) as SchemaNode;
   }
 
   render(renderRoot: Element): void {

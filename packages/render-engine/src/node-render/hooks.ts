@@ -4,7 +4,7 @@ import { logger } from '@one-for-all/utils';
 import { importComponent } from '../repository';
 import PathContext from './path-context';
 import initCTX from '../ctx';
-import deserializeSchema from '../deserialize-schema';
+import deserialize from '../deserialize';
 import useInstantiateProps from '../use-instantiate-props';
 import type {
   CTX,
@@ -119,7 +119,7 @@ export function useRefResult(
           sharedStatesSpec: schema.sharedStatesSpec,
           parentCTX: orphan ? undefined : ctx,
         });
-        const instantiatedNode = deserializeSchema(schema.node, refCTX);
+        const instantiatedNode = deserialize(schema.node, refCTX) as SchemaNode | null;
         if (!instantiatedNode) {
           // TODO: paint error
           return;

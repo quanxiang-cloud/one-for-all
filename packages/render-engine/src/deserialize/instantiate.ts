@@ -1,9 +1,8 @@
-import { RenderEngineCTX } from '../types';
 import { instantiateFuncSpec, isObject, isFuncSpec } from './utils';
 
-function deserialize(n: unknown, ctx: RenderEngineCTX): void {
+function instantiate(n: unknown, ctx: unknown): unknown {
   if (!isObject(n) || typeof n !== 'object' || n === null) {
-    return;
+    return n;
   }
 
   Object.entries(n).forEach(([key, v]) => {
@@ -13,7 +12,7 @@ function deserialize(n: unknown, ctx: RenderEngineCTX): void {
     }
 
     if (isObject(v)) {
-      deserialize(v, ctx);
+      Reflect.set(n, key, instantiate(v, ctx));
       return;
     }
 
@@ -21,14 +20,13 @@ function deserialize(n: unknown, ctx: RenderEngineCTX): void {
       Reflect.set(
         n,
         key,
-        v.map((_v) => {
-          deserialize(_v, ctx);
-          return _v;
-        }),
+        v.map((_v) => instantiate(_v, ctx)),
       );
       return;
     }
   });
+
+  return n;
 }
 
-export default deserialize;
+export default instantiate;

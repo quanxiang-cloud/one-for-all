@@ -3,8 +3,8 @@ import type { Schema } from '@one-for-all/schema-spec';
 
 import initCTX from './ctx';
 import NodeRender from './node-render';
-import deserializeSchema from './deserialize-schema';
-import type { Plugins, RenderEngineCTX } from './types';
+import deserialize from './deserialize';
+import type { Plugins, RenderEngineCTX, SchemaNode } from './types';
 
 interface Props {
   schema: Schema;
@@ -27,7 +27,7 @@ function SchemaRender(
     apiStates: ctx.apiStates,
   }));
 
-  const instantiatedNode = deserializeSchema(schema.node, ctx);
+  const instantiatedNode = deserialize(schema.node, ctx) as SchemaNode;
   if (!instantiatedNode) {
     // TODO: paint error
     return null;
