@@ -1,4 +1,4 @@
-.qxp-table-wrapper {
+.ofa-table-wrapper {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -10,7 +10,7 @@
     min-width: 16px;
   }
 
-  .qxp-table-middle {
+  .ofa-table-middle {
     td {
       padding: 12px;
     }
@@ -21,14 +21,13 @@
     }
   }
 
-  .qxp-table {
+  .ofa-table {
     max-height: 100%;
     overflow: auto;
 
     table {
       width: 100%;
       table-layout: fixed;
-      border-collapse: separate;
       text-align: left;
       color: var(--gray-900);
       font-size: 12px;
@@ -87,7 +86,7 @@
       }
     }
 
-    tbody>tr>.qxp-table-td {
+    tbody>tr>.ofa-table-td {
       padding: 17px 16px;
       border-bottom: 1px solid;
       border-color: var(--gray-200);
@@ -95,7 +94,7 @@
     }
   }
 
-  .qxp-table-empty {
+  .ofa-table-empty {
     padding: 30px;
     text-align: center;
 
@@ -105,14 +104,14 @@
     }
   }
 
-  .qxp-table-total-tips {
+  .ofa-table-total-tips {
     font-size: 12px;
     line-height: 20px;
     color: var(--gray-600);
   }
 
-  .qxp-table-tr {
-    &:hover .qxp-table-td {
+  .ofa-table-tr {
+    &:hover .ofa-table-td {
       background-color: var(--gray-100);
     }
   }
