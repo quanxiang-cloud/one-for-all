@@ -5,7 +5,8 @@
     "rootDir": ".",
     "module": "ESNext",
     "baseUrl": ".",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "lib": ["WebWorker"],
   },
   "include": [
     "src/**/*"

@@ -1,0 +1,63 @@
+.qxp-file-picker {
+  &:hover {
+    border: 1px dashed var(--gray-800);
+    color: var(--gray-600);
+    .upload-icon {
+      color: var(--gray-700);
+    }
+  }
+
+  &:active {
+    color: var(--blue-600);
+    border-color: var(--blue-600);
+    .upload-icon {
+      color: var(--blue-600);
+    }
+  }
+}
+
+.qxp-file-picker-dragover {
+  color: var(--blue-600);
+  .upload-icon {
+    color: var(--blue-600);
+  }
+}
+
+.qxp-file-list {
+  .qxp-file-item {
+    &:not(:last-child){
+      border-bottom: 1px dashed var(--blue-100);
+    }
+  }
+}
+.qxp-file-img-opt{
+  background: rgb(15, 23, 42, 0.65) ;
+}
+
+.file-upload-success-icon{
+  color: var(--green-600);
+}
+
+.file-upload-loading-icon{
+  color: var(--blue-600);
+}
+
+.file-upload-retry-icon{
+  color: var(--yellow-600);
+}
+
+.file-upload-failed-icon{
+  color: var(--red-600);
+}
+
+.file-list-icon{
+  @apply rounded-4 rounded-tr-none box-content p-5;
+}
+
+.file-type{
+  background-color: var(--blue-600);
+}
+.img-type{
+  background-color: var(--yellow-600);
+}
+

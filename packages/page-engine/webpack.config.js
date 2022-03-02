@@ -42,6 +42,14 @@ export default {
   module: {
     rules: [
       {
+        test: /\.worker\.ts$/,
+        loader: 'worker-loader',
+        options: {
+          filename: '[name]:[hash:8].js',
+          inline: "fallback",
+        }
+      },
+      {
         test: /\.tsx?$/,
         use: [{
           loader: 'ts-loader',
