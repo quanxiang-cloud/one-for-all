@@ -184,7 +184,7 @@ function NodeRender({ schema }: Props): JSX.Element | null {
       ref: boxRef,
       className: cs(styles.elem, {
         [styles.dragging]: isDragging,
-        [styles.isOver]: isOver,
+        [styles.isOver]: isOver || page.hoverElemId === id,
         [styles.selected]: page.activeElemId === id,
         [styles.draggingUp]: isOver && page.dragPos === 'up',
         [styles.draggingInner]: isOver && page.dragPos === 'inner',

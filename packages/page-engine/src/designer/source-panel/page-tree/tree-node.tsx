@@ -192,6 +192,8 @@ function TreeNode({
           onClick={() => {
             onSelect?.(node);
           }}
+          onMouseOver={()=> page.setHoverNode(node.id)}
+          onMouseLeave={()=> page.setHoverNode('')}
         >
           {nodePrefixIconRender()}
           {nodeContentRender ? nodeContentRender?.(node) : node.label}
