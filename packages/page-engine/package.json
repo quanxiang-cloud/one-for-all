@@ -9,7 +9,6 @@
   "module": "lib",
   "types": "lib/src/index.d.ts",
   "files": [
-    "dist",
     "lib"
   ],
   "scripts": {
