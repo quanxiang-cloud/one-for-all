@@ -44,9 +44,7 @@ class PageStore {
 
   @computed
   get activeElem(): any {
-    const node = findNode(this.schema.node, this.activeElemId);
-    window.__isDev__ && console.log('cur active elem: ', toJS(node));
-    return node;
+    return findNode(this.schema.node, this.activeElemId);
   }
 
   @computed
@@ -220,11 +218,11 @@ class PageStore {
     window.__isDev__ && console.log('append node: ', toJS(srcNode), toJS(targetRealNode), this.dragPos);
 
     if (this.dragPos === 'up') {
-      this.insertBefore(srcNode as PageNode, targetNode, targetRealNode, options);
+      this.insertBefore(srcNode as PageNode, targetRealNode, options);
     } else if (this.dragPos === 'inner') {
       this.appendChild(srcNode as PageNode, targetNode, targetRealNode, options);
     } else if (this.dragPos === 'down') {
-      this.insertAfter(srcNode as PageNode, targetNode, targetRealNode, options);
+      this.insertAfter(srcNode as PageNode, targetRealNode, options);
     }
     this.loopType='';
   }
@@ -268,7 +266,7 @@ class PageStore {
   }
 
   @action
-  insertBefore = (rawNode: PageNode, targetWrap: PageNode, target: PageNode, options?: AppendNodeOptions): void => {
+  insertBefore = (rawNode: PageNode, target: PageNode, options?: AppendNodeOptions): void => {
     const node = this.getRealNode(rawNode);
     const srcParent = findNode(this.schema.node, node.pid);
     const targetParent = findNode(this.schema.node, target.pid);
@@ -300,7 +298,7 @@ class PageStore {
   }
 
   @action
-  insertAfter = (rawNode: PageNode, targetWrap: PageNode, target: PageNode, options?: AppendNodeOptions): void => {
+  insertAfter = (rawNode: PageNode, target: PageNode, options?: AppendNodeOptions): void => {
     const node = this.getRealNode(rawNode);
     const srcParent = findNode(this.schema.node, node.pid);
     const targetParent = findNode(this.schema.node, target.pid);
