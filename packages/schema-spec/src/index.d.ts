@@ -340,16 +340,18 @@ declare namespace SchemaSpec {
   /**
    * InitializerFuncSpec is used to define a function which return value will assigned to some state
    */
-  interface InitializerFuncSpec extends BaseFunctionSpec {
-    type: 'initializer_func_spec';
-    args: '';
+  interface Initializer {
+    func: BaseFunctionSpec & { type: 'initializer_func_spec'; args: 'dependencies'; };
+    dependencies?: {
+      [key: string]: unknown;
+    }
   }
 
   interface SharedState {
     initial: unknown;
     // default to true
     writeable?: boolean;
-    initializer?: InitializerFuncSpec;
+    initializer?: Initializer;
     [key: string]: unknown;
   }
 

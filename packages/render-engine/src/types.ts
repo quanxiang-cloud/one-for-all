@@ -263,7 +263,28 @@ export type RenderEngineCTX = Pick<CTX, 'states' | 'apiStates'>;
 // todo should also store builder info
 export type APIStatesSpec = Record<string, { apiID: string; [key: string]: unknown }>;
 
-export type SharedStatesSpec = Record<string, { initial: unknown }>;
+// todo delete this
+interface Initializer {
+  func: () => Promise<unknown> | unknown;
+  dependencies?: {
+    [key: string]: unknown;
+  }
+}
+
+// todo delete this
+export interface SharedState {
+  initial: unknown;
+  // default to true
+  writeable?: boolean;
+  initializer?: Initializer;
+  [key: string]: unknown;
+}
+
+// export type SharedState = Omit<SchemaSpec.SharedState, 'initializer'> & {
+//   initializer?: () => unknown;
+// }
+
+export type SharedStatesSpec = Record<string, SharedState>;
 
 export interface Schema {
   node: SchemaNode;
