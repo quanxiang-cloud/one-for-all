@@ -329,7 +329,23 @@ declare namespace SchemaSpec {
   // todo should also store builder info
   type APIStatesSpec = Record<string, { apiID: string; [key: string]: unknown }>;
 
-  type SharedStatesSpec = Record<string, { initial: unknown }>;
+  /**
+   * InitializerFuncSpec is used to define a function which return value will assigned to some state
+   */
+  interface InitializerFuncSpec extends BaseFunctionSpec {
+    type: 'initializer_func_spec';
+    args: '';
+  }
+
+  interface SharedState {
+    initial: unknown;
+    // default to true
+    writeable?: boolean;
+    initializer?: InitializerFuncSpec;
+    [key: string]: unknown;
+  }
+
+  type SharedStatesSpec = Record<string, SharedState>;
 
   interface Schema {
     node: SchemaNode;
