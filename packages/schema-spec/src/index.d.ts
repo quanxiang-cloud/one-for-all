@@ -240,7 +240,8 @@ declare namespace SchemaSpec {
     | 'loop-container'
     | 'composed-node'
     | 'ref-node'
-    | 'jsx-node';
+    | 'jsx-node'
+    | 'route-node';
 
   interface BaseNode {
     id: string | number;
@@ -251,7 +252,7 @@ declare namespace SchemaSpec {
     lifecycleHooks?: LifecycleHooks;
   }
 
-  type SchemaNode = HTMLNode | ReactComponentNode | LoopContainerNode | RefNode | JSXNode;
+  type SchemaNode = HTMLNode | ReactComponentNode | LoopContainerNode | RefNode | JSXNode | RouteNode;
 
   interface HTMLNode extends BaseNode {
     type: 'html-element';
@@ -269,6 +270,13 @@ declare namespace SchemaSpec {
     children?: Array<SchemaNode>;
   }
 
+  interface RouteNode extends BaseNode {
+    type: 'route-node';
+    path: string;
+    node: SchemaNode;
+    exactly?: boolean;
+  }
+  
   interface IndividualLoopContainer extends BaseNode {
     type: 'loop-container';
     loopKey: string;
