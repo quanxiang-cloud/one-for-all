@@ -97,7 +97,7 @@ function Modal({
         width={width}
         height={height}
         fullscreen={fullscreen}
-        {...(controlled ? pick(rest, ['data-node-key', 'ref', 'draggable']) : {})}
+        {...(controlled ? pick(rest, ['id', 'data-node-key', 'ref', 'draggable']) : {})}
       >
         <Header>
           <div className='md-header-left'>
