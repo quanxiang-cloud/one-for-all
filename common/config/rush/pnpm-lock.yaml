@@ -3,6 +3,7 @@ lockfileVersion: 5.3
 specifiers:
   '@codemirror/lang-javascript': ^0.19.3
   '@one-for-all/render-engine': 0.13.1
+  '@one-for-all/ui': 0.2.18
   '@popperjs/core': ^2.11.0
   '@rollup/plugin-alias': ^3.1.8
   '@rollup/plugin-commonjs': ^21.0.1
@@ -136,6 +137,7 @@ specifiers:
 dependencies:
   '@codemirror/lang-javascript': 0.19.6
   '@one-for-all/render-engine': 0.13.1
+  '@one-for-all/ui': 0.2.18
   '@popperjs/core': 2.11.2
   '@rollup/plugin-alias': 3.1.9_rollup@2.66.0
   '@rollup/plugin-commonjs': 21.0.1_rollup@2.66.0
@@ -1187,6 +1189,21 @@ packages:
 
   /@one-for-all/schema-spec/0.12.1:
     resolution: {integrity: sha512-edIP7bYERa7a3/zU4MFi4PlX7BW6VuPqSE2XO7KAceFv5JGogIObih6feIDQDjHAkvRIMrYHt7RBjvqO+DpZpg==}
+    dev: false
+
+  /@one-for-all/ui/0.2.18:
+    resolution: {integrity: sha512-ilJp/1IjFODEEsLp2z4kYjY5RdsAo7K34npJ3CU9CnhIGrEbF0F++mmyfvzWHZAN+Id+knGTafgTHQ/ua35QWQ==}
+    dependencies:
+      '@popperjs/core': 2.11.2
+      classnames: 2.3.1
+      lodash: 4.17.21
+      nanoid: 3.2.0
+      react: 17.0.2
+      react-color: 2.19.3_react@17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      react-is: 17.0.2
+      react-popper: 2.2.5_4d48938cec404f33c7375aa6b453941c
+      styled-components: 5.3.3_281a4fa50a045c9112baf635f3bc27a7
     dev: false
 
   /@one-for-all/utils/0.1.0:
@@ -11332,7 +11349,7 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-QToBzWCHBgv6yKIEpn2D90CKpe3nnr5OkOZ4t2MbBMlioteRUo1dVf4Z4nT3TsqJ4GHmYPRYu+kZsVtuZR1IUA==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-7dYNEKyeVejOGZnLOogQC5Qz4SOTQ0NvKcmjXNlHDzHPBK2FMA874qa7uksBewAET4YeULm+tg6Q1IsHTImAuQ==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
@@ -11401,11 +11418,12 @@ packages:
     dev: false
 
   file:projects/headless-ui.tgz_esbuild@0.14.13:
-    resolution: {integrity: sha512-05fWPgGGTq/0L0ioivVfcZhQ/ELS5AWFRAV+AzVw6+WTp7m3ZQNlyx7d4aBu7KTo+XUIUpfagpbVIVya0JukYQ==, tarball: file:projects/headless-ui.tgz}
+    resolution: {integrity: sha512-JrU1hOMcpkLpDBlco2BebEeguptflLjJtNCDyOS48sSkhlumiiuBocCTcuJZlahQOX/Efs0rSAU19JS5NeMjlA==, tarball: file:projects/headless-ui.tgz}
     id: file:projects/headless-ui.tgz
     name: '@rush-temp/headless-ui'
     version: 0.0.0
     dependencies:
+      '@one-for-all/ui': 0.2.18
       '@popperjs/core': 2.11.2
       '@rollup/plugin-commonjs': 21.0.1_rollup@2.66.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
@@ -11498,13 +11516,14 @@ packages:
     dev: false
 
   file:projects/page-engine.tgz_f1db27541b51b520ad4ef7d7df039c22:
-    resolution: {integrity: sha512-fkNzOka8SS/dLS1OE5wmmpJGXthinGoj+/kOV6GAjZCkw8z9PmT1d/X0cMhoOiW5lSq/0Jbwmk+q8VyGSLbZ6g==, tarball: file:projects/page-engine.tgz}
+    resolution: {integrity: sha512-64ZAdvQgErDsCG2YXaAgSws6+lrNIz8BaCNur1PggJ/xChAJJGEJaDsR5nvXpE/+5RM9i8yhXfna1RDqJ3SopQ==, tarball: file:projects/page-engine.tgz}
     id: file:projects/page-engine.tgz
     name: '@rush-temp/page-engine'
     version: 0.0.0
     dependencies:
       '@codemirror/lang-javascript': 0.19.6
       '@one-for-all/render-engine': 0.13.1
+      '@one-for-all/ui': 0.2.18
       '@rollup/plugin-alias': 3.1.9_rollup@2.66.0
       '@rollup/plugin-commonjs': 21.0.1_rollup@2.66.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
@@ -11680,7 +11699,7 @@ packages:
     dev: false
 
   file:projects/render-engine.tgz_@types+jest@27.4.0:
-    resolution: {integrity: sha512-L/Ii3yBqfVyXeIwEaXr7mWk29ZSUoLKH1KLuoiXQTL1vd2Xx6H7y+tgCiUprzloLY9Tj/S0xKjCrPW0Zo0mI/A==, tarball: file:projects/render-engine.tgz}
+    resolution: {integrity: sha512-UyVivwdkDvwG/Q8QfhOGLfEh8oYtuGLP+UFpYQu0j1/dgtATupFOTg+OflqvmC1deLiX7dD9J3qh0QYPZ2+Peg==, tarball: file:projects/render-engine.tgz}
     id: file:projects/render-engine.tgz
     name: '@rush-temp/render-engine'
     version: 0.0.0
