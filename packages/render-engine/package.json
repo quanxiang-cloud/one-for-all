@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "@one-for-all/api-spec-adapter": "0.3.3",
-    "@one-for-all/schema-spec": "0.13.1-0",
     "@one-for-all/utils": "0.1.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -36,6 +35,7 @@
     "rxjs": "^7.4.0"
   },
   "devDependencies": {
+    "@one-for-all/schema-spec": "0.13.1-0",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rushstack/eslint-config": "2.5.1",
     "@rushstack/heft": "0.44.2",
