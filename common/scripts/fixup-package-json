@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# webpack 5 did not load esm properly, patch package.json before publish
+
 set -euo pipefail
 
 removeTypeField() {
