@@ -276,7 +276,7 @@ declare namespace SchemaSpec {
     node: SchemaNode;
     exactly?: boolean;
   }
-  
+
   interface IndividualLoopContainer extends BaseNode {
     type: 'loop-container';
     loopKey: string;
@@ -334,7 +334,6 @@ declare namespace SchemaSpec {
   }
 
   // map of stateID and apiID
-  // todo should also store builder info
   type APIStatesSpec = Record<string, { apiID: string; [key: string]: unknown }>;
 
   /**

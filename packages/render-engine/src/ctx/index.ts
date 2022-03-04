@@ -24,13 +24,14 @@ async function initCTX({ apiStateSpec, sharedStatesSpec, parentCTX, plugins }: P
 
   const statesHubAPI = new StatesHubAPI(
     {
+      // TODO: throw error instead of tolerating it
       apiSpecAdapter: apiSpecAdapter || dummyAPISpecAdapter,
       apiStateSpec: apiStateSpec || {},
     },
     parentCTX?.statesHubAPI,
   );
 
-  const instantiateSpec = deserialize(sharedStatesSpec, null) as SharedStatesSpec;
+  const instantiateSpec = deserialize(sharedStatesSpec, null) as SharedStatesSpec | null;
   const initializedState = await initializeLazyStates(instantiateSpec || {}, apiStateSpec || {}, apiSpecAdapter);
   const statesHubShared = new StatesHubShared(initializedState, parentCTX?.statesHubShared);
 
