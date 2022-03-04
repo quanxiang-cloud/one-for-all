@@ -6,6 +6,7 @@ import type { CTX, Plugins, SharedStatesSpec } from '../types';
 import type { APIStatesSpec, SharedStatesSpec as _SharedStatesSpec } from '@one-for-all/schema-spec';
 import type { APISpecAdapter } from '@one-for-all/api-spec-adapter';
 import deserialize from '../deserialize';
+import initializeLazyStates from './initialize-lazy-shared-states';
 
 const dummyAPISpecAdapter: APISpecAdapter = {
   build: () => ({ url: '/api', method: 'get' }),
@@ -16,39 +17,6 @@ interface Params {
   sharedStatesSpec?: _SharedStatesSpec;
   parentCTX?: CTX;
   plugins?: Plugins;
-}
-
-function getAsyncStates(spec: SharedStatesSpec): Array<[string, () => unknown]> {
-  return Object.entries(spec)
-    .filter((pair): pair is [string, { initializer: () => unknown }] => {
-      return !!pair[1].initializer;
-    }).map<[string, () => unknown]>(([key, { initializer }]) => {
-      // todo handle error
-      return [key, initializer];
-    });
-}
-
-function promisify(func: () => unknown): Promise<unknown> {
-  return Promise.resolve(() => {
-    try {
-      return func();
-    } catch (error) {
-      return undefined;
-    }
-  });
-}
-
-async function resolveSharedStates(spec: SharedStatesSpec): Promise<SharedStatesSpec> {
-  const asyncStatePairs = getAsyncStates(spec);
-  const stateList = await Promise.all(asyncStatePairs.map(([, initializer]) => {
-    return promisify(initializer);
-  }));
-
-  asyncStatePairs.forEach(([key], index) => {
-    spec[key].initial = stateList[index] ?? spec[key].initial;
-  });
-
-  return spec;
 }
 
 async function initCTX({ apiStateSpec, sharedStatesSpec, parentCTX, plugins }: Params): Promise<CTX> {
@@ -63,7 +31,7 @@ async function initCTX({ apiStateSpec, sharedStatesSpec, parentCTX, plugins }: P
   );
 
   const instantiateSpec = deserialize(sharedStatesSpec, null) as SharedStatesSpec;
-  const initializedState = await resolveSharedStates(instantiateSpec || {});
+  const initializedState = await initializeLazyStates(instantiateSpec || {}, apiStateSpec || {}, apiSpecAdapter);
   const statesHubShared = new StatesHubShared(initializedState, parentCTX?.statesHubShared);
 
   const ctx: CTX = {

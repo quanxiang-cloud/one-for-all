@@ -263,11 +263,13 @@ export type RenderEngineCTX = Pick<CTX, 'states' | 'apiStates'>;
 // todo should also store builder info
 export type APIStatesSpec = Record<string, { apiID: string; [key: string]: unknown }>;
 
+export type InitializerFunc = (dependencies: Record<string, unknown>) => Promise<unknown> | unknown;
+
 // todo delete this
 interface Initializer {
-  func: () => Promise<unknown> | unknown;
+  func: InitializerFunc;
   dependencies?: {
-    [key: string]: unknown;
+    [key: string]: FetchParams;
   }
 }
 

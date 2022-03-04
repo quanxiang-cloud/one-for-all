@@ -15,6 +15,7 @@ import type {
   SchemaNode,
   ReactComponentNode,
 } from '../types';
+import SchemaSpec from 'packages/schema-spec/src';
 
 export function useLifecycleHook({ didMount, willUnmount }: LifecycleHooks): void {
   useEffect(() => {
@@ -106,6 +107,7 @@ export function useRefResult(
     }
 
     let unMounting = false;
+    let _schema: SchemaSpec.Schema | undefined;
 
     refLoader(schemaID)
       .then(({ schema, plugins }) => {
@@ -113,13 +115,20 @@ export function useRefResult(
           return;
         }
 
-        const refCTX = initCTX({
+        _schema = schema;
+
+        return initCTX({
           plugins,
           apiStateSpec: schema.apiStateSpec,
           sharedStatesSpec: schema.sharedStatesSpec,
           parentCTX: orphan ? undefined : ctx,
         });
-        const instantiatedNode = deserialize(schema.node, refCTX) as SchemaNode | null;
+      }).then((refCTX) => {
+        if (!refCTX || !_schema) {
+          return;
+        }
+
+        const instantiatedNode = deserialize(_schema.node, refCTX) as SchemaNode | null;
         if (!instantiatedNode) {
           // TODO: paint error
           return;
