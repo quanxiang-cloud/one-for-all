@@ -1,6 +1,6 @@
 {
   "name": "@one-for-all/render-engine",
-  "version": "0.13.6-1",
+  "version": "0.13.6-2",
   "license": "Apache-2.0",
   "module": "dist/esm/index.js",
   "main": "dist/cjs/index.js",
