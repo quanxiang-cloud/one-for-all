@@ -2,10 +2,9 @@
   "name": "@one-for-all/render-engine",
   "version": "0.13.6-2",
   "license": "Apache-2.0",
-  "module": "dist/esm/index.js",
-  "main": "dist/cjs/index.js",
-  "types": "dist/esm/index.d.ts",
   "type": "module",
+  "module": "lib/index.js",
+  "types": "src/index.d.ts",
   "files": [
     "dist",
     "src",
@@ -15,12 +14,14 @@
     "!**/__mocks__"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json && tsc -p tsconfig-cjs.json",
+    "build": "heft build --clean",
     "bundle": "rm -rf dist && rollup -c rollup.config.js",
     "docs": "typedoc",
     "lint": "eslint src/**/*.ts --fix",
     "prepack": "yarn run build",
     "pack": "yarn pack",
+    "prepublishOnly": "./fixup-package-json patch",
+    "postpublish": "./fixup-package-json restore",
     "test": "jest",
     "test:coverage": "jest --collectCoverage",
     "updateSnapshot": "jest --updateSnapshot"
