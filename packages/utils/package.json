@@ -1,9 +1,10 @@
 {
   "name": "@one-for-all/utils",
-  "version": "0.1.1",
+  "version": "0.3.0",
   "description": "",
   "license": "Apache-2.0",
   "author": "",
+  "type": "module",
   "module": "lib/src/index.js",
   "types": "lib/src/index.d.ts",
   "files": [
@@ -15,6 +16,8 @@
     "build": "rm -rf lib & tsc --build tsconfig.json",
     "bundle": "rm -rf dist & rollup -c rollup.config.js",
     "pack": "yarn pack",
+    "prepublishOnly": "./fixup-package-json patch",
+    "postpublish": "./fixup-package-json restore",
     "test": "jest",
     "updateSnapshot": "jest --updateSnapshot"
   },

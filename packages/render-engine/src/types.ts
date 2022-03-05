@@ -260,10 +260,22 @@ export interface CTX {
 export type RenderEngineCTX = Pick<CTX, 'states' | 'apiStates'>;
 
 // map of stateID and apiID
-// todo should also store builder info
 export type APIStatesSpec = Record<string, { apiID: string; [key: string]: unknown }>;
 
-export type SharedStatesSpec = Record<string, { initial: unknown }>;
+export type InitializerFunc = (dependencies: Record<string, unknown>) => Promise<unknown> | unknown;
+
+interface Initializer {
+  func: InitializerFunc;
+  dependencies?: {
+    [key: string]: FetchParams;
+  }
+}
+
+export type SharedState = Omit<SchemaSpec.SharedState, 'initializer'> & {
+  initializer?: Initializer;
+}
+
+export type SharedStatesSpec = Record<string, SharedState>;
 
 export interface Schema {
   node: SchemaNode;

@@ -1,10 +1,10 @@
-import { BehaviorSubject, Subject, noop } from 'rxjs';
-import { map, filter, share, skip, delay } from 'rxjs/operators';
-import type { APISpecAdapter, FetchParams } from '@one-for-all/api-spec-adapter';
+import { BehaviorSubject, noop } from 'rxjs';
+import type { APISpecAdapter } from '@one-for-all/api-spec-adapter';
 import { logger } from '@one-for-all/utils';
 
 import type { StatesHubAPI, APIState, APIStatesSpec, FetchOption, APIState$WithActions } from '../types';
-import getResponseState$, { initialState } from './http/response';
+import { initialState } from './http/response';
+import initAPIState from './init-api-state';
 
 type Cache = Record<string, APIState$WithActions>;
 
@@ -18,50 +18,6 @@ const dummyState$WithAction: APIState$WithActions = {
   refresh: noop,
 };
 
-function initState(apiID: string, apiSpecAdapter: APISpecAdapter): APIState$WithActions {
-  const params$ = new Subject<FetchParams | undefined>();
-  const request$ = params$.pipe(
-    // it is adapter's responsibility to handle build error
-    // if a error occurred, build should return undefined
-    map((params) => apiSpecAdapter.build(apiID, params)),
-    filter(Boolean),
-    share(),
-  );
-
-  let _latestFetchOption: FetchOption | undefined = undefined;
-  const apiState$ = getResponseState$(request$, apiSpecAdapter.responseAdapter);
-
-  // execute fetch callback after new `result` emitted from apiState$
-  apiState$
-    .pipe(
-      skip(1),
-      filter(({ loading }) => !loading),
-      // because this subscription is happened before than view's,
-      // so delay `callback` execution to next frame.
-      delay(10),
-    )
-    .subscribe((state) => {
-      _latestFetchOption?.callback?.(state);
-    });
-
-  return {
-    state$: apiState$,
-    fetch: (fetchOption: FetchOption) => {
-      _latestFetchOption = fetchOption;
-
-      params$.next(fetchOption.params);
-    },
-    refresh: () => {
-      if (!_latestFetchOption) {
-        return;
-      }
-      // override onSuccess and onError to undefined
-      _latestFetchOption = { params: _latestFetchOption.params };
-      params$.next(_latestFetchOption.params);
-    },
-  };
-}
-
 export default class Hub implements StatesHubAPI {
   cache: Cache;
   parentHub?: StatesHubAPI = undefined;
@@ -70,7 +26,7 @@ export default class Hub implements StatesHubAPI {
     this.parentHub = parentHub;
 
     this.cache = Object.entries(apiStateSpec).reduce<Cache>((acc, [stateID, { apiID }]) => {
-      acc[stateID] = initState(apiID, apiSpecAdapter);
+      acc[stateID] = initAPIState(apiID, apiSpecAdapter);
       return acc;
     }, {});
   }

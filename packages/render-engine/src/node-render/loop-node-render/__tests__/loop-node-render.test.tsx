@@ -41,7 +41,7 @@ test('LoopContainer_resolve_empty_value', () => {
   expect(container).toMatchSnapshot();
 });
 
-test('LoopContainer_should_log_error_when_iterableState_is_not_iterable', () => {
+test('LoopContainer_should_log_error_when_iterableState_is_not_iterable', async () => {
   const schema: SchemaSpec.Schema = {
     node: { id: 'some_node', type: 'html-element', name: 'div', props: {} },
     apiStateSpec: {},
@@ -51,7 +51,7 @@ test('LoopContainer_should_log_error_when_iterableState_is_not_iterable', () => 
     build: () => ({ url: '/api', method: 'get' }),
   };
 
-  const ctx = initCTX({
+  const ctx = await initCTX({
     apiStateSpec: schema.apiStateSpec,
     sharedStatesSpec: schema.sharedStatesSpec,
     plugins: { apiSpecAdapter },
@@ -81,7 +81,7 @@ test('LoopContainer_should_log_error_when_iterableState_is_not_iterable', () => 
 });
 
 // todo test case about primary value iteration
-test('LoopContainer_resolve_items', () => {
+test('LoopContainer_resolve_items', async () => {
   const schema: SchemaSpec.Schema = {
     node: { id: 'some_node', type: 'html-element', name: 'div', props: {} },
     apiStateSpec: {},
@@ -91,7 +91,7 @@ test('LoopContainer_resolve_items', () => {
     build: () => ({ url: '/api', method: 'get' }),
   };
 
-  const ctx = initCTX({
+  const ctx = await initCTX({
     apiStateSpec: schema.apiStateSpec,
     sharedStatesSpec: schema.sharedStatesSpec,
     plugins: { apiSpecAdapter },
@@ -120,7 +120,7 @@ test('LoopContainer_resolve_items', () => {
   expect(container).toMatchSnapshot();
 });
 
-test('LoopNode_with_ReactOutLayer_composedNode', () => {
+test('LoopNode_with_ReactOutLayer_composedNode', async () => {
   const schema: SchemaSpec.Schema = {
     node: { id: 'some_node', type: 'html-element', name: 'div', props: {} },
     apiStateSpec: {},
@@ -130,7 +130,7 @@ test('LoopNode_with_ReactOutLayer_composedNode', () => {
     build: () => ({ url: '/api', method: 'get' }),
   };
 
-  const ctx = initCTX({
+  const ctx = await initCTX({
     apiStateSpec: schema.apiStateSpec,
     sharedStatesSpec: schema.sharedStatesSpec,
     plugins: { apiSpecAdapter, repository },
@@ -204,7 +204,7 @@ test('LoopNode_with_ReactOutLayer_composedNode', () => {
   expect(container).toMatchSnapshot();
 });
 
-test('LoopNode_with_HTMLOutLayer_composedNode', () => {
+test('LoopNode_with_HTMLOutLayer_composedNode', async () => {
   const schema: SchemaSpec.Schema = {
     node: { id: 'some_node', type: 'html-element', name: 'div', props: {} },
     apiStateSpec: {},
@@ -214,7 +214,7 @@ test('LoopNode_with_HTMLOutLayer_composedNode', () => {
     build: () => ({ url: '/api', method: 'get' }),
   };
 
-  const ctx = initCTX({
+  const ctx = await initCTX({
     apiStateSpec: schema.apiStateSpec,
     sharedStatesSpec: schema.sharedStatesSpec,
     plugins: { apiSpecAdapter, repository },
@@ -292,7 +292,7 @@ test('LoopNode_with_HTMLOutLayer_composedNode', () => {
   expect(container).toMatchSnapshot();
 });
 
-test('LoopNode_with_ordinaryNode_HTMLNode', () => {
+test('LoopNode_with_ordinaryNode_HTMLNode', async () => {
   const schema: SchemaSpec.Schema = {
     node: { id: 'some_node', type: 'html-element', name: 'div', props: {} },
     apiStateSpec: {},
@@ -302,7 +302,7 @@ test('LoopNode_with_ordinaryNode_HTMLNode', () => {
     build: () => ({ url: '/api', method: 'get' }),
   };
 
-  const ctx = initCTX({
+  const ctx = await initCTX({
     apiStateSpec: schema.apiStateSpec,
     sharedStatesSpec: schema.sharedStatesSpec,
     plugins: { apiSpecAdapter, repository },
@@ -341,7 +341,7 @@ test('LoopNode_with_ordinaryNode_HTMLNode', () => {
   expect(container).toMatchSnapshot();
 });
 
-test('LoopNode_with_ordinaryNode_ReactNode', () => {
+test('LoopNode_with_ordinaryNode_ReactNode', async () => {
   const schema: SchemaSpec.Schema = {
     node: { id: 'some_node', type: 'html-element', name: 'div', props: {} },
     apiStateSpec: {},
@@ -351,7 +351,7 @@ test('LoopNode_with_ordinaryNode_ReactNode', () => {
     build: () => ({ url: '/api', method: 'get' }),
   };
 
-  const ctx = initCTX({
+  const ctx = await initCTX({
     apiStateSpec: schema.apiStateSpec,
     sharedStatesSpec: schema.sharedStatesSpec,
     plugins: { apiSpecAdapter, repository },

@@ -1,10 +1,10 @@
 {
   "name": "@one-for-all/render-engine",
-  "version": "0.13.5",
+  "version": "0.14.0",
   "license": "Apache-2.0",
-  "module": "lib/index.js",
-  "types": "lib/index.d.ts",
   "type": "module",
+  "module": "lib/index.js",
+  "types": "src/index.d.ts",
   "files": [
     "lib",
     "src",
@@ -20,20 +20,22 @@
     "lint": "eslint src/**/*.ts --fix",
     "prepack": "yarn run build",
     "pack": "yarn pack",
+    "prepublishOnly": "./fixup-package-json patch",
+    "postpublish": "./fixup-package-json restore",
     "test": "jest",
     "test:coverage": "jest --collectCoverage",
     "updateSnapshot": "jest --updateSnapshot"
   },
   "dependencies": {
-    "@one-for-all/api-spec-adapter": "0.3.3",
-    "@one-for-all/schema-spec": "0.13.0",
-    "@one-for-all/utils": "0.1.1",
+    "@one-for-all/api-spec-adapter": "0.4.0",
+    "@one-for-all/utils": "0.3.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-jsx-parser": "1.29.0",
     "rxjs": "^7.4.0"
   },
   "devDependencies": {
+    "@one-for-all/schema-spec": "0.13.1-0",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rushstack/eslint-config": "2.5.1",
     "@rushstack/heft": "0.44.2",

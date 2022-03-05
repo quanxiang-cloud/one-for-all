@@ -5,4 +5,5 @@ export default {
   name: '@one-for-all/render-engine',
   displayName: 'Render Engine',
   setupFilesAfterEnv: ['./config/mock-ofa-utils.js'].concat(base.setupFilesAfterEnv),
+  modulePathIgnorePatterns: ['<rootDir>/lib/'].concat(base.modulePathIgnorePatterns)
 };

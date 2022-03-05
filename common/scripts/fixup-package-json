@@ -1,0 +1,21 @@
+#!/bin/bash
+# webpack 5 did not load esm properly, patch package.json before publish
+set -euo pipefail
+
+removeTypeField() {
+  mv ./package.json ./package.json.bak
+  sed '/"type"/d' ./package.json.bak > ./package.json
+}
+
+restorePackageJSON() {
+  mv ./package.json.bak ./package.json
+}
+
+if [ "$1" == "patch" ]; then
+  removeTypeField
+elif [ "$1" == "restore" ]; then
+  restorePackageJSON
+else
+  echo "invalid argument, should be patch or restore"
+  exit 1
+fi

@@ -4,8 +4,8 @@
     "outDir": "lib",
     "rootDir": "src",
     "module": "ESNext",
+    "types": ["@types/heft-jest", "@types/testing-library__jest-dom", "@types/systemjs"],
     "typeRoots": ["node_modules/@types"] /* List of folders to include type definitions from. */
   },
-  "include": ["src/**/*"],
-  "exclude": ["**/__tests__", "**/__mocks__"]
+  "include": ["src/**/*"]
 }

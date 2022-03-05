@@ -276,7 +276,7 @@ declare namespace SchemaSpec {
     node: SchemaNode;
     exactly?: boolean;
   }
-  
+
   interface IndividualLoopContainer extends BaseNode {
     type: 'loop-container';
     loopKey: string;
@@ -334,22 +334,27 @@ declare namespace SchemaSpec {
   }
 
   // map of stateID and apiID
-  // todo should also store builder info
   type APIStatesSpec = Record<string, { apiID: string; [key: string]: unknown }>;
 
+  // TODO: merge with type definition in api-spec-adapter
+  type FetchParams = Partial<{ params: Record<string, any>; body: any }>;
+
   /**
-   * InitializerFuncSpec is used to define a function which return value will assigned to some state
+   * InitializerFuncSpec is used to define a function which return value will assigned to some state.
+   * The `dependencies` MUST be some states defined in APIStatesSpec.
    */
-  interface InitializerFuncSpec extends BaseFunctionSpec {
-    type: 'initializer_func_spec';
-    args: '';
+  interface Initializer {
+    func: BaseFunctionSpec & { type: 'initializer_func_spec'; args: 'dependencies'; };
+    dependencies?: {
+      [key: string]: FetchParams;
+    }
   }
 
   interface SharedState {
     initial: unknown;
     // default to true
     writeable?: boolean;
-    initializer?: InitializerFuncSpec;
+    initializer?: Initializer;
     [key: string]: unknown;
   }
 

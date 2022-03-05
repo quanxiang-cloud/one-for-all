@@ -12,6 +12,17 @@ const todoAppSchema: Schema = {
     currentTodo: {
       initial: '',
     },
+    todoCount: {
+      initial: 0,
+      initializer: {
+        func: {
+          type: 'initializer_func_spec',
+          args: 'dependencies',
+          body: `return dependencies['全部待办列表'].length`
+        },
+        dependencies: { '全部待办列表': { } },
+      }
+    }
   },
   node: {
     id: 'container',
