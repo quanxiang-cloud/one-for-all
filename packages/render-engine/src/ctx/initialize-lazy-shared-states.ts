@@ -1,5 +1,5 @@
 import { APISpecAdapter, FetchParams } from '@one-for-all/api-spec-adapter';
-import { combineLatest, firstValueFrom, from, Observable, of, switchMap, take } from 'rxjs';
+import { combineLatest, firstValueFrom, from, last, map, Observable, of, switchMap, take, tap } from 'rxjs';
 import { logger } from '@one-for-all/utils';
 
 import { APIStatesSpec, SharedStatesSpec, InitializerFunc } from '../types';
@@ -22,8 +22,10 @@ function toDependency$(
 
   // we only need the api result
   const dependency$ = state$.pipe(
-    // undefine, loading, resolved
-    take(3),
+    // loading, resolved
+    take(2),
+    last(),
+    map(({ result }) => result),
   );
 
   fetch({ params });
@@ -62,13 +64,13 @@ function toDeps$(
 
 function promisify(func: InitializerFunc): (p: Record<string, unknown>) => Promise<unknown> {
   return (p: Record<string, unknown>) => {
-    return Promise.resolve(() => {
+    return Promise.resolve((() => {
       try {
         return func(p);
       } catch (error) {
         return undefined;
       }
-    });
+    })());
   }
 }
 

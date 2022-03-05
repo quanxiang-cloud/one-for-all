@@ -6,6 +6,7 @@
   "author": "",
   "module": "lib/src/index.js",
   "types": "lib/src/index.d.ts",
+  "type": "module",
   "files": [
     "lib",
     "src",

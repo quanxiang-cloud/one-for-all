@@ -341,7 +341,7 @@ declare namespace SchemaSpec {
 
   /**
    * InitializerFuncSpec is used to define a function which return value will assigned to some state.
-   * The `dependencies` MUST be some stated defined in APIStatesSpec.
+   * The `dependencies` MUST be some states defined in APIStatesSpec.
    */
   interface Initializer {
     func: BaseFunctionSpec & { type: 'initializer_func_spec'; args: 'dependencies'; };
