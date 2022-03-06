@@ -11,6 +11,6 @@ export default {
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   testEnvironment: 'jsdom',
-  modulePathIgnorePatterns: ['__tests__/fixtures', 'dist'],
+  modulePathIgnorePatterns: ['__tests__/fixtures', 'dist', '<rootDir>/lib/'],
   setupFilesAfterEnv: [path.resolve(__dirname, './jest-setup-import-jest-dom.js')]
 };
