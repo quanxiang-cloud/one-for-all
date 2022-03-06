@@ -23,7 +23,7 @@ const sharedStatesSpec: SchemaSpec.SharedStatesSpec = {
         body: 'return Promise.resolve(dependencies.some_api_state)',
       },
       dependencies: {
-        some_api_state: {}
+        some_api_state: {},
       },
     },
   },
@@ -39,5 +39,5 @@ test('initCTX_return_expected_value', async () => {
   });
 
   const ctx = await initCTX({ apiStateSpec, sharedStatesSpec, plugins: { apiSpecAdapter } });
-  expect(ctx.states.lazyState).toBe(mockRes)
+  expect(ctx.states.lazyState).toBe(mockRes);
 });

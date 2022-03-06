@@ -10,7 +10,7 @@ interface LazyState {
   func: InitializerFunc;
   dependencies?: {
     [key: string]: FetchParams;
-  }
+  };
 }
 
 function toDependency$(
@@ -41,7 +41,9 @@ function toDeps$(
   const dependencies$ = Object.entries(deps)
     .map(([stateID, fetchParams]) => {
       if (!apiStates[stateID]) {
-        logger.error(`no state: ${stateID} found in APIStatesSpec, undefined will be used as this dependency value`);
+        logger.error(
+          `no state: ${stateID} found in APIStatesSpec, undefined will be used as this dependency value`,
+        );
         return undefined;
       }
 
@@ -64,14 +66,16 @@ function toDeps$(
 
 function promisify(func: InitializerFunc): (p: Record<string, unknown>) => Promise<unknown> {
   return (p: Record<string, unknown>) => {
-    return Promise.resolve((() => {
-      try {
-        return func(p);
-      } catch (error) {
-        return undefined;
-      }
-    })());
-  }
+    return Promise.resolve(
+      (() => {
+        try {
+          return func(p);
+        } catch (error) {
+          return undefined;
+        }
+      })(),
+    );
+  };
 }
 
 function toObservableMap(
@@ -79,20 +83,22 @@ function toObservableMap(
   apiStateSpec: APIStatesSpec,
   apiSpecAdapter: APISpecAdapter,
 ): Record<string, Observable<unknown>> {
-  return lazyStates.map<[string, Observable<unknown>]>(({ stateID, func, dependencies }) => {
-    const deps$ = toDeps$(dependencies || {}, apiStateSpec, apiSpecAdapter);
-    const state$ = deps$.pipe(
-      switchMap((deps) => {
-        return from(promisify(func)(deps))
-      }),
-    );
+  return lazyStates
+    .map<[string, Observable<unknown>]>(({ stateID, func, dependencies }) => {
+      const deps$ = toDeps$(dependencies || {}, apiStateSpec, apiSpecAdapter);
+      const state$ = deps$.pipe(
+        switchMap((deps) => {
+          return from(promisify(func)(deps));
+        }),
+      );
 
-    return [stateID, state$];
-  }).reduce<Record<string, Observable<unknown>>>((acc, [stateID, state$]) => {
-    acc[stateID] = state$;
+      return [stateID, state$];
+    })
+    .reduce<Record<string, Observable<unknown>>>((acc, [stateID, state$]) => {
+      acc[stateID] = state$;
 
-    return acc;
-  }, {});
+      return acc;
+    }, {});
 }
 
 /**
@@ -100,13 +106,15 @@ function toObservableMap(
  * @param sharedStateSpec - SharedStatesSpec
  */
 function filterLazyStates(sharedStateSpec: SharedStatesSpec): Array<LazyState> {
-  return Object.entries(sharedStateSpec).map(([stateID, { initializer }]) => {
-    if (initializer) {
-      return { ...initializer, stateID };
-    }
+  return Object.entries(sharedStateSpec)
+    .map(([stateID, { initializer }]) => {
+      if (initializer) {
+        return { ...initializer, stateID };
+      }
 
-    return;
-  }).filter((lazyState): lazyState is LazyState => !!lazyState);
+      return;
+    })
+    .filter((lazyState): lazyState is LazyState => !!lazyState);
 }
 
 /**

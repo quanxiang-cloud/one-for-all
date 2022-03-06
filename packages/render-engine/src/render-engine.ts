@@ -23,7 +23,7 @@ export default class RenderEngine {
       sharedStatesSpec: this.schema.sharedStatesSpec,
     });
 
-    const node = deserialize(this.schema.node, ctx) as SchemaNode
+    const node = deserialize(this.schema.node, ctx) as SchemaNode;
     if (!node) {
       // TODO: paint error
       // return { ctx };

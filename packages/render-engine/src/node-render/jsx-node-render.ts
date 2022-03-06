@@ -18,20 +18,22 @@ function useReactJSXParser(): React.Component<TProps> | null {
   useEffect(() => {
     let unMounting = false;
     // todo change 'react-jsx-parser' as plugin
-    System.import('react-jsx-parser').then((module) => {
-      if (unMounting) {
-        return;
-      }
+    System.import('react-jsx-parser')
+      .then((module) => {
+        if (unMounting) {
+          return;
+        }
 
-      setComponent(() => module.default);
-    }).catch((err) => {
-      logger.error('failed to load dependance react-jsx-parser:', err);
-      return;
-    });
+        setComponent(() => module.default);
+      })
+      .catch((err) => {
+        logger.error('failed to load dependance react-jsx-parser:', err);
+        return;
+      });
 
     return () => {
       unMounting = true;
-    }
+    };
   });
 
   return com;
@@ -44,10 +46,7 @@ function JSXNodeRender({ node, ctx }: Props): React.ReactElement | null {
   const ReactJSXParser = useReactJSXParser();
 
   if (!node.jsx) {
-    logger.error(
-      'jsx string is required,',
-      `please check the spec of node: ${currentPath}.`,
-    );
+    logger.error('jsx string is required,', `please check the spec of node: ${currentPath}.`);
     return null;
   }
 
@@ -55,15 +54,12 @@ function JSXNodeRender({ node, ctx }: Props): React.ReactElement | null {
     return null;
   }
 
-  return React.createElement(
-    ReactJSXParser as any,
-    {
-      bindings: props,
-      renderInWrapper: false,
-      jsx: node.jsx,
-      onError: (err: any) => console.log(err)
-    },
-  );
+  return React.createElement(ReactJSXParser as any, {
+    bindings: props,
+    renderInWrapper: false,
+    jsx: node.jsx,
+    onError: (err: any) => console.log(err),
+  });
 }
 
 export default JSXNodeRender;

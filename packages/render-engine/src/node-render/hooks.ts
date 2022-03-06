@@ -123,7 +123,8 @@ export function useRefResult(
           sharedStatesSpec: schema.sharedStatesSpec,
           parentCTX: orphan ? undefined : ctx,
         });
-      }).then((refCTX) => {
+      })
+      .then((refCTX) => {
         if (!refCTX || !_schema) {
           return;
         }

@@ -21,11 +21,11 @@ function useCTX(schema: Schema, plugins?: Plugins): CTX | null {
       apiStateSpec: schema.apiStateSpec,
       sharedStatesSpec: schema.sharedStatesSpec,
       // todo parentCTX?
-    }).then((_ctx) => {
-      setCTX(_ctx)
-    }).catch((err) => {
-      logger.error(err);
-    });
+    })
+      .then((_ctx) => setCTX(_ctx))
+      .catch((err) => {
+        logger.error(err);
+      });
   }, []);
 
   return ctx;
@@ -37,13 +37,17 @@ function SchemaRender(
 ): React.ReactElement | null {
   const ctx = useCTX(schema, plugins);
 
-  useImperativeHandle(ref, () => {
-    if (!ctx) {
-      return;
-    }
+  useImperativeHandle(
+    ref,
+    () => {
+      if (!ctx) {
+        return;
+      }
 
-    return { apiStates: ctx.apiStates, states: ctx.states };
-  }, [ctx]);
+      return { apiStates: ctx.apiStates, states: ctx.states };
+    },
+    [ctx],
+  );
 
   if (!ctx) {
     return null;

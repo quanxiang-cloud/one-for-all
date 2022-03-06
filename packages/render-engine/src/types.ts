@@ -268,12 +268,12 @@ interface Initializer {
   func: InitializerFunc;
   dependencies?: {
     [key: string]: FetchParams;
-  }
+  };
 }
 
 export type SharedState = Omit<SchemaSpec.SharedState, 'initializer'> & {
   initializer?: Initializer;
-}
+};
 
 export type SharedStatesSpec = Record<string, SharedState>;
 

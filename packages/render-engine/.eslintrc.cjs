@@ -22,9 +22,7 @@ module.exports = {
         },
       },
     ],
-    "semi": [
-      "warn", "always"
-    ],
-    "quotes": ["warn", "single"],
+    semi: ['warn', 'always'],
+    quotes: ['warn', 'single'],
   },
 };

@@ -25,4 +25,4 @@ test('node_state_hub_resolve_obj_value', () => {
   (getFunc as Function)();
 
   expect(func).toHaveBeenCalled();
-})
+});
