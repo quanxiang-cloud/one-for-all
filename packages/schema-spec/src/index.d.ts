@@ -292,6 +292,9 @@ declare namespace SchemaSpec {
     node: ComposedNode;
   }
 
+  // why LoopContainer, not `LoopState`?
+  // - it is more maintainable to having a virtual node to holding the loop state
+  // - `LoopState` is confusing with lifecycle hooks
   type LoopContainerNode = IndividualLoopContainer | ComposedNodeLoopContainer;
 
   type ComposedNodeChild = SchemaNode & {
