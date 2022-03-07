@@ -1,16 +1,20 @@
-import React, { Children, isValidElement, useState, ReactElement } from 'react';
+import React, { Children, isValidElement, useState, ReactElement, forwardRef, ForwardedRef, DetailedHTMLProps, InputHTMLAttributes } from 'react';
 
-interface Props {
+interface Props
+extends Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange'>  {
+  'data-node-key'?: string;
+  className?: string;
   children: (boolean | ReactElement)[];
   onChange: (value: string | number | boolean) => void;
 }
 
-function RadioGroup({ children, onChange }: Props): JSX.Element {
+function RadioGroup({  children, className, style, onChange, ...rest }: Props, ref: ForwardedRef<HTMLDivElement>): JSX.Element {
   const [checkedIndex, setCheckedIndex] = useState(-1);
+  const dataNodeKey = rest['data-node-key'] || '';
 
   return (
-    <>
-      {
+    <div ref={ref} data-node-key={dataNodeKey} style={style} className={className}>
+     {
         Children.map(children, (child, index) => {
           if (isValidElement(child) && child.props.value !== null) {
             return React.cloneElement(child as ReactElement, {
@@ -24,8 +28,9 @@ function RadioGroup({ children, onChange }: Props): JSX.Element {
           return child;
         })
       }
-    </>
+    </div>
   );
 }
 
-export default RadioGroup;
+export default forwardRef<HTMLDivElement, Props>(RadioGroup);
+
