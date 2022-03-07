@@ -1,0 +1,8 @@
+@import "../shared/index.css";
+@import "./variables/typography.css";
+
+html {
+  /* define root font size, 1rem = 100px in 1x design */
+  font-size: calc(10000vw / 375);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
