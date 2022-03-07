@@ -21,20 +21,27 @@ function applyStyle(compKey: string, css: string, shadowRoot: ShadowRoot): void 
 }
 
 export function ShadowContent({ shadowRoot, children }: { children: JSX.Element[], shadowRoot: ShadowRoot }) {
-  const style = document.createElement('style');
-  style.textContent = `
-  .style-config-preview-comp {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-    cursor: pointer;
-    padding: 5px;
-    border: 1px solid transparent;
-  }
-  .style-config-preview-comp:hover {
-    border: 1px solid #638AFF;
-  }`;
-  shadowRoot.appendChild(style);
+  useEffect(() => {
+    const style = document.createElement('style');
+    const compStyle = document.createElement('link');
+    compStyle.href = '/pkg/style-guide/dist/@one-for-all/style-guide@0.0.1/css/web.css';
+    compStyle.rel = 'stylesheet';
+    style.textContent = `
+      .style-config-preview-comp {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        cursor: pointer;
+        padding: 5px;
+        border: 1px solid transparent;
+      }
+      .style-config-preview-comp:hover {
+        border: 1px solid #638AFF;
+      }`;
+    shadowRoot.appendChild(compStyle);
+    shadowRoot.appendChild(style);
+  }, [])
+
   return ReactDOM.createPortal(children, shadowRoot as unknown as Element);
 }
 
