@@ -2,14 +2,14 @@ import React from 'react';
 import { RadioGroup, Radio } from '@one-for-all/ui';
 
 export interface Props {
-  id?: string;
-  radioOptions: string;
   'data-node-key': string;
+  radioOptions: string;
+  id?: string;
   disabled?: boolean;
   currentValue?: string | number | boolean;
   className?: string;
   style?: React.CSSProperties;
-  onChange: (value: string | number | boolean) => void;
+  onChange?: (value: string | number | boolean) => void;
 }
 
 function RadioGroupElm({
@@ -28,7 +28,7 @@ function RadioGroupElm({
       {...rest}
       ref={ref}
       className='flex'
-      onChange={(v: string) => onChange && onChange(v)}
+      onChange={(v: string | number | boolean) => onChange?.(v)}
     >
       {turnRadioOption.map((label) => {
         return (

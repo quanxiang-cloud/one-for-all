@@ -1,14 +1,14 @@
 import React, { Children, isValidElement, useState, ReactElement, forwardRef, ForwardedRef, DetailedHTMLProps, InputHTMLAttributes } from 'react';
 
 interface Props
-extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>  {
+extends Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'onChange'>  {
   'data-node-key'?: string;
   className?: string;
   children: (boolean | ReactElement)[];
-  onChange: (...args: any[]) => void;
+  onChange: (value: string | number | boolean) => void;
 }
 
-function RadioGroup({  children, className, style, onChange, ...rest }: Props, ref: ForwardedRef<HTMLDivElement>,): JSX.Element {
+function RadioGroup({  children, className, style, onChange, ...rest }: Props, ref: ForwardedRef<HTMLDivElement>): JSX.Element {
   const [checkedIndex, setCheckedIndex] = useState(-1);
   const dataNodeKey = rest['data-node-key'] || '';
 

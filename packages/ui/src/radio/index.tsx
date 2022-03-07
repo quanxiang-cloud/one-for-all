@@ -1,11 +1,9 @@
 import React, {
   forwardRef,
-  DetailedHTMLProps,
-  InputHTMLAttributes,
   useState,
-  Ref,
   ChangeEvent,
   useEffect,
+  ForwardedRef,
 } from 'react';
 import cs from 'classnames';
 
@@ -13,7 +11,7 @@ import { uuid } from '../utils';
 import { RadioProps } from '../types';
 
 
-function InternalRadio(props: RadioProps, ref?: Ref<HTMLInputElement>): JSX.Element {
+function InternalRadio(props: RadioProps, ref?: ForwardedRef<HTMLInputElement>): JSX.Element {
   const {
     defaultChecked, error, className, radioClass, onChange, label, checked: isChecked, disabled, ...inputProps
   } = props;
