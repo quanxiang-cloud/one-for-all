@@ -1,5 +1,5 @@
-import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
-import { RefLoader, CTX, SchemaNode } from '../../types';
+import dummyCTX from '../../../ctx/__tests__/fixtures/dummy-ctx';
+import { RefLoader, CTX, SchemaNode } from '../../../types';
 
 export function useLifecycleHook(): void {
   return;

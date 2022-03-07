@@ -20,7 +20,7 @@ interface Params {
 }
 
 async function initCTX({ apiStateSpec, sharedStatesSpec, parentCTX, plugins }: Params): Promise<CTX> {
-  const { apiSpecAdapter, repository, refLoader } = plugins || {};
+  const { apiSpecAdapter, repository, refLoader, componentLoader } = plugins || {};
 
   const statesHubAPI = new StatesHubAPI(
     {
@@ -48,6 +48,7 @@ async function initCTX({ apiStateSpec, sharedStatesSpec, parentCTX, plugins }: P
 
     repository: repository || parentCTX?.repository,
     refLoader: refLoader || parentCTX?.refLoader,
+    componentLoader: componentLoader || parentCTX?.componentLoader
   };
 
   return ctx;

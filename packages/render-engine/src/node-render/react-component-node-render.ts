@@ -3,7 +3,8 @@ import React from 'react';
 import useInstantiateProps from '../use-instantiate-props';
 import { ChildrenRender } from './index';
 import type { CTX, ReactComponentNode } from '../types';
-import { useLifecycleHook, useNodeComponent } from './hooks';
+import { useLifecycleHook } from './hooks';
+import useNodeComponent from './hooks/use-node-component';
 
 interface Props {
   node: ReactComponentNode;
@@ -12,7 +13,7 @@ interface Props {
 
 function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | null {
   const props = useInstantiateProps(node, ctx);
-  const nodeComponent = useNodeComponent(node, ctx.repository);
+  const nodeComponent = useNodeComponent(node, ctx);
   useLifecycleHook(node.lifecycleHooks || {});
 
   if (!nodeComponent) {
