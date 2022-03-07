@@ -13,7 +13,7 @@ test('Divider component test', () => {
     },
   };
 
-  const { container } = render(<Divider {...node}/>);
+  const { container } = render(<Divider {...node} />);
   expect(container).toMatchSnapshot();
 });
 
@@ -28,13 +28,12 @@ test('Divider component test', () => {
     },
   };
 
-  const { container } = render(<Divider {...node}/>);
+  const { container } = render(<Divider {...node} />);
   expect(container).toMatchSnapshot();
 });
 
 test('Divider component test', () => {
   const ref = React.createRef<HTMLDivElement>();
-  render(<Divider ref={ref}/>);
+  render(<Divider ref={ref} />);
   expect(ref.current && ref.current instanceof HTMLDivElement).toBeTruthy();
 });
-

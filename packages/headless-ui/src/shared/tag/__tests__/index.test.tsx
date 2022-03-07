@@ -15,13 +15,13 @@ test('Tag props test', () => {
     modifier: 'primary',
   };
 
-  const { container } = render(<Tag {...node}/>);
+  const { container } = render(<Tag {...node} />);
   expect(container).toMatchSnapshot();
 });
 
 test('Tag ref expose test', () => {
   const ref = React.createRef<HTMLSpanElement>();
-  render(<Tag value={'2'} ref={ref}/>);
+  render(<Tag value={'2'} ref={ref} />);
   expect(ref.current && ref.current instanceof HTMLSpanElement).toBeTruthy();
 });
 
@@ -35,7 +35,7 @@ test('Tag delete event test', () => {
     deleteIconSize: 15,
   };
 
-  const { container } = render(<Tag {...node} onDelete={handleDel}/>);
+  const { container } = render(<Tag {...node} onDelete={handleDel} />);
   fireEvent.click(container.querySelector('.ofa-tag-delete-icon') as HTMLElement);
   expect(handleDel).toHaveBeenCalledTimes(1);
   expect(container).toMatchSnapshot();

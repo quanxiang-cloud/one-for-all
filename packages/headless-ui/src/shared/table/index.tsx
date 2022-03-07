@@ -1,10 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import cs from 'classnames';
-import {
-  useTable,
-  TableOptions,
-  useRowSelect,
-} from 'react-table';
+import { useTable, TableOptions, useRowSelect } from 'react-table';
 
 import { getDefaultSelectMap, useExtendColumns, DEFAULT_WIDTH, MINIMUM_WIDTH } from './utils';
 import useSticky from './use-sticky';
@@ -41,12 +37,16 @@ function Table<T extends Record<string, any>>({
     rows,
     selectedFlatRows,
     state: { selectedRowIds },
-  } = useTable(({
-    data,
-    columns: _columns,
-    getRowId: (row) => row[rowKey],
-    initialState: { selectedRowIds: getDefaultSelectMap(initialSelectedRowKeys || []) },
-  }) as TableOptions<T>, useRowSelect, useSticky);
+  } = useTable(
+    {
+      data,
+      columns: _columns,
+      getRowId: (row) => row[rowKey],
+      initialState: { selectedRowIds: getDefaultSelectMap(initialSelectedRowKeys || []) },
+    } as TableOptions<T>,
+    useRowSelect,
+    useSticky,
+  );
 
   const handleWidthChange = (x: number, columnID: string): void => {
     if (x < MINIMUM_WIDTH) {
@@ -80,14 +80,15 @@ function Table<T extends Record<string, any>>({
     }
 
     const selectedRows = selectedFlatRows.map(({ original }) => original);
-    const selectedKeys = canAcrossPageChoose ?
-      Object.keys(selectedRowIds) : selectedRows.map((row) => row[rowKey] as string);
+    const selectedKeys = canAcrossPageChoose
+      ? Object.keys(selectedRowIds)
+      : selectedRows.map((row) => row[rowKey] as string);
     onSelectChange(selectedKeys, selectedRows);
   }, [Object.keys(selectedRowIds).length]);
 
   const tableFooterRender = (): JSX.Element | undefined => {
     if (rows.length === 0) {
-      return (<div className="ofa-table-empty">{emptyTips}</div>);
+      return <div className="ofa-table-empty">{emptyTips}</div>;
     }
   };
 
@@ -114,11 +115,7 @@ function Table<T extends Record<string, any>>({
           <tr className={cs({ 'ofa-table-adjust-header': canSetColumnWidth })}>
             {headerGroups[0].headers.map((header, index) => {
               return (
-                <th
-                  {...header.getHeaderProps()}
-                  key={header.id}
-                  className='ofa-table-th'
-                >
+                <th {...header.getHeaderProps()} key={header.id} className="ofa-table-th">
                   {header.render('Header')}
                   {canSetColumnWidth && header.id !== '_selector' && index !== _columns.length - 1 && (
                     <AdjustHandle
@@ -140,7 +137,7 @@ function Table<T extends Record<string, any>>({
                 {...row.getRowProps()}
                 onClick={() => onRowClick?.(row.id, row.original)}
                 key={row.id}
-                className='ofa-table-tr'
+                className="ofa-table-tr"
                 data-row={JSON.stringify({
                   id: row?.id ?? '',
                   selectedRow: row?.original ?? {},
@@ -148,11 +145,7 @@ function Table<T extends Record<string, any>>({
               >
                 {row.cells.map((cell) => {
                   return (
-                    <td
-                      className='ofa-table-td'
-                      {...cell.getCellProps()}
-                      key={cell.column.id}
-                    >
+                    <td className="ofa-table-td" {...cell.getCellProps()} key={cell.column.id}>
                       {cell.render('Cell')}
                     </td>
                   );
@@ -163,7 +156,7 @@ function Table<T extends Record<string, any>>({
         </tbody>
       </table>
       {tableFooterRender()}
-      {loading && (<div className='ofa-table-loading-box'>Loading...</div>)}
+      {loading && <div className="ofa-table-loading-box">Loading...</div>}
     </div>
   );
 }

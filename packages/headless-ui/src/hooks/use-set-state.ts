@@ -5,9 +5,7 @@ const useSetState = <T extends Record<string, unknown>>(
 ): [T, (patch: Partial<T> | ((prevState: T) => Partial<T>)) => void] => {
   const [state, set] = useState<T>(initialState);
   const setState = useCallback((patch) => {
-    set((prevState) =>
-      Object.assign({}, prevState, patch instanceof Function ? patch(prevState) : patch),
-    );
+    set((prevState) => Object.assign({}, prevState, patch instanceof Function ? patch(prevState) : patch));
   }, []);
 
   return [state, setState];

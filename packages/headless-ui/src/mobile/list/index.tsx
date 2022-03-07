@@ -3,7 +3,9 @@ import React, {
   useImperativeHandle,
   isValidElement,
   MutableRefObject,
-  ReactNode, ForwardedRef, PropsWithChildren,
+  ReactNode,
+  ForwardedRef,
+  PropsWithChildren,
 } from 'react';
 import cs from 'classnames';
 
@@ -71,7 +73,7 @@ function List(props: PropsWithChildren<ListProps>, ref: ForwardedRef<ListInstanc
 
   const renderFinishedText = (): ReactNode => {
     if (finished && finishedText) {
-      return <div className='ofa-list__finished-text text-placeholder'>{finishedText}</div>;
+      return <div className="ofa-list__finished-text text-placeholder">{finishedText}</div>;
     }
     return null;
   };
@@ -84,7 +86,7 @@ function List(props: PropsWithChildren<ListProps>, ref: ForwardedRef<ListInstanc
   const renderErrorText = (): ReactNode => {
     if (state.error && errorText) {
       return (
-        <div className='ofa-list__error-text text-placeholder' onClick={clickErrorText}>
+        <div className="ofa-list__error-text text-placeholder" onClick={clickErrorText}>
           {errorText}
         </div>
       );
@@ -95,11 +97,11 @@ function List(props: PropsWithChildren<ListProps>, ref: ForwardedRef<ListInstanc
   const renderLoading = (): ReactNode => {
     if (state.loading && !finished) {
       return (
-        <div className='ofa-list__loading text-placeholder'>
+        <div className="ofa-list__loading text-placeholder">
           {typeof loadingText === 'function' && isValidElement(loadingText) ? (
             loadingText()
           ) : (
-            <Loading className='ofa-list__loading-icon text-placeholder' iconSize='.18rem'>
+            <Loading className="ofa-list__loading-icon text-placeholder" iconSize=".18rem">
               {loadingText}
             </Loading>
           )}
@@ -136,17 +138,17 @@ function List(props: PropsWithChildren<ListProps>, ref: ForwardedRef<ListInstanc
   }));
 
   const Placeholder = (
-    <div
-      ref={placeholder as MutableRefObject<HTMLDivElement>}
-      className='ofa-list__placeholder' />
+    <div ref={placeholder as MutableRefObject<HTMLDivElement>} className="ofa-list__placeholder" />
   );
 
   return (
-    <div ref={root as MutableRefObject<HTMLDivElement>}
+    <div
+      ref={root as MutableRefObject<HTMLDivElement>}
       role="feed"
       className={cs('ofa-list', props.className)}
       style={props.style}
-      aria-busy={state.loading}>
+      aria-busy={state.loading}
+    >
       {direction === 'down' ? props.children : Placeholder}
       {renderLoading()}
       {renderFinishedText()}

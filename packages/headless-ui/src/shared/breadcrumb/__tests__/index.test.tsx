@@ -35,14 +35,14 @@ test('Breadcrumb props test', () => {
     },
   };
 
-  const { container } = render(<Breadcrumb {...node}/>);
+  const { container } = render(<Breadcrumb {...node} />);
   expect(container).toMatchSnapshot();
 });
 
 test('Breadcrumb ref expose test', () => {
   const ref = React.createRef<HTMLDivElement>();
 
-  render(<Breadcrumb segments={[]} ref={ref}/>);
+  render(<Breadcrumb segments={[]} ref={ref} />);
   expect(ref.current && ref.current instanceof HTMLDivElement).toBeTruthy();
 });
 
@@ -50,13 +50,13 @@ test('Breadcrumb segmentRender event test', () => {
   const handleRender = (link: Segment): JSX.Element => {
     return (
       <div>
-        <Icon name='star'/>
+        <Icon name="star" />
         {link.text}
       </div>
     );
   };
 
-  const { container } = render(<Breadcrumb segments={globalSegments} segmentRender={handleRender}/>);
+  const { container } = render(<Breadcrumb segments={globalSegments} segmentRender={handleRender} />);
   expect(container).toMatchSnapshot();
 });
 
@@ -66,7 +66,7 @@ test('Breadcrumb active test', () => {
     activeClass: 'active-segment',
   };
 
-  const { container } = render(<Breadcrumb {...node}/>);
+  const { container } = render(<Breadcrumb {...node} />);
   expect(container).toMatchSnapshot();
 });
 
@@ -76,6 +76,6 @@ test('Breadcrumb separator test', () => {
     separator: '>',
   };
 
-  const { container } = render(<Breadcrumb {...node}/>);
+  const { container } = render(<Breadcrumb {...node} />);
   expect(container).toMatchSnapshot();
 });

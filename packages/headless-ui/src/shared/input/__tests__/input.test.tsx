@@ -22,7 +22,7 @@ describe('Input', () => {
   });
 
   it('default value works', () => {
-    const wrapper = render(<Input defaultValue='testDefaultValue' />);
+    const wrapper = render(<Input defaultValue="testDefaultValue" />);
     expect((wrapper.getByRole('textbox') as HTMLInputElement).value).toEqual('testDefaultValue');
   });
 

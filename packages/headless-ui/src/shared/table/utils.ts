@@ -37,9 +37,6 @@ export function useExtendColumns<T extends Record<string, unknown>>(
     }
 
     const firstColumnFixed = _originalColumns.length > 0 && (_originalColumns[0] as FixedColumn<any>).fixed;
-    return [
-      { ...checkboxColumn, fixed: firstColumnFixed },
-      ..._originalColumns,
-    ];
+    return [{ ...checkboxColumn, fixed: firstColumnFixed }, ..._originalColumns];
   }, [showCheckbox, originalColumns]);
 }

@@ -4,7 +4,7 @@ type Props = {
   onChange: (a: number) => void;
   onMouseUp: () => void;
   thID: string;
-}
+};
 
 export default function AdjustHandle({ onChange, thID, onMouseUp }: Props): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
@@ -32,7 +32,5 @@ export default function AdjustHandle({ onChange, thID, onMouseUp }: Props): JSX.
     ref.current?.addEventListener('mousedown', onMouseDown);
   }, []);
 
-  return (
-    <div ref={ref} className='ofa-table-adjust-handle' />
-  );
+  return <div ref={ref} className="ofa-table-adjust-handle" />;
 }

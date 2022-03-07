@@ -1,5 +1,5 @@
 :root {
-  --nav-bar-height: .44rem;
+  --nav-bar-height: 0.44rem;
 }
 
 .ofa-nav-bar {
@@ -35,12 +35,12 @@
     bottom: 0;
     display: flex;
     align-items: center;
-    padding: .08rem;
-    margin: 0 .08rem;
+    padding: 0.08rem;
+    margin: 0 0.08rem;
     cursor: pointer;
 
     &:active {
-      opacity: .6;
+      opacity: 0.6;
     }
   }
 
@@ -51,5 +51,4 @@
   &__right {
     right: 0;
   }
-
 }
