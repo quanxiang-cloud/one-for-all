@@ -10,10 +10,15 @@ type Modifier = 'primary' | 'secondary' | 'success' | 'danger';
 interface ButtonProps extends BaseProps {
   modifier?: Modifier;
   disabled?: boolean;
+  children: React.ReactNode;
   loading?: boolean;
   loadingText?: string;
   iconName?: string;
+  type?: 'submit' | 'reset' | 'button' | undefined;
   iconSize?: NumberString;
+  size?: 'normal' | 'compact';
+  textClassName?: string;
+  forbidden?: boolean;
   iconClassName?: string;
   onClick?: React.MouseEventHandler;
 }
@@ -459,10 +464,13 @@ interface TableProps<T extends Record<string, any>> {
   showCheckbox?: boolean;
   onRowClick?: (rowID: string, selectedRow: T) => void;
   onSelectChange?: (selectedKeys: string[], selectedRows: T[]) => void;
-  // canSetColumnWidth?: boolean;
-  // canAcrossPageChoose?: boolean;
-  // initWidthMap?: WidthMap;
-  // widthMapChange?: (widthMap: WidthMap) => void;
+  className?: string;
+  isCompact?: boolean;
+  style?: React.CSSProperties;
+  canSetColumnWidth?: boolean;
+  canAcrossPageChoose?: boolean;
+  initWidthMap?: WidthMap;
+  widthMapChange?: (widthMap: WidthMap) => void;
 }
 
 interface PaginationProps extends BaseProps {

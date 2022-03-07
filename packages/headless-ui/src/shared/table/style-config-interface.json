@@ -1,0 +1,47 @@
+{
+  "key": "Table",
+  "title": "表格",
+  "specs": [
+    {
+      "title": "默认状态",
+      "rules": [
+        {
+          "selector": ".ofa-table-td",
+          "desc": "单元格样式"
+        },
+        {
+          "selector": ".ofa-table-td",
+          "desc": "表头样式"
+        }
+      ]
+    },
+    {
+      "title": "紧凑",
+      "componentProps": {
+        "isCompact": true
+      },
+      "rules": [
+        {
+          "selector": ".ofa-table-small td",
+          "desc": "紧凑模式单元格样式"
+        },
+        {
+          "selector": ".ofa-table-small th",
+          "desc": "紧凑模式表头样式"
+        }
+      ]
+    },
+    {
+      "title": "加载状态",
+      "componentProps": {
+        "loading": true
+      },
+      "rules": [
+        {
+          "selector": ".ofa-table-loading-box",
+          "desc": "loading状态样式"
+        }
+      ]
+    }
+  ]
+}

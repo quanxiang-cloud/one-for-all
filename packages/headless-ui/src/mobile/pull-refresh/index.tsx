@@ -105,7 +105,7 @@ function PullRefresh(
     case 'loosing':
       return loosingText;
     }
-    return props[`${state.status}Text`];
+    return (props as any)[`${state.status}Text`];
   };
 
   const renderStatus = (): ReactNode => {
