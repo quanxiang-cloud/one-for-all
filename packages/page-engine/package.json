@@ -30,7 +30,7 @@
     "@codemirror/lang-javascript": "^0.19.3",
     "@one-for-all/render-engine": "0.14.0",
     "@one-for-all/schema-spec": "0.13.1-0",
-    "@one-for-all/ui": "0.2.18",
+    "@one-for-all/ui": "0.2.20",
     "@uiw/react-codemirror": "~4.2.0",
     "classnames": "^2.3.1",
     "lodash": "^4.17.21",
