@@ -89,5 +89,25 @@ export default [
         copyOnce: true
       })
     ]
-  }
+  },
+  {
+    input: 'src/component-style-config/index.tsx',
+    output: {
+      file: 'dist/component-style-config/index.js',
+      format: 'system',
+      sourcemap: 'inline',
+    },
+
+    external: ['react', 'react-dom', /@one-for-all\/.*/],
+
+    plugins: [
+      ...commonPlugins,
+      copy({
+        targets: [
+          { src: path.resolve(__dirname, './src/component-style-config/assets/*'), dest: 'dist/component-style-config' },
+        ],
+        copyOnce: true
+      })
+    ],
+  },
 ];

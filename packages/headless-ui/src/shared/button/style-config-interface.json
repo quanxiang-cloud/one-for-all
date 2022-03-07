@@ -1,0 +1,107 @@
+{
+  "key": "Button",
+  "title": "按钮",
+  "specs": [
+    {
+      "title": "默认状态",
+      "componentProps": {
+        "children": "默认"
+      },
+      "rules": [
+        {
+          "selector": ".ofa-btn",
+          "desc": "可编辑属性有宽度、边框、圆角等",
+          "pseudo": [
+            {
+              "selector": "hover",
+              "desc": "按钮鼠标移入效果"
+            },
+            {
+              "selector": "active",
+              "desc": "按钮点击效果"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "禁止状态",
+      "componentProps": [
+        {
+          "modifier": "primary",
+          "forbidden": true,
+          "children": "禁止状态"
+        },
+        {
+          "modifier": "danger",
+          "forbidden": true,
+          "children": "禁止状态"
+        }
+      ],
+      "rules": [
+        {
+          "selector": ".ofa-btn--forbidden",
+          "desc": "禁止"
+        }
+      ]
+    },
+    {
+      "title": "加载状态",
+      "componentProps": {
+        "loading": true
+      },
+      "rules": [
+        {
+          "selector": ".ofa-btn--loading",
+          "desc": "loading"
+        }
+      ]
+    },
+    {
+      "title": "主色状态",
+      "componentProps": {
+        "modifier": "primary",
+        "children": "主色"
+      },
+      "rules": [
+        {
+          "selector": ".ofa-btn--primary",
+          "desc": "默认样式",
+          "pseudo": [
+            {
+              "selector": "hover",
+              "desc": "按钮鼠标移入效果"
+            },
+            {
+              "selector": "active",
+              "desc": "按钮点击效果"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "危险状态",
+      "componentProps": {
+        "modifier": "danger",
+        "children": "危险"
+      },
+      "rules": [
+        {
+          "selector": ".ofa-btn--danger",
+          "desc": "loading",
+          "pseudo": [
+            {
+              "selector": "hover",
+              "desc": "按钮鼠标移入效果"
+            },
+            {
+              "selector": "active",
+              "desc": "按钮点击效果"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
