@@ -1,0 +1,24 @@
+/* override variables with web only styles */
+:root {
+  /* font size values */
+  --font-size-headline1: 24px;
+  --font-size-headline2: 20px;
+  --font-size-headline3: 16px;
+  --font-size-headline4: 14px;
+  --font-size-body1: 16px;
+  --font-size-body2: 14px;
+  --font-size-button: 14px;
+  --font-size-underline: 12px;
+  --font-size-caption: 12px;
+
+  /* line height values */
+  --line-height-headline1: calc(32 / 24);
+  --line-height-headline2: calc(28 / 20);
+  --line-height-headline3: calc(24 / 16);
+  --line-height-headline4: calc(22 / 14);
+  --line-height-body1: calc(24 / 16);
+  --line-height-body2: calc(22 / 14);
+  --line-height-button: calc(22 / 14);
+  --line-height-underline: calc(20 / 12);
+  --line-height-caption: calc(20 / 12);
+}

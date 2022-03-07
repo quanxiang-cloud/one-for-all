@@ -1,0 +1,61 @@
+/* semantic background color classes */
+.bg-light {
+  background-color: var(--color-light);
+}
+
+.bg-app {
+  background-color: var(--color-bg-app);
+}
+
+.bg-error {
+  background-color: var(--color-error-lighter);
+}
+
+.bg-success {
+  background-color: var(--color-success-lighter);
+}
+
+.bg-warning {
+  background-color: var(--color-warning-lighter);
+}
+
+.bg-secondary {
+  background-color: var(--color-secondary-lighter);
+}
+
+.bg-highlight {
+  background-color: var(--color-highlight-lighter);
+}
+
+/* text color classes */
+.color-light {
+  color: var(--color-light);
+}
+
+.color-primary {
+  color: var(--color-primary);
+}
+
+.color-secondary {
+  color: var(--color-secondary);
+}
+
+.color-highlight {
+  color: var(--color-highlight);
+}
+
+.color-placeholder {
+  color: var(--color-placeholder);
+}
+
+.color-error {
+  color: var(--color-error);
+}
+
+.color-success {
+  color: var(--color-success);
+}
+
+.color-warning {
+  color: var(--color-warning);
+}

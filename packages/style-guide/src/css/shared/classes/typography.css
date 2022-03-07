@@ -1,0 +1,55 @@
+/* typography style classes */
+.typography-headline1 {
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-headline1);
+  line-height: var(--line-height-headline1);
+}
+
+.typography-headline2 {
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-headline2);
+  line-height: var(--line-height-headline2);
+}
+
+.typography-headline3 {
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-headline3);
+  line-height: var(--line-height-headline3);
+}
+
+.typography-headline4 {
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-headline4);
+  line-height: var(--line-height-headline4);
+}
+
+.typography-body1 {
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-body1);
+  line-height: var(--line-height-body1);
+}
+
+.typography-body2 {
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-body2);
+  line-height: var(--line-height-body2);
+}
+
+.typography-button {
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-button);
+  line-height: var(--line-height-button);
+}
+
+.typography-underline {
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-underline);
+  line-height: var(--line-height-underline);
+  text-decoration-line: underline;
+}
+
+.typography-caption {
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-caption);
+}
