@@ -14,8 +14,9 @@ function PageTree(): JSX.Element {
   const { page } = useCtx();
   const [mode, setMode] = useState<Mode>('tree');
 
+  // fixme: `gap-10` not work in projects with two tailwind config
   return (
-    <div className="w-full h-full flex flex-col gap-10 items-center overflow-hidden relative page-tree">
+    <div className="w-full h-full flex flex-col items-center overflow-hidden relative page-tree">
       <RadioButtonGroup
         listData={[
           { label: '大纲视图', value: 'tree' },
@@ -24,7 +25,7 @@ function PageTree(): JSX.Element {
         onChange={(mode) => setMode(mode as string)}
         currentValue={mode}
       />
-      <div className="grid w-full overflow-x-auto relative flex-1">
+      <div className="grid w-full overflow-x-auto relative flex-1 mt-10">
         {mode === 'tree' && (<TreeView />)}
         {mode === 'code' && (
           <pre className='mt-8'>

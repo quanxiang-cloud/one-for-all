@@ -183,6 +183,7 @@ function NodeRender({ schema }: Props): JSX.Element | null {
       'data-node-key': schema.id,
       ref: boxRef,
       className: cs(styles.elem, {
+        [styles.isPage]: schema.exportName === 'page',
         [styles.dragging]: isDragging,
         [styles.isOver]: isOver || page.hoverElemId === id,
         [styles.selected]: page.activeElemId === id,
