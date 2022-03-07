@@ -4,6 +4,34 @@
   "specs": [
     {
       "title": "默认状态",
+      "componentProps": {
+        "columns": [
+          {
+            "Header": "列一",
+            "accessor": "one"
+          },
+          {
+            "Header": "列二",
+            "accessor": "two"
+          },
+          {
+            "Header": "列三",
+            "accessor": "three"
+          }
+        ],
+        "data": [
+          {
+            "one": "Test",
+            "two": "Test",
+            "three": "Test"
+          },
+          {
+            "one": "Test",
+            "two": "Test",
+            "three": "Test"
+          }
+        ]
+      },
       "rules": [
         {
           "selector": ".ofa-table-td",
@@ -18,7 +46,33 @@
     {
       "title": "紧凑",
       "componentProps": {
-        "isCompact": true
+        "isCompact": true,
+        "columns": [
+          {
+            "Header": "列一",
+            "accessor": "one"
+          },
+          {
+            "Header": "列二",
+            "accessor": "two"
+          },
+          {
+            "Header": "列三",
+            "accessor": "three"
+          }
+        ],
+        "data": [
+          {
+            "one": "Test",
+            "two": "Test",
+            "three": "Test"
+          },
+          {
+            "one": "Test",
+            "two": "Test",
+            "three": "Test"
+          }
+        ]
       },
       "rules": [
         {
@@ -34,7 +88,33 @@
     {
       "title": "加载状态",
       "componentProps": {
-        "loading": true
+        "loading": true,
+        "columns": [
+          {
+            "Header": "列一",
+            "accessor": "one"
+          },
+          {
+            "Header": "列二",
+            "accessor": "two"
+          },
+          {
+            "Header": "列三",
+            "accessor": "three"
+          }
+        ],
+        "data": [
+          {
+            "one": "Test",
+            "two": "Test",
+            "three": "Test"
+          },
+          {
+            "one": "Test",
+            "two": "Test",
+            "three": "Test"
+          }
+        ]
       },
       "rules": [
         {

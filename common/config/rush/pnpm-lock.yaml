@@ -2,6 +2,7 @@ lockfileVersion: 5.3
 
 specifiers:
   '@codemirror/lang-javascript': ^0.19.3
+  '@leifandersen/react-codemirror2': ~7.2.1
   '@one-for-all/render-engine': 0.13.6-0
   '@one-for-all/ui': 0.2.18
   '@popperjs/core': ^2.11.0
@@ -59,6 +60,7 @@ specifiers:
   '@uiw/react-codemirror': ~4.2.0
   autoprefixer: 10.4.2
   classnames: ^2.3.1
+  codemirror: ^5.65.1
   comment-json: ^4.1.1
   cors: ^2.8.5
   css-loader: ~6.5.1
@@ -138,6 +140,7 @@ specifiers:
 
 dependencies:
   '@codemirror/lang-javascript': 0.19.7
+  '@leifandersen/react-codemirror2': 7.2.1_codemirror@5.65.2+react@17.0.2
   '@one-for-all/render-engine': 0.13.6-0
   '@one-for-all/ui': 0.2.18
   '@popperjs/core': 2.11.2
@@ -195,6 +198,7 @@ dependencies:
   '@uiw/react-codemirror': 4.2.4_react-dom@17.0.2+react@17.0.2
   autoprefixer: 10.4.2_postcss@8.4.5
   classnames: 2.3.1
+  codemirror: 5.65.2
   comment-json: 4.2.2
   cors: 2.8.5
   css-loader: 6.5.1_webpack@5.70.0
@@ -1126,6 +1130,16 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.0.5
       '@jridgewell/sourcemap-codec': 1.4.11
+    dev: false
+
+  /@leifandersen/react-codemirror2/7.2.1_codemirror@5.65.2+react@17.0.2:
+    resolution: {integrity: sha512-nc3RN3kwwoF9oh9+3LGFxtq1Hx3kMnviRcM04yzPYRUoufJ3Oyyo0Gir9B2neMsWPWcMgCzAj4qlzDmWvcizFw==}
+    peerDependencies:
+      codemirror: 5.x
+      react: '>=15.5 <=17.x'
+    dependencies:
+      codemirror: 5.65.2
+      react: 17.0.2
     dev: false
 
   /@lezer/common/0.15.11:
@@ -3224,6 +3238,10 @@ packages:
       '@types/q': 1.5.5
       chalk: 2.4.2
       q: 1.5.1
+    dev: false
+
+  /codemirror/5.65.2:
+    resolution: {integrity: sha512-SZM4Zq7XEC8Fhroqe3LxbEEX1zUPWH1wMr5zxiBuiUF64iYOUH/JI88v4tBag8MiBS8B8gRv8O1pPXGYXQ4ErA==}
     dev: false
 
   /codepage/1.15.0:
@@ -11020,10 +11038,11 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-68hG7/d1v47XINIIdHvSzQ4AoLbbm40hrJ3+mjUMuw3nM4bDwuHPBjk9nIpfj/a9XQDeNUJ1mb8PZEBfqAi3dQ==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-mE4P9L1oaX33LL7gzcYPOnsa2ZujjU5FaJnvQRryaR5Lp1S91E8fLsfD+PEV8QpEjSt48txs8Ji4Lo26Ghu7JA==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
+      '@leifandersen/react-codemirror2': 7.2.1_codemirror@5.65.2+react@17.0.2
       '@one-for-all/render-engine': 0.13.6-0
       '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
@@ -11033,6 +11052,8 @@ packages:
       '@types/react-dom': 17.0.13
       '@typescript-eslint/eslint-plugin': 5.10.0_0f442f6b60390429061d5d9b6bcaaba6
       '@typescript-eslint/parser': 5.10.1_eslint@8.7.0+typescript@4.5.5
+      classnames: 2.3.1
+      codemirror: 5.65.2
       comment-json: 4.2.2
       cors: 2.8.5
       esbuild: 0.14.13
