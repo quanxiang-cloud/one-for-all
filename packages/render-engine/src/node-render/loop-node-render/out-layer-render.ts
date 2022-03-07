@@ -2,7 +2,8 @@ import React, { PropsWithChildren } from 'react';
 
 import { CTX, HTMLNode, ReactComponentNode, ComposeOutLayer } from '../../types';
 import useInstantiateProps from '../../use-instantiate-props';
-import { useLifecycleHook, useNodeComponent } from '../hooks';
+import { useLifecycleHook } from '../hooks';
+import useNodeComponent from '../hooks/use-node-component'
 
 type HTMLOutLayerRenderProps = PropsWithChildren<{
   outLayer: Omit<HTMLNode, 'children'>;
@@ -25,7 +26,7 @@ function ReactComponentOutLayerRender({
   children,
 }: ReactComponentOutLayerRenderProps): React.ReactElement | null {
   const props = useInstantiateProps(outLayer, ctx);
-  const nodeComponent = useNodeComponent(outLayer, ctx.repository);
+  const nodeComponent = useNodeComponent(outLayer, ctx);
   useLifecycleHook(outLayer.lifecycleHooks || {});
 
   if (!nodeComponent) {

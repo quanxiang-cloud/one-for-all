@@ -1,17 +1,14 @@
-jest.mock('../../repository');
-
-import React from 'react';
 import { logger } from '@one-for-all/utils';
 import { act, renderHook } from '@testing-library/react-hooks/pure';
 import { APISpecAdapter } from '@one-for-all/api-spec-adapter/lib/src/types';
 import type { Schema } from '@one-for-all/schema-spec';
 
-import { ReactComponentNode, Repository, RefLoader, HTMLNode, APIStatesSpec } from '../../types';
-import APIStatesHub from '../../ctx/states-hub-api';
-import SharedStateHub from '../../ctx/states-hub-shared';
-import SharedStatesHub from '../../ctx/states-hub-shared';
-import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
-import { useLifecycleHook, useNodeComponent, useRefResult, useShouldRender } from '../hooks';
+import { RefLoader, HTMLNode, APIStatesSpec } from '../../../types';
+import APIStatesHub from '../../../ctx/states-hub-api';
+import SharedStateHub from '../../../ctx/states-hub-shared';
+import SharedStatesHub from '../../../ctx/states-hub-shared';
+import dummyCTX from '../../../ctx/__tests__/fixtures/dummy-ctx';
+import { useLifecycleHook, useRefResult, useShouldRender } from '../index';
 
 function wait(timeSecond: number): Promise<boolean> {
   return new Promise((resolve) => {
@@ -20,60 +17,6 @@ function wait(timeSecond: number): Promise<boolean> {
     }, timeSecond * 1000);
   });
 }
-
-test('useNodeComponent_should_return_null', async () => {
-  const node: Pick<ReactComponentNode, 'packageName' | 'packageVersion' | 'exportName'> = {
-    packageName: 'null',
-    packageVersion: 'whatever',
-    exportName: 'Foo',
-  };
-
-  const { result, unmount } = renderHook(() => useNodeComponent(node));
-
-  // await waitForNextUpdate();
-
-  expect(result.current).toEqual(null);
-  // expect(logger.error).toBeCalled();
-
-  unmount();
-});
-
-test('useNodeComponent_should_return_dummy_component', async () => {
-  const node: Pick<ReactComponentNode, 'packageName' | 'packageVersion' | 'exportName'> = {
-    packageName: 'foo',
-    packageVersion: 'whatever',
-    exportName: 'Foo',
-  };
-
-  const { result, unmount, waitForNextUpdate } = renderHook(() => useNodeComponent(node));
-
-  await waitForNextUpdate();
-
-  expect(result.current).toBeTruthy();
-  expect(logger.error).not.toBeCalled();
-
-  unmount();
-});
-
-test('useNodeComponent_should_return_component_in_repository', () => {
-  const dummyComponent = (): JSX.Element => <div />;
-  const node: Pick<ReactComponentNode, 'packageName' | 'packageVersion' | 'exportName'> = {
-    packageName: 'foo',
-    packageVersion: 'whatever',
-    exportName: 'Foo',
-  };
-  const repository: Repository = {
-    'foo@whatever': {
-      Foo: dummyComponent,
-    },
-  };
-  const { result, unmount } = renderHook(() => useNodeComponent(node, repository));
-
-  expect(logger.error).not.toBeCalled();
-  expect(result.current).toEqual(dummyComponent);
-
-  unmount();
-});
 
 test('useLifecycleHook_should_be_called', () => {
   const didMount = jest.fn();

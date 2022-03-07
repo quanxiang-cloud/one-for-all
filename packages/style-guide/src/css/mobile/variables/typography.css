@@ -1,0 +1,24 @@
+/* override variables with mobile only styles */
+:root {
+  /*font size values*/
+  --font-size-headline1: .22rem;
+  --font-size-headline2: .19rem;
+  --font-size-headline3: .17rem;
+  --font-size-headline4: .15rem;
+  --font-size-body1: .17rem;
+  --font-size-body2: .15rem;
+  --font-size-button: .15rem;
+  --font-size-underline: .13rem;
+  --font-size-caption: .13rem;
+
+  /*line height values*/
+  --line-height-headline1: calc(33 / 22);
+  --line-height-headline2: calc(29 / 19);
+  --line-height-headline3: calc(26 / 17);
+  --line-height-headline4: calc(23 / 15);
+  --line-height-body1: calc(26 / 17);
+  --line-height-body2: calc(23 / 15);
+  --line-height-button: calc(23 / 15);
+  --line-height-underline: calc(20 / 13);
+  --line-height-caption: calc(20 / 13);
+}

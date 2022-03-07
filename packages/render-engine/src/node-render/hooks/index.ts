@@ -1,20 +1,16 @@
 import { useContext, useEffect, useState } from 'react';
 import { logger } from '@one-for-all/utils';
 
-import { importComponent } from '../repository';
-import PathContext from './path-context';
-import initCTX from '../ctx';
-import deserialize from '../deserialize';
-import useInstantiateProps from '../use-instantiate-props';
+import PathContext from '../path-context';
+import initCTX from '../../ctx';
+import deserialize from '../../deserialize';
+import useInstantiateProps from '../../use-instantiate-props';
 import type {
   CTX,
   RefLoader,
-  Repository,
   LifecycleHooks,
-  DynamicComponent,
   SchemaNode,
-  ReactComponentNode,
-} from '../types';
+} from '../../types';
 import SchemaSpec from 'packages/schema-spec/src';
 
 export function useLifecycleHook({ didMount, willUnmount }: LifecycleHooks): void {
@@ -27,51 +23,6 @@ export function useLifecycleHook({ didMount, willUnmount }: LifecycleHooks): voi
       willUnmount?.();
     };
   }, []);
-}
-
-export function useNodeComponent(
-  node: Pick<ReactComponentNode, 'packageName' | 'packageVersion' | 'exportName'>,
-  repository?: Repository,
-): DynamicComponent | null {
-  const [lazyLoadedComponent, setComponent] = useState<DynamicComponent | null>(null);
-  const currentPath = useContext(PathContext);
-
-  useEffect(() => {
-    let unMounting = false;
-    const packageNameVersion = `${node.packageName}@${node.packageVersion}`;
-    if (repository?.[packageNameVersion]?.[node.exportName || 'default']) {
-      setComponent(() => repository?.[packageNameVersion]?.[node.exportName || 'default']);
-      return;
-    }
-
-    // eslint-disable-next-line no-void
-    void importComponent({
-      packageName: node.packageName,
-      version: node.packageVersion,
-      exportName: node.exportName,
-    }).then((comp) => {
-      if (unMounting) {
-        return;
-      }
-
-      if (!comp) {
-        logger.error(
-          `got empty component for package: ${node.packageName},`,
-          `exportName: ${node.exportName}, version: ${node.packageVersion}`,
-          `please check the spec for node: ${currentPath}.`,
-        );
-        return;
-      }
-
-      setComponent(() => comp);
-    });
-
-    return () => {
-      unMounting = true;
-    };
-  }, []);
-
-  return lazyLoadedComponent;
 }
 
 interface RefResult {
