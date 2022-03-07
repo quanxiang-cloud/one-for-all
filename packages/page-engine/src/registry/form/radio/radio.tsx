@@ -24,10 +24,7 @@ function RadioGroupElm({
   }).filter(Boolean);
 
   return (
-    <RadioGroup 
-      {...rest}
-      ref={ref}
-      className='flex'
+    <RadioGroup
       onChange={(v: string | number | boolean) => onChange?.(v)}
     >
       {turnRadioOption.map((label) => {
