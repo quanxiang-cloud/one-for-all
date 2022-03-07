@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ForwardedRef, forwardRef } from 'react';
 import { RadioGroup, Radio } from '@one-for-all/ui';
 
 export interface Props {
@@ -18,7 +18,7 @@ function RadioGroupElm({
   radioOptions='',
   onChange,
   ...rest
-}: Props, ref: React.Ref<HTMLDivElement>): JSX.Element {
+}: Props, ref: ForwardedRef<HTMLDivElement>): JSX.Element {
   const turnRadioOption = radioOptions.split(/\r?\n/).map((option: string) => {
     return option.trim().slice(0, 15);
   }).filter(Boolean);
@@ -43,4 +43,4 @@ function RadioGroupElm({
   );
 }
 
-export default React.forwardRef(RadioGroupElm);
+export default forwardRef(RadioGroupElm);
