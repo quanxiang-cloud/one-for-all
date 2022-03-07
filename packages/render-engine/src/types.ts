@@ -255,6 +255,7 @@ export interface CTX {
   states: Record<string, unknown>;
   repository?: Repository;
   refLoader?: RefLoader;
+  componentLoader?: ComponentLoader;
 }
 
 export type RenderEngineCTX = Pick<CTX, 'states' | 'apiStates'>;
@@ -291,8 +292,17 @@ export type Repository = Record<PackageNameVersion, Record<string, DynamicCompon
 
 export type RefLoader = (schemaID: string) => Promise<{ schema: SchemaSpec.Schema; plugins?: Plugins }>;
 
+export interface ComponentLoaderParam {
+  packageName: string;
+  packageVersion: string;
+  exportName: string;
+}
+
+export type ComponentLoader = (locator: ComponentLoaderParam) => Promise<DynamicComponent>
+
 export interface Plugins {
   apiSpecAdapter?: APISpecAdapter;
   repository?: Repository;
   refLoader?: RefLoader;
+  componentLoader?: ComponentLoader;
 }
