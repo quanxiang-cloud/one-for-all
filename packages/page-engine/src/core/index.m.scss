@@ -40,6 +40,11 @@
     }
   }
 
+  &.isPage {
+    // this will set page elem as child fixed elem's parent
+    transform: translate3d(0, 0, 0);
+  }
+
   &:hover {
     outline: 1px dashed var(--blue-400);
   }
