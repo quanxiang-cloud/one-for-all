@@ -14,6 +14,8 @@ import Tag from './tag';
 import Search from './search';
 import Radio from './radio';
 import RadioGroup from './radio/group';
+import Checkbox from './checkbox';
+import CheckboxGroup from './checkbox/checkbox-group';
 import Image from './img';
 import Input from './input';
 import RadioButtonGroup from './radio/radio-button-group';
@@ -43,6 +45,8 @@ export {
   Search,
   Radio,
   RadioGroup,
+  Checkbox,
+  CheckboxGroup,
   Image,
   Input,
   RadioButtonGroup,

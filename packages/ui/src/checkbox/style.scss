@@ -1,0 +1,23 @@
+label.checkbox-rounded {
+  @apply bg-white cursor-pointer w-16 h-16 relative;
+  input {
+    @apply invisible opacity-0;
+
+    &:checked + span {
+      @apply bg-blue-600 border-blue-600;
+    }
+
+    &:checked + span::after {
+      opacity: 1;
+    }
+  }
+
+  span {
+    @apply absolute w-full h-full left-0 top-0 transition duration-240 rounded-full border border-gray-400;
+    &::after {
+      content: '';
+      transform: translate(-50%, -55%) rotate(-45deg);
+      @apply w-10 h-6 left-1/2 top-1/2 absolute border-white border-l-1 border-b-1 opacity-0;
+    }
+  }
+}

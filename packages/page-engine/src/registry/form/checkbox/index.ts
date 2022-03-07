@@ -1,22 +1,24 @@
-import Checkbox from './checkbox';
-import ConfigForm from './config-form';
+import CheckboxElm from './checkbox';
+import ConfigForm, { DEFAULT_CONFIG }  from './config-form';
 import type { SourceElement } from '../../../index';
 
-type Props = {
+interface Props {
   name?: string
 }
 
-const defaultConfig: Props = {};
+
 
 const elem: SourceElement<Props> = {
   name: 'checkbox',
   icon: 'apps',
   label: '多选',
   category: 'form',
-  component: Checkbox,
+  component: CheckboxElm,
   configForm: ConfigForm,
-  defaultConfig,
-  order: 4,
+  defaultConfig: DEFAULT_CONFIG,
+  order: 9,
+  exportActions: ['onChange'],
 };
-
 export default elem;
+
+
