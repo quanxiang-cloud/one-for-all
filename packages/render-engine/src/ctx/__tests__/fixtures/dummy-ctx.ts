@@ -1,6 +1,7 @@
 import { CTX } from '../../..';
 import StatesHubAPI from '../../states-hub-api';
 import SharedStatesHub from '../../states-hub-shared';
+import NodePropsCache from '../../node-props-cache';
 
 const ctx: CTX = {
   statesHubAPI: new StatesHubAPI({
@@ -11,6 +12,7 @@ const ctx: CTX = {
 
   apiStates: {},
   states: {},
+  nodePropsCache: new NodePropsCache([]),
 };
 
 export default ctx;

@@ -89,6 +89,7 @@ declare namespace SchemaSpec {
     | 'functional_property'
     | 'render_property'
     | 'computed_property'
+    | 'inherit_property'
     /**
      * @deprecated This type has been deprecated, please use FunctionalProperty instead
      */
@@ -108,7 +109,8 @@ declare namespace SchemaSpec {
     | SharedStateMutationProperty
     | APIInvokeProperty
     | RenderProperty
-    | ComputedProperty;
+    | ComputedProperty
+    | InheritProperty;
 
   type PlainState = APIResultProperty | SharedStateProperty | NodeStateProperty | ConstantProperty;
 
@@ -221,6 +223,13 @@ declare namespace SchemaSpec {
   interface ComputedProperty {
     type: 'computed_property';
     deps: Array<ComputedDependency>;
+    convertor: StateConvertExpression | StateConvertorFuncSpec;
+    fallback: unknown;
+  }
+
+  interface InheritProperty {
+    type: 'inherit_property';
+    parentIndex: number;
     convertor: StateConvertExpression | StateConvertorFuncSpec;
     fallback: unknown;
   }

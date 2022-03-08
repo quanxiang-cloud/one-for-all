@@ -1,5 +1,6 @@
 import instatiateFuncSpec from '../instantiate';
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
+import deserialize from '../';
 
 test('deserialize_keep_n_unchanged', () => {
   const n = { foo: 'bar', bar: 123 };
@@ -43,4 +44,41 @@ test('deserialize_return_expected_value', () => {
   expect(typeof n.children[0].fn2).toBe('function');
   // @ts-ignore
   expect(n.children[0].fn2({ foo: 'bar' })).toBe(10);
+});
+
+test('deserialize_includes_inherit_property', () => {
+  const n = {
+    id: 'some_node_id',
+    children: [
+      {
+        id: 'some_child_id',
+        props: {
+          style: {
+            type: 'inherit_property',
+            parentIndex: 0
+          }
+        },
+        children: [
+          {
+            id: 'some_child_id_next',
+            props: {
+              style1: {
+                type: 'inherit_property',
+                parentIndex: 1
+              },
+              test: {
+                type: 'inherit_property',
+                parentIndex: 0
+              }
+            }
+          }
+        ]
+      },
+    ],
+  };
+  deserialize(n, dummyCTX);
+
+  expect(dummyCTX.nodePropsCache.hasCacheKey('some_node_id.style')).toBeTruthy();
+  expect(dummyCTX.nodePropsCache.hasCacheKey('some_node_id.style1')).toBeTruthy();
+  expect(dummyCTX.nodePropsCache.hasCacheKey('some_child_id.test')).toBeTruthy();
 });
