@@ -1,6 +1,10 @@
 import React from 'react';
 
-import svgHash from './svg-hash';
+// @ts-ignore
+const spriteURL = window.__svg_icon_sprite_url__;
+if (!spriteURL) {
+  console.error('you must set window.__svg_icon_sprite_url__ is in order to use "@one-for-all/icon"');
+}
 
 interface IconProps {
   name: string;
@@ -21,7 +25,7 @@ function Icon(
 
   return (
     <svg ref={ref} data-name={name} style={_style} className={'ofa-svg-icon ' + className}>
-      <use xlinkHref={`${svgHash}#${name}`} />
+      <use xlinkHref={`${spriteURL}#${name}`} />
     </svg>
   );
 }
