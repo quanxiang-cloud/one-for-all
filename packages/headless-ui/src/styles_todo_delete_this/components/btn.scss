@@ -87,7 +87,7 @@
 
 .button-bg-dark {
   border-color: var(--gray-600);
-  background-color: #FFF;
+  background-color: #fff;
 }
 
 .button-bg-dark svg {
@@ -96,7 +96,7 @@
 
 .button-bg-dark:hover:not(.btn--forbidden) {
   border-color: var(--gray-800);
-  background-color: #FFF;
+  background-color: #fff;
 }
 
 .button-bg-dark:hover:not(.btn--forbidden) svg {
@@ -109,7 +109,7 @@
 }
 
 .button-bg-dark:active:not(.btn--forbidden) svg {
-  color: #FFF;
+  color: #fff;
 }
 
 .header-nav-btn-icon {
@@ -161,7 +161,8 @@
     margin-right: 20px;
   }
 
-  .global-header-nav:hover .svg-icon, .global-header-nav--active .svg-icon {
+  .global-header-nav:hover .svg-icon,
+  .global-header-nav--active .svg-icon {
     @apply text-gray-600;
   }
 

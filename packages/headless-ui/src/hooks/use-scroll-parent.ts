@@ -36,9 +36,7 @@ export function getScrollParent(el: Element, root: ScrollElement | undefined = d
   return _root;
 }
 
-function useScrollParent(
-  el: BasicTarget<HTMLElement | Element | Window | Document>,
-): Element | Window {
+function useScrollParent(el: BasicTarget<HTMLElement | Element | Window | Document>): Element | Window {
   const [scrollParent, setScrollParent] = useState<Element | Window>();
 
   useEffect(() => {

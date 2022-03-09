@@ -1,6 +1,6 @@
 {
   "name": "@one-for-all/icon",
-  "version": "0.2.16",
+  "version": "0.3.0",
   "description": "Headless svg icon component",
   "license": "Apache-2.0",
   "module": "lib/src",
@@ -11,10 +11,9 @@
   "scripts": {
     "build": "tsc --build tsconfig.json",
     "build:icons": "node scripts/build-icons.js",
-    "prebundle": "yarn run clean && yarn run build && yarn run build:icons && yarn run copy:assets",
+    "prebundle": "yarn run clean && yarn run build && yarn run build:icons",
     "bundle": "rollup -c",
     "clean": "rm -rf dist lib",
-    "copy:assets": "mkdir -p ../../dist/images && cp -R ../svg-icon/dist/images/* ../../dist/images",
     "lint": "eslint src/**/*.ts --fix",
     "pack": "yarn pack",
     "preview:icons": "node scripts/preview-icons.js"

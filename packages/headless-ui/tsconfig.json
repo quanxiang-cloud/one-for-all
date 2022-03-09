@@ -10,13 +10,6 @@
       "path": "../icon"
     }
   ],
-  "include": [
-    "src/**/*",
-    "./global.d.ts",
-    "./types.d.ts",
-  ],
-  "exclude": [
-    "src/**/__tests__/*",
-    "src/**/__test__/*"
-  ]
+  "include": ["src/**/*", "./global.d.ts", "./types.d.ts"],
+  "exclude": ["src/**/__tests__/*", "src/**/__test__/*"]
 }

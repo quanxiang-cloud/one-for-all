@@ -13,13 +13,7 @@ function Divider(props: DividerProps, ref: ForwardedRef<HTMLDivElement>): JSX.El
     _style.height = size;
   }
 
-  return (
-    <div
-      ref={ref}
-      style={{ ..._style, ...style }}
-      className={cs('ofa-divider', className)}
-    />
-  );
+  return <div ref={ref} style={{ ..._style, ...style }} className={cs('ofa-divider', className)} />;
 }
 
 export default forwardRef(Divider);

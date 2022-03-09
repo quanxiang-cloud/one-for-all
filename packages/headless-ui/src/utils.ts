@@ -139,9 +139,10 @@ export function unitToPx(value: NumberString): number {
 }
 
 export function getZIndexStyle(
-  zIndex?: NumberString, originStyle?: React.CSSProperties,
+  zIndex?: NumberString,
+  originStyle?: React.CSSProperties,
 ): React.CSSProperties {
-  const style: React.CSSProperties = { ...originStyle || {} };
+  const style: React.CSSProperties = { ...(originStyle || {}) };
   if (zIndex !== undefined) {
     style.zIndex = +zIndex;
   }

@@ -31,7 +31,7 @@ describe('Checkbox', () => {
         </>
       );
     }
-    const wrapper = render(<TestChangeDisabled/>);
+    const wrapper = render(<TestChangeDisabled />);
     expect(wrapper.getByRole('checkbox', { hidden: true })).toBeDisabled();
 
     act(() => {
@@ -50,13 +50,9 @@ describe('Checkbox', () => {
 
   it('should have classname while indeterminate', () => {
     const wrapper = render(<Checkbox value="test1" />);
-    expect(
-      wrapper.container.querySelector('.ofa-checkbox-wrapper__indeterminate'),
-    ).not.toBeInTheDocument();
+    expect(wrapper.container.querySelector('.ofa-checkbox-wrapper__indeterminate')).not.toBeInTheDocument();
     wrapper.rerender(<Checkbox value="test1" indeterminate />);
-    expect(
-      wrapper.container.querySelector('.ofa-checkbox-wrapper__indeterminate'),
-    ).toBeInTheDocument();
+    expect(wrapper.container.querySelector('.ofa-checkbox-wrapper__indeterminate')).toBeInTheDocument();
   });
 
   it('should be checked while checked is set', () => {
@@ -77,7 +73,7 @@ describe('Checkbox', () => {
   });
 
   it('should not change checked while disabled whth clicking', () => {
-    const wrapper = render(<Checkbox value="test1" disabled/>);
+    const wrapper = render(<Checkbox value="test1" disabled />);
     act(() => {
       fireEvent.click(wrapper.getByRole('checkbox', { hidden: true }));
     });

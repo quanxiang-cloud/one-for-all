@@ -73,12 +73,16 @@ function Input(
       disabled={disabled}
       readOnly={readOnly}
       style={style}
-      className={cs('ofa-input', {
-        'ofa-input__disabled': disabled,
-        'ofa-input__readOnly': readOnly,
-        'ofa-input__focus': focused,
-        'ofa-input__error': error,
-      }, className)}
+      className={cs(
+        'ofa-input',
+        {
+          'ofa-input__disabled': disabled,
+          'ofa-input__readOnly': readOnly,
+          'ofa-input__focus': focused,
+          'ofa-input__error': error,
+        },
+        className,
+      )}
       onChange={handleChange}
       onKeyDown={handleKeyDown}
       onFocus={handleFocus}

@@ -6,13 +6,13 @@ describe('Radio', () => {
   afterEach(cleanup);
   it('component could be render and unmounted without errors', () => {
     expect(() => {
-      const wrapper = render(<Radio value='test1'/>);
+      const wrapper = render(<Radio value="test1" />);
       wrapper.unmount();
     }).not.toThrow();
   });
 
   it('should render label', () => {
-    const wrapper = render(<Radio value='test1' label='test1'/>);
+    const wrapper = render(<Radio value="test1" label="test1" />);
     expect(wrapper.asFragment()).toMatchSnapshot();
   });
 
@@ -31,7 +31,7 @@ describe('Radio', () => {
         </>
       );
     }
-    const wrapper = render(<TestChangeDisabled/>);
+    const wrapper = render(<TestChangeDisabled />);
     expect(wrapper.getByRole('radio', { hidden: true })).toBeDisabled();
 
     act(() => {
@@ -49,19 +49,19 @@ describe('Radio', () => {
   });
 
   it('should have classname while error', () => {
-    const wrapper = render(<Radio value='test1'/>);
+    const wrapper = render(<Radio value="test1" />);
     expect(wrapper.container.querySelector('.ofa-radio-wrapper__error')).not.toBeInTheDocument();
-    wrapper.rerender(<Radio value='test1' error/>);
+    wrapper.rerender(<Radio value="test1" error />);
     expect(wrapper.container.querySelector('.ofa-radio-wrapper__error')).toBeInTheDocument();
   });
 
   it('should be checked while checked is set', () => {
-    const wrapper = render(<Radio value='test1' checked/>);
+    const wrapper = render(<Radio value="test1" checked />);
     expect(wrapper.getByRole('radio', { hidden: true }) as HTMLInputElement).toBeChecked();
   });
 
   it('should be checked while click', () => {
-    const wrapper = render(<Radio value='test1'/>);
+    const wrapper = render(<Radio value="test1" />);
     act(() => {
       fireEvent.click(wrapper.getByRole('radio', { hidden: true }));
     });
@@ -74,7 +74,7 @@ describe('Radio', () => {
 
   it('should trigger onChange', () => {
     const onChange = jest.fn((val) => val);
-    const wrapper = render(<Radio value='test1' onChange={onChange} />);
+    const wrapper = render(<Radio value="test1" onChange={onChange} />);
     act(() => {
       fireEvent.click(wrapper.getByRole('radio', { hidden: true }));
     });
@@ -97,11 +97,13 @@ describe('RadioGroup', () => {
   });
 
   it('should render label group', () => {
-    const wrapper = render(<RadioGroup value='1'>
-      <Radio value='1' label='1'></Radio>
-      <Radio value='2' label='2'></Radio>
-      <Radio value='3' label='3'></Radio>
-    </RadioGroup>);
+    const wrapper = render(
+      <RadioGroup value="1">
+        <Radio value="1" label="1"></Radio>
+        <Radio value="2" label="2"></Radio>
+        <Radio value="3" label="3"></Radio>
+      </RadioGroup>,
+    );
     expect(wrapper.asFragment()).toMatchSnapshot();
   });
 
@@ -162,11 +164,13 @@ describe('RadioGroup', () => {
   });
 
   it('Radio should be checked while value equals', () => {
-    const wrapper = render(<RadioGroup value='1'>
-      <Radio value='1' label='1'></Radio>
-      <Radio value='2' label='2'></Radio>
-      <Radio value='3' label='3'></Radio>
-    </RadioGroup>);
+    const wrapper = render(
+      <RadioGroup value="1">
+        <Radio value="1" label="1"></Radio>
+        <Radio value="2" label="2"></Radio>
+        <Radio value="3" label="3"></Radio>
+      </RadioGroup>,
+    );
 
     expect(wrapper.getByLabelText('1')).toBeChecked();
     expect(wrapper.getByLabelText('2')).not.toBeChecked();
@@ -207,11 +211,13 @@ describe('RadioGroup', () => {
   it('onchange', () => {
     const onChangeGroup = jest.fn((val) => val);
     const onChange = jest.fn((val) => val);
-    const wrapper = render(<RadioGroup value='1' onChange={onChangeGroup}>
-      <Radio value='1' label='1'></Radio>
-      <Radio value='2' label='2' onChange={onChange}></Radio>
-      <Radio value='3' label='3'></Radio>
-    </RadioGroup>);
+    const wrapper = render(
+      <RadioGroup value="1" onChange={onChangeGroup}>
+        <Radio value="1" label="1"></Radio>
+        <Radio value="2" label="2" onChange={onChange}></Radio>
+        <Radio value="3" label="3"></Radio>
+      </RadioGroup>,
+    );
 
     act(() => {
       fireEvent.click(wrapper.getByLabelText('2'));

@@ -8,7 +8,7 @@
   border-radius: 16px;
   display: inline-block;
   transition: all 0.16s linear;
-  background-color: #CBD5E1;
+  background-color: #cbd5e1;
 }
 
 .ofa-switch:after {
@@ -30,9 +30,8 @@
 }
 
 .ofa-switch:active {
-  background-color: #819AEA;
+  background-color: #819aea;
 }
-
 
 .ofa-switch-disabled {
   opacity: 0.5;
@@ -58,7 +57,7 @@
 }
 
 .ofa-switch-checked {
-  background-color: #375FF3;
+  background-color: #375ff3;
 }
 
 .ofa-switch-checked:after {

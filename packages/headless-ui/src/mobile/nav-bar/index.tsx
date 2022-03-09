@@ -32,13 +32,10 @@ function NavBar(props: NavBarProps, ref: ForwardedRef<HTMLDivElement>): JSX.Elem
 
     return [
       !!leftArrow && (
-        <Icon key="ofa-nav-bar__arrow"
-          className='ofa-nav-bar__arrow'
-          name="keyboard_backspace"
-          size={24} />
+        <Icon key="ofa-nav-bar__arrow" className="ofa-nav-bar__arrow" name="keyboard_backspace" size={24} />
       ),
       !!left && (
-        <span key="ofa-nav-bar__text" className='ofa-nav-bar__text'>
+        <span key="ofa-nav-bar__text" className="ofa-nav-bar__text">
           {left}
         </span>
       ),
@@ -50,7 +47,7 @@ function NavBar(props: NavBarProps, ref: ForwardedRef<HTMLDivElement>): JSX.Elem
       return right;
     }
 
-    return <span className='ofa-nav-bar__text'>{right}</span>;
+    return <span className="ofa-nav-bar__text">{right}</span>;
   };
 
   const renderNavBar = (): ReactElement => {
@@ -69,15 +66,15 @@ function NavBar(props: NavBarProps, ref: ForwardedRef<HTMLDivElement>): JSX.Elem
           props.className,
         )}
       >
-        <div className='ofa-nav-bar__content text-primary'>
+        <div className="ofa-nav-bar__content text-primary">
           {hasLeft && (
-            <div className='ofa-nav-bar__left' onClick={onClickLeft}>
+            <div className="ofa-nav-bar__left" onClick={onClickLeft}>
               {renderLeft()}
             </div>
           )}
-          <div className='ofa-nav-bar__title title3 truncate'>{title}</div>
+          <div className="ofa-nav-bar__title title3 truncate">{title}</div>
           {hasRight && (
-            <div className='ofa-nav-bar__right' onClick={onClickRight}>
+            <div className="ofa-nav-bar__right" onClick={onClickRight}>
               {renderRight()}
             </div>
           )}
@@ -90,7 +87,7 @@ function NavBar(props: NavBarProps, ref: ForwardedRef<HTMLDivElement>): JSX.Elem
     if (fixed && placeholder) {
       return (
         <div
-          className='ofa-nav-bar__placeholder'
+          className="ofa-nav-bar__placeholder"
           style={{ height: navBarHeight ? `${navBarHeight}px` : undefined }}
         />
       );

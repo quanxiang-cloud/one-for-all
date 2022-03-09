@@ -13,19 +13,11 @@ import cs from 'classnames';
 import context from './context';
 
 export type LabelWithInputInstance = HTMLLabelElement & {
-  inputInstance: HTMLInputElement
-}
+  inputInstance: HTMLInputElement;
+};
 
 function InternalCheckbox<T extends ValueType>(
-  {
-    className,
-    style,
-    label,
-    indeterminate,
-    error,
-    onChange,
-    ...restProps
-  }: CheckboxProps<T>,
+  { className, style, label, indeterminate, error, onChange, ...restProps }: CheckboxProps<T>,
   ref?: ForwardedRef<LabelWithInputInstance>,
 ): JSX.Element {
   const [name, setName] = useState<string>();
@@ -40,7 +32,7 @@ function InternalCheckbox<T extends ValueType>(
     if (rootRef.current && inputRef.current) {
       (rootRef.current as LabelWithInputInstance).inputInstance = inputRef.current;
     }
-    return (rootRef.current as LabelWithInputInstance);
+    return rootRef.current as LabelWithInputInstance;
   });
 
   useEffect(() => {
