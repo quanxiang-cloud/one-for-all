@@ -1,0 +1,77 @@
+{
+  "colorNos": [
+    50,
+    100,
+    200,
+    300,
+    400,
+    500,
+    600,
+    700,
+    800,
+    900
+  ],
+  "primary": 400,
+  "colors": [
+    {
+      "name": "pink",
+      "colorValues": [
+        "#fdf2f8",
+        "#fce7f3",
+        "#fbcfe8",
+        "#f9a8d4",
+        "#f472b6",
+        "#ec4899",
+        "#db2777",
+        "#be185d",
+        "#9d174d",
+        "#831843"
+      ]
+    },
+    {
+      "name": "blue",
+      "colorValues": [
+        "#f0f6ff",
+        "#f0f6ff",
+        "#DEE9FF",
+        "#B5CCFF",
+        "#8CADFF",
+        "#638AFF",
+        "#375FF3",
+        "#2543CC",
+        "#162BA6",
+        "#1e3a8a"
+      ]
+    },
+    {
+      "name": "green",
+      "colorValues": [
+        "#f0fdf4",
+        "#dcfce7",
+        "#bbf7d0",
+        "#86efac",
+        "#4ade80",
+        "#22c55e",
+        "#16a34a",
+        "#15803d",
+        "#166534",
+        "#14532d"
+      ]
+    },
+    {
+      "name": "yellow",
+      "colorValues": [
+        "#fefce8",
+        "#fef9c3",
+        "#fef08a",
+        "#fde047",
+        "#FCD34D",
+        "#F59E0B",
+        "#D97706",
+        "#a16207",
+        "#854d0e",
+        "#713f12"
+      ]
+    }
+  ]
+}

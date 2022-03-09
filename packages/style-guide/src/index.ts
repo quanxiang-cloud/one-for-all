@@ -11,7 +11,7 @@ import {
   SelectorListPlain
 } from 'css-tree';
 import init, { compressStringGzip } from "./wasm_gzip/wasm_gzip";
-import type { ClassNameSchema, StyleConfigInterface } from './type';
+import type { ClassNameSchema, StyleConfigInterface, CssVariables } from './type';
 import './assets/csslint.js';
 
 export * from './type';
@@ -86,6 +86,7 @@ function cssGzip(cssStr: string): Promise<Blob | null> {
   });
 }
 
+
 export default class CssASTStore {
   cssASTMap: Record<string, StyleSheetPlain>;
   constructor(initCssMap?: Record<string, StyleSheetPlain>) {
@@ -135,4 +136,13 @@ export default class CssASTStore {
   getGzipFile(): Promise<Blob | null> {
     return cssGzip(this.getCssString());
   }
+}
+
+export function getVariablesCss(variables: CssVariables): Promise<Blob | null> {
+  const cssVariables = variables.colors.map(({ name, colorValues }) => {
+    return variables.colorNos.map((no, index) => {
+      return `--${name}-${no}: ${colorValues[index]};`
+    }).join('');
+  })
+  return cssGzip(`:root{${cssVariables.join('')}}`);
 }

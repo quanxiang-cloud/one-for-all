@@ -18,3 +18,12 @@ export type ComponentSpec = {
   specs: StyleConfigInterface[];
   title: string;
 }
+
+export type CssVariables = {
+  colorNos: number[];
+  primary: number;
+  colors: {
+    name: string,
+    colorValues: string[];
+  }[]
+}
