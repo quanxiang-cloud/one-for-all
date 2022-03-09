@@ -1,6 +1,7 @@
 import React, { useEffect, useImperativeHandle, useState } from 'react';
-import type { Schema } from '@one-for-all/schema-spec';
+import { BrowserHistory } from 'history';
 import { logger } from '@one-for-all/utils';
+import type { Schema } from '@one-for-all/schema-spec';
 
 import initCTX from './ctx';
 import NodeRender from './node-render';
@@ -22,13 +23,27 @@ function useCTX(schema: Schema, plugins?: Plugins): CTX | null {
       sharedStatesSpec: schema.sharedStatesSpec,
       // todo parentCTX?
     })
-      .then((_ctx) => setCTX(_ctx))
-      .catch((err) => {
-        logger.error(err);
-      });
+      .then(setCTX)
+      .catch(logger.error);
   }, []);
 
   return ctx;
+}
+
+function useListenHistory(history?: BrowserHistory) {
+  if (!history) {
+    return null;
+  }
+
+  console.log(history);
+  const [state, setState] = React.useState({
+    action: history.action,
+    location: history.location,
+  });
+
+  React.useEffect(() => history.listen(setState), [history]);
+
+  return state;
 }
 
 function SchemaRender(
@@ -36,6 +51,7 @@ function SchemaRender(
   ref: React.Ref<RenderEngineCTX | undefined>,
 ): React.ReactElement | null {
   const ctx = useCTX(schema, plugins);
+  const historyCTX = useListenHistory(plugins?.history);
 
   useImperativeHandle(
     ref,

@@ -2,6 +2,7 @@ import React from 'react';
 import type { BehaviorSubject } from 'rxjs';
 import type { FetchParams, APISpecAdapter } from '@one-for-all/api-spec-adapter';
 import type * as SchemaSpec from '@one-for-all/schema-spec';
+import { BrowserHistory } from 'history';
 
 export type VersatileFunc<T = unknown> = (...args: unknown[]) => T;
 
@@ -104,7 +105,7 @@ export interface ComputedProperty extends Omit<SchemaSpec.ComputedProperty, 'con
 
 export type NodeProperties = Record<string, NodeProperty>;
 
-export type SchemaNode = HTMLNode | ReactComponentNode | LoopContainerNode | ComposedNode | RefNode | JSXNode;
+export type SchemaNode = HTMLNode | ReactComponentNode | LoopContainerNode | ComposedNode | RefNode | JSXNode | RouteNode;
 
 export type ShouldRenderCondition =
   | APIResultProperty
@@ -132,6 +133,13 @@ export interface ReactComponentNode
     > {
   type: 'react-component';
   children?: Array<SchemaNode>;
+}
+
+export interface RouteNode extends BaseNode {
+  type: 'route-node';
+  path: string;
+  node: SchemaNode;
+  exactly?: boolean;
 }
 
 export interface IndividualLoopContainer extends BaseNode, Pick<SchemaSpec.LoopContainerNode, 'loopKey'> {
@@ -255,6 +263,7 @@ export interface CTX {
   states: Record<string, unknown>;
   repository?: Repository;
   refLoader?: RefLoader;
+  history?: BrowserHistory;
   componentLoader?: ComponentLoader;
 }
 
@@ -304,5 +313,6 @@ export interface Plugins {
   apiSpecAdapter?: APISpecAdapter;
   repository?: Repository;
   refLoader?: RefLoader;
+  history?: BrowserHistory;
   componentLoader?: ComponentLoader;
 }
