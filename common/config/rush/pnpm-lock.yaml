@@ -3,6 +3,7 @@ lockfileVersion: 5.3
 specifiers:
   '@codemirror/lang-javascript': ^0.19.3
   '@leifandersen/react-codemirror2': ~7.2.1
+  '@one-for-all/icon': ~0.2.14
   '@one-for-all/ui': 0.2.18
   '@popperjs/core': ^2.11.0
   '@rollup/plugin-alias': ^3.1.8
@@ -145,6 +146,7 @@ specifiers:
 dependencies:
   '@codemirror/lang-javascript': 0.19.7
   '@leifandersen/react-codemirror2': 7.2.1_codemirror@5.65.2+react@17.0.2
+  '@one-for-all/icon': 0.2.16
   '@one-for-all/ui': 0.2.18
   '@popperjs/core': 2.11.2
   '@rollup/plugin-alias': 3.1.9_rollup@2.66.0
@@ -1232,6 +1234,12 @@ packages:
 
   /@one-for-all/api-spec-adapter/0.3.3:
     resolution: {integrity: sha512-ovc5lcweofbJ1KRN+y1E+IReR4T0E6vgS4Uq1+6VMbA7UAk+6gSRgQnvFecR7Di01Bgj8Ofex4mBhE3gKSPurQ==}
+    dev: false
+
+  /@one-for-all/icon/0.2.16:
+    resolution: {integrity: sha512-Uk/fjCAUnR8JYlk2E2Mdjh4QYhwmqnPmAtiDpwVuhp1aXHf9JzbISyrgOTJUOx3ywZwxdgf2v123Hr5szdQnNQ==}
+    dependencies:
+      react: 17.0.2
     dev: false
 
   /@one-for-all/render-engine/0.13.6-0:
@@ -11623,11 +11631,12 @@ packages:
     dev: false
 
   file:projects/headless-ui.tgz_esbuild@0.14.13:
-    resolution: {integrity: sha512-9V3dKAj1bc2a57QlzhWsqQCNKN1l1QtYq5e7Yua/hFyYX2KUaX7usQTlC1avBJsnFWaWapIkCi7tT4/zo06gfw==, tarball: file:projects/headless-ui.tgz}
+    resolution: {integrity: sha512-VR9Ng5tbfgKcLkgayRcZvK9B/Uz26HRwv18kxkzEI8x4ANBBGNJ1qqqIU0V4rfHj4FpZ2MrObmQ9nfeikTj3Fg==, tarball: file:projects/headless-ui.tgz}
     id: file:projects/headless-ui.tgz
     name: '@rush-temp/headless-ui'
     version: 0.0.0
     dependencies:
+      '@one-for-all/icon': 0.2.16
       '@one-for-all/ui': 0.2.18
       '@popperjs/core': 2.11.2
       '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
