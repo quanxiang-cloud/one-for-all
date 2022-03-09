@@ -46,28 +46,22 @@ test('deserialize_return_expected_value', () => {
   expect(n.children[0].fn2({ foo: 'bar' })).toBe(10);
 });
 
-test('deserialize_includes_inherit_property', () => {
+test('deserialize_includes_inherited_property', () => {
   const n = {
     id: 'some_node_id',
     children: [
       {
         id: 'some_child_id',
-        props: {
-          style: {
-            type: 'inherit_property',
-            parentIndex: 0
-          }
-        },
         children: [
           {
             id: 'some_child_id_next',
             props: {
               style1: {
-                type: 'inherit_property',
+                type: 'inherited_property',
                 parentIndex: 1
               },
               test: {
-                type: 'inherit_property',
+                type: 'inherited_property',
                 parentIndex: 0
               }
             }
@@ -78,7 +72,6 @@ test('deserialize_includes_inherit_property', () => {
   };
   deserialize(n, dummyCTX);
 
-  expect(dummyCTX.nodePropsCache.hasCacheKey('some_node_id.style')).toBeTruthy();
-  expect(dummyCTX.nodePropsCache.hasCacheKey('some_node_id.style1')).toBeTruthy();
-  expect(dummyCTX.nodePropsCache.hasCacheKey('some_child_id.test')).toBeTruthy();
+  expect(dummyCTX.nodePropsCache?.hasCacheID('some_node_id')).toBeTruthy();
+  expect(dummyCTX.nodePropsCache?.hasCacheID('some_child_id')).toBeTruthy();
 });

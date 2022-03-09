@@ -2,26 +2,24 @@ import { useEffect, useRef, useState, useContext } from 'react';
 import { BehaviorSubject, combineLatest, map, Observable, of, skip, tap } from 'rxjs';
 
 import PathContext from '../node-render/path-context';
-import { CTX, InheritProperty, SchemaNode, StateConvertor } from '../types';
-import { convertState, convertPath } from './utils';
+import { CTX, InheritedProperty, SchemaNode, StateConvertor } from '../types';
+import { convertState } from './utils';
 
-function useInheritProps(node: SchemaNode, ctx: CTX): Record<string, unknown> {
+function useInheritedProps(node: SchemaNode, ctx: CTX): Record<string, unknown> {
   const currentPath = useContext(PathContext);
-  const nodePath = convertPath(currentPath);
 
   const convertors: Record<string, StateConvertor | undefined> = {};
   const states$: Record<string, BehaviorSubject<unknown> | undefined> = {};
   const initialFallbacks: Record<string, unknown> = {};
 
   Object.entries(node.props || {})
-    .filter((pair): pair is [string, InheritProperty] => {
-      return pair[1].type === 'inherit_property';
+    .filter((pair): pair is [string, InheritedProperty] => {
+      return pair[1].type === 'inherited_property';
     })
     .forEach(([propName, { fallback, convertor, parentIndex }]) => {
-      const parentID = nodePath.split('/').reverse()[parentIndex + 1];
       initialFallbacks[propName] = fallback;
       convertors[propName] = convertor;
-      states$[propName] = ctx.nodePropsCache.getProps$(`${parentID}.${propName}`);
+      states$[propName] = ctx.nodePropsCache?.getProps$(currentPath, parentIndex);
     });
 
   const fallbacksRef = useRef<Record<string, unknown>>(initialFallbacks);
@@ -77,4 +75,4 @@ function useInheritProps(node: SchemaNode, ctx: CTX): Record<string, unknown> {
   return state;
 }
 
-export default useInheritProps;
+export default useInheritedProps;

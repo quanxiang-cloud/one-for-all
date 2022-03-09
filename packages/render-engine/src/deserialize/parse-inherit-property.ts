@@ -1,36 +1,33 @@
 import SchemaSpec from 'packages/schema-spec/src';
-import { CTX } from '../types';
 
 export default function parseInheritProperty(
   node: SchemaSpec.SchemaNode,
-  parentIDs: (string | number)[],
-  ctx: unknown,
-): SchemaSpec.SchemaNode {
+  path: string,
+  cacheIDs: Set<string>,
+): Set<string> {
   const props = node.props || {};
 
   Object.entries(props).forEach(([key, property]) => {
-    if (property.type !== 'inherit_property') {
+    if (property.type !== 'inherited_property') {
       return;
     }
     const level = property.parentIndex;
-
+    const parentIDs = path.split('/').reverse();
     if (Number.isNaN(level) || level > parentIDs.length) {
       return;
     }
 
     const parentID = parentIDs[level];
-    (ctx as CTX)?.nodePropsCache?.addCacheKey(`${parentID}.${key}`);
+    cacheIDs.add(parentID);
   });
 
   if ('children' in node) {
-    node.children = node.children?.map((subNode) => {
-      return parseInheritProperty(subNode, [node.id, ...parentIDs], ctx);
-    });
+    node.children?.forEach((subNode) => parseInheritProperty(subNode, `${path}/${node.id}`, cacheIDs));
   }
 
   if ('node' in node) {
-    node.node = parseInheritProperty(node.node as SchemaSpec.SchemaNode, [node.id, ...parentIDs], ctx);
+    parseInheritProperty(node.node as SchemaSpec.SchemaNode, `${path}/${node.id}`, cacheIDs);
   }
 
-  return node;
+  return cacheIDs;
 }

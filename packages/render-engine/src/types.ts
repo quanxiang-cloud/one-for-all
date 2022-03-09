@@ -37,7 +37,7 @@ export type NodeProperty =
   | APIInvokeProperty
   | RenderProperty
   | ComputedProperty
-  | InheritProperty;
+  | InheritedProperty;
 
 export type PlainState =
   | APIResultProperty
@@ -103,8 +103,8 @@ export interface ComputedProperty extends Omit<SchemaSpec.ComputedProperty, 'con
   convertor: StateConvertor;
 }
 
-export interface InheritProperty extends Omit<SchemaSpec.InheritProperty, 'convertor'> {
-  convertor: StateConvertor;
+export interface InheritedProperty extends Omit<SchemaSpec.InheritedProperty, 'convertor'> {
+  convertor?: StateConvertor;
 }
 
 export type NodeProperties = Record<string, NodeProperty>;
@@ -254,11 +254,11 @@ export interface APIStateWithFetch extends APIState {
 }
 
 export interface NodePropsCache {
-  getProps$: (key: string) => BehaviorSubject<unknown> | undefined;
-  setProps: (key: string, props: unknown) => void;
-  clearProps: (key: string, cb?: (key: string) => boolean) => void;
-  addCacheKey: (key: string) => void;
-  hasCacheKey: (key: string) => boolean;
+  getProps$: (path: string, parentIndex: number) => BehaviorSubject<unknown> | undefined;
+  setProps: (path: string, nodeID: SchemaNode['id'] ,props: unknown) => void;
+  clearProps: (path: string, cb?: (path: string) => boolean) => void;
+  addCacheID: (nodeID: string) => void;
+  hasCacheID: (nodeID: string) => boolean;
 }
 export interface CTX {
   statesHubAPI: StatesHubAPI;
@@ -268,7 +268,7 @@ export interface CTX {
   repository?: Repository;
   refLoader?: RefLoader;
   componentLoader?: ComponentLoader;
-  nodePropsCache: NodePropsCache;
+  nodePropsCache?: NodePropsCache;
 }
 
 export type RenderEngineCTX = Pick<CTX, 'states' | 'apiStates'>;

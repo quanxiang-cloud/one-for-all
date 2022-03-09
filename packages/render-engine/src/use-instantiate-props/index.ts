@@ -12,13 +12,10 @@ import useInternalHookProps from './use-internal-hook-props';
 import useRenderProps from './use-render-props';
 import useComputedProps from './use-computed-props';
 import PathContext from '../node-render/path-context';
-import { convertPath } from './utils';
-import useInheritProps from './use-inherit-props';
+import useInheritedProps from './use-inherited-props';
 
 function useInstantiateProps(node: SchemaNode, ctx: CTX): Record<string, unknown> {
   const currentPath = useContext(PathContext);
-  const nodePath = convertPath(currentPath);
-  const nodeID = nodePath.split('/').pop() || node.id;
 
   const constantProps = useConstantProps(node);
   const apiResultProps = useAPIResultProps(node, ctx);
@@ -26,7 +23,7 @@ function useInstantiateProps(node: SchemaNode, ctx: CTX): Record<string, unknown
   const sharedStateProps = useSharedStateProps(node, ctx);
   const internalHookProps = useInternalHookProps(node, ctx);
   const computedProps = useComputedProps(node, ctx);
-  const inheritProps = useInheritProps(node, ctx);
+  const inheritedProps = useInheritedProps(node, ctx);
   const funcProps = useFuncProps(node);
 
   const sharedStateMutationProps = useSharedStateMutationProps(node, ctx);
@@ -40,21 +37,16 @@ function useInstantiateProps(node: SchemaNode, ctx: CTX): Record<string, unknown
       apiResultProps,
       apiLoadingProps,
       sharedStateProps,
-      funcProps,
       sharedStateMutationProps,
       internalHookProps,
       renderProps,
       computedProps,
-      inheritProps,
+      inheritedProps,
     );
 
-    Object.entries(instantiateProps).forEach(([key, prop]) => {
-      if(ctx.nodePropsCache.hasCacheKey(`${nodeID}.${key}`)) {
-        ctx.nodePropsCache.setProps(`${nodeID}.${key}`, prop);
-      }
-    });
+    ctx.nodePropsCache?.setProps(currentPath, node.id, instantiateProps);
 
-    return instantiateProps;
+    return Object.assign(instantiateProps, funcProps);
   }, [apiResultProps, sharedStateProps, apiLoadingProps, computedProps, constantProps]);
 }
 

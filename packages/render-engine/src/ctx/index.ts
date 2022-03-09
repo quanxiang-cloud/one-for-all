@@ -2,7 +2,6 @@ import StatesHubAPI from './states-hub-api';
 import StatesHubShared from './states-hub-shared';
 import getAPIStates from './api-states';
 import getSharedStates from './shared-states';
-import NodePropsCache from './node-props-cache';
 import type { CTX, Plugins, SharedStatesSpec } from '../types';
 import type { APIStatesSpec, SharedStatesSpec as _SharedStatesSpec } from '@one-for-all/schema-spec';
 import type { APISpecAdapter } from '@one-for-all/api-spec-adapter';
@@ -50,7 +49,6 @@ async function initCTX({ apiStateSpec, sharedStatesSpec, parentCTX, plugins }: P
     repository: repository || parentCTX?.repository,
     refLoader: refLoader || parentCTX?.refLoader,
     componentLoader: componentLoader || parentCTX?.componentLoader,
-    nodePropsCache: new NodePropsCache([]),
   };
 
   return ctx;
