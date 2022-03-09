@@ -127,6 +127,47 @@ test('StatesHubShared_getNodeState$_return_parent_node_value', () => {
   expect(nodeState$.value).toBe(parentNodeValue);
 });
 
+describe('StatesHubShared_mutateState_return_expected_value', () => {
+  test('StatesHubShared_writeable_undefined_return_expected_value', () => {
+    const sharedStatesSpec: SharedStatesSpec = {
+      foo: { initial: 'foo' },
+    };
+    const statesHubShared = new StatesHubShared(sharedStatesSpec);
+    const foo$ = statesHubShared.getState$('foo');
+
+    expect(foo$).toBeInstanceOf(BehaviorSubject);
+    expect(foo$.value).toBe('foo');
+    statesHubShared.mutateState('foo', 'kk_mei');
+    expect(foo$.value).toBe('kk_mei');
+  });
+
+  test('StatesHubShared_writeable_true_return_expected_value', () => {
+    const sharedStatesSpec: SharedStatesSpec = {
+      foo: { initial: 'foo', writeable: true },
+    };
+    const statesHubShared = new StatesHubShared(sharedStatesSpec);
+    const foo$ = statesHubShared.getState$('foo');
+
+    expect(foo$).toBeInstanceOf(BehaviorSubject);
+    expect(foo$.value).toBe('foo');
+    statesHubShared.mutateState('foo', 'kk_mei');
+    expect(foo$.value).toBe('kk_mei');
+  });
+
+  test('StatesHubShared_writeable_false_return_expected_value', () => {
+    const sharedStatesSpec: SharedStatesSpec = {
+      foo: { initial: 'foo', writeable: false },
+    };
+    const statesHubShared = new StatesHubShared(sharedStatesSpec);
+    const foo$ = statesHubShared.getState$('foo');
+
+    expect(foo$).toBeInstanceOf(BehaviorSubject);
+    expect(foo$.value).toBe('foo');
+    statesHubShared.mutateState('foo', 'kk_mei');
+    expect(foo$.value).toBe('foo');
+  });
+});
+
 // todo add test cases for
 // retrieveNodeState: (nodeKey: string) => unknown;
 // mutateState: (stateID: string, state: unknown) => void;
