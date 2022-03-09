@@ -263,8 +263,9 @@ export interface CTX {
   states: Record<string, unknown>;
   repository?: Repository;
   refLoader?: RefLoader;
-  history?: BrowserHistory;
   componentLoader?: ComponentLoader;
+  urlPush?: (path: string) => void;
+  routeState?: Record<string, string>;
 }
 
 export type RenderEngineCTX = Pick<CTX, 'states' | 'apiStates'>;

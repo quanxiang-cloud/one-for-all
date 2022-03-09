@@ -49,12 +49,29 @@ function Dummy(): JSX.Element {
 //   expect(container.querySelector('[jest-id="state"]')).toBeTruthy();
 // });
 
-test('SchemaRender_should_console_changed', () => {
-  const { container } = render(<Dummy />);
+const routeNodeSchema: SchemaSpec.Schema = {
+  apiStateSpec: {},
+  sharedStatesSpec: {},
+  node: {
+    id: 'test_route',
+    type: 'route-node',
+    path: '/test/route/change',
+    node: {
+      id: 'test',
+      type: 'html-element',
+      name: 'div',
+    },
+  },
+};
 
-  act(() => {
-  
-  });
+function DummyRouter(): JSX.Element {
+  return <SchemaRender schema={routeNodeSchema} plugins={{ apiSpecAdapter: dummyAdapter, history }} />;
+}
+
+test('SchemaRender_should_render_null', () => {
+  const { container } = render(<DummyRouter />);
+
+  act (() => history.push('/test/route/change'));
 });
 
 test('todo', () => {

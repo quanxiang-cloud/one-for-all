@@ -35,7 +35,6 @@ function useListenHistory(history?: BrowserHistory) {
     return null;
   }
 
-  console.log(history);
   const [state, setState] = React.useState({
     action: history.action,
     location: history.location,
@@ -51,7 +50,7 @@ function SchemaRender(
   ref: React.Ref<RenderEngineCTX | undefined>,
 ): React.ReactElement | null {
   const ctx = useCTX(schema, plugins);
-  const historyCTX = useListenHistory(plugins?.history);
+  const routerCTX = useListenHistory(plugins?.history);
 
   useImperativeHandle(
     ref,
@@ -75,7 +74,7 @@ function SchemaRender(
     return null;
   }
 
-  return React.createElement(NodeRender, { node: instantiatedNode, ctx });
+  return React.createElement(NodeRender, { node: instantiatedNode, ctx, routerCTX });
 }
 
 export default React.forwardRef<RenderEngineCTX | undefined, Props>(SchemaRender);
