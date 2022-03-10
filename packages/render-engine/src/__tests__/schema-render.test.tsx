@@ -22,8 +22,6 @@ const dummyAdapter: APISpecAdapter = {
   build: () => ({ url: '', method: '' }),
 };
 
-const history = createBrowserHistory({ window });
-
 function Dummy(): JSX.Element {
   const ref = useRef<RenderEngineCTX>(null);
   const [state, setState] = useState<RenderEngineCTX | undefined>();
@@ -38,7 +36,7 @@ function Dummy(): JSX.Element {
 
   return (
     <>
-      <SchemaRender ref={ref} schema={schema} plugins={{ apiSpecAdapter: dummyAdapter, history }} />
+      <SchemaRender ref={ref} schema={schema} plugins={{ apiSpecAdapter: dummyAdapter }} />
       {state && <div jest-id="state" />}
     </>
   );
@@ -65,13 +63,11 @@ const routeNodeSchema: SchemaSpec.Schema = {
 };
 
 function DummyRouter(): JSX.Element {
-  return <SchemaRender schema={routeNodeSchema} plugins={{ apiSpecAdapter: dummyAdapter, history }} />;
+  return <SchemaRender schema={routeNodeSchema} plugins={{ apiSpecAdapter: dummyAdapter }} />;
 }
 
-test('SchemaRender_should_render_null', () => {
+test('SchemaRender_should_render_element', () => {
   const { container } = render(<DummyRouter />);
-
-  act (() => history.push('/test/route/change'));
 });
 
 test('todo', () => {

@@ -265,7 +265,15 @@ export interface CTX {
   refLoader?: RefLoader;
   componentLoader?: ComponentLoader;
   urlPush?: (path: string) => void;
-  routeState?: Record<string, string>;
+  routeState?: {location: Location};
+}
+
+export interface Location {
+  pathname: string;
+  search: string;
+  hash: string;
+  state: null;
+  key: 'default';
 }
 
 export type RenderEngineCTX = Pick<CTX, 'states' | 'apiStates'>;

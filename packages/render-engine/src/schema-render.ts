@@ -1,5 +1,5 @@
-import React, { useEffect, useImperativeHandle, useState } from 'react';
-import { BrowserHistory } from 'history';
+import React, { useEffect, useImperativeHandle, useMemo, useState } from 'react';
+import { BrowserHistory, createBrowserHistory } from 'history';
 import { logger } from '@one-for-all/utils';
 import type { Schema } from '@one-for-all/schema-spec';
 
@@ -14,6 +14,8 @@ interface Props {
 }
 
 function useCTX(schema: Schema, plugins?: Plugins): CTX | null {
+  const history = createBrowserHistory({ window });
+  const routeState = useRouteState(history);
   const [ctx, setCTX] = useState<CTX | null>(null);
 
   useEffect(() => {
@@ -27,18 +29,17 @@ function useCTX(schema: Schema, plugins?: Plugins): CTX | null {
       .catch(logger.error);
   }, []);
 
-  return ctx;
+  return useMemo(() => {
+    return {...ctx, routeState} as CTX;
+  }, [ctx, routeState]);
 }
 
-function useListenHistory(history?: BrowserHistory) {
+export function useRouteState(history?: BrowserHistory): any {
   if (!history) {
     return null;
   }
 
-  const [state, setState] = React.useState({
-    action: history.action,
-    location: history.location,
-  });
+  const [state, setState] = React.useState({ location: history.location });
 
   React.useEffect(() => history.listen(setState), [history]);
 
@@ -50,7 +51,6 @@ function SchemaRender(
   ref: React.Ref<RenderEngineCTX | undefined>,
 ): React.ReactElement | null {
   const ctx = useCTX(schema, plugins);
-  const routerCTX = useListenHistory(plugins?.history);
 
   useImperativeHandle(
     ref,
@@ -59,7 +59,7 @@ function SchemaRender(
         return;
       }
 
-      return { apiStates: ctx.apiStates, states: ctx.states };
+      return { apiStates: ctx.apiStates, states: ctx.states, routeState: ctx.routeState };
     },
     [ctx],
   );
@@ -74,7 +74,7 @@ function SchemaRender(
     return null;
   }
 
-  return React.createElement(NodeRender, { node: instantiatedNode, ctx, routerCTX });
+  return React.createElement(NodeRender, { node: instantiatedNode, ctx });
 }
 
 export default React.forwardRef<RenderEngineCTX | undefined, Props>(SchemaRender);
