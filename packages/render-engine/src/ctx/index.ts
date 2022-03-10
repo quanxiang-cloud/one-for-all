@@ -1,3 +1,4 @@
+import { To } from 'history';
 import type { APISpecAdapter } from '@one-for-all/api-spec-adapter';
 import type { APIStatesSpec, SharedStatesSpec as _SharedStatesSpec } from '@one-for-all/schema-spec';
 
@@ -8,7 +9,6 @@ import getSharedStates from './shared-states';
 import StatesHubShared from './states-hub-shared';
 import type { CTX, Plugins, SharedStatesSpec } from '../types';
 import initializeLazyStates from './initialize-lazy-shared-states';
-import { To } from 'history';
 
 const dummyAPISpecAdapter: APISpecAdapter = {
   build: () => ({ url: '/api', method: 'get' }),

@@ -273,7 +273,7 @@ export interface Location {
   pathname: string;
   search: string;
   hash: string;
-  state: null;
+  state: any;
   key: 'default';
 }
 
