@@ -10,6 +10,7 @@ import HTMLNodeRender from './html-node-render';
 import LoopNodeRender from './loop-node-render';
 import RouteNodeRender from './route-node-render';
 import ReactComponentNodeRender from './react-component-node-render';
+import RouteContext from './route-context';
 
 interface ChildrenRenderProps {
   nodes: SchemaNode[];
@@ -38,6 +39,7 @@ interface Props {
 
 function NodeRender({ node, ctx }: Props): React.ReactElement | null {
   const parentPath = useContext(PathContext);
+  const parentMatch = useContext(RouteContext);
   const currentPath = `${parentPath}/${node.id}`;
   const shouldRender = useShouldRender(node, ctx);
 
@@ -46,9 +48,14 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
   }
 
   if (node.type === 'route-node') {
+    const test = {
+      path: node.path,
+      node: node.node,
+    };
+
     return React.createElement(
-      PathContext.Provider,
-      {value: currentPath},
+      RouteContext.Provider,
+      {value: test},
       React.createElement(RouteNodeRender, { node, ctx })
     );
   }

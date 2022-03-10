@@ -139,6 +139,7 @@ export interface RouteNode extends BaseNode {
   type: 'route-node';
   path: string;
   node: SchemaNode;
+  children?: RouteNode[];
   exactly?: boolean;
 }
 
