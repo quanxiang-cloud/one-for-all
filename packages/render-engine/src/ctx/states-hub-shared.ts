@@ -6,13 +6,16 @@ import { StatesHubShared, SharedStatesSpec } from '../types';
 export default class Hub implements StatesHubShared {
   public cache: Record<string, BehaviorSubject<unknown>>;
   public parentHub?: StatesHubShared = undefined;
+  public unWriteableStates: string[] = [];
 
   public constructor(spec: SharedStatesSpec, parentHub?: StatesHubShared) {
     this.parentHub = parentHub;
     this.cache = Object.entries(spec).reduce<Record<string, BehaviorSubject<unknown>>>(
-      (acc, [stateID, { initial }]) => {
+      (acc, [stateID, { initial, writeable }]) => {
         acc[stateID] = new BehaviorSubject(initial);
-
+        if (writeable === false) {
+          this.unWriteableStates.push(stateID);
+        }
         return acc;
       },
       {},
@@ -53,6 +56,11 @@ export default class Hub implements StatesHubShared {
   public mutateState(stateID: string, state: unknown): void {
     if (stateID.startsWith('$')) {
       logger.warn('shared stateID can not starts with $, this action will be ignored');
+      return;
+    }
+
+    if (this.unWriteableStates.includes(stateID)) {
+      logger.warn('this shared state is not allowed to be written, this action will be ignored');
       return;
     }
 
