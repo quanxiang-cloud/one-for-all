@@ -34,10 +34,9 @@ export function ChildrenRender({
 interface Props {
   node: SchemaNode;
   ctx: CTX;
-  routerCTX?: any;
 }
 
-function NodeRender({ node, ctx, routerCTX }: Props): React.ReactElement | null {
+function NodeRender({ node, ctx }: Props): React.ReactElement | null {
   const parentPath = useContext(PathContext);
   const currentPath = `${parentPath}/${node.id}`;
   const shouldRender = useShouldRender(node, ctx);
@@ -50,7 +49,7 @@ function NodeRender({ node, ctx, routerCTX }: Props): React.ReactElement | null 
     return React.createElement(
       PathContext.Provider,
       {value: currentPath},
-      React.createElement(RouteNodeRender, { node, ctx, routerCTX })
+      React.createElement(RouteNodeRender, { node, ctx })
     );
   }
 

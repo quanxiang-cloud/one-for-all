@@ -1,9 +1,8 @@
-import React, { useContext } from 'react';
-import NodeRender from '.';
+import React from 'react';
 
+import NodeRender from '.';
 import type { CTX, RouteNode } from '../types';
 import { useLifecycleHook } from './hooks';
-import PathContext from './path-context';
 
 interface Props {
   node: RouteNode;
@@ -12,10 +11,12 @@ interface Props {
 
 function RouteNodeRender({ node, ctx }: Props): React.ReactElement | null {
   useLifecycleHook(node.lifecycleHooks || {});
-  const currentPath = useContext(PathContext);
+  const nodePath = node.path.replace(/\/+$/, '').replace(/^\/*/, '/'); // to format route node path
 
-  console.log(ctx.routeState);
-  if (ctx.routeState?.location.pathname === node.path) {
+  ctx.urlPush?.('/app/with/test/:id/ad?pageID=aaaaa', { form: '/' });
+
+  console.log(nodePath);
+  if (ctx.routeState?.location.pathname === nodePath) {
     return React.createElement(NodeRender, { node: node.node, ctx });
   }
 

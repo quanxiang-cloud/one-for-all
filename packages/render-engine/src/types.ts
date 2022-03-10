@@ -2,7 +2,7 @@ import React from 'react';
 import type { BehaviorSubject } from 'rxjs';
 import type { FetchParams, APISpecAdapter } from '@one-for-all/api-spec-adapter';
 import type * as SchemaSpec from '@one-for-all/schema-spec';
-import { BrowserHistory } from 'history';
+import { BrowserHistory, To } from 'history';
 
 export type VersatileFunc<T = unknown> = (...args: unknown[]) => T;
 
@@ -264,8 +264,8 @@ export interface CTX {
   repository?: Repository;
   refLoader?: RefLoader;
   componentLoader?: ComponentLoader;
-  urlPush?: (path: string) => void;
-  routeState?: {location: Location};
+  urlPush?: (to: To, state?: any) => void;
+  routeState?: { action: string, location: Location };
 }
 
 export interface Location {

@@ -1,11 +1,13 @@
-import StatesHubAPI from './states-hub-api';
-import StatesHubShared from './states-hub-shared';
-import getAPIStates from './api-states';
-import getSharedStates from './shared-states';
-import type { CTX, Plugins, SharedStatesSpec } from '../types';
-import type { APIStatesSpec, SharedStatesSpec as _SharedStatesSpec } from '@one-for-all/schema-spec';
+import { To } from 'history';
 import type { APISpecAdapter } from '@one-for-all/api-spec-adapter';
+import type { APIStatesSpec, SharedStatesSpec as _SharedStatesSpec } from '@one-for-all/schema-spec';
+
+import getAPIStates from './api-states';
 import deserialize from '../deserialize';
+import StatesHubAPI from './states-hub-api';
+import getSharedStates from './shared-states';
+import StatesHubShared from './states-hub-shared';
+import type { CTX, Plugins, SharedStatesSpec } from '../types';
 import initializeLazyStates from './initialize-lazy-shared-states';
 
 const dummyAPISpecAdapter: APISpecAdapter = {

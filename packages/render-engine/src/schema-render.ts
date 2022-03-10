@@ -13,6 +13,18 @@ interface Props {
   plugins?: Plugins;
 }
 
+function useRouteState(history?: BrowserHistory): any {
+  if (!history) {
+    return null;
+  }
+
+  const [state, setState] = React.useState({ action: history.action, location: history.location });
+
+  React.useEffect(() => history.listen(setState), [history]);
+
+  return state;
+}
+
 function useCTX(schema: Schema, plugins?: Plugins): CTX | null {
   const history = createBrowserHistory({ window });
   const routeState = useRouteState(history);
@@ -30,20 +42,8 @@ function useCTX(schema: Schema, plugins?: Plugins): CTX | null {
   }, []);
 
   return useMemo(() => {
-    return {...ctx, routeState} as CTX;
+    return {...ctx, routeState, urlPush: history.push} as CTX;
   }, [ctx, routeState]);
-}
-
-export function useRouteState(history?: BrowserHistory): any {
-  if (!history) {
-    return null;
-  }
-
-  const [state, setState] = React.useState({ location: history.location });
-
-  React.useEffect(() => history.listen(setState), [history]);
-
-  return state;
 }
 
 function SchemaRender(

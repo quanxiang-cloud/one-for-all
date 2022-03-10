@@ -3,10 +3,8 @@ import { render } from '@testing-library/react';
 import { APISpecAdapter } from '@one-for-all/api-spec-adapter';
 import type * as SchemaSpec from '@one-for-all/schema-spec';
 
-import SchemaRender from '../schema-render';
 import { RenderEngineCTX } from '../types';
-import { createBrowserHistory } from 'history';
-import { act } from 'react-dom/test-utils';
+import SchemaRender from '../schema-render';
 
 const schema: SchemaSpec.Schema = {
   apiStateSpec: {},
@@ -51,14 +49,14 @@ const routeNodeSchema: SchemaSpec.Schema = {
   apiStateSpec: {},
   sharedStatesSpec: {},
   node: {
-    id: 'test_route',
+    id: 'test',
     type: 'route-node',
-    path: '/test/route/change',
+    path: 'test',
     node: {
-      id: 'test',
+      id: 'last',
       type: 'html-element',
-      name: 'div',
-    },
+      name: 'i',
+    }
   },
 };
 
