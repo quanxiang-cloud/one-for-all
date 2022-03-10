@@ -28,13 +28,14 @@ function useRouteState(history?: BrowserHistory): any {
 function useCTX(schema: Schema, plugins?: Plugins): CTX | null {
   const history = createBrowserHistory({ window });
   const routeState = useRouteState(history);
-  const [ctx, setCTX] = useState<CTX | null>(null);
+  const [ctx, setCTX] = useState<CTX | undefined>();
 
   useEffect(() => {
     initCTX({
       plugins,
       apiStateSpec: schema.apiStateSpec,
       sharedStatesSpec: schema.sharedStatesSpec,
+      urlPush: history.push,
       // todo parentCTX?
     })
       .then(setCTX)
@@ -42,7 +43,7 @@ function useCTX(schema: Schema, plugins?: Plugins): CTX | null {
   }, []);
 
   return useMemo(() => {
-    return {...ctx, routeState, urlPush: history.push} as CTX;
+    return {...ctx, routeState} as CTX;
   }, [ctx, routeState]);
 }
 

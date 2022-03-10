@@ -15,7 +15,7 @@ function RouteNodeRender({ node, ctx }: Props): React.ReactElement | null {
 
   ctx.urlPush?.('/app/with/test/:id/ad?pageID=aaaaa', { form: '/' });
 
-  console.log(nodePath);
+  console.log(ctx.routeState);
   if (ctx.routeState?.location.pathname === nodePath) {
     return React.createElement(NodeRender, { node: node.node, ctx });
   }
