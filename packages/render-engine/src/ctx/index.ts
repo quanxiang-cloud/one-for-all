@@ -19,10 +19,11 @@ interface Params {
   plugins?: Plugins;
   apiStateSpec?: APIStatesSpec;
   sharedStatesSpec?: _SharedStatesSpec;
-  urlPush?: (to: To, state: any) => void;
+  goTo?: (to: To, state: any) => void;
+  goBack?: () => void,
 }
 
-async function initCTX({ parentCTX, plugins, apiStateSpec, sharedStatesSpec, urlPush }: Params): Promise<CTX> {
+async function initCTX({ parentCTX, plugins, apiStateSpec, sharedStatesSpec, goTo, goBack }: Params): Promise<CTX> {
   const { apiSpecAdapter, repository, refLoader, componentLoader } = plugins || {};
 
   const statesHubAPI = new StatesHubAPI(
@@ -49,7 +50,8 @@ async function initCTX({ parentCTX, plugins, apiStateSpec, sharedStatesSpec, url
     apiStates: getAPIStates(statesHubAPI),
     states: getSharedStates(statesHubShared),
 
-    urlPush,
+    goTo,
+    goBack,
     repository: repository || parentCTX?.repository,
     refLoader: refLoader || parentCTX?.refLoader,
     componentLoader: componentLoader || parentCTX?.componentLoader

@@ -35,7 +35,8 @@ function useCTX(schema: Schema, plugins?: Plugins): CTX | null {
       plugins,
       apiStateSpec: schema.apiStateSpec,
       sharedStatesSpec: schema.sharedStatesSpec,
-      urlPush: history.push,
+      goTo: history.push,
+      goBack: history.back,
       // todo parentCTX?
     })
       .then(setCTX)

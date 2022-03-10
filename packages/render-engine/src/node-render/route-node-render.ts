@@ -12,10 +12,7 @@ interface Props {
 function RouteNodeRender({ node, ctx }: Props): React.ReactElement | null {
   useLifecycleHook(node.lifecycleHooks || {});
   const nodePath = node.path.replace(/\/+$/, '').replace(/^\/*/, '/'); // to format route node path
-
-  ctx.urlPush?.('/app/with/test/:id/ad?pageID=aaaaa', { form: '/' });
-
-  console.log(ctx.routeState);
+  
   if (ctx.routeState?.location.pathname === nodePath) {
     return React.createElement(NodeRender, { node: node.node, ctx });
   }

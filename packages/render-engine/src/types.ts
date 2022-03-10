@@ -264,7 +264,8 @@ export interface CTX {
   repository?: Repository;
   refLoader?: RefLoader;
   componentLoader?: ComponentLoader;
-  urlPush?: (to: To, state?: any) => void;
+  goTo?: (to: To, state?: any) => void;
+  goBack?: () => void,
   routeState?: { action: string, location: Location };
 }
 
