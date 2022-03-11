@@ -14,7 +14,6 @@ export default function Tab<T extends React.Key>({
   contentClassName,
   currentKey,
   onChange,
-  children,
 }: TabsProps<T>): JSX.Element {
   const navsRef = useRef(null);
   const [key, setKey] = useState<string | number>(currentKey || items[0].id);
@@ -26,13 +25,9 @@ export default function Tab<T extends React.Key>({
   return (
     <div
       style={{ maxHeight, ...style }}
-      className={cs(
-        'ofa-tab-wrapper',
-        {
-          [`ofa-tab-direction__${direction}`]: direction,
-        },
-        className,
-      )}
+      className={cs('ofa-tab-wrapper', {
+        [`ofa-tab-direction__${direction}`]: direction,
+      }, className)}
     >
       <TabNavs
         ref={navsRef}
@@ -46,7 +41,11 @@ export default function Tab<T extends React.Key>({
           onChange?.(id as T);
         }}
       />
-      <div className={cs('ofa-tab-content', contentClassName)}>{children}</div>
+      <div
+        className={cs('ofa-tab-content', contentClassName)}
+      >
+        {items.find((item) => item.id === key)?.content}
+      </div>
     </div>
   );
 }

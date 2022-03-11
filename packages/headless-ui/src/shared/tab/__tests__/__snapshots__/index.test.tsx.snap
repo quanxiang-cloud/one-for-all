@@ -1,5 +1,39 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`tab navs click test 1`] = `
+<div>
+  <div
+    class="ofa-tab-navs-wrapper"
+  >
+     
+    <div
+      class="ofa-tab-navs tab-click-test-className"
+    >
+      <div
+        class="cursor-pointer relative ofa-tab-nav-item"
+      >
+        tab1
+      </div>
+      <div
+        class="cursor-pointer relative ofa-tab-nav-item tab-click-test-active-className tab-nav__error"
+      >
+        tab2
+      </div>
+      <div
+        class="cursor-pointer relative ofa-tab-nav-item tab-nav__warning"
+      >
+        tab3
+      </div>
+      <div
+        class="cursor-pointer relative ofa-tab-nav-item disabled tab-nav__error"
+      >
+        tab4
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`tab navs props test 1`] = `
 <div>
   <div
@@ -16,7 +50,7 @@ exports[`tab navs props test 1`] = `
         tab1
       </div>
       <div
-        class="cursor-pointer relative ofa-tab-nav-item tab-nav__error test-navs-className"
+        class="cursor-pointer relative ofa-tab-nav-item test-active-className tab-nav__error test-navs-className"
       >
         tab2
       </div>
@@ -49,7 +83,7 @@ exports[`tab props test 1`] = `
         class="ofa-tab-navs"
       >
         <div
-          class="cursor-pointer relative ofa-tab-nav-item test-navs-className"
+          class="cursor-pointer relative ofa-tab-nav-item test-active-className test-navs-className"
         >
           tab1
         </div>
@@ -72,7 +106,9 @@ exports[`tab props test 1`] = `
     </div>
     <div
       class="ofa-tab-content"
-    />
+    >
+      tab1 content
+    </div>
   </div>
 </div>
 `;

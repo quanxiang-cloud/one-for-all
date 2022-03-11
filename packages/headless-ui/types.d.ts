@@ -465,6 +465,7 @@ interface TabItemProps<T extends React.Key> extends BaseProps {
   name: string | React.ReactNode;
   state?: 'error' | 'warning';
   disabled?: boolean;
+  content?: React.ReactNode;
 }
 
 type TabNavProps<T extends React.Key> = BaseProps & {
@@ -478,7 +479,6 @@ interface TabsProps<T extends React.Key> extends BaseProps {
   items: TabItemProps<T>[];
   direction: 'vertical' | 'horizon';
   maxHeight: NumberString;
-  children?: React.ReactNode;
   navsClassName?: string;
   activeNavClassName?: string;
   contentClassName?: string;
