@@ -9,8 +9,8 @@ interface Window {
   addEventListener: (
     type: string,
     listener: (() => void) | null,
-    opts: boolean | AddEventListenerOptions
-  ) => void
+    opts: boolean | AddEventListenerOptions,
+  ) => void;
 }
 
 if (inBrowser) {

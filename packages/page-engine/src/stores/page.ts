@@ -20,12 +20,14 @@ interface AppendNodeOptions {
 }
 
 class PageStore {
-  @observable schema: PageSchema = initPageSchema()
-  @observable mode: Mode = 'design'
-  @observable activeElemId = ''
-  @observable dragPos: DragPos = 'down'
-  @observable schemaElements: Record<string, SchemaElements> = {}
-  @observable parentNodes: string[] = [] // canvas cur node's parents
+  @observable schema: PageSchema = initPageSchema();
+  @observable mode: Mode = 'design';
+  @observable activeElemId = '';
+  @observable hoverElemId='';
+  @observable dragPos: DragPos = 'down';
+  @observable schemaElements: Record<string, SchemaElements> = {};
+  @observable parentNodes: string[] = []; // canvas cur node's parents
+  loopType='';
 
   constructor() {
     makeObservable(this);
@@ -42,21 +44,6 @@ class PageStore {
 
   @computed
   get activeElem(): any {
-    // const node = this.rawActiveElem;
-    // if (node?.type === 'loop-container') {
-    //   if (node.node.type === 'composed-node') {
-    //     const { outLayer, children = [] } = node.node;
-    //     if (outLayer && (outLayer.id === this.activeElemId)) {
-    //       return outLayer;
-    //     }
-
-    //     const currentNode = children.find((item: PageNode) => item.id === this.activeElemId);
-    //     return currentNode;
-    //   }
-
-    //   return node.node;
-    // }
-    // return node;
     return findNode(this.schema.node, this.activeElemId);
   }
 
@@ -110,6 +97,19 @@ class PageStore {
     this.dragPos = pos;
   }
 
+  getRealNode = (rawNode: PageNode): PageNode => {
+    // return rawNode.type === 'loop-container' ? (rawNode as any).node : rawNode;
+    if (rawNode.type === 'loop-container') {
+      const { node } = rawNode;
+      if (node && node.type === 'composed-node') {
+        return node?.outLayer || ({} as PageNode);
+      }
+
+      return node as PageNode;
+    }
+    return rawNode;
+  }
+
   @action
   appendNode = (node: Omit<PageNode, 'type' | 'id'>, target?: Omit<PageNode, 'type' | 'id'> | null, options?: AppendNodeOptions): void => {
     const pageId=this.schema.node.id;
@@ -120,7 +120,6 @@ class PageStore {
     }
     const targetNode = findNode(this.schema.node, targetId, true);
     let targetRealNode = targetNode;
-    let loopType = '';
 
     if (targetNode.type === 'loop-container') {
       if (targetNode.node && targetNode.node.type === 'composed-node') {
@@ -128,19 +127,17 @@ class PageStore {
         if (outLayer.id !== targetId) {
           (children || []).forEach((child: PageNode) => {
             if (child.id === targetId) {
-              loopType = 'composed-node';
+              this.loopType = 'composed-node';
               targetRealNode = child;
             }
           });
-        }
-
-        if (outLayer.id === targetId) {
-          loopType = 'composed-node';
+        } else {
+          this.loopType = 'composed-node';
           targetRealNode = outLayer;
         }
       } else {
         if (targetNode.node.id === targetId) {
-          loopType = 'loop-container';
+          this.loopType = 'loop-container';
           targetRealNode = targetNode.node;
         }
       }
@@ -204,7 +201,7 @@ class PageStore {
       srcNode = defaults(cloneDeep(foundNode), params);
     }
 
-    if (loopType === 'composed-node') {
+    if (this.loopType === 'composed-node') {
       const rawPropsKeys = Object.keys(mapRawProps(srcNode.props)).join(',');
       srcNode.toProps = {
         type: 'to_props_function_spec',
@@ -213,66 +210,59 @@ class PageStore {
       };
     }
 
-    if (targetNode) {
-      window.__isDev__ && console.log('append node: ', toJS(srcNode), toJS(targetNode), this.dragPos);
-
-      if (this.dragPos === 'up') {
-        this.insertBefore(srcNode as PageNode, targetNode, options);
-        return;
-      }
-
-      if (this.dragPos === 'inner') {
-        if (srcNode.id && options?.from !== 'source') {
-          const srcParent = findNode(this.schema.node, srcNode.pid);
-          if (srcParent && srcParent.children) {
-            const isLoopNode = srcNode.type === 'loop-container';
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            const srcNodeId = isLoopNode ? srcNode.node.id : srcNode.id;
-
-            const idx = srcParent.children.findIndex((v: PageNode) => v.id === srcNodeId || v.id === srcNode.id);
-            if (idx > -1) {
-              // remove src node
-              srcParent.children.splice(idx, 1);
-
-              // append to target
-              if (isLoopNode) {
-                set(srcNode, 'node.pid', targetNode.id);
-              }
-              targetNode?.children?.push(Object.assign(srcNode, { pid: targetNode.id }));
-            }
-          }
-        } else {
-          // from source panel
-          if (loopType === 'composed-node') {
-            targetNode?.node.children?.push(Object.assign(srcNode, { pid: targetRealNode.id }));
-            return;
-          }
-          if (targetNode?.children) {
-            targetNode?.children?.push(Object.assign(srcNode, { pid: targetNode.id }));
-          }
-        }
-
-        return;
-      }
-
-      if (this.dragPos === 'down') {
-        this.insertAfter(srcNode as PageNode, targetNode, options);
-      }
+    if(!targetRealNode) {
+      window.__isDev__ && console.log('no target node');
+      return;
     }
+
+    window.__isDev__ && console.log('append node: ', toJS(srcNode), toJS(targetRealNode), this.dragPos);
+
+    if (this.dragPos === 'up') {
+      this.insertBefore(srcNode as PageNode, targetRealNode, options);
+    } else if (this.dragPos === 'inner') {
+      this.appendChild(srcNode as PageNode, targetNode, targetRealNode, options);
+    } else if (this.dragPos === 'down') {
+      this.insertAfter(srcNode as PageNode, targetRealNode, options);
+    }
+    this.loopType='';
   }
 
-  getRealNode = (rawNode: PageNode): PageNode => {
-    // return rawNode.type === 'loop-container' ? (rawNode as any).node : rawNode;
-    if (rawNode.type === 'loop-container') {
-      const { node } = rawNode;
-      if (node && node.type === 'composed-node') {
-        return node?.outLayer || ({} as PageNode);
-      }
+  @action
+  appendChild=(src: PageNode, targetWrap: PageNode, target: PageNode, options?: AppendNodeOptions): void=> {
+    const srcNode=this.getRealNode(src);
+    if (srcNode.id && options?.from !== 'source') {
+      const srcParent = findNode(this.schema.node, srcNode.pid);
+      if(!srcParent?.children) return;
 
-      return node as PageNode;
+      const isLoopNode = srcNode.type === 'loop-container';
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const srcNodeId = isLoopNode ? srcNode.node.id : srcNode.id;
+
+      const idx = srcParent.children.findIndex((v: PageNode) => v.id === srcNodeId || v.id === srcNode.id);
+      if (idx > -1) {
+        // remove src node
+        srcParent.children.splice(idx, 1);
+
+        // append to target
+        if (isLoopNode) {
+          set(srcNode, 'node.pid', target.id);
+        }
+        target?.children?.push(Object.assign(srcNode, { pid: target.id }));
+      }
+    } else {
+      // from source panel
+      const newNode=Object.assign({}, srcNode, {pid: target.id});
+
+      if (target?.children) {
+        target?.children?.push(newNode);
+      } else if (this.loopType === 'composed-node') {
+        // fixme
+        if(targetWrap.node?.outLayer?.id === target.id) {
+          targetWrap?.node?.children?.push(newNode);
+        }
+      }
     }
-    return rawNode;
   }
 
   @action
@@ -372,40 +362,41 @@ class PageStore {
 
   @action
   updateElemProperty = (elem_id: string, propKey: string, conf: any, options?: Record<string, any>): void => {
-    const elem = findNode(this.schema.node, elem_id, true);
-    if (elem) {
-      let actualNode = elem;
-      if (!options?.useRawNode && elem.type === 'loop-container') {
-        // support composed-node
-        if (elem.node.type === 'composed-node') {
-          const { outLayer, children } = elem.node;
-          if (outLayer && outLayer.id === this.activeElemId) {
-            actualNode = outLayer;
-          }
+    const elem = findNode(this.schema.node, elem_id) || findNode(this.schema.node, elem_id, true);
+    if(!elem) return;
 
-          if (children && outLayer.id !== this.activeElemId) {
-            actualNode = children.find((item: PageNode) => item.id === this.activeElemId);
-          }
-        } else {
-          actualNode = elem.node;
+    let actualNode = elem;
+    // todo: remove
+    if (!options?.useRawNode && elem.type === 'loop-container') {
+      // support composed-node
+      if (elem.node.type === 'composed-node') {
+        const { outLayer, children } = elem.node;
+        if (outLayer && outLayer.id === this.activeElemId) {
+          actualNode = outLayer;
         }
-      }
 
-      // console.log('update node props: ', elem_id, toJS(actualNode), propKey, conf);
-
-      if (propKey === 'props') {
-        set(actualNode, propKey, mergeAsRenderEngineProps(toJS(this.activeElem?.props), conf));
-        if (actualNode.exportName && actualNode.exportName === 'grid') {
-          set(actualNode, 'children', generateGridChildren(toJS(actualNode), actualNode.id, conf).children);
+        if (children && outLayer.id !== this.activeElemId) {
+          actualNode = children.find((item: PageNode) => item.id === this.activeElemId);
         }
-      } else if (propKey === 'props.style') {
-        // fixme: style bind variable
-        set(actualNode, propKey, { type: 'constant_property', value: conf });
-      } else if (propKey === 'lifecycleHooks') {
-        set(actualNode, propKey, transformLifecycleHooks(conf));
       } else {
-        set(actualNode, propKey, conf);
+        actualNode = elem.node;
       }
+    }
+
+    // console.log('update node props: ', elem_id, toJS(actualNode), propKey, conf);
+
+    if (propKey === 'props') {
+      set(actualNode, propKey, mergeAsRenderEngineProps(toJS(this.activeElem?.props), conf));
+      if (actualNode.exportName && actualNode.exportName === 'grid') {
+        set(actualNode, 'children', generateGridChildren(toJS(actualNode), actualNode.id, conf).children);
+      }
+    } else if (propKey === 'props.style') {
+      // fixme: style bind variable
+      set(actualNode, propKey, { type: 'constant_property', value: conf });
+    } else if (propKey === 'lifecycleHooks') {
+      set(actualNode, propKey, transformLifecycleHooks(conf));
+    } else {
+      set(actualNode, propKey, conf);
     }
   }
 
@@ -586,6 +577,11 @@ class PageStore {
   // 判断节点的父节点是否为布局容器类型（grid）
   isLayoutContainerNode = (node: PageNode): boolean => {
     return findNode(this.schema.node, node.pid)?.exportName === 'grid'
+  }
+
+  @action
+  setHoverNode=(nodeId: string)=> {
+    this.hoverElemId=nodeId;
   }
 }
 

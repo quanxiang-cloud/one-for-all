@@ -4,3 +4,4 @@ node_modules
 scripts/*
 jest.*.js
 rollup.*.js
+packages/*/config

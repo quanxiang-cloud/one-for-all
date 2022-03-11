@@ -1,0 +1,29 @@
+.style-config-comp-list {
+  border-right: 1px solid #638AFF;
+}
+
+.style-config-container {
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.style-config-comp-box {
+  padding: 10px 5px;
+  cursor: pointer;
+}
+
+.style-config-comp-box:hover {
+  color: #375FF3;
+}
+
+.style-config-comp-active {
+  background-color: #DEE9FF;
+  color: #375FF3;
+}
+
+.style-config-preview {
+  /* display: grid; */
+}

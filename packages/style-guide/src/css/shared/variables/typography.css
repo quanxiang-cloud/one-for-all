@@ -1,0 +1,32 @@
+:root {
+  /* font family */
+  --font-family:  -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+  /* font weight values */
+  --font-weight-medium: 500;
+  --font-weight-regular: 400;
+
+  /* font size values, will override in web/mobile.css */
+
+  /*--font-size-headline1*/
+  /*--font-size-headline2*/
+  /*--font-size-headline3*/
+  /*--font-size-headline4*/
+  /*--font-size-body1*/
+  /*--font-size-body2*/
+  /*--font-size-button*/
+  /*--font-size-underline*/
+  /*--font-size-caption*/
+
+  /* line height values, will override in web/mobile.css */
+
+  /*--line-height-headline1*/
+  /*--line-height-headline2*/
+  /*--line-height-headline3*/
+  /*--line-height-headline4*/
+  /*--line-height-body1*/
+  /*--line-height-body2*/
+  /*--line-height-button*/
+  /*--line-height-underline*/
+  /*--line-height-caption*/
+}

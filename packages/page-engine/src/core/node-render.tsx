@@ -161,13 +161,15 @@ function NodeRender({ schema }: Props): JSX.Element | null {
         Object.assign(elemProps, {
           placeholder: (
             <div
-              className={cs('border border-dashed flex items-center justify-center', {
+              className={cs('border border-dashed flex items-center justify-center w-full h-full', {
                 'bg-gray-100': !backgroundColor && !backgroundImage,
               })}
-              style={{ minHeight: (heightValue.value && Number(heightValue.value) < 60 &&
-                heightValue.unit === 'px') ? Number(heightValue.value) : 60,
-              backgroundColor: backgroundColor,
-              backgroundImage: backgroundImage }}
+              style={{
+                minHeight: (heightValue.value && Number(heightValue.value) < 60 &&
+                  heightValue.unit === 'px') ? Number(heightValue.value) : 60,
+                backgroundColor: backgroundColor,
+                backgroundImage: backgroundImage
+              }}
             >
               {(heightValue.value && Number(heightValue.value) < 60 && heightValue.unit === 'px') ?
                 '' : COMP_WITH_PLACEHOLDER[schema.exportName]}
@@ -181,8 +183,9 @@ function NodeRender({ schema }: Props): JSX.Element | null {
       'data-node-key': schema.id,
       ref: boxRef,
       className: cs(styles.elem, {
+        [styles.isPage]: schema.exportName === 'page',
         [styles.dragging]: isDragging,
-        [styles.isOver]: isOver,
+        [styles.isOver]: isOver || page.hoverElemId === id,
         [styles.selected]: page.activeElemId === id,
         [styles.draggingUp]: isOver && page.dragPos === 'up',
         [styles.draggingInner]: isOver && page.dragPos === 'inner',

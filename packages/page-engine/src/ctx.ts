@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react';
+import { Emitter } from 'mitt';
 
 import PageStore from './stores/page';
 import RegistryStore from './stores/registry';
@@ -10,6 +11,7 @@ export type CtxValue = {
   registry: typeof RegistryStore;
   designer: typeof DesignerStore;
   dataSource: typeof DataSourceStore;
+  eventBus: Emitter<any>;
   [key: string]: any;
 }
 

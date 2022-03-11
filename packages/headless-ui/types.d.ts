@@ -10,10 +10,15 @@ type Modifier = 'primary' | 'secondary' | 'success' | 'danger';
 interface ButtonProps extends BaseProps {
   modifier?: Modifier;
   disabled?: boolean;
+  children: React.ReactNode;
   loading?: boolean;
   loadingText?: string;
   iconName?: string;
+  type?: 'submit' | 'reset' | 'button' | undefined;
   iconSize?: NumberString;
+  size?: 'normal' | 'compact';
+  textClassName?: string;
+  forbidden?: boolean;
   iconClassName?: string;
   onClick?: React.MouseEventHandler;
 }
@@ -76,14 +81,7 @@ interface DividerProps extends BaseProps {
   thickness?: string;
 }
 
-type InputEnterKeyHint =
-  | 'enter'
-  | 'done'
-  | 'go'
-  | 'next'
-  | 'previous'
-  | 'search'
-  | 'send';
+type InputEnterKeyHint = 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send';
 // todo: add BaseInputProps
 interface InputProps extends BaseProps {
   placeholder?: string;
@@ -141,7 +139,7 @@ type CheckboxProps<T extends ValueType> = Omit<RadioProps<T>, 'renderIcon'> & {
 type CheckboxGroupProps<T extends ValueType> = Omit<RadioGroupProps<T>, 'value' | 'onChange'> & {
   value?: T[];
   onChange?: (value: T[]) => void;
-}
+};
 
 type SelectOption<T> = {
   value: T;
@@ -155,21 +153,13 @@ type TriggerRenderFunc<T> = React.FC<{
 }>;
 
 interface ShowSearchType {
-  filter?: (
-    inputValue: string,
-    path: CascaderOptionType[],
-    names: FilledFieldNamesType
-  ) => boolean;
-  render?: (
-    inputValue: string,
-    path: CascaderOptionType[],
-    names: FilledFieldNamesType
-  ) => React.ReactNode;
+  filter?: (inputValue: string, path: CascaderOptionType[], names: FilledFieldNamesType) => boolean;
+  render?: (inputValue: string, path: CascaderOptionType[], names: FilledFieldNamesType) => React.ReactNode;
   sort?: (
     a: CascaderOptionType[],
     b: CascaderOptionType[],
     inputValue: string,
-    names: FilledFieldNamesType
+    names: FilledFieldNamesType,
   ) => number;
   matchInputWidth?: boolean;
   limit?: number | false;
@@ -218,14 +208,8 @@ interface CascaderProps extends BaseProps {
   options: CascaderOptionType[];
   defaultValue?: NumberString[];
   value?: NumberString[];
-  onChange?: (
-    value: NumberString[],
-    selectedOptions?: CascaderOptionType[]
-  ) => void;
-  displayRender?: (
-    label: string[],
-    selectedOptions?: CascaderOptionType[]
-  ) => React.ReactNode;
+  onChange?: (value: NumberString[], selectedOptions?: CascaderOptionType[]) => void;
+  displayRender?: (label: string[], selectedOptions?: CascaderOptionType[]) => React.ReactNode;
   popupClassName?: string;
   popupPlacement?: PopupPlacement;
   placeholder?: string;
@@ -325,11 +309,7 @@ interface TreeNodeProps<T> {
 
 type PullRefreshStatus = 'normal' | 'loading' | 'loosing' | 'pulling' | 'success';
 
-type StatusTextTypeRender = ({
-  distance,
-}: {
-  distance: number;
-}) => React.ReactNode;
+type StatusTextTypeRender = ({ distance }: { distance: number }) => React.ReactNode;
 
 type StatusTextType = React.ReactNode | StatusTextTypeRender;
 
@@ -384,10 +364,10 @@ interface NavBarProps extends BaseProps {
 }
 
 type SwitchProps = Partial<RadioProps<boolean>> & {
-  onText?: string
-  offText?: string
-  onChange?: (value: boolean) => void,
-}
+  onText?: string;
+  offText?: string;
+  onChange?: (value: boolean) => void;
+};
 
 interface FileProps {
   uid: string;
@@ -459,10 +439,13 @@ interface TableProps<T extends Record<string, any>> {
   showCheckbox?: boolean;
   onRowClick?: (rowID: string, selectedRow: T) => void;
   onSelectChange?: (selectedKeys: string[], selectedRows: T[]) => void;
-  // canSetColumnWidth?: boolean;
-  // canAcrossPageChoose?: boolean;
-  // initWidthMap?: WidthMap;
-  // widthMapChange?: (widthMap: WidthMap) => void;
+  className?: string;
+  isCompact?: boolean;
+  style?: React.CSSProperties;
+  canSetColumnWidth?: boolean;
+  canAcrossPageChoose?: boolean;
+  initWidthMap?: WidthMap;
+  widthMapChange?: (widthMap: WidthMap) => void;
 }
 
 interface PaginationProps extends BaseProps {
@@ -473,10 +456,7 @@ interface PaginationProps extends BaseProps {
   pageSizeOptions?: number[];
   showQuickJumper?: boolean;
   showLessItems?: boolean;
-  renderTotalTip?: (
-    total: number,
-    range?: [number, number]
-  ) => React.ReactNode;
+  renderTotalTip?: (total: number, range?: [number, number]) => React.ReactNode;
   onChange?: (current: number, pageSize: number) => void;
 }
 
@@ -507,7 +487,7 @@ interface TabsProps<T extends React.Key> extends BaseProps {
 }
 
 // interface TagsProps
-interface TagProps<T extends React.Key> extends BaseProps{
+interface TagProps<T extends React.Key> extends BaseProps {
   value: T;
   label?: string;
   onDelete?: (value: T) => void;
@@ -587,10 +567,7 @@ interface DrawerProps extends Omit<ModalProps, 'height'> {
   position?: 'top' | 'right' | 'bottom' | 'left';
 }
 
-type SegmentRenderType = (
-  segment: Segment,
-  active?: boolean
-) => React.ReactNode;
+type SegmentRenderType = (segment: Segment, active?: boolean) => React.ReactNode;
 interface Segment {
   key: string;
   text: string;

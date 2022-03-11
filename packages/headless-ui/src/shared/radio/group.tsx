@@ -65,20 +65,14 @@ function InternalRadioGroup<T extends ValueType>(
   };
 
   return (
-    <div
-      className={cs(
-        { 'radio-group-wrapper__disbaled': disabled },
-        className,
-      )}
-      style={style}
-      ref={ref}
-    >
+    <div className={cs({ 'radio-group-wrapper__disbaled': disabled }, className)} style={style} ref={ref}>
       <GroupContext.Provider value={context}>{child}</GroupContext.Provider>
     </div>
   );
 }
 
-const RadioGroup =
-  forwardRef<HTMLDivElement, PropsWithChildren<RadioGroupProps<ValueType>>>(InternalRadioGroup);
+const RadioGroup = forwardRef<HTMLDivElement, PropsWithChildren<RadioGroupProps<ValueType>>>(
+  InternalRadioGroup,
+);
 
 export default memo(RadioGroup);

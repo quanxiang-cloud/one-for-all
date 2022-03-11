@@ -1,0 +1,41 @@
+.ofa-btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  flex-shrink: 0;
+  transition: all 0.3s linear;
+}
+
+.ofa-btn--disable,.ofa-btn--disable>svg {
+  pointer-events: none;
+}
+
+.ofa-btn--forbidden {
+  @extend .ofa-btn--disable;
+  cursor: not-allowed;
+}
+
+.ofa-btn--loading {
+  @extend .ofa-btn--disable;
+
+  &>svg {
+    animation: spin 1s linear infinite;
+  }
+}
+
+.ofa-btn-icon {
+  color: inherit;
+  margin-right: 4px; 
+  fill: currentColor;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

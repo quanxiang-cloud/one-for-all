@@ -1,4 +1,4 @@
-import React, { useEffect,forwardRef, ForwardedRef } from 'react';
+import React, { useEffect, forwardRef, ForwardedRef } from 'react';
 import cs from 'classnames';
 
 import SvgIcon from '@one-for-all/icon';
@@ -6,19 +6,21 @@ import { Select } from '@one-for-all/ui';
 
 import Pager from './pager';
 
-function Pagination({
-  current = 1,
-  total = 0,
-  pageSize = 10,
-  pageSizeOptions = [10, 20, 50, 100],
-  renderTotalTip,
-  showSizeChanger = true,
-  showQuickJumper,
-  showLessItems,
-  onChange,
-  className,
-}: PaginationProps, ref: ForwardedRef<HTMLDivElement>): JSX.Element | null {
-
+function Pagination(
+  {
+    current = 1,
+    total = 0,
+    pageSize = 10,
+    pageSizeOptions = [10, 20, 50, 100],
+    renderTotalTip,
+    showSizeChanger = true,
+    showQuickJumper,
+    showLessItems,
+    onChange,
+    className,
+  }: PaginationProps,
+  ref: ForwardedRef<HTMLDivElement>,
+): JSX.Element | null {
   const [pageParams, setPageParams] = React.useState({
     current: current || 0,
     _current: '',
@@ -124,7 +126,8 @@ function Pagination({
       className={cs('ofa-pagination-page', {
         'ofa-pagination-disabled': pageParams.current === 1,
       })}
-      onClick={handPrev}>
+      onClick={handPrev}
+    >
       <SvgIcon name="chevron_left" />
     </li>
   );
@@ -134,7 +137,8 @@ function Pagination({
       className={cs('ofa-pagination-page', {
         'ofa-pagination-disabled': pageParams.current === calcPage(),
       })}
-      onClick={handleNext}>
+      onClick={handleNext}
+    >
       <SvgIcon name="chevron_right" />
     </li>
   );
@@ -152,40 +156,40 @@ function Pagination({
   if (allPages <= 9) {
     for (let i = 1; i <= allPages; i += 1) {
       const active = pageParams.current === i;
-      pagerList.push(<Pager
-        key={i}
-        page={i}
-        active={active}
-        onClick={() => handleChange(i)}
-      />);
+      pagerList.push(<Pager key={i} page={i} active={active} onClick={() => handleChange(i)} />);
     }
   } else {
-    lastPager = (<Pager key={allPages} page={allPages} active={false}
-      onClick={() => handleChange(allPages)} />);
-    firstPager = (<Pager key={1} page={1} active={false} onClick={() => handleChange(1)} />);
+    lastPager = (
+      <Pager key={allPages} page={allPages} active={false} onClick={() => handleChange(allPages)} />
+    );
+    firstPager = <Pager key={1} page={1} active={false} onClick={() => handleChange(1)} />;
     jumpPrev = (
       <li
         key="jumpPrev"
         className="ofa-pagination-page ofa-pagination-jump ofa-pagination-jump-prev"
-        onClick={handleJumpPrev}>
+        onClick={handleJumpPrev}
+      >
         <SvgIcon className="icon" name="more_horiz" />
         <SvgIcon className="prev" name="double_arrow" />
-      </li>);
+      </li>
+    );
     jumpNext = (
       <li
         key="jumpNext"
         className="ofa-pagination-page ofa-pagination-jump ofa-pagination-jump-next"
-        onClick={handleJumpNext}>
+        onClick={handleJumpNext}
+      >
         <SvgIcon className="icon" name="more_horiz" />
         <SvgIcon className="next" name="double_arrow" />
-      </li>);
+      </li>
+    );
 
     const num = showLessItems ? 2 : 4;
     const secondNum = showLessItems ? 3 : 4;
 
     const _current = pageParams.current;
-    let left = Math.max(1, _current - (num / 2));
-    let right = Math.min(_current + (num / 2), allPages);
+    let left = Math.max(1, _current - num / 2);
+    let right = Math.min(_current + num / 2, allPages);
 
     if (_current - 1 <= num / 2) {
       right = 1 + num;
@@ -197,8 +201,7 @@ function Pagination({
 
     for (let i = left; i <= right; i += 1) {
       const active = _current === i;
-      pagerList.push((<Pager key={i} page={i} active={active}
-        onClick={() => handleChange(i)} />));
+      pagerList.push(<Pager key={i} page={i} active={active} onClick={() => handleChange(i)} />);
     }
 
     if (_current - 1 >= secondNum) {
@@ -217,7 +220,7 @@ function Pagination({
   }
 
   if (renderTotalTip) {
-    totalText = (<>{renderTotalTip(allPages)}</>);
+    totalText = <>{renderTotalTip(allPages)}</>;
   }
 
   if ((showSizeChanger && total <= 50) || total > 50) {
@@ -226,13 +229,17 @@ function Pagination({
         <div>
           <div>每页</div>
           <Select
-            className='ofa-pagination-select'
+            className="ofa-pagination-select"
             value={pageParams.pageSize}
             onChange={changePageSize}
-            options={pageSizeOptions ? pageSizeOptions.map((page: number) => ({
-              label: `${page} 条`,
-              value: page,
-            })) : []}
+            options={
+              pageSizeOptions
+                ? pageSizeOptions.map((page: number) => ({
+                    label: `${page} 条`,
+                    value: page,
+                  }))
+                : []
+            }
           />
         </div>
       </li>
@@ -259,9 +266,7 @@ function Pagination({
 
   return (
     <div className="ofa-pagination-wrapper" ref={ref}>
-      <div className="ofa-pagination-total">
-        {totalText || `共 ${total} 条数据`}
-      </div>
+      <div className="ofa-pagination-total">{totalText || `共 ${total} 条数据`}</div>
       <ul className={cs('ofa-pagination', className)}>
         {prevIcon}
         {pagerList}

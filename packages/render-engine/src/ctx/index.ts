@@ -2,9 +2,11 @@ import StatesHubAPI from './states-hub-api';
 import StatesHubShared from './states-hub-shared';
 import getAPIStates from './api-states';
 import getSharedStates from './shared-states';
-import type { CTX, Plugins } from '../types';
-import { APIStatesSpec, SharedStatesSpec } from '@one-for-all/schema-spec';
+import type { CTX, Plugins, SharedStatesSpec } from '../types';
+import type { APIStatesSpec, SharedStatesSpec as _SharedStatesSpec } from '@one-for-all/schema-spec';
 import type { APISpecAdapter } from '@one-for-all/api-spec-adapter';
+import deserialize from '../deserialize';
+import initializeLazyStates from './initialize-lazy-shared-states';
 
 const dummyAPISpecAdapter: APISpecAdapter = {
   build: () => ({ url: '/api', method: 'get' }),
@@ -12,18 +14,31 @@ const dummyAPISpecAdapter: APISpecAdapter = {
 
 interface Params {
   apiStateSpec?: APIStatesSpec;
-  sharedStatesSpec?: SharedStatesSpec;
+  sharedStatesSpec?: _SharedStatesSpec;
   parentCTX?: CTX;
   plugins?: Plugins;
 }
 
-function initCTX({ apiStateSpec, sharedStatesSpec, parentCTX, plugins }: Params): CTX {
-  const { apiSpecAdapter, repository, refLoader } = plugins || {};
+async function initCTX({ apiStateSpec, sharedStatesSpec, parentCTX, plugins }: Params): Promise<CTX> {
+  const { apiSpecAdapter, repository, refLoader, componentLoader } = plugins || {};
+
   const statesHubAPI = new StatesHubAPI(
-    { apiSpecAdapter: apiSpecAdapter || dummyAPISpecAdapter, apiStateSpec: apiStateSpec || {} },
+    {
+      // TODO: throw error instead of tolerating it
+      apiSpecAdapter: apiSpecAdapter || dummyAPISpecAdapter,
+      apiStateSpec: apiStateSpec || {},
+    },
     parentCTX?.statesHubAPI,
   );
-  const statesHubShared = new StatesHubShared(sharedStatesSpec || {}, parentCTX?.statesHubShared);
+
+  const instantiateSpec = deserialize(sharedStatesSpec, null) as SharedStatesSpec | null;
+  const initializedState = await initializeLazyStates(
+    instantiateSpec || {},
+    apiStateSpec || {},
+    apiSpecAdapter,
+  );
+  const statesHubShared = new StatesHubShared(initializedState, parentCTX?.statesHubShared);
+
   const ctx: CTX = {
     statesHubAPI: statesHubAPI,
     statesHubShared: statesHubShared,
@@ -33,6 +48,7 @@ function initCTX({ apiStateSpec, sharedStatesSpec, parentCTX, plugins }: Params)
 
     repository: repository || parentCTX?.repository,
     refLoader: refLoader || parentCTX?.refLoader,
+    componentLoader: componentLoader || parentCTX?.componentLoader
   };
 
   return ctx;

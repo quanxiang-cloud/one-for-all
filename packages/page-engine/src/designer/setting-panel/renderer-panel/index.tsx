@@ -30,28 +30,44 @@ function RendererPanel(): JSX.Element {
   useEffect(()=> {
     // todo: get cur loop node conf
     const rawNode = page.rawActiveElem;
-    const rawPropsKeys = Object.keys(mapRawProps(rawNode.props)).join(',');
-    const toProps = rawNode.toProps
-    setToPropsFn(get(toProps, 'body', `//${rawPropsKeys}\n${defaultToPropsFn}`));
-
+    
     if (rawNode.type === 'loop-container') {
-      const { iterableState, loopKey } = pick(rawNode, ['iterableState', 'loopKey']);
+      const { iterableState, loopKey, toProps } = pick(rawNode, ['iterableState', 'loopKey', 'toProps']);
+      let node = rawNode.node;
+      if(rawNode.node.type === 'composed-node') {
+        node = rawNode.node.outLayer;
+      }
+      const rawPropsKeys = Object.keys(mapRawProps(node.props)).join(',');
+      setToPropsFn(get(toProps, 'body', `//${rawPropsKeys}\n${defaultToPropsFn}`));
       setLoopKey(loopKey);
       setIsComposed(rawNode.node && rawNode.node.type === 'composed-node');
 
       if (iterableState?.type === 'constant_property') {
         setBindConst(iterableState.value);
       }
+    } else {
+      const toProps = rawNode.toProps;
+      const rawPropsKeys = Object.keys(mapRawProps(rawNode.props)).join(',');
+      setToPropsFn(get(toProps, 'body', `//${rawPropsKeys}\n${defaultToPropsFn}`));
     }
+
     
   }, [page.activeElemId]);
 
   useUpdateEffect(()=> {
     // console.log('sync all loop conf to elem: %s, %s, %o', toPropsFn, loopKey, toJS(bindConst));
     // todo: debounce update
+    const rawNode = page.rawActiveElem;
+    if(rawNode.type === 'loop-container') {
+      page.updateCurNodeAsLoopContainer('loopKey', loopKey || defaultLoopKey);
+      page.updateCurNodeAsLoopContainer('toProps', toPropsFn || defaultToPropsFn);
+    }
+  }, [toPropsFn, loopKey]);
+
+  useUpdateEffect(()=> {
     page.updateCurNodeAsLoopContainer('loopKey', loopKey || defaultLoopKey);
     page.updateCurNodeAsLoopContainer('toProps', toPropsFn || defaultToPropsFn);
-  }, [toPropsFn, loopKey, bindConst]);
+  }, [bindConst])
 
   function handleBindConstVal(): void {
     try {

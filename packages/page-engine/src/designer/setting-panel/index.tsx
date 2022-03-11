@@ -44,44 +44,44 @@ function SettingPanel(): JSX.Element {
         content: <RendererPanel />,
       },
     ]);
-  }, [page.activeElem]);
+  }, [page.activeElemId]);
 
   useEffect(() => {
     if (page.activeElem?.exportName === 'page' && !['props', 'style'].includes(designer.activePanel)) {
       // reset to default panel
       designer.setActivePanel('props');
-      return;
     }
-
-    designer.setActivePanel('props');
   }, [page.activeElemId]);
 
-  function renderPropsPanel(): JSX.Element {
+  function renderPropsPanel(): JSX.Element | null {
     const elem = registry.getElemByType(page.activeElem.exportName);
+    if(!elem) {
+      return (
+        <div className='flex justify-center items-center flex-col h-full'>
+          <p>当前节点暂无属性配置</p>
+        </div>
+      )
+    }
     const ConfigForm = elem.configForm;
 
-    return (
-      <div>
-        <ConfigForm />
-      </div>
-    );
+    return <ConfigForm />;
   }
 
   function renderCont(): JSX.Element {
-    if (!page.activeElem) {
+    if(!page.activeElem){
       return (
         <div className='flex justify-center items-center flex-col h-full'>
           <p>当前层级没有内容</p>
           <p>请在左侧画布选中其他元素</p>
         </div>
-      );
+      )
     }
 
     return (
       <>
         <div className={styles.curElem}>
-          <span className='mr-8'>{page.activeElem.label} ID: </span>
-          <span>{page.activeElem.id}</span>
+          <span className='mr-8'>{page.activeElem?.label} ID: </span>
+          <span>{page.activeElemId}</span>
         </div>
         <Tab
           className={styles.tabs}

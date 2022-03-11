@@ -1,16 +1,16 @@
-@import "./reset.css";
+@import './reset.css';
 
-@import "./variables/colors.css";
+@import './variables/colors.css';
 
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 /*@import "./typography.css";*/
-@import "./border.css";
+@import './border.css';
 /*@import "./animation.css";*/
-@import "./scrollbar.css";
+@import './scrollbar.css';
 
 @import './components/btn.scss';
-@import "./components/icon.scss";
-@import "./components/dropdown.scss";
+@import './components/icon.scss';
+@import './components/dropdown.scss';

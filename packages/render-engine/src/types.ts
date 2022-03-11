@@ -255,15 +255,28 @@ export interface CTX {
   states: Record<string, unknown>;
   repository?: Repository;
   refLoader?: RefLoader;
+  componentLoader?: ComponentLoader;
 }
 
 export type RenderEngineCTX = Pick<CTX, 'states' | 'apiStates'>;
 
 // map of stateID and apiID
-// todo should also store builder info
 export type APIStatesSpec = Record<string, { apiID: string; [key: string]: unknown }>;
 
-export type SharedStatesSpec = Record<string, { initial: unknown }>;
+export type InitializerFunc = (dependencies: Record<string, unknown>) => Promise<unknown> | unknown;
+
+interface Initializer {
+  func: InitializerFunc;
+  dependencies?: {
+    [key: string]: FetchParams;
+  };
+}
+
+export type SharedState = Omit<SchemaSpec.SharedState, 'initializer'> & {
+  initializer?: Initializer;
+};
+
+export type SharedStatesSpec = Record<string, SharedState>;
 
 export interface Schema {
   node: SchemaNode;
@@ -279,8 +292,17 @@ export type Repository = Record<PackageNameVersion, Record<string, DynamicCompon
 
 export type RefLoader = (schemaID: string) => Promise<{ schema: SchemaSpec.Schema; plugins?: Plugins }>;
 
+export interface ComponentLoaderParam {
+  packageName: string;
+  packageVersion: string;
+  exportName: string;
+}
+
+export type ComponentLoader = (locator: ComponentLoaderParam) => Promise<DynamicComponent>
+
 export interface Plugins {
   apiSpecAdapter?: APISpecAdapter;
   repository?: Repository;
   refLoader?: RefLoader;
+  componentLoader?: ComponentLoader;
 }

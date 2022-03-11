@@ -81,12 +81,7 @@ function InternalCheckboxGroup<T extends ValueType>(
         label={option.label}
         value={option.value}
         checked={value.indexOf(option.value) !== -1}
-        onChange={
-          option.onChange as (
-            val: ValueType,
-            e: ChangeEvent<HTMLInputElement>
-          ) => void
-        }
+        onChange={option.onChange as (val: ValueType, e: ChangeEvent<HTMLInputElement>) => void}
       ></Checkbox>
     ));
   }
@@ -101,22 +96,14 @@ function InternalCheckboxGroup<T extends ValueType>(
   };
 
   return (
-    <div
-      ref={ref}
-      style={style}
-      className={cs(
-        { 'checkbox-group-wrapper__disbaled': disabled },
-        className,
-      )}
-    >
+    <div ref={ref} style={style} className={cs({ 'checkbox-group-wrapper__disbaled': disabled }, className)}>
       <GroupContext.Provider value={context}>{child}</GroupContext.Provider>
     </div>
   );
 }
 
-const CheckboxGroup = forwardRef<
-  HTMLDivElement,
-  PropsWithChildren<CheckboxGroupProps<ValueType>>
->(InternalCheckboxGroup);
+const CheckboxGroup = forwardRef<HTMLDivElement, PropsWithChildren<CheckboxGroupProps<ValueType>>>(
+  InternalCheckboxGroup,
+);
 
 export default memo(CheckboxGroup);

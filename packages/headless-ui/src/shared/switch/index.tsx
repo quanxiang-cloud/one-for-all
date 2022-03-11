@@ -4,15 +4,7 @@ import cs from 'classnames';
 import './index.css';
 
 function Switch(
-  {
-    onChange,
-    className,
-    style,
-    onText = '',
-    offText = '',
-    disabled = false,
-    checked = false,
-  }: SwitchProps,
+  { onChange, className, style, onText = '', offText = '', disabled = false, checked = false }: SwitchProps,
   ref?: Ref<HTMLLabelElement>,
 ): JSX.Element {
   const [switcChecked, setSwitchChecked] = useState(checked);
@@ -29,7 +21,8 @@ function Switch(
     <label
       className={cs('ofa-switch', className, {
         'ofa-switch-disabled': disabled,
-        'ofa-switch-checked': switcChecked })}
+        'ofa-switch-checked': switcChecked,
+      })}
       style={style}
       onClick={handleToggleSwitch}
       ref={ref}

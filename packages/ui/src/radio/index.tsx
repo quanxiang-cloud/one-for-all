@@ -1,27 +1,17 @@
 import React, {
   forwardRef,
-  DetailedHTMLProps,
-  InputHTMLAttributes,
   useState,
-  Ref,
   ChangeEvent,
   useEffect,
+  ForwardedRef,
 } from 'react';
 import cs from 'classnames';
 
 import { uuid } from '../utils';
+import { RadioProps } from '../types';
 
-export type Props = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & {
-  onChange?: (value: string | number | boolean) => void;
-  label?: string;
-  value: string | number | boolean;
-  error?: boolean;
-  disabled?: boolean;
-  radioClass?: string;
-  className?: string;
-};
 
-function InternalRadio(props: Props, ref?: Ref<HTMLInputElement>): JSX.Element {
+function InternalRadio(props: RadioProps, ref?: ForwardedRef<HTMLInputElement>): JSX.Element {
   const {
     defaultChecked, error, className, radioClass, onChange, label, checked: isChecked, disabled, ...inputProps
   } = props;

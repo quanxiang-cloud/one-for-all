@@ -1,5 +1,5 @@
 %isOver {
-  background-color: var(--blue-400);
+  background-color: var(--blue-200);
   //opacity: .5;
 }
 
@@ -11,7 +11,7 @@
 
   &.isOver {
     @extend %isOver;
-    opacity: 0.5;
+    //opacity: 0.5;
   }
 }
 
@@ -40,12 +40,17 @@
     }
   }
 
+  &.isPage {
+    // this will set page elem as child fixed elem's parent
+    transform: translate3d(0, 0, 0);
+  }
+
   &:hover {
     outline: 1px dashed var(--blue-400);
   }
 
   &.selected {
-    outline: 1px solid var(--blue-600);
+    outline: 1px solid var(--blue-400);
 
     &>.toolbar {
       visibility: visible;
@@ -58,7 +63,7 @@
   }
 
   &.draggingUp {
-    border-top: 2px solid var(--blue-600)
+    border-top: 2px solid var(--blue-400)
   }
 
   &.draggingInner {
@@ -66,7 +71,7 @@
   }
 
   &.draggingDown {
-    border-bottom: 2px solid var(--blue-600)
+    border-bottom: 2px solid var(--blue-400)
   }
 
   &.forbidden {

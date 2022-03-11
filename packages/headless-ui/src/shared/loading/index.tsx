@@ -11,17 +11,10 @@ function Loading(
   ref?: ForwardedRef<HTMLDivElement>,
 ): JSX.Element {
   return (
-    <div
-      className={cs(
-        'ofa-loading',
-        className,
-        { 'ofa-loading--vertical': vertical },
-      )}
-      ref={ref}
-    >
-      <Icon name='refresh' size={unitToPx(iconSize ?? 0)} className='ofa-loading__icon' />
-      {!!desc && <span className='ofa-loading__desc'>desc</span>}
-      {!desc && !!children && <span className='ofa-loading__desc'>children</span>}
+    <div className={cs('ofa-loading', className, { 'ofa-loading--vertical': vertical })} ref={ref}>
+      <Icon name="refresh" size={unitToPx(iconSize ?? 0)} className="ofa-loading__icon" />
+      {!!desc && <span className="ofa-loading__desc">desc</span>}
+      {!desc && !!children && <span className="ofa-loading__desc">children</span>}
     </div>
   );
 }

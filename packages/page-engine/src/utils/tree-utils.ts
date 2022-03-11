@@ -6,68 +6,27 @@ export function findNode(tree: PageNode, node_id?: string, loopNode?: boolean): 
   if (!tree || typeof tree !== 'object') {
     return;
   }
-
-  // fixme: remove this case
-  if (!node_id) {
+  if (!node_id || tree.id === node_id) {
     return tree;
   }
   // if loop node, return wrapper node
-  // && get(tree, 'node.id') === node_id
   if (tree.type === 'loop-container') {
-    // const loopChildren = get(tree, 'node.children');
-    // if (loopChildren) {
-    //   for (const child of loopChildren) {
-    //     const found = findNode(child as PageNode, node_id);
-    //     if (found) {
-    //       return found;
-    //     }
-    //   }
-    // }
-
-    if (loopNode) {
-      if (tree.node?.type === 'composed-node') {
-        const { outLayer, children } = tree.node;
-        if (outLayer && outLayer.id === node_id) {
-          return tree;
-        }
-
-        if (children) {
-          const isHave = children.find((item) => item.id === node_id);
-          if (isHave) {
-            return tree;
+    if (tree.node?.type === 'composed-node') {
+      const { outLayer, children } = tree.node || {};
+      if (outLayer && outLayer.id === node_id) {
+        return loopNode ? tree : outLayer;
+      }
+      if (children) {
+        for (const child of children) {
+          const found = findNode(child as PageNode, node_id, loopNode);
+          if (found) {
+            return loopNode ? tree : found;
           }
         }
       }
-
-      if (get(tree, 'node.id') === node_id) {
-        return tree;
-      }
+    } else if (get(tree, 'node.id') === node_id) {
+      return loopNode ? tree : tree.node;
     }
-
-    if (tree.node) {
-      // support composed-node
-      if (tree.node.type === 'composed-node') {
-        const { outLayer, children } = tree.node;
-        if (outLayer && outLayer.id === node_id) {
-          return outLayer;
-        }
-
-        if (children) {
-          const isHave = children.find((item) => item.id === node_id);
-          if (isHave) {
-            return isHave;
-          }
-        }
-      }
-    }
-
-    if (get(tree, 'node.id') === node_id) {
-      return tree.node;
-    }
-  }
-
-  if (tree.id === node_id) {
-    return tree;
   }
 
   if (tree.children) {

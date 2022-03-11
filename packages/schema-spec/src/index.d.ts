@@ -240,7 +240,8 @@ declare namespace SchemaSpec {
     | 'loop-container'
     | 'composed-node'
     | 'ref-node'
-    | 'jsx-node';
+    | 'jsx-node'
+    | 'route-node';
 
   interface BaseNode {
     id: string | number;
@@ -251,7 +252,7 @@ declare namespace SchemaSpec {
     lifecycleHooks?: LifecycleHooks;
   }
 
-  type SchemaNode = HTMLNode | ReactComponentNode | LoopContainerNode | RefNode | JSXNode;
+  type SchemaNode = HTMLNode | ReactComponentNode | LoopContainerNode | RefNode | JSXNode | RouteNode;
 
   interface HTMLNode extends BaseNode {
     type: 'html-element';
@@ -269,6 +270,13 @@ declare namespace SchemaSpec {
     children?: Array<SchemaNode>;
   }
 
+  interface RouteNode extends BaseNode {
+    type: 'route-node';
+    path: string;
+    node: SchemaNode;
+    exactly?: boolean;
+  }
+
   interface IndividualLoopContainer extends BaseNode {
     type: 'loop-container';
     loopKey: string;
@@ -284,6 +292,9 @@ declare namespace SchemaSpec {
     node: ComposedNode;
   }
 
+  // why LoopContainer, not `LoopState`?
+  // - it is more maintainable to having a virtual node to holding the loop state
+  // - `LoopState` is confusing with lifecycle hooks
   type LoopContainerNode = IndividualLoopContainer | ComposedNodeLoopContainer;
 
   type ComposedNodeChild = SchemaNode & {
@@ -326,10 +337,31 @@ declare namespace SchemaSpec {
   }
 
   // map of stateID and apiID
-  // todo should also store builder info
   type APIStatesSpec = Record<string, { apiID: string; [key: string]: unknown }>;
 
-  type SharedStatesSpec = Record<string, { initial: unknown }>;
+  // TODO: merge with type definition in api-spec-adapter
+  type FetchParams = Partial<{ params: Record<string, any>; body: any }>;
+
+  /**
+   * InitializerFuncSpec is used to define a function which return value will assigned to some state.
+   * The `dependencies` MUST be some states defined in APIStatesSpec.
+   */
+  interface Initializer {
+    func: BaseFunctionSpec & { type: 'initializer_func_spec'; args: 'dependencies'; };
+    dependencies?: {
+      [key: string]: FetchParams;
+    }
+  }
+
+  interface SharedState {
+    initial: unknown;
+    // default to true
+    writeable?: boolean;
+    initializer?: Initializer;
+    [key: string]: unknown;
+  }
+
+  type SharedStatesSpec = Record<string, SharedState>;
 
   interface Schema {
     node: SchemaNode;

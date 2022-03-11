@@ -4,7 +4,7 @@ export default {
   ...base,
   name: '@one-for-all/headless-ui',
   moduleNameMapper: {
-    "\\.(css|scss|less)$": "jest-css-modules",
-    "@one-for-all/icon": "<rootDir>../icon/src",
+    '\\.(css|scss|less)$': 'jest-css-modules',
+    '@one-for-all/icon': '<rootDir>../icon/src',
   },
 };

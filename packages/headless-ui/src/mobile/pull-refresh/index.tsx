@@ -1,7 +1,8 @@
 import React, {
   CSSProperties,
   ForwardedRef,
-  MutableRefObject, PropsWithChildren,
+  MutableRefObject,
+  PropsWithChildren,
   ReactNode,
   useCallback,
   useMemo,
@@ -69,9 +70,9 @@ function PullRefresh(
     let _distance = distance;
     if (_distance > _pullDistance) {
       if (_distance < _pullDistance * 2) {
-        _distance = _pullDistance + ((_distance - _pullDistance) / 2);
+        _distance = _pullDistance + (_distance - _pullDistance) / 2;
       } else {
-        _distance = (_pullDistance * 1.5) + ((_distance - (_pullDistance * 2)) / 4);
+        _distance = _pullDistance * 1.5 + (_distance - _pullDistance * 2) / 4;
       }
     }
 
@@ -96,16 +97,16 @@ function PullRefresh(
 
   const getStatusText = (): StatusTextType => {
     switch (state.status) {
-    case 'normal':
-      return '';
-    case 'pulling':
-      return pullingText;
-    case 'loading':
-      return loadingText;
-    case 'loosing':
-      return loosingText;
+      case 'normal':
+        return '';
+      case 'pulling':
+        return pullingText;
+      case 'loading':
+        return loadingText;
+      case 'loosing':
+        return loosingText;
     }
-    return props[`${state.status}Text`];
+    return (props as any)[`${state.status}Text`];
   };
 
   const renderStatus = (): ReactNode => {
@@ -119,14 +120,14 @@ function PullRefresh(
 
     if (TEXT_STATUS.includes(status)) {
       nodes.push(
-        <div key="ofa-text" className='ofa-pull-refresh__text text-placeholder'>
+        <div key="ofa-text" className="ofa-pull-refresh__text text-placeholder">
           {statusText}
         </div>,
       );
     }
     if (status === 'loading') {
       nodes.push(
-        <Loading key="ofa-loading" iconSize='.16rem' className='ofa-pull-refresh__loading text-placeholder'>
+        <Loading key="ofa-loading" iconSize=".16rem" className="ofa-pull-refresh__loading text-placeholder">
           {statusText}
         </Loading>,
       );
@@ -232,13 +233,13 @@ function PullRefresh(
     <div ref={ref} className={cs(props.className, 'pull-refresh')} style={props.style}>
       <div
         ref={track}
-        className='ofa-pull-refresh__track'
+        className="ofa-pull-refresh__track"
         style={trackStyle}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
         onTouchCancel={onTouchEnd}
       >
-        <div className='ofa-pull-refresh__head' style={getHeadStyle()}>
+        <div className="ofa-pull-refresh__head" style={getHeadStyle()}>
           {renderStatus()}
         </div>
         {props.children}

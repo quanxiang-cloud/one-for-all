@@ -1,4 +1,4 @@
-jest.mock('../hooks');
+jest.mock('../hooks/index');
 
 import React from 'react';
 import { render } from '@testing-library/react';

@@ -1,10 +1,10 @@
 import esbuild from 'rollup-plugin-esbuild';
 import { terser } from 'rollup-plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
-import commonjs from "@rollup/plugin-commonjs";
+import commonjs from '@rollup/plugin-commonjs';
 // import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import styles from 'rollup-plugin-styles';
-import replace from '@rollup/plugin-replace'
+import replace from '@rollup/plugin-replace';
 
 import typescriptPaths from '../../common/config/rollup/rollup-plugin-typescript-paths';
 import packageJSON from './package.json';
@@ -50,7 +50,7 @@ const commonConfigs = {
     commonjs(),
     replace({
       preventAssignment: true,
-      'process.env.NODE_ENV': JSON.stringify('production')
+      'process.env.NODE_ENV': JSON.stringify('production'),
     }),
     esbuild({
       // All options are optional
@@ -79,19 +79,19 @@ const commonConfigs = {
     styles({
       autoModules: /\.m\.scss/,
       // mode: ["extract", "ofa-ui.css"]
-    })
-  ]
-}
+    }),
+  ],
+};
 
 export default [
   {
     input: 'src/web/index.ts',
     output: getOutput(packageJSON.name, packageJSON.version, 'web'),
-    ...commonConfigs
+    ...commonConfigs,
   },
   {
     input: 'src/mobile/index.ts',
     output: getOutput(packageJSON.name, packageJSON.version, 'mobile'),
-    ...commonConfigs
-  }
+    ...commonConfigs,
+  },
 ];

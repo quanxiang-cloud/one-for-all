@@ -13,18 +13,11 @@ import cs from 'classnames';
 import context from './context';
 
 export type LabelWithInputInstace = HTMLLabelElement & {
-  inputInstance: HTMLInputElement
-}
+  inputInstance: HTMLInputElement;
+};
 
 function InternalRadio<T extends ValueType>(
-  {
-    className,
-    style,
-    label,
-    error,
-    onChange,
-    ...restProps
-  }: RadioProps<T>,
+  { className, style, label, error, onChange, ...restProps }: RadioProps<T>,
   ref?: ForwardedRef<LabelWithInputInstace>,
 ): JSX.Element {
   const groupContext = useContext(context);
@@ -38,7 +31,7 @@ function InternalRadio<T extends ValueType>(
     if (rootRef.current && inputRef.current) {
       (rootRef.current as LabelWithInputInstace).inputInstance = inputRef.current;
     }
-    return (rootRef.current as LabelWithInputInstace);
+    return rootRef.current as LabelWithInputInstace;
   });
 
   useEffect(() => {
@@ -70,13 +63,17 @@ function InternalRadio<T extends ValueType>(
     <label
       ref={rootRef}
       style={style}
-      className={cs('ofa-radio-wrapper', {
-        'ofa-radio-wrapper__checked': checked,
-        'ofa-radio-wrapper__disabled': disabled,
-        'ofa-radio-wrapper__error': error,
-      }, className)}
+      className={cs(
+        'ofa-radio-wrapper',
+        {
+          'ofa-radio-wrapper__checked': checked,
+          'ofa-radio-wrapper__disabled': disabled,
+          'ofa-radio-wrapper__error': error,
+        },
+        className,
+      )}
     >
-      <span className='ofa-radio-item'>
+      <span className="ofa-radio-item">
         <input
           ref={inputRef}
           type="radio"
@@ -90,9 +87,9 @@ function InternalRadio<T extends ValueType>(
             handleChange(checked, e);
           }}
         />
-        <span className='ofa-radio-icon'></span>
+        <span className="ofa-radio-icon"></span>
       </span>
-      {label && (<span className='ofa-radio-label'>{label}</span>)}
+      {label && <span className="ofa-radio-label">{label}</span>}
     </label>
   );
 }

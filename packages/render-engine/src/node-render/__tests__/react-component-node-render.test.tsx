@@ -1,4 +1,4 @@
-jest.mock('../../repository');
+jest.mock('../hooks/use-node-component');
 
 import React, { PropsWithChildren } from 'react';
 import { render } from '@testing-library/react';
@@ -11,7 +11,7 @@ const dummyComponent: React.FC<PropsWithChildren<unknown>> = ({ children }): JSX
   return <div id="some_dummy_component">{children}</div>;
 };
 const repository: Repository = {
-  'foo@whatever': {
+  'somePackageInRepository@whatever': {
     Foo: dummyComponent,
   },
 };
@@ -36,7 +36,7 @@ test('ReactComponentNodeRender_match_snapshots', () => {
   const node: ReactComponentNode = {
     id: 'some_node_id',
     type: 'react-component',
-    packageName: 'foo',
+    packageName: 'somePackageInRepository',
     packageVersion: 'whatever',
     exportName: 'Foo',
   };
@@ -52,7 +52,7 @@ test('ReactComponentNodeRender_match_snapshots_with_children', () => {
   const node: ReactComponentNode = {
     id: 'some_node_id',
     type: 'react-component',
-    packageName: 'foo',
+    packageName: 'somePackageInRepository',
     packageVersion: 'whatever',
     exportName: 'Foo',
     children: [

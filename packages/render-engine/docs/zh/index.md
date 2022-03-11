@@ -36,8 +36,6 @@ yarn add @one-for-all/render-engine
 
 ### ComponentLoader
 
-// todo implement this
-
 渲染引擎虽然是基于 React 实现的，但是没有内置任何 React Component，不过借助 React 的 API，
 渲染引擎可以直接创建 HTML element，也就是说如果 Schema 中的全部节点都是 `html-element`，
 那使用渲染引擎的方式将非常简单，例如 `<SchemaRender schema={schema} />`。
@@ -45,13 +43,13 @@ yarn add @one-for-all/render-engine
 渲染引擎提供了按需下载组件的接口，类型声明如下：
 
 ```typescript
-type componentLocator = {
-   packageName: string;
-   packageVersion: string;
-   exportName: string;
+interface ComponentLoaderParam {
+  packageName: string;
+  packageVersion: string;
+  exportName: string;
 }
 
-type ComponentLoader = (locator: componentLocator) => Promise<Component>
+type ComponentLoader = (locator: ComponentLoaderParam) => Promise<DynamicComponent>
 ```
 
 ### Repository
@@ -61,7 +59,7 @@ type Repository = Record<PackageNameVersion, Record<string, Component>>;
 ```
 
 渲染页面的组件可以动态加载，也可以直接注入到渲染引擎实例中。在渲染阶段，当节点需要外部组件时，
-会首先查找 `Repository`，如果没有对应的实现才会调用 `componentLocator`。 `Repository`
+会首先查找 `Repository`，如果没有对应的实现才会调用 `ComponentLoaderParam`。 `Repository`
  是一个组件实现的集合对象，类型如下:
 
 ### APISpecAdapter

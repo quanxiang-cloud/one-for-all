@@ -19,6 +19,16 @@ export interface InputProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLIn
   className?: string;
 }
 
+export type RadioProps = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> & {
+  onChange?: (value: string | number | boolean) => void;
+  label?: string;
+  value: string | number | boolean;
+  error?: boolean;
+  disabled?: boolean;
+  radioClass?: string;
+  className?: string;
+};
+
 export interface TextareaProps extends DetailedHTMLProps<TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>{
   style?: React.CSSProperties;
   children?: React.ReactNode;

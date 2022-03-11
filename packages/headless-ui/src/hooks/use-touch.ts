@@ -26,7 +26,7 @@ const INITIAL_STATE = {
   direction: '' as Direction,
 };
 
-type State = (typeof INITIAL_STATE) & Record<string, unknown>;
+type State = typeof INITIAL_STATE & Record<string, unknown>;
 
 type Touch = State & {
   move: EventListener;
@@ -34,7 +34,7 @@ type Touch = State & {
   reset: () => void;
   isVertical: () => boolean;
   isHorizontal: () => boolean;
-}
+};
 
 type StateType = Partial<typeof INITIAL_STATE>;
 type StateFunctionType = (value: StateType) => typeof INITIAL_STATE;
@@ -60,10 +60,7 @@ const useTouch = (canState?: boolean): Touch => {
   };
 
   const isVertical = useCallback(() => innerState.direction === 'vertical', [innerState.direction]);
-  const isHorizontal = useCallback(
-    () => innerState.direction === 'horizontal',
-    [innerState.direction],
-  );
+  const isHorizontal = useCallback(() => innerState.direction === 'horizontal', [innerState.direction]);
 
   const reset = (): void => {
     update({

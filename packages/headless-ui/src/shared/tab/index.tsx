@@ -19,16 +19,20 @@ export default function Tab<T extends React.Key>({
   const navsRef = useRef(null);
   const [key, setKey] = useState<string | number>(currentKey || items[0].id);
 
-  useEffect(()=> {
+  useEffect(() => {
     setKey(currentKey || items[0].id);
   }, [currentKey]);
 
   return (
     <div
-      style={{maxHeight, ...style}}
-      className={cs('ofa-tab-wrapper',{
-        [`ofa-tab-direction__${direction}`]: direction,
-      }, className)}
+      style={{ maxHeight, ...style }}
+      className={cs(
+        'ofa-tab-wrapper',
+        {
+          [`ofa-tab-direction__${direction}`]: direction,
+        },
+        className,
+      )}
     >
       <TabNavs
         ref={navsRef}
@@ -42,13 +46,9 @@ export default function Tab<T extends React.Key>({
           onChange?.(id as T);
         }}
       />
-      <div
-        className={cs('ofa-tab-content', contentClassName)}
-      >
-        {children}
-      </div>
+      <div className={cs('ofa-tab-content', contentClassName)}>{children}</div>
     </div>
   );
 }
 
-export { TabNavs }
+export { TabNavs };
