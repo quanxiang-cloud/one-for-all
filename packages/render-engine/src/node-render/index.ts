@@ -3,7 +3,7 @@ import { logger } from '@one-for-all/utils';
 
 import PathContext from './path-context';
 import { useShouldRender } from './hooks';
-import { CTX, RouteNode, SchemaNode } from '../types';
+import { CTX, RouteMatch, RouteNode, SchemaNode } from '../types';
 import JSXNodeRender from './jsx-node-render';
 import RefNodeRender from './ref-node-render';
 import HTMLNodeRender from './html-node-render';
@@ -38,9 +38,9 @@ interface Props {
 }
 
 // to get route node component tree
-function getMatchRoutes(node: RouteNode): { path: string, element: unknown}[] {
+function getMatchRoutes(node: RouteNode): RouteMatch[] {
   const parentPath = node.path;
-  const matches: { path: string, element: unknown}[] = [{path: parentPath, element: node.node}];
+  const matches: RouteMatch[] = [{path: parentPath, element: node.node}];
 
   if(node.children?.length) {
     node.children.forEach((childNode) => {

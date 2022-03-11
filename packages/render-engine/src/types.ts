@@ -135,6 +135,11 @@ export interface ReactComponentNode
   children?: Array<SchemaNode>;
 }
 
+export interface RouteMatch {
+  path: string;
+  element: unknown;
+}
+
 export interface RouteNode extends BaseNode {
   type: 'route-node';
   path: string;

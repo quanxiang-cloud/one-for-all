@@ -1,5 +1,6 @@
 import react from 'react';
+import { RouteMatch } from '../types';
 
-const RouteContext = react.createContext<{ path: string, element: unknown}[]>([]);
+const RouteContext = react.createContext<RouteMatch[]>([]);
 
 export default RouteContext;
