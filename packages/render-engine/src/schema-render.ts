@@ -4,7 +4,6 @@ import { logger } from '@one-for-all/utils';
 
 import initCTX from './ctx';
 import NodeRender from './node-render';
-import deserialize from './deserialize';
 import type { CTX, Plugins, RenderEngineCTX, SchemaNode } from './types';
 
 interface Props {
@@ -12,16 +11,17 @@ interface Props {
   plugins?: Plugins;
 }
 
-function useCTX(schema: Schema, plugins?: Plugins): CTX | null {
-  const [ctx, setCTX] = useState<CTX | null>(null);
+interface UseCTXResult {
+  ctx: CTX;
+  rootNode: SchemaNode;
+}
+
+function useCTX(schema: Schema, plugins?: Plugins): UseCTXResult | null {
+  const [ctx, setCTX] = useState<UseCTXResult | null>(null);
 
   useEffect(() => {
-    initCTX({
-      plugins,
-      apiStateSpec: schema.apiStateSpec,
-      sharedStatesSpec: schema.sharedStatesSpec,
-      // todo parentCTX?
-    })
+    // todo parentCTX?
+    initCTX({ plugins, schema })
       .then((_ctx) => setCTX(_ctx))
       .catch((err) => {
         logger.error(err);
@@ -44,7 +44,7 @@ function SchemaRender(
         return;
       }
 
-      return { apiStates: ctx.apiStates, states: ctx.states };
+      return { apiStates: ctx.ctx.apiStates, states: ctx.ctx.states };
     },
     [ctx],
   );
@@ -53,13 +53,7 @@ function SchemaRender(
     return null;
   }
 
-  const instantiatedNode = deserialize(schema.node, ctx) as SchemaNode;
-  if (!instantiatedNode) {
-    // TODO: paint error
-    return null;
-  }
-
-  return React.createElement(NodeRender, { node: instantiatedNode, ctx });
+  return React.createElement(NodeRender, { node: ctx.rootNode, ctx: ctx.ctx });
 }
 
 export default React.forwardRef<RenderEngineCTX | undefined, Props>(SchemaRender);

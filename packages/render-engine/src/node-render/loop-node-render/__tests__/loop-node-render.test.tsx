@@ -51,11 +51,7 @@ test('LoopContainer_should_log_error_when_iterableState_is_not_iterable', async 
     build: () => ({ url: '/api', method: 'get' }),
   };
 
-  const ctx = await initCTX({
-    apiStateSpec: schema.apiStateSpec,
-    sharedStatesSpec: schema.sharedStatesSpec,
-    plugins: { apiSpecAdapter },
-  });
+  const { ctx } = await initCTX({ schema, plugins: { apiSpecAdapter } });
   ctx.statesHubShared.mutateState('not_arr', { id: 'abc' });
 
   const props: Props = {
@@ -91,11 +87,7 @@ test('LoopContainer_resolve_items', async () => {
     build: () => ({ url: '/api', method: 'get' }),
   };
 
-  const ctx = await initCTX({
-    apiStateSpec: schema.apiStateSpec,
-    sharedStatesSpec: schema.sharedStatesSpec,
-    plugins: { apiSpecAdapter },
-  });
+  const { ctx } = await initCTX({ schema, plugins: { apiSpecAdapter } });
   ctx.statesHubShared.mutateState('arr', [{ id: 'abc' }, { id: 'def' }]);
 
   const props: Props = {
@@ -130,11 +122,7 @@ test('LoopNode_with_ReactOutLayer_composedNode', async () => {
     build: () => ({ url: '/api', method: 'get' }),
   };
 
-  const ctx = await initCTX({
-    apiStateSpec: schema.apiStateSpec,
-    sharedStatesSpec: schema.sharedStatesSpec,
-    plugins: { apiSpecAdapter, repository },
-  });
+  const { ctx } = await initCTX({ schema, plugins: { apiSpecAdapter, repository } });
 
   ctx.statesHubShared.mutateState('arr', [
     { id: 'abc', title: 'kk', hobby: ['eat', 'sleep'] },
@@ -214,11 +202,7 @@ test('LoopNode_with_HTMLOutLayer_composedNode', async () => {
     build: () => ({ url: '/api', method: 'get' }),
   };
 
-  const ctx = await initCTX({
-    apiStateSpec: schema.apiStateSpec,
-    sharedStatesSpec: schema.sharedStatesSpec,
-    plugins: { apiSpecAdapter, repository },
-  });
+  const { ctx } = await initCTX({ schema, plugins: { apiSpecAdapter, repository } });
 
   ctx.statesHubShared.mutateState('arr', [
     { id: 'abc', title: 'kk', hobby: ['eat', 'sleep'] },
@@ -302,11 +286,7 @@ test('LoopNode_with_ordinaryNode_HTMLNode', async () => {
     build: () => ({ url: '/api', method: 'get' }),
   };
 
-  const ctx = await initCTX({
-    apiStateSpec: schema.apiStateSpec,
-    sharedStatesSpec: schema.sharedStatesSpec,
-    plugins: { apiSpecAdapter, repository },
-  });
+  const { ctx } = await initCTX({ schema, plugins: { apiSpecAdapter, repository } });
 
   ctx.statesHubShared.mutateState('arr', [
     { id: 'abc', title: 'kk', hobby: ['eat', 'sleep'] },
@@ -351,11 +331,7 @@ test('LoopNode_with_ordinaryNode_ReactNode', async () => {
     build: () => ({ url: '/api', method: 'get' }),
   };
 
-  const ctx = await initCTX({
-    apiStateSpec: schema.apiStateSpec,
-    sharedStatesSpec: schema.sharedStatesSpec,
-    plugins: { apiSpecAdapter, repository },
-  });
+  const { ctx } = await initCTX({ schema, plugins: { apiSpecAdapter, repository } });
 
   ctx.statesHubShared.mutateState('arr', [
     { id: 'abc', title: 'kk', hobby: ['eat', 'sleep'] },

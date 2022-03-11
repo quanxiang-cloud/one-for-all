@@ -38,6 +38,11 @@ test('initCTX_return_expected_value', async () => {
     return res.status(200).body(JSON.stringify(mockRes));
   });
 
-  const ctx = await initCTX({ apiStateSpec, sharedStatesSpec, plugins: { apiSpecAdapter } });
+  const schema: SchemaSpec.Schema = {
+    apiStateSpec, sharedStatesSpec,
+    node: { id: 'abv', type: 'html-element', name: 'div' },
+  };
+
+  const { ctx } = await initCTX({ schema, plugins: { apiSpecAdapter } });
   expect(ctx.states.lazyState).toBe(mockRes);
 });

@@ -31,7 +31,7 @@ test('ReactComponentNodeRender_should_return_null_no_component', () => {
 });
 
 test('ReactComponentNodeRender_match_snapshots', () => {
-  dummyCTX.repository = repository;
+  dummyCTX.plugins.repository = repository;
 
   const node: ReactComponentNode = {
     id: 'some_node_id',
@@ -47,7 +47,7 @@ test('ReactComponentNodeRender_match_snapshots', () => {
 });
 
 test('ReactComponentNodeRender_match_snapshots_with_children', () => {
-  dummyCTX.repository = repository;
+  dummyCTX.plugins.repository = repository;
 
   const node: ReactComponentNode = {
     id: 'some_node_id',

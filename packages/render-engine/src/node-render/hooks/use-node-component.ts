@@ -3,11 +3,11 @@ import { logger } from '@one-for-all/utils';
 
 import PathContext from '../path-context';
 import { findComponentInRepository, systemComponentLoader } from './helper';
-import type { CTX, DynamicComponent, ReactComponentNode } from '../../types';
+import type { DynamicComponent, Plugins, ReactComponentNode } from '../../types';
 
 export default function useNodeComponent(
   node: Pick<ReactComponentNode, 'packageName' | 'packageVersion' | 'exportName'>,
-  { repository, componentLoader }: Pick<CTX, 'repository' | 'componentLoader'>,
+  { repository, componentLoader }: Pick<Plugins, 'repository' | 'componentLoader'>,
 ): DynamicComponent | undefined {
   const currentPath = useContext(PathContext);
   const [lazyLoadedComponent, setComponent] = useState<DynamicComponent | undefined>(() => {
