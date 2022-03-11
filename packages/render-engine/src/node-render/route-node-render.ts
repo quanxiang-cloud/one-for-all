@@ -1,35 +1,27 @@
 import React, { useContext } from 'react';
 
-import { useLifecycleHook } from './hooks';
-import type { CTX, RouteNode } from '../types';
-import NodeRender, { ChildrenRender } from '.';
+import NodeRender from '.';
 import RouteContext from './route-context';
+import { useLifecycleHook } from './hooks';
+import type { CTX, RouteNode, SchemaNode } from '../types';
 
 export interface Props {
   node: RouteNode;
   ctx: CTX;
 }
 
-function RouteNodeRender({ node, ctx }: Props): React.ReactElement | null {
+function RouteMatchNodeRender({ node, ctx }: Props): React.ReactElement | null {
   useLifecycleHook(node.lifecycleHooks || {});
-  const parentMatch = useContext(RouteContext);
-  const nodePath = node.path.replace(/\/+$/, '').replace(/^\/*/, '/'); // to format route node path
-  // const fullPath = ctx.routeState?.location.pathname.split('?')[0].split('/');
+  const matches = useContext(RouteContext);
+  const match = matches.find(({ path }) => {
+    return path.replace(/\/+$/, '').replace(/^\/*/, '/') === ctx.routeState?.location.pathname;
+  });
 
-  console.log(parentMatch);
-  if (ctx.routeState?.location.pathname === nodePath) {
-    if (!node.children || !node.children.length) {
-      return React.createElement(NodeRender, { node: node.node, ctx });
-    }
-
-    return React.createElement(
-      NodeRender, 
-      { node: node.node, ctx }, 
-      React.createElement(ChildrenRender, { nodes: node.children || [], ctx }),
-    );
+  if (!match) {
+    return null;
   }
 
-  return null;
+  return React.createElement(NodeRender, { node: match.element as SchemaNode, ctx });
 }
 
-export default RouteNodeRender;
+export default RouteMatchNodeRender;

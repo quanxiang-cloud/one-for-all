@@ -1,5 +1,5 @@
 import react from 'react';
 
-const RouteContext = react.createContext<Record<string, unknown>>({});
+const RouteContext = react.createContext<{ path: string, element: unknown}[]>([]);
 
 export default RouteContext;

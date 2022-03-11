@@ -3,7 +3,7 @@ import { logger } from '@one-for-all/utils';
 
 import PathContext from './path-context';
 import { useShouldRender } from './hooks';
-import { CTX, SchemaNode } from '../types';
+import { CTX, RouteNode, SchemaNode } from '../types';
 import JSXNodeRender from './jsx-node-render';
 import RefNodeRender from './ref-node-render';
 import HTMLNodeRender from './html-node-render';
@@ -37,6 +37,32 @@ interface Props {
   ctx: CTX;
 }
 
+// to get route node component tree
+function getMatchRoutes(node: RouteNode): { path: string, element: unknown}[] {
+  const parentPath = node.path;
+  const matches: { path: string, element: unknown}[] = [{path: parentPath, element: node.node}];
+
+  if(node.children?.length) {
+    node.children.forEach((childNode) => {
+      const path = [parentPath, childNode.path].join('/');
+      const element = {...node.node, children: [ childNode.node ]};
+      matches.push({ path, element });
+
+      if(childNode.children?.length) {
+        const c_mathes = getMatchRoutes(childNode);        
+        c_mathes.forEach((c_match) => {
+          matches.push({
+            path: [parentPath, c_match.path].join('/'),
+            element: {...element, children: c_match.element}
+          });
+        });
+      }
+    });
+  }
+
+  return matches;
+}
+
 function NodeRender({ node, ctx }: Props): React.ReactElement | null {
   const parentPath = useContext(PathContext);
   const parentMatch = useContext(RouteContext);
@@ -48,14 +74,11 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
   }
 
   if (node.type === 'route-node') {
-    const test = {
-      path: node.path,
-      node: node.node,
-    };
-
+    // todo get route nested relationship component and path
+    const matches = getMatchRoutes(node);
     return React.createElement(
       RouteContext.Provider,
-      {value: test},
+      { value: parentMatch.concat(matches) },
       React.createElement(RouteNodeRender, { node, ctx })
     );
   }
