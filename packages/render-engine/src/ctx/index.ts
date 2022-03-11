@@ -2,24 +2,24 @@ import StatesHubAPI from './states-hub-api';
 import StatesHubShared from './states-hub-shared';
 import getAPIStates from './api-states';
 import getSharedStates from './shared-states';
-import type { CTX, Plugins, SharedStatesSpec } from '../types';
-import type { APIStatesSpec, SharedStatesSpec as _SharedStatesSpec } from '@one-for-all/schema-spec';
+import type { CTX, Plugins, SchemaNode, SharedStatesSpec } from '../types';
 import type { APISpecAdapter } from '@one-for-all/api-spec-adapter';
-import deserialize from '../deserialize';
+import deserialize from './deserialize';
 import initializeLazyStates from './initialize-lazy-shared-states';
+import SchemaSpec from '@one-for-all/schema-spec';
 
 const dummyAPISpecAdapter: APISpecAdapter = {
   build: () => ({ url: '/api', method: 'get' }),
 };
 
 interface Params {
-  apiStateSpec?: APIStatesSpec;
-  sharedStatesSpec?: _SharedStatesSpec;
+  schema: SchemaSpec.Schema;
   parentCTX?: CTX;
   plugins?: Plugins;
 }
 
-async function initCTX({ apiStateSpec, sharedStatesSpec, parentCTX, plugins }: Params): Promise<CTX> {
+async function initCTX({ schema, parentCTX, plugins }: Params): Promise<{ ctx: CTX; rootNode: SchemaNode; }> {
+  const { apiStateSpec, sharedStatesSpec } = schema;
   const { apiSpecAdapter, repository, refLoader, componentLoader } = plugins || {};
 
   const statesHubAPI = new StatesHubAPI(
@@ -45,13 +45,17 @@ async function initCTX({ apiStateSpec, sharedStatesSpec, parentCTX, plugins }: P
 
     apiStates: getAPIStates(statesHubAPI),
     states: getSharedStates(statesHubShared),
-
-    repository: repository || parentCTX?.repository,
-    refLoader: refLoader || parentCTX?.refLoader,
-    componentLoader: componentLoader || parentCTX?.componentLoader
+    plugins: {
+      repository: repository || parentCTX?.plugins?.repository,
+      refLoader: refLoader || parentCTX?.plugins?.refLoader,
+      componentLoader: componentLoader || parentCTX?.plugins?.componentLoader
+    }
   };
 
-  return ctx;
+  // todo handle error
+  const rootNode = deserialize(schema.node, ctx) as SchemaNode;
+
+  return { ctx, rootNode };
 }
 
 export default initCTX;

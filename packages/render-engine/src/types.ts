@@ -253,9 +253,7 @@ export interface CTX {
   statesHubShared: StatesHubShared;
   apiStates: Readonly<Record<string, APIStateWithFetch>>;
   states: Record<string, unknown>;
-  repository?: Repository;
-  refLoader?: RefLoader;
-  componentLoader?: ComponentLoader;
+  plugins: Plugins;
 }
 
 export type RenderEngineCTX = Pick<CTX, 'states' | 'apiStates'>;

@@ -26,7 +26,7 @@ function ReactComponentOutLayerRender({
   children,
 }: ReactComponentOutLayerRenderProps): React.ReactElement | null {
   const props = useInstantiateProps(outLayer, ctx);
-  const nodeComponent = useNodeComponent(outLayer, ctx);
+  const nodeComponent = useNodeComponent(outLayer, ctx.plugins);
   useLifecycleHook(outLayer.lifecycleHooks || {});
 
   if (!nodeComponent) {

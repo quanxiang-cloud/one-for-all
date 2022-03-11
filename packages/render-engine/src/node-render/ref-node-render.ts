@@ -12,7 +12,7 @@ interface Props {
 export default function RefNodeRender({ node, ctx }: Props): React.ReactElement | null {
   useLifecycleHook(node.lifecycleHooks || {});
   const refResult = useRefResult(
-    { schemaID: node.schemaID, refLoader: ctx.refLoader, orphan: node.orphan },
+    { schemaID: node.schemaID, refLoader: ctx.plugins.refLoader, orphan: node.orphan },
     ctx,
   );
 

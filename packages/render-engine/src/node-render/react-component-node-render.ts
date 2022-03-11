@@ -13,7 +13,7 @@ interface Props {
 
 function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | null {
   const props = useInstantiateProps(node, ctx);
-  const nodeComponent = useNodeComponent(node, ctx);
+  const nodeComponent = useNodeComponent(node, ctx.plugins);
   useLifecycleHook(node.lifecycleHooks || {});
 
   if (!nodeComponent) {
