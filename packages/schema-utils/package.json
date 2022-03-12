@@ -1,0 +1,39 @@
+{
+  "name": "@one-for-all/schema-utils",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "type": "module",
+  "module": "lib",
+  "types": "typed.d.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "build": "echo 'no need to build'",
+    "bundle": "echo 'no need to bundle this package'",
+    "docs": "typedoc",
+    "lint": "eslint src/**/*.js --fix",
+    "prepack": "yarn run build",
+    "pack": "yarn pack",
+    "test": "jest",
+    "test:coverage": "jest --collectCoverage",
+    "updateSnapshot": "jest --updateSnapshot"
+  },
+  "dependencies": {
+    "immutable": "4.0.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "~7.17.6",
+    "@babel/core": "~7.17.5",
+    "@babel/preset-env": "~7.16.11",
+    "@one-for-all/schema-spec": "0.13.1-0",
+    "@types/heft-jest": "~1.0.2",
+    "@types/jest": "27.4.0",
+    "eslint": "8.7.0",
+    "jest": "27.4.7",
+    "ts-jest": "^27.0.7",
+    "typedoc": "^0.22.10",
+    "typescript": "4.5.5"
+  }
+}
