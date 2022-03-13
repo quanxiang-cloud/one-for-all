@@ -483,6 +483,10 @@
       "projectFolder": "packages/schema-spec"
     },
     {
+      "packageName": "@one-for-all/schema-utils",
+      "projectFolder": "packages/schema-utils"
+    },
+    {
       "packageName": "@one-for-all/style-guide",
       "projectFolder": "packages/style-guide"
     },

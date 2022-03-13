@@ -1,6 +1,6 @@
 import type * as SchemaSpec from '@one-for-all/schema-spec';
 
-import { VersatileFunc, StateConvertor } from '../types';
+import { VersatileFunc, StateConvertor } from '../../types';
 
 export function isObject(n: unknown): boolean {
   return Object.prototype.toString.call(n) === '[object Object]';

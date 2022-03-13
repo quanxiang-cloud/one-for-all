@@ -3,7 +3,7 @@ import { logger } from '@one-for-all/utils';
 
 import PathContext from '../path-context';
 import initCTX from '../../ctx';
-import deserialize from '../../deserialize';
+import deserialize from '../../ctx/deserialize';
 import useInstantiateProps from '../../use-instantiate-props';
 import type {
   CTX,
@@ -70,8 +70,7 @@ export function useRefResult(
 
         return initCTX({
           plugins,
-          apiStateSpec: schema.apiStateSpec,
-          sharedStatesSpec: schema.sharedStatesSpec,
+          schema,
           parentCTX: orphan ? undefined : ctx,
         });
       })
@@ -80,13 +79,7 @@ export function useRefResult(
           return;
         }
 
-        const instantiatedNode = deserialize(_schema.node, refCTX) as SchemaNode | null;
-        if (!instantiatedNode) {
-          // TODO: paint error
-          return;
-        }
-
-        setResult({ refCTX, refNode: instantiatedNode });
+        setResult({ refCTX: refCTX.ctx, refNode: refCTX.rootNode });
       })
       .catch((err) => {
         logger.error(err);

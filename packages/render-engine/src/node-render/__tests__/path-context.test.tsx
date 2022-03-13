@@ -5,7 +5,7 @@ import { render } from '@testing-library/react';
 
 import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 import NodeRender from '../index';
-import { SchemaNode, Repository, ReactComponentNode } from '../../types';
+import { SchemaNode, Repository } from '../../types';
 import renderPathRepository from './fixtures/render-path';
 
 const dummyComponent: React.FC<PropsWithChildren<unknown>> = ({ children }): JSX.Element => {
@@ -21,7 +21,7 @@ const list = [{ id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' }, { id: 'e' }, {
 
 test('node_path_match_expect_value', () => {
   dummyCTX.statesHubShared.getState$('list').next(list);
-  dummyCTX.repository = renderPathRepository;
+  dummyCTX.plugins.repository = renderPathRepository;
 
   const node: SchemaNode = {
     id: 'root',

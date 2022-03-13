@@ -1,12 +1,11 @@
-import React, { useEffect, useImperativeHandle, useMemo, useState } from 'react';
-import { BrowserHistory, createBrowserHistory } from 'history';
-import { logger } from '@one-for-all/utils';
+import React, { useEffect, useImperativeHandle, useState } from 'react';
 import type { Schema } from '@one-for-all/schema-spec';
+import { logger } from '@one-for-all/utils';
 
 import initCTX from './ctx';
 import NodeRender from './node-render';
-import deserialize from './deserialize';
 import type { CTX, Plugins, RenderEngineCTX, SchemaNode } from './types';
+import { BrowserHistory } from 'history';
 
 interface Props {
   schema: Schema;
@@ -18,34 +17,31 @@ function useRouteState(history?: BrowserHistory): any {
     return null;
   }
 
-  const [state, setState] = React.useState({ action: history.action, location: history.location });
+  const [state, setState] = React.useState({ location: history.location });
 
   React.useEffect(() => history.listen(setState), [history]);
 
   return state;
 }
 
-function useCTX(schema: Schema, plugins?: Plugins): CTX | null {
-  const history = createBrowserHistory({ window });
-  const routeState = useRouteState(history);
-  const [ctx, setCTX] = useState<CTX | undefined>();
+interface UseCTXResult {
+  ctx: CTX;
+  rootNode: SchemaNode;
+}
+
+function useCTX(schema: Schema, plugins?: Plugins): UseCTXResult | null {
+  const [ctx, setCTX] = useState<UseCTXResult | null>(null);
 
   useEffect(() => {
-    initCTX({
-      plugins,
-      apiStateSpec: schema.apiStateSpec,
-      sharedStatesSpec: schema.sharedStatesSpec,
-      goTo: history.push,
-      goBack: history.back,
-      // todo parentCTX?
-    })
-      .then(setCTX)
-      .catch(logger.error);
+    // todo parentCTX?
+    initCTX({ plugins, schema })
+      .then((_ctx) => setCTX(_ctx))
+      .catch((err) => {
+        logger.error(err);
+      });
   }, []);
 
-  return useMemo(() => {
-    return {...ctx, routeState} as CTX;
-  }, [ctx, routeState]);
+  return ctx;
 }
 
 function SchemaRender(
@@ -61,7 +57,7 @@ function SchemaRender(
         return;
       }
 
-      return { apiStates: ctx.apiStates, states: ctx.states, routeState: ctx.routeState };
+      return { apiStates: ctx.ctx.apiStates, states: ctx.ctx.states };
     },
     [ctx],
   );
@@ -70,13 +66,7 @@ function SchemaRender(
     return null;
   }
 
-  const instantiatedNode = deserialize(schema.node, ctx) as SchemaNode;
-  if (!instantiatedNode) {
-    // TODO: paint error
-    return null;
-  }
-
-  return React.createElement(NodeRender, { node: instantiatedNode, ctx });
+  return React.createElement(NodeRender, { node: ctx.rootNode, ctx: ctx.ctx });
 }
 
 export default React.forwardRef<RenderEngineCTX | undefined, Props>(SchemaRender);

@@ -6,7 +6,13 @@ import initCTX from '../../ctx';
 import { Props } from '../route-node-render';
 
 test('route_node_render_item', async () => {
-  const ctx = await initCTX({
+  const schema: SchemaSpec.Schema = {
+    node: { id: 'some_node', type: 'html-element', name: 'div', props: {} },
+    apiStateSpec: {},
+    sharedStatesSpec: {},
+  };
+  const { ctx } = await initCTX({
+    schema,
     apiStateSpec: {},
     sharedStatesSpec: {},
   });
@@ -24,7 +30,7 @@ test('route_node_render_item', async () => {
   };
 
   const props: Props = {
-    ctx: ctx,
+    ctx,
     node: {
       id: 'test',
       type: 'route-node',
@@ -42,7 +48,13 @@ test('route_node_render_item', async () => {
 });
 
 test('route_node_render_null', async () => {
-  const ctx = await initCTX({
+  const schema: SchemaSpec.Schema = {
+    node: { id: 'some_node', type: 'html-element', name: 'div', props: {} },
+    apiStateSpec: {},
+    sharedStatesSpec: {},
+  };
+  const { ctx } = await initCTX({
+    schema,
     apiStateSpec: {},
     sharedStatesSpec: {},
   });
@@ -78,7 +90,13 @@ test('route_node_render_null', async () => {
 });
 
 test('render_nest_route_node_match_element', async () => {
-  const ctx = await initCTX({
+  const schema: SchemaSpec.Schema = {
+    node: { id: 'some_node', type: 'html-element', name: 'div', props: {} },
+    apiStateSpec: {},
+    sharedStatesSpec: {},
+  };
+  const { ctx } = await initCTX({
+    schema,
     apiStateSpec: {},
     sharedStatesSpec: {},
   });

@@ -267,11 +267,9 @@ export interface CTX {
   statesHubShared: StatesHubShared;
   apiStates: Readonly<Record<string, APIStateWithFetch>>;
   states: Record<string, unknown>;
-  repository?: Repository;
-  refLoader?: RefLoader;
-  componentLoader?: ComponentLoader;
-  goTo?: (to: To, state?: any) => void;
+  plugins: Plugins;
   goBack?: () => void,
+  goTo?: (to: To, state?: any) => void;
   routeState?: { action: string, location: Location };
 }
 

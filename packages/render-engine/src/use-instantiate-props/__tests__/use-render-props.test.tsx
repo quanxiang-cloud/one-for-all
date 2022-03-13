@@ -6,7 +6,7 @@ import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
 import CustomRender from './fixtures/custom-render';
 import NodeRender from '../../node-render';
 
-dummyCTX.repository = {
+dummyCTX.plugins.repository = {
   'testPackage@version': {
     CustomRender: CustomRender,
   },

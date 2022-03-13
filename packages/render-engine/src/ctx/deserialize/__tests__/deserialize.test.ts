@@ -1,5 +1,5 @@
 import instatiateFuncSpec from '../instantiate';
-import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
+import dummyCTX from '../../__tests__/fixtures/dummy-ctx';
 
 test('deserialize_keep_n_unchanged', () => {
   const n = { foo: 'bar', bar: 123 };

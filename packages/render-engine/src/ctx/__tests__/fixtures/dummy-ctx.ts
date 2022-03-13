@@ -11,6 +11,7 @@ const ctx: CTX = {
 
   apiStates: {},
   states: {},
+  plugins: {},
 };
 
 export default ctx;
