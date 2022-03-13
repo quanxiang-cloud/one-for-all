@@ -2,7 +2,7 @@ import React from 'react';
 import type { BehaviorSubject } from 'rxjs';
 import type { FetchParams, APISpecAdapter } from '@one-for-all/api-spec-adapter';
 import type * as SchemaSpec from '@one-for-all/schema-spec';
-import { BrowserHistory, To } from 'history';
+import { BrowserHistory, Listener, To } from 'history';
 
 export type VersatileFunc<T = unknown> = (...args: unknown[]) => T;
 
@@ -267,10 +267,11 @@ export interface CTX {
   statesHubShared: StatesHubShared;
   apiStates: Readonly<Record<string, APIStateWithFetch>>;
   states: Record<string, unknown>;
+  routeState: { location: Location };
   plugins: Plugins;
   goBack?: () => void,
   goTo?: (to: To, state?: any) => void;
-  routeState?: { action: string, location: Location };
+  historyListener?: (listener: Listener) => void;
 }
 
 export interface Location {

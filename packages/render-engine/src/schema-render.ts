@@ -1,33 +1,29 @@
-import React, { useEffect, useImperativeHandle, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useMemo, useState } from 'react';
+import { Listener } from 'history';
 import type { Schema } from '@one-for-all/schema-spec';
 import { logger } from '@one-for-all/utils';
 
-import initCTX from './ctx';
+import initCTX, { UseCTXResult } from './ctx';
 import NodeRender from './node-render';
-import type { CTX, Plugins, RenderEngineCTX, SchemaNode } from './types';
-import { BrowserHistory } from 'history';
+import type { Plugins, RenderEngineCTX } from './types';
 
 interface Props {
   schema: Schema;
   plugins?: Plugins;
 }
 
-function useRouteState(history?: BrowserHistory): any {
-  if (!history) {
+function useRouteState(listener?: (listener: Listener) => void): any {
+  if (!listener) {
     return null;
   }
 
-  const [state, setState] = React.useState({ location: history.location });
+  const [state, setState] = useState({});
 
-  React.useEffect(() => history.listen(setState), [history]);
+  useEffect(() => listener(({location}) => setState(location)), [history]);
 
   return state;
 }
 
-interface UseCTXResult {
-  ctx: CTX;
-  rootNode: SchemaNode;
-}
 
 function useCTX(schema: Schema, plugins?: Plugins): UseCTXResult | null {
   const [ctx, setCTX] = useState<UseCTXResult | null>(null);
@@ -35,13 +31,22 @@ function useCTX(schema: Schema, plugins?: Plugins): UseCTXResult | null {
   useEffect(() => {
     // todo parentCTX?
     initCTX({ plugins, schema })
-      .then((_ctx) => setCTX(_ctx))
-      .catch((err) => {
-        logger.error(err);
-      });
+      .then(setCTX)
+      .catch(logger.error);
   }, []);
 
-  return ctx;
+  const routeState = useRouteState(ctx?.ctx.historyListener);
+  
+  return useMemo(() => {
+    if (!ctx) {
+      return null;
+    }
+
+    return {
+      ctx: {...ctx?.ctx, routeState},
+      rootNode: ctx?.rootNode,
+    };
+  }, [ctx?.ctx, routeState]);
 }
 
 function SchemaRender(
@@ -57,7 +62,7 @@ function SchemaRender(
         return;
       }
 
-      return { apiStates: ctx.ctx.apiStates, states: ctx.ctx.states };
+      return { apiStates: ctx.ctx.apiStates, states: ctx.ctx.states, routeState: ctx.ctx.routeState };
     },
     [ctx],
   );

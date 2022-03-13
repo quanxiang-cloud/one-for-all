@@ -19,7 +19,6 @@ test('route_node_render_item', async () => {
   
   // to mock latest route state when url change;
   ctx.routeState = {
-    action: 'push',
     location: {
       pathname: '/aaa/bbb/test1', // default pathname is '/'
       hash: '',
@@ -61,7 +60,6 @@ test('route_node_render_null', async () => {
   
   // to mock latest route state when url change;
   ctx.routeState = {
-    action: 'push',
     location: {
       pathname: '/aaa/bbb', // default pathname is '/'
       hash: '',
@@ -103,7 +101,6 @@ test('render_nest_route_node_match_element', async () => {
 
   // to mock latest route state when url change;
   ctx.routeState = {
-    action: 'push',
     location: {
       pathname: '/aaa/bbb/test2/newtttt/sadnewtttt', // default pathname is '/'
       hash: '',

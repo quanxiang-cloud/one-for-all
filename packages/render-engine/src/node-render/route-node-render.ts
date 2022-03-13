@@ -17,6 +17,7 @@ function RouteMatchNodeRender({ node, ctx }: Props): React.ReactElement | null {
     return path.replace(/\/+$/, '').replace(/^\/*/, '/') === ctx.routeState?.location.pathname;
   });
 
+  console.log(ctx.routeState);
   if (!match) {
     return null;
   }

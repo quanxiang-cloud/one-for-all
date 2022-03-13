@@ -1,4 +1,5 @@
-import { To } from 'history';
+import { createBrowserHistory } from 'history';
+import SchemaSpec from '@one-for-all/schema-spec';
 import type { APISpecAdapter } from '@one-for-all/api-spec-adapter';
 import type { APIStatesSpec, SharedStatesSpec as _SharedStatesSpec } from '@one-for-all/schema-spec';
 
@@ -7,9 +8,8 @@ import deserialize from './deserialize';
 import StatesHubAPI from './states-hub-api';
 import getSharedStates from './shared-states';
 import StatesHubShared from './states-hub-shared';
-import type { CTX, Plugins, SchemaNode, SharedStatesSpec } from '../types';
 import initializeLazyStates from './initialize-lazy-shared-states';
-import SchemaSpec from '@one-for-all/schema-spec';
+import type { CTX, Plugins, SchemaNode, SharedStatesSpec } from '../types';
 
 const dummyAPISpecAdapter: APISpecAdapter = {
   build: () => ({ url: '/api', method: 'get' }),
@@ -21,11 +21,16 @@ interface Params {
   plugins?: Plugins;
   apiStateSpec?: APIStatesSpec;
   sharedStatesSpec?: _SharedStatesSpec;
-  goTo?: (to: To, state: any) => void;
-  goBack?: () => void,
 }
 
-async function initCTX({ schema, parentCTX, plugins }: Params): Promise<{ ctx: CTX; rootNode: SchemaNode; }> {
+export interface UseCTXResult {
+  ctx: CTX;
+  rootNode: SchemaNode;
+}
+
+async function initCTX({ schema, parentCTX, plugins }: Params): Promise<UseCTXResult> {
+  const history = createBrowserHistory({ window });
+
   const { apiStateSpec, sharedStatesSpec } = schema;
   const { apiSpecAdapter, repository, refLoader, componentLoader } = plugins || {};
 
@@ -52,6 +57,19 @@ async function initCTX({ schema, parentCTX, plugins }: Params): Promise<{ ctx: C
 
     apiStates: getAPIStates(statesHubAPI),
     states: getSharedStates(statesHubShared),
+
+    goTo: history.push,
+    goBack: history.back,
+    historyListener: history.listen,
+    routeState: {
+      location: {
+        pathname: '/',
+        search: '',
+        hash: '',
+        state: null,
+        key: 'default'
+      }
+    },
     
     plugins: {
       repository: repository || parentCTX?.plugins?.repository,

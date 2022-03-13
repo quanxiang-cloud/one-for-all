@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`render_nest_route_node_match_element 1`] = `
+<div>
+  <div>
+    <ul>
+      <li />
+    </ul>
+  </div>
+</div>
+`;
