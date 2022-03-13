@@ -87,7 +87,7 @@ test('render_nest_route_node_match_element', async () => {
   ctx.routeState = {
     action: 'push',
     location: {
-      pathname: '/aaa/bbb/test2/newt', // default pathname is '/'
+      pathname: '/aaa/bbb/test2/newtttt/sadnewtttt', // default pathname is '/'
       hash: '',
       search: '',
       state: '',

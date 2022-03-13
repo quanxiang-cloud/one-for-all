@@ -53,7 +53,7 @@ function getMatchRoutes(node: RouteNode): RouteMatch[] {
         c_mathes.forEach((c_match) => {
           matches.push({
             path: [parentPath, c_match.path].join('/'),
-            element: {...element, children: c_match.element}
+            element: {...element, children: [ c_match.element ]}
           });
         });
       }
