@@ -3,9 +3,9 @@
 exports[`render_nest_route_node_match_element 1`] = `
 <div>
   <div>
-    <ul>
-      <li />
-    </ul>
+    <div>
+      <span />
+    </div>
   </div>
 </div>
 `;

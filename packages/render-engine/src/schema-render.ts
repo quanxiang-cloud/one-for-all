@@ -43,7 +43,7 @@ function useCTX(schema: Schema, plugins?: Plugins): UseCTXResult | null {
     }
 
     return {
-      ctx: {...ctx?.ctx, routeState},
+      ctx: {...ctx?.ctx, routeState}, // todo omit historyListener of ctx
       rootNode: ctx?.rootNode,
     };
   }, [ctx?.ctx, routeState]);
