@@ -42,5 +42,5 @@ declare module '@one-for-all/schema-utils' {
     jsxNode: (currentNode: import('@one-for-all/schema-spec').JSXNode) => void;
     routeNode: (currentNode: import('@one-for-all/schema-spec').JSXNode) => void;
   }>;
-  export function travel(schemaNode: SchemaNode, Visitors: Visitors): void;
+  export function travel(schemaNode: import('@one-for-all/schema-spec').SchemaNode, Visitors: Visitors): void;
 }
