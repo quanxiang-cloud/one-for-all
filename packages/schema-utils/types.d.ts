@@ -47,6 +47,6 @@ declare module '@one-for-all/schema-utils' {
     routeNode: (currentNode: import('@one-for-all/schema-spec').RouteNode) => void;
   }>;
   export function travel(schemaNode: SchemaNode, Visitors: Visitors): void;
-
-  export function getNodeParentIDs(schemaNode: SchemaNode, nodeID: string): string[] | undefined;
+  export function getNodeParentIDs(schemaNode: SchemaNode, id: string): string[] | undefined;
+  export function findNodeByID(schemaNode: SchemaNode, id: string): SchemaNode | undefined;
 }
