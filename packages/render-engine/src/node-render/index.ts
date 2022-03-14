@@ -21,7 +21,6 @@ interface ChildrenRenderProps {
 export function ChildrenRender({
   nodes,
   ctx,
-  parentRoute,
 }: ChildrenRenderProps): React.FunctionComponentElement<Record<string, unknown>> | null {
   if (!nodes.length) {
     return null;
@@ -30,7 +29,7 @@ export function ChildrenRender({
   return React.createElement(
     React.Fragment,
     null,
-    nodes.map((node) => React.createElement(NodeRender, { key: node.id, node: node, ctx, parentRoute })),
+    nodes.map((node) => React.createElement(NodeRender, { key: node.id, node: node, ctx })),
   );
 }
 
@@ -40,34 +39,9 @@ export interface Props {
   parentRoute?: string;
 }
 
-// // to get route node component tree
-// function getMatchRoutes(node: RouteNode): RouteMatch[] {
-//   const parentPath = node.path;
-//   const matches: RouteMatch[] = [{path: parentPath, element: node.node}];
-
-//   if(node.children?.length) {
-//     node.children.forEach((childNode) => {
-//       const path = [parentPath, childNode.path].join('/');
-//       const element = {...node.node, children: [ childNode.node ]};
-//       matches.push({ path, element });
-
-//       if(childNode.children?.length) {
-//         const c_mathes = getMatchRoutes(childNode);        
-//         c_mathes.forEach((c_match) => {
-//           matches.push({
-//             path: [parentPath, c_match.path].join('/'),
-//             element: {...element, children: [ c_match.element ]}
-//           });
-//         });
-//       }
-//     });
-//   }
-
-//   return matches;
-// }
-
-function NodeRender({ node, ctx, parentRoute = '/' }: Props): React.ReactElement | null {
+function NodeRender({ node, ctx }: Props): React.ReactElement | null {
   const parentPath = useContext(PathContext);
+  const parentRoutePath = useContext(RouteContext);
   const currentPath = `${parentPath}/${node.id}`;
   const shouldRender = useShouldRender(node, ctx);
 
@@ -78,8 +52,8 @@ function NodeRender({ node, ctx, parentRoute = '/' }: Props): React.ReactElement
   if (node.type === 'route-node') {
     return React.createElement(
       RouteContext.Provider,
-      { value: parentRoute },
-      React.createElement(RouteNodeRender, { node, ctx, parentRoute })
+      { value: [...parentRoutePath] },
+      React.createElement(RouteNodeRender, { node, ctx })
     );
   }
 
@@ -95,7 +69,7 @@ function NodeRender({ node, ctx, parentRoute = '/' }: Props): React.ReactElement
     return React.createElement(
       PathContext.Provider,
       { value: currentPath },
-      React.createElement(HTMLNodeRender, { node, ctx, parentRoute }),
+      React.createElement(HTMLNodeRender, { node, ctx }),
     );
   }
 

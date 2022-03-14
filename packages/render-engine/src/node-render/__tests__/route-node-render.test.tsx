@@ -5,87 +5,87 @@ import NodeRender from '..';
 import initCTX from '../../ctx';
 import { Props } from '../index';
 
-// test('route_node_render_item', async () => {
-//   const schema: SchemaSpec.Schema = {
-//     node: { id: 'some_node', type: 'html-element', name: 'div', props: {} },
-//     apiStateSpec: {},
-//     sharedStatesSpec: {},
-//   };
-//   const { ctx } = await initCTX({
-//     schema,
-//     apiStateSpec: {},
-//     sharedStatesSpec: {},
-//   });
+test('route_node_render_item', async () => {
+  const schema: SchemaSpec.Schema = {
+    node: { id: 'some_node', type: 'html-element', name: 'div', props: {} },
+    apiStateSpec: {},
+    sharedStatesSpec: {},
+  };
+  const { ctx } = await initCTX({
+    schema,
+    apiStateSpec: {},
+    sharedStatesSpec: {},
+  });
   
-//   // to mock latest route state when url change;
-//   ctx.routeState = {
-//     location: {
-//       pathname: '/test1', // default pathname is '/'
-//       hash: '',
-//       search: '',
-//       state: '',
-//       key: 'default'
-//     }
-//   };
+  // to mock latest route state when url change;
+  ctx.routeState = {
+    location: {
+      pathname: '/test1', // default pathname is '/'
+      hash: '',
+      search: '',
+      state: '',
+      key: 'default'
+    }
+  };
 
-//   const props: Props = {
-//     ctx,
-//     node: {
-//       id: 'test1',
-//       type: 'route-node',
-//       path: '/test1',
-//       node: {
-//         id: 'el',
-//         type: 'html-element',
-//         name: 'i',
-//       }
-//     },
-//   };
+  const props: Props = {
+    ctx,
+    node: {
+      id: 'test1',
+      type: 'route-node',
+      path: '/test1',
+      node: {
+        id: 'el',
+        type: 'html-element',
+        name: 'i',
+      }
+    },
+  };
 
-//   const { container } = render(<NodeRender {...props} />);
-//   expect(container.childNodes).toBeTruthy();
-// });
+  const { container } = render(<NodeRender {...props} />);
+  expect(container.childNodes).toBeTruthy();
+});
 
-// test('route_node_render_null', async () => {
-//   const schema: SchemaSpec.Schema = {
-//     node: { id: 'some_node', type: 'html-element', name: 'div', props: {} },
-//     apiStateSpec: {},
-//     sharedStatesSpec: {},
-//   };
-//   const { ctx } = await initCTX({
-//     schema,
-//     apiStateSpec: {},
-//     sharedStatesSpec: {},
-//   });
+test('route_node_render_null', async () => {
+  const schema: SchemaSpec.Schema = {
+    node: { id: 'some_node', type: 'html-element', name: 'div', props: {} },
+    apiStateSpec: {},
+    sharedStatesSpec: {},
+  };
+  const { ctx } = await initCTX({
+    schema,
+    apiStateSpec: {},
+    sharedStatesSpec: {},
+  });
   
-//   // to mock latest route state when url change;
-//   ctx.routeState = {
-//     location: {
-//       pathname: '/aaa/bbb', // default pathname is '/'
-//       hash: '',
-//       search: '',
-//       state: '',
-//       key: 'default'
-//     }
-//   };
+  // to mock latest route state when url change;
+  ctx.routeState = {
+    location: {
+      pathname: '/aaa/bbb', // default pathname is '/'
+      hash: '',
+      search: '',
+      state: '',
+      key: 'default'
+    }
+  };
 
-//   const props: Props = {
-//     ctx: ctx,
-//     node: {
-//       id: 'test2',
-//       type: 'route-node',
-//       path: '/test2',
-//       node: {
-//         id: 'iii',
-//         type: 'html-element',
-//         name: 'i',
-//       },
-//     },
-//   };
+  const props: Props = {
+    ctx: ctx,
+    node: {
+      id: 'test2',
+      type: 'route-node',
+      path: '/test2',
+      node: {
+        id: 'iii',
+        type: 'html-element',
+        name: 'i',
+      },
+    },
+  };
 
-//   const { container } = render(<NodeRender {...props} />);
-//   expect(container.firstChild).toBeFalsy();
-// });
+  const { container } = render(<NodeRender {...props} />);
+  expect(container.firstChild).toBeFalsy();
+});
 
 test('render_nest_route_node_match_element', async () => {
   const schema: SchemaSpec.Schema = {
@@ -130,9 +130,9 @@ test('render_nest_route_node_match_element', async () => {
         {
           id: 'b',
           type: 'route-node',
-          path: '/b',
+          path: 'b',
           node: {
-            id: 'bb',
+            id: '/bb',
             type: 'html-element',  
             name: 'div',
             children: [
@@ -144,7 +144,7 @@ test('render_nest_route_node_match_element', async () => {
                   {
                     id: 'bbbb',
                     type: 'route-node',
-                    path: 'bbb',
+                    path: '/bbb',
                     node: {
                       id: '_bbbb',
                       type: 'html-element',
@@ -159,7 +159,7 @@ test('render_nest_route_node_match_element', async () => {
         {
           id: 'c',
           type: 'route-node',
-          path: '/c',
+          path: 'c',
           node: {
             id: 'cc',
             type: 'html-element',  
