@@ -9,6 +9,16 @@ const ctx: CTX = {
   }),
   statesHubShared: new SharedStatesHub({}),
 
+  routeState: {
+    location: {
+      pathname: '/',
+      search: '',
+      hash: '',
+      state: null,
+      key: 'default'
+    }
+  },
+
   apiStates: {},
   states: {},
   plugins: {},

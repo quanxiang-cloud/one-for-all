@@ -24,7 +24,6 @@ function useRouteState(listener?: (listener: Listener) => void): any {
   return state;
 }
 
-
 function useCTX(schema: Schema, plugins?: Plugins): UseCTXResult | null {
   const [ctx, setCTX] = useState<UseCTXResult | null>(null);
 
