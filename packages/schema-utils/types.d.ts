@@ -4,6 +4,7 @@ declare module '@one-for-all/schema-utils' {
   export type KeyPath = import('immutable').Seq.Indexed<string | number>;
   export type IdPath = import('immutable').Seq.Indexed<string>;
   export type IdOrKeyPath = string | KeyPath;
+  type SchemaNode = import('@one-for-all/schema-spec').SchemaNode;
 
   export type WalkIterator<T, StopValue = unknown> = (
     accumulator: T | undefined,
@@ -40,7 +41,9 @@ declare module '@one-for-all/schema-utils' {
     composedNode: (currentNode: import('@one-for-all/schema-spec').ComposedNode) => void;
     refNode: (currentNode: import('@one-for-all/schema-spec').RefNode) => void;
     jsxNode: (currentNode: import('@one-for-all/schema-spec').JSXNode) => void;
-    routeNode: (currentNode: import('@one-for-all/schema-spec').JSXNode) => void;
+    routeNode: (currentNode: import('@one-for-all/schema-spec').RouteNode) => void;
   }>;
-  export function travel(schemaNode: import('@one-for-all/schema-spec').SchemaNode, Visitors: Visitors): void;
+  export function travel(schemaNode: SchemaNode, Visitors: Visitors): void;
+
+  export function getNodeParentIDs(schemaNode: SchemaNode, nodeID: string): string[] | undefined;
 }

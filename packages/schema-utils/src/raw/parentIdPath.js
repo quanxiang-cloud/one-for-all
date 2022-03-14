@@ -3,7 +3,7 @@ import byArbitrary from './byArbitrary';
 import parent from './parent';
 
 function parentIdPath(node, idOrKeyPath) {
-  let keyPath=  byArbitrary(node, idOrKeyPath);
+  let keyPath = byArbitrary(node, idOrKeyPath);
   if (!keyPath) {
     return;
   }
