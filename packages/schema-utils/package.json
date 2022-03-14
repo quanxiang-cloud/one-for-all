@@ -1,6 +1,6 @@
 {
   "name": "@one-for-all/schema-utils",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "license": "Apache-2.0",
   "type": "module",
   "module": "lib",
@@ -23,6 +23,7 @@
     "updateSnapshot": "jest --updateSnapshot"
   },
   "dependencies": {
+    "@one-for-all/schema-spec": "0.13.1-0",
     "immutable": "4.0.0"
   },
   "devDependencies": {

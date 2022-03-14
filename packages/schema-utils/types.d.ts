@@ -34,13 +34,13 @@ declare module '@one-for-all/schema-utils' {
   export function walk<T, Stop = unknown>(node: ImmutableNode, iterator: WalkIterator<T, Stop>): T | Stop | undefined;
 
   export type Visitors = Partial<{
-    htmlElement: (currentNode: HTMLNode) => void;
-    reactComponent: (currentNode: ReactComponentNode) => void;
-    loopContainer: (currentNode: LoopContainerNode) => void;
-    composedNode: (currentNode: ComposedNode) => void;
-    refNode: (currentNode: RefNode) => void;
-    // jsxNode: (currentNode: JSXNode) => void;
-    // routeNode: (currentNode: RouteNode) => void;
+    htmlNode: (currentNode: import('@one-for-all/schema-spec').HTMLNode) => void;
+    reactComponentNode: (currentNode: import('@one-for-all/schema-spec').ReactComponentNode) => void;
+    loopContainerNode: (currentNode: import('@one-for-all/schema-spec').LoopContainerNode) => void;
+    composedNode: (currentNode: import('@one-for-all/schema-spec').ComposedNode) => void;
+    refNode: (currentNode: import('@one-for-all/schema-spec').RefNode) => void;
+    jsxNode: (currentNode: import('@one-for-all/schema-spec').JSXNode) => void;
+    routeNode: (currentNode: import('@one-for-all/schema-spec').JSXNode) => void;
   }>;
   export function travel(schemaNode: SchemaNode, Visitors: Visitors): void;
 }

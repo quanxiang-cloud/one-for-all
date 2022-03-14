@@ -2,9 +2,9 @@ import { fromJS } from 'immutable';
 import walk from './raw/walk';
 
 const NODE_TYPE_TRAVELER_MAP = {
-  'html-element': 'htmlElement',
-  'react-component': 'reactComponent',
-  'loop-container': 'loopContainer',
+  'html-element': 'htmlNode',
+  'react-component': 'reactComponentNode',
+  'loop-container': 'loopContainerNode',
   'composed-node': 'composedNode',
   'ref-node': 'refNode',
   'jsx-node': 'jsxNode',

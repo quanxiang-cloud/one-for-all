@@ -3,13 +3,13 @@ import travel from '../travel';
 
 test('travel_call_Visitors', () => {
   travel(schemaNode, {
-    htmlElement: (currentNode) => {
+    htmlNode: (currentNode) => {
       console.log(`${currentNode.type}:${currentNode.id}`);
     },
-    reactComponent: (currentNode) => {
+    reactComponentNode: (currentNode) => {
       console.log(`${currentNode.type}:${currentNode.id}`);
     },
-    loopContainer: (currentNode) => {
+    loopContainerNode: (currentNode) => {
       console.log(`${currentNode.type}:${currentNode.id}`);
     },
     composedNode: (currentNode) => {
