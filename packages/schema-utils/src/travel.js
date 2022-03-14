@@ -11,11 +11,11 @@ const NODE_TYPE_TRAVELER_MAP = {
   'route-node': 'routeNode',
 }
 
-export default function travel(schemaNode, travelers) {
+export default function travel(schemaNode, Visitors) {
   const node = fromJS(schemaNode);
   walk(node, (_, keyPath) => {
     const nodeType = node.getIn(keyPath.concat(['type']));
     const currentNode = node.getIn(keyPath).toJS();
-    travelers[NODE_TYPE_TRAVELER_MAP[nodeType]]?.(currentNode);
+    Visitors[NODE_TYPE_TRAVELER_MAP[nodeType]]?.(currentNode);
   });
 }

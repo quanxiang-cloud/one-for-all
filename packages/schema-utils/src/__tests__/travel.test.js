@@ -1,7 +1,7 @@
 import schemaNode from '../raw/__tests__/fixtures/node';
 import travel from '../travel';
 
-test('travel_call_travelers', () => {
+test('travel_call_Visitors', () => {
   travel(schemaNode, {
     htmlElement: (currentNode) => {
       console.log(`${currentNode.type}:${currentNode.id}`);
