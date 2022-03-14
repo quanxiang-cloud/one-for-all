@@ -9,7 +9,7 @@ const NODE_TYPE_TRAVELER_MAP = {
   'ref-node': 'refNode',
   'jsx-node': 'jsxNode',
   'route-node': 'routeNode',
-}
+};
 
 export default function travel(schemaNode, Visitors) {
   const node = fromJS(schemaNode);

@@ -32,7 +32,10 @@ declare module '@one-for-all/schema-utils' {
   export function parentIdPath(node: ImmutableNode, idOrKeyPath: IdOrKeyPath): KeyPath | undefined;
   export function previousSibling(node: ImmutableNode, idOrKeyPath: IdOrKeyPath): KeyPath | undefined;
   export function right(node: ImmutableNode, idOrKeyPath: IdOrKeyPath): KeyPath | undefined;
-  export function walk<T, Stop = unknown>(node: ImmutableNode, iterator: WalkIterator<T, Stop>): T | Stop | undefined;
+  export function walk<T, Stop = unknown>(
+    node: ImmutableNode,
+    iterator: WalkIterator<T, Stop>,
+  ): T | Stop | undefined;
 
   export type Visitors = Partial<{
     htmlNode: (currentNode: import('@one-for-all/schema-spec').HTMLNode) => void;

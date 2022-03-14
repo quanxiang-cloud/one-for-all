@@ -24,5 +24,5 @@ test('travel_call_Visitors', () => {
     routeNode: (currentNode) => {
       console.log(`${currentNode.type}:${currentNode.id}`);
     },
-  })
-})
+  });
+});
