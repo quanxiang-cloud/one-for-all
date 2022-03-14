@@ -1,4 +1,4 @@
-import { Seq } from 'immutable';
+import { Seq, fromJS } from 'immutable';
 import parentIdPath from './raw/parentIdPath';
 
 function getNodeParentIDs(schemaNode, nodeID) {

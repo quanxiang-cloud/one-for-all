@@ -12,7 +12,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "rm -rf lib & babel src --out-dir lib",
+    "build": "rm -rf lib & babel src --out-dir lib --ignore '**/__tests__'",
     "bundle": "rm -rf dist && rollup -c rollup.config.js",
     "docs": "typedoc",
     "lint": "eslint src/**/*.js --fix",
