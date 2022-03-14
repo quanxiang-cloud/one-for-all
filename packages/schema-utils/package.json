@@ -1,13 +1,15 @@
 {
   "name": "@one-for-all/schema-utils",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "license": "Apache-2.0",
   "type": "module",
   "module": "lib",
   "types": "types.d.ts",
   "files": [
     "lib",
-    "src"
+    "src",
+    "types.d.ts",
+    "README.md"
   ],
   "scripts": {
     "build": "echo 'no need to build'",

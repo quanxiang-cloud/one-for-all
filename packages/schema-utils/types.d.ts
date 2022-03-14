@@ -1,5 +1,5 @@
 declare module '@one-for-all/schema-utils' {
-  export type List = import('immutable').List;
+  export type List<T> = import('immutable').List<T>;
   export type ImmutableNode = import('immutable').Collection<unknown, unknown>;
   export type KeyPath = import('immutable').Seq.Indexed<string | number>;
   export type IdPath = import('immutable').Seq.Indexed<string>;
@@ -7,7 +7,7 @@ declare module '@one-for-all/schema-utils' {
 
   export type WalkIterator<T, StopValue = unknown> = (
     accumulator: T | undefined,
-    keyPath: Seq.Indexed<string | number>,
+    keyPath: KeyPath,
     stop: (value: StopValue) => StopValue,
   ) => T;
 
