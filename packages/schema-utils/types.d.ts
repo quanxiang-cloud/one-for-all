@@ -49,4 +49,5 @@ declare module '@one-for-all/schema-utils' {
   export function travel(schemaNode: SchemaNode, Visitors: Visitors): void;
   export function getNodeParentIDs(schemaNode: SchemaNode, id: string): string[] | undefined;
   export function findNodeByID(schemaNode: SchemaNode, id: string): SchemaNode | undefined;
+  export function appendChild(schemaNode: SchemaNode, parentID: string, child: SchemaNode): SchemaNode | undefined;
 }

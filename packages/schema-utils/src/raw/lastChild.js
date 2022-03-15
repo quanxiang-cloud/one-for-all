@@ -32,7 +32,7 @@ function lastChild(node, idOrKeyPath) {
   }
 
   if (childNodeKey === 'node' && node.hasIn(keyPath.concat([node]))) {
-    return node.hasIn(keyPath.concat([node]));
+    return node.getIn(keyPath.concat([node]));
   }
 
   var item = node.getIn(keyPath.concat([childNodeKey]));
