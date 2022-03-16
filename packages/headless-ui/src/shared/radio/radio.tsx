@@ -16,7 +16,7 @@ export type LabelWithInputInstace = HTMLLabelElement & {
   inputInstance: HTMLInputElement;
 };
 
-function InternalRadio<T extends ValueType>(
+function InternalRadio<T extends string | number>(
   { className, style, label, error, onChange, ...restProps }: RadioProps<T>,
   ref?: ForwardedRef<LabelWithInputInstace>,
 ): JSX.Element {
@@ -80,7 +80,7 @@ function InternalRadio<T extends ValueType>(
           style={{ display: 'none' }}
           checked={checked}
           name={name}
-          value={restProps.value.toString()}
+          value={restProps.value}
           disabled={disabled}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             const { checked } = e.target;

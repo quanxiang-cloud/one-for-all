@@ -1,0 +1,65 @@
+{
+  "key": "Radio",
+  "title": "单选框",
+  "specs": [
+    {
+      "title": "默认状态",
+      "componentProps": {
+        "label": "Test"
+      },
+      "rules": [
+        {
+          "selector": ".ofa-radio-wrapper",
+          "desc": "容器样式"
+        },
+        {
+          "selector": ".ofa-radio-label",
+          "desc": "标签样式"
+        },
+        {
+          "selector": ".ofa-radio-icon",
+          "desc": "选择框样式"
+        }
+      ]
+    },
+    {
+      "title": "选中",
+      "componentProps": {
+        "label": "Test",
+        "checked": true
+      },
+      "rules": [
+        {
+          "selector": ".ofa-radio-wrapper__checked .ofa-radio-icon",
+          "desc": "选中状态的选择框样式",
+          "pseudo": [
+            {
+              "selector": ":after",
+              "desc": "选中状态符号样式"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "禁用",
+      "componentProps": [
+        {
+          "label": "Test",
+          "checked": true,
+          "disabled": true
+        },
+        {
+          "label": "Test",
+          "disabled": true
+        }
+      ],
+      "rules": [
+        {
+          "selector": ".ofa-radio-wrapper__disabled .ofa-radio-label",
+          "desc": "禁用状态下标签样式"
+        }
+      ]
+    }
+  ]
+}

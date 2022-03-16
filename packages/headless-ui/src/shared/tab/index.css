@@ -1,0 +1,16 @@
+.ofa-tab-direction__vertical {
+  display: flex;
+}
+
+.ofa-tab-direction__horizon .ofa-tab-navs {
+  display: flex;
+  gap: 5px;
+}
+
+.ofa-tab-nav-item {
+  cursor: pointer;
+}
+
+.ofa-tab-nav-disabled {
+  cursor: no-drop;
+}

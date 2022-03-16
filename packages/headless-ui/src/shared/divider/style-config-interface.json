@@ -1,0 +1,19 @@
+{
+  "key": "Divider",
+  "title": "分割线",
+  "specs": [
+    {
+      "title": "默认状态",
+      "componentProps": {
+        "style": {
+          "backgroundColor": "#E6ECF9"
+        }
+      },
+      "rules": [
+        {
+          "selector": ".ofa-divider"
+        }
+      ]
+    }
+  ]
+}
