@@ -1,5 +1,4 @@
-import React, { useEffect, useImperativeHandle, useMemo, useState } from 'react';
-import { Listener } from 'history';
+import React, { useEffect, useImperativeHandle, useState } from 'react';
 import type { Schema } from '@one-for-all/schema-spec';
 import { logger } from '@one-for-all/utils';
 
@@ -12,18 +11,6 @@ interface Props {
   plugins?: Plugins;
 }
 
-function useRouteState(listener?: (listener: Listener) => void): any {
-  if (!listener) {
-    return null;
-  }
-
-  const [state, setState] = useState({});
-
-  useEffect(() => listener(({location}) => setState(location)), [history]);
-
-  return state;
-}
-
 function useCTX(schema: Schema, plugins?: Plugins): UseCTXResult | null {
   const [ctx, setCTX] = useState<UseCTXResult | null>(null);
 
@@ -34,18 +21,7 @@ function useCTX(schema: Schema, plugins?: Plugins): UseCTXResult | null {
       .catch(logger.error);
   }, []);
 
-  const routeState = useRouteState(ctx?.ctx.historyListener);
-  
-  return useMemo(() => {
-    if (!ctx) {
-      return null;
-    }
-
-    return {
-      ctx: {...ctx?.ctx, routeState}, // todo omit historyListener of ctx
-      rootNode: ctx?.rootNode,
-    };
-  }, [ctx?.ctx, routeState]);
+  return ctx;
 }
 
 function SchemaRender(
@@ -61,7 +37,7 @@ function SchemaRender(
         return;
       }
 
-      return { apiStates: ctx.ctx.apiStates, states: ctx.ctx.states, routeState: ctx.ctx.routeState };
+      return { apiStates: ctx.ctx.apiStates, states: ctx.ctx.states };
     },
     [ctx],
   );

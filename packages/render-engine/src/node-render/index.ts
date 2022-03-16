@@ -51,9 +51,13 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
 
   if (node.type === 'route-node') {
     return React.createElement(
-      RouteContext.Provider,
-      { value: [...parentRoutePath] },
-      React.createElement(RouteNodeRender, { node, ctx })
+      PathContext.Provider,
+      { value: currentPath },
+      React.createElement(
+        RouteContext.Provider,
+        { value: [...parentRoutePath] },
+        React.createElement(RouteNodeRender, { node, ctx })
+      )
     );
   }
 
