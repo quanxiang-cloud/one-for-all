@@ -52,4 +52,5 @@ declare module '@one-for-all/schema-utils' {
   export function appendChild(schemaNode: SchemaNode, parentID: string, child: SchemaNode): SchemaNode | undefined;
   export function patchNode(schemaNode: SchemaNode, partialNode: Partial<SchemaNode>): SchemaNode | undefined;
   export function deleteByID(schemaNode: SchemaNode, id: string): SchemaNode;
+  export function getNodeParents(schemaNode: SchemaNode, id: string): SchemaNode[] | undefined;
 }
