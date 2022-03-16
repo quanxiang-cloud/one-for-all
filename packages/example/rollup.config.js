@@ -69,6 +69,19 @@ export default [
     plugins: commonPlugins,
   },
 
+  {
+    input: 'src/route-render/index.ts',
+    output: {
+      file: 'dist/route-render/index.js',
+      format: 'system',
+      sourcemap: 'inline',
+    },
+
+    external: ['react', 'react-dom', /@one-for-all\/.*/],
+
+    plugins: commonPlugins,
+  },
+
   // build for page engine
   {
     input: 'src/page-engine/index.tsx',

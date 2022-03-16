@@ -19,7 +19,6 @@ function RouteNodeRender({ node, ctx }: Props): React.ReactElement | null {
   const parentRoutePath = useContext(RouteContext);
   const _currentRoutePath = [...parentRoutePath, node.path.replace(/\/+$/, '').replace(/^\/*/, '')];
   const currentRoutePath = `${_currentRoutePath.join('/')}`.replace(/\/+$/, '').replace(/^\/*/, '/');
-  console.log(currentRoutePath);
   const matched = useRouteMatchedState(ctx.routeState$, currentRoutePath);
 
   if (matched) {
