@@ -60,7 +60,7 @@ function Breadcrumb(props: BreadcrumbProps, ref?: ForwardedRef<HTMLDivElement>):
             key={segment.key}
             style={segmentStyle}
             className={cs('ofa-breadcrumb-item', segmentClass, {
-              activeClass: isLast,
+              'ofa-breadcrumb-active': isLast,
             })}
           >
             <BreadcrumbChild segment={segment} isLast={isLast} />

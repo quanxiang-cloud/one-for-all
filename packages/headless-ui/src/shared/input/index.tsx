@@ -12,6 +12,8 @@ import React, {
 import { omit } from 'lodash';
 import cs from 'classnames';
 
+import './index.css';
+
 function Input(
   {
     className,

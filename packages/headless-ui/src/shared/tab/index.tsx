@@ -3,14 +3,15 @@ import cs from 'classnames';
 
 import TabNavs from './tab-navs';
 
+import './index.css';
+
 export default function Tab<T extends React.Key>({
   items,
   style,
   className,
-  direction,
+  direction = 'horizon',
   maxHeight,
   navsClassName,
-  activeNavClassName,
   contentClassName,
   currentKey,
   onChange,
@@ -39,7 +40,6 @@ export default function Tab<T extends React.Key>({
         navs={items}
         currentKey={key}
         navsClassName={navsClassName}
-        activeNavClassName={activeNavClassName}
         onClick={({ id, disabled }) => {
           if (disabled) return;
           setKey(id);

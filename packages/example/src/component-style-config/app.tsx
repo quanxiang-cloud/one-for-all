@@ -5,7 +5,7 @@ import * as componentsMap from '@one-for-all/headless-ui';
 // @ts-ignore
 import comps from '@one-for-all/headless-ui/components-interface.json';
 import CssASTStore, { ComponentSpec } from '@one-for-all/style-guide';
-import { Button } from '@one-for-all/headless-ui';
+import { Button, Tab } from '@one-for-all/headless-ui';
 
 import PreviewConfigurableComponent from './preview';
 

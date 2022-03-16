@@ -1,0 +1,32 @@
+{
+  "key": "Loading",
+  "title": "加载",
+  "specs": [
+    {
+      "title": "默认状态",
+      "componentProps": [
+        {
+          "desc": "加载中..."
+        },
+        {
+          "desc": "加载中...",
+          "vertical": true
+        }
+      ],
+      "rules": [
+        {
+          "selector": ".ofa-loading",
+          "desc": "容器样式"
+        },
+        {
+          "selector": ".ofa-loading__icon",
+          "desc": "图标样式"
+        },
+        {
+          "selector": ".ofa-loading__desc",
+          "desc": "文本样式"
+        }
+      ]
+    }
+  ]
+}

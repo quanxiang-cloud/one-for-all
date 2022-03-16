@@ -115,7 +115,7 @@ interface OptionType<T extends ValueType> {
   onChange?: (val: T, e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-interface RadioProps<T extends ValueType> extends BaseProps {
+interface RadioProps<T extends string | number> extends BaseProps {
   label?: React.ReactNode;
   value: T;
   error?: boolean;
@@ -471,7 +471,6 @@ type TabNavProps<T extends React.Key> = BaseProps & {
   navs: TabItemProps<T>[];
   currentKey: string | number;
   navsClassName?: string;
-  activeNavClassName?: string;
   onClick?: (item: TabItemProps<T>) => void;
 };
 interface TabsProps<T extends React.Key> extends BaseProps {
@@ -480,7 +479,6 @@ interface TabsProps<T extends React.Key> extends BaseProps {
   maxHeight: NumberString;
   children?: React.ReactNode;
   navsClassName?: string;
-  activeNavClassName?: string;
   contentClassName?: string;
   currentKey?: string | number;
   onChange?: (key: T) => void;
