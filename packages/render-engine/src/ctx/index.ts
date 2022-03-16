@@ -1,5 +1,5 @@
 import { createBrowserHistory } from 'history';
-import { BehaviorSubject, combineLatestWith, of, tap } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import SchemaSpec from '@one-for-all/schema-spec';
 import type { APISpecAdapter } from '@one-for-all/api-spec-adapter';
 import type { APIStatesSpec, SharedStatesSpec as _SharedStatesSpec } from '@one-for-all/schema-spec';
@@ -10,8 +10,7 @@ import StatesHubAPI from './states-hub-api';
 import getSharedStates from './shared-states';
 import StatesHubShared from './states-hub-shared';
 import initializeLazyStates from './initialize-lazy-shared-states';
-import type { CTX, Plugins, SchemaNode, SharedStatesSpec, Location } from '../types';
-import { useEffect } from 'react';
+import type { CTX, Plugins, SchemaNode, SharedStatesSpec, HistoryState } from '../types';
 
 const dummyAPISpecAdapter: APISpecAdapter = {
   build: () => ({ url: '/api', method: 'get' }),
@@ -30,10 +29,16 @@ export interface UseCTXResult {
   rootNode: SchemaNode;
 }
 
-async function initCTX({ schema, parentCTX, plugins }: Params): Promise<UseCTXResult> {
-  const history = createBrowserHistory({ window });
-  const routeState$ = new BehaviorSubject(history.location as Location);
+function createHistoryState(): HistoryState {
+  const history = createBrowserHistory();
 
+  return {
+    history,
+    location$: new BehaviorSubject(history.location),
+  };
+}
+
+async function initCTX({ schema, parentCTX, plugins }: Params): Promise<UseCTXResult> {
   const { apiStateSpec, sharedStatesSpec } = schema;
   const { apiSpecAdapter, repository, refLoader, componentLoader } = plugins || {};
 
@@ -46,7 +51,6 @@ async function initCTX({ schema, parentCTX, plugins }: Params): Promise<UseCTXRe
     parentCTX?.statesHubAPI,
   );
 
-  // add route full path and listen routeState
   const instantiateSpec = deserialize(sharedStatesSpec, null) as SharedStatesSpec | null;
   const initializedState = await initializeLazyStates(
     instantiateSpec || {},
@@ -55,26 +59,22 @@ async function initCTX({ schema, parentCTX, plugins }: Params): Promise<UseCTXRe
   );
   const statesHubShared = new StatesHubShared(initializedState, parentCTX?.statesHubShared);
 
+  const historyState = parentCTX?.historyState || createHistoryState();
+
   const ctx: CTX =  {
     statesHubAPI: statesHubAPI,
     statesHubShared: statesHubShared,
 
     apiStates: getAPIStates(statesHubAPI),
     states: getSharedStates(statesHubShared),
+    historyState,
 
-    goTo: history.push,
-    goBack: history.back,
-    historyListener: history.listen,
-    routeState$,
-    
     plugins: {
       repository: repository || parentCTX?.plugins?.repository,
       refLoader: refLoader || parentCTX?.plugins?.refLoader,
       componentLoader: componentLoader || parentCTX?.plugins?.componentLoader
     }
   };
-
-  history.listen(({location}) => {routeState$.next(location);});
 
   // todo handle error
   const rootNode = deserialize(schema.node, ctx) as SchemaNode;
