@@ -4,7 +4,7 @@ import cs from 'classnames';
 import Radio from './radio';
 import GroupContext from './context';
 
-function InternalRadioGroup<T extends ValueType>(
+function InternalRadioGroup<T extends string | number>(
   {
     className,
     style,
@@ -71,7 +71,7 @@ function InternalRadioGroup<T extends ValueType>(
   );
 }
 
-const RadioGroup = forwardRef<HTMLDivElement, PropsWithChildren<RadioGroupProps<ValueType>>>(
+const RadioGroup = forwardRef<HTMLDivElement, PropsWithChildren<RadioGroupProps<string | number>>>(
   InternalRadioGroup,
 );
 

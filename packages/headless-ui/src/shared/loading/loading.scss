@@ -1,0 +1,22 @@
+.ofa-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.ofa-loading__desc {
+  display: inline-block;
+  margin-left: 8px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.ofa-loading--vertical {
+  flex-direction: column;
+
+  .ofa-loading__desc {
+    margin-top: 8px;
+  }
+}

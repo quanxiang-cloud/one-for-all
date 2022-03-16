@@ -244,7 +244,7 @@ declare namespace SchemaSpec {
     | 'route-node';
 
   interface BaseNode {
-    id: string | number;
+    id: string;
     label?: string;
     type: NodeType;
     props?: NodeProperties;

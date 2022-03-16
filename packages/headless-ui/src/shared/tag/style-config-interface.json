@@ -1,0 +1,62 @@
+{
+  "key": "Tag",
+  "title": "标签",
+  "specs": [
+    {
+      "title": "默认状态",
+      "componentProps": {
+        "label": "Test",
+        "onDelete": "t"
+      },
+      "rules": [
+        {
+          "selector": ".ofa-tag",
+          "desc": "标签样式"
+        },
+        {
+          "selector": ".ofa-tag-delete-icon",
+          "desc": "关闭按钮样式"
+        }
+      ]
+    },
+    {
+      "title": "主色",
+      "componentProps": {
+        "label": "Test",
+        "modifier": "primary"
+      },
+      "rules": [
+        {
+          "selector": ".ofa-tag--primary",
+          "desc": "标签样式"
+        }
+      ]
+    },
+    {
+      "title": "成功",
+      "componentProps": {
+        "label": "Test",
+        "modifier": "success"
+      },
+      "rules": [
+        {
+          "selector": ".ofa-tag--success",
+          "desc": "标签样式"
+        }
+      ]
+    },
+    {
+      "title": "危险",
+      "componentProps": {
+        "label": "Test",
+        "modifier": "danger"
+      },
+      "rules": [
+        {
+          "selector": ".ofa-tag--danger",
+          "desc": "标签样式"
+        }
+      ]
+    }
+  ]
+}

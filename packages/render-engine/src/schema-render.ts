@@ -49,4 +49,4 @@ function SchemaRender(
   return React.createElement(NodeRender, { node: ctx.rootNode, ctx: ctx.ctx });
 }
 
-export default React.forwardRef<RenderEngineCTX | undefined, Props>(SchemaRender);
+export default SchemaRender;

@@ -1,0 +1,72 @@
+.ofa-radio-wrapper {
+  background-color: white;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.ofa-radio-icon {
+  position: relative;
+  transition: all .24s;
+  border-radius: 9999px;
+  border: 1px solid gray;
+  box-sizing: border-box;
+  position: relative;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+}
+
+.ofa-radio-icon::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin-top: -8px;
+  margin-left: -8px;
+  background-color: blue;
+  border-top: 0;
+  border-left: 0;
+  border-radius: 16px;
+  transform: scale(0);
+  opacity: 0;
+  transition: all .3s cubic-bezier(.78, .14, .15, .86);
+  content: " ";
+}
+
+.ofa-radio-item {
+  display: flex;
+}
+
+.ofa-radio-wrapper__checked {
+  .ofa-radio-icon {
+    border-color: blue;
+
+    &::after {
+      transform: scale(.5);
+      opacity: 1;
+      transition: all .3s cubic-bezier(.78, .14, .15, .86);
+    }
+  }
+}
+
+.ofa-radio-wrapper__disabled,
+.ofa-radio-wrapper__checked.ofa-radio-wrapper__disabled {
+  cursor: no-drop;
+
+  .ofa-radio-icon {
+    border-color: #d9d9d9;
+
+    &::after {
+      background-color: #0003;
+    }
+  }
+}
+
+.ofa-radio-wrapper__disabled .ofa-radio-label {
+  color: #00000040;
+}

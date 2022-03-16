@@ -1,0 +1,66 @@
+{
+  "key": "Checkbox",
+  "title": "复选框",
+  "specs": [
+    {
+      "title": "默认状态",
+      "componentProps": {
+        "label": "Test"
+      },
+      "rules": [
+        {
+          "selector": ".ofa-checkbox-wrapper",
+          "desc": "外层容器的样式"
+        },
+        {
+          "selector": ".ofa-checkbox-icon",
+          "desc": "选择框样式"
+        },
+        {
+          "selector": ".ofa-checkbox-label",
+          "desc": "标签样式"
+        }
+      ]
+    },
+    {
+      "title": "选中状态",
+      "componentProps": {
+        "label": "Test",
+        "checked": true
+      },
+      "rules": [
+        {
+          "selector": ".ofa-checkbox-wrapper__checked .ofa-checkbox-icon",
+          "desc": "选中状态的选择框样式",
+          "pseudo": [
+            {
+              "selector": ":after",
+              "desc": "选中状态符号样式"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "禁用状态",
+      "componentProps": [
+        {
+          "label": "Test",
+          "disabled": true,
+          "checked": true
+        },
+        {
+          "label": "Test",
+          "disabled": true,
+          "checked": false
+        }
+      ],
+      "rules": [
+        {
+          "selector": ".ofa-checkbox-wrapper__disabled .ofa-checkbox-label",
+          "desc": "禁用状态下标签样式"
+        }
+      ]
+    }
+  ]
+}

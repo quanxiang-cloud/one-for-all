@@ -1,17 +1,19 @@
 {
   "name": "@one-for-all/schema-utils",
-  "version": "0.0.1",
+  "version": "0.9.0",
   "license": "Apache-2.0",
   "type": "module",
   "module": "lib",
-  "types": "typed.d.ts",
+  "types": "types.d.ts",
   "files": [
     "lib",
-    "src"
+    "src",
+    "types.d.ts",
+    "README.md"
   ],
   "scripts": {
-    "build": "echo 'no need to build'",
-    "bundle": "echo 'no need to bundle this package'",
+    "build": "rm -rf lib & babel src --out-dir lib --ignore '**/__tests__'",
+    "bundle": "rm -rf dist && rollup -c rollup.config.js",
     "docs": "typedoc",
     "lint": "eslint src/**/*.js --fix",
     "prepack": "yarn run build",
@@ -21,17 +23,21 @@
     "updateSnapshot": "jest --updateSnapshot"
   },
   "dependencies": {
+    "@one-for-all/schema-spec": "0.14.0",
     "immutable": "4.0.0"
   },
   "devDependencies": {
     "@babel/cli": "~7.17.6",
     "@babel/core": "~7.17.5",
     "@babel/preset-env": "~7.16.11",
-    "@one-for-all/schema-spec": "0.13.1-0",
+    "@one-for-all/schema-spec": "0.14.0",
+    "@rollup/plugin-node-resolve": "^13.0.6",
     "@types/heft-jest": "~1.0.2",
     "@types/jest": "27.4.0",
     "eslint": "8.7.0",
     "jest": "27.4.7",
+    "rollup": "2.66.0",
+    "rollup-plugin-terser": "^7.0.2",
     "ts-jest": "^27.0.7",
     "typedoc": "^0.22.10",
     "typescript": "4.5.5"

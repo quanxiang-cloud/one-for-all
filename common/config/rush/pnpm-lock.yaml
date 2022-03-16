@@ -12578,7 +12578,7 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-+VpWKY+CtX5bJ0+t+gov63VS6tryjL4QO2YnqxrVjO/H+98FDsUeJ3d3/H3SZby/PFxBQZwT4HGYqFXG9sf1Iw==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-TpdBff5D9Yn+G/qnpYD8FeM4j8sRXj9g5AnbcSVyB/BVcaAlsIKeN1jWnWPqPDBcqKAz9hmj7GRwd+pdz6NEJg==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
@@ -12747,7 +12747,7 @@ packages:
     dev: false
 
   file:projects/page-engine.tgz_f1db27541b51b520ad4ef7d7df039c22:
-    resolution: {integrity: sha512-u29Cwt3ggSXxnqSW1d9ibLVu8gqauOIuPHrjSpuEn+PBSnmUKsxNxPLB49Wcc4oD1pAWABB/i6N3uJ3ulsyRPg==, tarball: file:projects/page-engine.tgz}
+    resolution: {integrity: sha512-mPV82jIHITObLqKMz3dnG/0dWx2lW1OjZiwhO4VFGjtF70ORDCbNEDqDLiB3U6xRkNgy7GjCOYr8v9DLHPuz2A==, tarball: file:projects/page-engine.tgz}
     id: file:projects/page-engine.tgz
     name: '@rush-temp/page-engine'
     version: 0.0.0
@@ -12929,7 +12929,7 @@ packages:
     dev: false
 
   file:projects/render-engine.tgz_6b2ccff9a78e846c2e8cf541c3cbf871:
-    resolution: {integrity: sha512-L4Ggloxn97/8smO4EUK+1HkDkNOXOIjYkraqmKJr3y2n4SLd4EwcfZW+g6LzVWm5jl3wLqvoLx35HXwxM549CA==, tarball: file:projects/render-engine.tgz}
+    resolution: {integrity: sha512-6Zaa31e/5yShTRsw7uYdwyUNfHB/Y6TE4cgSoC1v/hIkY9YuYulrfAwv9bPDoa+puJBm+pwOe5fGSMDUcBkk/g==, tarball: file:projects/render-engine.tgz}
     id: file:projects/render-engine.tgz
     name: '@rush-temp/render-engine'
     version: 0.0.0
@@ -13013,7 +13013,7 @@ packages:
     dev: false
 
   file:projects/schema-utils.tgz_esbuild@0.14.13:
-    resolution: {integrity: sha512-4WvniI+wpOPH0NEsLuaodCPbCzgpJ1qUEHHe1I79wwJ+7CudEcIkkjsFeocqo1hBXxl5nNCInxQXKcSw7BvNsQ==, tarball: file:projects/schema-utils.tgz}
+    resolution: {integrity: sha512-tfpdD7IOtG8btUU6kSbQ4vTvCQSOpUAdZuEMZN4gkYy70F4iv9SjXrE3Yity5E1n30Luau0V1Xsdm5OxQ8/Iqg==, tarball: file:projects/schema-utils.tgz}
     id: file:projects/schema-utils.tgz
     name: '@rush-temp/schema-utils'
     version: 0.0.0
@@ -13021,11 +13021,14 @@ packages:
       '@babel/cli': 7.17.6_@babel+core@7.17.5
       '@babel/core': 7.17.5
       '@babel/preset-env': 7.16.11_@babel+core@7.17.5
+      '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
       '@types/heft-jest': 1.0.2
       '@types/jest': 27.4.0
       eslint: 8.7.0
       immutable: 4.0.0
       jest: 27.4.7
+      rollup: 2.66.0
+      rollup-plugin-terser: 7.0.2_rollup@2.66.0
       ts-jest: 27.1.3_6db47f07d935f60eef31627bb14fa828
       typedoc: 0.22.12_typescript@4.5.5
       typescript: 4.5.5

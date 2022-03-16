@@ -1,0 +1,31 @@
+{
+  "key": "Switch",
+  "title": "开关",
+  "specs": [
+    {
+      "title": "默认状态",
+      "componentProps": {
+        "onText": "是",
+        "offText": "否"
+      },
+      "rules": [
+        {
+          "selector": ".ofa-switch"
+        }
+      ]
+    },
+    {
+      "title": "禁止",
+      "componentProps": {
+        "onText": "是",
+        "offText": "否"
+      },
+      "rules": [
+        {
+          "selector": ".ofa-switch-disabled",
+          "desc": "禁止状态样式"
+        }
+      ]
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+import { BehaviorSubject } from 'rxjs';
 import { CTX } from '../../..';
 import StatesHubAPI from '../../states-hub-api';
 import SharedStatesHub from '../../states-hub-shared';
@@ -9,15 +10,13 @@ const ctx: CTX = {
   }),
   statesHubShared: new SharedStatesHub({}),
 
-  routeState: {
-    location: {
-      pathname: '/',
-      search: '',
-      hash: '',
-      state: null,
-      key: 'default'
-    }
-  },
+  routeState$: new BehaviorSubject({
+    pathname: '/',
+    search: '',
+    hash: '',
+    state: null,
+    key: 'default'
+  }),
 
   apiStates: {},
   states: {},
