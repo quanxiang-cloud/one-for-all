@@ -261,7 +261,7 @@ export interface CTX {
   statesHubShared: StatesHubShared;
   apiStates: Readonly<Record<string, APIStateWithFetch>>;
   states: Record<string, unknown>;
-  routeState: { location: Location };
+  routeState$: BehaviorSubject<Location>;
   plugins: Plugins;
   goBack?: () => void,
   goTo?: (to: To, state?: any) => void;
@@ -273,7 +273,7 @@ export interface Location {
   search: string;
   hash: string;
   state: any;
-  key: 'default';
+  key: string;
 }
 
 export type RenderEngineCTX = Pick<CTX, 'states' | 'apiStates'>;
