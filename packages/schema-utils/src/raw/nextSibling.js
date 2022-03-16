@@ -30,3 +30,5 @@ function nextSibling(node, idOrKeyPath) {
   }
   return;
 }
+
+export default nextSibling;
