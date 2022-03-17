@@ -111,6 +111,37 @@ const rootSchema: Schema = {
                 }
               }
             ]
+          },
+          {
+            id: 'style-guide-link',
+            type: 'html-element',
+            name: 'a',
+            isLink: true,
+            props: {
+              href: {
+                type: 'constant_property',
+                value: '/style-guide'
+              },
+              style: {
+                type: 'constant_property',
+                value: {
+                  marginRight: '20px',
+                }
+              }
+            },
+            children: [
+              {
+                id: 'style-guide-page',
+                type: 'html-element',
+                name: 'h2',
+                props: {
+                  children: {
+                    type: 'constant_property',
+                    value: 'Style Guide'
+                  }
+                }
+              }
+            ]
           }
         ]
       },
@@ -139,6 +170,16 @@ const rootSchema: Schema = {
               value: 'this is about page'
             }
           }
+        },
+      },
+      {
+        id: 'route-for-style-guide',
+        type: 'route-node',
+        path: 'style-guide',
+        node: {
+          id: 'style-guide-page',
+          type: 'ref-node',
+          schemaID: 'SCHEMA_ID_STYLE_GUIDE',
         },
       }
     ]

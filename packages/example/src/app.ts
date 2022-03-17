@@ -9,12 +9,16 @@ import todoAppMainSchema from './todo-app/todo-app-main-schema';
 import todoHeaderSchema from './todo-app/todo-header';
 import todoAppRepository from './todo-app/repository';
 
+import styleGuideSchema from './component-style-config/schema';
+import styleGuideRepository from './component-style-config/repository';
+
 const apiSpecAdapter = new SwaggerSpecAdapter(apiDoc);
-const repository: Repository = Object.assign({}, todoAppRepository);
+const repository: Repository = Object.assign({}, todoAppRepository, styleGuideRepository);
 
 const schemaDB: Record<string, Schema> = {
   SCHEMA_ID_TODO: todoAppMainSchema,
   SCHEMA_ID_TODO_HEADER: todoHeaderSchema,
+  SCHEMA_ID_STYLE_GUIDE: styleGuideSchema,
 }
 
 const refLoader: RefLoader = (schemaID: string) => {
