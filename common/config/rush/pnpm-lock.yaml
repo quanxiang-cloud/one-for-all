@@ -7,6 +7,7 @@ specifiers:
   '@codemirror/lang-javascript': ^0.19.3
   '@leifandersen/react-codemirror2': ~7.2.1
   '@one-for-all/render-engine': 0.17.0
+  '@one-for-all/schema-spec': 0.14.0
   '@one-for-all/ui': 0.2.18
   '@popperjs/core': ^2.11.0
   '@rollup/plugin-alias': ^3.1.8
@@ -158,6 +159,7 @@ dependencies:
   '@codemirror/lang-javascript': 0.19.7
   '@leifandersen/react-codemirror2': 7.2.1_codemirror@5.65.2+react@17.0.2
   '@one-for-all/render-engine': 0.17.0
+  '@one-for-all/schema-spec': 0.14.0
   '@one-for-all/ui': 0.2.18
   '@popperjs/core': 2.11.2
   '@rollup/plugin-alias': 3.1.9_rollup@2.66.0
@@ -12594,12 +12596,13 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-ftgQwjvnwAVpQMHw5ktDqK0wMsJP5vg629P0i1G2lWseZKnrMBN6jNHL56oBLUy8Q9wHE1ObXmQgFUDQ8q7IIg==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-2kB3IXIASUFJM0yGOV5bgLXhN/n26ISJxENwUtlO7NxFfRJwe/GeQvRcRHT2+BD3xsngzunmc6zD2uRmwWaVlA==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
       '@leifandersen/react-codemirror2': 7.2.1_codemirror@5.65.2+react@17.0.2
       '@one-for-all/render-engine': 0.17.0
+      '@one-for-all/schema-spec': 0.14.0
       '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
       '@tsconfig/recommended': 1.0.1
@@ -12763,12 +12766,13 @@ packages:
     dev: false
 
   file:projects/page-engine-v2.tgz_@babel+core@7.17.5:
-    resolution: {integrity: sha512-o63bWvaNy7S+t96lnDgp1DKWO6zIb/3+QSjBgxTumAQankRceHqhuZfrZOYsAKbTo0GZNwJYM0NMKSa96C3q4Q==, tarball: file:projects/page-engine-v2.tgz}
+    resolution: {integrity: sha512-811z584ZNfegg4Voyfk+ue0Tp6cxGdr+7fLtEbMIwNeSnKpWj9e80PswGDRRjJtlGIc+Op1hDTNTwee9S+0Shg==, tarball: file:projects/page-engine-v2.tgz}
     id: file:projects/page-engine-v2.tgz
     name: '@rush-temp/page-engine-v2'
     version: 0.0.0
     dependencies:
       '@one-for-all/render-engine': 0.17.0
+      '@one-for-all/schema-spec': 0.14.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
       '@rushstack/eslint-config': 2.5.1_eslint@8.7.0+typescript@4.5.5
       '@testing-library/jest-dom': 5.16.2
@@ -12823,13 +12827,14 @@ packages:
     dev: false
 
   file:projects/page-engine.tgz_f1db27541b51b520ad4ef7d7df039c22:
-    resolution: {integrity: sha512-5O2UpVitesOcqYUA+JMFNzD8uK0pSPpyn73W2ON5hsOwytx/CWi3fxDOBNg/EnsPyZ4Sq0W44XspjsJethQUPA==, tarball: file:projects/page-engine.tgz}
+    resolution: {integrity: sha512-/bWvR1DDbp5yx/VYYjvlUqoStH62InQJ8y5K+5IXIsLW3ng1o4S1JSCPH4O5TZcc/EOWyCnATAgCuG7SWZY85A==, tarball: file:projects/page-engine.tgz}
     id: file:projects/page-engine.tgz
     name: '@rush-temp/page-engine'
     version: 0.0.0
     dependencies:
       '@codemirror/lang-javascript': 0.19.7
       '@one-for-all/render-engine': 0.17.0
+      '@one-for-all/schema-spec': 0.14.0
       '@one-for-all/ui': 0.2.18
       '@rollup/plugin-alias': 3.1.9_rollup@2.66.0
       '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
@@ -13005,11 +13010,12 @@ packages:
     dev: false
 
   file:projects/render-engine.tgz_6b2ccff9a78e846c2e8cf541c3cbf871:
-    resolution: {integrity: sha512-5AaeoQs6DRvopI7psyIbbDQ+drc7FO7nQQ7N3W/JLp5GONgy/WmgxM4S1q5nX/vd8uVG7EOFAm9hGTMwCOPrIw==, tarball: file:projects/render-engine.tgz}
+    resolution: {integrity: sha512-SAcEV8EOEtZrESHJKWgExk87Uxbs6JTw5w1A/0hh1N0JdP/KSg74vlAGTPAL3rRSWCqkMC/oLiMc6+BzrnXmfQ==, tarball: file:projects/render-engine.tgz}
     id: file:projects/render-engine.tgz
     name: '@rush-temp/render-engine'
     version: 0.0.0
     dependencies:
+      '@one-for-all/schema-spec': 0.14.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
       '@rollup/plugin-replace': 3.1.0_rollup@2.66.0
       '@rushstack/eslint-config': 2.5.1_eslint@8.7.0+typescript@4.5.5
@@ -13090,7 +13096,7 @@ packages:
     dev: false
 
   file:projects/schema-utils.tgz_esbuild@0.14.13:
-    resolution: {integrity: sha512-tfpdD7IOtG8btUU6kSbQ4vTvCQSOpUAdZuEMZN4gkYy70F4iv9SjXrE3Yity5E1n30Luau0V1Xsdm5OxQ8/Iqg==, tarball: file:projects/schema-utils.tgz}
+    resolution: {integrity: sha512-gnu9O3EnBjbwj+sFytfM2J7e08BHgH45CzEVvgnufMJG14ztADEWoUGFnKxD3JTDMcURcmce8sX7YJLGLHhUyQ==, tarball: file:projects/schema-utils.tgz}
     id: file:projects/schema-utils.tgz
     name: '@rush-temp/schema-utils'
     version: 0.0.0
@@ -13098,6 +13104,7 @@ packages:
       '@babel/cli': 7.17.6_@babel+core@7.17.5
       '@babel/core': 7.17.5
       '@babel/preset-env': 7.16.11_@babel+core@7.17.5
+      '@one-for-all/schema-spec': 0.14.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
       '@types/heft-jest': 1.0.2
       '@types/jest': 27.4.0

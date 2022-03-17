@@ -25,7 +25,7 @@ function RouteNodeRender({ node, ctx }: Props): React.ReactElement | null {
 
   const parentRoutePath = useContext(RoutePathContext);
   const currentRoutePath = buildCurrentPath(parentRoutePath, node.path);
-  const match = useMatch(ctx.historyState.location$, currentRoutePath, node.exactly ?? false);
+  const match = useMatch(ctx.location$, currentRoutePath, node.exactly ?? false);
 
   if (match) {
     return React.createElement(

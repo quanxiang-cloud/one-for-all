@@ -40,7 +40,7 @@ function SchemaRender(
         return;
       }
 
-      return { apiStates: ctx.ctx.apiStates, states: ctx.ctx.states };
+      return { apiStates: ctx.ctx.apiStates, states: ctx.ctx.states, history: ctx.ctx.history };
     },
     [ctx],
   );

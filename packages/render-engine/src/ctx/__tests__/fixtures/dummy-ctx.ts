@@ -15,11 +15,8 @@ const ctx: CTX = {
   statesHubShared: new SharedStatesHub({}),
   apiStates: {},
   states: {},
-
-  historyState: {
-    history,
-    location$: new BehaviorSubject(history.location),
-  },
+  history,
+  location$: new BehaviorSubject(history.location),
 
   plugins: {},
 };

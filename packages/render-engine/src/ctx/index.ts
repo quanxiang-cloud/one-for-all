@@ -8,21 +8,12 @@ import StatesHubAPI from './states-hub-api';
 import getSharedStates from './shared-states';
 import StatesHubShared from './states-hub-shared';
 import initializeLazyStates from './initialize-lazy-shared-states';
-import type { CTX, Plugins, SchemaNode, SharedStatesSpec, HistoryState } from '../types';
+import type { CTX, Plugins, SchemaNode, SharedStatesSpec } from '../types';
 
 interface Params {
   schema: SchemaSpec.Schema;
   parentCTX?: CTX;
   plugins?: Plugins;
-}
-
-function createHistoryState(): HistoryState {
-  const history = createBrowserHistory();
-
-  return {
-    history,
-    location$: new BehaviorSubject(history.location),
-  };
 }
 
 async function initCTX({ schema, parentCTX, plugins }: Params): Promise<{ ctx: CTX; rootNode: SchemaNode }> {
@@ -38,7 +29,7 @@ async function initCTX({ schema, parentCTX, plugins }: Params): Promise<{ ctx: C
     parentCTX?.statesHubAPI,
   );
 
-  const instantiateSpec = deserialize(sharedStatesSpec || {}, null) as SharedStatesSpec | null;
+  const instantiateSpec = deserialize(sharedStatesSpec || {}, undefined) as SharedStatesSpec | null;
   const initializedState = await initializeLazyStates(
     instantiateSpec || {},
     apiStateSpec || {},
@@ -46,7 +37,14 @@ async function initCTX({ schema, parentCTX, plugins }: Params): Promise<{ ctx: C
   );
   const statesHubShared = new StatesHubShared(initializedState, parentCTX?.statesHubShared);
 
-  const historyState = parentCTX?.historyState || createHistoryState();
+  const history = parentCTX?.history || createBrowserHistory();
+  const location$ = parentCTX?.location$ || new BehaviorSubject(history.location);
+
+  if (!parentCTX?.location$) {
+    history.listen(({ location }) => {
+      location$.next(location);
+    });
+  }
 
   const ctx: CTX = {
     statesHubAPI: statesHubAPI,
@@ -54,7 +52,8 @@ async function initCTX({ schema, parentCTX, plugins }: Params): Promise<{ ctx: C
 
     apiStates: getAPIStates(statesHubAPI),
     states: getSharedStates(statesHubShared),
-    historyState,
+    history,
+    location$,
 
     plugins: {
       repository: repository || parentCTX?.plugins?.repository,
@@ -64,7 +63,7 @@ async function initCTX({ schema, parentCTX, plugins }: Params): Promise<{ ctx: C
   };
 
   // todo handle error
-  const rootNode = deserialize(schema.node, ctx) as SchemaNode;
+  const rootNode = deserialize(schema.node, { apiStates: ctx.apiStates, states: ctx.states, history: ctx.history }) as SchemaNode;
 
   return { ctx, rootNode };
 }

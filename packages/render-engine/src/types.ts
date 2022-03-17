@@ -107,6 +107,7 @@ export type NodeProperties = Record<string, NodeProperty>;
 
 export type SchemaNode =
   | HTMLNode
+  | LinkNode
   | ReactComponentNode
   | LoopContainerNode
   | ComposedNode
@@ -130,6 +131,11 @@ export interface BaseNode extends Omit<SchemaSpec.BaseNode, 'props' | 'shouldRen
 export interface HTMLNode extends BaseNode, Pick<SchemaSpec.HTMLNode, 'name'> {
   type: 'html-element';
   children?: Array<SchemaNode>;
+}
+
+export interface LinkNode extends HTMLNode {
+  name: 'a';
+  isLink: true;
 }
 
 export interface ReactComponentNode
@@ -263,22 +269,20 @@ export interface APIStateWithFetch extends APIState {
   refresh: () => void;
 }
 
-export interface HistoryState {
-  location$: BehaviorSubject<Location>;
-  history: BrowserHistory;
-}
-
 export interface CTX {
   statesHubAPI: StatesHubAPI;
   statesHubShared: StatesHubShared;
   apiStates: Readonly<Record<string, APIStateWithFetch>>;
   states: Record<string, unknown>;
-  historyState: HistoryState;
+  location$: BehaviorSubject<Location>;
+  history: BrowserHistory;
 
   plugins: Plugins;
 }
 
-export type RenderEngineCTX = Pick<CTX, 'states' | 'apiStates'>;
+export type RenderEngineCTX = Pick<CTX, 'states' | 'apiStates'> & {
+  history: BrowserHistory;
+};
 
 // map of stateID and apiID
 export type APIStatesSpec = Record<string, { apiID: string; [key: string]: unknown }>;
