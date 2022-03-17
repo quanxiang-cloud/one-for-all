@@ -22,6 +22,7 @@ specifiers:
   '@rush-temp/jszip': file:./projects/jszip.tgz
   '@rush-temp/lodash': file:./projects/lodash.tgz
   '@rush-temp/page-engine': file:./projects/page-engine.tgz
+  '@rush-temp/page-engine-v2': file:./projects/page-engine-v2.tgz
   '@rush-temp/quill': file:./projects/quill.tgz
   '@rush-temp/ramda': file:./projects/ramda.tgz
   '@rush-temp/react': file:./projects/react.tgz
@@ -53,6 +54,7 @@ specifiers:
   '@types/moo': ^0.5.4
   '@types/nearley': ^2.11.1
   '@types/node': ^15.12.2
+  '@types/ramda': ~0.28.0
   '@types/react': ~17.0.38
   '@types/react-color': 3.0.6
   '@types/react-dom': ^17.0.11
@@ -170,6 +172,7 @@ dependencies:
   '@rush-temp/jszip': file:projects/jszip.tgz
   '@rush-temp/lodash': file:projects/lodash.tgz_rollup@2.66.0
   '@rush-temp/page-engine': file:projects/page-engine.tgz_f1db27541b51b520ad4ef7d7df039c22
+  '@rush-temp/page-engine-v2': file:projects/page-engine-v2.tgz_@babel+core@7.17.5
   '@rush-temp/quill': file:projects/quill.tgz
   '@rush-temp/ramda': file:projects/ramda.tgz
   '@rush-temp/react': file:projects/react.tgz_rollup@2.66.0
@@ -201,6 +204,7 @@ dependencies:
   '@types/moo': 0.5.5
   '@types/nearley': 2.11.2
   '@types/node': 15.14.9
+  '@types/ramda': 0.28.1
   '@types/react': 17.0.39
   '@types/react-color': 3.0.6
   '@types/react-dom': 17.0.13
@@ -2717,6 +2721,12 @@ packages:
 
   /@types/qs/6.9.7:
     resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==}
+    dev: false
+
+  /@types/ramda/0.28.1:
+    resolution: {integrity: sha512-8wnJK5aPaGL7AYhQSe7olwxjhIB9GO4GOCxd6JjYlVNe128DHJDOu7Kyve4kx4uazeKJdnOS3N5TVRv0z1bb1g==}
+    dependencies:
+      ts-toolbelt: 6.15.5
     dev: false
 
   /@types/range-parser/1.2.4:
@@ -11755,6 +11765,10 @@ packages:
       webpack: 5.70.0_f9b71e6e9044338f0cacc94c1b95cabe
     dev: false
 
+  /ts-toolbelt/6.15.5:
+    resolution: {integrity: sha512-FZIXf1ksVyLcfr7M317jbB67XFJhOO1YqdTcuGaq9q5jLUoTikukZ+98TPjKiP2jC5CgmYdWWYs0s2nLSU0/1A==}
+    dev: false
+
   /tsconfig-paths-jest/0.0.1:
     resolution: {integrity: sha1-qXelZIxDQDe2mITmRM4bgr8CW2g=}
     dev: false
@@ -12744,6 +12758,65 @@ packages:
       lodash-es: 4.17.21
     transitivePeerDependencies:
       - rollup
+    dev: false
+
+  file:projects/page-engine-v2.tgz_@babel+core@7.17.5:
+    resolution: {integrity: sha512-viGxOcgiY06WdsdVlE+StdZKC1Nz29TiJTE3ud/JLk9HyAKf0PncBBudvQST3WPypBKaL/2SHTkukjCsQubYkg==, tarball: file:projects/page-engine-v2.tgz}
+    id: file:projects/page-engine-v2.tgz
+    name: '@rush-temp/page-engine-v2'
+    version: 0.0.0
+    dependencies:
+      '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
+      '@rushstack/eslint-config': 2.5.1_eslint@8.7.0+typescript@4.5.5
+      '@testing-library/jest-dom': 5.16.2
+      '@testing-library/react': 12.1.3_react-dom@17.0.2+react@17.0.2
+      '@testing-library/react-hooks': 7.0.2_react-dom@17.0.2+react@17.0.2
+      '@tsconfig/recommended': 1.0.1
+      '@types/jest': 27.4.0
+      '@types/node': 15.14.9
+      '@types/ramda': 0.28.1
+      '@types/react': 17.0.39
+      '@types/react-dom': 17.0.13
+      '@types/systemjs': 6.1.1
+      '@types/testing-library__jest-dom': 5.14.3
+      '@typescript-eslint/parser': 5.10.1_eslint@8.7.0+typescript@4.5.5
+      autoprefixer: 10.4.2_postcss@8.4.5
+      classnames: 2.3.1
+      esbuild: 0.14.13
+      eslint: 8.7.0
+      jest: 27.4.7
+      jest-css-modules: 2.1.0
+      jest-diff: 27.4.6
+      nanoid: 3.3.1
+      postcss: 8.4.5
+      postcss-import: 14.0.2_postcss@8.4.5
+      pretty-format: 27.4.6
+      ramda: 0.27.2
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      rollup: 2.66.0
+      rollup-plugin-esbuild: 4.8.2_esbuild@0.14.13+rollup@2.66.0
+      rollup-plugin-postcss: 4.0.2_postcss@8.4.5
+      rollup-plugin-styles: 3.14.1_rollup@2.66.0
+      rollup-plugin-terser: 7.0.2_rollup@2.66.0
+      rxjs: 7.5.4
+      sass: 1.49.9
+      tailwindcss: 2.2.19_ef48b3b8837f8a23677bffe8f9cd866d
+      ts-jest: 27.1.3_6db47f07d935f60eef31627bb14fa828
+      tsconfig-paths-jest: 0.0.1
+      tslib: 2.3.1
+      typescript: 4.5.5
+      xhr-mock: 2.5.1
+    transitivePeerDependencies:
+      - '@babel/core'
+      - babel-jest
+      - bufferutil
+      - canvas
+      - node-notifier
+      - react-test-renderer
+      - supports-color
+      - ts-node
+      - utf-8-validate
     dev: false
 
   file:projects/page-engine.tgz_f1db27541b51b520ad4ef7d7df039c22:
