@@ -12,11 +12,19 @@ export interface Props {
   ctx: CTX;
 }
 
+function buildCurrentPath(parentPath: string, routePath: string): string {
+  if (parentPath === '/') {
+    return `/${trimSlash(routePath)}`;
+  }
+
+  return `${parentPath}/${trimSlash(routePath)}`;
+}
+
 function RouteNodeRender({ node, ctx }: Props): React.ReactElement | null {
   useLifecycleHook(node.lifecycleHooks || {});
 
   const parentRoutePath = useContext(RoutePathContext);
-  const currentRoutePath = `${parentRoutePath}/${trimSlash(node.path)}`;
+  const currentRoutePath = buildCurrentPath(parentRoutePath, node.path);
   const match = useMatch(ctx.historyState.location$, currentRoutePath, node.exactly ?? false);
 
   if (match) {

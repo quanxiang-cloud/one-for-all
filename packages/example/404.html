@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Render Engine Demo</title>
+  <script type="systemjs-importmap">
+    {
+      "imports": {
+        "react": "https://ofapkg.pek3b.qingstor.com/react@17.0.1/react.17.0.1.min.js",
+        "react-dom": "https://ofapkg.pek3b.qingstor.com/react-dom@17.0.1/react-dom.17.0.1.min.js",
+        "rxjs/ajax": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-ajax.min.js",
+        "rxjs/fetch": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-fetch.min.js",
+        "rxjs/operators": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-operators.min.js",
+        "rxjs/shared": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-shared.min.js",
+        "rxjs/testing": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-testing.min.js",
+        "rxjs/websocket": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-websocket.min.js",
+        "rxjs": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs.min.js",
+        "react-jsx-parser": "https://ofapkg.pek3b.qingstor.com/@one-for-all/react-jsx-parser@1.29.0/index.min.js"
+      }
+    }
+  </script>
+  <script type="systemjs-importmap">
+    {
+      "imports": {
+        "todo-app": "dist/todo-app/todo-components.js",
+        "@one-for-all/api-spec-adapter": "https://ofapkg.pek3b.qingstor.com/@one-for-all/api-spec-adapter@latest/index.min.js",
+        "@one-for-all/render-engine": "/pkg/render-engine/dist/@one-for-all/render-engine@latest/index.js",
+        "@one-for-all/utils": "/pkg/utils/dist/@one-for-all/utils@latest/index.min.js",
+        "@one-for-all/ui": "/pkg/ui/dist/@one-for-all/ui@latest/index.min.js"
+      }
+    }
+  </script>
+  <script src="https://ofapkg.pek3b.qingstor.com/system@6.10.3/system.6.10.3.min.js"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="systemjs-module" src="dist/index.js"></script>
+</body>
+
+</html>

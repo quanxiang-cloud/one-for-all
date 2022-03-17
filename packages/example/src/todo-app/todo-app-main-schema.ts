@@ -54,7 +54,7 @@ const todoAppSchema: Schema = {
       {
         id: 'ref-schema',
         type: 'ref-node',
-        schemaID: 'whatever',
+        schemaID: 'SCHEMA_ID_TODO_HEADER',
       },
       {
         id: 'todo-input-container',
@@ -120,7 +120,8 @@ const todoAppSchema: Schema = {
               },
             },
           },
-          children: [
+          children: [],
+          nodes: [
             {
               id: 'todo-toggle',
               type: 'html-element',

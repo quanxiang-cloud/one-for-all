@@ -2,9 +2,9 @@ import React from 'react';
 import { RefLoader, Repository, SchemaRender } from '@one-for-all/render-engine';
 import { SwaggerSpecAdapter } from '@one-for-all/api-spec-adapter';
 
-import schema from './serialized-schema';
-import refSchema from './ref-schema';
-import apiDoc from './api-doc';
+import schema from './todo-app-main-schema';
+import refSchema from './todo-header';
+import apiDoc from '../api-doc';
 import TodoList from './components/todo-list';
 import TodoInput from './components/todo-input';
 import TodoFilter from './components/todo-filter';

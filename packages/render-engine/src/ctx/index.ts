@@ -2,7 +2,6 @@ import { createBrowserHistory } from 'history';
 import { BehaviorSubject } from 'rxjs';
 import SchemaSpec from '@one-for-all/schema-spec';
 import type { APISpecAdapter } from '@one-for-all/api-spec-adapter';
-import type { APIStatesSpec, SharedStatesSpec as _SharedStatesSpec } from '@one-for-all/schema-spec';
 
 import getAPIStates from './api-states';
 import deserialize from './deserialize';
@@ -20,13 +19,6 @@ interface Params {
   schema: SchemaSpec.Schema;
   parentCTX?: CTX;
   plugins?: Plugins;
-  apiStateSpec?: APIStatesSpec;
-  sharedStatesSpec?: _SharedStatesSpec;
-}
-
-export interface UseCTXResult {
-  ctx: CTX;
-  rootNode: SchemaNode;
 }
 
 function createHistoryState(): HistoryState {
@@ -38,7 +30,7 @@ function createHistoryState(): HistoryState {
   };
 }
 
-async function initCTX({ schema, parentCTX, plugins }: Params): Promise<UseCTXResult> {
+async function initCTX({ schema, parentCTX, plugins }: Params): Promise<{ ctx: CTX; rootNode: SchemaNode; }> {
   const { apiStateSpec, sharedStatesSpec } = schema;
   const { apiSpecAdapter, repository, refLoader, componentLoader } = plugins || {};
 
@@ -51,7 +43,7 @@ async function initCTX({ schema, parentCTX, plugins }: Params): Promise<UseCTXRe
     parentCTX?.statesHubAPI,
   );
 
-  const instantiateSpec = deserialize(sharedStatesSpec, null) as SharedStatesSpec | null;
+  const instantiateSpec = deserialize(sharedStatesSpec || {}, null) as SharedStatesSpec | null;
   const initializedState = await initializeLazyStates(
     instantiateSpec || {},
     apiStateSpec || {},

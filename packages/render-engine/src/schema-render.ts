@@ -2,13 +2,18 @@ import React, { useEffect, useImperativeHandle, useState } from 'react';
 import type { Schema } from '@one-for-all/schema-spec';
 import { logger } from '@one-for-all/utils';
 
-import initCTX, { UseCTXResult } from './ctx';
+import initCTX from './ctx';
 import NodeRender from './node-render';
-import type { Plugins, RenderEngineCTX } from './types';
+import type { CTX, Plugins, RenderEngineCTX, SchemaNode } from './types';
 
 interface Props {
   schema: Schema;
   plugins?: Plugins;
+}
+
+interface UseCTXResult {
+  ctx: CTX;
+  rootNode: SchemaNode;
 }
 
 function useCTX(schema: Schema, plugins?: Plugins): UseCTXResult | null {

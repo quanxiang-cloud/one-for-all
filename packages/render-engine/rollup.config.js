@@ -13,13 +13,13 @@ export default {
   external: ['react', 'react-dom', 'rxjs', /@one-for-all\/.*/, /rxjs\/.*/, 'react-jsx-parser'],
 
   plugins: [
-    typescriptPaths(),
     replace({
       preventAssignment: true,
       values: {
         'process.env.NODE_ENV': JSON.stringify('production'),
       },
     }),
+    typescriptPaths(),
     resolve({
       preferBuiltins: false,
       browser: true,

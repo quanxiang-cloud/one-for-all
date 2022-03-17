@@ -12929,12 +12929,13 @@ packages:
     dev: false
 
   file:projects/render-engine.tgz_6b2ccff9a78e846c2e8cf541c3cbf871:
-    resolution: {integrity: sha512-6Zaa31e/5yShTRsw7uYdwyUNfHB/Y6TE4cgSoC1v/hIkY9YuYulrfAwv9bPDoa+puJBm+pwOe5fGSMDUcBkk/g==, tarball: file:projects/render-engine.tgz}
+    resolution: {integrity: sha512-5AaeoQs6DRvopI7psyIbbDQ+drc7FO7nQQ7N3W/JLp5GONgy/WmgxM4S1q5nX/vd8uVG7EOFAm9hGTMwCOPrIw==, tarball: file:projects/render-engine.tgz}
     id: file:projects/render-engine.tgz
     name: '@rush-temp/render-engine'
     version: 0.0.0
     dependencies:
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
+      '@rollup/plugin-replace': 3.1.0_rollup@2.66.0
       '@rushstack/eslint-config': 2.5.1_eslint@8.7.0+typescript@4.5.5
       '@rushstack/heft': 0.44.2
       '@testing-library/jest-dom': 5.16.2

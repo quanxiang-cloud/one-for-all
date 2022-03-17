@@ -2,7 +2,7 @@ import React from 'react';
 import type { BehaviorSubject } from 'rxjs';
 import type { FetchParams, APISpecAdapter } from '@one-for-all/api-spec-adapter';
 import type * as SchemaSpec from '@one-for-all/schema-spec';
-import { BrowserHistory, Listener, To, Location } from 'history';
+import type { BrowserHistory, Location } from 'history';
 
 export type VersatileFunc<T = unknown> = (...args: unknown[]) => T;
 

@@ -23,7 +23,6 @@ export function exactlyCheck(path: string, currentRoutePath: string): boolean {
 export function prefixCheck(path: string, currentRoutePath: string): boolean {
   const pathFragments = path.split('/');
   const routeFragments = currentRoutePath.split('/');
-
   if (pathFragments.length < routeFragments.length) {
     return false;
   }
