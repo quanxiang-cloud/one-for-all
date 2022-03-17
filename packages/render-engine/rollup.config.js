@@ -1,5 +1,6 @@
 import esbuild from 'rollup-plugin-esbuild';
 import resolve from '@rollup/plugin-node-resolve';
+import replace from '@rollup/plugin-replace';
 
 import typescriptPaths from '../../common/config/rollup/rollup-plugin-typescript-paths';
 import getOutput from '../../common/config/rollup/get-common-output';
@@ -13,6 +14,12 @@ export default {
 
   plugins: [
     typescriptPaths(),
+    replace({
+      preventAssignment: true,
+      values: {
+        'process.env.NODE_ENV': JSON.stringify('production'),
+      },
+    }),
     resolve({
       preferBuiltins: false,
       browser: true,
