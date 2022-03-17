@@ -502,6 +502,10 @@
       "packageName": "@one-for-all/headless-ui",
       "projectFolder": "packages/headless-ui"
     },
+    {
+      "packageName": "@one-for-all/page-engine-v2",
+      "projectFolder": "packages/page-engine-v2"
+    },
 
     // vendors
     {
