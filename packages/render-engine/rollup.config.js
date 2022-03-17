@@ -1,5 +1,6 @@
 import esbuild from 'rollup-plugin-esbuild';
 import resolve from '@rollup/plugin-node-resolve';
+import replace from '@rollup/plugin-replace';
 
 import typescriptPaths from '../../common/config/rollup/rollup-plugin-typescript-paths';
 import getOutput from '../../common/config/rollup/get-common-output';
@@ -12,6 +13,13 @@ export default {
   external: ['react', 'react-dom', 'rxjs', /@one-for-all\/.*/, /rxjs\/.*/, 'react-jsx-parser'],
 
   plugins: [
+    // just for fixing 'process.env.NODE_ENV' in history.js
+    replace({
+      preventAssignment: true,
+      values: {
+        'process.env.NODE_ENV': JSON.stringify('production'),
+      },
+    }),
     typescriptPaths(),
     resolve({
       preferBuiltins: false,

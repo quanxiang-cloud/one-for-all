@@ -9,29 +9,34 @@ import initAPIState from './init-api-state';
 type Cache = Record<string, APIState$WithActions>;
 
 interface Props {
-  apiSpecAdapter: APISpecAdapter;
+  apiSpecAdapter?: APISpecAdapter;
   apiStateSpec: APIStatesSpec;
 }
+
 const dummyState$WithAction: APIState$WithActions = {
   state$: new BehaviorSubject<APIState>(initialState),
   fetch: noop,
   refresh: noop,
 };
 
-export default class Hub implements StatesHubAPI {
-  cache: Cache;
-  parentHub?: StatesHubAPI = undefined;
+const dummyAPISpecAdapter: APISpecAdapter = {
+  build: () => ({ url: '/api', method: 'get' }),
+};
 
-  constructor({ apiStateSpec, apiSpecAdapter }: Props, parentHub?: StatesHubAPI) {
+export default class Hub implements StatesHubAPI {
+  public cache: Cache;
+  public parentHub?: StatesHubAPI = undefined;
+
+  public constructor({ apiStateSpec, apiSpecAdapter }: Props, parentHub?: StatesHubAPI) {
     this.parentHub = parentHub;
 
     this.cache = Object.entries(apiStateSpec).reduce<Cache>((acc, [stateID, { apiID }]) => {
-      acc[stateID] = initAPIState(apiID, apiSpecAdapter);
+      acc[stateID] = initAPIState(apiID, apiSpecAdapter || dummyAPISpecAdapter);
       return acc;
     }, {});
   }
 
-  hasState$(stateID: string): boolean {
+  public hasState$(stateID: string): boolean {
     if (this.cache[stateID]) {
       return true;
     }
@@ -39,7 +44,7 @@ export default class Hub implements StatesHubAPI {
     return !!this.parentHub?.hasState$(stateID);
   }
 
-  findState$(stateID: string): APIState$WithActions | undefined {
+  public findState$(stateID: string): APIState$WithActions | undefined {
     if (this.cache[stateID]) {
       return this.cache[stateID];
     }
@@ -47,7 +52,7 @@ export default class Hub implements StatesHubAPI {
     return this.parentHub?.findState$(stateID);
   }
 
-  getState$(stateID: string): BehaviorSubject<APIState> {
+  public getState$(stateID: string): BehaviorSubject<APIState> {
     const { state$ } = this.findState$(stateID) || {};
     if (state$) {
       return state$;
@@ -63,7 +68,7 @@ export default class Hub implements StatesHubAPI {
     return dummyState$WithAction.state$;
   }
 
-  fetch(stateID: string, fetchOption: FetchOption): void {
+  public fetch(stateID: string, fetchOption: FetchOption): void {
     const { fetch } = this.findState$(stateID) || {};
     if (fetch) {
       fetch(fetchOption);
@@ -78,7 +83,7 @@ export default class Hub implements StatesHubAPI {
     );
   }
 
-  refresh(stateID: string): void {
+  public refresh(stateID: string): void {
     const { refresh } = this.findState$(stateID) || {};
     if (refresh) {
       refresh();

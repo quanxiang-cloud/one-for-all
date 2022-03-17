@@ -16,6 +16,7 @@
         "rxjs/testing": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-testing.min.js",
         "rxjs/websocket": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-websocket.min.js",
         "rxjs": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs.min.js",
+        "lodash": "https://unpkg.com/lodash@4.17.21/lodash.js",
         "react-jsx-parser": "https://ofapkg.pek3b.qingstor.com/@one-for-all/react-jsx-parser@1.29.0/index.min.js"
       }
     }
@@ -23,32 +24,24 @@
   <script type="systemjs-importmap">
     {
       "imports": {
-        "todo-app": "dist/todo-app/todo-components.js",
-        "@one-for-all/api-spec-adapter": "https://ofapkg.pek3b.qingstor.com/@one-for-all/api-spec-adapter@0.3.3/index.min.js",
+        "@one-for-all/api-spec-adapter": "https://ofapkg.pek3b.qingstor.com/@one-for-all/api-spec-adapter@latest/index.min.js",
         "@one-for-all/render-engine": "/pkg/render-engine/dist/@one-for-all/render-engine@latest/index.js",
-        "@one-for-all/utils": "https://ofapkg.pek3b.qingstor.com/@one-for-all/utils@0.1.0/index.min.js",
-        "@one-for-all/ui": "https://ofapkg.pek3b.qingstor.com/@one-for-all/ui@0.2.15/index.min.js"
+        "@one-for-all/utils": "/pkg/utils/dist/@one-for-all/utils@latest/index.min.js",
+        "@one-for-all/ui": "/pkg/ui/dist/@one-for-all/ui@latest/index.min.js",
+        "@one-for-all/headless-ui": "/pkg/headless-ui/dist/@one-for-all/headless-ui@latest/web.js",
+        "@one-for-all/headless-ui/components-interface.json": "/pkg/headless-ui/dist/@one-for-all/headless-ui@latest/components-interface.json",
+        "@one-for-all/icon": "/pkg/icon/dist/@one-for-all/icon@latest/index.js",
+        "@one-for-all/style-guide": "/pkg/style-guide/dist/@one-for-all/style-guide@0.0.1/index.js",
+        "csslint": "/pkg/style-guide/dist/@one-for-all/style-guide@0.0.1/csslint.js"
       }
     }
   </script>
   <script src="https://ofapkg.pek3b.qingstor.com/system@6.10.3/system.6.10.3.min.js"></script>
-  <!-- <script defer src="/externals/adoptedStyleSheets.min.js"></script> -->
-  <script>
-    (function () {
-      const endsWithFileExtension = /\/?\.[a-zA-Z]{2,}$/;
-      const originalResolve = System.constructor.prototype.resolve;
-
-      System.constructor.prototype.resolve = (id, parent) => {
-        // apply original resolve to make sure importmaps are resolved first
-        const url = originalResolve.apply(System, [id, parent]);
-        // append .js file extension if url is missing a file extension
-        return endsWithFileExtension.test(url) ? url : url + ".js";
-      };
-    })();
-  </script>
 </head>
+
 <body>
   <div id="root"></div>
-  <script type="systemjs-module" src="dist/todo-app/index.js"></script>
+  <script type="systemjs-module" src="dist/index.js"></script>
 </body>
+
 </html>

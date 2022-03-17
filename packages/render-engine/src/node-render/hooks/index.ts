@@ -3,14 +3,8 @@ import { logger } from '@one-for-all/utils';
 
 import PathContext from '../path-context';
 import initCTX from '../../ctx';
-import deserialize from '../../ctx/deserialize';
 import useInstantiateProps from '../../use-instantiate-props';
-import type {
-  CTX,
-  RefLoader,
-  LifecycleHooks,
-  SchemaNode,
-} from '../../types';
+import type { CTX, RefLoader, LifecycleHooks, SchemaNode } from '../../types';
 import SchemaSpec from 'packages/schema-spec/src';
 
 export function useLifecycleHook({ didMount, willUnmount }: LifecycleHooks): void {

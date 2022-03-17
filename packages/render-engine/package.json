@@ -1,7 +1,8 @@
 {
   "name": "@one-for-all/render-engine",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "license": "Apache-2.0",
+  "type": "module",
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
@@ -27,8 +28,9 @@
   },
   "dependencies": {
     "@one-for-all/api-spec-adapter": "0.4.0",
-    "@one-for-all/schema-spec": "0.14.0",
+    "@one-for-all/schema-spec": "0.15.0",
     "@one-for-all/utils": "0.3.0",
+    "history": "^5.2.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-jsx-parser": "1.29.0",
@@ -36,6 +38,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.0.6",
+    "@rollup/plugin-replace": "^3.0.0",
     "@rushstack/eslint-config": "2.5.1",
     "@rushstack/heft": "0.44.2",
     "@testing-library/jest-dom": "^5.14.1",

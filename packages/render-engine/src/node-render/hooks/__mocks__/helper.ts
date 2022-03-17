@@ -5,11 +5,7 @@ import { DynamicComponent } from '../../../types';
 const dummyComponent = (): JSX.Element => React.createElement('div');
 const nullComponent: FC = (): null => null;
 
-import type {
-  ComponentLoaderParam,
-  Repository,
-} from '../../../types';
-
+import type { ComponentLoaderParam, Repository } from '../../../types';
 
 export function findComponentInRepository(
   repository: Repository,
@@ -22,7 +18,10 @@ export function findComponentInRepository(
   return dummyComponent;
 }
 
-export function systemComponentLoader({ packageName, exportName }: ComponentLoaderParam): Promise<DynamicComponent> {
+export function systemComponentLoader({
+  packageName,
+  exportName,
+}: ComponentLoaderParam): Promise<DynamicComponent> {
   if (packageName === 'null') {
     return Promise.resolve(nullComponent);
   }

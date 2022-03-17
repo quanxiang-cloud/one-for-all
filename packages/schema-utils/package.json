@@ -23,14 +23,14 @@
     "updateSnapshot": "jest --updateSnapshot"
   },
   "dependencies": {
-    "@one-for-all/schema-spec": "0.14.0",
+    "@one-for-all/schema-spec": "0.15.0",
     "immutable": "4.0.0"
   },
   "devDependencies": {
     "@babel/cli": "~7.17.6",
     "@babel/core": "~7.17.5",
     "@babel/preset-env": "~7.16.11",
-    "@one-for-all/schema-spec": "0.14.0",
+    "@one-for-all/schema-spec": "0.15.0",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@types/heft-jest": "~1.0.2",
     "@types/jest": "27.4.0",

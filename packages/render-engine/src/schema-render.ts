@@ -21,11 +21,7 @@ function useCTX(schema: Schema, plugins?: Plugins): UseCTXResult | null {
 
   useEffect(() => {
     // todo parentCTX?
-    initCTX({ plugins, schema })
-      .then((_ctx) => setCTX(_ctx))
-      .catch((err) => {
-        logger.error(err);
-      });
+    initCTX({ plugins, schema }).then(setCTX).catch(logger.error);
   }, []);
 
   return ctx;
@@ -44,7 +40,7 @@ function SchemaRender(
         return;
       }
 
-      return { apiStates: ctx.ctx.apiStates, states: ctx.ctx.states };
+      return { apiStates: ctx.ctx.apiStates, states: ctx.ctx.states, history: ctx.ctx.history };
     },
     [ctx],
   );

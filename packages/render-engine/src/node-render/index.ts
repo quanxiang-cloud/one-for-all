@@ -2,23 +2,21 @@ import React, { useContext } from 'react';
 import { logger } from '@one-for-all/utils';
 
 import PathContext from './path-context';
+import { useShouldRender } from './hooks';
+import { CTX, SchemaNode } from '../types';
+import JSXNodeRender from './jsx-node-render';
 import RefNodeRender from './ref-node-render';
 import HTMLNodeRender from './html-node-render';
 import LoopNodeRender from './loop-node-render';
+import RouteNodeRender from './route-node-render';
 import ReactComponentNodeRender from './react-component-node-render';
-import JSXNodeRender from './jsx-node-render';
-import { CTX, SchemaNode } from '../types';
-import { useShouldRender } from './hooks';
 
 interface ChildrenRenderProps {
   nodes: SchemaNode[];
   ctx: CTX;
 }
 
-export function ChildrenRender({
-  nodes,
-  ctx,
-}: ChildrenRenderProps): React.FunctionComponentElement<Record<string, unknown>> | null {
+export function ChildrenRender({ nodes, ctx }: ChildrenRenderProps): React.ReactElement | null {
   if (!nodes.length) {
     return null;
   }
@@ -42,6 +40,14 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
 
   if (!shouldRender) {
     return null;
+  }
+
+  if (node.type === 'route-node') {
+    return React.createElement(
+      PathContext.Provider,
+      { value: currentPath },
+      React.createElement(RouteNodeRender, { node, ctx }),
+    );
   }
 
   if (node.type === 'loop-container') {
