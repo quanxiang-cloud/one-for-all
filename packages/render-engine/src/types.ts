@@ -105,7 +105,14 @@ export interface ComputedProperty extends Omit<SchemaSpec.ComputedProperty, 'con
 
 export type NodeProperties = Record<string, NodeProperty>;
 
-export type SchemaNode = HTMLNode | ReactComponentNode | LoopContainerNode | ComposedNode | RefNode | JSXNode | RouteNode;
+export type SchemaNode =
+  | HTMLNode
+  | ReactComponentNode
+  | LoopContainerNode
+  | ComposedNode
+  | RefNode
+  | JSXNode
+  | RouteNode;
 
 export type ShouldRenderCondition =
   | APIResultProperty
@@ -311,7 +318,7 @@ export interface ComponentLoaderParam {
   exportName: string;
 }
 
-export type ComponentLoader = (locator: ComponentLoaderParam) => Promise<DynamicComponent>
+export type ComponentLoader = (locator: ComponentLoaderParam) => Promise<DynamicComponent>;
 
 export interface Plugins {
   apiSpecAdapter?: APISpecAdapter;

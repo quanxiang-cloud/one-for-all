@@ -16,7 +16,7 @@ import { Props } from '../index';
 //     apiStateSpec: {},
 //     sharedStatesSpec: {},
 //   });
-  
+
 //   // to mock latest route state when url change;
 //   // ctx.routeState = {
 //   //   location: {
@@ -58,7 +58,7 @@ import { Props } from '../index';
 //     apiStateSpec: {},
 //     sharedStatesSpec: {},
 //   });
-  
+
 //   // to mock latest route state when url change;
 //   // ctx.routeState = {
 //   //   location: {
@@ -111,14 +111,14 @@ test('render_nest_route_node_match_element', async () => {
   //     key: 'default'
   //   }
   // };
-  
+
   ctx.goTo?.('/b/bbb');
 
   const props: Props = {
     ctx: ctx,
-    node: { 
-      id: 'test3', 
-      type: 'html-element', 
+    node: {
+      id: 'test3',
+      type: 'html-element',
       name: 'div',
       children: [
         {
@@ -127,9 +127,9 @@ test('render_nest_route_node_match_element', async () => {
           path: '/a',
           node: {
             id: 'aa',
-            type: 'html-element',  
+            type: 'html-element',
             name: 'i',
-          }
+          },
         },
         {
           id: 'b',
@@ -137,7 +137,7 @@ test('render_nest_route_node_match_element', async () => {
           path: 'b',
           node: {
             id: '/bb',
-            type: 'html-element',  
+            type: 'html-element',
             name: 'div',
             children: [
               {
@@ -153,12 +153,12 @@ test('render_nest_route_node_match_element', async () => {
                       id: '_bbbb',
                       type: 'html-element',
                       name: 'i',
-                    }
+                    },
                   },
-                ]
-              }
-            ]
-          }
+                ],
+              },
+            ],
+          },
         },
         {
           id: 'c',
@@ -166,11 +166,11 @@ test('render_nest_route_node_match_element', async () => {
           path: 'c',
           node: {
             id: 'cc',
-            type: 'html-element',  
+            type: 'html-element',
             name: 'li',
-          }
+          },
         },
-      ]
+      ],
     },
   };
 

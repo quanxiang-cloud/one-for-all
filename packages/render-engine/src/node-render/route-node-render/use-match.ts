@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BehaviorSubject, distinctUntilChanged, map } from 'rxjs';
-import type{ Location } from 'history';
+import type { Location } from 'history';
 
 import { isParamHolder } from './utils';
 
@@ -40,12 +40,14 @@ function useMatch(location$: BehaviorSubject<Location>, currentRoutePath: string
   const [match, setMatch] = useState(false);
 
   useEffect(() => {
-    const subscribe = location$.pipe(
-      map(({ pathname }): boolean => {
-        return exactly ? exactlyCheck(pathname, currentRoutePath) : prefixCheck(pathname, currentRoutePath);
-      }),
-      distinctUntilChanged(),
-    ).subscribe(setMatch);
+    const subscribe = location$
+      .pipe(
+        map(({ pathname }): boolean => {
+          return exactly ? exactlyCheck(pathname, currentRoutePath) : prefixCheck(pathname, currentRoutePath);
+        }),
+        distinctUntilChanged(),
+      )
+      .subscribe(setMatch);
 
     return () => subscribe.unsubscribe();
   }, []);

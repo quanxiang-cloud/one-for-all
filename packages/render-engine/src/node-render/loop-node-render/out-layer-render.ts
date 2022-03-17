@@ -3,7 +3,7 @@ import React, { PropsWithChildren } from 'react';
 import { CTX, HTMLNode, ReactComponentNode, ComposeOutLayer } from '../../types';
 import useInstantiateProps from '../../use-instantiate-props';
 import { useLifecycleHook } from '../hooks';
-import useNodeComponent from '../hooks/use-node-component'
+import useNodeComponent from '../hooks/use-node-component';
 
 type HTMLOutLayerRenderProps = PropsWithChildren<{
   outLayer: Omit<HTMLNode, 'children'>;

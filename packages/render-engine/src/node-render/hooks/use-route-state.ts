@@ -10,9 +10,9 @@ function useRouteMatchedState(routeState$: BehaviorSubject<Location>, currentRou
       setState(state);
     });
 
-    return (() => {
+    return () => {
       subscription.unsubscribe();
-    });
+    };
   }, []);
 
   return state.pathname?.startsWith(currentRoutePath);

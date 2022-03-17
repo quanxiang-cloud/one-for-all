@@ -39,7 +39,8 @@ test('initCTX_return_expected_value', async () => {
   });
 
   const schema: SchemaSpec.Schema = {
-    apiStateSpec, sharedStatesSpec,
+    apiStateSpec,
+    sharedStatesSpec,
     node: { id: 'abv', type: 'html-element', name: 'div' },
   };
 

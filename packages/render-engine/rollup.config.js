@@ -13,6 +13,7 @@ export default {
   external: ['react', 'react-dom', 'rxjs', /@one-for-all\/.*/, /rxjs\/.*/, 'react-jsx-parser'],
 
   plugins: [
+    // just for fixing 'process.env.NODE_ENV' in history.js
     replace({
       preventAssignment: true,
       values: {

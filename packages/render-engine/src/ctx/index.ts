@@ -30,7 +30,7 @@ function createHistoryState(): HistoryState {
   };
 }
 
-async function initCTX({ schema, parentCTX, plugins }: Params): Promise<{ ctx: CTX; rootNode: SchemaNode; }> {
+async function initCTX({ schema, parentCTX, plugins }: Params): Promise<{ ctx: CTX; rootNode: SchemaNode }> {
   const { apiStateSpec, sharedStatesSpec } = schema;
   const { apiSpecAdapter, repository, refLoader, componentLoader } = plugins || {};
 
@@ -53,7 +53,7 @@ async function initCTX({ schema, parentCTX, plugins }: Params): Promise<{ ctx: C
 
   const historyState = parentCTX?.historyState || createHistoryState();
 
-  const ctx: CTX =  {
+  const ctx: CTX = {
     statesHubAPI: statesHubAPI,
     statesHubShared: statesHubShared,
 
@@ -64,8 +64,8 @@ async function initCTX({ schema, parentCTX, plugins }: Params): Promise<{ ctx: C
     plugins: {
       repository: repository || parentCTX?.plugins?.repository,
       refLoader: refLoader || parentCTX?.plugins?.refLoader,
-      componentLoader: componentLoader || parentCTX?.plugins?.componentLoader
-    }
+      componentLoader: componentLoader || parentCTX?.plugins?.componentLoader,
+    },
   };
 
   // todo handle error

@@ -21,9 +21,7 @@ function useCTX(schema: Schema, plugins?: Plugins): UseCTXResult | null {
 
   useEffect(() => {
     // todo parentCTX?
-    initCTX({ plugins, schema })
-      .then(setCTX)
-      .catch(logger.error);
+    initCTX({ plugins, schema }).then(setCTX).catch(logger.error);
   }, []);
 
   return ctx;

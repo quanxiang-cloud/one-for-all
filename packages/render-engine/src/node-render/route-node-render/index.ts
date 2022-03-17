@@ -31,7 +31,7 @@ function RouteNodeRender({ node, ctx }: Props): React.ReactElement | null {
     return React.createElement(
       RoutePathContext.Provider,
       { value: currentRoutePath },
-      React.createElement(NodeRender, { node: node.node, ctx })
+      React.createElement(NodeRender, { node: node.node, ctx }),
     );
   }
 
