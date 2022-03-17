@@ -3,7 +3,7 @@ import cs from 'classnames';
 
 import useHeight from '../../hooks/use-height';
 import { getZIndexStyle } from '../../utils';
-import Icon from '@one-for-all/icon';
+// import Icon from '@one-for-all/icon';
 
 import '../../styles_todo_delete_this/components/nav-bar.scss';
 
@@ -31,9 +31,9 @@ function NavBar(props: NavBarProps, ref: ForwardedRef<HTMLDivElement>): JSX.Elem
     }
 
     return [
-      !!leftArrow && (
-        <Icon key="ofa-nav-bar__arrow" className="ofa-nav-bar__arrow" name="keyboard_backspace" size={24} />
-      ),
+      // !!leftArrow && (
+      //   <Icon key="ofa-nav-bar__arrow" className="ofa-nav-bar__arrow" name="keyboard_backspace" size={24} />
+      // ),
       !!left && (
         <span key="ofa-nav-bar__text" className="ofa-nav-bar__text">
           {left}
