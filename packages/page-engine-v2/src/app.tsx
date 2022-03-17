@@ -14,10 +14,10 @@ import './styles/index.scss';
 interface Props<T extends PageEngineV2.BaseBlocksCommunicationState> extends PageEngineV2.Props<T> {
   engineId: string;
   setSchemaStore: (store: BehaviorSubject<SchemaSpec.Schema>) => void;
-  setLayerStore: (store: BehaviorSubject<PageEngineV2.Layer<T>[]>) => void;
+  setLayersStore: (store: BehaviorSubject<PageEngineV2.Layer<T>[]>) => void;
 }
 
-function App<T extends PageEngineV2.BaseBlocksCommunicationState>({ schema, layers, setSchemaStore, setLayerStore, engineId }: Props<T>): JSX.Element {
+function App<T extends PageEngineV2.BaseBlocksCommunicationState>({ schema, layers, setSchemaStore, setLayersStore, engineId }: Props<T>): JSX.Element {
   const schemaStore$ = useMemo(() => createSchemaStore(schema), [schema]);
   const layersStore$ = useMemo(() => createLayersStore(layers), [layers]);
   const engineStore$ = useMemo(() => createEngineStore<T>({ schemaStore$ }), [schemaStore$]);
@@ -28,7 +28,7 @@ function App<T extends PageEngineV2.BaseBlocksCommunicationState>({ schema, laye
   }, [schemaStore$]);
 
   useEffect(() => {
-    setLayerStore(layersStore$);
+    setLayersStore(layersStore$);
   }, [layersStore$]);
 
   return (
@@ -74,7 +74,7 @@ export default class PageEngine<T extends PageEngineV2.BaseBlocksCommunicationSt
     this.schemaStore$ = store$;
   }
 
-  private setLayerStore = (store$: BehaviorSubject<PageEngineV2.Layer<T>[]>): void => {
+  private setLayersStore = (store$: BehaviorSubject<PageEngineV2.Layer<T>[]>): void => {
     this.layerStore$ = store$;
   }
 
@@ -84,7 +84,7 @@ export default class PageEngine<T extends PageEngineV2.BaseBlocksCommunicationSt
         schema={this.schema}
         layers={this.layers}
         setSchemaStore={this.setSchemaStore}
-        setLayerStore={this.setLayerStore}
+        setLayersStore={this.setLayersStore}
         engineId={this.engineId}
       />,
       document.getElementById(selector)

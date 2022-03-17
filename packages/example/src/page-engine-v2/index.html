@@ -7,9 +7,16 @@
   <script type="systemjs-importmap">
     {
       "imports": {
-        "react": "/pkg/react/dist/react.17.0.1.js",
-        "react-dom": "/pkg/react-dom/dist/react-dom.17.0.1.js",
-        "rxjs": "/pkg/rxjs/dist/@one-for-all/rxjs@7.4.0/rxjs.min.js"
+        "react": "https://ofapkg.pek3b.qingstor.com/react@17.0.1/react.17.0.1.min.js",
+        "react-dom": "https://ofapkg.pek3b.qingstor.com/react-dom@17.0.1/react-dom.17.0.1.min.js",
+        "rxjs": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs.min.js",
+        "rxjs/ajax": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-ajax.min.js",
+        "rxjs/fetch": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-fetch.min.js",
+        "rxjs/operators": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-operators.min.js",
+        "rxjs/shared": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-shared.min.js",
+        "rxjs/testing": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-testing.min.js",
+        "rxjs/websocket": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-websocket.min.js",
+        "react-jsx-parser": "https://ofapkg.pek3b.qingstor.com/@one-for-all/react-jsx-parser@1.29.0/index.min.js"
       }
     }
   </script>
@@ -17,9 +24,11 @@
     {
       "imports": {
         "@one-for-all/page-engine-v2": "/pkg/page-engine-v2/dist/@one-for-all/page-engine-v2@latest/index.js",
-        "@one-for-all/ui": "/pkg/ui/dist/@one-for-all/ui@latest/index.js",
-        "ramda": "/pkg/ramda/dist/@one-for-all/ramda@latest/index.js",
-        "@one-for-all/example@0.0.1": "/pkg/example/dist/page-engine-v2/index.js"
+        "@one-for-all/render-engine": "/pkg/render-engine/dist/@one-for-all/render-engine@latest/index.min.js",
+        "page-engine-v2-components": "/dist/page-engine-v2-components/index.js",
+        "ramda": "/vendors/ramda/dist/@one-for-all/ramda@latest/index.js",
+        "@one-for-all/utils": "https://ofapkg.pek3b.qingstor.com/@one-for-all/utils@latest/index.min.js",
+        "@one-for-all/ui": "https://ofapkg.pek3b.qingstor.com/@one-for-all/ui@latest/index.min.js"
       }
     }
   </script>
@@ -39,7 +48,7 @@
         return endsWithFileExtension.test(url) ? url : url + ".js";
       };
 
-      System.import('/pkg/react/dist/react.17.0.1.js').then(React => window.React = React)
+      System.import('react').then(React => window.React = React)
 
       // fixme: react throw process not defined
       if(!window.process){

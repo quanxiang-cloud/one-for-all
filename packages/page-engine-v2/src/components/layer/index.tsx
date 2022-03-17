@@ -7,7 +7,7 @@ import { getContext as getEngineStoreContext, update as updateEngineStore  } fro
 import './style.scss';
 
 export default function Layer<T extends PageEngineV2.BaseBlocksCommunicationState>(props: PageEngineV2.LayerProps<T>): JSX.Element {
-  const { blocks, gridTemplateColumns, gridTemplateRows, zIndex, engineId, blocksCommunicationStateInitialValue } = props;
+  const { blocks, gridTemplateColumns, gridTemplateRows, zIndex, engineId, blocksCommunicationStateInitialValue, setLayer } = props;
   const EngineStoreContext = useMemo(() => getEngineStoreContext<T>(engineId), [engineId]);
   const engineStore$ = useContext(EngineStoreContext);
   const blocksCommunicationState$ = useMemo(
@@ -34,6 +34,7 @@ export default function Layer<T extends PageEngineV2.BaseBlocksCommunicationStat
           {...block}
           key={index}
           engineId={engineId}
+          setLayer={setLayer}
         />
       ))}
     </div>

@@ -68,6 +68,17 @@ export default [
 
     plugins: commonPlugins,
   },
+  {
+    input: 'src/page-engine-v2-components/index.ts',
+    output: {
+      file: 'dist/page-engine-v2-components/index.js',
+      format: 'system',
+      sourcemap: 'inline',
+    },
+
+    external: ['react', 'react-dom', /@one-for-all\/.*/],
+    plugins: commonPlugins,
+  },
 
   // build for page engine
   {

@@ -4,7 +4,9 @@ $ibc: #dcdfe6;
   box-sizing: border-box;
   background-color: #f6f6f6;
   height: 100%;
-  @apply overflow-hidden flex flex-col;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 
   .page-engine-layer-block__canvas-toolbar {
     padding: 30px;
@@ -14,9 +16,36 @@ $ibc: #dcdfe6;
   .page-engine-layer-block__canvas-container {
     padding: 20px;
     background-color: white;
-    @apply flex-1 overflow-auto;
+    flex: 1;
+    overflow: auto;
+
     &>div {
       display: unset;
+    }
+
+    .page-engine-layer-block__canvas-container-item {
+      position: relative;
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+      }
+    }
+
+    .page-engine-layer-block__canvas-container-item--active {
+      $size: 4px;
+      &::after {
+        content: '';
+        position: absolute;
+        top: -$size;
+        left: -$size;
+        bottom: -$size;
+        right: -$size;
+        border: 1px dashed blue;
+      }
     }
   }
 }

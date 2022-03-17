@@ -5,6 +5,6 @@ export function create(schema: SchemaSpec.Schema): BehaviorSubject<SchemaSpec.Sc
   return new BehaviorSubject<SchemaSpec.Schema>(schema);
 }
 
-export function set(store$: BehaviorSubject<SchemaSpec.Schema>, schema: SchemaSpec.Schema): void {
-  store$.next(schema);
+export function set(store$: BehaviorSubject<SchemaSpec.Schema> | undefined, schema: SchemaSpec.Schema): void {
+  store$?.next(schema);
 }

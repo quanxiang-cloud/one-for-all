@@ -4,24 +4,15 @@ import Header from './components/header';
 import Canvas from './components/canvas';
 import Menu from './components/menu';
 import Config from './components/config';
-import Input from './components/canvas/components/input';
-import Button from './components/canvas/components/button';
-import Text from './components/canvas/components/text';
-
-export {
-  Input,
-  Button,
-  Text,
-}
 
 const schema: SchemaSpec.Schema = {
   node: {
     type: 'html-element',
     name: 'div',
     children: [
-      {type: 'react-component', id: '1', packageName: '@one-for-all/example', packageVersion: '0.0.1', exportName: 'Text', label: '文本'},
-      {type: 'react-component', id: '2', packageName: '@one-for-all/example', packageVersion: '0.0.1', exportName: 'Button', label: '按钮'},
-      {type: 'react-component', id: '3', packageName: '@one-for-all/example', packageVersion: '0.0.1', exportName: 'Input', label: '输入框'},
+      {type: 'react-component', id: '1', packageName: 'page-engine-v2-components', packageVersion: '', exportName: 'Text', label: '文本'},
+      {type: 'react-component', id: '2', packageName: 'page-engine-v2-components', packageVersion: '', exportName: 'Button', label: '按钮'},
+      {type: 'react-component', id: '3', packageName: 'page-engine-v2-components', packageVersion: '', exportName: 'Input', label: '输入框'},
     ],
     id: 'canvas-container',
   }
@@ -47,8 +38,4 @@ const layers: Layer<BlocksCommunicationState>[] = [{
   blocksCommunicationStateInitialValue: { activeNodeID: '' },
 }]
 
-const EngineInstance = new PageEngine2(schema, layers);
-const el = document.getElementById('app');
-if (!el?.childElementCount) {
-  EngineInstance.render('app');
-}
+new PageEngine2(schema, layers).render('app');

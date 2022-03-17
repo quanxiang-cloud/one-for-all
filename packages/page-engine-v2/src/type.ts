@@ -9,6 +9,7 @@ export interface Block<T extends BaseBlocksCommunicationState> {
 
 export interface BlockProps<T extends BaseBlocksCommunicationState> extends Block<T> {
   engineId: string;
+  setLayer: (transfer: LayerTransfer<T>) => void;
 }
 
 export interface Layer<T extends BaseBlocksCommunicationState> {
@@ -21,7 +22,10 @@ export interface Layer<T extends BaseBlocksCommunicationState> {
 export interface LayerProps<T extends BaseBlocksCommunicationState> extends Layer<T> {
   zIndex: number;
   engineId: string;
+  setLayer: (transfer: LayerTransfer<T>) => void;
 }
+
+export type LayerTransfer<T extends BaseBlocksCommunicationState> = (layer: Layer<T>) => Layer<T>;
 
 export interface BaseBlocksCommunicationState {
   activeNodeID: string;
@@ -35,6 +39,7 @@ export interface BlockItemProps<T extends BaseBlocksCommunicationState> {
   onChange: (schema: Schema) => void;
   schema: Schema;
   blocksCommunicationState$: BlocksCommunicationState<T>;
+  setLayer: (transfer: LayerTransfer<T>) => void;
 }
 
 export interface Props<T extends BaseBlocksCommunicationState> {
@@ -44,5 +49,5 @@ export interface Props<T extends BaseBlocksCommunicationState> {
 
 export interface EngineState<T extends BaseBlocksCommunicationState> {
   schemaStore$: import('rxjs').BehaviorSubject<Schema>;
-  blocksCommunicationState$?: PageEngineV2.BlocksCommunicationState<T>;
+  blocksCommunicationState$?: BlocksCommunicationState<T>;
 }
