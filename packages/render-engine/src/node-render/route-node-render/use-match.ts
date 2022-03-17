@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { BehaviorSubject, distinctUntilChanged, map } from 'rxjs';
-import { Location } from 'history';
+import type{ Location } from 'history';
 
-import type { RouteNode } from '../../types';
 import { isParamHolder } from './utils';
 
-function exactlyCheck(location: Location, currentRoutePath: string): boolean {
-  const pathFragments = location.pathname.split('/');
+export function exactlyCheck(path: string, currentRoutePath: string): boolean {
+  const pathFragments = path.split('/');
   const routeFragments = currentRoutePath.split('/');
   if (pathFragments.length !== routeFragments.length) {
     return false;
@@ -21,11 +20,11 @@ function exactlyCheck(location: Location, currentRoutePath: string): boolean {
   });
 }
 
-function prefixCheck(location: Location, currentRoutePath: string): boolean {
-  const pathFragments = location.pathname.split('/');
+export function prefixCheck(path: string, currentRoutePath: string): boolean {
+  const pathFragments = path.split('/');
   const routeFragments = currentRoutePath.split('/');
 
-  if (pathFragments.length <= routeFragments.length) {
+  if (pathFragments.length < routeFragments.length) {
     return false;
   }
 
@@ -38,13 +37,13 @@ function prefixCheck(location: Location, currentRoutePath: string): boolean {
   });
 }
 
-function useMatch(node: RouteNode, location$: BehaviorSubject<Location>, currentRoutePath: string): boolean {
+function useMatch(location$: BehaviorSubject<Location>, currentRoutePath: string, exactly: boolean): boolean {
   const [match, setMatch] = useState(false);
 
   useEffect(() => {
     const subscribe = location$.pipe(
-      map((location): boolean => {
-        return node.exactly ? exactlyCheck(location, currentRoutePath) : prefixCheck(location, currentRoutePath);
+      map(({ pathname }): boolean => {
+        return exactly ? exactlyCheck(pathname, currentRoutePath) : prefixCheck(pathname, currentRoutePath);
       }),
       distinctUntilChanged(),
     ).subscribe(setMatch);

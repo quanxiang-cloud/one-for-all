@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BehaviorSubject } from 'rxjs';
 
-import { Location } from '../../types';
-
 function useRouteMatchedState(routeState$: BehaviorSubject<Location>, currentRoutePath: string): boolean {
   const [state, setState] = useState(routeState$.value);
 
