@@ -32,7 +32,7 @@
     "rxjs": "^7.4.0",
     "ramda": "^0.27.1",
     "nanoid": "^3.1.30",
-    "@one-for-all/render-engine": "0.17.0"
+    "@one-for-all/render-engine": "0.18.0"
   },
   "devDependencies": {
     "tailwindcss": "^2.2.19",
