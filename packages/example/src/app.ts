@@ -21,9 +21,10 @@ const refLoader: RefLoader = (schemaID: string) => {
   if (!schemaDB[schemaID]) {
     return Promise.reject(`no schema found for: ${schemaID}`);
   }
+
   return Promise.resolve({
     schema: schemaDB[schemaID],
-    plugins: { apiSpecAdapter },
+    plugins: { apiSpecAdapter, repository },
   });
 };
 

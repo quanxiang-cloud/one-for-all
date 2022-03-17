@@ -10,6 +10,14 @@ const rootSchema: Schema = {
         id: 'global-header',
         type: 'html-element',
         name: 'div',
+        props: {
+          style: {
+            type: 'constant_property',
+            value: {
+              display: 'flex',
+            }
+          }
+        },
         children: [
           {
             id: 'home-link',
@@ -113,7 +121,8 @@ const rootSchema: Schema = {
         node: {
           id: 'todo-app-ref',
           type: 'ref-node',
-          schemaID: 'SCHEMA_ID_TODO'
+          schemaID: 'SCHEMA_ID_TODO',
+          // orphan: true,
         },
       },
       {
