@@ -10,10 +10,9 @@ import PathContext from './path-context';
 interface Props {
   node: HTMLNode;
   ctx: CTX;
-  parentRoute?: string;
 }
 
-function HTMLNodeRender({ node, ctx, parentRoute }: Props): React.ReactElement | null {
+function HTMLNodeRender({ node, ctx }: Props): React.ReactElement | null {
   const props = useInstantiateProps(node, ctx);
   useLifecycleHook(node.lifecycleHooks || {});
   const currentPath = useContext(PathContext);
@@ -33,7 +32,7 @@ function HTMLNodeRender({ node, ctx, parentRoute }: Props): React.ReactElement |
   return React.createElement(
     node.name,
     props,
-    React.createElement(ChildrenRender, { nodes: node.children || [], ctx, parentRoute }),
+    React.createElement(ChildrenRender, { nodes: node.children || [], ctx }),
   );
 }
 

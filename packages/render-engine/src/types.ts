@@ -324,6 +324,5 @@ export interface Plugins {
   apiSpecAdapter?: APISpecAdapter;
   repository?: Repository;
   refLoader?: RefLoader;
-  history?: BrowserHistory;
   componentLoader?: ComponentLoader;
 }

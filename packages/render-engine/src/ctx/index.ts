@@ -1,7 +1,6 @@
 import { createBrowserHistory } from 'history';
 import { BehaviorSubject } from 'rxjs';
 import SchemaSpec from '@one-for-all/schema-spec';
-import type { APISpecAdapter } from '@one-for-all/api-spec-adapter';
 
 import getAPIStates from './api-states';
 import deserialize from './deserialize';
@@ -10,10 +9,6 @@ import getSharedStates from './shared-states';
 import StatesHubShared from './states-hub-shared';
 import initializeLazyStates from './initialize-lazy-shared-states';
 import type { CTX, Plugins, SchemaNode, SharedStatesSpec, HistoryState } from '../types';
-
-const dummyAPISpecAdapter: APISpecAdapter = {
-  build: () => ({ url: '/api', method: 'get' }),
-};
 
 interface Params {
   schema: SchemaSpec.Schema;
@@ -37,7 +32,7 @@ async function initCTX({ schema, parentCTX, plugins }: Params): Promise<{ ctx: C
   const statesHubAPI = new StatesHubAPI(
     {
       // TODO: throw error instead of tolerating it
-      apiSpecAdapter: apiSpecAdapter || dummyAPISpecAdapter,
+      apiSpecAdapter: apiSpecAdapter,
       apiStateSpec: apiStateSpec || {},
     },
     parentCTX?.statesHubAPI,

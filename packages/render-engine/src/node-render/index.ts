@@ -14,13 +14,9 @@ import ReactComponentNodeRender from './react-component-node-render';
 interface ChildrenRenderProps {
   nodes: SchemaNode[];
   ctx: CTX;
-  parentRoute?: string;
 }
 
-export function ChildrenRender({
-  nodes,
-  ctx,
-}: ChildrenRenderProps): React.FunctionComponentElement<Record<string, unknown>> | null {
+export function ChildrenRender({ nodes, ctx }: ChildrenRenderProps): React.ReactElement | null {
   if (!nodes.length) {
     return null;
   }
@@ -32,10 +28,9 @@ export function ChildrenRender({
   );
 }
 
-export interface Props {
+interface Props {
   node: SchemaNode;
   ctx: CTX;
-  parentRoute?: string;
 }
 
 function NodeRender({ node, ctx }: Props): React.ReactElement | null {

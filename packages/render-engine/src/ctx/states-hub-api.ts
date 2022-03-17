@@ -9,13 +9,18 @@ import initAPIState from './init-api-state';
 type Cache = Record<string, APIState$WithActions>;
 
 interface Props {
-  apiSpecAdapter: APISpecAdapter;
+  apiSpecAdapter?: APISpecAdapter;
   apiStateSpec: APIStatesSpec;
 }
+
 const dummyState$WithAction: APIState$WithActions = {
   state$: new BehaviorSubject<APIState>(initialState),
   fetch: noop,
   refresh: noop,
+};
+
+const dummyAPISpecAdapter: APISpecAdapter = {
+  build: () => ({ url: '/api', method: 'get' }),
 };
 
 export default class Hub implements StatesHubAPI {
@@ -26,7 +31,7 @@ export default class Hub implements StatesHubAPI {
     this.parentHub = parentHub;
 
     this.cache = Object.entries(apiStateSpec).reduce<Cache>((acc, [stateID, { apiID }]) => {
-      acc[stateID] = initAPIState(apiID, apiSpecAdapter);
+      acc[stateID] = initAPIState(apiID, apiSpecAdapter || dummyAPISpecAdapter);
       return acc;
     }, {});
   }

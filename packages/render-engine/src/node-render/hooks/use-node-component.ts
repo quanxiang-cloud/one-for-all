@@ -47,9 +47,7 @@ export default function useNodeComponent(
 
         setComponent(() => comp);
       })
-      .catch((err) => {
-        logger.error(err);
-      });
+      .catch(logger.error);
 
     return () => {
       unMounting = true;

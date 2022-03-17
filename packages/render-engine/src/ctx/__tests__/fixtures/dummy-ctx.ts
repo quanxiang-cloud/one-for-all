@@ -18,7 +18,7 @@ const ctx: CTX = {
 
   historyState: {
     history,
-    location$: new BehaviorSubject(history.location)
+    location$: new BehaviorSubject(history.location),
   },
 
   plugins: {},
