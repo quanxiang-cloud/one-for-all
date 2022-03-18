@@ -1,10 +1,6 @@
 import React from 'react';
 
-// @ts-ignore
-const spriteURL = window.__svg_icon_sprite_url__;
-if (!spriteURL) {
-  console.error('you must set window.__svg_icon_sprite_url__ is in order to use "@one-for-all/icon"');
-}
+import svgSprite from './sprite.svg';
 
 interface IconProps {
   name: string;
@@ -23,9 +19,10 @@ function Icon(
     height: typeof size === 'string' ? size : `${size}px`,
   };
 
+
   return (
     <svg ref={ref} data-name={name} style={_style} className={'ofa-svg-icon ' + className}>
-      <use xlinkHref={`${spriteURL}#${name}`} />
+      <use xlinkHref={`${svgSprite}#${name}`} />
     </svg>
   );
 }
