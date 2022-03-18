@@ -2,7 +2,7 @@ import mockXHR from 'xhr-mock';
 import type { APISpecAdapter } from '@one-for-all/api-spec-adapter';
 import type * as SchemaSpec from '@one-for-all/schema-spec';
 import { APIStatesSpec } from '../../types';
-import initCTX from '../index';
+import bootUp from '../index';
 
 const apiSpecAdapter: APISpecAdapter = {
   build: () => ({ url: '/api', method: 'get' }),
@@ -44,6 +44,6 @@ test('initCTX_return_expected_value', async () => {
     node: { id: 'abv', type: 'html-element', name: 'div' },
   };
 
-  const { ctx } = await initCTX({ schema, plugins: { apiSpecAdapter } });
+  const { ctx } = await bootUp({ schema, plugins: { apiSpecAdapter } });
   expect(ctx.states.lazyState).toBe(mockRes);
 });

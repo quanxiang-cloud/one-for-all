@@ -4,8 +4,8 @@ import { logger } from '@one-for-all/utils';
 
 import { SchemaNode } from '../../types';
 import useSharedStateProps from '../use-shared-state-props';
-import SharedStatesHub from '../../ctx/states-hub-shared';
-import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
+import SharedStatesHub from '../../boot-up/states-hub-shared';
+import dummyCTX from '../../boot-up/__tests__/fixtures/dummy-ctx';
 
 describe('useSharedStateProps_resolve_expected_value', () => {
   const sharedStates = new SharedStatesHub({

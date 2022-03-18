@@ -10,30 +10,33 @@ import StatesHubShared from './states-hub-shared';
 import initializeLazyStates from './initialize-lazy-shared-states';
 import type { CTX, Plugins, SchemaNode, SharedStatesSpec } from '../types';
 
-interface Params {
+export interface BootUpParams {
   schema: SchemaSpec.Schema;
   parentCTX?: CTX;
   plugins?: Plugins;
 }
 
-async function initCTX({ schema, parentCTX, plugins }: Params): Promise<{ ctx: CTX; rootNode: SchemaNode }> {
-  const { apiStateSpec, sharedStatesSpec } = schema;
-  const { apiSpecAdapter, repository, refLoader, componentLoader } = plugins || {};
+export interface BootResult {
+  ctx: CTX;
+  rootNode: SchemaNode;
+}
 
-  const statesHubAPI = new StatesHubAPI(
-    {
-      // TODO: throw error instead of tolerating it
-      apiSpecAdapter: apiSpecAdapter,
-      apiStateSpec: apiStateSpec || {},
-    },
-    parentCTX?.statesHubAPI,
-  );
+async function bootUp({ schema, parentCTX, plugins }: BootUpParams): Promise<BootResult> {
+  const { apiStateSpec, sharedStatesSpec } = schema;
+  const _plugins = Object.assign({}, parentCTX?.plugins || {}, plugins || {});
+
+  const statesHubAPI = new StatesHubAPI({
+    // TODO: throw error instead of tolerating it
+    apiSpecAdapter: _plugins.apiSpecAdapter,
+    apiStateSpec: apiStateSpec || {},
+    parentHub: parentCTX?.statesHubAPI,
+  });
 
   const instantiateSpec = deserialize(sharedStatesSpec || {}, undefined) as SharedStatesSpec | null;
   const initializedState = await initializeLazyStates(
     instantiateSpec || {},
     apiStateSpec || {},
-    apiSpecAdapter,
+    _plugins.apiSpecAdapter,
   );
   const statesHubShared = new StatesHubShared(initializedState, parentCTX?.statesHubShared);
 
@@ -55,17 +58,19 @@ async function initCTX({ schema, parentCTX, plugins }: Params): Promise<{ ctx: C
     history,
     location$,
 
-    plugins: {
-      repository: repository || parentCTX?.plugins?.repository,
-      refLoader: refLoader || parentCTX?.plugins?.refLoader,
-      componentLoader: componentLoader || parentCTX?.plugins?.componentLoader,
-    },
+    plugins: _plugins,
   };
 
-  // todo handle error
-  const rootNode = deserialize(schema.node, { apiStates: ctx.apiStates, states: ctx.states, history: ctx.history }) as SchemaNode;
+  const rootNode = deserialize(schema.node, {
+    apiStates: ctx.apiStates,
+    states: ctx.states,
+    history: ctx.history,
+  }) as SchemaNode;
+  if (!rootNode) {
+    return Promise.reject(new Error('failed to init ctx!'));
+  }
 
   return { ctx, rootNode };
 }
 
-export default initCTX;
+export default bootUp;

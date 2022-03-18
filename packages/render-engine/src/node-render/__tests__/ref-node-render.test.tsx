@@ -3,7 +3,7 @@ jest.mock('../hooks/index');
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
+import dummyCTX from '../../boot-up/__tests__/fixtures/dummy-ctx';
 import RefNodeRender from '../ref-node-render';
 import { RefNode } from '../../types';
 

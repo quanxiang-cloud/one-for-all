@@ -1,8 +1,8 @@
 import { logger } from '@one-for-all/utils';
 import { renderHook } from '@testing-library/react-hooks/pure';
 
-import StatesHubAPI from '../../../ctx/states-hub-api';
-import dummyCTX from '../../../ctx/__tests__/fixtures/dummy-ctx';
+import StatesHubAPI from '../../../boot-up/states-hub-api';
+import dummyCTX from '../../../boot-up/__tests__/fixtures/dummy-ctx';
 import { useIterable } from '../helpers';
 import { PlainState } from '../../..';
 

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import type { Schema } from '@one-for-all/schema-spec';
 
 import NodeRender from './node-render';
-import initCTX from './ctx';
+import bootUp from './boot-up';
 import type { Plugins } from './types';
 
 export default class RenderEngine {
@@ -16,7 +16,7 @@ export default class RenderEngine {
   }
 
   public async render(renderRoot: Element): Promise<void> {
-    const { ctx, rootNode } = await initCTX({
+    const { ctx, rootNode } = await bootUp({
       plugins: this.plugins,
       schema: this.schema,
     });

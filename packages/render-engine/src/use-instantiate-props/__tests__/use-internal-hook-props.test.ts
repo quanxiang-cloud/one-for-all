@@ -1,10 +1,10 @@
 import { renderHook } from '@testing-library/react-hooks/pure';
 
 import { SchemaNode } from '../../types';
-import StatesHubShared from '../../ctx/states-hub-shared';
+import StatesHubShared from '../../boot-up/states-hub-shared';
 import useInternalHooks from '../use-internal-hook-props';
 
-import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
+import dummyCTX from '../../boot-up/__tests__/fixtures/dummy-ctx';
 
 test('useInternalHooks_resolve_expected_value', () => {
   const hub = new StatesHubShared({});

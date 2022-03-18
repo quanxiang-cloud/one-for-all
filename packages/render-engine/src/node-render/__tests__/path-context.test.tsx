@@ -3,7 +3,7 @@ jest.mock('../../repository');
 import React, { PropsWithChildren } from 'react';
 import { render } from '@testing-library/react';
 
-import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
+import dummyCTX from '../../boot-up/__tests__/fixtures/dummy-ctx';
 import NodeRender from '../index';
 import { SchemaNode, Repository } from '../../types';
 import renderPathRepository from './fixtures/render-path';

@@ -30,7 +30,7 @@ describe('StatesHubAPI_hasState$_return_expected_value', () => {
       parentState: { apiID: 'get:/api' },
     };
     const parentHub: StatesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: parentStateSpec });
-    const statesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec }, parentHub);
+    const statesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec, parentHub });
     const has = statesHubAPI.hasState$('parentState');
 
     expect(has).toBe(true);
@@ -41,7 +41,7 @@ describe('StatesHubAPI_hasState$_return_expected_value', () => {
       parentState: { apiID: 'get:/api' },
     };
     const parentHub: StatesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: parentStateSpec });
-    const statesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec }, parentHub);
+    const statesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec, parentHub });
     const has = statesHubAPI.hasState$('some_state_not_exist');
 
     expect(has).toBe(false);
@@ -61,7 +61,7 @@ describe('StatesHubAPI_findState$_return_expected_value', () => {
       parentState: { apiID: 'get:/api' },
     };
     const parentHub: StatesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: parentStateSpec });
-    const statesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec }, parentHub);
+    const statesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec, parentHub });
     const state$WithActions = statesHubAPI.findState$('parentState');
 
     expect(state$WithActions).toBeTruthy();
@@ -72,7 +72,7 @@ describe('StatesHubAPI_findState$_return_expected_value', () => {
       parentState: { apiID: 'get:/api' },
     };
     const parentHub: StatesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec: parentStateSpec });
-    const statesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec }, parentHub);
+    const statesHubAPI = new StatesHubAPI({ apiSpecAdapter, apiStateSpec, parentHub });
     const state$WithActions = statesHubAPI.findState$('some_state_not_exist');
 
     expect(state$WithActions).toBeFalsy();

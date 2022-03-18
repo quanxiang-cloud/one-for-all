@@ -13,7 +13,7 @@ function useLinkProps(node: SchemaNode, ctx: CTX): Record<string, unknown> {
           return;
         }
         ctx.history.push(href);
-      }
+      },
     };
   }
 
