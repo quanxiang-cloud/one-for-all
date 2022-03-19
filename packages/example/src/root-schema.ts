@@ -163,13 +163,35 @@ const rootSchema: Schema = {
         node: {
           id: 'about-page',
           type: 'html-element',
-          name: 'h1',
-          props: {
-            children: {
-              type: 'constant_property',
-              value: 'this is about page'
-            }
-          }
+          name: 'div',
+          children: [
+            {
+              id: 'icon',
+              type: 'react-component',
+              packageName: '@one-for-all/icon',
+              packageVersion: 'someversion',
+              exportName: 'default',
+              props: {
+                name: {
+                  type: 'constant_property',
+                  value: 'accessible',
+                }
+              }
+            },
+            {
+              id: 'icon',
+              type: 'react-component',
+              packageName: '@one-for-all/icon',
+              packageVersion: 'someversion',
+              exportName: 'default',
+              props: {
+                name: {
+                  type: 'constant_property',
+                  value: 'account_balance_wallet',
+                }
+              }
+            },
+          ]
         },
       },
       {
