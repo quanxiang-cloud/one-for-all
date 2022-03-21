@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-const { generateSprite } = require('./svg-to-sprite');
+const { generateSpriteAndName } = require('./svg-to-sprite');
 
-generateSprite();
+generateSpriteAndName(0);
