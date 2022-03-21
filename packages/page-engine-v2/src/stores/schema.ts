@@ -1,10 +1,10 @@
 import { BehaviorSubject } from 'rxjs';
-import SchemaSpec from '@one-for-all/schema-spec';
+import type { Schema } from '@one-for-all/schema-spec';
 
-export function create(schema: SchemaSpec.Schema): BehaviorSubject<SchemaSpec.Schema> {
-  return new BehaviorSubject<SchemaSpec.Schema>(schema);
+export function create(schema: Schema): BehaviorSubject<Schema> {
+  return new BehaviorSubject<Schema>(schema);
 }
 
-export function set(store$: BehaviorSubject<SchemaSpec.Schema> | undefined, schema: SchemaSpec.Schema): void {
+export function set(store$: BehaviorSubject<Schema> | undefined, schema: Schema): void {
   store$?.next(schema);
 }
