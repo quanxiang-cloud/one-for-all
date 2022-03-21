@@ -11,12 +11,12 @@ interface Props {
 
 export default function RefNodeRender({ node, ctx }: Props): React.ReactElement | null {
   useLifecycleHook(node.lifecycleHooks || {});
-  const refResult = useRefResult(
-    { schemaID: node.schemaID, refLoader: ctx.refLoader, orphan: node.orphan },
+  const result = useRefResult(
+    { schemaID: node.schemaID, refLoader: ctx.plugins.refLoader, orphan: node.orphan },
     ctx,
   );
 
-  if (!refResult) {
+  if (!result) {
     if (node.fallback) {
       return React.createElement(NodeRender, { node: node.fallback, ctx });
     }
@@ -24,5 +24,5 @@ export default function RefNodeRender({ node, ctx }: Props): React.ReactElement 
     return null;
   }
 
-  return React.createElement(NodeRender, { node: refResult.refNode, ctx: refResult.refCTX });
+  return React.createElement(NodeRender, { node: result.rootNode, ctx: result.ctx });
 }

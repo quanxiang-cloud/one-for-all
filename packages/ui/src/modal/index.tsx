@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import styled, { createGlobalStyle, keyframes, css } from 'styled-components';
+import styled, { createGlobalStyle, keyframes, css  } from 'styled-components';
 import cs from 'classnames';
 import { pick } from 'lodash';
 

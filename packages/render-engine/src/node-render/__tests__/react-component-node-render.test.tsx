@@ -3,7 +3,7 @@ jest.mock('../hooks/use-node-component');
 import React, { PropsWithChildren } from 'react';
 import { render } from '@testing-library/react';
 
-import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
+import dummyCTX from '../../boot-up/__tests__/fixtures/dummy-ctx';
 import ReactComponentNodeRender from '../react-component-node-render';
 import { Repository, ReactComponentNode } from '../../types';
 
@@ -31,7 +31,7 @@ test('ReactComponentNodeRender_should_return_null_no_component', () => {
 });
 
 test('ReactComponentNodeRender_match_snapshots', () => {
-  dummyCTX.repository = repository;
+  dummyCTX.plugins.repository = repository;
 
   const node: ReactComponentNode = {
     id: 'some_node_id',
@@ -47,7 +47,7 @@ test('ReactComponentNodeRender_match_snapshots', () => {
 });
 
 test('ReactComponentNodeRender_match_snapshots_with_children', () => {
-  dummyCTX.repository = repository;
+  dummyCTX.plugins.repository = repository;
 
   const node: ReactComponentNode = {
     id: 'some_node_id',

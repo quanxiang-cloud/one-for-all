@@ -24,7 +24,7 @@ export function ShadowContent({ shadowRoot, children }: { children: JSX.Element[
   useEffect(() => {
     const style = document.createElement('style');
     const compStyle = document.createElement('link');
-    compStyle.href = '/pkg/style-guide/dist/@one-for-all/style-guide@0.0.1/css/web.css';
+    compStyle.href = '/pkg/headless-ui/dist/@one-for-all/headless-ui@latest/ofa-headless-ui-web.css';
     compStyle.rel = 'stylesheet';
     style.textContent = `
       .style-config-preview-comp {

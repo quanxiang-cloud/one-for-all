@@ -1,0 +1,51 @@
+{
+  "key": "Tab",
+  "title": "标签页",
+  "specs": [
+    {
+      "title": "默认状态",
+      "componentProps": {
+        "children": "Test",
+        "items": [
+          {
+            "id": "one",
+            "name": "标签1"
+          },
+          {
+            "id": "two",
+            "name": "标签2"
+          },
+          {
+            "id": "three",
+            "name": "标签3",
+            "disabled": true
+          }
+        ]
+      },
+      "rules": [
+        {
+          "selector": ".ofa-tab-nav-active",
+          "desc": "标签激活样式"
+        },
+        {
+          "selector": ".ofa-tab-nav-item",
+          "desc": "标签样式",
+          "pseudo": [
+            {
+              "selector": "hover",
+              "desc": "按钮鼠标移入效果"
+            }
+          ]
+        },
+        {
+          "selector": ".ofa-tab-navs-wrapper",
+          "desc": "标签容器样式"
+        },
+        {
+          "selector": ".ofa-tab-nav-disabled",
+          "desc": "禁止样式"
+        }
+      ]
+    }
+  ]
+}

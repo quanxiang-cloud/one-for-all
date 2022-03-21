@@ -3,7 +3,7 @@ import { logger } from '@one-for-all/utils';
 import { render } from '@testing-library/react';
 
 import HTMLNodeRender from '../html-node-render';
-import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
+import dummyCTX from '../../boot-up/__tests__/fixtures/dummy-ctx';
 import { HTMLNode } from '../../types';
 
 test('HTMLNodeRender_should_handle_empty_html_tag', () => {

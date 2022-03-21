@@ -483,6 +483,10 @@
       "projectFolder": "packages/schema-spec"
     },
     {
+      "packageName": "@one-for-all/schema-utils",
+      "projectFolder": "packages/schema-utils"
+    },
+    {
       "packageName": "@one-for-all/style-guide",
       "projectFolder": "packages/style-guide"
     },
@@ -497,6 +501,10 @@
     {
       "packageName": "@one-for-all/headless-ui",
       "projectFolder": "packages/headless-ui"
+    },
+    {
+      "packageName": "@one-for-all/page-engine-v2",
+      "projectFolder": "packages/page-engine-v2"
     },
 
     // vendors
@@ -583,6 +591,11 @@
     {
       "packageName": "@one-for-all/elkjs",
       "projectFolder": "vendors/elkjs",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@one-for-all/history",
+      "projectFolder": "vendors/history",
       "shouldPublish": false
     }
   ]

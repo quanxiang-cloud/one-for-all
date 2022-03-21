@@ -2,40 +2,42 @@ import React, { useEffect, useImperativeHandle, useState } from 'react';
 import type { Schema } from '@one-for-all/schema-spec';
 import { logger } from '@one-for-all/utils';
 
-import initCTX from './ctx';
 import NodeRender from './node-render';
-import deserialize from './deserialize';
-import type { CTX, Plugins, RenderEngineCTX, SchemaNode } from './types';
+import bootUp, { BootResult } from './boot-up';
+import type { Plugins, RenderEngineCTX } from './types';
 
 interface Props {
   schema: Schema;
   plugins?: Plugins;
 }
 
-function useCTX(schema: Schema, plugins?: Plugins): CTX | null {
-  const [ctx, setCTX] = useState<CTX | null>(null);
+function useBootResult(schema: Schema, plugins?: Plugins): BootResult | undefined {
+  const [result, setResult] = useState<BootResult>();
 
   useEffect(() => {
-    initCTX({
-      plugins,
-      apiStateSpec: schema.apiStateSpec,
-      sharedStatesSpec: schema.sharedStatesSpec,
-      // todo parentCTX?
-    })
-      .then((_ctx) => setCTX(_ctx))
-      .catch((err) => {
-        logger.error(err);
-      });
+    let unMounting = false;
+
+    bootUp({ schema, plugins })
+      .then((bootResult) => {
+        if (!unMounting) {
+          setResult(bootResult);
+        }
+      })
+      .catch(logger.error);
+
+    return () => {
+      unMounting = true;
+    };
   }, []);
 
-  return ctx;
+  return result;
 }
 
 function SchemaRender(
   { schema, plugins }: Props,
   ref: React.Ref<RenderEngineCTX | undefined>,
 ): React.ReactElement | null {
-  const ctx = useCTX(schema, plugins);
+  const { ctx, rootNode } = useBootResult(schema, plugins) || {};
 
   useImperativeHandle(
     ref,
@@ -44,22 +46,16 @@ function SchemaRender(
         return;
       }
 
-      return { apiStates: ctx.apiStates, states: ctx.states };
+      return { apiStates: ctx.apiStates, states: ctx.states, history: ctx.history };
     },
     [ctx],
   );
 
-  if (!ctx) {
+  if (!ctx || !rootNode) {
     return null;
   }
 
-  const instantiatedNode = deserialize(schema.node, ctx) as SchemaNode;
-  if (!instantiatedNode) {
-    // TODO: paint error
-    return null;
-  }
-
-  return React.createElement(NodeRender, { node: instantiatedNode, ctx });
+  return React.createElement(NodeRender, { node: rootNode, ctx: ctx });
 }
 
 export default React.forwardRef<RenderEngineCTX | undefined, Props>(SchemaRender);

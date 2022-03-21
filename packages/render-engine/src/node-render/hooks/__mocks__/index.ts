@@ -1,25 +1,25 @@
-import dummyCTX from '../../../ctx/__tests__/fixtures/dummy-ctx';
+import { BootResult } from 'packages/render-engine/src/boot-up';
+import dummyCTX from '../../../boot-up/__tests__/fixtures/dummy-ctx';
 import { RefLoader, CTX, SchemaNode } from '../../../types';
 
 export function useLifecycleHook(): void {
   return;
 }
 
-type RefResult = { refCTX: CTX; refNode: SchemaNode };
 type UseRefResultProps = {
   schemaID: string;
   refLoader?: RefLoader;
   orphan?: boolean;
 };
 
-export function useRefResult({ schemaID }: UseRefResultProps): RefResult | undefined {
+export function useRefResult({ schemaID }: UseRefResultProps): BootResult | undefined {
   if (schemaID === 'undefined') {
     return;
   }
 
   return {
-    refCTX: dummyCTX,
-    refNode: {
+    ctx: dummyCTX,
+    rootNode: {
       id: 'dummy',
       type: 'html-element',
       name: 'div',

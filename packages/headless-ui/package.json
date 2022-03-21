@@ -22,7 +22,6 @@
     "tsc": "tsc --build tsconfig.json"
   },
   "dependencies": {
-    "@one-for-all/icon": "~0.2.14",
     "@one-for-all/ui": "0.2.18",
     "@popperjs/core": "^2.11.0",
     "classnames": "^2.3.1",

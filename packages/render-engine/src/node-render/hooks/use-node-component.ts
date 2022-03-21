@@ -3,11 +3,11 @@ import { logger } from '@one-for-all/utils';
 
 import PathContext from '../path-context';
 import { findComponentInRepository, systemComponentLoader } from './helper';
-import type { CTX, DynamicComponent, ReactComponentNode } from '../../types';
+import type { DynamicComponent, Plugins, ReactComponentNode } from '../../types';
 
 export default function useNodeComponent(
   node: Pick<ReactComponentNode, 'packageName' | 'packageVersion' | 'exportName'>,
-  { repository, componentLoader }: Pick<CTX, 'repository' | 'componentLoader'>,
+  { repository, componentLoader }: Pick<Plugins, 'repository' | 'componentLoader'>,
 ): DynamicComponent | undefined {
   const currentPath = useContext(PathContext);
   const [lazyLoadedComponent, setComponent] = useState<DynamicComponent | undefined>(() => {
@@ -17,7 +17,6 @@ export default function useNodeComponent(
 
     return findComponentInRepository(repository, node);
   });
-
 
   useEffect(() => {
     if (lazyLoadedComponent) {
@@ -31,24 +30,24 @@ export default function useNodeComponent(
       packageName: node.packageName,
       packageVersion: node.packageVersion,
       exportName: node.exportName,
-    }).then((comp) => {
-      if (unMounting) {
-        return;
-      }
+    })
+      .then((comp) => {
+        if (unMounting) {
+          return;
+        }
 
-      if (!comp) {
-        logger.error(
-          `got empty component for package: ${node.packageName},`,
-          `exportName: ${node.exportName}, version: ${node.packageVersion}`,
-          `please check the spec for node: ${currentPath}.`,
-        );
-        return;
-      }
+        if (!comp) {
+          logger.error(
+            `got empty component for package: ${node.packageName},`,
+            `exportName: ${node.exportName}, version: ${node.packageVersion}`,
+            `please check the spec for node: ${currentPath}.`,
+          );
+          return;
+        }
 
-      setComponent(() => comp);
-    }).catch((err) => {
-      logger.error(err);
-    });
+        setComponent(() => comp);
+      })
+      .catch(logger.error);
 
     return () => {
       unMounting = true;

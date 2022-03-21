@@ -1,6 +1,6 @@
 import React from 'react';
 
-import svgHash from './svg-hash';
+import svgSprite from './sprite.svg';
 
 interface IconProps {
   name: string;
@@ -19,9 +19,10 @@ function Icon(
     height: typeof size === 'string' ? size : `${size}px`,
   };
 
+
   return (
     <svg ref={ref} data-name={name} style={_style} className={'ofa-svg-icon ' + className}>
-      <use xlinkHref={`${svgHash}#${name}`} />
+      <use xlinkHref={`${svgSprite}#${name}`} />
     </svg>
   );
 }

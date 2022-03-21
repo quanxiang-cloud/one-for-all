@@ -4,6 +4,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
 
 import typescriptPaths from '../../common/config/rollup/rollup-plugin-typescript-paths';
+import importMetaAssets from '../../common/config/rollup/rollup-plugin-import-meta-assets';
 import getOutput from '../../common/config/rollup/get-common-output';
 import packageJSON from './package.json';
 
@@ -11,9 +12,10 @@ export default {
   input: 'src/index.tsx',
   output: getOutput(packageJSON.name, packageJSON.version),
 
-  external: ['react', 'react-is', /@one-for-all\/.*/],
+  external: ['react'],
 
   plugins: [
+    importMetaAssets(),
     typescriptPaths(),
     resolve({
       preferBuiltins: false,

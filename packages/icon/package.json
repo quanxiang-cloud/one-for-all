@@ -1,6 +1,6 @@
 {
   "name": "@one-for-all/icon",
-  "version": "0.2.16",
+  "version": "0.4.0",
   "description": "Headless svg icon component",
   "license": "Apache-2.0",
   "module": "lib/src",
@@ -11,10 +11,9 @@
   "scripts": {
     "build": "tsc --build tsconfig.json",
     "build:icons": "node scripts/build-icons.js",
-    "prebundle": "yarn run clean && yarn run build && yarn run build:icons && yarn run copy:assets",
+    "prebundle": "yarn run clean && yarn run build && yarn run build:icons",
     "bundle": "rollup -c",
     "clean": "rm -rf dist lib",
-    "copy:assets": "mkdir -p ../../dist/images && cp -R ../svg-icon/dist/images/* ../../dist/images",
     "lint": "eslint src/**/*.ts --fix",
     "pack": "yarn pack",
     "preview:icons": "node scripts/preview-icons.js"
@@ -26,12 +25,11 @@
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rollup/plugin-replace": "^3.0.0",
-    "@types/styled-components": "^5.1.16",
-    "rollup": "2.66.0",
-    "rollup-plugin-esbuild": "^4.6.0",
-    "svg-spreact": "1.3.2",
     "@types/react": "~17.0.38",
     "glob": "~7.2.0",
-    "mkdirp": "~1.0.4"
+    "mkdirp": "~1.0.4",
+    "rollup": "2.66.0",
+    "rollup-plugin-esbuild": "^4.6.0",
+    "svg-spreact": "1.3.2"
   }
 }

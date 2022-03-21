@@ -1,7 +1,9 @@
 import React, { forwardRef, Ref } from 'react';
 import cs from 'classnames';
 
-import Icon from '@one-for-all/icon';
+// import Icon from '@one-for-all/icon';
+
+import './index.css';
 
 function Button(
   {
@@ -35,13 +37,13 @@ function Button(
       })}
       disabled={forbidden}
     >
-      {(iconName || loading) && (
+      {/* {(iconName || loading) && (
         <Icon
           name={loading ? 'refresh' : iconName || 'refresh'}
           size={Number(iconSize)}
           className={cs('ofa-btn-icon', iconClassName)}
         />
-      )}
+      )} */}
       <span className={textClassName}>{!loading && children}</span>
     </button>
   );

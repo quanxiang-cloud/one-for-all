@@ -4,7 +4,3 @@
 /* classes */
 @import "./classes/colors.css";
 @import "./classes/typography.css";
-
-/* components */
-@import "./components/btn.css";
-@import "./components/table.css";

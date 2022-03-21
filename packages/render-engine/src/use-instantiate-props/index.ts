@@ -13,6 +13,7 @@ import useRenderProps from './use-render-props';
 import useComputedProps from './use-computed-props';
 import PathContext from '../node-render/path-context';
 import useInheritedProps from './use-inherited-props';
+import useLinkProps from './use-link-props';
 
 function useInstantiateProps(node: SchemaNode, ctx: CTX): Record<string, unknown> {
   const currentPath = useContext(PathContext);
@@ -30,6 +31,9 @@ function useInstantiateProps(node: SchemaNode, ctx: CTX): Record<string, unknown
   const apiStateInvokeProps = useAPIInvokeProps(node, ctx);
   const renderProps = useRenderProps(node, ctx);
 
+  // todo support user defined onClick event
+  const linkProps = useLinkProps(node, ctx);
+
   return useMemo(() => {
     const instantiateProps = Object.assign(
       constantProps,
@@ -37,11 +41,12 @@ function useInstantiateProps(node: SchemaNode, ctx: CTX): Record<string, unknown
       apiResultProps,
       apiLoadingProps,
       sharedStateProps,
+      computedProps,
       sharedStateMutationProps,
       internalHookProps,
       renderProps,
-      computedProps,
       inheritedProps,
+      linkProps,
     );
 
     ctx.nodePropsCache?.setProps(currentPath, node.id, instantiateProps);

@@ -1,10 +1,6 @@
 import { logger } from '@one-for-all/utils';
 
-import type {
-  ComponentLoaderParam,
-  DynamicComponent,
-  Repository,
-} from '../../types';
+import type { ComponentLoaderParam, DynamicComponent, Repository } from '../../types';
 
 export function findComponentInRepository(
   repository: Repository,
@@ -15,7 +11,10 @@ export function findComponentInRepository(
   return repository[packageNameVersion]?.[exportName || 'default'];
 }
 
-export function systemComponentLoader({ packageName, exportName }: ComponentLoaderParam): Promise<DynamicComponent> {
+export function systemComponentLoader({
+  packageName,
+  exportName,
+}: ComponentLoaderParam): Promise<DynamicComponent> {
   return System.import(packageName)
     .then((systemModule) => {
       // todo catch undefined error
