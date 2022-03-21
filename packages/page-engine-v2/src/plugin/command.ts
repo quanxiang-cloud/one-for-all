@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useCallback } from "react";
 import { clone } from 'ramda';
+import { Schema } from '@one-for-all/schema-spec';
 
 import { removeNodeFromSchemaByNodeId, removeAllNodeFromSchema } from "../utils";
 
@@ -154,8 +155,8 @@ export function useCommand(): UseCommandExpose {
 }
 
 interface Props<T extends PageEngineV2.BaseBlocksCommunicationState> {
-  schema: PageEngineV2.Schema;
-  onChange: (schema: PageEngineV2.Schema) => void;
+  schema: Schema;
+  onChange: (schema: Schema) => void;
   blocksCommunicationState$: PageEngineV2.BlocksCommunicationState<T>;
 }
 export function useCanvasCommand<T extends PageEngineV2.BaseBlocksCommunicationState>(
