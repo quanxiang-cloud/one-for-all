@@ -2,36 +2,42 @@ import React, { useEffect, useImperativeHandle, useState } from 'react';
 import type { Schema } from '@one-for-all/schema-spec';
 import { logger } from '@one-for-all/utils';
 
-import initCTX from './ctx';
 import NodeRender from './node-render';
-import type { CTX, Plugins, RenderEngineCTX, SchemaNode } from './types';
+import bootUp, { BootResult } from './boot-up';
+import type { Plugins, RenderEngineCTX } from './types';
 
 interface Props {
   schema: Schema;
   plugins?: Plugins;
 }
 
-interface UseCTXResult {
-  ctx: CTX;
-  rootNode: SchemaNode;
-}
-
-function useCTX(schema: Schema, plugins?: Plugins): UseCTXResult | null {
-  const [ctx, setCTX] = useState<UseCTXResult | null>(null);
+function useBootResult(schema: Schema, plugins?: Plugins): BootResult | undefined {
+  const [result, setResult] = useState<BootResult>();
 
   useEffect(() => {
-    // todo parentCTX?
-    initCTX({ plugins, schema }).then(setCTX).catch(logger.error);
+    let unMounting = false;
+
+    bootUp({ schema, plugins })
+      .then((bootResult) => {
+        if (!unMounting) {
+          setResult(bootResult);
+        }
+      })
+      .catch(logger.error);
+
+    return () => {
+      unMounting = true;
+    };
   }, []);
 
-  return ctx;
+  return result;
 }
 
 function SchemaRender(
   { schema, plugins }: Props,
   ref: React.Ref<RenderEngineCTX | undefined>,
 ): React.ReactElement | null {
-  const ctx = useCTX(schema, plugins);
+  const { ctx, rootNode } = useBootResult(schema, plugins) || {};
 
   useImperativeHandle(
     ref,
@@ -40,16 +46,16 @@ function SchemaRender(
         return;
       }
 
-      return { apiStates: ctx.ctx.apiStates, states: ctx.ctx.states, history: ctx.ctx.history };
+      return { apiStates: ctx.apiStates, states: ctx.states, history: ctx.history };
     },
     [ctx],
   );
 
-  if (!ctx) {
+  if (!ctx || !rootNode) {
     return null;
   }
 
-  return React.createElement(NodeRender, { node: ctx.rootNode, ctx: ctx.ctx });
+  return React.createElement(NodeRender, { node: rootNode, ctx: ctx });
 }
 
-export default SchemaRender;
+export default React.forwardRef<RenderEngineCTX | undefined, Props>(SchemaRender);

@@ -3,9 +3,9 @@ import type { APISpecAdapter } from '@one-for-all/api-spec-adapter';
 import { logger } from '@one-for-all/utils';
 
 import useAPIResultProps from '../use-api-result-props';
-import StatesHubAPI from '../../ctx/states-hub-api';
+import StatesHubAPI from '../../boot-up/states-hub-api';
 import { SchemaNode } from '../../types';
-import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
+import dummyCTX from '../../boot-up/__tests__/fixtures/dummy-ctx';
 
 const apiSpecAdapter: APISpecAdapter = {
   build: () => ({ url: '/api', method: 'get' }),

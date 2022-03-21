@@ -2,16 +2,14 @@ import { useContext, useEffect, useState } from 'react';
 import { logger } from '@one-for-all/utils';
 
 import PathContext from '../path-context';
-import initCTX from '../../ctx';
+import bootUp, { BootResult } from '../../boot-up';
 import useInstantiateProps from '../../use-instantiate-props';
 import type { CTX, RefLoader, LifecycleHooks, SchemaNode } from '../../types';
 import SchemaSpec from 'packages/schema-spec/src';
 
 export function useLifecycleHook({ didMount, willUnmount }: LifecycleHooks): void {
   useEffect(() => {
-    if (didMount) {
-      didMount();
-    }
+    didMount?.();
 
     return () => {
       willUnmount?.();
@@ -19,10 +17,6 @@ export function useLifecycleHook({ didMount, willUnmount }: LifecycleHooks): voi
   }, []);
 }
 
-interface RefResult {
-  refCTX: CTX;
-  refNode: SchemaNode;
-}
 interface UseRefResultProps {
   schemaID: string;
   refLoader?: RefLoader;
@@ -31,9 +25,9 @@ interface UseRefResultProps {
 
 export function useRefResult(
   { schemaID, refLoader, orphan }: UseRefResultProps,
-  ctx: CTX,
-): RefResult | undefined {
-  const [result, setResult] = useState<RefResult | undefined>();
+  parentCTX: CTX,
+): BootResult | undefined {
+  const [result, setResult] = useState<BootResult>();
   const currentPath = useContext(PathContext);
 
   useEffect(() => {
@@ -62,22 +56,20 @@ export function useRefResult(
 
         _schema = schema;
 
-        return initCTX({
+        return bootUp({
           plugins,
           schema,
-          parentCTX: orphan ? undefined : ctx,
+          parentCTX: orphan ? undefined : parentCTX,
         });
       })
-      .then((refCTX) => {
-        if (!refCTX || !_schema) {
+      .then((refBootResult) => {
+        if (!refBootResult || !_schema) {
           return;
         }
 
-        setResult({ refCTX: refCTX.ctx, refNode: refCTX.rootNode });
+        setResult({ ctx: refBootResult.ctx, rootNode: refBootResult.rootNode });
       })
-      .catch((err) => {
-        logger.error(err);
-      });
+      .catch(logger.error);
 
     return () => {
       unMounting = true;

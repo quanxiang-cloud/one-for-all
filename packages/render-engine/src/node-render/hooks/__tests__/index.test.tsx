@@ -4,10 +4,10 @@ import { APISpecAdapter } from '@one-for-all/api-spec-adapter/lib/src/types';
 import type { Schema } from '@one-for-all/schema-spec';
 
 import { RefLoader, HTMLNode, APIStatesSpec } from '../../../types';
-import APIStatesHub from '../../../ctx/states-hub-api';
-import SharedStateHub from '../../../ctx/states-hub-shared';
-import SharedStatesHub from '../../../ctx/states-hub-shared';
-import dummyCTX from '../../../ctx/__tests__/fixtures/dummy-ctx';
+import APIStatesHub from '../../../boot-up/states-hub-api';
+import SharedStateHub from '../../../boot-up/states-hub-shared';
+import SharedStatesHub from '../../../boot-up/states-hub-shared';
+import dummyCTX from '../../../boot-up/__tests__/fixtures/dummy-ctx';
 import { useLifecycleHook, useRefResult, useShouldRender } from '../index';
 
 function wait(timeSecond: number): Promise<boolean> {
@@ -40,8 +40,8 @@ describe('useRefResult_should_return_undefined', () => {
     const schemaID = 'some_id';
     const { result, unmount } = renderHook(() => useRefResult({ schemaID }, dummyCTX));
 
-    expect(result.current?.refCTX).toBeFalsy();
-    expect(result.current?.refNode).toBeFalsy();
+    expect(result.current?.ctx).toBeFalsy();
+    expect(result.current?.rootNode).toBeFalsy();
     expect(result.all.length).toBe(1);
     expect(logger.error).toBeCalled();
 
@@ -52,8 +52,8 @@ describe('useRefResult_should_return_undefined', () => {
     const schemaID = 'some_id';
     const { result, unmount } = renderHook(() => useRefResult({ schemaID }, dummyCTX));
 
-    expect(result.current?.refCTX).toBeFalsy();
-    expect(result.current?.refNode).toBeFalsy();
+    expect(result.current?.ctx).toBeFalsy();
+    expect(result.current?.rootNode).toBeFalsy();
     expect(result.all.length).toBe(1);
     expect(logger.error).toBeCalled();
 
@@ -72,8 +72,8 @@ test('useRefResult_should_catch_promise_reject', async () => {
 
   await wait(1);
 
-  expect(result.current?.refCTX).toBeFalsy();
-  expect(result.current?.refNode).toBeFalsy();
+  expect(result.current?.ctx).toBeFalsy();
+  expect(result.current?.rootNode).toBeFalsy();
   expect(result.all.length).toBe(1);
   expect(logger.error).toBeCalledWith(err);
 
@@ -97,8 +97,8 @@ test('useRefResult_should_return_expected_value', async () => {
 
   await waitForValueToChange(() => result.current);
 
-  expect(result.current?.refCTX).toBeTruthy();
-  expect(result.current?.refNode).toBeTruthy();
+  expect(result.current?.ctx).toBeTruthy();
+  expect(result.current?.rootNode).toBeTruthy();
   expect(result.all.length).toBe(2);
   expect(logger.error).not.toBeCalled();
 

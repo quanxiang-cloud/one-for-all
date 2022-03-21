@@ -11,6 +11,7 @@ type Cache = Record<string, APIState$WithActions>;
 interface Props {
   apiSpecAdapter?: APISpecAdapter;
   apiStateSpec: APIStatesSpec;
+  parentHub?: StatesHubAPI;
 }
 
 const dummyState$WithAction: APIState$WithActions = {
@@ -27,7 +28,7 @@ export default class Hub implements StatesHubAPI {
   public cache: Cache;
   public parentHub?: StatesHubAPI = undefined;
 
-  public constructor({ apiStateSpec, apiSpecAdapter }: Props, parentHub?: StatesHubAPI) {
+  public constructor({ apiStateSpec, apiSpecAdapter, parentHub }: Props) {
     this.parentHub = parentHub;
 
     this.cache = Object.entries(apiStateSpec).reduce<Cache>((acc, [stateID, { apiID }]) => {

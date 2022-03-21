@@ -1,4 +1,5 @@
 import React, { CSSProperties, useCallback, useContext, useMemo } from 'react';
+import { Schema } from '@one-for-all/schema-spec';
 
 import { useObservable } from '../../hooks';
 import { set as setSchema } from '../../stores/schema';
@@ -12,7 +13,7 @@ export default function Block<T extends PageEngineV2.BaseBlocksCommunicationStat
   const { schemaStore$, blocksCommunicationState$ } = useObservable<PageEngineV2.EngineState<T>>(engineStore$, {
     schemaStore$: engineStore$.value.schemaStore$,
   });
-  const schema = useObservable<PageEngineV2.Schema | undefined>(schemaStore$, undefined);
+  const schema = useObservable<Schema | undefined>(schemaStore$, undefined);
 
   const style: CSSProperties = {
     gridColumnStart,

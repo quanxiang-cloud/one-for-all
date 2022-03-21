@@ -3,7 +3,7 @@ jest.mock('../hooks/use-node-component');
 import React, { PropsWithChildren } from 'react';
 import { render } from '@testing-library/react';
 
-import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
+import dummyCTX from '../../boot-up/__tests__/fixtures/dummy-ctx';
 import ReactComponentNodeRender from '../react-component-node-render';
 import { Repository, ReactComponentNode } from '../../types';
 

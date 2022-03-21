@@ -1,6 +1,6 @@
 {
   "name": "@one-for-all/icon",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Headless svg icon component",
   "license": "Apache-2.0",
   "module": "lib/src",
@@ -27,10 +27,6 @@
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rollup/plugin-replace": "^3.0.0",
-    "@types/styled-components": "^5.1.16",
-    "rollup": "2.66.0",
-    "rollup-plugin-esbuild": "^4.6.0",
-    "svg-spreact": "1.3.2",
     "@types/react": "~17.0.38",
     "glob": "~7.2.0",
     "rphtml": "^0.3.11",
@@ -63,6 +59,9 @@
     "tailwindcss": "^2.2.19",
     "eslint": "8.7.0",
     "@rushstack/eslint-config": "2.5.1",
-    "typescript": "4.5.5"
+    "typescript": "4.5.5",
+    "rollup": "2.66.0",
+    "rollup-plugin-esbuild": "^4.6.0",
+    "svg-spreact": "1.3.2"
   }
 }

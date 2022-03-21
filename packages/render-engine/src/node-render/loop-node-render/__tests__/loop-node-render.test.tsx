@@ -3,9 +3,9 @@ import { render } from '@testing-library/react';
 import { logger } from '@one-for-all/utils';
 import { APISpecAdapter } from '@one-for-all/api-spec-adapter';
 
-import dummyCTX from '../../../ctx/__tests__/fixtures/dummy-ctx';
+import dummyCTX from '../../../boot-up/__tests__/fixtures/dummy-ctx';
 import { LoopContainerNode, Repository } from '../../../types';
-import initCTX from '../../../ctx';
+import bootUp from '../../../boot-up';
 import LoopNodeRender from '..';
 import LoopContainer, { Props } from '../loop-individual';
 
@@ -51,7 +51,7 @@ test('LoopContainer_should_log_error_when_iterableState_is_not_iterable', async 
     build: () => ({ url: '/api', method: 'get' }),
   };
 
-  const { ctx } = await initCTX({ schema, plugins: { apiSpecAdapter } });
+  const { ctx } = await bootUp({ schema, plugins: { apiSpecAdapter } });
   ctx.statesHubShared.mutateState('not_arr', { id: 'abc' });
 
   const props: Props = {
@@ -87,7 +87,7 @@ test('LoopContainer_resolve_items', async () => {
     build: () => ({ url: '/api', method: 'get' }),
   };
 
-  const { ctx } = await initCTX({ schema, plugins: { apiSpecAdapter } });
+  const { ctx } = await bootUp({ schema, plugins: { apiSpecAdapter } });
   ctx.statesHubShared.mutateState('arr', [{ id: 'abc' }, { id: 'def' }]);
 
   const props: Props = {
@@ -122,7 +122,7 @@ test('LoopNode_with_ReactOutLayer_composedNode', async () => {
     build: () => ({ url: '/api', method: 'get' }),
   };
 
-  const { ctx } = await initCTX({ schema, plugins: { apiSpecAdapter, repository } });
+  const { ctx } = await bootUp({ schema, plugins: { apiSpecAdapter, repository } });
 
   ctx.statesHubShared.mutateState('arr', [
     { id: 'abc', title: 'kk', hobby: ['eat', 'sleep'] },
@@ -202,7 +202,7 @@ test('LoopNode_with_HTMLOutLayer_composedNode', async () => {
     build: () => ({ url: '/api', method: 'get' }),
   };
 
-  const { ctx } = await initCTX({ schema, plugins: { apiSpecAdapter, repository } });
+  const { ctx } = await bootUp({ schema, plugins: { apiSpecAdapter, repository } });
 
   ctx.statesHubShared.mutateState('arr', [
     { id: 'abc', title: 'kk', hobby: ['eat', 'sleep'] },
@@ -286,7 +286,7 @@ test('LoopNode_with_ordinaryNode_HTMLNode', async () => {
     build: () => ({ url: '/api', method: 'get' }),
   };
 
-  const { ctx } = await initCTX({ schema, plugins: { apiSpecAdapter, repository } });
+  const { ctx } = await bootUp({ schema, plugins: { apiSpecAdapter, repository } });
 
   ctx.statesHubShared.mutateState('arr', [
     { id: 'abc', title: 'kk', hobby: ['eat', 'sleep'] },
@@ -331,7 +331,7 @@ test('LoopNode_with_ordinaryNode_ReactNode', async () => {
     build: () => ({ url: '/api', method: 'get' }),
   };
 
-  const { ctx } = await initCTX({ schema, plugins: { apiSpecAdapter, repository } });
+  const { ctx } = await bootUp({ schema, plugins: { apiSpecAdapter, repository } });
 
   ctx.statesHubShared.mutateState('arr', [
     { id: 'abc', title: 'kk', hobby: ['eat', 'sleep'] },

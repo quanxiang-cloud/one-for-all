@@ -1,8 +1,5 @@
 import React from 'react';
-import { Color } from 'react-color';
-
-// @ts-ignore
-import svgHash from './svg-hash';
+import svgSprite from './sprite.svg';
 
 interface IconProps {
   name: string;
@@ -23,9 +20,10 @@ function Icon(
     fill: color
   };
 
+
   return (
     <svg ref={ref} data-name={name} style={_style} className={'ofa-svg-icon ' + className}>
-      <use xlinkHref={`${svgHash}#${name}`} />
+      <use xlinkHref={`${svgSprite}#${name}`} />
     </svg>
   );
 }

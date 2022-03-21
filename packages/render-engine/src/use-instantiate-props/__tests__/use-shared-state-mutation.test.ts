@@ -3,10 +3,10 @@ import { renderHook, act } from '@testing-library/react-hooks/pure';
 
 import { SchemaNode } from '../../types';
 
-import SharedStatesHub from '../../ctx/states-hub-shared';
+import SharedStatesHub from '../../boot-up/states-hub-shared';
 import useSharedStateMutationProps from '../use-shared-state-mutation';
 
-import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
+import dummyCTX from '../../boot-up/__tests__/fixtures/dummy-ctx';
 
 test('useSharedStateMutationProps_resolve_raw_data_when_adapter_is_undefined', () => {
   const sharedStates = new SharedStatesHub({});

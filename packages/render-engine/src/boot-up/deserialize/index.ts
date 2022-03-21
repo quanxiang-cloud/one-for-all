@@ -7,7 +7,7 @@ function deserialize(n: unknown, ctx: RenderEngineCTX | undefined): unknown | nu
   try {
     return instantiate(JSON.parse(JSON.stringify(n)), ctx);
   } catch (error) {
-    logger.error(error);
+    logger.error('deserialize failed:', error);
     return null;
   }
 }
