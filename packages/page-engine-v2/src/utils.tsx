@@ -1,8 +1,8 @@
 import { customAlphabet } from 'nanoid';
 import React, { useEffect } from 'react';
 import RenderEngine from '@one-for-all/render-engine';
-import { HTMLNode, ReactComponentNode, LoopContainerNode, RouteNode } from '@one-for-all/schema-spec';
-import { over, lensPath } from 'ramda';
+import { HTMLNode, ReactComponentNode, LoopContainerNode, RouteNode, Schema, SchemaNode } from '@one-for-all/schema-spec';
+import { over, lensPath, clone } from 'ramda';
 
 export const uuid = customAlphabet('1234567890qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM', 8);
 
@@ -22,7 +22,7 @@ export async function loadPackage<T>({ packageName, packageVersion, exportName }
 }
 
 interface RenderSchemaProps {
-  schema: PageEngineV2.Schema;
+  schema: Schema;
   elementId: string;
 }
 export function RenderSchema({ schema, elementId }: RenderSchemaProps): JSX.Element {
@@ -48,8 +48,8 @@ export interface SchemaComponent {
   // eslint-disable-next-line
   Render?: (...args: any[]) => JSX.Element | null;
 }
-export async function loadComponentsFromSchema(schema: PageEngineV2.Schema): Promise<SchemaComponent[]> {
-  const nodes: PageEngineV2.SchemaNode[] = [];
+export async function loadComponentsFromSchema(schema: Schema): Promise<SchemaComponent[]> {
+  const nodes: SchemaNode[] = [];
   traverseSchema(schema, node => nodes.push(node));
 
   const componentsInPromise = nodes.map(async node => {
@@ -68,15 +68,15 @@ export async function loadComponentsFromSchema(schema: PageEngineV2.Schema): Pro
 
 export interface TraverseSchemaOption {
   level: number;
-  parentNode?: PageEngineV2.SchemaNode;
+  parentNode?: SchemaNode;
   path?: string;
 }
-export type OnTraverse = (node: PageEngineV2.SchemaNode, { level, parentNode, path }: TraverseSchemaOption) => void;
+export type OnTraverse = (node: SchemaNode, { level, parentNode, path }: TraverseSchemaOption) => void;
 export function traverseSchema(
-  schema: PageEngineV2.Schema,
+  schema: Schema,
   callback: OnTraverse,
   level = 0,
-  parent?: PageEngineV2.SchemaNode,
+  parent?: SchemaNode,
   path?: string,
 ): void {
   const { node } = schema
@@ -91,7 +91,7 @@ export function traverseSchema(
   }
 }
 
-export function getNodeParentPathFromSchemaByNodeId(schema: PageEngineV2.Schema, nodeID: string): string | undefined {
+export function getNodeParentPathFromSchemaByNodeId(schema: Schema, nodeID: string): string | undefined {
   let nodePath: string | undefined
   traverseSchema(schema, (node, { path }) => {
     if (node.id === nodeID) {
@@ -102,27 +102,27 @@ export function getNodeParentPathFromSchemaByNodeId(schema: PageEngineV2.Schema,
   return nodePath ? nodePath.split('.').slice(0, -1).join('.') : undefined;
 }
 
-export function removeNodeFromSchemaByNodeId(schema: PageEngineV2.Schema, nodeID: string): PageEngineV2.Schema {
+export function removeNodeFromSchemaByNodeId(schema: Schema, nodeID: string): Schema {
   const nodeParentPath = getNodeParentPathFromSchemaByNodeId(schema, nodeID);
   if (nodeParentPath) {
     return over(
       lensPath(nodeParentPath.split('.')),
-      children => children.filter((child: PageEngineV2.SchemaNode) => child.id !== nodeID),
+      children => children.filter((child: SchemaNode) => child.id !== nodeID),
       schema
     );
   }
   return schema;
 }
 
-export function schemaNodeWithChildren(node: PageEngineV2.SchemaNode): node is (HTMLNode | ReactComponentNode) {
+export function schemaNodeWithChildren(node: SchemaNode): node is (HTMLNode | ReactComponentNode) {
   return node.type === 'html-element' || node.type === 'react-component';
 }
 
-export function schemaNodeWithNode(node: PageEngineV2.SchemaNode): node is (RouteNode | LoopContainerNode) {
+export function schemaNodeWithNode(node: SchemaNode): node is (RouteNode | LoopContainerNode) {
   return node.type === 'loop-container' || node.type === 'route-node';
 }
 
-export function removeAllNodeFromSchema(schema: PageEngineV2.Schema): PageEngineV2.Schema {
+export function removeAllNodeFromSchema(schema: Schema): Schema {
   const nodeIDs: string[] = [];
   traverseSchema(schema, (node, { level, parentNode, path }) => {
     if (parentNode && schemaNodeWithChildren(parentNode)) {
@@ -130,4 +130,26 @@ export function removeAllNodeFromSchema(schema: PageEngineV2.Schema): PageEngine
     }
   });
   return nodeIDs.reduce((schemaAcc, nodeID) => removeNodeFromSchemaByNodeId(schemaAcc, nodeID), schema);
+}
+
+export function getActiveSchemaNodeById(schema: Schema, activeNodeID: string): SchemaNode | undefined {
+  let activeElem: SchemaNode | undefined;
+  traverseSchema(schema, (node) => {
+    if (node.id === activeNodeID) {
+      activeElem = node;
+    }
+  });
+  return activeElem;
+}
+
+export function updateSchemaByNodeId(
+  schema: Schema, activeNodeID: string, transformer: (s: SchemaNode) => SchemaNode,
+): Schema {
+  const sc = clone(schema);
+  traverseSchema(sc, (node) => {
+    if (node.id === activeNodeID) {
+      transformer(node);
+    }
+  });
+  return sc;
 }

@@ -1,3 +1,6 @@
+import type { BehaviorSubject } from 'rxjs';
+import type { Schema } from '@one-for-all/schema-spec';
+
 export interface Block<T extends BaseBlocksCommunicationState> {
   render: (props: BlockItemProps<T>) => JSX.Element;
   gridColumnStart?: string;
@@ -31,9 +34,7 @@ export interface BaseBlocksCommunicationState {
   activeNodeID: string;
 }
 
-export type BlocksCommunicationState<T extends BaseBlocksCommunicationState> = import('rxjs').BehaviorSubject<T>;
-export type Schema = import('@one-for-all/schema-spec').Schema;
-export type SchemaNode = import('@one-for-all/schema-spec').SchemaNode;
+export type BlocksCommunicationState<T extends BaseBlocksCommunicationState> = BehaviorSubject<T>;
 export interface BlockItemProps<T extends BaseBlocksCommunicationState> {
   engineId: string;
   onChange: (schema: Schema) => void;
@@ -48,6 +49,6 @@ export interface Props<T extends BaseBlocksCommunicationState> {
 }
 
 export interface EngineState<T extends BaseBlocksCommunicationState> {
-  schemaStore$: import('rxjs').BehaviorSubject<Schema>;
+  schemaStore$?: BehaviorSubject<Schema>;
   blocksCommunicationState$?: BlocksCommunicationState<T>;
 }
