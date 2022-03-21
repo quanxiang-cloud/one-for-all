@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useMemo, useEffect, Fragment, PropsWithChildren } from "react";
 import ReactDOM from "react-dom";
 import type { BehaviorSubject } from "rxjs";
 
@@ -10,6 +10,9 @@ import { create as createLayersStore, registryLayers } from './stores/layer';
 import { create as createEngineStore, getContext as getEngineStoreContext } from './stores/engine';
 
 import './styles/index.scss';
+
+// eslint-disable-next-line @rushstack/no-new-null
+type RenderContext = (props: PropsWithChildren<unknown>) => JSX.Element | null;
 
 interface Props<T extends PageEngineV2.BaseBlocksCommunicationState> extends PageEngineV2.Props<T> {
   engineId: string;
@@ -78,15 +81,17 @@ export default class PageEngine<T extends PageEngineV2.BaseBlocksCommunicationSt
     this.layerStore$ = store$;
   }
 
-  public render = (selector: string): void => {
+  public render = (selector: string, Context: RenderContext = Fragment): void => {
     ReactDOM.render(
-      <App<T>
-        schema={this.schema}
-        layers={this.layers}
-        setSchemaStore={this.setSchemaStore}
-        setLayersStore={this.setLayersStore}
-        engineId={this.engineId}
-      />,
+      <Context>
+        <App<T>
+          schema={this.schema}
+          layers={this.layers}
+          setSchemaStore={this.setSchemaStore}
+          setLayersStore={this.setLayersStore}
+          engineId={this.engineId}
+        />
+      </Context>,
       document.getElementById(selector)
     );
   }
