@@ -142,6 +142,37 @@ const rootSchema: Schema = {
                 }
               }
             ]
+          },
+          {
+            id: 'icon-preview',
+            type: 'html-element',
+            name: 'a',
+            isLink: true,
+            props: {
+              href: {
+                type: 'constant_property',
+                value: '/icon-preview'
+              },
+              style: {
+                type: 'constant_property',
+                value: {
+                  marginRight: '20px',
+                }
+              }
+            },
+            children: [
+              {
+                id: 'style-guide-page',
+                type: 'html-element',
+                name: 'h2',
+                props: {
+                  children: {
+                    type: 'constant_property',
+                    value: 'icon preview'
+                  }
+                }
+              }
+            ]
           }
         ]
       },
@@ -202,6 +233,16 @@ const rootSchema: Schema = {
           id: 'style-guide-page',
           type: 'ref-node',
           schemaID: 'SCHEMA_ID_STYLE_GUIDE',
+        },
+      },
+      {
+        id: 'route-for-icon-preview',
+        type: 'route-node',
+        path: 'icon-preview',
+        node: {
+          id: 'icon-preview-page',
+          type: 'ref-node',
+          schemaID: 'SCHEMA_ID_ICON_PREVIEW',
         },
       }
     ]

@@ -1,5 +1,6 @@
 import React from 'react';
 import svgSprite from './sprite.svg';
+import { svgNameMap } from './svgNameMap';
 
 interface IconProps {
   name: string;
@@ -29,3 +30,5 @@ function Icon(
 }
 
 export default React.forwardRef(Icon);
+
+export { svgNameMap };

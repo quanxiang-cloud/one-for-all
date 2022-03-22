@@ -1,6 +1,6 @@
 import React from "react";
 
-import Icon from '../../src/index';
+import Icon from '@one-for-all/icon';
 
 type propsType = {
     categoryMap: {[key: string]: Array<string>}

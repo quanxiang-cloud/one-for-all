@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { render } from 'react-dom';
 
 import './index.scss'
-import svgNameHash from './svg-name-hash';
 
 import ToggleClassification from './components/toggle-classification';
 import RenderIconOfClassification from './components/render-icon-of-classification';
 
-function App(): JSX.Element {
+import { svgNameMap } from '@one-for-all/icon'
+
+export default function ShowIcon(): JSX.Element {
   const [classificationSvgArr, setClassificationSvgArr] = useState([])
   const [activeIndex, setActiveIndex] = useState(0)
 
   useEffect(() => {
-    fetch(svgNameHash)
-      .then(res => res.json())
-      .then(data => {
-        setClassificationSvgArr(data)
-      })
+    // fetch(svgNameMap)
+    //   .then(res => res.json())
+    //   .then(data => {
+    //     setClassificationSvgArr(data)
+    //   })
+    setClassificationSvgArr(svgNameMap)
   }, [])
 
   return (
@@ -30,4 +31,3 @@ function App(): JSX.Element {
     </div>
   );
 }
-render(<App />, document.getElementById('app'));
