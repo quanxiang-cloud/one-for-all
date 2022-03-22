@@ -18,11 +18,11 @@ const todoAppSchema: Schema = {
         func: {
           type: 'initializer_func_spec',
           args: 'dependencies',
-          body: `return dependencies['全部待办列表'].length`
+          body: `return dependencies['全部待办列表'].length`,
         },
-        dependencies: { '全部待办列表': { } },
-      }
-    }
+        dependencies: { 全部待办列表: {} },
+      },
+    },
   },
   node: {
     id: 'container',
@@ -32,7 +32,7 @@ const todoAppSchema: Schema = {
       didMount: {
         type: 'lifecycle_hook_func_spec',
         args: '',
-        body: 'this.apiStates[\'全部待办列表\'].fetch();',
+        body: "this.apiStates['全部待办列表'].fetch();",
       },
     },
     props: {
@@ -46,7 +46,8 @@ const todoAppSchema: Schema = {
           padding: '20px',
           borderRadius: '2px',
           // boxShadow: 'rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px',
-          boxShadow: 'blue 0px 0px 0px 2px inset, rgb(255, 255, 255) 10px -10px 0px -3px, rgb(31, 193, 27) 10px -10px, rgb(255, 255, 255) 20px -20px 0px -3px, rgb(255, 217, 19) 20px -20px, rgb(255, 255, 255) 30px -30px 0px -3px, rgb(255, 156, 85) 30px -30px, rgb(255, 255, 255) 40px -40px 0px -3px, rgb(255, 85, 85) 40px -40px'
+          boxShadow:
+            'blue 0px 0px 0px 2px inset, rgb(255, 255, 255) 10px -10px 0px -3px, rgb(31, 193, 27) 10px -10px, rgb(255, 255, 255) 20px -20px 0px -3px, rgb(255, 217, 19) 20px -20px, rgb(255, 255, 255) 30px -30px 0px -3px, rgb(255, 156, 85) 30px -30px, rgb(255, 255, 255) 40px -40px 0px -3px, rgb(255, 85, 85) 40px -40px',
         },
       },
     },
@@ -226,7 +227,7 @@ const todoAppSchema: Schema = {
               paddingTop: '16px',
               borderTop: '1px solid #eee',
               display: 'flex',
-              justifyContent: 'space-between'
+              justifyContent: 'space-between',
             },
           },
         },
@@ -271,8 +272,8 @@ const todoAppSchema: Schema = {
           //     }
           //   }
           // }
-        ]
-      }
+        ],
+      },
     ],
   },
 };

@@ -15,8 +15,8 @@ const rootSchema: Schema = {
             type: 'constant_property',
             value: {
               display: 'flex',
-            }
-          }
+            },
+          },
         },
         children: [
           {
@@ -27,14 +27,14 @@ const rootSchema: Schema = {
             props: {
               href: {
                 type: 'constant_property',
-                value: '/'
+                value: '/',
               },
               style: {
                 type: 'constant_property',
                 value: {
                   marginRight: '20px',
-                }
-              }
+                },
+              },
             },
             children: [
               {
@@ -44,11 +44,11 @@ const rootSchema: Schema = {
                 props: {
                   children: {
                     type: 'constant_property',
-                    value: '主页'
-                  }
-                }
-              }
-            ]
+                    value: '主页',
+                  },
+                },
+              },
+            ],
           },
           {
             id: 'todo-link',
@@ -58,14 +58,14 @@ const rootSchema: Schema = {
             props: {
               href: {
                 type: 'constant_property',
-                value: '/todo'
+                value: '/todo',
               },
               style: {
                 type: 'constant_property',
                 value: {
                   marginRight: '20px',
-                }
-              }
+                },
+              },
             },
             children: [
               {
@@ -75,11 +75,11 @@ const rootSchema: Schema = {
                 props: {
                   children: {
                     type: 'constant_property',
-                    value: 'Todo App'
-                  }
-                }
-              }
-            ]
+                    value: 'Todo App',
+                  },
+                },
+              },
+            ],
           },
           {
             id: 'about-link',
@@ -89,14 +89,14 @@ const rootSchema: Schema = {
             props: {
               href: {
                 type: 'constant_property',
-                value: '/about'
+                value: '/about',
               },
               style: {
                 type: 'constant_property',
                 value: {
                   marginRight: '20px',
-                }
-              }
+                },
+              },
             },
             children: [
               {
@@ -106,11 +106,11 @@ const rootSchema: Schema = {
                 props: {
                   children: {
                     type: 'constant_property',
-                    value: 'About'
-                  }
-                }
-              }
-            ]
+                    value: 'About',
+                  },
+                },
+              },
+            ],
           },
           {
             id: 'style-guide-link',
@@ -120,14 +120,14 @@ const rootSchema: Schema = {
             props: {
               href: {
                 type: 'constant_property',
-                value: '/style-guide'
+                value: '/style-guide',
               },
               style: {
                 type: 'constant_property',
                 value: {
                   marginRight: '20px',
-                }
-              }
+                },
+              },
             },
             children: [
               {
@@ -137,13 +137,13 @@ const rootSchema: Schema = {
                 props: {
                   children: {
                     type: 'constant_property',
-                    value: 'Style Guide'
-                  }
-                }
-              }
-            ]
-          }
-        ]
+                    value: 'Style Guide',
+                  },
+                },
+              },
+            ],
+          },
+        ],
       },
       {
         id: 'route-for-todo',
@@ -175,8 +175,8 @@ const rootSchema: Schema = {
                 name: {
                   type: 'constant_property',
                   value: 'accessible',
-                }
-              }
+                },
+              },
             },
             {
               id: 'icon',
@@ -188,10 +188,10 @@ const rootSchema: Schema = {
                 name: {
                   type: 'constant_property',
                   value: 'account_balance_wallet',
-                }
-              }
+                },
+              },
             },
-          ]
+          ],
         },
       },
       {
@@ -203,9 +203,9 @@ const rootSchema: Schema = {
           type: 'ref-node',
           schemaID: 'SCHEMA_ID_STYLE_GUIDE',
         },
-      }
-    ]
-  }
+      },
+    ],
+  },
 };
 
 export default rootSchema;

@@ -9,6 +9,6 @@ const todoAppRepository: Repository = {
     TodoInput: TodoInput,
     TodoFilter: TodoFilter,
   },
-}
+};
 
 export default todoAppRepository;

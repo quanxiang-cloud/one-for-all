@@ -26,7 +26,7 @@ export default [
       sourcemap: 'inline',
     },
 
-    external: ['react', 'react-dom', "lodash", /@one-for-all\/.*/],
+    external: ['react', 'react-dom', 'lodash', /@one-for-all\/.*/],
 
     plugins: [
       commonjs(),

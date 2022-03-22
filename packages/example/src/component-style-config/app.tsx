@@ -31,30 +31,23 @@ function Application(): JSX.Element {
   return (
     <div>
       <div style={{ padding: '5px' }}>
-        <Button onClick={handleSave}>
-          保存
-        </Button>
+        <Button onClick={handleSave}>保存</Button>
       </div>
-      <div
-        style={{ gridTemplateColumns: '200px auto 500px' }}
-        className='style-config-container'>
-        <div className='style-guide-comp-list'>
-          {
-            comps.map((comp: ComponentSpec) => {
-              return (
-                <div
-                  className={cs(
-                    'style-config-comp-box',
-                    { 'style-config-comp-active': currentComp?.key === comp.key },
-                  )}
-                  key={comp.key}
-                  onClick={() => setCurrentComp(comp)}
-                >
-                  {comp.title}
-                </div>
-              );
-            })
-          }
+      <div style={{ gridTemplateColumns: '200px auto 500px' }} className="style-config-container">
+        <div className="style-guide-comp-list">
+          {comps.map((comp: ComponentSpec) => {
+            return (
+              <div
+                className={cs('style-config-comp-box', {
+                  'style-config-comp-active': currentComp?.key === comp.key,
+                })}
+                key={comp.key}
+                onClick={() => setCurrentComp(comp)}
+              >
+                {comp.title}
+              </div>
+            );
+          })}
         </div>
         {!!currentComp && (
           <PreviewConfigurableComponent
@@ -65,7 +58,6 @@ function Application(): JSX.Element {
         )}
       </div>
     </div>
-
   );
 }
 
