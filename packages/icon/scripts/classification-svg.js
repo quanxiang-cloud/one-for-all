@@ -58,11 +58,6 @@ function classificationByFill(svgArr, dropSingleColor) {
     if (fillValue.length === 1 && dropSingleColor && fillValue[0] !== 'fill') {
       svgCode.cont = svgCode.cont.replace(new RegExp(`fill="${fillValue[0]}"`, 'g'), '');
     }
-    if (fillValue.length === 2) {
-      if (fillValue[0] === 'fill') fillValue.push(fillValue.shift());
-      svgCode.cont = svgCode.cont.replace(new RegExp(fillValue[0], 'g'), '#475569');
-      svgCode.cont = svgCode.cont.replace(new RegExp(`fill="${fillValue[1]}"`, 'g'), '');
-    }
     classification[Math.min(fillValue.length - 1, 2)].push(svgCode);
   });
   return classification;

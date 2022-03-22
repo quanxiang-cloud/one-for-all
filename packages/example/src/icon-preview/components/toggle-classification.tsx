@@ -9,10 +9,10 @@ export default function ToggleClassification({ change } : propsType):JSX.Element
     const colorClassification = ['单色', '双色', '彩色']
     
     useEffect(() => {
-      change(activeIndex)
+      change && change(activeIndex)
     }, [activeIndex])
 
-    const changeTab = (index) => {
+    const changeTab = (index: number): void => {
       if (index === activeIndex) return
       setActiveIndex(index)
     }
