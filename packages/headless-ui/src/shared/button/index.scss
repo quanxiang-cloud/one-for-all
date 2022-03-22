@@ -8,9 +8,9 @@
   transition: all 0.3s linear;
 }
 
-.ofa-btn--disable,.ofa-btn--disable>svg {
+.ofa-btn--disable,
+.ofa-btn--disable>svg {
   pointer-events: none;
-}
 
 .ofa-btn--forbidden {
   @extend .ofa-btn--disable;
@@ -27,7 +27,7 @@
 
 .ofa-btn-icon {
   color: inherit;
-  margin-right: 4px; 
+  margin-right: 4px;
   fill: currentColor;
 }
 
@@ -35,6 +35,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

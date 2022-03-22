@@ -194,7 +194,6 @@ async function load(e, t) {
   }
 }
 async function init(e) {
-  console.log(import.meta);
   void 0 === e && (e =
     import.meta.url.replace(/\.js$/, "_bg.wasm"));
   const t = {
