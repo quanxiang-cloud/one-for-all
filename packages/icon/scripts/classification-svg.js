@@ -46,19 +46,19 @@ function classificationByFill(svgArr, dropSingleColor) {
       allow_fix_unclose: false,
       case_sensitive_tagname: false,
     });
-    const sameColor = ['none', 'currentColor'];
-    const fillValue = getAttrOfFillValue(getDomTree(ast.toJson().childs), true).filter((value) => {
-      if (sameColor.includes(value)) {
+    const dropColor = ['none', 'currentColor'];
+    const effectiveFillValue = getAttrOfFillValue(getDomTree(ast.toJson().childs), true).filter((value) => {
+      if (dropColor.includes(value)) {
         return false;
       } else {
         return value.indexOf('url(') !== 0;
       }
     });
-		// fillValue.length 代表颜色值个数（1: 单色，2:双色，>2:彩色）
-    if (fillValue.length === 1 && dropSingleColor && fillValue[0] !== 'fill') {
-      svgCode.cont = svgCode.cont.replace(new RegExp(`fill="${fillValue[0]}"`, 'g'), '');
+		// effectiveFillValue.length 代表有效的颜色值个数（1: 单色，2:双色，>2:彩色）
+    if (effectiveFillValue.length === 1 && dropSingleColor && effectiveFillValue[0] !== 'fill') {
+      svgCode.cont = svgCode.cont.replace(new RegExp(`fill="${effectiveFillValue[0]}"`, 'g'), '');
     }
-    classification[Math.min(fillValue.length - 1, 2)].push(svgCode);
+    classification[Math.min(effectiveFillValue.length - 1, 2)].push(svgCode);
   });
   return classification;
 }
