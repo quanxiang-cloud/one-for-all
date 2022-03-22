@@ -53,29 +53,39 @@ function generateHash(value) {
 const getSpriteAndName = async function (colorMark) {
   const svgArr = await getAllSvgContent();
   const classificationRes = classificationByFill(svgArr, true);
-  const { afterClassificationName, iconNames } = getSvgNameByClassification(classificationRes)
-  const afterClassificationSvg = classificationRes.map(singleClassification => {
-    const svgCont = []
-    singleClassification.forEach(({ cont }) => svgCont.push(cont))
-    return svgCont
-  })
+  const { afterClassificationName, iconNames } = getSvgNameByClassification(classificationRes);
+  const afterClassificationSvg = classificationRes.map((singleClassification) => {
+    return singleClassification.map(({ cont }) => cont);
+  });
 
   if (colorMark === undefined) {
     const iconID = (n_1) => [].concat(...iconNames)[n_1];
-    const { defs } = await svgSpreact([].concat(...afterClassificationSvg), { tidy: true, processId: iconID, svgoConfig });
+    const { defs } = await svgSpreact([].concat(...afterClassificationSvg), {
+      tidy: true,
+      processId: iconID,
+      svgoConfig,
+    });
     return {
       names: afterClassificationName,
-      svgStr: defs.replace(/currentColor/g, 'none').replace(new RegExp(WILL_REPLACE_COLOR, 'g'), 'currentColor')
+      svgStr: defs
+        .replace(/currentColor/g, 'none')
+        .replace(new RegExp(WILL_REPLACE_COLOR, 'g'), 'currentColor'),
     };
   } else {
     const iconID = (n_1) => iconNames[colorMark][n_1];
-    const { defs } = await svgSpreact(afterClassificationSvg[colorMark], { tidy: true, processId: iconID, svgoConfig });
+    const { defs } = await svgSpreact(afterClassificationSvg[colorMark], {
+      tidy: true,
+      processId: iconID,
+      svgoConfig,
+    });
     return {
       names: afterClassificationName.slice(colorMark, colorMark + 1),
-      svgStr: defs.replace(/currentColor/g, 'none').replace(new RegExp(WILL_REPLACE_COLOR, 'g'), 'currentColor')
+      svgStr: defs
+        .replace(/currentColor/g, 'none')
+        .replace(new RegExp(WILL_REPLACE_COLOR, 'g'), 'currentColor'),
     };
   }
-}
+};
 
 /**
  * 生成雪碧图和对应 icon 的name
@@ -84,8 +94,8 @@ const getSpriteAndName = async function (colorMark) {
 const generateSpriteAndName = async function (colorMark) {
   try {
     const { names, svgStr } = await getSpriteAndName(colorMark);
-    writeSvgName(JSON.stringify(names))
-    writeSprite(svgStr)
+    writeSvgName(JSON.stringify(names));
+    writeSprite(svgStr);
   } catch (err) {
     console.error(err);
   }
@@ -98,9 +108,9 @@ const writeSvgName = async function (nameStr) {
     mkdirp.sync(path.dirname(svgNameFile));
     fs.writeFileSync(svgNameFile, nameStr);
   } catch (error) {
-    console.log(error)    
+    console.log(error);
   }
-}
+};
 const writeSprite = async function (svgStr) {
   const pathName = 'src/sprite.svg';
   const spriteFile = path.join(basePath, pathName);
@@ -108,34 +118,34 @@ const writeSprite = async function (svgStr) {
     mkdirp.sync(path.dirname(spriteFile));
     fs.writeFileSync(spriteFile, svgStr);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
-const getSvgNameByClassification = function(classificationRes) {
-  const afterClassificationName = []
-  const iconNames = []
-  classificationRes.map(singleClassification => {
-    const categoryRes = {}
-    const categoryNames = []
+};
+const getSvgNameByClassification = function (classificationRes) {
+  const afterClassificationName = [];
+  const iconNames = [];
+  classificationRes.map((singleClassification) => {
+    const categoryRes = {};
+    const categoryNames = [];
     singleClassification.forEach(({ file }) => {
-      const pathSplit = file.split('/')
-      const currentCategory = pathSplit[pathSplit.length - 2]
-      const svgName = path.basename(file).replace('.svg', '')
+      const pathSplit = file.split('/');
+      const currentCategory = pathSplit[pathSplit.length - 2];
+      const svgName = path.basename(file).replace('.svg', '');
       if (categoryRes[currentCategory]) {
-        categoryRes[currentCategory].push(svgName)
+        categoryRes[currentCategory].push(svgName);
       } else {
-        categoryRes[currentCategory] = [svgName]
+        categoryRes[currentCategory] = [svgName];
       }
-      categoryNames.push(svgName)
-    })
-    afterClassificationName.push(categoryRes)
-    iconNames.push(categoryNames)
-  })
+      categoryNames.push(svgName);
+    });
+    afterClassificationName.push(categoryRes);
+    iconNames.push(categoryNames);
+  });
   return {
     afterClassificationName,
-    iconNames
-  }
-}
+    iconNames,
+  };
+};
 
 module.exports = {
   getSprite,

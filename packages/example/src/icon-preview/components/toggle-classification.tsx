@@ -5,30 +5,30 @@ type propsType = {
 }
 
 export default function ToggleClassification({ change } : propsType):JSX.Element {
-    const [activeIndex, setActiveIndex] = useState(0)
-    const colorClassification = ['单色', '双色', '彩色']
-    
-    useEffect(() => {
-      change && change(activeIndex)
-    }, [activeIndex])
+  const [activeIndex, setActiveIndex] = useState(0);
+  const colorClassification = ['单色', '双色', '彩色'];
+  
+  useEffect(() => {
+    change && change(activeIndex);
+  }, [activeIndex])
 
-    const changeTab = (index: number): void => {
-      if (index === activeIndex) return
-      setActiveIndex(index)
+  const changeTab = (index: number): void => {
+    if (index === activeIndex) return;
+    setActiveIndex(index);
+  }
+
+  return (
+    <div className='classification'>
+    {
+      colorClassification.map((color, index) => (
+        <span
+          className={activeIndex === index ? 'classification-item is-active' : 'classification-item'}
+          key={color}
+          onClick={()=>{ changeTab(index) }}>
+          { color }
+        </span>
+      ))
     }
-
-    return (
-        <div className='classification'>
-        {
-          colorClassification.map((color, index) => (
-            <span
-              className={activeIndex === index ? 'classification-item is-active' : 'classification-item'}
-              key={color}
-              onClick={()=>{ changeTab(index) }}>
-              { color }
-            </span>
-          ))
-        }
-      </div>
-    )
+  </div>
+  );
 }

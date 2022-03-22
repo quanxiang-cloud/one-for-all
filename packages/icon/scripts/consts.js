@@ -1,3 +1,3 @@
 module.exports = {
-  WILL_REPLACE_COLOR: '#475569'
-}
+  WILL_REPLACE_COLOR: '#475569',
+};

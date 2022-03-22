@@ -54,7 +54,7 @@ function classificationByFill(svgArr, dropSingleColor) {
         return value.indexOf('url(') !== 0;
       }
     });
-		// effectiveFillValue.length 代表有效的颜色值个数（1: 单色，2:双色，>2:彩色）
+    // effectiveFillValue.length 代表有效的颜色值个数（1: 单色，2:双色，>2:彩色）
     if (effectiveFillValue.length === 1 && dropSingleColor && effectiveFillValue[0] !== 'fill') {
       svgCode.cont = svgCode.cont.replace(new RegExp(`fill="${effectiveFillValue[0]}"`, 'g'), '');
     }

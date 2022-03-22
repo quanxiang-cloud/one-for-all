@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
-import './index.scss'
+import './index.scss';
 
 import ToggleClassification from './components/toggle-classification';
 import RenderIconOfClassification from './components/render-icon-of-classification';
 
-import { svgNameMap } from '@one-for-all/icon'
+import { svgNameMap } from '@one-for-all/icon';
 
 export default function ShowIcon(): JSX.Element {
-  const [classificationSvgArr, setClassificationSvgArr] = useState([])
-  const [activeIndex, setActiveIndex] = useState(0)
+  const [classificationSvgArr, setClassificationSvgArr] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     // fetch(svgNameMap)
@@ -17,8 +17,8 @@ export default function ShowIcon(): JSX.Element {
     //   .then(data => {
     //     setClassificationSvgArr(data)
     //   })
-    setClassificationSvgArr(svgNameMap)
-  }, [])
+    setClassificationSvgArr(svgNameMap);
+  }, []);
 
   return (
     <div>
