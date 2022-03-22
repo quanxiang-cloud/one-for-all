@@ -1,5 +1,5 @@
-import React, { useMemo, useEffect } from "react";
-import ReactDOM from "react-dom";
+import React, { useMemo, useEffect, Component } from "react";
+import { Schema } from '@one-for-all/schema-spec';
 import type { BehaviorSubject } from "rxjs";
 
 import Core from './core';
@@ -13,7 +13,7 @@ import './styles/index.scss';
 
 interface Props<T extends PageEngineV2.BaseBlocksCommunicationState> extends PageEngineV2.Props<T> {
   engineId: string;
-  setSchemaStore: (store: BehaviorSubject<SchemaSpec.Schema>) => void;
+  setSchemaStore: (store: BehaviorSubject<Schema>) => void;
   setLayersStore: (store: BehaviorSubject<PageEngineV2.Layer<T>[]>) => void;
 }
 
@@ -38,24 +38,31 @@ function App<T extends PageEngineV2.BaseBlocksCommunicationState>({ schema, laye
   )
 }
 
-export default class PageEngine<T extends PageEngineV2.BaseBlocksCommunicationState> {
+export interface PageEngineProps<T extends PageEngineV2.BaseBlocksCommunicationState> {
+  schema: Schema;
+  layers: PageEngineV2.Layer<T>[];
+}
+
+export default class PageEngine<T extends PageEngineV2.BaseBlocksCommunicationState> extends Component<PageEngineProps<T>> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private static instanceMap: Record<string, PageEngine<any>> = {};
-  private schema: SchemaSpec.Schema;
+  private schema: Schema;
   private layers: PageEngineV2.Layer<T>[];
-  private schemaStore$!: BehaviorSubject<SchemaSpec.Schema>;
+  private schemaStore$!: BehaviorSubject<Schema>;
   private layerStore$!: BehaviorSubject<PageEngineV2.Layer<T>[]>;
   public engineId: string;
   public static useObservable = useObservable;
 
-  public constructor(schema: SchemaSpec.Schema, layers: PageEngineV2.Layer<T>[]) {
+  public constructor(props: PageEngineProps<T>) {
+    super(props);
+    const { schema, layers } = props;
     this.schema = schema;
     this.layers = layers;
     this.engineId= uuid();
     PageEngine.instanceMap[this.engineId] = this;
   }
 
-  public static useSchema = (engineId: string): SchemaSpec.Schema => {
+  public static useSchema = (engineId: string): Schema => {
     const engine = PageEngine.instanceMap[engineId];
     return useSchema(engine.schemaStore$, engine.schema);
   }
@@ -70,7 +77,7 @@ export default class PageEngine<T extends PageEngineV2.BaseBlocksCommunicationSt
     return registryLayers(engine.layerStore$, layers);
   }
 
-  private setSchemaStore = (store$: BehaviorSubject<SchemaSpec.Schema>): void => {
+  private setSchemaStore = (store$: BehaviorSubject<Schema>): void => {
     this.schemaStore$ = store$;
   }
 
@@ -78,16 +85,15 @@ export default class PageEngine<T extends PageEngineV2.BaseBlocksCommunicationSt
     this.layerStore$ = store$;
   }
 
-  public render = (selector: string): void => {
-    ReactDOM.render(
+  public render = (): JSX.Element => {
+    return (
       <App<T>
         schema={this.schema}
         layers={this.layers}
         setSchemaStore={this.setSchemaStore}
         setLayersStore={this.setLayersStore}
         engineId={this.engineId}
-      />,
-      document.getElementById(selector)
-    );
+      />
+    )
   }
 }
