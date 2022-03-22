@@ -76,7 +76,7 @@ function selectorDetection(cssAst: StyleSheetPlain, classNameSchema: ClassNameSc
 }
 
 function cssGzip(cssStr: string): Promise<Blob | null> {
-  return init('/dist/component-style-config/wasm_gzip_bg.wasm').then(() => {
+  return init(`https://ofapkg.pek3b.qingstor.com/@one-for-all/style-guide@0.0.1/wasm_gzip_bg.wasm`).then(() => {
     let compressed = compressStringGzip(cssStr);
     if (!compressed) {
       return null;
