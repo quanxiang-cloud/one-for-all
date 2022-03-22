@@ -22,7 +22,7 @@ export default function Block<T extends PageEngineV2.BaseBlocksCommunicationStat
     gridRowEnd,
   }
 
-  const handleSchemaChange = useCallback((schema: SchemaSpec.Schema): void => {
+  const handleSchemaChange = useCallback((schema: Schema): void => {
     setSchema(schemaStore$, schema);
   }, [schemaStore$, schema]);
 
