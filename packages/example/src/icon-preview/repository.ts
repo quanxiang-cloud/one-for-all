@@ -1,10 +1,10 @@
 import { Repository } from '@one-for-all/render-engine';
 import ShowIcon from './index';
 
-const styleGuideRepository: Repository = {
+const iconPreviewRepository: Repository = {
   'icon@0.4.0': {
     ShowIcon: ShowIcon,
   }
 }
 
-export default styleGuideRepository;
+export default iconPreviewRepository;

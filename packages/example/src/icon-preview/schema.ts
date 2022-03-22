@@ -1,6 +1,6 @@
 import type { Schema } from '@one-for-all/schema-spec';
 
-const styleSchema: Schema = {
+const iconSchema: Schema = {
   node: {
     id: 'icon-preview-root-node',
     type: 'react-component',
@@ -10,4 +10,4 @@ const styleSchema: Schema = {
   }
 }
 
-export default styleSchema;
+export default iconSchema;

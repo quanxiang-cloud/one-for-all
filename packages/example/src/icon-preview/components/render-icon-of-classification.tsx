@@ -17,7 +17,7 @@ export default function RenderIconOfClassification({ categoryMap }: propsType): 
                     {
                       categoryMap[category].map(name => (
                         <span className='svg-item' key={name}>
-                          <Icon name={name} key={name} size={32} color={'#00a971'} />
+                          <Icon name={name} key={name} size={32} />
                           <span className='label'>{ name }</span>
                         </span>
                       ))
