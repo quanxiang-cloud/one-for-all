@@ -1,9 +1,9 @@
 import { Repository } from '@one-for-all/render-engine';
-import ShowIcon from './index';
+import PreviewIcon from './index';
 
 const iconPreviewRepository: Repository = {
   'icon@0.4.0': {
-    ShowIcon: ShowIcon,
+    PreviewIcon: PreviewIcon,
   }
 }
 

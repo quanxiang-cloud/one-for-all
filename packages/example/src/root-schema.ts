@@ -162,7 +162,7 @@ const rootSchema: Schema = {
             },
             children: [
               {
-                id: 'style-guide-page',
+                id: 'icon-preview-page',
                 type: 'html-element',
                 name: 'h2',
                 props: {

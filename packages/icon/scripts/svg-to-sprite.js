@@ -1,11 +1,9 @@
 const path = require('path');
 const fs = require('fs');
-const crypto = require('crypto');
 const svgSpreact = require('svg-spreact');
 const svgoConfig = require('./svgo.config');
 const mkdirp = require('mkdirp');
 const { promisify } = require('util');
-const { uniteFillColor } = require('./classification-svg');
 const glob = promisify(require('glob'));
 const packageJSON = require('../package.json');
 
@@ -34,25 +32,8 @@ async function getAllSvgContent() {
   });
 }
 
-async function getSprite() {
-  const svgArr = await getAllSvgContent();
-  const iconNames = svgArr.map(({ file }) => path.basename(file).replace('.svg', ''));
-  const iconID = (n_1) => iconNames[n_1];
-  const input = svgArr.map((v) => v.cont);
-  const { defs } = await svgSpreact(input, { tidy: true, processId: iconID, svgoConfig });
-  // replace #475569 by currentColor in order to be styled by css
-  return defs.replace(/currentColor/g, 'none').replace(new RegExp(WILL_REPLACE_COLOR, 'g'), 'currentColor');
-}
-
-function generateHash(value) {
-  const cryptoCreate = crypto.createHash('md5');
-  cryptoCreate.update(value);
-  return cryptoCreate.digest('hex');
-}
-
 const generateSpriteAndName = async function () {
   const svgArr = await getAllSvgContent();
-  uniteFillColor(svgArr);
   const { categoryNames, iconNames } = getSvgNameByCategory(svgArr);
   const iconID = (n_1) => iconNames[n_1];
   const input = svgArr.map((v) => v.cont);
@@ -71,9 +52,21 @@ const generateSpriteAndName = async function () {
 const writeSvgName = async function (nameStr) {
   const pathName = `dist/${packageJSON.name}@${packageJSON.version}/svgNameMap.json`;
   const svgNameFile = path.join(basePath, pathName);
+  const jsPathName = `dist/${packageJSON.name}@${packageJSON.version}/svgNameMap.js`;
+  const jsSvgNameFile = path.join(basePath, jsPathName);
+  const jsSvgContent = `System.register([], (function (exports) {
+    'use strict';
+    return {
+      execute: (function () {
+        const svgNameMap = exports('svgNameMap', JSON.parse('${nameStr}'));
+      })
+    };
+  }));`;
   try {
     mkdirp.sync(path.dirname(svgNameFile));
     fs.writeFileSync(svgNameFile, nameStr);
+    mkdirp.sync(path.dirname(jsSvgNameFile));
+    fs.writeFileSync(jsSvgNameFile, jsSvgContent);
   } catch (error) {
     console.log(error);
   }
@@ -110,6 +103,5 @@ const getSvgNameByCategory = function (svgArr) {
 
 module.exports = {
   getAllSvgContent,
-  getSprite,
   generateSpriteAndName,
 };

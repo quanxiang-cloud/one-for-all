@@ -2,23 +2,15 @@ import React, { useEffect, useState } from 'react';
 
 import './index.scss';
 
-import RenderIconOfClassification from './components/render-icon-of-classification';
+import RenderIconByClassification from './render-icon-by-classification';
+import { svgNameMap } from 'svgNameMap';
 
-export default function ShowIcon(): JSX.Element {
+export default function PreviewIcon(): JSX.Element {
   const [categorySvgMap, setCategorySvgMap] = useState({});
 
   useEffect(() => {
-    // fetch(svgNameMap)
-    //   .then(res => res.json())
-    //   .then(data => {
-    //     setClassificationSvgArr(data)
-    //   })
-    setCategorySvgMap({action: ["3d_rotation", "accessibility_new"]});
+    setCategorySvgMap(svgNameMap);
   }, []);
 
-  return (
-    <div>
-      <RenderIconOfClassification categoryMap={categorySvgMap} />
-    </div>
-  );
+  return <RenderIconByClassification categoryMap={categorySvgMap} />;
 }

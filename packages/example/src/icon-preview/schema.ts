@@ -6,7 +6,7 @@ const iconSchema: Schema = {
     type: 'react-component',
     packageName: 'icon',
     packageVersion: '0.4.0',
-    exportName: 'ShowIcon'
+    exportName: 'PreviewIcon'
   }
 }
 

@@ -17,9 +17,8 @@ function Icon(
     ...style,
     width: typeof size === 'string' ? size : `${size}px`,
     height: typeof size === 'string' ? size : `${size}px`,
-    fill: color
+    fill: color,
   };
-
 
   return (
     <svg ref={ref} data-name={name} style={_style} className={'ofa-svg-icon ' + className}>
