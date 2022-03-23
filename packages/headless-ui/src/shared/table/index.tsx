@@ -6,7 +6,7 @@ import { getDefaultSelectMap, useExtendColumns, DEFAULT_WIDTH, MINIMUM_WIDTH } f
 import useSticky from './use-sticky';
 import AdjustHandle from './adjust-handle';
 
-import './index.css';
+import './index.scss';
 
 function Table<T extends Record<string, any>>({
   className,

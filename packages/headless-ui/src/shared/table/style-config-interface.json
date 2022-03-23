@@ -38,8 +38,17 @@
           "desc": "单元格样式"
         },
         {
-          "selector": ".ofa-table-td",
+          "selector": ".ofa-table-th",
           "desc": "表头样式"
+        }, {
+          "selector": ".ofa-table-tr",
+          "desc": "行整体样式",
+          "pseudo": [
+            {
+              "selector": "hover",
+              "desc": "行鼠标移入样式"
+            }
+          ]
         }
       ]
     },
