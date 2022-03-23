@@ -11,6 +11,7 @@
 .ofa-btn--disable,
 .ofa-btn--disable>svg {
   pointer-events: none;
+}
 
 .ofa-btn--forbidden {
   @extend .ofa-btn--disable;
