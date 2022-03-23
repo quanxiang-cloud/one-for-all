@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tab navs props test 1`] = `
+<div>
+  <div
+    class="ofa-notice ofa-notice__success ofa-notice-in"
+    id="1"
+  >
+    <div
+      class="ofa-notice-icon"
+    />
+    <div
+      class="ofa-notice-content"
+    >
+      Test toast success!
+    </div>
+    <div
+      class="ofa-notice-close-btn"
+    />
+  </div>
+</div>
+`;

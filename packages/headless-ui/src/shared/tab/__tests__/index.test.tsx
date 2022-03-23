@@ -3,10 +3,10 @@ import { render, fireEvent } from '@testing-library/react';
 import Tab, { TabNavs } from '../index';
 
 const navs: TabItemProps<React.Key>[] = [
-  { id: '1', name: 'tab1' },
-  { id: '2', name: 'tab2', state: 'error' },
-  { id: '3', name: 'tab3', state: 'warning' },
-  { id: '4', name: 'tab4', state: 'error', disabled: true },
+  { id: '1', name: 'tab1', content: 'tab1 content' },
+  { id: '2', name: 'tab2', state: 'error', content: 'tab2 content' },
+  { id: '3', name: 'tab3', state: 'warning', content: 'tab3 content' },
+  { id: '4', name: 'tab4', state: 'error', disabled: true, content: 'tab4 content' },
 ];
 
 const tabNavsTestProps: TabNavProps<React.Key> = {
@@ -19,7 +19,7 @@ const tabNavsTestProps: TabNavProps<React.Key> = {
   className: 'test-className',
   activeNavClassName: 'test-active-className',
   navsClassName: 'test-navs-className',
-  currentKey: 2,
+  currentKey: '2',
   onClick: (item) => {
     console.log(item);
   },
@@ -42,7 +42,7 @@ test('tab navs click test', () => {
     navs,
     className: 'tab-click-test-className',
     activeNavClassName: 'tab-click-test-active-className',
-    currentKey: 3,
+    currentKey: '2',
     onClick: handleClick,
   };
 
@@ -61,7 +61,7 @@ test('tab props test', () => {
     className: 'test-className',
     activeNavClassName: 'test-active-className',
     navsClassName: 'test-navs-className',
-    currentKey: 2,
+    currentKey: '1',
     onChange: (key) => {
       console.log(key);
     },

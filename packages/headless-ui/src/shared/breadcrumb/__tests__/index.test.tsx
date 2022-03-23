@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import Breadcrumb from '../index';
-import Icon from '@one-for-all/icon';
+// import Icon from '@one-for-all/icon';
 
 const globalSegments: Array<Segment> = [
   {
@@ -50,7 +50,7 @@ test('Breadcrumb segmentRender event test', () => {
   const handleRender = (link: Segment): JSX.Element => {
     return (
       <div>
-        <Icon name="star" />
+        {/* <Icon name="star" /> */}
         {link.text}
       </div>
     );

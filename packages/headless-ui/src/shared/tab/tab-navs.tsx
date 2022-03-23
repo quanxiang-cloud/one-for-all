@@ -3,7 +3,7 @@ import React, { forwardRef } from 'react';
 import cs from 'classnames';
 
 function TabNavs<T extends React.Key>(
-  { navs, className, navsClassName, currentKey, onClick, style }: TabNavProps<T>,
+  { navs, className, activeNavClassName, navsClassName, currentKey, onClick, style }: TabNavProps<T>,
   ref?: React.Ref<HTMLDivElement>,
 ): JSX.Element {
   return (
@@ -18,10 +18,10 @@ function TabNavs<T extends React.Key>(
               key={item.id}
               onClick={() => onClick?.(item)}
               className={cs(
-                'ofa-tab-nav-item',
+                'cursor-pointer relative ofa-tab-nav-item',
                 {
-                  'ofa-tab-nav-disabled': item.disabled,
-                  [`ofa-tab-nav-active`]: active,
+                  disabled: item.disabled,
+                  [`${activeNavClassName}`]: active,
                   [`tab-nav__${item.state}`]: item.state,
                 },
                 navsClassName,

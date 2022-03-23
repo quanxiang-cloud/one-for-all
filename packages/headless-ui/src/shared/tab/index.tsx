@@ -3,19 +3,17 @@ import cs from 'classnames';
 
 import TabNavs from './tab-navs';
 
-import './index.css';
-
 export default function Tab<T extends React.Key>({
   items,
   style,
   className,
-  direction = 'horizon',
+  direction,
   maxHeight,
   navsClassName,
+  activeNavClassName,
   contentClassName,
   currentKey,
   onChange,
-  children,
 }: TabsProps<T>): JSX.Element {
   const navsRef = useRef(null);
   const [key, setKey] = useState<string | number>(currentKey || items[0].id);
@@ -27,26 +25,27 @@ export default function Tab<T extends React.Key>({
   return (
     <div
       style={{ maxHeight, ...style }}
-      className={cs(
-        'ofa-tab-wrapper',
-        {
-          [`ofa-tab-direction__${direction}`]: direction,
-        },
-        className,
-      )}
+      className={cs('ofa-tab-wrapper', {
+        [`ofa-tab-direction__${direction}`]: direction,
+      }, className)}
     >
       <TabNavs
         ref={navsRef}
         navs={items}
         currentKey={key}
         navsClassName={navsClassName}
+        activeNavClassName={activeNavClassName}
         onClick={({ id, disabled }) => {
           if (disabled) return;
           setKey(id);
           onChange?.(id as T);
         }}
       />
-      <div className={cs('ofa-tab-content', contentClassName)}>{children}</div>
+      <div
+        className={cs('ofa-tab-content', contentClassName)}
+      >
+        {items.find((item) => item.id === key)?.content}
+      </div>
     </div>
   );
 }

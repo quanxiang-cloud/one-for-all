@@ -36,7 +36,7 @@ exports[`Breadcrumb active test 1`] = `
       </span>
     </div>
     <div
-      class="ofa-breadcrumb-item activeClass"
+      class="ofa-breadcrumb-item ofa-breadcrumb-active"
     >
       <span
         class="ofa-breadcrumb-link"
@@ -87,7 +87,7 @@ exports[`Breadcrumb props test 1`] = `
       </span>
     </div>
     <div
-      class="ofa-breadcrumb-item segment-test activeClass"
+      class="ofa-breadcrumb-item segment-test ofa-breadcrumb-active"
       style="font-size: 20px;"
     >
       <span
@@ -109,15 +109,6 @@ exports[`Breadcrumb segmentRender event test 1`] = `
       class="ofa-breadcrumb-item"
     >
       <div>
-        <svg
-          class="ofa-svg-icon "
-          data-name="star"
-          style="width: 16px; height: 16px;"
-        >
-          <use
-            xlink:href="/dist/images/sprite-137db0aa0124f9675ced9fff276d1044.svg#star"
-          />
-        </svg>
         segment1
       </div>
       <span
@@ -130,15 +121,6 @@ exports[`Breadcrumb segmentRender event test 1`] = `
       class="ofa-breadcrumb-item"
     >
       <div>
-        <svg
-          class="ofa-svg-icon "
-          data-name="star"
-          style="width: 16px; height: 16px;"
-        >
-          <use
-            xlink:href="/dist/images/sprite-137db0aa0124f9675ced9fff276d1044.svg#star"
-          />
-        </svg>
         segment2
       </div>
       <span
@@ -148,18 +130,9 @@ exports[`Breadcrumb segmentRender event test 1`] = `
       </span>
     </div>
     <div
-      class="ofa-breadcrumb-item activeClass"
+      class="ofa-breadcrumb-item ofa-breadcrumb-active"
     >
       <div>
-        <svg
-          class="ofa-svg-icon "
-          data-name="star"
-          style="width: 16px; height: 16px;"
-        >
-          <use
-            xlink:href="/dist/images/sprite-137db0aa0124f9675ced9fff276d1044.svg#star"
-          />
-        </svg>
         segment3
       </div>
     </div>
@@ -203,7 +176,7 @@ exports[`Breadcrumb separator test 1`] = `
       </span>
     </div>
     <div
-      class="ofa-breadcrumb-item activeClass"
+      class="ofa-breadcrumb-item ofa-breadcrumb-active"
     >
       <span
         class="ofa-breadcrumb-link"
