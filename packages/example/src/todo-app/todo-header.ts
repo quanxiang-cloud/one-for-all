@@ -24,9 +24,9 @@ const refSchema: Schema = {
               color: 'rgba(175, 47, 47, 0.15)',
               WebkitTextRendering: 'optimizeLegibility',
               MozTextRendering: 'optimizeLegibility',
-              textRendering: 'optimizeLegibility'
-            }
-          }
+              textRendering: 'optimizeLegibility',
+            },
+          },
         },
       },
       {
@@ -39,12 +39,12 @@ const refSchema: Schema = {
             fallback: 0,
             convertor: {
               type: 'state_convert_expression',
-              expression: 'state.length'
-            }
-          }
+              expression: 'state.length',
+            },
+          },
         },
-        jsx: `<p style={{ textAlign: 'right' }}>current list count: {count}</p>`
-      }
+        jsx: `<p style={{ textAlign: 'right' }}>current list count: {count}</p>`,
+      },
     ],
   },
 };

@@ -1,5 +1,5 @@
 .style-config-comp-list {
-  border-right: 1px solid #638AFF;
+  border-right: 1px solid #638aff;
 }
 
 .style-config-container {
@@ -16,12 +16,12 @@
 }
 
 .style-config-comp-box:hover {
-  color: #375FF3;
+  color: #375ff3;
 }
 
 .style-config-comp-active {
-  background-color: #DEE9FF;
-  color: #375FF3;
+  background-color: #dee9ff;
+  color: #375ff3;
 }
 
 .style-config-preview {

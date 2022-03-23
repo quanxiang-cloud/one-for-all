@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import ReactDOM from "react-dom";
+import ReactDOM from 'react-dom';
 
 import CssASTStore, { ComponentSpec, StyleConfigInterface } from '@one-for-all/style-guide';
 
@@ -9,7 +9,7 @@ type Props = {
   componentSpec: ComponentSpec;
   astStore: CssASTStore;
   componentsMap: Record<string, React.FC>;
-}
+};
 
 function applyStyle(compKey: string, css: string, shadowRoot: ShadowRoot): void {
   const styleID = `custom-css-${compKey}`;
@@ -20,7 +20,7 @@ function applyStyle(compKey: string, css: string, shadowRoot: ShadowRoot): void 
   shadowRoot.appendChild(style);
 }
 
-export function ShadowContent({ shadowRoot, children }: { children: JSX.Element[], shadowRoot: ShadowRoot }) {
+export function ShadowContent({ shadowRoot, children }: { children: JSX.Element[]; shadowRoot: ShadowRoot }) {
   useEffect(() => {
     const style = document.createElement('style');
     const compStyle = document.createElement('link');
@@ -40,7 +40,7 @@ export function ShadowContent({ shadowRoot, children }: { children: JSX.Element[
       }`;
     shadowRoot.appendChild(compStyle);
     shadowRoot.appendChild(style);
-  }, [])
+  }, []);
 
   return ReactDOM.createPortal(children, shadowRoot as unknown as Element);
 }
@@ -57,7 +57,7 @@ function PreviewConfigurableComponent({ componentSpec, astStore, componentsMap }
       return;
     }
 
-    setShadowRoot(previewRef.current?.attachShadow({ mode: 'open' }))
+    setShadowRoot(previewRef.current?.attachShadow({ mode: 'open' }));
   }, [previewRef.current]);
 
   function setCustomCss(key: string, css: string) {
@@ -66,44 +66,45 @@ function PreviewConfigurableComponent({ componentSpec, astStore, componentsMap }
     }
 
     astStore.setCss(key, css, currentCompStatus.rules, (msg) => alert(msg));
-    const componentName = key.split('.').shift() || "";
-    const componentCss = astStore.getComponentCss(componentName, componentSpec.specs)
+    const componentName = key.split('.').shift() || '';
+    const componentCss = astStore.getComponentCss(componentName, componentSpec.specs);
     shadowRoot && applyStyle(componentName, componentCss, shadowRoot);
   }
 
   return (
     <>
-      <div ref={previewRef} className='style-config-preview'>
+      <div ref={previewRef} className="style-config-preview">
         {shadowRoot && (
           <ShadowContent shadowRoot={shadowRoot}>
-            {
-              componentSpec.specs.map((spec) => {
-                return (
-                  <div style={{ padding: '5px 0' }} key={spec.title}>
-                    <div style={{ marginBottom: '5px' }}>{spec.title}</div>
-                    <div
-                      onClick={() => setStatus(spec)}
-                      className='style-config-preview-comp'
-                    >
-                      {Array.isArray(spec.componentProps) ? spec.componentProps.map((props) => (
-                        <Component key={JSON.stringify(props)} {...props} />
-                      )) : (<Component {...spec.componentProps} />)}
-                    </div>
+            {componentSpec.specs.map((spec) => {
+              return (
+                <div style={{ padding: '5px 0' }} key={spec.title}>
+                  <div style={{ marginBottom: '5px' }}>{spec.title}</div>
+                  <div onClick={() => setStatus(spec)} className="style-config-preview-comp">
+                    {Array.isArray(spec.componentProps) ? (
+                      spec.componentProps.map((props) => <Component key={JSON.stringify(props)} {...props} />)
+                    ) : (
+                      <Component {...spec.componentProps} />
+                    )}
                   </div>
-                );
-              })
-            }
+                </div>
+              );
+            })}
           </ShadowContent>
         )}
       </div>
       {currentCompStatus ? (
         <CSSEditor
-          getCompCss={() => astStore.getInitCompCss(`${key}.${currentCompStatus.title}`, currentCompStatus.rules)}
+          getCompCss={() =>
+            astStore.getInitCompCss(`${key}.${currentCompStatus.title}`, currentCompStatus.rules)
+          }
           setCustomCss={setCustomCss}
           componentName={key}
           statusName={currentCompStatus.title}
         />
-      ) : <div />}
+      ) : (
+        <div />
+      )}
     </>
   );
 }

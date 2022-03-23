@@ -70,15 +70,11 @@ const todoSpec: Spec = {
         },
         security: [
           {
-            todo_auth: [
-              'read:todo',
-            ],
+            todo_auth: ['read:todo'],
           },
         ],
         summary: 'List the available tasks',
-        tags: [
-          'tasks',
-        ],
+        tags: ['tasks'],
       },
       post: {
         operationId: 'createTodo',
@@ -95,15 +91,11 @@ const todoSpec: Spec = {
         },
         security: [
           {
-            todo_auth: [
-              'write:todo',
-            ],
+            todo_auth: ['write:todo'],
           },
         ],
         summary: 'Create a todo',
-        tags: [
-          'tasks',
-        ],
+        tags: ['tasks'],
       },
     },
     '/todos/{todoId}': {
@@ -137,15 +129,11 @@ const todoSpec: Spec = {
         },
         security: [
           {
-            todo_auth: [
-              'write:todo',
-            ],
+            todo_auth: ['write:todo'],
           },
         ],
         summary: 'Delete the todo',
-        tags: [
-          'tasks',
-        ],
+        tags: ['tasks'],
       },
       put: {
         description: 'Update the todo title and status\n',
@@ -168,15 +156,11 @@ const todoSpec: Spec = {
         },
         security: [
           {
-            todo_auth: [
-              'write:todo',
-            ],
+            todo_auth: ['write:todo'],
           },
         ],
         summary: 'Update the todo',
-        tags: [
-          'tasks',
-        ],
+        tags: ['tasks'],
       },
     },
   },

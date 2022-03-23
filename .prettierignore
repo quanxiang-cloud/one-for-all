@@ -105,7 +105,8 @@ lib
 *.md
 
 packages/render-engine/docs
-packages/example
+packages/example/pkg
+packages/example/externals
 packages/page-engine
 packages/schema-spec/docs
 packages/style-guide

@@ -12,7 +12,4 @@ if (!appRoot) {
   throw new Error('appRoot is null, can not render app.');
 }
 
-ReactDOM.render(
-  React.createElement(App),
-  appRoot,
-);
+ReactDOM.render(React.createElement(App), appRoot);

@@ -23,7 +23,7 @@ const schemaDB: Record<string, Schema> = {
   SCHEMA_ID_TODO_HEADER: todoHeaderSchema,
   SCHEMA_ID_STYLE_GUIDE: styleGuideSchema,
   SCHEMA_ID_ICON_PREVIEW: iconPreviewSchema,
-}
+};
 
 const refLoader: RefLoader = (schemaID: string) => {
   if (!schemaDB[schemaID]) {
@@ -37,5 +37,8 @@ const refLoader: RefLoader = (schemaID: string) => {
 };
 
 export default function App(): JSX.Element {
-  return React.createElement(SchemaRender, { schema: rootSchema, plugins: { apiSpecAdapter, repository, refLoader } });
+  return React.createElement(SchemaRender, {
+    schema: rootSchema,
+    plugins: { apiSpecAdapter, repository, refLoader },
+  });
 }

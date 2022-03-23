@@ -6,8 +6,8 @@ const styleSchema: Schema = {
     type: 'react-component',
     packageName: 'style-guide',
     packageVersion: '1.0.0',
-    exportName: 'App'
-  }
-}
+    exportName: 'App',
+  },
+};
 
 export default styleSchema;
