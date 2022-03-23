@@ -1,0 +1,42 @@
+.classification {
+    display: flex;
+    align-items: center;
+    .classification-item {
+        border: 1px solid rgba(2,5,8,.04);
+        padding: .5em 1em;
+        font-size: 12px;
+        cursor: pointer;
+        margin-left: -1px;
+        &:hover {
+            color: rgb(0, 169, 113);
+        }
+        &.is-active {
+            border-color: rgb(0, 169, 113);
+            color: rgb(0, 169, 113);
+        }
+    }
+}
+
+.category-title {
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.preview-wrap {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(80px, 1fr));
+    grid-gap: 10px;
+    .svg-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        &:hover {
+            background: #ededed;
+        }
+        > svg {
+            width: 48px;
+            height: 48px;
+        }
+    }
+}

@@ -5,8 +5,11 @@ const svgSpreact = require('svg-spreact');
 const svgoConfig = require('./svgo.config');
 const mkdirp = require('mkdirp');
 const { promisify } = require('util');
+const { uniteFillColor } = require('./classification-svg');
 const glob = promisify(require('glob'));
 const packageJSON = require('../package.json');
+
+const { WILL_REPLACE_COLOR } = require('./consts');
 
 const basePath = process.cwd();
 
@@ -38,8 +41,7 @@ async function getSprite() {
   const input = svgArr.map((v) => v.cont);
   const { defs } = await svgSpreact(input, { tidy: true, processId: iconID, svgoConfig });
   // replace #475569 by currentColor in order to be styled by css
-  // todo define #475569 as constant?
-  return defs.replace(/currentColor/g, 'none').replace(/#475569/g, 'currentColor');
+  return defs.replace(/currentColor/g, 'none').replace(new RegExp(WILL_REPLACE_COLOR, 'g'), 'currentColor');
 }
 
 function generateHash(value) {
@@ -48,19 +50,66 @@ function generateHash(value) {
   return cryptoCreate.digest('hex');
 }
 
-const generateSprite = async function () {
+const generateSpriteAndName = async function () {
+  const svgArr = await getAllSvgContent();
+  uniteFillColor(svgArr);
+  const { categoryNames, iconNames } = getSvgNameByCategory(svgArr);
+  const iconID = (n_1) => iconNames[n_1];
+  const input = svgArr.map((v) => v.cont);
+  const { defs } = await svgSpreact(input, { tidy: true, processId: iconID, svgoConfig });
+  const svgStr = defs
+    .replace(/currentColor/g, 'none')
+    .replace(new RegExp(WILL_REPLACE_COLOR, 'g'), 'currentColor');
   try {
-    const svgStr = await getSprite();
-    // const hash = generateHash(svgStr);
-    const pathName = 'src/sprite.svg';
-    const spriteFile = path.join(basePath, pathName);
-    fs.writeFileSync(spriteFile, svgStr);
+    writeSvgName(JSON.stringify(categoryNames));
+    writeSprite(svgStr);
   } catch (err) {
     console.error(err);
   }
 };
 
+const writeSvgName = async function (nameStr) {
+  const pathName = `dist/${packageJSON.name}@${packageJSON.version}/svgNameMap.json`;
+  const svgNameFile = path.join(basePath, pathName);
+  try {
+    mkdirp.sync(path.dirname(svgNameFile));
+    fs.writeFileSync(svgNameFile, nameStr);
+  } catch (error) {
+    console.log(error);
+  }
+};
+const writeSprite = async function (svgStr) {
+  const pathName = 'src/sprite.svg';
+  const spriteFile = path.join(basePath, pathName);
+  try {
+    mkdirp.sync(path.dirname(spriteFile));
+    fs.writeFileSync(spriteFile, svgStr);
+  } catch (error) {
+    console.log(error);
+  }
+};
+const getSvgNameByCategory = function (svgArr) {
+  const categoryNames = {};
+  const iconNames = [];
+  svgArr.forEach(({ file }) => {
+    const pathSplit = file.split('/');
+    const currentCategory = pathSplit[pathSplit.length - 2];
+    const svgName = path.basename(file).replace('.svg', '');
+    if (categoryNames[currentCategory]) {
+      categoryNames[currentCategory].push(svgName);
+    } else {
+      categoryNames[currentCategory] = [svgName];
+    }
+    iconNames.push(svgName);
+  });
+  return {
+    categoryNames,
+    iconNames,
+  };
+};
+
 module.exports = {
+  getAllSvgContent,
   getSprite,
-  generateSprite,
+  generateSpriteAndName,
 };
