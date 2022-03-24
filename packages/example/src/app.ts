@@ -12,13 +12,17 @@ import todoAppRepository from './todo-app/repository';
 import styleGuideSchema from './component-style-config/schema';
 import styleGuideRepository from './component-style-config/repository';
 
+import iconPreviewSchema from './icon-preview/schema';
+import iconPreviewRepository from './icon-preview/repository';
+
 const apiSpecAdapter = new SwaggerSpecAdapter(apiDoc);
-const repository: Repository = Object.assign({}, todoAppRepository, styleGuideRepository);
+const repository: Repository = Object.assign({}, todoAppRepository, styleGuideRepository, iconPreviewRepository);
 
 const schemaDB: Record<string, Schema> = {
   SCHEMA_ID_TODO: todoAppMainSchema,
   SCHEMA_ID_TODO_HEADER: todoHeaderSchema,
   SCHEMA_ID_STYLE_GUIDE: styleGuideSchema,
+  SCHEMA_ID_ICON_PREVIEW: iconPreviewSchema,
 };
 
 const refLoader: RefLoader = (schemaID: string) => {

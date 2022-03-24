@@ -1,12 +1,13 @@
 const path = require('path');
 const fs = require('fs');
-const crypto = require('crypto');
 const svgSpreact = require('svg-spreact');
 const svgoConfig = require('./svgo.config');
 const mkdirp = require('mkdirp');
 const { promisify } = require('util');
 const glob = promisify(require('glob'));
 const packageJSON = require('../package.json');
+
+const { WILL_REPLACE_COLOR } = require('./consts');
 
 const basePath = process.cwd();
 
@@ -31,36 +32,63 @@ async function getAllSvgContent() {
   });
 }
 
-async function getSprite() {
+function getSvgNameByCategory(svgArr) {
+  const categoryNames = {};
+  svgArr.forEach(({ file }) => {
+    const currentCategory = path.basename(path.dirname(file));
+    const svgName = path.basename(file, '.svg');
+    if (categoryNames[currentCategory]) {
+      categoryNames[currentCategory].push(svgName);
+    } else {
+      categoryNames[currentCategory] = [svgName];
+    }
+  });
+  return categoryNames;
+}
+
+async function writeSvgNameToFile(svgNameStr) {
+  const pathName = `dist/${packageJSON.name}@${packageJSON.version}/svgNameMap.json`;
+  const svgNameMapFile = path.join(basePath, pathName);
+  try {
+    mkdirp.sync(path.dirname(svgNameMapFile));
+    fs.writeFileSync(svgNameMapFile, svgNameStr);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function writeSpriteToFile(svgStr) {
+  const pathName = 'src/sprite.svg';
+  const spriteFile = path.join(basePath, pathName);
+  try {
+    mkdirp.sync(path.dirname(spriteFile));
+    fs.writeFileSync(spriteFile, svgStr);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function generateSpriteAndNameMap() {
   const svgArr = await getAllSvgContent();
-  const iconNames = svgArr.map(({ file }) => path.basename(file).replace('.svg', ''));
+
+  const categoryNames = getSvgNameByCategory(svgArr);
+  const iconNames = [].concat(...Object.values(categoryNames));
+
   const iconID = (n_1) => iconNames[n_1];
   const input = svgArr.map((v) => v.cont);
   const { defs } = await svgSpreact(input, { tidy: true, processId: iconID, svgoConfig });
-  // replace #475569 by currentColor in order to be styled by css
-  // todo define #475569 as constant?
-  return defs.replace(/currentColor/g, 'none').replace(/#475569/g, 'currentColor');
-}
 
-function generateHash(value) {
-  const cryptoCreate = crypto.createHash('md5');
-  cryptoCreate.update(value);
-  return cryptoCreate.digest('hex');
-}
-
-const generateSprite = async function () {
+  const svgStr = defs
+    .replace(/currentColor/g, 'none')
+    .replace(new RegExp(WILL_REPLACE_COLOR, 'g'), 'currentColor');
   try {
-    const svgStr = await getSprite();
-    // const hash = generateHash(svgStr);
-    const pathName = 'src/sprite.svg';
-    const spriteFile = path.join(basePath, pathName);
-    fs.writeFileSync(spriteFile, svgStr);
+    writeSvgNameToFile(JSON.stringify(categoryNames));
+    writeSpriteToFile(svgStr);
   } catch (err) {
     console.error(err);
   }
-};
+}
 
 module.exports = {
-  getSprite,
-  generateSprite,
+  generateSpriteAndNameMap,
 };
