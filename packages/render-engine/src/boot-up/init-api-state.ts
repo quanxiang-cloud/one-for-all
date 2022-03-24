@@ -1,4 +1,5 @@
-import { Subject } from 'rxjs';
+import { merge, Subject } from 'rxjs';
+import { AjaxConfig } from 'rxjs/ajax';
 import { map, filter, share, skip, delay } from 'rxjs/operators';
 import type { APISpecAdapter, FetchParams } from '@one-for-all/api-spec-adapter';
 
@@ -6,6 +7,7 @@ import type { FetchOption, APIState$WithActions } from '../types';
 import getResponseState$ from './http/response';
 
 function initAPIState(apiID: string, apiSpecAdapter: APISpecAdapter): APIState$WithActions {
+  const rawParams$ = new Subject<AjaxConfig>();
   const params$ = new Subject<FetchParams | undefined>();
   const request$ = params$.pipe(
     // it is adapter's responsibility to handle build error
@@ -16,7 +18,7 @@ function initAPIState(apiID: string, apiSpecAdapter: APISpecAdapter): APIState$W
   );
 
   let _latestFetchOption: FetchOption | undefined = undefined;
-  const apiState$ = getResponseState$(request$, apiSpecAdapter.responseAdapter);
+  const apiState$ = getResponseState$(merge(request$, rawParams$), apiSpecAdapter.responseAdapter);
 
   // execute fetch callback after new `result` emitted from apiState$
   apiState$
@@ -37,6 +39,12 @@ function initAPIState(apiID: string, apiSpecAdapter: APISpecAdapter): APIState$W
       _latestFetchOption = fetchOption;
 
       params$.next(fetchOption.params);
+    },
+    rawFetch: ({ callback, ...ajaxConfig }) => {
+      // todo fix this
+      _latestFetchOption = { callback };
+
+      rawParams$.next(ajaxConfig);
     },
     refresh: () => {
       if (!_latestFetchOption) {
