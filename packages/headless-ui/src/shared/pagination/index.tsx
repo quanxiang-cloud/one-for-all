@@ -1,10 +1,13 @@
 import React, { useEffect, forwardRef, ForwardedRef } from 'react';
 import cs from 'classnames';
 
-import SvgIcon from '@one-for-all/icon';
-import { Select } from '@one-for-all/ui';
+import Icon from '@one-for-all/icon';
+import Select from '../select';
+import Input from '../input';
 
 import Pager from './pager';
+
+import './index.scss';
 
 function Pagination(
   {
@@ -19,7 +22,7 @@ function Pagination(
     onChange,
     className,
   }: PaginationProps,
-  ref: ForwardedRef<HTMLDivElement>,
+  ref: ForwardedRef<HTMLUListElement>,
 ): JSX.Element | null {
   const [pageParams, setPageParams] = React.useState({
     current: current || 0,
@@ -113,33 +116,33 @@ function Pagination(
     return pageParams.current < calcPage();
   }
 
-  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>): void {
+  function handleInputChange(value: string): void {
     setPageParams({
       pageSize: pageParams.pageSize,
       current: pageParams.current,
-      _current: e.target.value,
+      _current: value,
     });
   }
 
   const prevIcon = (
     <li
-      className={cs('ofa-pagination-page', {
+      className={cs('ofa-pagination-prev', {
         'ofa-pagination-disabled': pageParams.current === 1,
       })}
       onClick={handPrev}
     >
-      <SvgIcon name="chevron_left" />
+      <Icon name="chevron_left" />
     </li>
   );
 
   const nextIcon = (
     <li
-      className={cs('ofa-pagination-page', {
+      className={cs('ofa-pagination-next', {
         'ofa-pagination-disabled': pageParams.current === calcPage(),
       })}
       onClick={handleNext}
     >
-      <SvgIcon name="chevron_right" />
+      <Icon name="chevron_right" />
     </li>
   );
 
@@ -169,8 +172,8 @@ function Pagination(
         className="ofa-pagination-page ofa-pagination-jump ofa-pagination-jump-prev"
         onClick={handleJumpPrev}
       >
-        <SvgIcon className="icon" name="more_horiz" />
-        <SvgIcon className="prev" name="double_arrow" />
+        <Icon className="icon" name="more_horiz" />
+        <Icon className="prev" name="double_arrow" />
       </li>
     );
     jumpNext = (
@@ -179,8 +182,8 @@ function Pagination(
         className="ofa-pagination-page ofa-pagination-jump ofa-pagination-jump-next"
         onClick={handleJumpNext}
       >
-        <SvgIcon className="icon" name="more_horiz" />
-        <SvgIcon className="next" name="double_arrow" />
+        <Icon className="icon" name="more_horiz" />
+        <Icon className="next" name="double_arrow" />
       </li>
     );
 
@@ -226,22 +229,19 @@ function Pagination(
   if ((showSizeChanger && total <= 50) || total > 50) {
     pageSizeText = (
       <li className="ofa-pagination-select-wrapper">
-        <div>
-          <div>每页</div>
-          <Select
-            className="ofa-pagination-select"
-            value={pageParams.pageSize}
-            onChange={changePageSize}
-            options={
-              pageSizeOptions
-                ? pageSizeOptions.map((page: number) => ({
-                    label: `${page} 条`,
-                    value: page,
-                  }))
-                : []
-            }
-          />
-        </div>
+        <div>每页</div>
+        <Select
+          value={pageParams.pageSize}
+          onChange={changePageSize}
+          options={
+            pageSizeOptions
+              ? pageSizeOptions.map((page: number) => ({
+                label: `${page} 条`,
+                value: page,
+              }))
+              : []
+          }
+        />
       </li>
     );
   }
@@ -249,32 +249,28 @@ function Pagination(
   if (showQuickJumper) {
     quickJumperText = (
       <li className="ofa-pagination-quick-jumper">
-        <div>
-          <div>跳至</div>
-          <input
-            value={pageParams._current}
-            onChange={handleInputChange}
-            onBlur={handleInputOnblur}
-            onKeyDown={handleInputKeydown}
-            className="ofa-pagination-input"
-          />
-          <div className="">页</div>
-        </div>
+        <div>跳至</div>
+        <Input
+          className="ofa-pagination-quick-jumper-input"
+          value={pageParams._current}
+          onChange={handleInputChange}
+          onBlur={handleInputOnblur}
+          onKeyDown={handleInputKeydown}
+        />
+        <div>页</div>
       </li>
     );
   }
 
   return (
-    <div className="ofa-pagination-wrapper" ref={ref}>
-      <div className="ofa-pagination-total">{totalText || `共 ${total} 条数据`}</div>
-      <ul className={cs('ofa-pagination', className)}>
-        {prevIcon}
-        {pagerList}
-        {nextIcon}
-        {pageSizeText}
-        {quickJumperText}
-      </ul>
-    </div>
+    <ul ref={ref} className={cs('ofa-pagination', className)}>
+      <li className="ofa-pagination-total">{totalText || `共 ${total} 条数据`}</li>
+      {prevIcon}
+      {pagerList}
+      {nextIcon}
+      {pageSizeText}
+      {quickJumperText}
+    </ul>
   );
 }
 

@@ -1,0 +1,125 @@
+{
+  "key": "Select",
+  "title": "选择框",
+  "specs": [
+    {
+      "title": "默认状态",
+      "componentProps": [
+        {
+          "options": [
+            {
+              "label": "Test1",
+              "value": "Test1"
+            },
+            {
+              "label": "Test2",
+              "value": "Test2"
+            }
+          ]
+        },
+        {
+          "multiple": true,
+          "value": [
+            "Test1",
+            "Test2"
+          ],
+          "options": [
+            {
+              "label": "Test1",
+              "value": "Test1"
+            },
+            {
+              "label": "Test2",
+              "value": "Test2"
+            }
+          ]
+        }
+      ],
+      "rules": [
+        {
+          "selector": ".ofa-trigger-content",
+          "desc": "选择框内容"
+        },
+        {
+          "selector": ".ofa-select-trigger",
+          "desc": "选择框样式",
+          "pseudo": [
+            {
+              "selector": "hover",
+              "desc": "按钮鼠标移入效果"
+            }
+          ]
+        },
+        {
+          "selector": ".ofa-select-trigger-active",
+          "desc": "选择框激活状态"
+        },
+        {
+          "selector": ".ofa-select-option-active",
+          "desc": "当前选择项"
+        },
+        {
+          "selector": ".ofa-select-option",
+          "desc": "选项",
+          "pseudo": [
+            {
+              "selector": "hover",
+              "desc": "按钮鼠标移入效果"
+            }
+          ]
+        },
+        {
+          "selector": ".ofa-select-options-desc",
+          "desc": "选项框提示文本"
+        },
+        {
+          "selector": ".ofa-select-options",
+          "desc": "选项框"
+        }
+      ]
+    },
+    {
+      "title": "禁止状态",
+      "componentProps": [
+        {
+          "disabled": true,
+          "value": "Test1",
+          "options": [
+            {
+              "label": "Test1",
+              "value": "Test1"
+            },
+            {
+              "label": "Test2",
+              "value": "Test2"
+            }
+          ]
+        },
+        {
+          "disabled": true,
+          "multiple": true,
+          "value": [
+            "Test1",
+            "Test2"
+          ],
+          "options": [
+            {
+              "label": "Test1",
+              "value": "Test1"
+            },
+            {
+              "label": "Test2",
+              "value": "Test2"
+            }
+          ]
+        }
+      ],
+      "rules": [
+        {
+          "selector": ".ofa-select-trigger-disabled",
+          "desc": "禁止"
+        }
+      ]
+    }
+  ]
+}
