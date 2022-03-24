@@ -1,6 +1,6 @@
 import React from 'react';
 import type { BehaviorSubject } from 'rxjs';
-import type { FetchParams, APISpecAdapter } from '@one-for-all/api-spec-adapter';
+import type { FetchParams, APISpecAdapter, AjaxConfig } from '@one-for-all/api-spec-adapter';
 import type * as SchemaSpec from '@one-for-all/schema-spec';
 import type { BrowserHistory, Location } from 'history';
 
@@ -230,6 +230,8 @@ export interface FetchOption {
   callback?: APIFetchCallback;
 }
 
+export type RawFetchOption = Pick<AjaxConfig, 'method' | 'url' | 'body' | 'headers'>;
+
 // APIState define the type of API results from view perspective.
 // This type is inspired by [react-query](https://react-query.tanstack.com/).
 export interface APIState {
@@ -243,6 +245,7 @@ export interface StatesHubAPI {
   findState$: (stateID: string) => APIState$WithActions | undefined;
   getState$: (stateID: string) => BehaviorSubject<APIState>;
   fetch: (stateID: string, fetchOption: FetchOption) => void;
+  rawFetch: (stateID: string, rawFetchOption: RawFetchOption & { callback?: APIFetchCallback; }) => void;
   refresh: (stateID: string) => void;
 }
 
@@ -250,6 +253,7 @@ export interface APIState$WithActions {
   state$: BehaviorSubject<APIState>;
   fetch: (fetchOption: FetchOption) => void;
   refresh: () => void;
+  rawFetch: (rawFetchOption: RawFetchOption & { callback?: APIFetchCallback; }) => void;
 }
 
 export type APIFetchCallback = (state: Omit<APIState, 'loading'>) => void;
@@ -266,6 +270,7 @@ export interface StatesHubShared {
 
 export interface APIStateWithFetch extends APIState {
   fetch: APIFetch;
+  rawFetch: (rawFetchOption: RawFetchOption, callback?: APIFetchCallback) => void;
   refresh: () => void;
 }
 
