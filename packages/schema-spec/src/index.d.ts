@@ -229,7 +229,7 @@ declare namespace SchemaSpec {
 
   interface InheritedProperty {
     type: 'inherited_property';
-    parentIndex: number;
+    parentID: string;
     convertor?: StateConvertExpression | StateConvertorFuncSpec;
     fallback: unknown;
   }

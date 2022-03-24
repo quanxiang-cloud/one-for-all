@@ -51,7 +51,7 @@ async function bootUp({ schema, parentCTX, plugins }: BootUpParams): Promise<Boo
     });
   }
 
-  const cacheIDs = parseInheritProperty(schema.node, 'ROOT', new Set());
+  const cacheIDs = parseInheritProperty(schema.node, new Set());
   const nodePropsCache = new NodePropsCache(cacheIDs);
 
   const ctx: CTX = {

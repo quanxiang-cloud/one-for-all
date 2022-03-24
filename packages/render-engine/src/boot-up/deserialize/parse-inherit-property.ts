@@ -2,31 +2,28 @@ import SchemaSpec from 'packages/schema-spec/src';
 
 export default function parseInheritProperty(
   node: SchemaSpec.SchemaNode,
-  path: string,
   cacheIDs: Set<string>,
 ): Set<string> {
   const props = node.props || {};
 
-  Object.entries(props).forEach(([key, property]) => {
+  Object.values(props).forEach((property) => {
     if (property.type !== 'inherited_property') {
       return;
     }
-    const level = property.parentIndex;
-    const parentIDs = path.split('/').reverse();
-    if (Number.isNaN(level) || level > parentIDs.length) {
+
+    if(!property.parentID) {
       return;
     }
 
-    const parentID = parentIDs[level];
-    cacheIDs.add(parentID);
+    cacheIDs.add(property.parentID);
   });
 
   if ('children' in node) {
-    node.children?.forEach((subNode) => parseInheritProperty(subNode, `${path}/${node.id}`, cacheIDs));
+    node.children?.forEach((subNode) => parseInheritProperty(subNode, cacheIDs));
   }
 
   if ('node' in node) {
-    parseInheritProperty(node.node as SchemaSpec.SchemaNode, `${path}/${node.id}`, cacheIDs);
+    parseInheritProperty(node.node as SchemaSpec.SchemaNode, cacheIDs);
   }
 
   return cacheIDs;

@@ -1,43 +1,42 @@
 import { BehaviorSubject } from 'rxjs';
+
 import { NodePropsCache, SchemaNode } from '../types';
 import { convertPath } from '../use-instantiate-props/utils';
 
 const NODE_SHOULD_NOT_CACHE: SchemaNode['id'][] = ['dummyLoopContainer', 'placeholder-node'];
 class Store implements NodePropsCache {
-  cache: Record<string, BehaviorSubject<unknown>>;
-  cacheIDs: Set<string>;
+  private cache: Record<string, BehaviorSubject<unknown>>;
+  private cacheIDs: Set<string>;
 
-  constructor(cacheIDs: Set<string>) {
+  public constructor(cacheIDs: Set<string>) {
     this.cache = {};
     this.cacheIDs = cacheIDs;
   }
 
-  addCacheID(nodeID: string): void {
+  public addCacheID(nodeID: string): void {
     if (this.hasCacheID(nodeID)) {
       return;
     }
     this.cacheIDs.add(nodeID);
   }
 
-  hasCacheID(nodeID: string): boolean {
+  public hasCacheID(nodeID: string): boolean {
     return this.cacheIDs.has(nodeID);
   }
 
-  initState(path: string) {
+  public initState(path: string): void {
     if (!this.cache[path]) {
       this.cache[path] = new BehaviorSubject({} as unknown);
     }
   }
 
-  getProps$(path: string, parentIndex: number): BehaviorSubject<unknown> | undefined {
-    const nodePath = convertPath(path).split('/');
-    const parentPath = nodePath.slice(0, nodePath.length - (parentIndex + 1)).join('/');
-    this.initState(parentPath);
+  public getProps$(parentID: string): BehaviorSubject<unknown> | undefined {
+    this.initState(parentID);
 
-    return this.cache[parentPath];
+    return this.cache[parentID];
   }
 
-  setProps(path: string, nodeID: SchemaNode['id'] ,props: unknown): void {
+  public setProps(path: string, nodeID: SchemaNode['id'] ,props: unknown): void {
     const nodePath = convertPath(path);
     const nodePathID = nodePath.split('/').pop();
     // to avoid reset props while node is dummyLoopContainer or placeholder-node
@@ -47,15 +46,15 @@ class Store implements NodePropsCache {
       return;
     }
 
-    if (!this.cache[nodePath]) {
-      this.cache[nodePath] = new BehaviorSubject(props);
+    if (!this.cache[nodePathID]) {
+      this.cache[nodePathID] = new BehaviorSubject(props);
       return;
     }
 
-    this.cache[nodePath].next(props);
+    this.cache[nodePathID].next(props);
   }
 
-  clearProps(path: string): void {
+  public clearProps(path: string): void {
     if (!this.cache[path]) return;
 
     this.cache[path].complete();

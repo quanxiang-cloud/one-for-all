@@ -275,9 +275,9 @@ export interface APIStateWithFetch extends APIState {
 }
 
 export interface NodePropsCache {
-  getProps$: (path: string, parentIndex: number) => BehaviorSubject<unknown> | undefined;
+  getProps$: (parentID: string) => BehaviorSubject<unknown> | undefined;
   setProps: (path: string, nodeID: SchemaNode['id'] ,props: unknown) => void;
-  clearProps: (path: string, cb?: (path: string) => boolean) => void;
+  clearProps: (parentID: string, cb?: (parentID: string) => boolean) => void;
   addCacheID: (nodeID: string) => void;
   hasCacheID: (nodeID: string) => boolean;
 }

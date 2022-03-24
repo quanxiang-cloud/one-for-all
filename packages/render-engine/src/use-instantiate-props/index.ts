@@ -45,8 +45,8 @@ function useInstantiateProps(node: SchemaNode, ctx: CTX): Record<string, unknown
       sharedStateMutationProps,
       internalHookProps,
       renderProps,
-      inheritedProps,
       linkProps,
+      inheritedProps,
     );
 
     ctx.nodePropsCache?.setProps(currentPath, node.id, instantiateProps);
