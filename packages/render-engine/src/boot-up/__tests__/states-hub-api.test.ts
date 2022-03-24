@@ -189,4 +189,32 @@ test('APIStates_fetch_called_should_resolve_values', (done) => {
   });
 });
 
+test('StatesHubAPI_rawFetch', (done) => {
+  const mockRes = { data: { id: 'abc-123' } };
+  mockXHR.get(/.*/, (req, res) => {
+    return res.status(200).body(JSON.stringify(mockRes));
+  });
+
+  const callback = jest.fn();
+  const apiStates = new StatesHubAPI({ apiSpecAdapter, apiStateSpec });
+  const state$ = apiStates.getState$('findPetsByTags');
+
+  state$.subscribe(callback);
+
+  function fetchCallback(): void {
+    try {
+      expect(callback).toBeCalledTimes(3);
+      done();
+    } catch (error) {
+      done(error);
+    }
+  }
+
+  apiStates.rawFetch('findPetsByTags', {
+    callback: fetchCallback,
+    method: 'get',
+    url: 'some_url'
+  });
+});
+
 // todo test cases of success and error callbacks

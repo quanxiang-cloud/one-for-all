@@ -137,13 +137,44 @@ const rootSchema: Schema = {
                 props: {
                   children: {
                     type: 'constant_property',
-                    value: 'Style Guide',
-                  },
-                },
-              },
-            ],
+                    value: 'Style Guide'
+                  }
+                }
+              }
+            ]
           },
-        ],
+          {
+            id: 'icon-preview',
+            type: 'html-element',
+            name: 'a',
+            isLink: true,
+            props: {
+              href: {
+                type: 'constant_property',
+                value: '/icon-preview'
+              },
+              style: {
+                type: 'constant_property',
+                value: {
+                  marginRight: '20px',
+                }
+              }
+            },
+            children: [
+              {
+                id: 'icon-preview-page',
+                type: 'html-element',
+                name: 'h2',
+                props: {
+                  children: {
+                    type: 'constant_property',
+                    value: 'icon preview'
+                  }
+                }
+              }
+            ]
+          }
+        ]
       },
       {
         id: 'route-for-todo',
@@ -204,8 +235,18 @@ const rootSchema: Schema = {
           schemaID: 'SCHEMA_ID_STYLE_GUIDE',
         },
       },
-    ],
-  },
+      {
+        id: 'route-for-icon-preview',
+        type: 'route-node',
+        path: 'icon-preview',
+        node: {
+          id: 'icon-preview-page',
+          type: 'ref-node',
+          schemaID: 'SCHEMA_ID_ICON_PREVIEW',
+        },
+      }
+    ]
+  }
 };
 
 export default rootSchema;
