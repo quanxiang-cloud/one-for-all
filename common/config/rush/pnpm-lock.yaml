@@ -6,6 +6,7 @@ specifiers:
   '@babel/preset-env': ~7.16.11
   '@codemirror/lang-javascript': ^0.19.3
   '@leifandersen/react-codemirror2': ~7.2.1
+  '@one-for-all/headless-ui': 0.1.0
   '@one-for-all/render-engine': 0.18.0
   '@one-for-all/ui': 0.2.18
   '@popperjs/core': ^2.11.0
@@ -159,6 +160,7 @@ dependencies:
   '@babel/preset-env': 7.16.11_@babel+core@7.17.8
   '@codemirror/lang-javascript': 0.19.7
   '@leifandersen/react-codemirror2': 7.2.1_codemirror@5.65.2+react@17.0.2
+  '@one-for-all/headless-ui': 0.1.0
   '@one-for-all/render-engine': 0.18.0
   '@one-for-all/ui': 0.2.18
   '@popperjs/core': 2.11.4
@@ -2101,6 +2103,26 @@ packages:
 
   /@one-for-all/api-spec-adapter/0.4.0:
     resolution: {integrity: sha512-0AvMUdxfWa6/gdIgk0PPOzBO17XJnD/6QUAoAdvm1kOU+hmVydXLY4ODRvDHs9cVNvBDjcZwLsdQ0esRelnT7g==}
+    dev: false
+
+  /@one-for-all/headless-ui/0.1.0:
+    resolution: {integrity: sha512-kqpVZ59xsVCR4fUIHaAD0fMDJ/CNXYCZOnTSdEjj4s1oCDk4Y7kHC8lDvb6ZMwd9Gb+kyQp6LpNB5hZ0z+q0aA==}
+    dependencies:
+      '@one-for-all/icon': 0.3.0
+      '@one-for-all/ui': 0.2.18
+      '@popperjs/core': 2.11.4
+      classnames: 2.3.1
+      lodash: 4.17.21
+      nanoid: 3.3.1
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      react-table: 7.7.0_react@17.0.2
+    dev: false
+
+  /@one-for-all/icon/0.3.0:
+    resolution: {integrity: sha512-zgdAdS8dx6+smbIyRHAXf0ihqJ8gMRx7XA18WzFM3AfuoHp5njSTbFsGYeLsTgtTYC661jRXR0ttVYVSWNpaGw==}
+    dependencies:
+      react: 17.0.2
     dev: false
 
   /@one-for-all/render-engine/0.18.0:
@@ -12609,11 +12631,12 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-AAtaFzxgvMV9vqEgipOll0YJhYkXuY+FF3AyygKD4/q7K4BKFYJxC20WZMdVjQcfg/H78kB4xX9FaWNK3/AwNA==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-PL31Ec6ubJJFZfwX+JPGq3EtJCt58oofKU74SM1k6nJBREUyUhB5Tlf34HF4y9IqTmyxit0RFoMFJPKwrgHnwA==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
       '@leifandersen/react-codemirror2': 7.2.1_codemirror@5.65.2+react@17.0.2
+      '@one-for-all/headless-ui': 0.1.0
       '@one-for-all/render-engine': 0.18.0
       '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
@@ -12736,7 +12759,7 @@ packages:
     dev: false
 
   file:projects/icon.tgz_esbuild@0.14.13:
-    resolution: {integrity: sha512-MsQpsJcvZRSk2X23RIZ+KCp8Tp5IbVcMpTSZ6kLxyqSSq1voApY9sPG5dlSyx+GZ/LUOP0Tz1ASlFiSfJcnL8w==, tarball: file:projects/icon.tgz}
+    resolution: {integrity: sha512-RSKHX2R5nif6CNPovkepJDWYdlRgrPHaHojqD7Lhu8smCtiiu+df33NrDY+3PdQdEIGHMyUqOKG0ekw7LE+9/Q==, tarball: file:projects/icon.tgz}
     id: file:projects/icon.tgz
     name: '@rush-temp/icon'
     version: 0.0.0

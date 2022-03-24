@@ -3,7 +3,7 @@ import cs from 'classnames';
 
 // import Icon from '@one-for-all/icon';
 
-import './index.css';
+import './index.scss';
 
 function Button(
   {
