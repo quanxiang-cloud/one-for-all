@@ -94,7 +94,3 @@ export function getComputedState$({
 
   return state$;
 }
-
-export function convertPath(path: string): string {
-  return path.replace(/\/(.+)\/[0-9]+/g, '/$1');
-}

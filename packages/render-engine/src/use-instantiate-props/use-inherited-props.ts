@@ -7,7 +7,7 @@ import { convertState } from './utils';
 function useInheritedProps(node: SchemaNode, ctx: CTX): Record<string, unknown> {
 
   const convertors: Record<string, StateConvertor | undefined> = {};
-  const states$: Record<string, BehaviorSubject<unknown> | undefined> = {};
+  const states$: Record<string, BehaviorSubject<Record<string, unknown>> | undefined> = {};
   const initialFallbacks: Record<string, unknown> = {};
 
   Object.entries(node.props || {})

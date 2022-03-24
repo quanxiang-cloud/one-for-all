@@ -1,11 +1,15 @@
 import { BehaviorSubject } from 'rxjs';
 
 import { NodePropsCache, SchemaNode } from '../types';
-import { convertPath } from '../use-instantiate-props/utils';
+
+function getNodeIDByPath(path: string): string | undefined {
+  const nodePath = path.replace(/\/(.+)\/[0-9]+/g, '/$1');
+  return nodePath.split('/').pop();
+}
 
 const NODE_SHOULD_NOT_CACHE: SchemaNode['id'][] = ['dummyLoopContainer', 'placeholder-node'];
 class Store implements NodePropsCache {
-  private cache: Record<string, BehaviorSubject<unknown>>;
+  private cache: Record<string, BehaviorSubject<Record<string, unknown>>>;
   private cacheIDs: Set<string>;
 
   public constructor(cacheIDs: Set<string>) {
@@ -13,36 +17,28 @@ class Store implements NodePropsCache {
     this.cacheIDs = cacheIDs;
   }
 
-  public addCacheID(nodeID: string): void {
-    if (this.hasCacheID(nodeID)) {
-      return;
-    }
-    this.cacheIDs.add(nodeID);
-  }
-
-  public hasCacheID(nodeID: string): boolean {
+  public shouldCache(nodeID: string): boolean {
     return this.cacheIDs.has(nodeID);
   }
 
   public initState(path: string): void {
     if (!this.cache[path]) {
-      this.cache[path] = new BehaviorSubject({} as unknown);
+      this.cache[path] = new BehaviorSubject({} as Record<string, unknown>);
     }
   }
 
-  public getProps$(parentID: string): BehaviorSubject<unknown> | undefined {
+  public getProps$(parentID: string): BehaviorSubject<Record<string, unknown>> | undefined {
     this.initState(parentID);
 
     return this.cache[parentID];
   }
 
-  public setProps(path: string, nodeID: SchemaNode['id'] ,props: unknown): void {
-    const nodePath = convertPath(path);
-    const nodePathID = nodePath.split('/').pop();
+  public setProps(path: string, nodeID: SchemaNode['id'] ,props: Record<string, unknown>): void {
+    const nodePathID = getNodeIDByPath(path);
     // to avoid reset props while node is dummyLoopContainer or placeholder-node
     // or some meaningless node but use useInstantiateProps to parse specific props
     // like iterableState, shouldRender
-    if(!nodePathID || NODE_SHOULD_NOT_CACHE.includes(nodeID) ||!this.hasCacheID(nodePathID)) {
+    if(!nodePathID || NODE_SHOULD_NOT_CACHE.includes(nodeID) ||!this.shouldCache(nodePathID)) {
       return;
     }
 
@@ -52,14 +48,6 @@ class Store implements NodePropsCache {
     }
 
     this.cache[nodePathID].next(props);
-  }
-
-  public clearProps(path: string): void {
-    if (!this.cache[path]) return;
-
-    this.cache[path].complete();
-
-    delete this.cache[path];
   }
 }
 

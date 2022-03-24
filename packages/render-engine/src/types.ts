@@ -275,11 +275,9 @@ export interface APIStateWithFetch extends APIState {
 }
 
 export interface NodePropsCache {
-  getProps$: (parentID: string) => BehaviorSubject<unknown> | undefined;
-  setProps: (path: string, nodeID: SchemaNode['id'] ,props: unknown) => void;
-  clearProps: (parentID: string, cb?: (parentID: string) => boolean) => void;
-  addCacheID: (nodeID: string) => void;
-  hasCacheID: (nodeID: string) => boolean;
+  getProps$: (parentID: string) => BehaviorSubject<Record<string, unknown>> | undefined;
+  setProps: (path: string, nodeID: SchemaNode['id'] ,props: Record<string, unknown>) => void;
+  shouldCache: (nodeID: string) => boolean;
 }
 export interface CTX {
   statesHubAPI: StatesHubAPI;
