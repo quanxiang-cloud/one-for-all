@@ -8,7 +8,17 @@ exports[`tab navs props test 1`] = `
   >
     <div
       class="ofa-notice-icon"
-    />
+    >
+      <svg
+        class="ofa-svg-icon "
+        data-name="close"
+        style="width: 18px; height: 18px;"
+      >
+        <use
+          xlink:href="undefined#close"
+        />
+      </svg>
+    </div>
     <div
       class="ofa-notice-content"
     >

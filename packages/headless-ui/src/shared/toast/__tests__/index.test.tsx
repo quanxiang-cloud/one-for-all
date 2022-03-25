@@ -1,7 +1,7 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
-// import Icon from '@one-for-all/icon'
+import Icon from '@one-for-all/icon'
 
 import { Notice } from '../index';
 
@@ -9,7 +9,7 @@ const toastPropsTest: ToastProps = {
   modifier: 'success',
   content: 'Test toast success!',
   duration: 1000,
-  // icon: <Icon name="close" size={18}/>,
+  icon: <Icon name="close" size={18}/>,
   onClose: () => {
     console.log('Success toast is closed');
   },
