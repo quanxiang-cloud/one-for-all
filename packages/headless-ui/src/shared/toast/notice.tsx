@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import cs from 'classnames';
 
-// import Icon from '@one-for-all/icon';
+import Icon from '@one-for-all/icon';
 import { Notice } from './notification';
 
 
@@ -44,7 +44,7 @@ function Notice({ notice, onClose }: Props): JSX.Element {
         className={`ofa-notice-close-btn`}
         onClick={handleClose}
       >
-        {/* <Icon name="close" size={20} /> */}
+        <Icon name="close" size={20} />
       </div>
     </div>
   );

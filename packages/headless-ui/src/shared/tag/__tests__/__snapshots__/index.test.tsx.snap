@@ -8,7 +8,17 @@ exports[`Tag delete event test 1`] = `
     Tag delete function Test
     <span
       class="ofa-tag-delete-icon"
-    />
+    >
+      <svg
+        class="ofa-svg-icon "
+        data-name="close"
+        style="width: 15px; height: 15px;"
+      >
+        <use
+          xlink:href="undefined#close"
+        />
+      </svg>
+    </span>
   </span>
 </div>
 `;

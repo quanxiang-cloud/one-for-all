@@ -6,5 +6,6 @@ export default {
   moduleNameMapper: {
     '\\.(css|scss|less)$': 'jest-css-modules',
     '@one-for-all/icon': '<rootDir>../icon/src',
-  },
+    '\\.svg$': 'jest-svg-transformer'
+  }
 };
