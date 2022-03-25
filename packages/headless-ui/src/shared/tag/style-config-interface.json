@@ -57,6 +57,18 @@
           "desc": "标签样式"
         }
       ]
+    },
+    {
+      "title": "禁止",
+      "componentProps": {
+        "label": "Test",
+        "disabled": true
+      },
+      "rules": [
+        {
+          "selector": ".ofa-tag-disabled"
+        }
+      ]
     }
   ]
 }

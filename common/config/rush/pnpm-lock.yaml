@@ -12710,7 +12710,7 @@ packages:
     dev: false
 
   file:projects/headless-ui.tgz_esbuild@0.14.13:
-    resolution: {integrity: sha512-da5eS+yXr2KFk+l6WhxKJqR2xko6bDWVvcqu2PqOgA88kn4sVj3bm0CtXe4S0rSAKoSUM42kKw250RmY43BC4Q==, tarball: file:projects/headless-ui.tgz}
+    resolution: {integrity: sha512-7M7vKnDRUCuMucmL0M6jMgutS5sBz3tZAb58zuODzfyg+MwSL1lXgSpD3tP++IjRhVyiEoaymKKUGfQMA4F2Gg==, tarball: file:projects/headless-ui.tgz}
     id: file:projects/headless-ui.tgz
     name: '@rush-temp/headless-ui'
     version: 0.0.0
@@ -12767,7 +12767,7 @@ packages:
     dev: false
 
   file:projects/icon.tgz_esbuild@0.14.13:
-    resolution: {integrity: sha512-HAK8i7zw6tZtZhZpNEwVM5b1koG9mk2FnEG05mIWM3B1KaQgorXs8kT3bASQPud+HVAUApyq/AomMwZU22rq/w==, tarball: file:projects/icon.tgz}
+    resolution: {integrity: sha512-pcT5VUgvATiycZr4idC4laDbJzrscdzBbKkbaBIzma2d8O9vgj9u2TzbiXLw0FKROMS2V8jgIw1KKC+q/v0/fw==, tarball: file:projects/icon.tgz}
     id: file:projects/icon.tgz
     name: '@rush-temp/icon'
     version: 0.0.0

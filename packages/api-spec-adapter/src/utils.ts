@@ -50,3 +50,42 @@ export function join(...segments: string[]): string {
   }
   return `/${resultParts.join('/')}`;
 }
+
+type KeyPathPair = [string, string | number | boolean | null];
+
+function isPrimaryValue(v: unknown): boolean {
+  return typeof v === 'boolean' ||
+    typeof v === 'number' ||
+    typeof v === 'string' ||
+    v === null;
+}
+
+function shouldGoIn(v: unknown): boolean {
+  return typeof v === 'object' && v !== null;
+}
+
+function _toKeyPathPair(v: unknown, pairs: Array<KeyPathPair>, parentPath: string): Array<KeyPathPair> {
+  if (typeof v !== 'object' || v === null) {
+    return [];
+  }
+
+  Object.entries(v).forEach(([key, value]) => {
+    const keyPath = parentPath ? `${parentPath}.${key}` : key;
+    if (isPrimaryValue(value)) {
+      pairs.push([keyPath, value]);
+      return;
+    }
+
+    if (!shouldGoIn(v)) {
+      return;
+    }
+
+    _toKeyPathPair((v as any)[key], pairs, keyPath);
+  });
+
+  return pairs;
+}
+
+export function toKeyPathPair(v: unknown, prefix: string): Array<KeyPathPair> {
+  return _toKeyPathPair(v, [], prefix);
+}

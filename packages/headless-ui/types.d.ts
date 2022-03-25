@@ -84,6 +84,7 @@ interface DividerProps extends BaseProps {
 type InputEnterKeyHint = 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send';
 // todo: add BaseInputProps
 interface InputProps extends BaseProps {
+  value?: string;
   placeholder?: string;
   defaultValue?: string;
   disabled?: boolean;
@@ -487,10 +488,11 @@ interface TabsProps<T extends React.Key> extends BaseProps {
 // interface TagsProps
 interface TagProps<T extends React.Key> extends BaseProps {
   value: T;
-  label?: string;
-  onDelete?: (value: T) => void;
+  label?: React.ReactNode;
+  onDelete?: (value: T, e: React.MouseEvent) => void;
   deleteIconSize?: number;
   modifier?: Modifier;
+  disabled?: boolean;
 }
 
 // popover
