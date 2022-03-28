@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 
-const matchAssetsReg = /\.(svg|png|jpg)$/;
+const matchAssetsReg = /\.(svg|png|jpg|wasm)$/;
 
 function isAssets(source) {
   return matchAssetsReg.test(source);
@@ -16,7 +16,7 @@ function importMetaAssets() {
       }
     },
     load(id) {
-      if (id.endsWith('.svg')) {
+      if (isAssets(id)) {
         const referenceId = this.emitFile({
           type: 'asset',
           name: path.basename(id),

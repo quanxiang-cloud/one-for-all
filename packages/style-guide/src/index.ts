@@ -12,6 +12,7 @@ import {
 } from 'css-tree';
 import init, { compressStringGzip } from "./wasm_gzip/wasm_gzip";
 import type { ClassNameSchema, StyleConfigInterface } from './type';
+import wasm_gzip_bg from './wasm_gzip/wasm_gzip_bg.wasm';
 import './assets/csslint.js';
 
 export * from './type';
@@ -76,7 +77,7 @@ function selectorDetection(cssAst: StyleSheetPlain, classNameSchema: ClassNameSc
 }
 
 function cssGzip(cssStr: string): Promise<Blob | null> {
-  return init(`https://ofapkg.pek3b.qingstor.com/@one-for-all/style-guide@0.0.1/wasm_gzip_bg.wasm`).then(() => {
+  return init(wasm_gzip_bg).then(() => {
     let compressed = compressStringGzip(cssStr);
     if (!compressed) {
       return null;

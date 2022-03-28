@@ -6,6 +6,7 @@ import path from 'path';
 import copy from 'rollup-plugin-copy';
 import { terser } from 'rollup-plugin-terser';
 
+import importMetaAssets from '../../common/config/rollup/rollup-plugin-import-meta-assets';
 import commonPlugins from '../../scripts/common-plugins';
 import packageJSON from './package.json';
 
@@ -66,6 +67,7 @@ export default [
       },
     ],
     plugins: [
+      importMetaAssets(),
       esbuild({
         // All options are optional
         // include: /\.[jt]sx?$/, // default, inferred from `loaders` option
