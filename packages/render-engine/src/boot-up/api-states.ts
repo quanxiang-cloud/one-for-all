@@ -1,6 +1,6 @@
 import { FetchParams } from '@one-for-all/api-spec-adapter';
 import { APIFetchCallback } from '..';
-import { APIStateWithFetch, APIState, StatesHubAPI } from '../types';
+import { APIStateWithFetch, APIState, StatesHubAPI, RawFetchOption } from '../types';
 
 function getAPIStates(statesHubAPI: StatesHubAPI): Readonly<Record<string, APIStateWithFetch>> {
   const handler: ProxyHandler<Readonly<Record<string, APIState>>> = {
@@ -9,10 +9,13 @@ function getAPIStates(statesHubAPI: StatesHubAPI): Readonly<Record<string, APISt
 
       return {
         ...apiState,
+        refresh: () => statesHubAPI.refresh(p),
         fetch: (fetchParams: FetchParams, callback?: APIFetchCallback): void => {
           statesHubAPI.fetch(p, { params: fetchParams, callback });
         },
-        refresh: () => statesHubAPI.refresh(p),
+        rawFetch: (rawFetchOption: RawFetchOption, callback?: APIFetchCallback | undefined): void => {
+          statesHubAPI.rawFetch(p, rawFetchOption);
+        }
       };
     },
   };

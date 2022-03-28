@@ -1,0 +1,31 @@
+.ofa-pagination {
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  gap: 8px;
+  align-items: center;
+}
+
+.ofa-pagination-select-wrapper {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+}
+
+.ofa-pagination-disabled {
+  color: gray;
+}
+
+.ofa-pagination-current-page {
+  color: blue;
+}
+
+.ofa-pagination-quick-jumper {
+  display: flex;
+  column-gap: 8px;
+}
+
+.ofa-pagination-quick-jumper-input {
+  width: 50px;
+}

@@ -40,10 +40,6 @@ export default class SwaggerSpecAdapter implements APISpecAdapter {
       }
 
       if (p.in === 'query' && fetchParams?.params?.[p.name] !== undefined) {
-        // if (p.required && fetchParams?.params?.[p.name] === undefined) {
-        //   throw new Error(`parameter '${p.name}' required in query for ${operationID}`);
-        // }
-
         queryParams[p.name] = fetchParams.params[p.name];
       }
 

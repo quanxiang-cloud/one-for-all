@@ -1,0 +1,51 @@
+{
+  "key": "Pagination",
+  "title": "分页器",
+  "specs": [
+    {
+      "title": "默认状态",
+      "componentProps": {
+        "current": 1,
+        "total": 20,
+        "pageSize": 10,
+        "showQuickJumper": true
+      },
+      "rules": [
+        {
+          "selector": ".ofa-pagination",
+          "desc": "外层容器"
+        },
+        {
+          "selector": ".ofa-pagination-total",
+          "desc": "条目总数"
+        },
+        {
+          "selector": ".ofa-pagination-quick-jumper",
+          "desc": "快速跳转"
+        },
+        {
+          "selector": ".ofa-pagination-select-wrapper",
+          "desc": "页面容量选择"
+        },
+        {
+          "selector": ".ofa-pagination-disabled",
+          "desc": "上下页禁止样式"
+        },
+        {
+          "selector": ".ofa-pagination-page-item",
+          "desc": "页码样式"
+        },
+        {
+          "selector": ".ofa-pagination-current-page",
+          "desc": "当前页",
+          "pseudo": [
+            {
+              "selector": "hover",
+              "desc": "按钮鼠标移入效果"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
