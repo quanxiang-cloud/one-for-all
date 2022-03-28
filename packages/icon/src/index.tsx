@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import svgSprite from './sprite.svg';
-import getIconInSprite from './getIconInSprite';
+import getIconPathById from './getIconPathById';
 
 export interface IconProps {
   name: string;
@@ -24,8 +23,8 @@ function Icon(
 
   useEffect((): (() => void) => {
     let isUnmount = false;
-    getIconInSprite.getIconById(svgSprite, name).then((icon) => {
-      !isUnmount && setIconPathStr(icon.innerHTML);
+    getIconPathById(name).then((iconPath) => {
+      !isUnmount && setIconPathStr(iconPath);
     });
     return () => (isUnmount = true);
   }, [name]);
