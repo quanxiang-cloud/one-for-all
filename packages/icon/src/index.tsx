@@ -8,26 +8,26 @@ export interface IconProps {
   size?: number | string;
   color?: string;
   style?: React.CSSProperties;
-  'data-node-key'?: string;
 }
 
 function Icon(
-  { name, size = 16, color, className = '', style, ...rest }: IconProps,
+  { name, size = 16, color, className = '', style }: IconProps,
   ref?: React.Ref<SVGSVGElement>,
 ): JSX.Element {
-  const [icon, setIcon] = useState('');
+  const [iconPathStr, setIconPathStr] = useState('');
   const _style: React.CSSProperties = {
     ...style,
     width: typeof size === 'string' ? size : `${size}px`,
     height: typeof size === 'string' ? size : `${size}px`,
     fill: color,
   };
-  const dataNodeKey = rest['data-node-key'] || '';
 
-  useEffect(() => {
+  useEffect((): (() => void) => {
+    let isUnmount = false;
     getIconInSprite.getIconById(svgSprite, name).then((icon) => {
-      setIcon(icon.innerHTML);
+      !isUnmount && setIconPathStr(icon.innerHTML);
     });
+    return () => (isUnmount = true);
   }, [name]);
 
   return (
@@ -36,18 +36,9 @@ function Icon(
       data-name={name}
       style={_style}
       className={'ofa-svg-icon ' + className}
-      data-node-key={dataNodeKey}
-    >
-      {!!icon && (
-        <symbol
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          id={name}
-          dangerouslySetInnerHTML={{ __html: icon }}
-        ></symbol>
-      )}
-      <use xlinkHref={`#${name}`} />
-    </svg>
+      viewBox="0 0 24 24"
+      dangerouslySetInnerHTML={{ __html: iconPathStr }}
+    />
   );
 }
 
