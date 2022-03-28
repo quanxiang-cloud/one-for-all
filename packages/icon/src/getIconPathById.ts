@@ -9,11 +9,17 @@ async function getIconPathById(id: string): Promise<string> {
 }
 
 async function getSprite(): Promise<SVGAElement> {
-  const spriteText = await(await fetch(svgSprite)).text();
+  let spriteText = '';
+  try {
+    const fetchResponse = await fetch(svgSprite);
+    spriteText = await fetchResponse.text();
+  } catch (error) {
+    console.log(error);
+  }
 
   const spriteParent = document.createElement('div');
   spriteParent.innerHTML = spriteText;
-  return spriteParent.children[0] as SVGAElement
+  return spriteParent.children[0] as SVGAElement;
 }
 
 export default getIconPathById;
