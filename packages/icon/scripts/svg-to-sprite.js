@@ -49,9 +49,13 @@ function getSvgNameByCategory(svgArr) {
 async function writeSvgNameToFile(svgNameStr) {
   const pathName = `dist/${packageJSON.name}@${packageJSON.version}/svgNameMap.json`;
   const svgNameMapFile = path.join(basePath, pathName);
+  const pathNameInLatest = `dist/${packageJSON.name}@latest/svgNameMap.json`;
+  const svgNameMapFileInLatest = path.join(basePath, pathNameInLatest);
   try {
     mkdirp.sync(path.dirname(svgNameMapFile));
     fs.writeFileSync(svgNameMapFile, svgNameStr);
+    mkdirp.sync(path.dirname(svgNameMapFileInLatest));
+    fs.writeFileSync(svgNameMapFileInLatest, svgNameStr);
   } catch (error) {
     console.log(error);
   }
