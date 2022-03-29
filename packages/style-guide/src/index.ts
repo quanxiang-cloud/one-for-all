@@ -11,8 +11,8 @@ import {
   SelectorListPlain
 } from 'css-tree';
 import init, { compressStringGzip } from "./wasm_gzip/wasm_gzip";
-import type { ClassNameSchema, StyleConfigInterface } from './type';
 import wasm_gzip_bg from './wasm_gzip/wasm_gzip_bg.wasm';
+import type { ClassNameSchema, StyleConfigInterface, BaseColorConfig } from './type';
 import './assets/csslint.js';
 
 export * from './type';
@@ -87,10 +87,42 @@ function cssGzip(cssStr: string): Promise<Blob | null> {
   });
 }
 
+function getColorVariablesCss(variables: BaseColorConfig): string {
+  const cssVariables = variables.colors.map(({ name, colorValues }) => {
+    if (name === variables.primaryColor) {
+      let primaryColorCss = '';
+      const str = variables.colorNos.map((no, index) => {
+        primaryColorCss += `--primary-${no}: ${colorValues[index]};`
+        return `--${name}-${no}: ${colorValues[index]};`
+      }).join('');
+
+      return str + primaryColorCss;
+    }
+
+    return variables.colorNos.map((no, index) => {
+      return `--${name}-${no}: ${colorValues[index]};`
+    }).join('');
+  })
+
+  return `:root{${cssVariables.join('')}}`;
+}
+
+type props = {
+  initCssMap?: Record<string, StyleSheetPlain>;
+  baseColorVariables?: BaseColorConfig;
+}
+
 export default class CssASTStore {
   cssASTMap: Record<string, StyleSheetPlain>;
-  constructor(initCssMap?: Record<string, StyleSheetPlain>) {
+  baseVariables: BaseColorConfig;
+  constructor({ initCssMap, baseColorVariables }: props) {
     this.cssASTMap = initCssMap || {};
+    this.baseVariables = baseColorVariables || {
+      colorNos: [],
+      primaryColor: 'blue',
+      primaryColorNo: 0,
+      colors: [],
+    }
   }
 
   getCssAST(key: string) {
@@ -107,12 +139,10 @@ export default class CssASTStore {
     this.cssASTMap[key] = selectorDetection(toAST(css), rules);
   }
 
-  getCssString(componentKey?: string, isBeautify = false): string {
-    if (componentKey) {
-      return this.cssASTMap[componentKey] ? toCSSString(this.cssASTMap[componentKey], isBeautify) : '';
-    }
-
-    return Object.entries(this.cssASTMap).map(([_, cssAst]) => toCSSString(cssAst, isBeautify)).join('');
+  getCssString(isBeautify = false): string {
+    const compCss = Object.entries(this.cssASTMap).map(([_, cssAst]) => toCSSString(cssAst, isBeautify)).join('');
+    const variablesCss = getColorVariablesCss(this.baseVariables);
+    return `${variablesCss} ${compCss}`;
   }
 
   getComponentCss(componentKey: string, specs: StyleConfigInterface[]) {

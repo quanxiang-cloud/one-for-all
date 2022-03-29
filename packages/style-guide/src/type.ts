@@ -18,3 +18,25 @@ export type ComponentSpec = {
   specs: StyleConfigInterface[];
   title: string;
 }
+
+export type Colour = {
+  name: string,
+  colorValues: string[];
+}
+
+export type BaseColorConfig = {
+  colorNos: number[];
+  colors: Colour[];
+  primaryColorNo: number;
+  primaryColor?: string;
+}
+
+export type ThemeVariable = {
+  key: string;
+  name: string;
+}
+
+export type ColorVariables = {
+  baseColors: BaseColorConfig;
+  theme: ThemeVariable[];
+}
