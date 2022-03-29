@@ -19,11 +19,24 @@ export type ComponentSpec = {
   title: string;
 }
 
-export type CssVariables = {
+export type Colour = {
+  name: string,
+  colorValues: string[];
+}
+
+export type BaseColorConfig = {
   colorNos: number[];
-  primary: number;
-  colors: {
-    name: string,
-    colorValues: string[];
-  }[]
+  colors: Colour[];
+  primaryColorNo: number;
+  primaryColor?: string;
+}
+
+export type ThemeVariable = {
+  key: string;
+  name: string;
+}
+
+export type ColorVariables = {
+  baseColors: BaseColorConfig;
+  theme: ThemeVariable[];
 }
