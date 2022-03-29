@@ -3,8 +3,8 @@
 // import { APISpecAdapter } from '@one-for-all/api-spec-adapter';
 // import type * as SchemaSpec from '@one-for-all/schema-spec';
 
-// import SchemaRender from '../schema-render';
 // import { RenderEngineCTX } from '../types';
+// import SchemaRender from '../schema-render';
 
 // const schema: SchemaSpec.Schema = {
 //   apiStateSpec: {},
@@ -42,7 +42,6 @@
 
 // test('SchemaRender_should_return_expected_ref', () => {
 //   const { container } = render(<Dummy />);
-
 //   expect(container.querySelector('[jest-id="state"]')).toBeTruthy();
 // });
 

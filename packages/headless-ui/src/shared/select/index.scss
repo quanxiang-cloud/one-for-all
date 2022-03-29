@@ -1,0 +1,70 @@
+.ofa-trigger {
+  display: flex;
+  gap: 4px;
+}
+
+.ofa-select-options {
+  min-width: 90px;
+  max-width: 500px;
+  max-height: 300px;
+  box-shadow: 0px 8px 24px 4px rgba(148, 163, 184, 0.25);
+  padding: 16px 0;
+  background-color: #fff;
+  overflow-y: auto;
+}
+
+.ofa-select-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: 36px;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 500;
+
+  &:hover {
+    background-color: #f1f5f9;
+  }
+}
+
+.ofa-select-option-active {
+  color: #375ff3;
+}
+
+.ofa-select-option-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0px;
+}
+
+.ofa-select-trigger {
+  min-width: 90px;
+  max-width: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 32px;
+  padding: 0 16px;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  box-sizing: border-box;
+  transition: all .3s cubic-bezier(.645, .045, .355, 1);
+}
+
+.ofa-select-trigger-active {
+  border-color: #375ff3;
+}
+
+.ofa-select-trigger-disabled {
+  cursor: not-allowed;
+  color: #00000040;
+  background: #f5f5f5;
+}
+
+.ofa-trigger-content {}

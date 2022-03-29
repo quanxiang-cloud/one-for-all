@@ -1,6 +1,6 @@
 {
   "name": "@one-for-all/schema-spec",
-  "version": "0.13.1-0",
+  "version": "0.15.0",
   "license": "Apache-2.0",
   "type": "module",
   "module": "lib",

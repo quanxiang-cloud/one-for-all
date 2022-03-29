@@ -1,7 +1,8 @@
 import React from 'react';
 import type { BehaviorSubject } from 'rxjs';
-import type { FetchParams, APISpecAdapter } from '@one-for-all/api-spec-adapter';
+import type { FetchParams, APISpecAdapter, AjaxConfig } from '@one-for-all/api-spec-adapter';
 import type * as SchemaSpec from '@one-for-all/schema-spec';
+import type { BrowserHistory, Location } from 'history';
 
 export type VersatileFunc<T = unknown> = (...args: unknown[]) => T;
 
@@ -104,7 +105,15 @@ export interface ComputedProperty extends Omit<SchemaSpec.ComputedProperty, 'con
 
 export type NodeProperties = Record<string, NodeProperty>;
 
-export type SchemaNode = HTMLNode | ReactComponentNode | LoopContainerNode | ComposedNode | RefNode | JSXNode;
+export type SchemaNode =
+  | HTMLNode
+  | LinkNode
+  | ReactComponentNode
+  | LoopContainerNode
+  | ComposedNode
+  | RefNode
+  | JSXNode
+  | RouteNode;
 
 export type ShouldRenderCondition =
   | APIResultProperty
@@ -124,6 +133,11 @@ export interface HTMLNode extends BaseNode, Pick<SchemaSpec.HTMLNode, 'name'> {
   children?: Array<SchemaNode>;
 }
 
+export interface LinkNode extends HTMLNode {
+  name: 'a';
+  isLink: true;
+}
+
 export interface ReactComponentNode
   extends BaseNode,
     Pick<
@@ -132,6 +146,13 @@ export interface ReactComponentNode
     > {
   type: 'react-component';
   children?: Array<SchemaNode>;
+}
+
+export interface RouteNode extends BaseNode {
+  type: 'route-node';
+  path: string;
+  node: SchemaNode;
+  exactly?: boolean;
 }
 
 export interface IndividualLoopContainer extends BaseNode, Pick<SchemaSpec.LoopContainerNode, 'loopKey'> {
@@ -209,6 +230,8 @@ export interface FetchOption {
   callback?: APIFetchCallback;
 }
 
+export type RawFetchOption = Pick<AjaxConfig, 'method' | 'url' | 'body' | 'headers'>;
+
 // APIState define the type of API results from view perspective.
 // This type is inspired by [react-query](https://react-query.tanstack.com/).
 export interface APIState {
@@ -222,6 +245,7 @@ export interface StatesHubAPI {
   findState$: (stateID: string) => APIState$WithActions | undefined;
   getState$: (stateID: string) => BehaviorSubject<APIState>;
   fetch: (stateID: string, fetchOption: FetchOption) => void;
+  rawFetch: (stateID: string, rawFetchOption: RawFetchOption & { callback?: APIFetchCallback; }) => void;
   refresh: (stateID: string) => void;
 }
 
@@ -229,6 +253,7 @@ export interface APIState$WithActions {
   state$: BehaviorSubject<APIState>;
   fetch: (fetchOption: FetchOption) => void;
   refresh: () => void;
+  rawFetch: (rawFetchOption: RawFetchOption & { callback?: APIFetchCallback; }) => void;
 }
 
 export type APIFetchCallback = (state: Omit<APIState, 'loading'>) => void;
@@ -245,6 +270,7 @@ export interface StatesHubShared {
 
 export interface APIStateWithFetch extends APIState {
   fetch: APIFetch;
+  rawFetch: (rawFetchOption: RawFetchOption, callback?: APIFetchCallback) => void;
   refresh: () => void;
 }
 
@@ -253,12 +279,15 @@ export interface CTX {
   statesHubShared: StatesHubShared;
   apiStates: Readonly<Record<string, APIStateWithFetch>>;
   states: Record<string, unknown>;
-  repository?: Repository;
-  refLoader?: RefLoader;
-  componentLoader?: ComponentLoader;
+  location$: BehaviorSubject<Location>;
+  history: BrowserHistory;
+
+  plugins: Plugins;
 }
 
-export type RenderEngineCTX = Pick<CTX, 'states' | 'apiStates'>;
+export type RenderEngineCTX = Pick<CTX, 'states' | 'apiStates'> & {
+  history: BrowserHistory;
+};
 
 // map of stateID and apiID
 export type APIStatesSpec = Record<string, { apiID: string; [key: string]: unknown }>;
@@ -298,7 +327,7 @@ export interface ComponentLoaderParam {
   exportName: string;
 }
 
-export type ComponentLoader = (locator: ComponentLoaderParam) => Promise<DynamicComponent>
+export type ComponentLoader = (locator: ComponentLoaderParam) => Promise<DynamicComponent>;
 
 export interface Plugins {
   apiSpecAdapter?: APISpecAdapter;

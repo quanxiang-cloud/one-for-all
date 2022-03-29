@@ -51,7 +51,7 @@ function LoopComposed({ iterableState, loopKey, node, ctx }: Props): React.React
         React.createElement(
           OutLayerRender,
           { key, outLayer: node.outLayer, ctx },
-          (node.children || node.nodes).map((composedChild, index): React.ReactElement => {
+          (node.nodes || node.children).map((composedChild, index): React.ReactElement => {
             return React.createElement(ComposedChildRender, {
               node: composedChild,
               composedState,

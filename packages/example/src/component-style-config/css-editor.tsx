@@ -18,7 +18,7 @@ type Props = {
   statusName: string;
   setCustomCss: (key: string, customCss: string) => void;
   getCompCss: () => string;
-}
+};
 
 function CSSEditor({ componentName, statusName, setCustomCss, getCompCss }: Props): JSX.Element {
   const [value, setValue] = useState('');
@@ -49,7 +49,9 @@ function CSSEditor({ componentName, statusName, setCustomCss, getCompCss }: Prop
           setValue(value);
         }}
       />
-      <Button style={{ marginTop: '15px' }} onClick={handleSave} >应用</Button>
+      <Button style={{ marginTop: '15px' }} onClick={handleSave}>
+        应用
+      </Button>
     </div>
   );
 }

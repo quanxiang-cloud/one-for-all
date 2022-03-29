@@ -3,10 +3,10 @@ import { act, renderHook } from '@testing-library/react-hooks/pure';
 import { logger } from '@one-for-all/utils';
 
 import { SchemaNode } from '../../types';
-import StatesHubShared from '../../ctx/states-hub-shared';
+import StatesHubShared from '../../boot-up/states-hub-shared';
 import useSharedStateProps from '../use-shared-state-props';
 
-import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
+import dummyCTX from '../../boot-up/__tests__/fixtures/dummy-ctx';
 
 describe('useNodeStateProps_resolve_expected_value', () => {
   const hub = new StatesHubShared({});

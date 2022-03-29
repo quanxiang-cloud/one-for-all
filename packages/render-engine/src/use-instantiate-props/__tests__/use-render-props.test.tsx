@@ -2,11 +2,11 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import { SchemaNode } from '../../types';
-import dummyCTX from '../../ctx/__tests__/fixtures/dummy-ctx';
+import dummyCTX from '../../boot-up/__tests__/fixtures/dummy-ctx';
 import CustomRender from './fixtures/custom-render';
 import NodeRender from '../../node-render';
 
-dummyCTX.repository = {
+dummyCTX.plugins.repository = {
   'testPackage@version': {
     CustomRender: CustomRender,
   },

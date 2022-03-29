@@ -9,7 +9,7 @@ export default {
   input: 'src/index.ts',
   output: getOutput(packageJSON.name, packageJSON.version),
 
-  external: ['react', 'react-dom', 'rxjs', /@one-for-all\/.*/, /rxjs\/.*/, 'react-jsx-parser'],
+  external: ['react', 'react-dom', 'rxjs', /@one-for-all\/.*/, /rxjs\/.*/, 'react-jsx-parser', 'history'],
 
   plugins: [
     typescriptPaths(),

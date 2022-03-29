@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 
-function ThirdPartyInput(props: React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>): JSX.Element {
-  return (<input {...props} />);
+function ThirdPartyInput(
+  props: React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
+): JSX.Element {
+  return <input {...props} />;
 }
 
 type Props = {
   onEnter: (value: string) => void;
   __exposeState: (value: string) => void;
-}
+};
 
 // clear value after enter key down
 export default function TodoInput({ onEnter, __exposeState }: Props): JSX.Element {

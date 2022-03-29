@@ -7,14 +7,18 @@ import React, {
   FocusEvent,
   ForwardedRef,
   useRef,
+  useEffect,
   useImperativeHandle,
 } from 'react';
 import { omit } from 'lodash';
 import cs from 'classnames';
 
+import './index.css';
+
 function Input(
   {
     className,
+    value,
     style,
     error,
     disabled,
@@ -29,9 +33,17 @@ function Input(
   }: InputProps,
   ref: ForwardedRef<HTMLInputElement>,
 ): JSX.Element {
-  const [value, setValue] = useState<string>(defaultValue ?? '');
+  const [inputValue, setValue] = useState<string>(defaultValue ?? '');
   const [focused, setFocused] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (value === undefined) {
+      return;
+    }
+    setValue(value);
+  }, [value])
+
 
   useLayoutEffect(() => {
     if (!otherProps.enterKeyHint) return;
@@ -69,7 +81,7 @@ function Input(
     <input
       {...omit(otherProps, 'enterKeyHint')}
       ref={inputRef}
-      value={value}
+      value={inputValue}
       disabled={disabled}
       readOnly={readOnly}
       style={style}

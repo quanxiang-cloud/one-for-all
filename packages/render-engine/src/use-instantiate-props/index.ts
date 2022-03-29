@@ -11,6 +11,7 @@ import useSharedStateMutationProps from './use-shared-state-mutation';
 import useInternalHookProps from './use-internal-hook-props';
 import useRenderProps from './use-render-props';
 import useComputedProps from './use-computed-props';
+import useLinkProps from './use-link-props';
 
 function useInstantiateProps(node: SchemaNode, ctx: CTX): Record<string, unknown> {
   const constantProps = useConstantProps(node);
@@ -25,6 +26,9 @@ function useInstantiateProps(node: SchemaNode, ctx: CTX): Record<string, unknown
   const apiStateInvokeProps = useAPIInvokeProps(node, ctx);
   const renderProps = useRenderProps(node, ctx);
 
+  // todo support user defined onClick event
+  const linkProps = useLinkProps(node, ctx);
+
   return useMemo(() => {
     return Object.assign(
       constantProps,
@@ -32,11 +36,12 @@ function useInstantiateProps(node: SchemaNode, ctx: CTX): Record<string, unknown
       apiResultProps,
       apiLoadingProps,
       sharedStateProps,
+      computedProps,
       funcProps,
       sharedStateMutationProps,
       internalHookProps,
       renderProps,
-      computedProps,
+      linkProps,
     );
   }, [apiResultProps, sharedStateProps, apiLoadingProps, computedProps, constantProps]);
 }

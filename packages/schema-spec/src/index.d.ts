@@ -244,7 +244,7 @@ declare namespace SchemaSpec {
     | 'route-node';
 
   interface BaseNode {
-    id: string | number;
+    id: string;
     label?: string;
     type: NodeType;
     props?: NodeProperties;
@@ -252,12 +252,17 @@ declare namespace SchemaSpec {
     lifecycleHooks?: LifecycleHooks;
   }
 
-  type SchemaNode = HTMLNode | ReactComponentNode | LoopContainerNode | RefNode | JSXNode | RouteNode;
+  type SchemaNode = HTMLNode | LinkNode | ReactComponentNode | LoopContainerNode | RefNode | JSXNode | RouteNode;
 
   interface HTMLNode extends BaseNode {
     type: 'html-element';
     name: string;
     children?: Array<SchemaNode>;
+  }
+
+  interface LinkNode extends HTMLNode {
+    name: 'a';
+    isLink: true;
   }
 
   interface ReactComponentNode extends BaseNode {

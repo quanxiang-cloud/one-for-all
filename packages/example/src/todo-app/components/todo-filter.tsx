@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 type Props = {
   onToggleStatus: (statue: string) => void;
-}
+};
 
 function TodoFilter({ onToggleStatus }: Props): JSX.Element {
   const [status, setStatus] = useState('');

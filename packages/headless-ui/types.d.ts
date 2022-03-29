@@ -84,6 +84,7 @@ interface DividerProps extends BaseProps {
 type InputEnterKeyHint = 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send';
 // todo: add BaseInputProps
 interface InputProps extends BaseProps {
+  value?: string;
   placeholder?: string;
   defaultValue?: string;
   disabled?: boolean;
@@ -115,7 +116,7 @@ interface OptionType<T extends ValueType> {
   onChange?: (val: T, e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-interface RadioProps<T extends ValueType> extends BaseProps {
+interface RadioProps<T extends string | number> extends BaseProps {
   label?: React.ReactNode;
   value: T;
   error?: boolean;
@@ -471,7 +472,6 @@ type TabNavProps<T extends React.Key> = BaseProps & {
   navs: TabItemProps<T>[];
   currentKey: string | number;
   navsClassName?: string;
-  activeNavClassName?: string;
   onClick?: (item: TabItemProps<T>) => void;
 };
 interface TabsProps<T extends React.Key> extends BaseProps {
@@ -480,7 +480,6 @@ interface TabsProps<T extends React.Key> extends BaseProps {
   maxHeight: NumberString;
   children?: React.ReactNode;
   navsClassName?: string;
-  activeNavClassName?: string;
   contentClassName?: string;
   currentKey?: string | number;
   onChange?: (key: T) => void;
@@ -489,10 +488,11 @@ interface TabsProps<T extends React.Key> extends BaseProps {
 // interface TagsProps
 interface TagProps<T extends React.Key> extends BaseProps {
   value: T;
-  label?: string;
-  onDelete?: (value: T) => void;
+  label?: React.ReactNode;
+  onDelete?: (value: T, e: React.MouseEvent) => void;
   deleteIconSize?: number;
   modifier?: Modifier;
+  disabled?: boolean;
 }
 
 // popover

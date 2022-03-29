@@ -3,6 +3,8 @@ import cs from 'classnames';
 
 import Icon from '@one-for-all/icon';
 
+import './index.scss';
+
 function Button(
   {
     children,

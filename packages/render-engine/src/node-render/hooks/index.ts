@@ -2,22 +2,14 @@ import { useContext, useEffect, useState } from 'react';
 import { logger } from '@one-for-all/utils';
 
 import PathContext from '../path-context';
-import initCTX from '../../ctx';
-import deserialize from '../../deserialize';
+import bootUp, { BootResult } from '../../boot-up';
 import useInstantiateProps from '../../use-instantiate-props';
-import type {
-  CTX,
-  RefLoader,
-  LifecycleHooks,
-  SchemaNode,
-} from '../../types';
+import type { CTX, RefLoader, LifecycleHooks, SchemaNode } from '../../types';
 import SchemaSpec from 'packages/schema-spec/src';
 
 export function useLifecycleHook({ didMount, willUnmount }: LifecycleHooks): void {
   useEffect(() => {
-    if (didMount) {
-      didMount();
-    }
+    didMount?.();
 
     return () => {
       willUnmount?.();
@@ -25,10 +17,6 @@ export function useLifecycleHook({ didMount, willUnmount }: LifecycleHooks): voi
   }, []);
 }
 
-interface RefResult {
-  refCTX: CTX;
-  refNode: SchemaNode;
-}
 interface UseRefResultProps {
   schemaID: string;
   refLoader?: RefLoader;
@@ -37,9 +25,9 @@ interface UseRefResultProps {
 
 export function useRefResult(
   { schemaID, refLoader, orphan }: UseRefResultProps,
-  ctx: CTX,
-): RefResult | undefined {
-  const [result, setResult] = useState<RefResult | undefined>();
+  parentCTX: CTX,
+): BootResult | undefined {
+  const [result, setResult] = useState<BootResult>();
   const currentPath = useContext(PathContext);
 
   useEffect(() => {
@@ -68,29 +56,20 @@ export function useRefResult(
 
         _schema = schema;
 
-        return initCTX({
+        return bootUp({
           plugins,
-          apiStateSpec: schema.apiStateSpec,
-          sharedStatesSpec: schema.sharedStatesSpec,
-          parentCTX: orphan ? undefined : ctx,
+          schema,
+          parentCTX: orphan ? undefined : parentCTX,
         });
       })
-      .then((refCTX) => {
-        if (!refCTX || !_schema) {
+      .then((refBootResult) => {
+        if (!refBootResult || !_schema) {
           return;
         }
 
-        const instantiatedNode = deserialize(_schema.node, refCTX) as SchemaNode | null;
-        if (!instantiatedNode) {
-          // TODO: paint error
-          return;
-        }
-
-        setResult({ refCTX, refNode: instantiatedNode });
+        setResult({ ctx: refBootResult.ctx, rootNode: refBootResult.rootNode });
       })
-      .catch((err) => {
-        logger.error(err);
-      });
+      .catch(logger.error);
 
     return () => {
       unMounting = true;

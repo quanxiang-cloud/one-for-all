@@ -35,11 +35,13 @@ const handle_GET_todos = rest.get('/todos', (req, res, ctx) => {
 });
 
 const handle_GET_todoStatus = rest.get('/todo_status', (req, res, ctx) => {
-  return res(ctx.json({
-    all: tasks.length,
-    working: tasks.filter(({ status }) => status === 'working').length,
-    done: tasks.filter(({ status }) => status === 'done').length,
-  }));
+  return res(
+    ctx.json({
+      all: tasks.length,
+      working: tasks.filter(({ status }) => status === 'working').length,
+      done: tasks.filter(({ status }) => status === 'done').length,
+    }),
+  );
 });
 
 const handle_POST_todo = rest.post<Todo>('/todos', (req, res, ctx) => {
@@ -51,7 +53,7 @@ const handle_POST_todo = rest.post<Todo>('/todos', (req, res, ctx) => {
     id: Date.now(),
     title: req.body.title,
     status: 'working',
-    create_date: (new Date()).toISOString(),
+    create_date: new Date().toISOString(),
   };
 
   tasks.unshift(newTask);
@@ -89,11 +91,13 @@ const handle_PUT_todo = rest.put<Todo, { todoId: string }>('/todos/:todoId', (re
 });
 
 const handle_GET_status = rest.get('todo_status', (req, res, ctx) => {
-  return res(ctx.json({
-    all: tasks.length,
-    working: tasks.filter(({ status }) => status === 'working').length,
-    done: tasks.filter(({ status }) => status === 'done').length,
-  }));
+  return res(
+    ctx.json({
+      all: tasks.length,
+      working: tasks.filter(({ status }) => status === 'working').length,
+      done: tasks.filter(({ status }) => status === 'done').length,
+    }),
+  );
 });
 
 export const handlers = [

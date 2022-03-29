@@ -15,11 +15,12 @@
   margin: 0;
 }
 
-.todo[data-done="true"] .todo__title {
+.todo[data-done='true'] .todo__title {
   text-decoration: line-through;
 }
 
-.todo__toggle, .todo__action {
+.todo__toggle,
+.todo__action {
   flex-shrink: 0;
 }
 
@@ -61,7 +62,7 @@
   border: 1px solid transparent;
 }
 
-.todo-status[data-active="true"] {
+.todo-status[data-active='true'] {
   border: 1px solid orange;
   border-radius: 4px;
 }
@@ -85,5 +86,5 @@
   padding: 16px;
   border: none;
   background: rgba(0, 0, 0, 0.003);
-  box-shadow: inset 0 -2px 1px rgba(0,0,0,0.03);
+  box-shadow: inset 0 -2px 1px rgba(0, 0, 0, 0.03);
 }

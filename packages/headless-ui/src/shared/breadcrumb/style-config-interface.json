@@ -1,0 +1,48 @@
+{
+  "key": "Breadcrumb",
+  "title": "面包屑",
+  "specs": [
+    {
+      "title": "默认状态",
+      "componentProps": {
+        "segments": [
+          {
+            "key": "one",
+            "text": "一级菜单"
+          },
+          {
+            "key": "two",
+            "text": "二级菜单",
+            "path": "https://www.google.com/"
+          },
+          {
+            "key": "three",
+            "text": "三级菜单"
+          }
+        ]
+      },
+      "rules": [
+        {
+          "selector": ".ofa-breadcrumb",
+          "desc": "面包屑容器样式"
+        },
+        {
+          "selector": ".ofa-breadcrumb-item",
+          "desc": "面包屑单元样式"
+        },
+        {
+          "selector": ".ofa-breadcrumb-separator",
+          "desc": "分割符样式"
+        },
+        {
+          "selector": ".ofa-breadcrumb-link",
+          "desc": "链接样式"
+        },
+        {
+          "selector": ".ofa-breadcrumb-active",
+          "desc": "激活项样式"
+        }
+      ]
+    }
+  ]
+}
