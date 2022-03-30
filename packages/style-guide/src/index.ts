@@ -87,7 +87,7 @@ function cssGzip(cssStr: string): Promise<Blob | null> {
   });
 }
 
-function getColorVariablesCss(variables: BaseColorConfig): string {
+function getColorVariablesCss(variables: BaseColorConfig, themeColorVariables?: Record<string, string>): string {
   const cssVariables = variables.colors.map(({ name, colorValues }) => {
     if (name === variables.primaryColor) {
       let primaryColorCss = '';
@@ -104,19 +104,28 @@ function getColorVariablesCss(variables: BaseColorConfig): string {
     }).join('');
   })
 
+  if (themeColorVariables) {
+    Object.entries(themeColorVariables).map(([key, value]) => {
+      cssVariables.push(`${key}:${value};`);
+    })
+  }
+
   return `:root{${cssVariables.join('')}}`;
 }
 
 type props = {
   initCssMap?: Record<string, StyleSheetPlain>;
   baseColorVariables?: BaseColorConfig;
+  themeColorVariables?: Record<string, string>;
 }
 
 export default class CssASTStore {
   cssASTMap: Record<string, StyleSheetPlain>;
   baseVariables: BaseColorConfig;
-  constructor({ initCssMap, baseColorVariables }: props) {
+  themeColorVariables: Record<string, string>;
+  constructor({ initCssMap, baseColorVariables, themeColorVariables }: props) {
     this.cssASTMap = initCssMap || {};
+    this.themeColorVariables = themeColorVariables || {};
     this.baseVariables = baseColorVariables || {
       colorNos: [],
       primaryColor: 'blue',
@@ -141,7 +150,7 @@ export default class CssASTStore {
 
   getCssString(isBeautify = false): string {
     const compCss = Object.entries(this.cssASTMap).map(([_, cssAst]) => toCSSString(cssAst, isBeautify)).join('');
-    const variablesCss = getColorVariablesCss(this.baseVariables);
+    const variablesCss = getColorVariablesCss(this.baseVariables, this.themeColorVariables);
     return `${variablesCss} ${compCss}`;
   }
 
