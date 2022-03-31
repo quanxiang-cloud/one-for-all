@@ -12,18 +12,14 @@ export interface Props {
   style?: React.CSSProperties;
   children?: React.ReactNode;
   onClick?: any;
-  'data-node-key'?: string;
 }
 
 function Link(
-  { id, content, linkType, linkUrl, linkPage, isBlank, className, style, onClick, ...rest }: Props,
+  { id, content, linkType, linkUrl, linkPage, isBlank, className, style, onClick, children }: Props,
   ref: React.LegacyRef<HTMLAnchorElement>,
 ): JSX.Element {
-  const dataNodeKey = rest['data-node-key'] || '';
-
   return (
     <a
-      data-node-key={dataNodeKey}
       id={id}
       ref={ref}
       style={style}
@@ -34,6 +30,7 @@ function Link(
       onClick={onClick}
     >
       {content}
+      {children}
     </a>
   );
 }
