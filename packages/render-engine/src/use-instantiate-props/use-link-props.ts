@@ -2,7 +2,7 @@ import React from 'react';
 import { CTX, SchemaNode } from '../types';
 
 function useLinkProps(node: SchemaNode, ctx: CTX): Record<string, unknown> {
-  if ((node.props && 'isRouteLink' in node.props && 'exportName' in node) || ('isLink' in node && node.isLink && node.type === 'html-element' && node.name === 'a')) {
+  if ('isLink' in node && node.isLink && node.type === 'html-element' && node.name === 'a') {
     return {
       onClick: (e: React.MouseEvent<HTMLAnchorElement>) => {
         // todo proxy onClick event

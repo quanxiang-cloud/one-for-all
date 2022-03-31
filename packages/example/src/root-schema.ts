@@ -223,6 +223,22 @@ const rootSchema: Schema = {
               isRouteLink: {
                 type: 'constant_property', 
                 value: true
+              },
+              onClick: {
+                type: 'functional_property',
+                func: {
+                  type: 'raw',
+                  args: 'e',
+                  body: `
+                    e.stopPropagation();
+                    e.preventDefault();
+                    const href = e.currentTarget.href;
+                    if (!href) {
+                      return;
+                    }
+                    this.history.push(href);
+                  `,
+                }
               }
             }
           },

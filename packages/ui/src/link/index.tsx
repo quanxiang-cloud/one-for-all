@@ -11,7 +11,7 @@ export interface Props {
   className?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode;
-  onClick?: any;
+  onClick?: (e: any) => void;
   'data-node-key'?: string;
 }
 
