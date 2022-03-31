@@ -47,7 +47,7 @@ function LoopComposed({ iterableState, loopKey, node, ctx }: Props): React.React
 
       return React.createElement(
         PathContext.Provider,
-        { value: `${parentPath}/${index}`, key: index },
+        { value: `${parentPath}/${node.id}/${index}`, key: index },
         React.createElement(
           OutLayerRender,
           { key, outLayer: node.outLayer, ctx },

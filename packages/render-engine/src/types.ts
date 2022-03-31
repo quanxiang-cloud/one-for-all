@@ -37,7 +37,8 @@ export type NodeProperty =
   | SharedStateMutationProperty
   | APIInvokeProperty
   | RenderProperty
-  | ComputedProperty;
+  | ComputedProperty
+  | InheritedProperty;
 
 export type PlainState =
   | APIResultProperty
@@ -101,6 +102,10 @@ export interface RenderProperty extends Omit<SchemaSpec.RenderProperty, 'adapter
 
 export interface ComputedProperty extends Omit<SchemaSpec.ComputedProperty, 'convertor'> {
   convertor: StateConvertor;
+}
+
+export interface InheritedProperty extends Omit<SchemaSpec.InheritedProperty, 'convertor'> {
+  convertor?: StateConvertor;
 }
 
 export type NodeProperties = Record<string, NodeProperty>;
@@ -274,6 +279,11 @@ export interface APIStateWithFetch extends APIState {
   refresh: () => void;
 }
 
+export interface NodePropsCache {
+  getProps$: (parentID: string) => BehaviorSubject<Record<string, unknown>> | undefined;
+  setProps: (path: string, nodeID: SchemaNode['id'] ,props: Record<string, unknown>) => void;
+  shouldCache: (nodeID: string) => boolean;
+}
 export interface CTX {
   statesHubAPI: StatesHubAPI;
   statesHubShared: StatesHubShared;
@@ -281,6 +291,7 @@ export interface CTX {
   states: Record<string, unknown>;
   location$: BehaviorSubject<Location>;
   history: BrowserHistory;
+  nodePropsCache: NodePropsCache;
 
   plugins: Plugins;
 }

@@ -9,6 +9,8 @@ import getSharedStates from './shared-states';
 import StatesHubShared from './states-hub-shared';
 import initializeLazyStates from './initialize-lazy-shared-states';
 import type { CTX, Plugins, SchemaNode, SharedStatesSpec } from '../types';
+import parseInheritProperty from './deserialize/parse-inherit-property';
+import NodePropsCache from './node-props-cache';
 
 export interface BootUpParams {
   schema: SchemaSpec.Schema;
@@ -49,6 +51,9 @@ async function bootUp({ schema, parentCTX, plugins }: BootUpParams): Promise<Boo
     });
   }
 
+  const cacheIDs = parseInheritProperty(schema.node, new Set());
+  const nodePropsCache = new NodePropsCache(cacheIDs);
+
   const ctx: CTX = {
     statesHubAPI: statesHubAPI,
     statesHubShared: statesHubShared,
@@ -57,6 +62,7 @@ async function bootUp({ schema, parentCTX, plugins }: BootUpParams): Promise<Boo
     states: getSharedStates(statesHubShared),
     history,
     location$,
+    nodePropsCache,
 
     plugins: _plugins,
   };

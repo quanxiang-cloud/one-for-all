@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useContext } from 'react';
 
 import { CTX, SchemaNode } from '../types';
 import useConstantProps from './use-constant-props';
@@ -11,15 +11,20 @@ import useSharedStateMutationProps from './use-shared-state-mutation';
 import useInternalHookProps from './use-internal-hook-props';
 import useRenderProps from './use-render-props';
 import useComputedProps from './use-computed-props';
+import PathContext from '../node-render/path-context';
+import useInheritedProps from './use-inherited-props';
 import useLinkProps from './use-link-props';
 
 function useInstantiateProps(node: SchemaNode, ctx: CTX): Record<string, unknown> {
+  const currentPath = useContext(PathContext);
+
   const constantProps = useConstantProps(node);
   const apiResultProps = useAPIResultProps(node, ctx);
   const apiLoadingProps = useAPILoadingProps(node, ctx);
   const sharedStateProps = useSharedStateProps(node, ctx);
   const internalHookProps = useInternalHookProps(node, ctx);
   const computedProps = useComputedProps(node, ctx);
+  const inheritedProps = useInheritedProps(node, ctx);
   const funcProps = useFuncProps(node);
 
   const sharedStateMutationProps = useSharedStateMutationProps(node, ctx);
@@ -30,19 +35,23 @@ function useInstantiateProps(node: SchemaNode, ctx: CTX): Record<string, unknown
   const linkProps = useLinkProps(node, ctx);
 
   return useMemo(() => {
-    return Object.assign(
+    const instantiateProps = Object.assign(
       constantProps,
       apiStateInvokeProps,
       apiResultProps,
       apiLoadingProps,
       sharedStateProps,
       computedProps,
-      funcProps,
       sharedStateMutationProps,
       internalHookProps,
       renderProps,
       linkProps,
+      inheritedProps,
     );
+
+    ctx.nodePropsCache?.setProps(currentPath, node.id, instantiateProps);
+
+    return Object.assign(instantiateProps, funcProps);
   }, [apiResultProps, sharedStateProps, apiLoadingProps, computedProps, constantProps]);
 }
 

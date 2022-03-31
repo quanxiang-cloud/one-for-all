@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { CTX } from '../../..';
 import StatesHubAPI from '../../states-hub-api';
 import SharedStatesHub from '../../states-hub-shared';
+import NodePropsCache from '../../node-props-cache';
 
 const history = createBrowserHistory();
 
@@ -17,6 +18,7 @@ const ctx: CTX = {
   states: {},
   history,
   location$: new BehaviorSubject(history.location),
+  nodePropsCache: new NodePropsCache(new Set()),
 
   plugins: {},
 };
