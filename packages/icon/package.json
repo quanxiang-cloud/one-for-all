@@ -1,6 +1,6 @@
 {
   "name": "@one-for-all/icon",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Headless svg icon component",
   "license": "Apache-2.0",
   "module": "lib/src",
