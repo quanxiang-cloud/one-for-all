@@ -2,36 +2,41 @@ import React from 'react';
 import cs from 'classnames';
 
 export interface Props {
-  id?: string;
-  content: string,
+  content: React.ReactNode;
   linkType: 'outside' | 'inside',
+  id?: string;
   linkUrl?: string,
-  linkPage?: string,
   isBlank?: boolean,
   className?: string;
   style?: React.CSSProperties;
-  children?: React.ReactNode;
   onClick?: (e: any) => void;
   'data-node-key'?: string;
 }
 
 function Link(
-  { id, content, linkType, linkUrl, linkPage, isBlank, className, style, onClick, ...rest }: Props,
+  { id, linkType, linkUrl, isBlank, className, style, onClick, content, ...rest }: Props,
   ref: React.LegacyRef<HTMLAnchorElement>,
 ): JSX.Element {
+  const isOutsideUrl = linkType === 'outside';
   const dataNodeKey = rest['data-node-key'] || '';
 
   return (
     <a
-      data-node-key={dataNodeKey}
-      id={id}
       ref={ref}
-      style={style}
-      href={linkType === 'outside' ? linkUrl : linkPage}
-      className={cs('text-blue-600', className)}
-      target={isBlank ? '_blank' : '_self'}
       rel='noreferrer'
-      onClick={onClick}
+      id={dataNodeKey}
+      style={style}
+      href={linkUrl}
+      className={cs('text-blue-600', className)}
+      target={isOutsideUrl && isBlank ? '_blank' : '_self'}
+      onClick={(e) => {
+        if (!isOutsideUrl) {
+          e.stopPropagation();
+          e.preventDefault();
+        }
+
+        onClick && onClick(e);
+      }}
     >
       {content}
     </a>

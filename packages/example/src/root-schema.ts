@@ -182,14 +182,14 @@ const rootSchema: Schema = {
             packageVersion: 'whatever',
             children: [
               {
-                id: '',
+                id: 'dskjf',
                 type: 'html-element',
                 name: 'h2',
                 props: {
                   children: {
                     type: 'constant_property',
-                    value: 'page-engine-route-link-component'
-                  },
+                    value: '想不到吧'
+                  }
                 }
               }
             ],
@@ -204,25 +204,17 @@ const rootSchema: Schema = {
                 type: 'constant_property',
                 value: 'route-eexix9hx'
               },
-              inkType: {
+              linkType: {
                 type: 'constant_property',
                 value: 'inside'
               },
               linkUrl: {
                 type: 'constant_property',
-                value: ''
-              },
-              linkPage: {
-                type: 'constant_property',
                 value: '/apps/test'
               },
               isBlank: {
                 type: 'constant_property',
-                value: false
-              },
-              isRouteLink: {
-                type: 'constant_property', 
-                value: true
+                value: true,
               },
               onClick: {
                 type: 'functional_property',
@@ -230,8 +222,6 @@ const rootSchema: Schema = {
                   type: 'raw',
                   args: 'e',
                   body: `
-                    e.stopPropagation();
-                    e.preventDefault();
                     const href = e.currentTarget.href;
                     if (!href) {
                       return;

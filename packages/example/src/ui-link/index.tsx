@@ -3,10 +3,8 @@ import cs from 'classnames';
 
 export interface Props {
   id?: string;
-  content: string,
   linkType: 'outside' | 'inside',
   linkUrl?: string,
-  linkPage?: string,
   isBlank?: boolean,
   className?: string;
   style?: React.CSSProperties;
@@ -15,21 +13,29 @@ export interface Props {
 }
 
 function Link(
-  { id, content, linkType, linkUrl, linkPage, isBlank, className, style, onClick, children }: Props,
+  { id, linkType, linkUrl, isBlank, className, style, onClick, children }: Props,
   ref: React.LegacyRef<HTMLAnchorElement>,
 ): JSX.Element {
+  const isOutsideUrl = linkType === 'outside'
+  
   return (
     <a
       id={id}
       ref={ref}
       style={style}
-      href={linkType === 'outside' ? linkUrl : linkPage}
+      href={linkUrl}
       className={cs('text-blue-600', className)}
-      target={isBlank ? '_blank' : '_self'}
+      target={isOutsideUrl && isBlank ? '_blank' : '_self'}
       rel='noreferrer'
-      onClick={onClick}
+      onClick={(e) => {
+        if (!isOutsideUrl) {
+          e.stopPropagation();
+          e.preventDefault();
+        }
+
+        onClick && onClick(e)
+      }}
     >
-      {content}
       {children}
     </a>
   );
