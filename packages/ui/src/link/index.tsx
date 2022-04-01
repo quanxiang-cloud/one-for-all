@@ -9,7 +9,7 @@ export interface Props extends React.DetailedHTMLProps<React.AnchorHTMLAttribute
 }
 
 function Link(
-  { linkType, linkUrl, isBlank, onClick, content, className, ...rest }: Props,
+  { linkType, linkUrl, isBlank, content, className, ...rest }: Props,
   ref: React.LegacyRef<HTMLAnchorElement>,
 ): JSX.Element {
   const isOutsideUrl = linkType === 'outside';
@@ -22,14 +22,6 @@ function Link(
       href={linkUrl}
       className={cs('text-blue-600', className)}
       target={isOutsideUrl && isBlank ? '_blank' : '_self'}
-      onClick={(e) => {
-        if (!isOutsideUrl) {
-          e.stopPropagation();
-          e.preventDefault();
-        }
-
-        onClick && onClick(e);
-      }}
     >
       {content}
     </a>
