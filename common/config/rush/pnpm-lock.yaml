@@ -9,6 +9,7 @@ specifiers:
   '@one-for-all/headless-ui': 0.1.0
   '@one-for-all/icon': 0.4.0
   '@one-for-all/render-engine': 0.18.0
+  '@one-for-all/style-guide': 0.0.1
   '@one-for-all/ui': 0.2.18
   '@popperjs/core': ^2.11.0
   '@rollup/plugin-alias': ^3.1.8
@@ -163,6 +164,7 @@ dependencies:
   '@one-for-all/headless-ui': 0.1.0
   '@one-for-all/icon': 0.4.0
   '@one-for-all/render-engine': 0.18.0
+  '@one-for-all/style-guide': 0.0.1
   '@one-for-all/ui': 0.2.18
   '@popperjs/core': 2.11.4
   '@rollup/plugin-alias': 3.1.9_rollup@2.66.0
@@ -2146,6 +2148,13 @@ packages:
 
   /@one-for-all/schema-spec/0.15.0:
     resolution: {integrity: sha512-tPqHVGyGfAJnfNoVvbGJEMxLFPr4VsKySE9WDZw1IYGDLCzXrhSotb7M59aNww4XlCo+PFM/mhQtUpupH9lBww==}
+    dev: false
+
+  /@one-for-all/style-guide/0.0.1:
+    resolution: {integrity: sha512-D57aYDJUFDCgRsQLce7LB60aCWf7zJTuqLu7Gmzjn+uo5pUT4WghQibkG1FWMV0JxtJ/X49xgT8DrZFPtF2Ytg==}
+    dependencies:
+      css-tree: 2.1.0
+      cssbeautify: 0.3.1
     dev: false
 
   /@one-for-all/ui/0.2.18:
@@ -12637,7 +12646,7 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-x8o/4TsM797nEO1ThJLRlY1bMqS+c9XonEFeU/1kChvzKl+oIQHvtJr09sF6JuIyWbazz9RQEYqeRQBZdM22aQ==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-Koq1VjO8/rztjcHW4uF4kJUmPB7jZcFM/O6WEOxzl2hsPGfH69UDmlMbxUR/efUudPhMQWs33BZJVdiiwaRPFQ==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
@@ -12645,6 +12654,7 @@ packages:
       '@one-for-all/headless-ui': 0.1.0
       '@one-for-all/icon': 0.4.0
       '@one-for-all/render-engine': 0.18.0
+      '@one-for-all/style-guide': 0.0.1
       '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
       '@tsconfig/recommended': 1.0.1
@@ -12767,7 +12777,7 @@ packages:
     dev: false
 
   file:projects/icon.tgz_esbuild@0.14.13:
-    resolution: {integrity: sha512-pcT5VUgvATiycZr4idC4laDbJzrscdzBbKkbaBIzma2d8O9vgj9u2TzbiXLw0FKROMS2V8jgIw1KKC+q/v0/fw==, tarball: file:projects/icon.tgz}
+    resolution: {integrity: sha512-HAK8i7zw6tZtZhZpNEwVM5b1koG9mk2FnEG05mIWM3B1KaQgorXs8kT3bASQPud+HVAUApyq/AomMwZU22rq/w==, tarball: file:projects/icon.tgz}
     id: file:projects/icon.tgz
     name: '@rush-temp/icon'
     version: 0.0.0
