@@ -29,23 +29,15 @@ Schema 是渲染引擎和页面引擎对接的共同语言。以 Schema 作为�
 
 ### SchemaNode
 
-SchemaNode 是一个 Tree 结构的数据，由节点、子节点和节点上的属性组成。
-正如 DOM 的结构一样，SchemaNode 的结构也反映了最后渲染的页面结构。
+SchemaNode 是一个 Tree 结构的数据，由节点、子节点和节点上的属性组成。正如 DOM 的结构一样，
+SchemaNode 的结构也反映了最后渲染的页面结构。不同类型的节点由 `type` 字段区分，不同类型的节点
+的属性也有所差异。
 
-SchemaNode 使用 `type` 字段来区分不同的类型的节点，目前有以下类型：
+#### BaseNode
 
-| 类型              | 描述                                                           |
-| ----------------- | -------------------------------------------------------------- |
-| `html-element`    | 表示此节点会使用原生的 HTML 来渲染                             |
-| `react-component` | 表示此节点需要使用 React Component 来渲染                      |
-| `loop-container`  | 表示此节点是一个循环渲染的容器                                 |
-| `composed-node`   | 表示此节点是由多个其他类型的节点共同组成，对外可以当作一个节点 |
-| `ref-node`        | 表示此节点下的 sub tree 信息存在外部 Schema 中                 |
-| `route-node`      | 表示此节点为路由节点                                           |
+所有节点都是扩展的 `BaseNode`，在 `BaseNode` 上定义了节点的通用属性:
 
-每个节点都包含以下字段：
-
-| 名称                      | required | 描述                                                                         |
+| 名称                      | Required | 描述                                                                         |
 | ------------------------- | -------- | ---------------------------------------------------------------------------- |
 | `id`                      | 是       | 节点在整个 Schema 中的唯一标识                                               |
 | `type`                    | 是       | 表示节点的类型，例如 `html-element` `react-component` 等                     |
@@ -54,10 +46,9 @@ SchemaNode 使用 `type` 字段来区分不同的类型的节点，目前有以�
 | `lifecycleHooks`          | 否       | 节点生命周期规则                                                             |
 | `children`/`node`/`nodes` |          | 子节点，不同类型的节点子节点字段不同，详见节点说明                           |
 
-不同的节点有各自的扩展字段，下面分别介绍一下。
+#### HTMLNode
 
-### HTMLNode
-
+表示此节点会使用原生的 HTML 来渲染
 当节点 type 为 `html-element` 时，需要指定使用哪个 HTML tag 渲染
 
 | 名称       | require | 描述                                  |
@@ -66,11 +57,12 @@ SchemaNode 使用 `type` 字段来区分不同的类型的节点，目前有以�
 | `name`     | 是      | HTML tag，如 `div` `span` `button` 等 |
 | `children` | 否      | 子节点，SchemaNode[]                  |
 
-### ReactComponentNode
+#### ReactComponentNode
 
+表示此节点需要使用 React Component 来渲染
 当 type 为 `react-component` 时，表示此节点是由一个 React 组件渲染而来的，需要指定如下参数：
 
-| 名称                   | required | 描述                                                    |
+| 名称                   | Required | 描述                                                    |
 | ---------------------- | -------- | ------------------------------------------------------- |
 | `type`                 | 是       | `react-component`                                       |
 | `packageName`          | 是       | 组件所属的 package 名称                                 |
@@ -79,8 +71,9 @@ SchemaNode 使用 `type` 字段来区分不同的类型的节点，目前有以�
 | `supportStateExposure` | 否       | 表示组件是否支持对外暴露内部状态                        |
 | `children`             | 否       | 子节点，SchemaNode[]                                    |
 
-### ComposedNode
+#### ComposedNode
 
+表示此节点是由多个其他类型的节点共同组成，对外可以当作一个节点
 当 type 为 `composed-node` 时，表示次节点是由多个节点组合而成，这些节点可以共享同一个状态，一般用在循环渲染中，特定参数如下:
 
 | 名称       | require | 描述                                                                                |
@@ -89,11 +82,11 @@ SchemaNode 使用 `type` 字段来区分不同的类型的节点，目前有以�
 | `outLayer` | 否      | 表示被组合节点的外层元素，可以为空，类型可为 `html-element` 或者 `react-component`  |
 | `children` | 是      | 即被组合的节点列表，且每个节点都必须实现 `toProps` 方法，用来接受前面提到的共享状态 |
 
-### LoopContainerNode
-
+#### LoopContainerNode
+表示此节点是一个循环渲染的容器
 当 type 为 `loop-container` 时，表示此节点为一个循环容器，可以用于循环渲染某个节点，特定参数如下：
 
-| 名称            | required | 描述                                                                                                 |
+| 名称            | Required | 描述                                                                                                 |
 | --------------- | -------- | ---------------------------------------------------------------------------------------------------- |
 | `type`          | 是       | `loop-container`                                                                                     |
 | `iterableState` | 是       | 表示循环的数据来源，其实际值需要为一个数组                                                           |
@@ -103,20 +96,23 @@ SchemaNode 使用 `type` 字段来区分不同的类型的节点，目前有以�
 
 注：`toProps` 当被循环的节点为 `html-element` 和 `composed-node` 时，可以在 `toProps` 中将数组元素转化为节点需要的格式，当 node 为 `composed-node` 时，toProps 需要省略，因为已经在被组合的节点中实现了
 
-### RefNode
+#### RefNode
 
+表示此节点下的 sub tree 信息存在外部 Schema 中
 当 type 为 `ref-node` 时，表示节点的具体内容需要再此根据某些 id 获取，可以用来实现 schema 的组合和分片，特定参数如下：
 
-| 名称       | required | 描述                                                                                               |
+| 名称       | Required | 描述                                                                                               |
 | ---------- | -------- | -------------------------------------------------------------------------------------------------- |
 | `type`     | 是       | `ref-node`                                                                                         |
 | `schemaID` | 是       |                                                                                                    |
 | `fallback` | 否       | 当对应的 schema 还有没加载之前，在页面中渲染的内容，可选                                           |
 | `orphan`   | 否       | ref-node 默认继承父节点的状态，如果想让父节点和 ref-node 子节点状态隔离，可以将 orphan 设置为 true |
 
-### RouteNode
+#### RouteNode
 
-| 名称      | required | 描述         |
+表示此节点为路由节点
+
+| 名称      | Required | 描述         |
 | --------- | -------- | ------------ |
 | `type`    | 是       | `route-node` |
 | `path`    | 是       | string       |
@@ -139,14 +135,14 @@ SchemaNode 使用 `type` 字段来区分不同的类型的节点，目前有以�
 
 ### ConstantProperty
 
-| 名称    | required | 描述                |
+| 名称    | Required | 描述                |
 | ------- | -------- | ------------------- |
 | `type`  | 是       | `constant_property` |
 | `value` | 是       | 此属性的值          |
 
 ### APIResultProperty
 
-| 名称        | required | 描述                                                 |
+| 名称        | Required | 描述                                                 |
 | ----------- | -------- | ---------------------------------------------------- |
 | `type`      | 是       | `api_result_property`                                |
 | `stateID`   | 是       | string                                               |
@@ -155,14 +151,14 @@ SchemaNode 使用 `type` 字段来区分不同的类型的节点，目前有以�
 
 ### APILoadingProperty
 
-| 名称      | required | 描述                   |
+| 名称      | Required | 描述                   |
 | --------- | -------- | ---------------------- |
 | `type`    | 是       | `api_loading_property` |
 | `stateID` | 是       | 状态唯一标识 ID        |
 
 ### SharedStateProperty
 
-| 名称        | required | 描述                                             |
+| 名称        | Required | 描述                                             |
 | ----------- | -------- | ------------------------------------------------ |
 | `type`      | 是       | `shared_state_property`                          |
 | `stateID`   | 是       | string                                           |
@@ -171,7 +167,7 @@ SchemaNode 使用 `type` 字段来区分不同的类型的节点，目前有以�
 
 ### NodeStateProperty
 
-| 名称        | required | 描述                                             |
+| 名称        | Required | 描述                                             |
 | ----------- | -------- | ------------------------------------------------ |
 | `type`      | 是       | `node_state_property`                            |
 | `nodePath`  | 是       | string                                           |
@@ -180,14 +176,14 @@ SchemaNode 使用 `type` 字段来区分不同的类型的节点，目前有以�
 
 ### FunctionalProperty
 
-| 名称   | required | 描述                  |
+| 名称   | Required | 描述                  |
 | ------ | -------- | --------------------- |
 | `type` | 是       | `functional_property` |
 | `func` | 是       | BaseFunctionSpec      |
 
 ### RenderProperty
 
-| 名称      | required | 描述                                                            |
+| 名称      | Required | 描述                                                            |
 | --------- | -------- | --------------------------------------------------------------- |
 | `type`    | 是       | `render_property`                                               |
 | `node`    | 是       | SchemaNode                                                      |
@@ -195,7 +191,7 @@ SchemaNode 使用 `type` 字段来区分不同的类型的节点，目前有以�
 
 ### ComputedProperty
 
-| 名称        | required | 描述                                             |
+| 名称        | Required | 描述                                             |
 | ----------- | -------- | ------------------------------------------------ |
 | `type`      | 是       | `computed_property`                              |
 | `deps`      | 是       | Array<ComputedDependency>                        |
@@ -204,7 +200,7 @@ SchemaNode 使用 `type` 字段来区分不同的类型的节点，目前有以�
 
 ### InheritedProperty
 
-| 名称        | required | 描述                                             |
+| 名称        | Required | 描述                                             |
 | ----------- | -------- | ------------------------------------------------ |
 | `type`      | 是       | `inherited_property`                             |
 | `parentID`  | 是       | string｜                                         |
