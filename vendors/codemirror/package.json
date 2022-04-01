@@ -1,0 +1,35 @@
+{
+  "name": "@one-for-all/codemirror",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "type": "module",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "src",
+    "tsconfig.json",
+    "README.md",
+    "!**/__tests__",
+    "!**/__mocks__"
+  ],
+  "scripts": {
+    "bundle": "rm -rf dist && rollup -c rollup.config.js",
+    "prepack": "yarn run build",
+    "pack": "yarn pack"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "@leifandersen/react-codemirror2": "~7.2.1",
+    "codemirror": "^5.65.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "rollup": "2.66.0",
+    "rollup-plugin-esbuild": "^4.6.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-styles": "^3.14.1",
+    "@rollup/plugin-commonjs": "^21.0.1"
+  }
+}
