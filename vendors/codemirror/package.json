@@ -14,10 +14,7 @@
     "!**/__mocks__"
   ],
   "scripts": {
-    "build": "heft build --clean",
     "bundle": "rm -rf dist && rollup -c rollup.config.js",
-    "docs": "typedoc",
-    "lint": "eslint src/**/*.ts --fix",
     "prepack": "yarn run build",
     "pack": "yarn pack"
   },
@@ -29,18 +26,9 @@
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.0.6",
-    "@rushstack/eslint-config": "2.5.1",
-    "@rushstack/heft": "0.44.2",
-    "@tsconfig/recommended": "^1.0.1",
-    "@types/node": "^15.12.2",
-    "@types/react": "~17.0.38",
-    "@types/react-dom": "^17.0.11",
-    "@types/systemjs": "^6.1.1",
     "rollup": "2.66.0",
     "rollup-plugin-esbuild": "^4.6.0",
     "rollup-plugin-terser": "^7.0.2",
-    "tslib": "2.3.1",
-    "typescript": "4.5.5",
     "rollup-plugin-styles": "^3.14.1",
     "@rollup/plugin-commonjs": "^21.0.1"
   }

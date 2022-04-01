@@ -508,7 +508,7 @@
     },
     {
       "packageName": "@one-for-all/codemirror",
-      "projectFolder": "packages/codemirror"
+      "projectFolder": "vendors/codemirror"
     },
 
     // vendors
