@@ -1,31 +1,24 @@
 import React from 'react';
 import cs from 'classnames';
 
-export interface Props {
+export interface Props extends React.DetailedHTMLProps<React.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> {
   content: React.ReactNode;
   linkType: 'outside' | 'inside',
-  id?: string;
   linkUrl?: string,
   isBlank?: boolean,
-  className?: string;
-  style?: React.CSSProperties;
-  onClick?: (e: any) => void;
-  'data-node-key'?: string;
 }
 
 function Link(
-  { id, linkType, linkUrl, isBlank, className, style, onClick, content, ...rest }: Props,
+  { linkType, linkUrl, isBlank, onClick, content, className, ...rest }: Props,
   ref: React.LegacyRef<HTMLAnchorElement>,
 ): JSX.Element {
   const isOutsideUrl = linkType === 'outside';
-  const dataNodeKey = rest['data-node-key'] || '';
 
   return (
     <a
+      {...rest}
       ref={ref}
       rel='noreferrer'
-      id={dataNodeKey}
-      style={style}
       href={linkUrl}
       className={cs('text-blue-600', className)}
       target={isOutsideUrl && isBlank ? '_blank' : '_self'}
