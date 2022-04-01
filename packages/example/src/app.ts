@@ -15,10 +15,8 @@ import styleGuideRepository from './component-style-config/repository';
 import iconPreviewSchema from './icon-preview/schema';
 import iconPreviewRepository from './icon-preview/repository';
 
-import pageEngineLinkRepository from './ui-link/repository';
-
 const apiSpecAdapter = new SwaggerSpecAdapter(apiDoc);
-const repository: Repository = Object.assign({}, todoAppRepository, styleGuideRepository, iconPreviewRepository, pageEngineLinkRepository);
+const repository: Repository = Object.assign({}, todoAppRepository, styleGuideRepository, iconPreviewRepository);
 
 const schemaDB: Record<string, Schema> = {
   SCHEMA_ID_TODO: todoAppMainSchema,
