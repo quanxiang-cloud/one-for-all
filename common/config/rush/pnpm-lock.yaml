@@ -9,7 +9,6 @@ specifiers:
   '@one-for-all/headless-ui': 0.1.0
   '@one-for-all/icon': 0.4.0
   '@one-for-all/render-engine': 0.18.0
-  '@one-for-all/style-guide': 0.0.1
   '@one-for-all/ui': 0.2.18
   '@popperjs/core': ^2.11.0
   '@rollup/plugin-alias': ^3.1.8
@@ -17,6 +16,7 @@ specifiers:
   '@rollup/plugin-node-resolve': ^13.0.6
   '@rollup/plugin-replace': ^3.0.0
   '@rush-temp/api-spec-adapter': file:./projects/api-spec-adapter.tgz
+  '@rush-temp/codemirror': file:./projects/codemirror.tgz
   '@rush-temp/draft-js': file:./projects/draft-js.tgz
   '@rush-temp/elkjs': file:./projects/elkjs.tgz
   '@rush-temp/example': file:./projects/example.tgz
@@ -164,7 +164,6 @@ dependencies:
   '@one-for-all/headless-ui': 0.1.0
   '@one-for-all/icon': 0.4.0
   '@one-for-all/render-engine': 0.18.0
-  '@one-for-all/style-guide': 0.0.1
   '@one-for-all/ui': 0.2.18
   '@popperjs/core': 2.11.4
   '@rollup/plugin-alias': 3.1.9_rollup@2.66.0
@@ -172,6 +171,7 @@ dependencies:
   '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
   '@rollup/plugin-replace': 3.1.0_rollup@2.66.0
   '@rush-temp/api-spec-adapter': file:projects/api-spec-adapter.tgz_@babel+core@7.17.8
+  '@rush-temp/codemirror': file:projects/codemirror.tgz
   '@rush-temp/draft-js': file:projects/draft-js.tgz_react-dom@17.0.2+react@17.0.2
   '@rush-temp/elkjs': file:projects/elkjs.tgz
   '@rush-temp/example': file:projects/example.tgz
@@ -12616,6 +12616,38 @@ packages:
       - utf-8-validate
     dev: false
 
+  file:projects/codemirror.tgz:
+    resolution: {integrity: sha512-01CE0KMaJ54xMHZ4i/bpEUPXSYg8oBqx6u1hdJ9s6o0aTtCCrYqI6QXCj1tWJRYYpqu2FhF9GZhXlootpzCejg==, tarball: file:projects/codemirror.tgz}
+    name: '@rush-temp/codemirror'
+    version: 0.0.0
+    dependencies:
+      '@leifandersen/react-codemirror2': 7.2.1_codemirror@5.65.2+react@17.0.2
+      '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
+      '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
+      '@rushstack/eslint-config': 2.5.1_eslint@8.7.0+typescript@4.5.5
+      '@rushstack/heft': 0.44.2
+      '@tsconfig/recommended': 1.0.1
+      '@types/node': 15.14.9
+      '@types/react': 17.0.41
+      '@types/react-dom': 17.0.14
+      '@types/systemjs': 6.1.1
+      '@typescript-eslint/parser': 5.10.1_eslint@8.7.0+typescript@4.5.5
+      codemirror: 5.65.2
+      esbuild: 0.14.13
+      eslint: 8.7.0
+      pretty-format: 27.4.6
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      rollup: 2.66.0
+      rollup-plugin-esbuild: 4.8.2_esbuild@0.14.13+rollup@2.66.0
+      rollup-plugin-styles: 3.14.1_rollup@2.66.0
+      rollup-plugin-terser: 7.0.2_rollup@2.66.0
+      tslib: 2.3.1
+      typescript: 4.5.5
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   file:projects/draft-js.tgz_react-dom@17.0.2+react@17.0.2:
     resolution: {integrity: sha512-H7akwZE2/DHq9Qd/a8QzUmeTuweM00qhhTHZIZOcuJdqX9etdTbuzNjcW30Bd7JUWkA4M3XyoLepBipFMfYJ6g==, tarball: file:projects/draft-js.tgz}
     id: file:projects/draft-js.tgz
@@ -12646,7 +12678,7 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-Koq1VjO8/rztjcHW4uF4kJUmPB7jZcFM/O6WEOxzl2hsPGfH69UDmlMbxUR/efUudPhMQWs33BZJVdiiwaRPFQ==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-vqT9yfzrrjqtnXa3BOzdH64UlkoDzKVUXMrxn++N41txvI5cuh0Ihk4NvMiEyhMEJei6eK1x350kZt2bKARH1A==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
