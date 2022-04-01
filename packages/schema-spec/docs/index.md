@@ -56,7 +56,7 @@ SchemaNode 使用 `type` 字段来区分不同的类型的节点，目前有以�
 
 不同的节点有各自的扩展字段，下面分别介绍一下。
 
-### `html-element`
+### HTMLNode
 
 当节点 type 为 `html-element` 时，需要指定使用哪个 HTML tag 渲染
 
@@ -65,7 +65,7 @@ SchemaNode 使用 `type` 字段来区分不同的类型的节点，目前有以�
 | `name`     | 是      | HTML tag，如 `div` `span` `button` 等 |
 | `children` | 否      | 子节点，SchemaNode[]                  |
 
-### `react-component`
+### ReactComponentNode
 
 当 type 为 `react-component` 时，表示此节点是由一个 React 组件渲染而来的，需要指定如下参数：
 
@@ -77,7 +77,7 @@ SchemaNode 使用 `type` 字段来区分不同的类型的节点，目前有以�
 | `supportStateExposure` | 否      | 表示组件是否支持对外暴露内部状态                        |
 | `children`             | 否      | 子节点，SchemaNode[]                                    |
 
-### `composed-node`
+### ComposedNode
 
 当 type 为 `composed-node` 时，表示次节点是由多个节点组合而成，这些节点可以共享同一个状态，一般用在循环渲染中，特定参数如下:
 
@@ -86,7 +86,7 @@ SchemaNode 使用 `type` 字段来区分不同的类型的节点，目前有以�
 | `outLayer` | 否      | 表示被组合节点的外层元素，可以为空，类型可为 `html-element` 或者 `react-component`  |
 | `children` | 是      | 即被组合的节点列表，且每个节点都必须实现 `toProps` 方法，用来接受前面提到的共享状态 |
 
-### `loop-container`
+### LoopContainerNode
 
 当 type 为 `loop-container` 时，表示此节点为一个循环容器，可以用于循环渲染某个节点，特定参数如下：
 
@@ -99,15 +99,24 @@ SchemaNode 使用 `type` 字段来区分不同的类型的节点，目前有以�
 
 注：`toProps` 当被循环的节点为 `html-element` 和 `composed-node` 时，可以在 `toProps` 中将数组元素转化为节点需要的格式，当 node 为 `composed-node` 时，toProps 需要省略，因为已经在被组合的节点中实现了
 
-### `ref-node`
+### RefNode
 
 当 type 为 `ref-node` 时，表示节点的具体内容需要再此根据某些 id 获取，可以用来实现 schema 的组合和分片，特定参数如下：
 
-| 名称     | require | 描述                                                                                               |
-| -------- | ------- | -------------------------------------------------------------------------------------------------- |
-| schemaID | 是 ｜   |                                                                                                    |
-| fallback | 否      | 当对应的 schema 还有没加载之前，在页面中渲染的内容，可选                                           |
-| orphan   | 否      | ref-node 默认继承父节点的状态，如果想让父节点和 ref-node 子节点状态隔离，可以将 orphan 设置为 true |
+| 名称       | require | 描述                                                                                               |
+| ---------- | ------- | -------------------------------------------------------------------------------------------------- |
+| `schemaID` | 是 ｜   |                                                                                                    |
+| `fallback` | 否      | 当对应的 schema 还有没加载之前，在页面中渲染的内容，可选                                           |
+| `orphan`   | 否      | ref-node 默认继承父节点的状态，如果想让父节点和 ref-node 子节点状态隔离，可以将 orphan 设置为 true |
+
+### RouteNode
+
+| 名称    | require | 描述         |
+| ------- | ------- | ------------ |
+| `type`  | 是      | `route-node` |
+| path    | 是      | string       |
+| node    | 是      | SchemaNode   |
+| exactly | 是      | boolean      |
 
 ## 节点 Property
 
@@ -122,3 +131,77 @@ SchemaNode 使用 `type` 字段来区分不同的类型的节点，目前有以�
 - `render_property`
 
 同样的，不同的 property 类型不同的特定参数。
+
+### ConstantProperty
+
+| 名称    | require | 描述                |
+| ------- | ------- | ------------------- |
+| `type`  | 是      | `constant_property` |
+| `value` | 是      | 此属性的值          |
+
+### APIResultProperty
+
+| 名称        | require | 描述                                                 |
+| ----------- | ------- | ---------------------------------------------------- |
+| `type`      | 是      | `api_result_property`                                |
+| `stateID`   | 是      | string                                               |
+| `convertor` | 否      | `StateConvertExpression` or `StateConvertorFuncSpec` |
+| `fallback`  | 是      | `Fallback`                                           |
+
+### APILoadingProperty
+
+| 名称      | require | 描述                   |
+| --------- | ------- | ---------------------- |
+| `type`    | 是      | `api_loading_property` |
+| `stateID` | 是      | 状态唯一标识 ID        |
+
+### SharedStateProperty
+
+| 名称        | require | 描述                                             |
+| ----------- | ------- | ------------------------------------------------ |
+| `type`      | 是      | `shared_state_property`                          |
+| `stateID`   | 是      | string                                           |
+| `fallback`  | 是      | Fallback                                         |
+| `convertor` | 否      | StateConvertExpression or StateConvertorFuncSpec |
+
+### NodeStateProperty
+
+| 名称        | require | 描述                                             |
+| ----------- | ------- | ------------------------------------------------ |
+| `type`      | 是      | `node_state_property`                            |
+| `nodePath`  | 是      | string                                           |
+| `fallback`  | 是      | Fallback                                         |
+| `convertor` | 否      | StateConvertExpression or StateConvertorFuncSpec |
+
+### FunctionalProperty
+
+| 名称   | require | 描述                  |
+| ------ | ------- | --------------------- |
+| `type` | 是      | `functional_property` |
+| `func` | 是      | BaseFunctionSpec      |
+
+### RenderProperty
+
+| 名称      | require | 描述                                                            |
+| --------- | ------- | --------------------------------------------------------------- |
+| `type`    | 是      | `render_property`                                               |
+| `node`    | 是      | SchemaNode                                                      |
+| `adapter` | 是      | `BaseFunctionSpec & { type: 'render_property_function_spec'; }` |
+
+### ComputedProperty
+
+| 名称        | require | 描述                                             |
+| ----------- | ------- | ------------------------------------------------ |
+| `type`      | 是      | `computed_property`                              |
+| `deps`      | 是      | Array<ComputedDependency>                        |
+| `convertor` | 是      | StateConvertExpression or StateConvertorFuncSpec |
+| `fallback`  | 是      | unknown                                          |
+
+### InheritedProperty
+
+| 名称        | require | 描述                                             |
+| ----------- | ------- | ------------------------------------------------ |
+| `type`      | 是      | `inherited_property`                             |
+| `parentID`  | 是      | string｜                                         |
+| `convertor` | 否      | StateConvertExpression or StateConvertorFuncSpec |
+| `fallback`  | 是      | unknown｜                                        |
