@@ -35,64 +35,61 @@ SchemaNode 的结构也反映了最后渲染的页面结构。不同类型的节
 
 #### BaseNode
 
-所有节点都是扩展的 `BaseNode`，在 `BaseNode` 上定义了节点的通用属性:
+`BaseNode` 上定义了节点的通用属性，所有节点都是扩展的 `BaseNode`。
 
-| 名称                      | Required | 描述                                                                         |
-| ------------------------- | -------- | ---------------------------------------------------------------------------- |
-| `id`                      | 是       | 节点在整个 Schema 中的唯一标识                                               |
-| `type`                    | 是       | 表示节点的类型，例如 `html-element` `react-component` 等                     |
-| `props`                   | 否       | 表示在渲染节点时传递的参数，这些参数不是具体的值，而是描述**如何取值的说明** |
-| `shouldRender`            | 否       | 是否渲染此节点的规则                                                         |
-| `lifecycleHooks`          | 否       | 节点生命周期规则                                                             |
-| `children`/`node`/`nodes` |          | 子节点，不同类型的节点子节点字段不同，详见节点说明                           |
+| 名称             | Required | Type                       | 描述                                                                         |
+| ---------------- | -------- | -------------------------- | ---------------------------------------------------------------------------- |
+| `id`             | 是       | `string`                   | 节点在整个 Schema 中的唯一标识                                               |
+| `type`           | 是       | `string` enum              | 表示节点的类型，例如 `html-element` `react-component` 等                     |
+| `props`          | 否       | `Record<string, Property>` | 表示在渲染节点时传递的参数，这些参数不是具体的值，而是描述**如何取值的说明** |
+| `shouldRender`   | 否       | `ShouldRenderCondition`    | 是否渲染此节点的规则                                                         |
+| `lifecycleHooks` | 否       | `LifecycleHooks`           | 节点生命周期规则                                                             |
 
 #### HTMLNode
 
-表示此节点会使用原生的 HTML 来渲染
-当节点 type 为 `html-element` 时，需要指定使用哪个 HTML tag 渲染
+HTMLNode 节点会使用原生的 HTML 来渲染，需要指定使用哪个 HTML tag 渲染。
 
-| 名称       | require | 描述                                  |
-| ---------- | ------- | ------------------------------------- |
-| `type`     | 是      | `html-element`                        |
-| `name`     | 是      | HTML tag，如 `div` `span` `button` 等 |
-| `children` | 否      | 子节点，SchemaNode[]                  |
+| 名称       | require | Type           | 描述                                  |
+| ---------- | ------- | -------------- | ------------------------------------- |
+| `type`     | 是      | `string`       | 值为 `html-element`                   |
+| `name`     | 是      | `string`       | HTML tag，如 `div` `span` `button` 等 |
+| `children` | 否      | `SchemaNode[]` | 子节点                                |
 
 #### ReactComponentNode
 
-表示此节点需要使用 React Component 来渲染
-当 type 为 `react-component` 时，表示此节点是由一个 React 组件渲染而来的，需要指定如下参数：
+ReactComponentNode 节点需要使用 React Component 来渲染，需要声明组件所在的 package 等信息，
+用来定位到组件的具体实现。
 
-| 名称                   | Required | 描述                                                    |
-| ---------------------- | -------- | ------------------------------------------------------- |
-| `type`                 | 是       | `react-component`                                       |
-| `packageName`          | 是       | 组件所属的 package 名称                                 |
-| `packageVersion`       | 是       | 组件所属的 package 版本                                 |
-| `exportName`           | 是       | 表示使用 package 的哪个 export member，缺省为 `default` |
-| `supportStateExposure` | 否       | 表示组件是否支持对外暴露内部状态                        |
-| `children`             | 否       | 子节点，SchemaNode[]                                    |
+| 名称                   | Required | Type           | 描述                             |
+| ---------------------- | -------- | -------------- | -------------------------------- |
+| `type`                 | 是       | `string`       | 值为 `react-component`           |
+| `packageName`          | 是       | `string`       | 组件所属的 package 名称          |
+| `packageVersion`       | 是       | `string`       | 组件所属的 package 版本          |
+| `exportName`           | 否       | `string`       | 组件的导出名称，默认为 `default` |
+| `supportStateExposure` | 否       | `boolean`      | 表示组件是否支持对外暴露内部状态 |
+| `children`             | 否       | `SchemaNode[]` | 子节点                           |
 
 #### ComposedNode
 
-表示此节点是由多个其他类型的节点共同组成，对外可以当作一个节点
-当 type 为 `composed-node` 时，表示次节点是由多个节点组合而成，这些节点可以共享同一个状态，一般用在循环渲染中，特定参数如下:
+此节点是由多个其他类型的节点共同组成，这些节点可以共享同一个状态，一般用在循环渲染中。
 
-| 名称       | require | 描述                                                                                |
-| ---------- | ------- | ----------------------------------------------------------------------------------- |
-| `type`     | 是      | `composed-node`                                                                     |
-| `outLayer` | 否      | 表示被组合节点的外层元素，可以为空，类型可为 `html-element` 或者 `react-component`  |
-| `children` | 是      | 即被组合的节点列表，且每个节点都必须实现 `toProps` 方法，用来接受前面提到的共享状态 |
+| 名称       | Required | Type                               | 描述                                                                                |
+| :--------- | -------- | ---------------------------------- | ----------------------------------------------------------------------------------- |
+| `type`     | 是       | `string`                           | 值为 `composed-node`                                                                |
+| `outLayer` | 否       | `HTMLNode` or `ReactComponentNode` | 表示被组合节点的外层元素，可以为空                                                  |
+| `nodes`    | 是       | `SchemaNode[]`                     | 即被组合的节点列表，且每个节点都必须实现 `toProps` 方法，用来接受前面提到的共享状态 |
 
 #### LoopContainerNode
-表示此节点是一个循环渲染的容器
-当 type 为 `loop-container` 时，表示此节点为一个循环容器，可以用于循环渲染某个节点，特定参数如下：
 
-| 名称            | Required | 描述                                                                                                 |
-| --------------- | -------- | ---------------------------------------------------------------------------------------------------- |
-| `type`          | 是       | `loop-container`                                                                                     |
-| `iterableState` | 是       | 表示循环的数据来源，其实际值需要为一个数组                                                           |
-| `loopKey`       | 是       | 当被循环的数组元素为对象，loopKey 为对象的唯一标识，如果被循环的数组元素为基础类型，loopKey 可以为空 |
-| `node`          | 是       | 即被循环渲染的节点                                                                                   |
-| `toProps`       | 是       | 循环数据转换函数                                                                                     |
+此节点是一个循环渲染的容器，用于循环渲染某个节点。
+
+| 名称            | Required | Type              | 描述                                                                                                 |
+| --------------- | -------- | ----------------- | ---------------------------------------------------------------------------------------------------- |
+| `type`          | 是       | `string`          | 值为 `loop-container`                                                                                |
+| `iterableState` | 是       | `PlainState`      | 表示循环的数据来源，其实际值需要为一个数组                                                           |
+| `loopKey`       | 是       | `string`          | 当被循环的数组元素为对象，loopKey 为对象的唯一标识，如果被循环的数组元素为基础类型，loopKey 可以为空 |
+| `node`          | 是       | `SchemaNode`      | 即被循环渲染的节点                                                                                   |
+| `toProps`       | 是       | `ToPropsFuncSpec` | 循环数据转换函数                                                                                     |
 
 注：`toProps` 当被循环的节点为 `html-element` 和 `composed-node` 时，可以在 `toProps` 中将数组元素转化为节点需要的格式，当 node 为 `composed-node` 时，toProps 需要省略，因为已经在被组合的节点中实现了
 
