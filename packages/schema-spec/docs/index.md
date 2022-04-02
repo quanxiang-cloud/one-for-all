@@ -1,9 +1,8 @@
 # Overview
 
-Schema 是一个 tree 结构的 JSON 数据，Schema 是页面结构和行为的描述文件，Schema 是一套与实现无关的标准。我们可以使用 Schema 来完整的表示前端业务，例如定义一个 table，此 table 的数据来自某个 API 的 response，再比如定义一个简单的 [Todo App](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/example/src/todo-app)。
+Schema 是页面结构和行为的描述文件，Schema 是一套与实现无关的标准。我们可以使用 Schema 来完整的表示前端业务，例如定义一个 table，此 table 的数据来自某个 API 的 response，再比如定义一个简单的 [Todo App](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/example/src/todo-app)。
 
-Schema 是渲染引擎和页面引擎对接的共同语言。以 Schema 作为标准，我们可以分别独立开发渲染引擎和
-页面引擎，两者之间没有耦合。
+Schema 是渲染引擎和页面引擎对接的共同语言。以 Schema 作为标准，我们可以分别独立开发渲染引擎和页面引擎，两者之间没有耦合。
 
 ## 为什么要用 Schema 来描述页面逻辑
 
@@ -23,9 +22,17 @@ Schema 是渲染引擎和页面引擎对接的共同语言。以 Schema 作为�
 - `apiStateSpec` 描述页面中使用的 API
 - `sharedStatesSpec` 描述页面中的共享状态
 
+```typescript
+const schema: Schema = {
+  node: {},
+  apiStateSpec: {},
+  sharedStatesSpec: {}
+}
+```
+
 ### SchemaNode
 
-SchemaNode 是一个 Tree 结构的数据，由节点、子节点和节点上的属性组成。正如 DOM 的结构一样，SchemaNode 的结构也反映了最后渲染的页面结构。不同类型的节点由 `type` 字段区分，不同类型的节点的属性也有所差异。
+SchemaNode 的数据结构是 Tree，由节点、节点属性和子节点组成。正如 DOM 的结构一样，SchemaNode 的结构也反映了最后渲染的页面结构。不同类型的节点 Node 由 `type` 字段区分，不同类型的节点的属性 Property 也有所差异。
 
 #### BaseNode
 
@@ -99,7 +106,7 @@ ReactComponentNode 节点需要使用 React Component 来渲染，需要声明�
 
 #### RouteNode
 
-表示此节点为路由节点
+表示此节点为路由节点。
 
 | 名称      | Required | Type         | 描述                 |
 | :-------- | -------- | ------------ | -------------------- |
