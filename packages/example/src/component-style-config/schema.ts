@@ -1,6 +1,6 @@
-import type { Schema } from '@one-for-all/schema-spec';
+import type { Artery } from '@one-for-all/artery';
 
-const styleSchema: Schema = {
+const styleSchema: Artery = {
   node: {
     id: 'style-guide-root-node',
     type: 'react-component',

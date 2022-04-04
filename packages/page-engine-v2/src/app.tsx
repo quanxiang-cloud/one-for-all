@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect, Component } from "react";
-import { Schema } from '@one-for-all/schema-spec';
+import { Artery } from '@one-for-all/artery';
 import type { BehaviorSubject } from "rxjs";
 
 import Core from './core';
@@ -13,7 +13,7 @@ import './styles/index.scss';
 
 interface Props<T extends PageEngineV2.BaseBlocksCommunicationState> extends PageEngineV2.Props<T> {
   engineId: string;
-  setSchemaStore: (store: BehaviorSubject<Schema>) => void;
+  setSchemaStore: (store: BehaviorSubject<Artery>) => void;
   setLayersStore: (store: BehaviorSubject<PageEngineV2.Layer<T>[]>) => void;
 }
 
@@ -39,16 +39,16 @@ function App<T extends PageEngineV2.BaseBlocksCommunicationState>({ schema, laye
 }
 
 export interface PageEngineProps<T extends PageEngineV2.BaseBlocksCommunicationState> {
-  schema: Schema;
+  schema: Artery;
   layers: PageEngineV2.Layer<T>[];
 }
 
 export default class PageEngine<T extends PageEngineV2.BaseBlocksCommunicationState> extends Component<PageEngineProps<T>> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private static instanceMap: Record<string, PageEngine<any>> = {};
-  private schema: Schema;
+  private schema: Artery;
   private layers: PageEngineV2.Layer<T>[];
-  private schemaStore$!: BehaviorSubject<Schema>;
+  private schemaStore$!: BehaviorSubject<Artery>;
   private layerStore$!: BehaviorSubject<PageEngineV2.Layer<T>[]>;
   public engineId: string;
   public static useObservable = useObservable;
@@ -62,7 +62,7 @@ export default class PageEngine<T extends PageEngineV2.BaseBlocksCommunicationSt
     PageEngine.instanceMap[this.engineId] = this;
   }
 
-  public static useSchema = (engineId: string): Schema => {
+  public static useSchema = (engineId: string): Artery => {
     const engine = PageEngine.instanceMap[engineId];
     return useSchema(engine.schemaStore$, engine.schema);
   }
@@ -77,7 +77,7 @@ export default class PageEngine<T extends PageEngineV2.BaseBlocksCommunicationSt
     return registryLayers(engine.layerStore$, layers);
   }
 
-  private setSchemaStore = (store$: BehaviorSubject<Schema>): void => {
+  private setSchemaStore = (store$: BehaviorSubject<Artery>): void => {
     this.schemaStore$ = store$;
   }
 

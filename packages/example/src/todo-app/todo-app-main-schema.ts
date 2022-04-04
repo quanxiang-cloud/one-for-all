@@ -1,6 +1,6 @@
-import type { Schema } from '@one-for-all/schema-spec';
+import type { Artery } from '@one-for-all/artery';
 
-const todoAppSchema: Schema = {
+const todoAppSchema: Artery = {
   apiStateSpec: {
     postTodo: { apiID: 'post:/todos' },
     全部待办列表: { apiID: 'get:/todos' },
@@ -55,7 +55,7 @@ const todoAppSchema: Schema = {
       {
         id: 'ref-schema',
         type: 'ref-node',
-        schemaID: 'SCHEMA_ID_TODO_HEADER',
+        arteryID: 'SCHEMA_ID_TODO_HEADER',
       },
       {
         id: 'todo-input-container',

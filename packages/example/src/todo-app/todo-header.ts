@@ -1,6 +1,6 @@
-import type { Schema } from '@one-for-all/schema-spec';
+import type { Artery } from '@one-for-all/artery';
 
-const refSchema: Schema = {
+const refSchema: Artery = {
   apiStateSpec: {},
   sharedStatesSpec: {},
   node: {

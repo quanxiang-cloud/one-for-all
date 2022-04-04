@@ -1,4 +1,4 @@
-import { Repository } from '@one-for-all/render-engine';
+import { Repository } from '@one-for-all/artery-renderer';
 import PreviewIcon from './previewIcon';
 
 const iconPreviewRepository: Repository = {
