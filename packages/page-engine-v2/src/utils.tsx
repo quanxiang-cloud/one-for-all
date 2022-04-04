@@ -1,7 +1,7 @@
 import { customAlphabet } from 'nanoid';
 import React, { useEffect } from 'react';
-import RenderEngine from '@one-for-all/render-engine';
-import { HTMLNode, ReactComponentNode, LoopContainerNode, RouteNode, Schema, SchemaNode } from '@one-for-all/schema-spec';
+import RenderArtery from '@one-for-all/artery-renderer';
+import { HTMLNode, ReactComponentNode, LoopContainerNode, RouteNode, Artery, Node } from '@one-for-all/artery';
 import { over, lensPath, clone } from 'ramda';
 
 export const uuid = customAlphabet('1234567890qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM', 8);
@@ -22,11 +22,13 @@ export async function loadPackage<T>({ packageName, packageVersion, exportName }
 }
 
 interface RenderSchemaProps {
-  schema: Schema;
+  schema: Artery;
   elementId: string;
 }
+
+// TODO remove this
 export function RenderSchema({ schema, elementId }: RenderSchemaProps): JSX.Element {
-  const renderEngine = new RenderEngine(schema);
+  const renderEngine = new RenderArtery(schema);
   useEffect(() => {
     const el = document.getElementById(elementId);
     if (el) {
@@ -48,8 +50,8 @@ export interface SchemaComponent {
   // eslint-disable-next-line
   Render?: (...args: any[]) => JSX.Element | null;
 }
-export async function loadComponentsFromSchema(schema: Schema): Promise<SchemaComponent[]> {
-  const nodes: SchemaNode[] = [];
+export async function loadComponentsFromSchema(schema: Artery): Promise<SchemaComponent[]> {
+  const nodes: Node[] = [];
   traverseSchema(schema, node => nodes.push(node));
 
   const componentsInPromise = nodes.map(async node => {
@@ -68,15 +70,15 @@ export async function loadComponentsFromSchema(schema: Schema): Promise<SchemaCo
 
 export interface TraverseSchemaOption {
   level: number;
-  parentNode?: SchemaNode;
+  parentNode?: Node;
   path?: string;
 }
-export type OnTraverse = (node: SchemaNode, { level, parentNode, path }: TraverseSchemaOption) => void;
+export type OnTraverse = (node: Node, { level, parentNode, path }: TraverseSchemaOption) => void;
 export function traverseSchema(
-  schema: Schema,
+  schema: Artery,
   callback: OnTraverse,
   level = 0,
-  parent?: SchemaNode,
+  parent?: Node,
   path?: string,
 ): void {
   const { node } = schema
@@ -91,7 +93,7 @@ export function traverseSchema(
   }
 }
 
-export function getNodeParentPathFromSchemaByNodeId(schema: Schema, nodeID: string): string | undefined {
+export function getNodeParentPathFromSchemaByNodeId(schema: Artery, nodeID: string): string | undefined {
   let nodePath: string | undefined
   traverseSchema(schema, (node, { path }) => {
     if (node.id === nodeID) {
@@ -102,27 +104,27 @@ export function getNodeParentPathFromSchemaByNodeId(schema: Schema, nodeID: stri
   return nodePath ? nodePath.split('.').slice(0, -1).join('.') : undefined;
 }
 
-export function removeNodeFromSchemaByNodeId(schema: Schema, nodeID: string): Schema {
+export function removeNodeFromSchemaByNodeId(schema: Artery, nodeID: string): Artery {
   const nodeParentPath = getNodeParentPathFromSchemaByNodeId(schema, nodeID);
   if (nodeParentPath) {
     return over(
       lensPath(nodeParentPath.split('.')),
-      children => children.filter((child: SchemaNode) => child.id !== nodeID),
+      children => children.filter((child: Node) => child.id !== nodeID),
       schema
     );
   }
   return schema;
 }
 
-export function schemaNodeWithChildren(node: SchemaNode): node is (HTMLNode | ReactComponentNode) {
+export function schemaNodeWithChildren(node: Node): node is (HTMLNode | ReactComponentNode) {
   return node.type === 'html-element' || node.type === 'react-component';
 }
 
-export function schemaNodeWithNode(node: SchemaNode): node is (RouteNode | LoopContainerNode) {
+export function schemaNodeWithNode(node: Node): node is (RouteNode | LoopContainerNode) {
   return node.type === 'loop-container' || node.type === 'route-node';
 }
 
-export function removeAllNodeFromSchema(schema: Schema): Schema {
+export function removeAllNodeFromSchema(schema: Artery): Artery {
   const nodeIDs: string[] = [];
   traverseSchema(schema, (node, { level, parentNode, path }) => {
     if (parentNode && schemaNodeWithChildren(parentNode)) {
@@ -132,8 +134,8 @@ export function removeAllNodeFromSchema(schema: Schema): Schema {
   return nodeIDs.reduce((schemaAcc, nodeID) => removeNodeFromSchemaByNodeId(schemaAcc, nodeID), schema);
 }
 
-export function getActiveSchemaNodeById(schema: Schema, activeNodeID: string): SchemaNode | undefined {
-  let activeElem: SchemaNode | undefined;
+export function getActiveSchemaNodeById(schema: Artery, activeNodeID: string): Node | undefined {
+  let activeElem: Node | undefined;
   traverseSchema(schema, (node) => {
     if (node.id === activeNodeID) {
       activeElem = node;
@@ -143,8 +145,8 @@ export function getActiveSchemaNodeById(schema: Schema, activeNodeID: string): S
 }
 
 export function updateSchemaByNodeId(
-  schema: Schema, activeNodeID: string, transformer: (s: SchemaNode) => SchemaNode,
-): Schema {
+  schema: Artery, activeNodeID: string, transformer: (s: Node) => Node,
+): Artery {
   const sc = clone(schema);
   traverseSchema(sc, (node) => {
     if (node.id === activeNodeID) {

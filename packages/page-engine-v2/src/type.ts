@@ -1,5 +1,5 @@
 import type { BehaviorSubject } from 'rxjs';
-import type { Schema } from '@one-for-all/schema-spec';
+import type { Artery } from '@one-for-all/artery';
 
 export interface Block<T extends BaseBlocksCommunicationState> {
   render: (props: BlockItemProps<T>) => JSX.Element;
@@ -37,18 +37,18 @@ export interface BaseBlocksCommunicationState {
 export type BlocksCommunicationState<T extends BaseBlocksCommunicationState> = BehaviorSubject<T>;
 export interface BlockItemProps<T extends BaseBlocksCommunicationState> {
   engineId: string;
-  onChange: (schema: Schema) => void;
-  schema: Schema;
+  onChange: (schema: Artery) => void;
+  schema: Artery;
   blocksCommunicationState$: BlocksCommunicationState<T>;
   setLayer: (transfer: LayerTransfer<T>) => void;
 }
 
 export interface Props<T extends BaseBlocksCommunicationState> {
-  schema: Schema;
+  schema: Artery;
   layers: Array<Layer<T>>;
 }
 
 export interface EngineState<T extends BaseBlocksCommunicationState> {
-  schemaStore$?: BehaviorSubject<Schema>;
+  schemaStore$?: BehaviorSubject<Artery>;
   blocksCommunicationState$?: BlocksCommunicationState<T>;
 }

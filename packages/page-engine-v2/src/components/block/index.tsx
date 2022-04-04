@@ -1,5 +1,5 @@
 import React, { CSSProperties, useCallback, useContext, useMemo } from 'react';
-import { Schema } from '@one-for-all/schema-spec';
+import { Artery } from '@one-for-all/artery';
 
 import { useObservable } from '../../hooks';
 import { set as setSchema } from '../../stores/schema';
@@ -13,7 +13,7 @@ export default function Block<T extends PageEngineV2.BaseBlocksCommunicationStat
   const { schemaStore$, blocksCommunicationState$ } = useObservable<PageEngineV2.EngineState<T>>(engineStore$, {
     schemaStore$: engineStore$.value.schemaStore$,
   });
-  const schema = useObservable<Schema | undefined>(schemaStore$, undefined);
+  const schema = useObservable<Artery | undefined>(schemaStore$, undefined);
 
   const style: CSSProperties = {
     gridColumnStart,
@@ -22,7 +22,7 @@ export default function Block<T extends PageEngineV2.BaseBlocksCommunicationStat
     gridRowEnd,
   }
 
-  const handleSchemaChange = useCallback((schema: Schema): void => {
+  const handleSchemaChange = useCallback((schema: Artery): void => {
     setSchema(schemaStore$, schema);
   }, [schemaStore$, schema]);
 

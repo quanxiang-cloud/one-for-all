@@ -1,8 +1,8 @@
-import { Schema } from '@one-for-all/schema-spec';
+import { Artery } from '@one-for-all/artery';
 import type { BehaviorSubject } from 'rxjs';
 
 import useObservable from './use-observable';
 
-export default function useSchema(store$: BehaviorSubject<Schema>, defaultSchema: Schema): Schema {
-  return useObservable<Schema>(store$, defaultSchema);
+export default function useSchema(store$: BehaviorSubject<Artery>, defaultSchema: Artery): Artery {
+  return useObservable<Artery>(store$, defaultSchema);
 }
