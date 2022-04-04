@@ -9,6 +9,7 @@ specifiers:
   '@one-for-all/headless-ui': 0.1.0
   '@one-for-all/icon': 0.4.0
   '@one-for-all/render-engine': 0.18.0
+  '@one-for-all/schema-spec': 0.15.0
   '@one-for-all/ui': 0.2.18
   '@popperjs/core': ^2.11.0
   '@rollup/plugin-alias': ^3.1.8
@@ -16,6 +17,7 @@ specifiers:
   '@rollup/plugin-node-resolve': ^13.0.6
   '@rollup/plugin-replace': ^3.0.0
   '@rush-temp/api-spec-adapter': file:./projects/api-spec-adapter.tgz
+  '@rush-temp/artery': file:./projects/artery.tgz
   '@rush-temp/codemirror': file:./projects/codemirror.tgz
   '@rush-temp/draft-js': file:./projects/draft-js.tgz
   '@rush-temp/elkjs': file:./projects/elkjs.tgz
@@ -39,7 +41,6 @@ specifiers:
   '@rush-temp/render-engine': file:./projects/render-engine.tgz
   '@rush-temp/rxjs': file:./projects/rxjs.tgz
   '@rush-temp/rxjs6': file:./projects/rxjs6.tgz
-  '@rush-temp/schema-spec': file:./projects/schema-spec.tgz
   '@rush-temp/schema-utils': file:./projects/schema-utils.tgz
   '@rush-temp/style-guide': file:./projects/style-guide.tgz
   '@rush-temp/ui': file:./projects/ui.tgz
@@ -164,6 +165,7 @@ dependencies:
   '@one-for-all/headless-ui': 0.1.0
   '@one-for-all/icon': 0.4.0
   '@one-for-all/render-engine': 0.18.0
+  '@one-for-all/schema-spec': 0.15.0
   '@one-for-all/ui': 0.2.18
   '@popperjs/core': 2.11.4
   '@rollup/plugin-alias': 3.1.9_rollup@2.66.0
@@ -171,7 +173,8 @@ dependencies:
   '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
   '@rollup/plugin-replace': 3.1.0_rollup@2.66.0
   '@rush-temp/api-spec-adapter': file:projects/api-spec-adapter.tgz_@babel+core@7.17.8
-  '@rush-temp/codemirror': file:projects/codemirror.tgz
+  '@rush-temp/artery': file:projects/artery.tgz
+  '@rush-temp/codemirror': file:projects/codemirror.tgz_esbuild@0.14.13
   '@rush-temp/draft-js': file:projects/draft-js.tgz_react-dom@17.0.2+react@17.0.2
   '@rush-temp/elkjs': file:projects/elkjs.tgz
   '@rush-temp/example': file:projects/example.tgz
@@ -194,7 +197,6 @@ dependencies:
   '@rush-temp/render-engine': file:projects/render-engine.tgz_c445a9d32c5b835fb9c30404148ec5af
   '@rush-temp/rxjs': file:projects/rxjs.tgz
   '@rush-temp/rxjs6': file:projects/rxjs6.tgz
-  '@rush-temp/schema-spec': file:projects/schema-spec.tgz
   '@rush-temp/schema-utils': file:projects/schema-utils.tgz_esbuild@0.14.13
   '@rush-temp/style-guide': file:projects/style-guide.tgz_typescript@4.5.5
   '@rush-temp/ui': file:projects/ui.tgz_esbuild@0.14.13
@@ -12616,35 +12618,33 @@ packages:
       - utf-8-validate
     dev: false
 
-  file:projects/codemirror.tgz:
-    resolution: {integrity: sha512-01CE0KMaJ54xMHZ4i/bpEUPXSYg8oBqx6u1hdJ9s6o0aTtCCrYqI6QXCj1tWJRYYpqu2FhF9GZhXlootpzCejg==, tarball: file:projects/codemirror.tgz}
+  file:projects/artery.tgz:
+    resolution: {integrity: sha512-fGm+sD2ZSNuNtRdkIrYy2L/S2nsprZtEuag8W+FQNsUpliW7NBKT1nO1CyPODbheUPn8oWsclNU0BcdDFnghGw==, tarball: file:projects/artery.tgz}
+    name: '@rush-temp/artery'
+    version: 0.0.0
+    dependencies:
+      typedoc: 0.22.13_typescript@4.5.5
+      typescript: 4.5.5
+    dev: false
+
+  file:projects/codemirror.tgz_esbuild@0.14.13:
+    resolution: {integrity: sha512-3hudmw+OLll7cVt5K+qxj7/8c7jMifLSa0scHahYPP4m6ZLy+luWsqft5a270Xvt4FkfSOFBFA6q8F8IlV28Gg==, tarball: file:projects/codemirror.tgz}
+    id: file:projects/codemirror.tgz
     name: '@rush-temp/codemirror'
     version: 0.0.0
     dependencies:
       '@leifandersen/react-codemirror2': 7.2.1_codemirror@5.65.2+react@17.0.2
       '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
-      '@rushstack/eslint-config': 2.5.1_eslint@8.7.0+typescript@4.5.5
-      '@rushstack/heft': 0.44.2
-      '@tsconfig/recommended': 1.0.1
-      '@types/node': 15.14.9
-      '@types/react': 17.0.41
-      '@types/react-dom': 17.0.14
-      '@types/systemjs': 6.1.1
-      '@typescript-eslint/parser': 5.10.1_eslint@8.7.0+typescript@4.5.5
       codemirror: 5.65.2
-      esbuild: 0.14.13
-      eslint: 8.7.0
-      pretty-format: 27.4.6
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       rollup: 2.66.0
       rollup-plugin-esbuild: 4.8.2_esbuild@0.14.13+rollup@2.66.0
       rollup-plugin-styles: 3.14.1_rollup@2.66.0
       rollup-plugin-terser: 7.0.2_rollup@2.66.0
-      tslib: 2.3.1
-      typescript: 4.5.5
     transitivePeerDependencies:
+      - esbuild
       - supports-color
     dev: false
 
@@ -12678,7 +12678,7 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-vqT9yfzrrjqtnXa3BOzdH64UlkoDzKVUXMrxn++N41txvI5cuh0Ihk4NvMiEyhMEJei6eK1x350kZt2bKARH1A==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-FdTnvLUlKchNA6sqE4JsnxKjRMg6uaPt1w/UZIDlV5neDydxDZf89tvYFmuu4xAvPSe4Qy0qC45YyFSy4lzpjA==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
@@ -12686,6 +12686,7 @@ packages:
       '@one-for-all/headless-ui': 0.1.0
       '@one-for-all/icon': 0.4.0
       '@one-for-all/render-engine': 0.18.0
+      '@one-for-all/schema-spec': 0.15.0
       '@one-for-all/style-guide': 0.0.1
       '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
@@ -12889,12 +12890,13 @@ packages:
     dev: false
 
   file:projects/page-engine-v2.tgz_@babel+core@7.17.8:
-    resolution: {integrity: sha512-M+hLb8TK+JzkeGvblICL6TRt90GfqqNNE/E93o+wfDV1Ocima7UlCx/9SgC4HZudCZe9u3GNvKEuoPKQh1dekg==, tarball: file:projects/page-engine-v2.tgz}
+    resolution: {integrity: sha512-JfSsyOev/UD03pRklP3ccokVq9SjbGfI58GqLGT0tswxWd/k86rX1Llw6iBWf8/OgPq87sJe4D8XnaEwPubsYg==, tarball: file:projects/page-engine-v2.tgz}
     id: file:projects/page-engine-v2.tgz
     name: '@rush-temp/page-engine-v2'
     version: 0.0.0
     dependencies:
       '@one-for-all/render-engine': 0.18.0
+      '@one-for-all/schema-spec': 0.15.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
       '@rushstack/eslint-config': 2.5.1_eslint@8.7.0+typescript@4.5.5
       '@testing-library/jest-dom': 5.16.2
@@ -12949,13 +12951,14 @@ packages:
     dev: false
 
   file:projects/page-engine.tgz_f1db27541b51b520ad4ef7d7df039c22:
-    resolution: {integrity: sha512-ooHIo2DLP5Egc2+VYGaRj/PcXdw/mCKvb9UBwS3SdvGdfhsty3SceHKIXC6NTntu5cHXZI8Vj9+VZUr7Y+R6bA==, tarball: file:projects/page-engine.tgz}
+    resolution: {integrity: sha512-KKdHibx2dIfORRxfDmVrR87ln8Ozct2OWoA70u+eVH1ma7ZOtS6evBwbmL5Xwb1nArCXzv7dBcLVYt37/7Zisg==, tarball: file:projects/page-engine.tgz}
     id: file:projects/page-engine.tgz
     name: '@rush-temp/page-engine'
     version: 0.0.0
     dependencies:
       '@codemirror/lang-javascript': 0.19.7
       '@one-for-all/render-engine': 0.18.0
+      '@one-for-all/schema-spec': 0.15.0
       '@one-for-all/ui': 0.2.18
       '@rollup/plugin-alias': 3.1.9_rollup@2.66.0
       '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
@@ -13131,7 +13134,7 @@ packages:
     dev: false
 
   file:projects/render-engine.tgz_c445a9d32c5b835fb9c30404148ec5af:
-    resolution: {integrity: sha512-SeveriHQ5dhXV8WOmmYBcZVpj0GtK1WzMNcDsOCJwvBHhV95v9aRdhPgC/Nh+NCvMv5RsQDxQko6Z74LgSZJOw==, tarball: file:projects/render-engine.tgz}
+    resolution: {integrity: sha512-evwGupEEejR4Sj8F6QjMLG7/m6JmzrIpKNH++VKvkGXsjZ2qrK/S/aAwZey+JyURxLkLMxFCUg57T+f66FRzHA==, tarball: file:projects/render-engine.tgz}
     id: file:projects/render-engine.tgz
     name: '@rush-temp/render-engine'
     version: 0.0.0
@@ -13205,17 +13208,8 @@ packages:
       rxjs: 6.6.7
     dev: false
 
-  file:projects/schema-spec.tgz:
-    resolution: {integrity: sha512-xZicLz69/BEQI1RBlQZLaPlainkwD02iCLaBGfZbbxQr6ldrNM0+ZdDMSXzxk/wR2JQcHLsujwS7B6UhjC2IMA==, tarball: file:projects/schema-spec.tgz}
-    name: '@rush-temp/schema-spec'
-    version: 0.0.0
-    dependencies:
-      typedoc: 0.22.13_typescript@4.5.5
-      typescript: 4.5.5
-    dev: false
-
   file:projects/schema-utils.tgz_esbuild@0.14.13:
-    resolution: {integrity: sha512-Q6ZoKTjgndI+GvHHMUiXeV7cMtxhUoDqbMS+2nbYSJiszQh5QLzfznT50unYGuCFmnV++fs6q69yHYPSWv8B/Q==, tarball: file:projects/schema-utils.tgz}
+    resolution: {integrity: sha512-0asLTNLoM0hX4h/pXcMgkS/UUcWIq0HnysfbEBWrVQLAsRUCYRBx4hlZHwpX/1BRx3SEmGWuKTJ25GNFFioi1A==, tarball: file:projects/schema-utils.tgz}
     id: file:projects/schema-utils.tgz
     name: '@rush-temp/schema-utils'
     version: 0.0.0
@@ -13223,6 +13217,7 @@ packages:
       '@babel/cli': 7.17.6_@babel+core@7.17.8
       '@babel/core': 7.17.8
       '@babel/preset-env': 7.16.11_@babel+core@7.17.8
+      '@one-for-all/schema-spec': 0.15.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
       '@types/heft-jest': 1.0.2
       '@types/jest': 27.4.0

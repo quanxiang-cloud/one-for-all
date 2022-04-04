@@ -475,8 +475,8 @@
       "projectFolder": "packages/page-engine"
     },
     {
-      "packageName": "@one-for-all/render-engine",
-      "projectFolder": "packages/render-engine"
+      "packageName": "@one-for-all/artery-renderer",
+      "projectFolder": "packages/artery-renderer"
     },
     {
       "packageName": "@one-for-all/artery",
