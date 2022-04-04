@@ -1,6 +1,6 @@
-import type { Schema } from '@one-for-all/schema-spec';
+import type { Artery } from '@one-for-all/artery';
 
-const iconSchema: Schema = {
+const iconSchema: Artery = {
   node: {
     id: 'icon-preview-root-node',
     type: 'react-component',

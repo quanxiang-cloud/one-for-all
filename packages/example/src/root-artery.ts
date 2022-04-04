@@ -1,6 +1,6 @@
-import type { Schema } from '@one-for-all/schema-spec';
+import type { Artery } from '@one-for-all/artery';
 
-const rootSchema: Schema = {
+const rootSchema: Artery = {
   node: {
     id: 'app-root',
     type: 'html-element',
@@ -183,7 +183,7 @@ const rootSchema: Schema = {
         node: {
           id: 'todo-app-ref',
           type: 'ref-node',
-          schemaID: 'SCHEMA_ID_TODO',
+          arteryID: 'SCHEMA_ID_TODO',
           // orphan: true,
         },
       },
@@ -232,7 +232,7 @@ const rootSchema: Schema = {
         node: {
           id: 'style-guide-page',
           type: 'ref-node',
-          schemaID: 'SCHEMA_ID_STYLE_GUIDE',
+          arteryID: 'SCHEMA_ID_STYLE_GUIDE',
         },
       },
       {
@@ -242,7 +242,7 @@ const rootSchema: Schema = {
         node: {
           id: 'icon-preview-page',
           type: 'ref-node',
-          schemaID: 'SCHEMA_ID_ICON_PREVIEW',
+          arteryID: 'SCHEMA_ID_ICON_PREVIEW',
         },
       }
     ]

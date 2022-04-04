@@ -1,4 +1,4 @@
-import { Repository } from '@one-for-all/render-engine';
+import { Repository } from '@one-for-all/artery-renderer';
 
 import TodoList from './components/todo-list';
 import TodoInput from './components/todo-input';

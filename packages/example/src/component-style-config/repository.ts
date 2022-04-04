@@ -1,4 +1,4 @@
-import { Repository } from '@one-for-all/render-engine';
+import { Repository } from '@one-for-all/artery-renderer';
 import App from './app';
 
 const styleGuideRepository: Repository = {

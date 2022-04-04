@@ -15,7 +15,7 @@
       "path": "../api-spec-adapter"
     },
     {
-      "path": "../render-engine"
+      "path": "../artery-renderer"
     },
     {
       "path": "../page-engine"
@@ -24,7 +24,7 @@
       "path": "../ui"
     },
     {
-      "path": "../schema-spec"
+      "path": "../artery"
     }
   ]
 }
