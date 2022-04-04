@@ -483,8 +483,8 @@
       "projectFolder": "packages/artery"
     },
     {
-      "packageName": "@one-for-all/schema-utils",
-      "projectFolder": "packages/schema-utils"
+      "packageName": "@one-for-all/artery-utils",
+      "projectFolder": "packages/artery-utils"
     },
     {
       "packageName": "@one-for-all/style-guide",

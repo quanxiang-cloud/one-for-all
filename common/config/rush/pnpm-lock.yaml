@@ -19,6 +19,7 @@ specifiers:
   '@rush-temp/api-spec-adapter': file:./projects/api-spec-adapter.tgz
   '@rush-temp/artery': file:./projects/artery.tgz
   '@rush-temp/artery-renderer': file:./projects/artery-renderer.tgz
+  '@rush-temp/artery-utils': file:./projects/artery-utils.tgz
   '@rush-temp/codemirror': file:./projects/codemirror.tgz
   '@rush-temp/draft-js': file:./projects/draft-js.tgz
   '@rush-temp/elkjs': file:./projects/elkjs.tgz
@@ -41,7 +42,6 @@ specifiers:
   '@rush-temp/react-jsx-parser': file:./projects/react-jsx-parser.tgz
   '@rush-temp/rxjs': file:./projects/rxjs.tgz
   '@rush-temp/rxjs6': file:./projects/rxjs6.tgz
-  '@rush-temp/schema-utils': file:./projects/schema-utils.tgz
   '@rush-temp/style-guide': file:./projects/style-guide.tgz
   '@rush-temp/ui': file:./projects/ui.tgz
   '@rush-temp/utils': file:./projects/utils.tgz
@@ -175,6 +175,7 @@ dependencies:
   '@rush-temp/api-spec-adapter': file:projects/api-spec-adapter.tgz_@babel+core@7.17.8
   '@rush-temp/artery': file:projects/artery.tgz
   '@rush-temp/artery-renderer': file:projects/artery-renderer.tgz_c445a9d32c5b835fb9c30404148ec5af
+  '@rush-temp/artery-utils': file:projects/artery-utils.tgz_esbuild@0.14.13
   '@rush-temp/codemirror': file:projects/codemirror.tgz_esbuild@0.14.13
   '@rush-temp/draft-js': file:projects/draft-js.tgz_react-dom@17.0.2+react@17.0.2
   '@rush-temp/elkjs': file:projects/elkjs.tgz
@@ -197,7 +198,6 @@ dependencies:
   '@rush-temp/react-jsx-parser': file:projects/react-jsx-parser.tgz_react-dom@17.0.2+react@17.0.2
   '@rush-temp/rxjs': file:projects/rxjs.tgz
   '@rush-temp/rxjs6': file:projects/rxjs6.tgz
-  '@rush-temp/schema-utils': file:projects/schema-utils.tgz_esbuild@0.14.13
   '@rush-temp/style-guide': file:projects/style-guide.tgz_typescript@4.5.5
   '@rush-temp/ui': file:projects/ui.tgz_esbuild@0.14.13
   '@rush-temp/utils': file:projects/utils.tgz_@babel+core@7.17.8
@@ -12669,6 +12669,37 @@ packages:
       - utf-8-validate
     dev: false
 
+  file:projects/artery-utils.tgz_esbuild@0.14.13:
+    resolution: {integrity: sha512-MT75p0Z5ywMTs1PSWyg+MohLGs9AoHJsQV86Bcx+VH640CwG8Uiy4Y/+7XgVtGHc0l8R+UmQ7kWtANQg9+pj9w==, tarball: file:projects/artery-utils.tgz}
+    id: file:projects/artery-utils.tgz
+    name: '@rush-temp/artery-utils'
+    version: 0.0.0
+    dependencies:
+      '@babel/cli': 7.17.6_@babel+core@7.17.8
+      '@babel/core': 7.17.8
+      '@babel/preset-env': 7.16.11_@babel+core@7.17.8
+      '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
+      '@types/heft-jest': 1.0.2
+      '@types/jest': 27.4.0
+      eslint: 8.7.0
+      immutable: 4.0.0
+      jest: 27.4.7
+      rollup: 2.66.0
+      rollup-plugin-terser: 7.0.2_rollup@2.66.0
+      ts-jest: 27.1.3_13365270d18bd1970cc0926aba059d61
+      typedoc: 0.22.13_typescript@4.5.5
+      typescript: 4.5.5
+    transitivePeerDependencies:
+      - babel-jest
+      - bufferutil
+      - canvas
+      - esbuild
+      - node-notifier
+      - supports-color
+      - ts-node
+      - utf-8-validate
+    dev: false
+
   file:projects/artery.tgz:
     resolution: {integrity: sha512-fGm+sD2ZSNuNtRdkIrYy2L/S2nsprZtEuag8W+FQNsUpliW7NBKT1nO1CyPODbheUPn8oWsclNU0BcdDFnghGw==, tarball: file:projects/artery.tgz}
     name: '@rush-temp/artery'
@@ -13206,38 +13237,6 @@ packages:
       rollup: 2.66.0
       rollup-plugin-terser: 7.0.2_rollup@2.66.0
       rxjs: 6.6.7
-    dev: false
-
-  file:projects/schema-utils.tgz_esbuild@0.14.13:
-    resolution: {integrity: sha512-0asLTNLoM0hX4h/pXcMgkS/UUcWIq0HnysfbEBWrVQLAsRUCYRBx4hlZHwpX/1BRx3SEmGWuKTJ25GNFFioi1A==, tarball: file:projects/schema-utils.tgz}
-    id: file:projects/schema-utils.tgz
-    name: '@rush-temp/schema-utils'
-    version: 0.0.0
-    dependencies:
-      '@babel/cli': 7.17.6_@babel+core@7.17.8
-      '@babel/core': 7.17.8
-      '@babel/preset-env': 7.16.11_@babel+core@7.17.8
-      '@one-for-all/schema-spec': 0.15.0
-      '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
-      '@types/heft-jest': 1.0.2
-      '@types/jest': 27.4.0
-      eslint: 8.7.0
-      immutable: 4.0.0
-      jest: 27.4.7
-      rollup: 2.66.0
-      rollup-plugin-terser: 7.0.2_rollup@2.66.0
-      ts-jest: 27.1.3_13365270d18bd1970cc0926aba059d61
-      typedoc: 0.22.13_typescript@4.5.5
-      typescript: 4.5.5
-    transitivePeerDependencies:
-      - babel-jest
-      - bufferutil
-      - canvas
-      - esbuild
-      - node-notifier
-      - supports-color
-      - ts-node
-      - utf-8-validate
     dev: false
 
   file:projects/style-guide.tgz_typescript@4.5.5:

@@ -1,10 +1,10 @@
-declare module '@one-for-all/schema-utils' {
+declare module '@one-for-all/artery-utils' {
   export type List<T> = import('immutable').List<T>;
   export type ImmutableNode = import('immutable').Collection<unknown, unknown>;
   export type KeyPath = import('immutable').Seq.Indexed<string | number>;
   export type IdPath = import('immutable').Seq.Indexed<string>;
   export type IdOrKeyPath = string | KeyPath;
-  type SchemaNode = import('@one-for-all/schema-spec').SchemaNode;
+  type Node = import('@one-for-all/artery').Node;
 
   export type WalkIterator<T, StopValue = unknown> = (
     accumulator: T | undefined,
@@ -38,19 +38,19 @@ declare module '@one-for-all/schema-utils' {
   ): T | Stop | undefined;
 
   export type Visitors = Partial<{
-    htmlNode: (currentNode: import('@one-for-all/schema-spec').HTMLNode) => void;
-    reactComponentNode: (currentNode: import('@one-for-all/schema-spec').ReactComponentNode) => void;
-    loopContainerNode: (currentNode: import('@one-for-all/schema-spec').LoopContainerNode) => void;
-    composedNode: (currentNode: import('@one-for-all/schema-spec').ComposedNode) => void;
-    refNode: (currentNode: import('@one-for-all/schema-spec').RefNode) => void;
-    jsxNode: (currentNode: import('@one-for-all/schema-spec').JSXNode) => void;
-    routeNode: (currentNode: import('@one-for-all/schema-spec').RouteNode) => void;
+    htmlNode: (currentNode: import('@one-for-all/artery').HTMLNode) => void;
+    reactComponentNode: (currentNode: import('@one-for-all/artery').ReactComponentNode) => void;
+    loopContainerNode: (currentNode: import('@one-for-all/artery').LoopContainerNode) => void;
+    composedNode: (currentNode: import('@one-for-all/artery').ComposedNode) => void;
+    refNode: (currentNode: import('@one-for-all/artery').RefNode) => void;
+    jsxNode: (currentNode: import('@one-for-all/artery').JSXNode) => void;
+    routeNode: (currentNode: import('@one-for-all/artery').RouteNode) => void;
   }>;
-  export function travel(schemaNode: SchemaNode, Visitors: Visitors): void;
-  export function getNodeParentIDs(schemaNode: SchemaNode, id: string): string[] | undefined;
-  export function findNodeByID(schemaNode: SchemaNode, id: string): SchemaNode | undefined;
-  export function appendChild(schemaNode: SchemaNode, parentID: string, child: SchemaNode): SchemaNode | undefined;
-  export function patchNode(schemaNode: SchemaNode, partialNode: Partial<SchemaNode>): SchemaNode | undefined;
-  export function deleteByID(schemaNode: SchemaNode, id: string): SchemaNode;
-  export function getNodeParents(schemaNode: SchemaNode, id: string): SchemaNode[] | undefined;
+  export function travel(node: Node, Visitors: Visitors): void;
+  export function getNodeParentIDs(node: Node, id: string): string[] | undefined;
+  export function findNodeByID(node: Node, id: string): Node | undefined;
+  export function appendChild(node: Node, parentID: string, child: Node): Node | undefined;
+  export function patchNode(node: Node, partialNode: Partial<Node>): Node | undefined;
+  export function deleteByID(node: Node, id: string): Node;
+  export function getNodeParents(node: Node, id: string): Node[] | undefined;
 }
