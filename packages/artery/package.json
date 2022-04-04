@@ -1,5 +1,5 @@
 {
-  "name": "@one-for-all/schema-spec",
+  "name": "@one-for-all/artery",
   "version": "0.15.0",
   "license": "Apache-2.0",
   "type": "module",

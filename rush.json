@@ -479,8 +479,8 @@
       "projectFolder": "packages/render-engine"
     },
     {
-      "packageName": "@one-for-all/schema-spec",
-      "projectFolder": "packages/schema-spec"
+      "packageName": "@one-for-all/artery",
+      "projectFolder": "packages/artery"
     },
     {
       "packageName": "@one-for-all/schema-utils",

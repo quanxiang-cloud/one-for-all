@@ -1,7 +1,7 @@
-export = SchemaSpec;
-export as namespace SchemaSpec;
+export = ArterySpec;
+// export as namespace ArterySpec;
 
-declare namespace SchemaSpec {
+declare module ArterySpec {
   /**
    * BaseFunctionSpec define the fundamental shape of `function` in Schema,
    * all function spec **MUST** extends this type.
@@ -209,7 +209,7 @@ declare namespace SchemaSpec {
   // />
   interface RenderProperty extends BaseNodeProperty {
     type: 'render_property';
-    node: SchemaNode;
+    node: Node;
     adapter: BaseFunctionSpec & {
       type: 'render_property_function_spec';
     };
@@ -261,12 +261,12 @@ declare namespace SchemaSpec {
     lifecycleHooks?: LifecycleHooks;
   }
 
-  type SchemaNode = HTMLNode | LinkNode | ReactComponentNode | LoopContainerNode | RefNode | JSXNode | RouteNode;
+  type Node = HTMLNode | LinkNode | ReactComponentNode | LoopContainerNode | RefNode | JSXNode | RouteNode;
 
   interface HTMLNode extends BaseNode {
     type: 'html-element';
     name: string;
-    children?: Array<SchemaNode>;
+    children?: Array<Node>;
   }
 
   interface LinkNode extends HTMLNode {
@@ -281,13 +281,13 @@ declare namespace SchemaSpec {
     exportName: 'default' | string;
     supportStateExposure?: boolean;
     // not recommend, should avoid
-    children?: Array<SchemaNode>;
+    children?: Array<Node>;
   }
 
   interface RouteNode extends BaseNode {
     type: 'route-node';
     path: string;
-    node: SchemaNode;
+    node: Node;
     exactly?: boolean;
   }
 
@@ -295,7 +295,7 @@ declare namespace SchemaSpec {
     type: 'loop-container';
     loopKey: string;
     iterableState: PlainState;
-    node: SchemaNode;
+    node: Node;
     toProps: ToPropsFuncSpec;
   }
 
@@ -311,7 +311,7 @@ declare namespace SchemaSpec {
   // - `LoopState` is confusing with lifecycle hooks
   type LoopContainerNode = IndividualLoopContainer | ComposedNodeLoopContainer;
 
-  type ComposedNodeChild = SchemaNode & {
+  type ComposedNodeChild = Node & {
     toProps: ToPropsFuncSpec;
   };
 
@@ -329,8 +329,8 @@ declare namespace SchemaSpec {
 
   interface RefNode extends BaseNode {
     type: 'ref-node';
-    schemaID: string;
-    fallback?: SchemaNode;
+    arteryID: string;
+    fallback?: Node;
     // RefNode will inherit parent context,
     // which means use states if not found in current context.
     // set `orphan` to `true` to disable inheritance
@@ -377,8 +377,8 @@ declare namespace SchemaSpec {
 
   type SharedStatesSpec = Record<string, SharedState>;
 
-  interface Schema {
-    node: SchemaNode;
+  interface Artery {
+    node: Node;
     apiStateSpec?: APIStatesSpec;
     sharedStatesSpec?: SharedStatesSpec;
   }
