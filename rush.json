@@ -459,6 +459,22 @@
       "projectFolder": "packages/api-spec-adapter"
     },
     {
+      "packageName": "@one-for-all/artery",
+      "projectFolder": "packages/artery"
+    },
+    {
+      "packageName": "@one-for-all/artery-engine",
+      "projectFolder": "packages/artery-engine"
+    },
+    {
+      "packageName": "@one-for-all/artery-renderer",
+      "projectFolder": "packages/artery-renderer"
+    },
+    {
+      "packageName": "@one-for-all/artery-utils",
+      "projectFolder": "packages/artery-utils"
+    },
+    {
       "packageName": "@one-for-all/example",
       "projectFolder": "packages/example"
     },
@@ -467,24 +483,16 @@
       "projectFolder": "packages/formula"
     },
     {
+      "packageName": "@one-for-all/headless-ui",
+      "projectFolder": "packages/headless-ui"
+    },
+    {
       "packageName": "@one-for-all/icon",
       "projectFolder": "packages/icon"
     },
     {
       "packageName": "@one-for-all/page-engine",
       "projectFolder": "packages/page-engine"
-    },
-    {
-      "packageName": "@one-for-all/artery-renderer",
-      "projectFolder": "packages/artery-renderer"
-    },
-    {
-      "packageName": "@one-for-all/artery",
-      "projectFolder": "packages/artery"
-    },
-    {
-      "packageName": "@one-for-all/artery-utils",
-      "projectFolder": "packages/artery-utils"
     },
     {
       "packageName": "@one-for-all/style-guide",
@@ -498,20 +506,12 @@
       "packageName": "@one-for-all/utils",
       "projectFolder": "packages/utils"
     },
-    {
-      "packageName": "@one-for-all/headless-ui",
-      "projectFolder": "packages/headless-ui"
-    },
-    {
-      "packageName": "@one-for-all/artery-engine",
-      "projectFolder": "packages/artery-engine"
-    },
+
+    // vendors
     {
       "packageName": "@one-for-all/codemirror",
       "projectFolder": "vendors/codemirror"
     },
-
-    // vendors
     {
       "packageName": "@one-for-all/draft-js",
       "projectFolder": "vendors/draft-js",
