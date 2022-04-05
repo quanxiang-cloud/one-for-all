@@ -28,7 +28,7 @@ function useBootResult(artery: Artery, plugins?: Plugins): BootResult | undefine
     return () => {
       unMounting = true;
     };
-  }, []);
+  }, [artery]);
 
   return result;
 }
