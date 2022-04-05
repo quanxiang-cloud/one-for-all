@@ -503,8 +503,8 @@
       "projectFolder": "packages/headless-ui"
     },
     {
-      "packageName": "@one-for-all/page-engine-v2",
-      "projectFolder": "packages/page-engine-v2"
+      "packageName": "@one-for-all/artery-engine",
+      "projectFolder": "packages/artery-engine"
     },
     {
       "packageName": "@one-for-all/codemirror",

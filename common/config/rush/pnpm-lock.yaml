@@ -6,6 +6,7 @@ specifiers:
   '@babel/preset-env': ~7.16.11
   '@codemirror/lang-javascript': ^0.19.3
   '@leifandersen/react-codemirror2': ~7.2.1
+  '@one-for-all/artery-renderer': 0.20.0
   '@one-for-all/headless-ui': 0.1.0
   '@one-for-all/icon': 0.4.0
   '@one-for-all/render-engine': 0.18.0
@@ -18,6 +19,7 @@ specifiers:
   '@rollup/plugin-replace': ^3.0.0
   '@rush-temp/api-spec-adapter': file:./projects/api-spec-adapter.tgz
   '@rush-temp/artery': file:./projects/artery.tgz
+  '@rush-temp/artery-engine': file:./projects/artery-engine.tgz
   '@rush-temp/artery-renderer': file:./projects/artery-renderer.tgz
   '@rush-temp/artery-utils': file:./projects/artery-utils.tgz
   '@rush-temp/codemirror': file:./projects/codemirror.tgz
@@ -31,7 +33,6 @@ specifiers:
   '@rush-temp/jszip': file:./projects/jszip.tgz
   '@rush-temp/lodash': file:./projects/lodash.tgz
   '@rush-temp/page-engine': file:./projects/page-engine.tgz
-  '@rush-temp/page-engine-v2': file:./projects/page-engine-v2.tgz
   '@rush-temp/quill': file:./projects/quill.tgz
   '@rush-temp/ramda': file:./projects/ramda.tgz
   '@rush-temp/react': file:./projects/react.tgz
@@ -162,6 +163,7 @@ dependencies:
   '@babel/preset-env': 7.16.11_@babel+core@7.17.8
   '@codemirror/lang-javascript': 0.19.7
   '@leifandersen/react-codemirror2': 7.2.1_codemirror@5.65.2+react@17.0.2
+  '@one-for-all/artery-renderer': 0.20.0
   '@one-for-all/headless-ui': 0.1.0
   '@one-for-all/icon': 0.4.0
   '@one-for-all/render-engine': 0.18.0
@@ -174,6 +176,7 @@ dependencies:
   '@rollup/plugin-replace': 3.1.0_rollup@2.66.0
   '@rush-temp/api-spec-adapter': file:projects/api-spec-adapter.tgz_@babel+core@7.17.8
   '@rush-temp/artery': file:projects/artery.tgz
+  '@rush-temp/artery-engine': file:projects/artery-engine.tgz_@babel+core@7.17.8
   '@rush-temp/artery-renderer': file:projects/artery-renderer.tgz_c445a9d32c5b835fb9c30404148ec5af
   '@rush-temp/artery-utils': file:projects/artery-utils.tgz_esbuild@0.14.13
   '@rush-temp/codemirror': file:projects/codemirror.tgz_esbuild@0.14.13
@@ -187,7 +190,6 @@ dependencies:
   '@rush-temp/jszip': file:projects/jszip.tgz
   '@rush-temp/lodash': file:projects/lodash.tgz_rollup@2.66.0
   '@rush-temp/page-engine': file:projects/page-engine.tgz_f1db27541b51b520ad4ef7d7df039c22
-  '@rush-temp/page-engine-v2': file:projects/page-engine-v2.tgz_@babel+core@7.17.8
   '@rush-temp/quill': file:projects/quill.tgz
   '@rush-temp/ramda': file:projects/ramda.tgz
   '@rush-temp/react': file:projects/react.tgz_rollup@2.66.0
@@ -2107,6 +2109,23 @@ packages:
 
   /@one-for-all/api-spec-adapter/0.4.0:
     resolution: {integrity: sha512-0AvMUdxfWa6/gdIgk0PPOzBO17XJnD/6QUAoAdvm1kOU+hmVydXLY4ODRvDHs9cVNvBDjcZwLsdQ0esRelnT7g==}
+    dev: false
+
+  /@one-for-all/artery-renderer/0.20.0:
+    resolution: {integrity: sha512-A6jwdYr3yBSJ3ytAVa0bDvV4rf0m3jVktudtDdtzVT2jscLehl3QtrFJ/2kSiAm50kdsj5E1GmoL9s29u9mfNg==}
+    dependencies:
+      '@one-for-all/api-spec-adapter': 0.4.0
+      '@one-for-all/artery': 0.15.0
+      '@one-for-all/utils': 0.3.0
+      history: 5.3.0
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      react-jsx-parser: 1.29.0_react-dom@17.0.2+react@17.0.2
+      rxjs: 7.5.5
+    dev: false
+
+  /@one-for-all/artery/0.15.0:
+    resolution: {integrity: sha512-zZmnK09Zt33s335GBdQHMy5sG7+rSrWHaz1mqjIrdXLHWUvkkOISuEV739SWgnCamqEwUv58/QDTH9/VMIb32w==}
     dev: false
 
   /@one-for-all/headless-ui/0.1.0:
@@ -12618,6 +12637,66 @@ packages:
       - utf-8-validate
     dev: false
 
+  file:projects/artery-engine.tgz_@babel+core@7.17.8:
+    resolution: {integrity: sha512-bLg/y5F9HFaEbPzH/qqZURtVsHiOYr0dW35a/9UinFJuQAuE6XQT6Z4Vg+Zp7H3IuNe8DUfyMyXt9yWGcy5B8Q==, tarball: file:projects/artery-engine.tgz}
+    id: file:projects/artery-engine.tgz
+    name: '@rush-temp/artery-engine'
+    version: 0.0.0
+    dependencies:
+      '@one-for-all/artery-renderer': 0.20.0
+      '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
+      '@rushstack/eslint-config': 2.5.1_eslint@8.7.0+typescript@4.5.5
+      '@testing-library/jest-dom': 5.16.2
+      '@testing-library/react': 12.1.4_react-dom@17.0.2+react@17.0.2
+      '@testing-library/react-hooks': 7.0.2_react-dom@17.0.2+react@17.0.2
+      '@tsconfig/recommended': 1.0.1
+      '@types/jest': 27.4.0
+      '@types/node': 15.14.9
+      '@types/ramda': 0.28.1
+      '@types/react': 17.0.41
+      '@types/react-dom': 17.0.14
+      '@types/systemjs': 6.1.1
+      '@types/testing-library__jest-dom': 5.14.3
+      '@typescript-eslint/parser': 5.10.1_eslint@8.7.0+typescript@4.5.5
+      autoprefixer: 10.4.2_postcss@8.4.5
+      classnames: 2.3.1
+      esbuild: 0.14.13
+      eslint: 8.7.0
+      jest: 27.4.7
+      jest-css-modules: 2.1.0
+      jest-diff: 27.4.6
+      nanoid: 3.3.1
+      postcss: 8.4.5
+      postcss-import: 14.0.2_postcss@8.4.5
+      pretty-format: 27.4.6
+      ramda: 0.27.2
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      rollup: 2.66.0
+      rollup-plugin-esbuild: 4.8.2_esbuild@0.14.13+rollup@2.66.0
+      rollup-plugin-postcss: 4.0.2_postcss@8.4.5
+      rollup-plugin-styles: 3.14.1_rollup@2.66.0
+      rollup-plugin-terser: 7.0.2_rollup@2.66.0
+      rxjs: 7.5.5
+      sass: 1.49.9
+      tailwindcss: 2.2.19_ef48b3b8837f8a23677bffe8f9cd866d
+      ts-jest: 27.1.3_13365270d18bd1970cc0926aba059d61
+      tsconfig-paths-jest: 0.0.1
+      tslib: 2.3.1
+      typescript: 4.5.5
+      xhr-mock: 2.5.1
+    transitivePeerDependencies:
+      - '@babel/core'
+      - babel-jest
+      - bufferutil
+      - canvas
+      - node-notifier
+      - react-test-renderer
+      - supports-color
+      - ts-node
+      - utf-8-validate
+    dev: false
+
   file:projects/artery-renderer.tgz_c445a9d32c5b835fb9c30404148ec5af:
     resolution: {integrity: sha512-DsE3q7ZrGQJCiGGDRAmftVdnw9jS7oEF8UJfjGbYarXJRHMSmkk4W2qr8zgA3sO1/S3pq/IGfxFKcSOHRIsO6w==, tarball: file:projects/artery-renderer.tgz}
     id: file:projects/artery-renderer.tgz
@@ -12760,11 +12839,12 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-wIbsmkgp85g1IU9JDTAlATv9owYxWw6ozCRLrnBUorO60SfOR1E/dDGcafV0xjZdjtWbt+t9bvhlwIxt2dfRvw==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-UehrwVAsQC6DAA+7rjmqSBMMyDStk32g6ii50ff8oiR/woW5a4yNduT8cYIuk/pDQkuE2potjfXoVm7IXFSYCA==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
       '@leifandersen/react-codemirror2': 7.2.1_codemirror@5.65.2+react@17.0.2
+      '@one-for-all/artery-renderer': 0.20.0
       '@one-for-all/headless-ui': 0.1.0
       '@one-for-all/icon': 0.4.0
       '@one-for-all/render-engine': 0.18.0
@@ -12969,67 +13049,6 @@ packages:
       lodash-es: 4.17.21
     transitivePeerDependencies:
       - rollup
-    dev: false
-
-  file:projects/page-engine-v2.tgz_@babel+core@7.17.8:
-    resolution: {integrity: sha512-JfSsyOev/UD03pRklP3ccokVq9SjbGfI58GqLGT0tswxWd/k86rX1Llw6iBWf8/OgPq87sJe4D8XnaEwPubsYg==, tarball: file:projects/page-engine-v2.tgz}
-    id: file:projects/page-engine-v2.tgz
-    name: '@rush-temp/page-engine-v2'
-    version: 0.0.0
-    dependencies:
-      '@one-for-all/render-engine': 0.18.0
-      '@one-for-all/schema-spec': 0.15.0
-      '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
-      '@rushstack/eslint-config': 2.5.1_eslint@8.7.0+typescript@4.5.5
-      '@testing-library/jest-dom': 5.16.2
-      '@testing-library/react': 12.1.4_react-dom@17.0.2+react@17.0.2
-      '@testing-library/react-hooks': 7.0.2_react-dom@17.0.2+react@17.0.2
-      '@tsconfig/recommended': 1.0.1
-      '@types/jest': 27.4.0
-      '@types/node': 15.14.9
-      '@types/ramda': 0.28.1
-      '@types/react': 17.0.41
-      '@types/react-dom': 17.0.14
-      '@types/systemjs': 6.1.1
-      '@types/testing-library__jest-dom': 5.14.3
-      '@typescript-eslint/parser': 5.10.1_eslint@8.7.0+typescript@4.5.5
-      autoprefixer: 10.4.2_postcss@8.4.5
-      classnames: 2.3.1
-      esbuild: 0.14.13
-      eslint: 8.7.0
-      jest: 27.4.7
-      jest-css-modules: 2.1.0
-      jest-diff: 27.4.6
-      nanoid: 3.3.1
-      postcss: 8.4.5
-      postcss-import: 14.0.2_postcss@8.4.5
-      pretty-format: 27.4.6
-      ramda: 0.27.2
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-      rollup: 2.66.0
-      rollup-plugin-esbuild: 4.8.2_esbuild@0.14.13+rollup@2.66.0
-      rollup-plugin-postcss: 4.0.2_postcss@8.4.5
-      rollup-plugin-styles: 3.14.1_rollup@2.66.0
-      rollup-plugin-terser: 7.0.2_rollup@2.66.0
-      rxjs: 7.5.5
-      sass: 1.49.9
-      tailwindcss: 2.2.19_ef48b3b8837f8a23677bffe8f9cd866d
-      ts-jest: 27.1.3_13365270d18bd1970cc0926aba059d61
-      tsconfig-paths-jest: 0.0.1
-      tslib: 2.3.1
-      typescript: 4.5.5
-      xhr-mock: 2.5.1
-    transitivePeerDependencies:
-      - '@babel/core'
-      - babel-jest
-      - bufferutil
-      - canvas
-      - node-notifier
-      - react-test-renderer
-      - supports-color
-      - ts-node
-      - utf-8-validate
     dev: false
 
   file:projects/page-engine.tgz_f1db27541b51b520ad4ef7d7df039c22:

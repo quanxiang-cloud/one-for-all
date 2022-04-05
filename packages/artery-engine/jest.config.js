@@ -2,7 +2,7 @@ import base from '../../common/config/jest/jest.base.config.js';
 
 export default {
   ...base,
-  name: '@one-for-all/page-engine-v2',
+  name: '@one-for-all/artery-engine',
   displayName: 'Page Engine v2',
   testMatch: ["**/tests/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
   moduleNameMapper: {
