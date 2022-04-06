@@ -1,11 +1,12 @@
 {
   "name": "@one-for-all/style-guide",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "license": "Apache-2.0",
   "module": "lib",
   "types": "lib/src/index.d.ts",
   "scripts": {
     "bundle": "rm -rf dist & rollup -c rollup.config.js",
+    "prebundle": "yarn run build",
     "pack": "yarn pack",
     "build": "rm -rf lib & tsc --build tsconfig.json"
   },
