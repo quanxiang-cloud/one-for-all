@@ -12,7 +12,7 @@ import {
 } from 'css-tree';
 import init, { compressStringGzip } from "./wasm_gzip/wasm_gzip";
 import wasm_gzip_bg from './wasm_gzip/wasm_gzip_bg.wasm';
-import type { ClassNameSchema, StyleConfigInterface, BaseColorConfig } from './type';
+import type { ClassNameSchema, StyleConfigInterface, BaseColorConfig, ComponentSpec } from './type';
 import './assets/csslint.js';
 
 export * from './type';
@@ -117,13 +117,15 @@ type props = {
   initCssMap?: Record<string, StyleSheetPlain>;
   baseColorVariables?: BaseColorConfig;
   themeColorVariables?: Record<string, string>;
+  componentConfigs: ComponentSpec[];
 }
 
 export default class CssASTStore {
   cssASTMap: Record<string, StyleSheetPlain>;
   baseVariables: BaseColorConfig;
   themeColorVariables: Record<string, string>;
-  constructor({ initCssMap, baseColorVariables, themeColorVariables }: props) {
+  componentSortList: string[];
+  constructor({ initCssMap, baseColorVariables, themeColorVariables, componentConfigs }: props) {
     this.cssASTMap = initCssMap || {};
     this.themeColorVariables = themeColorVariables || {};
     this.baseVariables = baseColorVariables || {
@@ -131,7 +133,15 @@ export default class CssASTStore {
       primaryColor: 'blue',
       primaryColorNo: 0,
       colors: [],
-    }
+    };
+
+    this.componentSortList = componentConfigs.reduce<string[]>((acc, config) => {
+      const keys = config.specs.map((spec) => {
+        return `${config.key}.${spec.title}`
+      });
+
+      return [...acc, ...keys];
+    }, [])
   }
 
   getCssAST(key: string) {
@@ -149,7 +159,10 @@ export default class CssASTStore {
   }
 
   getCssString(isBeautify = false): string {
-    const compCss = Object.entries(this.cssASTMap).map(([_, cssAst]) => toCSSString(cssAst, isBeautify)).join('');
+    const compCss = this.componentSortList.map((key) => {
+      return this.cssASTMap[key] ? toCSSString(this.cssASTMap[key], isBeautify) : '';
+    }).join('');
+
     const variablesCss = getColorVariablesCss(this.baseVariables, this.themeColorVariables);
     return `${variablesCss} ${compCss}`;
   }
