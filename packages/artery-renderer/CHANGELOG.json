@@ -1,0 +1,17 @@
+{
+  "name": "@one-for-all/artery-renderer",
+  "entries": [
+    {
+      "version": "0.20.2",
+      "tag": "@one-for-all/artery-renderer_v0.20.2",
+      "date": "Wed, 06 Apr 2022 06:27:49 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add section for impatient user"
+          }
+        ]
+      }
+    }
+  ]
+}

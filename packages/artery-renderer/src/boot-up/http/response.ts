@@ -9,7 +9,7 @@ import http from './http';
 
 // API State Table
 /*
-    |     | loading |   data    |   error   |
+    |     | loading |  result   |   error   |
     | --- | :-----: | :-------: | :-------: |
     | 1   |  false  | undefined | undefined |
     | 2   |  true   | undefined | undefined |

@@ -34,9 +34,21 @@ Artery Renderer 没有限定 API 风格或者 request/response 格式，开发�
 
 对于体积较大的 Artery，我们可以将其拆分成各个部分，然后使用 `ref-node` 类型在渲染阶段将其组合。Artery Renderer 的 `RefLoader` 接口用于下载这种引用类型的 Artery。
 
-## Get Start
+AKA render engine, render [Artery](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/artery) into read UI.
 
-Install render engine use npm or yarn:
+TL;DR;
+
+- Artery Renderer is a implementation of MVC
+- Artery Renderer uses React and RxJS to implement View and Model
+- Artery Renderer is extremely extensible, you can implement plug-ins as needed
+
+- Usage
+- How Artery Renderer works
+- FAQ
+
+## Quick Start
+
+Install by npm or yarn:
 
 ```bash
 npm install @one-for-all/artery-renderer
@@ -45,6 +57,7 @@ npm install @one-for-all/artery-renderer
 ```jsx
 import React from 'react';
 import { RefLoader, Repository, ArteryRenderer } from '@one-for-all/artery-renderer';
+<<<<<<< HEAD
 
 const plugins: Plugins = {
   apiSpecAdapter?: APISpecAdapter,
@@ -57,6 +70,13 @@ function Demo() {
   const Artery = getArteryBySomeway();
 
   return (<ArteryRenderer Artery={Artery} plugins={plugins} />);
+=======
+
+function Demo() {
+  const artery = getArteryBySomeway();
+
+  return (<ArteryRenderer artery={artery} />);
+>>>>>>> 11c69f4b (docs: Update artery-renderer docs)
 }
 
 ```
