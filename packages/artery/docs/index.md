@@ -1,17 +1,19 @@
 # Overview
 
-Artery 是一种用来描述单页面应用 SPA 的[接口描述语言](https://en.wikipedia.org/wiki/Interface_description_language)，Artery 是一套与实现无关的标准。我们可以使用 Artery 来完整的表示前端业务，例如定义一个 table，此 table 的数据来自某个 API 的 response，再比如定义一个简单的 [Todo App](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/example/src/todo-app)。
+Artery 是一种用来描述单页面应用 SPA 的[接口描述语言](https://en.wikipedia.org/wiki/Interface_description_language)，Artery 是一套与实现无关的标准。
 
-Artery 是渲染引擎和页面引擎对接的共同语言。以 Artery 作为标准，我们可以分别独立开发渲染引擎和页面引擎，两者之间没有耦合。
+我们可以使用 Artery 来描述完整的前端业务，包括 UI、状态和两者之间的关系。理论上，任何的 SPA 都可以使用 Artery 来表达，并由渲染引擎来渲染。[Example](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/example) 的全部功能都是由 Artery 来描述的。
 
-## 为什么要用 Artery 来描述页面逻辑
+Artery 也是[渲染引擎](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/artery-renderer)和[页面引擎](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/artery-engine)对接的共同语言，以 Artery 作为标准，我们可以分别独立开发渲染引擎和页面引擎，使得两者之间没有耦合。
+
+## 为什么要用 Artery 来描述页面
 
 总体来说使用 Artery 和渲染引擎来构建前端业务有一下几点优势：
 
 - 上手难度低，学习 Artery 的成本要远远低于学习 React 或者 Vue 等前端 framework
 - 修改成本低，Artery 其实是属于数据的一部分，修改 Artery 后并不需要重新构建
 - 复制成本低，在 CURD 的场景中，借助 Artery 加渲染引擎的模式，可以快速的构建相似逻辑的前端业务
-- 定制开发容易，可是使用 Artery 自己自由组合前端的业务逻辑，充分满足客户的定制化需求
+- 定制开发容易，可是使用 Artery 自由组合前端的业务逻辑，充分满足客户的定制化需求
 - 实现真正的动态开发，可以根据业务需要，按需开发
 
 ## Artery 结构说明
@@ -30,9 +32,9 @@ const artery: Artery = {
 }
 ```
 
-### ArteryNode
+### Node
 
-ArteryNode 的数据结构是 Tree，由节点、节点属性和子节点组成。正如 DOM 的结构一样，ArteryNode 的结构也反映了最后渲染的页面结构。不同类型的节点 Node 由 `type` 字段区分，不同类型的节点的属性 Property 也有所差异。
+Node 的数据结构是 Tree，由节点、节点属性和子节点组成。正如 DOM 的结构一样，Node 的结构也反映了最后渲染的页面结构。不同类型的节点 Node 由 `type` 字段区分，不同类型的节点的属性 Property 也有所差异。
 
 #### BaseNode
 
