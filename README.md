@@ -1,19 +1,23 @@
 # One for All
 
-# Start
+A monorepo for low-code frontend core packages.
 
-This project use [Rush](https://rushjs.io/) as monorepo manager, you should install it first.
+## Start
 
-```
+This project uses [Rush](https://rushjs.io/) as monorepo manager, you should install it first.
+
+```bash
 npm install -g @microsoft/rush
 ```
 
-After installed, run the following command to bootstrap:
+Run the following command to install all dependencies:
 
-```
+```bash
 rush update
 ```
 
-then you can cd into some package and run test or start command.
+## Example
+
+`cd packages/example` into example project, run `npm start`, open the default link [http://localhost:8080](http://localhost:8080) to see some examples.
 
 ## Contribution guide
