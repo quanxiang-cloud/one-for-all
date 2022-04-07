@@ -23,16 +23,22 @@
           {
             "one": "Test",
             "two": "Test",
-            "three": "Test"
+            "three": "Test",
+            "id": "1"
           },
           {
             "one": "Test",
             "two": "Test",
-            "three": "Test"
+            "three": "Test",
+            "id": "2"
           }
         ]
       },
       "rules": [
+        {
+          "selector": ".ofa-table table",
+          "desc": "表格样式"
+        },
         {
           "selector": ".ofa-table-td",
           "desc": "单元格样式"
@@ -40,7 +46,8 @@
         {
           "selector": ".ofa-table-th",
           "desc": "表头样式"
-        }, {
+        },
+        {
           "selector": ".ofa-table-tr",
           "desc": "行整体样式",
           "pseudo": [
@@ -74,12 +81,14 @@
           {
             "one": "Test",
             "two": "Test",
-            "three": "Test"
+            "three": "Test",
+            "id": "1"
           },
           {
             "one": "Test",
             "two": "Test",
-            "three": "Test"
+            "three": "Test",
+            "id": "2"
           }
         ]
       },
@@ -116,12 +125,14 @@
           {
             "one": "Test",
             "two": "Test",
-            "three": "Test"
+            "three": "Test",
+            "id": "1"
           },
           {
             "one": "Test",
             "two": "Test",
-            "three": "Test"
+            "three": "Test",
+            "id": "2"
           }
         ]
       },

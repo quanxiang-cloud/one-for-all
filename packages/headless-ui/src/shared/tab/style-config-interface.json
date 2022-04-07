@@ -24,10 +24,6 @@
       },
       "rules": [
         {
-          "selector": ".ofa-tab-nav-active",
-          "desc": "标签激活样式"
-        },
-        {
           "selector": ".ofa-tab-nav-item",
           "desc": "标签样式",
           "pseudo": [
@@ -36,6 +32,10 @@
               "desc": "按钮鼠标移入效果"
             }
           ]
+        },
+        {
+          "selector": ".ofa-tab-nav-active",
+          "desc": "标签激活样式"
         },
         {
           "selector": ".ofa-tab-navs-wrapper",
