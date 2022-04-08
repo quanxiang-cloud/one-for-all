@@ -18,7 +18,7 @@ function Table<T extends Record<string, any>>({
   onRowClick,
   isCompact,
   onSelectChange,
-  rowKey,
+  rowKey = 'id',
   showCheckbox,
   style,
   canSetColumnWidth,

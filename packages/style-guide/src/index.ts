@@ -141,7 +141,7 @@ export default class CssASTStore {
       });
 
       return [...acc, ...keys];
-    }, [])
+    }, []);
   }
 
   getCssAST(key: string) {

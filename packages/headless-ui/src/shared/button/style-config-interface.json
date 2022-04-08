@@ -65,7 +65,7 @@
       },
       "rules": [
         {
-          "selector": ".ofa-btn--primary",
+          "selector": ".ofa-btn--primary:not(.ofa-btn--forbidden)",
           "desc": "默认样式",
           "pseudo": [
             {
@@ -88,7 +88,7 @@
       },
       "rules": [
         {
-          "selector": ".ofa-btn--danger",
+          "selector": ".ofa-btn--danger:not(.ofa-btn--forbidden)",
           "desc": "loading",
           "pseudo": [
             {
