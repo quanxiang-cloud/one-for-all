@@ -5,7 +5,6 @@
     {
       "title": "默认状态",
       "componentProps": {
-        "children": "Test",
         "items": [
           {
             "id": "one",
@@ -28,7 +27,7 @@
           "desc": "标签样式",
           "pseudo": [
             {
-              "selector": "hover",
+              "selector": "hover:not(.ofa-tab-nav-disabled)",
               "desc": "按钮鼠标移入效果"
             }
           ]

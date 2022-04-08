@@ -36,7 +36,13 @@
         },
         {
           "selector": ".ofa-breadcrumb-link",
-          "desc": "链接样式"
+          "desc": "链接样式",
+          "pseudo": [
+            {
+              "selector": "hover",
+              "desc": "按钮鼠标移入效果"
+            }
+          ]
         },
         {
           "selector": ".ofa-breadcrumb-active",
