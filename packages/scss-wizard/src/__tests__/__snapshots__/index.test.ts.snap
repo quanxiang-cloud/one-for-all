@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`demo 1`] = `
+Array [
+  Object {
+    "nodes": Array [
+      Object {
+        "prop": "color",
+        "raws": Object {
+          "before": "
+  ",
+          "between": ": ",
+        },
+        "source": Object {
+          "end": Object {
+            "column": 13,
+            "line": 2,
+            "offset": 22,
+          },
+          "inputId": 0,
+          "start": Object {
+            "column": 3,
+            "line": 2,
+            "offset": 12,
+          },
+        },
+        "type": "decl",
+        "value": "red",
+      },
+      Object {
+        "name": "include",
+        "params": "someMixin",
+        "raws": Object {
+          "afterName": " ",
+          "before": "
+
+  ",
+          "between": "",
+        },
+        "source": Object {
+          "end": Object {
+            "column": 21,
+            "line": 4,
+            "offset": 45,
+          },
+          "inputId": 0,
+          "start": Object {
+            "column": 3,
+            "line": 4,
+            "offset": 27,
+          },
+        },
+        "type": "atrule",
+      },
+      Object {
+        "nodes": Array [
+          Object {
+            "prop": "font-size",
+            "raws": Object {
+              "before": "
+    ",
+              "between": ": ",
+            },
+            "source": Object {
+              "end": Object {
+                "column": 20,
+                "line": 7,
+                "offset": 81,
+              },
+              "inputId": 0,
+              "start": Object {
+                "column": 5,
+                "line": 7,
+                "offset": 66,
+              },
+            },
+            "type": "decl",
+            "value": "20px",
+          },
+        ],
+        "raws": Object {
+          "after": "
+  ",
+          "before": "
+
+  ",
+          "between": " ",
+          "semicolon": true,
+        },
+        "selector": ".children",
+        "source": Object {
+          "end": Object {
+            "column": 3,
+            "line": 8,
+            "offset": 85,
+          },
+          "inputId": 0,
+          "start": Object {
+            "column": 3,
+            "line": 6,
+            "offset": 50,
+          },
+        },
+        "type": "rule",
+      },
+    ],
+    "raws": Object {
+      "after": "
+",
+      "before": "",
+      "between": " ",
+      "semicolon": false,
+    },
+    "selector": ".parent",
+    "source": Object {
+      "end": Object {
+        "column": 1,
+        "line": 9,
+        "offset": 87,
+      },
+      "inputId": 0,
+      "start": Object {
+        "column": 1,
+        "line": 1,
+        "offset": 0,
+      },
+    },
+    "type": "rule",
+  },
+]
+`;
+
+exports[`toSCSS 1`] = `
+".parent {
+  color: red;
+
+  @include someMixin;
+
+  .children {
+    font-size: 20px;
+  }
+}
+"
+`;

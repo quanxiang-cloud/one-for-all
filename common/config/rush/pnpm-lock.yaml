@@ -11,6 +11,7 @@ specifiers:
   '@one-for-all/icon': 0.4.0
   '@one-for-all/render-engine': 0.18.0
   '@one-for-all/schema-spec': 0.15.0
+  '@one-for-all/style-guide': 0.1.3
   '@one-for-all/ui': 0.2.18
   '@popperjs/core': ^2.11.0
   '@rollup/plugin-alias': ^3.1.8
@@ -43,6 +44,7 @@ specifiers:
   '@rush-temp/react-jsx-parser': file:./projects/react-jsx-parser.tgz
   '@rush-temp/rxjs': file:./projects/rxjs.tgz
   '@rush-temp/rxjs6': file:./projects/rxjs6.tgz
+  '@rush-temp/scss-wizard': file:./projects/scss-wizard.tgz
   '@rush-temp/style-guide': file:./projects/style-guide.tgz
   '@rush-temp/ui': file:./projects/ui.tgz
   '@rush-temp/utils': file:./projects/utils.tgz
@@ -111,6 +113,7 @@ specifiers:
   postcss: 8.4.5
   postcss-import: ^14.0.2
   postcss-loader: ~6.2.1
+  postcss-scss: 4.0.3
   precss: ^4.0.0
   pretty-format: ~27.4.6
   quill: ^1.3.6
@@ -168,6 +171,7 @@ dependencies:
   '@one-for-all/icon': 0.4.0
   '@one-for-all/render-engine': 0.18.0
   '@one-for-all/schema-spec': 0.15.0
+  '@one-for-all/style-guide': 0.1.3
   '@one-for-all/ui': 0.2.18
   '@popperjs/core': 2.11.4
   '@rollup/plugin-alias': 3.1.9_rollup@2.66.0
@@ -200,6 +204,7 @@ dependencies:
   '@rush-temp/react-jsx-parser': file:projects/react-jsx-parser.tgz_react-dom@17.0.2+react@17.0.2
   '@rush-temp/rxjs': file:projects/rxjs.tgz
   '@rush-temp/rxjs6': file:projects/rxjs6.tgz
+  '@rush-temp/scss-wizard': file:projects/scss-wizard.tgz_cd8e980bbf33a8c05999aaf144f14c48
   '@rush-temp/style-guide': file:projects/style-guide.tgz_typescript@4.5.5
   '@rush-temp/ui': file:projects/ui.tgz_esbuild@0.14.13
   '@rush-temp/utils': file:projects/utils.tgz_@babel+core@7.17.8
@@ -268,6 +273,7 @@ dependencies:
   postcss: 8.4.5
   postcss-import: 14.0.2_postcss@8.4.5
   postcss-loader: 6.2.1_postcss@8.4.5+webpack@5.70.0
+  postcss-scss: 4.0.3_postcss@8.4.5
   precss: 4.0.0
   pretty-format: 27.4.6
   quill: 1.3.7
@@ -2171,8 +2177,8 @@ packages:
     resolution: {integrity: sha512-tPqHVGyGfAJnfNoVvbGJEMxLFPr4VsKySE9WDZw1IYGDLCzXrhSotb7M59aNww4XlCo+PFM/mhQtUpupH9lBww==}
     dev: false
 
-  /@one-for-all/style-guide/0.0.1:
-    resolution: {integrity: sha512-D57aYDJUFDCgRsQLce7LB60aCWf7zJTuqLu7Gmzjn+uo5pUT4WghQibkG1FWMV0JxtJ/X49xgT8DrZFPtF2Ytg==}
+  /@one-for-all/style-guide/0.1.3:
+    resolution: {integrity: sha512-xT4SAaYGaj9sR9vvTHC+rC1bA37DmVo71pvHn1jgHn5PK1ZlsjjID2RpW1TltwZQYPYTBfVwEmeLk7YG0YiXfQ==}
     dependencies:
       css-tree: 2.1.0
       cssbeautify: 0.3.1
@@ -9729,6 +9735,15 @@ packages:
       postcss: 7.0.39
     dev: false
 
+  /postcss-scss/4.0.3_postcss@8.4.5:
+    resolution: {integrity: sha512-j4KxzWovfdHsyxwl1BxkUal/O4uirvHgdzMKS1aWJBAV0qh2qj5qAZqpeBfVUYGWv+4iK9Az7SPyZ4fyNju1uA==}
+    engines: {node: '>=12.0'}
+    peerDependencies:
+      postcss: ^8.3.3
+    dependencies:
+      postcss: 8.4.5
+    dev: false
+
   /postcss-selector-matches/4.0.0:
     resolution: {integrity: sha512-LgsHwQR/EsRYSqlwdGzeaPKVT0Ml7LAT6E75T8W8xLJY62CE4S/l03BWIt3jT8Taq22kXP08s2SfTSzaraoPww==}
     dependencies:
@@ -12839,7 +12854,7 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-UehrwVAsQC6DAA+7rjmqSBMMyDStk32g6ii50ff8oiR/woW5a4yNduT8cYIuk/pDQkuE2potjfXoVm7IXFSYCA==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-55mXf/1pmB7oOpPjP8SqWdBRywmQ+FRR1DTW/Ck5jhavGgfSh1+jut4++XuskSBcODaoCPmDiUSsH7BliCzTcg==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
@@ -12849,7 +12864,7 @@ packages:
       '@one-for-all/icon': 0.4.0
       '@one-for-all/render-engine': 0.18.0
       '@one-for-all/schema-spec': 0.15.0
-      '@one-for-all/style-guide': 0.0.1
+      '@one-for-all/style-guide': 0.1.3
       '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
       '@tsconfig/recommended': 1.0.1
@@ -13256,6 +13271,35 @@ packages:
       rollup: 2.66.0
       rollup-plugin-terser: 7.0.2_rollup@2.66.0
       rxjs: 6.6.7
+    dev: false
+
+  file:projects/scss-wizard.tgz_cd8e980bbf33a8c05999aaf144f14c48:
+    resolution: {integrity: sha512-ZracgtysQKJRgeMvLymRvYE56Wy3HIi9u7f1di+lt87Xs7opYrucx3QAaa8SIlCeBbElYeMV9o4c+wF7kqESRg==, tarball: file:projects/scss-wizard.tgz}
+    id: file:projects/scss-wizard.tgz
+    name: '@rush-temp/scss-wizard'
+    version: 0.0.0
+    dependencies:
+      '@types/jest': 27.4.0
+      '@types/node': 15.14.9
+      jest: 27.4.7
+      postcss: 8.4.5
+      postcss-scss: 4.0.3_postcss@8.4.5
+      rollup: 2.66.0
+      rollup-plugin-esbuild: 4.8.2_esbuild@0.14.13+rollup@2.66.0
+      rollup-plugin-terser: 7.0.2_rollup@2.66.0
+      ts-jest: 27.1.3_13365270d18bd1970cc0926aba059d61
+      tslib: 2.3.1
+    transitivePeerDependencies:
+      - '@babel/core'
+      - babel-jest
+      - bufferutil
+      - canvas
+      - esbuild
+      - node-notifier
+      - supports-color
+      - ts-node
+      - typescript
+      - utf-8-validate
     dev: false
 
   file:projects/style-guide.tgz_typescript@4.5.5:

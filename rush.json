@@ -495,6 +495,10 @@
       "projectFolder": "packages/page-engine"
     },
     {
+      "packageName": "@one-for-all/scss-wizard",
+      "projectFolder": "packages/scss-wizard"
+    },
+    {
       "packageName": "@one-for-all/style-guide",
       "projectFolder": "packages/style-guide"
     },
