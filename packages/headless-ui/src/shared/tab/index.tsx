@@ -12,10 +12,8 @@ export default function Tab<T extends React.Key>({
   direction = 'horizon',
   maxHeight,
   navsClassName,
-  contentClassName,
   currentKey,
   onChange,
-  children,
 }: TabsProps<T>): JSX.Element {
   const navsRef = useRef(null);
   const [key, setKey] = useState<string | number>(currentKey || items[0].id);
@@ -46,7 +44,6 @@ export default function Tab<T extends React.Key>({
           onChange?.(id as T);
         }}
       />
-      <div className={cs('ofa-tab-content', contentClassName)}>{children}</div>
     </div>
   );
 }

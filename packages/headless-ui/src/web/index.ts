@@ -12,6 +12,8 @@ import Loading from '../shared/loading';
 import Pagination from '../shared/pagination';
 import Select from '../shared/select';
 
+import '../css/index.css';
+
 export {
   Radio,
   RadioGroup,

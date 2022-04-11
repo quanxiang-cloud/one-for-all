@@ -17,6 +17,7 @@
     {
       "title": "禁止",
       "componentProps": {
+        "disabled": true,
         "onText": "是",
         "offText": "否"
       },
