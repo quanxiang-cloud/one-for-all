@@ -22,7 +22,7 @@ const scss = `
   border-color: #d5dee7;
   color: #324558;
   box-shadow: none;
-  border-radius: 2px 8px 8px 8px;
+      border-radius: 2px 8px 8px 8px;
 }
 
 .app-icon-select-option-box {
@@ -621,4 +621,9 @@ $popperArrowOffset: -4px;
 
 `;
 
+// const scss = `
+// // this is comment
+// .foo { color: red}
+
+// `;
 export default scss;

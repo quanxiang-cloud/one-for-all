@@ -10771,6 +10771,14 @@ packages:
       terser: 5.12.1
     dev: false
 
+  /rollup-plugin-web-worker-loader/1.6.1_rollup@2.66.0:
+    resolution: {integrity: sha512-4QywQSz1NXFHKdyiou16mH3ijpcfLtLGOrAqvAqu1Gx+P8+zj+3gwC2BSL/VW1d+LW4nIHC8F7d7OXhs9UdR2A==}
+    peerDependencies:
+      rollup: ^1.9.2 || ^2.0.0
+    dependencies:
+      rollup: 2.66.0
+    dev: false
+
   /rollup-pluginutils/2.8.2:
     resolution: {integrity: sha512-EEp9NhnUkwY8aif6bxgovPHMoMoNr2FulJziTndpt5H9RdwC47GSGuII9XxpSdzVGM0GWrNPHV6ie1LTNJPaLQ==}
     dependencies:
@@ -12854,7 +12862,7 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-55mXf/1pmB7oOpPjP8SqWdBRywmQ+FRR1DTW/Ck5jhavGgfSh1+jut4++XuskSBcODaoCPmDiUSsH7BliCzTcg==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-Up9uQ7mInyJRAVOR3CvpvDQ4CRWSV6+zxS8nWi+TR8biMH0DFSU3Dj6cmh9Ih778Yj8wjL7b/2U4ymu8VOtMJw==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
@@ -13274,7 +13282,7 @@ packages:
     dev: false
 
   file:projects/scss-wizard.tgz_cd8e980bbf33a8c05999aaf144f14c48:
-    resolution: {integrity: sha512-ZracgtysQKJRgeMvLymRvYE56Wy3HIi9u7f1di+lt87Xs7opYrucx3QAaa8SIlCeBbElYeMV9o4c+wF7kqESRg==, tarball: file:projects/scss-wizard.tgz}
+    resolution: {integrity: sha512-KnJIEjsHOw1QBZzSsEp1yBn+oxiE39RqRgTa8x1x1q1/oGfO+v+psXXLD1GRyLreQeJhwAycKeNEmV0tsPZlWg==, tarball: file:projects/scss-wizard.tgz}
     id: file:projects/scss-wizard.tgz
     name: '@rush-temp/scss-wizard'
     version: 0.0.0
@@ -13287,6 +13295,7 @@ packages:
       rollup: 2.66.0
       rollup-plugin-esbuild: 4.8.2_esbuild@0.14.13+rollup@2.66.0
       rollup-plugin-terser: 7.0.2_rollup@2.66.0
+      rollup-plugin-web-worker-loader: 1.6.1_rollup@2.66.0
       ts-jest: 27.1.3_13365270d18bd1970cc0926aba059d61
       tslib: 2.3.1
     transitivePeerDependencies:

@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import App from './app';
 import { worker } from './mocks/browser';
 
-import { toAST } from '@one-for-all/scss-wizard';
+import { toAST, toSCSS } from '@one-for-all/scss-wizard';
 import scss from './demo';
 
 // worker.start({ serviceWorker: { url: '/mockServiceWorker.js' } });
@@ -19,4 +19,7 @@ ReactDOM.render(React.createElement(App), appRoot);
 
 toAST(scss).then((ast) => {
   console.log(ast)
+  return toSCSS(ast)
+}).then((formattedSCSS) => {
+  console.log('formattedSCSS:\n', formattedSCSS);
 })

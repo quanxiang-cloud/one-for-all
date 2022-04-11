@@ -1,10 +1,11 @@
 {
   "name": "@one-for-all/scss-wizard",
-  "description": "Transforming/Manipulating SCSS in browser",
   "version": "1.0.0",
-  "main": "lib/index.js",
-  "type": "module",
+  "description": "Transforming/Manipulating SCSS in browser",
   "license": "MIT",
+  "type": "module",
+  "types": "lib/index.d.ts",
+  "main": "lib/index.js",
   "scripts": {
     "build": "rm -rf lib & tsc --build tsconfig.json",
     "prebundle": "rm -rf dist & yarn run build",
@@ -18,16 +19,15 @@
   },
   "dependencies": {
     "postcss": "8.4.5",
-    "@types/jest": "27.4.0",
-    "jest": "27.4.7",
-    "tslib": "2.3.1",
     "postcss-scss": "4.0.3",
-    "ts-jest": "^27.0.7",
-    "@types/node": "^15.12.2"
+    "tslib": "2.3.1"
   },
   "devDependencies": {
+    "@types/jest": "27.4.0",
+    "@types/node": "^15.12.2",
+    "jest": "27.4.7",
     "rollup": "2.66.0",
     "rollup-plugin-esbuild": "^4.6.0",
-    "rollup-plugin-terser": "^7.0.2"
+    "ts-jest": "^27.0.7"
   }
 }

@@ -1,5 +1,6 @@
-import postcss, { Root } from 'postcss';
+import postcss from 'postcss';
 import postcssScss from 'postcss-scss';
+import format from './format';
 
 export default function toSCSS(ast: Object): Promise<string> {
   return postcss([]).process(postcss.fromJSON(ast), {
@@ -9,6 +10,10 @@ export default function toSCSS(ast: Object): Promise<string> {
     stringifier: postcssScss.stringify,
     map: false,
   }).then((result) => {
-    return result.css;
+    if (process.env.NODE_ENV === 'test') {
+      return result.css
+    }
+
+    return format(result.css);
   })
 }
