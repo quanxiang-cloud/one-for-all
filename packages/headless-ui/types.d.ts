@@ -218,7 +218,7 @@ interface CascaderProps extends BaseProps {
   placeholder?: string;
   name?: string;
   id?: string;
-  multipleSelect?: boolean, // no
+  multipleSelect?: boolean,
   disabled?: boolean;
   showSearch?: boolean | ShowSearchType; // no
   notFoundContent?: React.ReactNode;

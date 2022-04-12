@@ -7,6 +7,8 @@ type BaseTreeNode<T> = {
   label: React.ReactNode;
 }
 
+type TreeValueType = NumberString[] | NumberString[][];
+
 export interface Tree<T> {
   isChecked: boolean;
   indeterminate: boolean;
@@ -15,8 +17,6 @@ export interface Tree<T> {
   parent?: Tree<T>;
   origin: T;
 }
-
-type TreeValueType = NumberString[] | NumberString[][];
 
 export function useTree<T extends BaseTreeNode<T>>({origin, defaultValue, isMultiple, hasLoad, onChange} :{
   origin: T[];
