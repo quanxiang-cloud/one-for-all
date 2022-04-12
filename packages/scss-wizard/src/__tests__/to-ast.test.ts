@@ -1,7 +1,4 @@
-import fs from 'fs';
-import path from 'path';
-
-import toAST from "../to-ast";
+import toAST from '../to-ast';
 
 const someBadSCSS = `
 // some unformatted scss
@@ -12,7 +9,7 @@ const someBadSCSS = `
 
       .children { font-size: 20px; }
 }
-`
+`;
 
 test('toAST_should_throw_if_encounter_bad_scss', (done) => {
   toAST(someBadSCSS).catch((err) => {

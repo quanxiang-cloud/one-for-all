@@ -5,7 +5,7 @@
     "outDir": "lib",
     "rootDir": "src",
     "module": "es2015",
+    "types": ["@types/heft-jest", "@types/node"],
   },
-  "include": ["src/**/*"],
-  "exclude": ["**/__tests__"]
+  "include": ["src/**/*"]
 }

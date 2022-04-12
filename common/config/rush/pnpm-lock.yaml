@@ -204,7 +204,7 @@ dependencies:
   '@rush-temp/react-jsx-parser': file:projects/react-jsx-parser.tgz_react-dom@17.0.2+react@17.0.2
   '@rush-temp/rxjs': file:projects/rxjs.tgz
   '@rush-temp/rxjs6': file:projects/rxjs6.tgz
-  '@rush-temp/scss-wizard': file:projects/scss-wizard.tgz_cd8e980bbf33a8c05999aaf144f14c48
+  '@rush-temp/scss-wizard': file:projects/scss-wizard.tgz_ea1c2b121f3a53d3e19a7a2b64ae74a6
   '@rush-temp/style-guide': file:projects/style-guide.tgz_typescript@4.5.5
   '@rush-temp/ui': file:projects/ui.tgz_esbuild@0.14.13
   '@rush-temp/utils': file:projects/utils.tgz_@babel+core@7.17.8
@@ -10771,14 +10771,6 @@ packages:
       terser: 5.12.1
     dev: false
 
-  /rollup-plugin-web-worker-loader/1.6.1_rollup@2.66.0:
-    resolution: {integrity: sha512-4QywQSz1NXFHKdyiou16mH3ijpcfLtLGOrAqvAqu1Gx+P8+zj+3gwC2BSL/VW1d+LW4nIHC8F7d7OXhs9UdR2A==}
-    peerDependencies:
-      rollup: ^1.9.2 || ^2.0.0
-    dependencies:
-      rollup: 2.66.0
-    dev: false
-
   /rollup-pluginutils/2.8.2:
     resolution: {integrity: sha512-EEp9NhnUkwY8aif6bxgovPHMoMoNr2FulJziTndpt5H9RdwC47GSGuII9XxpSdzVGM0GWrNPHV6ie1LTNJPaLQ==}
     dependencies:
@@ -13281,23 +13273,27 @@ packages:
       rxjs: 6.6.7
     dev: false
 
-  file:projects/scss-wizard.tgz_cd8e980bbf33a8c05999aaf144f14c48:
-    resolution: {integrity: sha512-KnJIEjsHOw1QBZzSsEp1yBn+oxiE39RqRgTa8x1x1q1/oGfO+v+psXXLD1GRyLreQeJhwAycKeNEmV0tsPZlWg==, tarball: file:projects/scss-wizard.tgz}
+  file:projects/scss-wizard.tgz_ea1c2b121f3a53d3e19a7a2b64ae74a6:
+    resolution: {integrity: sha512-pp2FNEAQbk9RWftj+5Ux2jNYpGs8kkkBjtnl8PZIMGOuIStgxHKejXOSSU0JvALJ1oohzOtP86OcI23jynk2eQ==, tarball: file:projects/scss-wizard.tgz}
     id: file:projects/scss-wizard.tgz
     name: '@rush-temp/scss-wizard'
     version: 0.0.0
     dependencies:
+      '@rushstack/eslint-config': 2.5.1_eslint@8.7.0+typescript@4.5.5
+      '@rushstack/heft': 0.44.2
+      '@types/heft-jest': 1.0.2
       '@types/jest': 27.4.0
       '@types/node': 15.14.9
+      '@typescript-eslint/parser': 5.10.1_eslint@8.7.0+typescript@4.5.5
+      eslint: 8.7.0
       jest: 27.4.7
       postcss: 8.4.5
       postcss-scss: 4.0.3_postcss@8.4.5
       rollup: 2.66.0
       rollup-plugin-esbuild: 4.8.2_esbuild@0.14.13+rollup@2.66.0
-      rollup-plugin-terser: 7.0.2_rollup@2.66.0
-      rollup-plugin-web-worker-loader: 1.6.1_rollup@2.66.0
       ts-jest: 27.1.3_13365270d18bd1970cc0926aba059d61
       tslib: 2.3.1
+      typescript: 4.5.5
     transitivePeerDependencies:
       - '@babel/core'
       - babel-jest
@@ -13307,7 +13303,6 @@ packages:
       - node-notifier
       - supports-color
       - ts-node
-      - typescript
       - utf-8-validate
     dev: false
 
