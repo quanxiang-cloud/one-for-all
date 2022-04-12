@@ -36,6 +36,11 @@ const isSelectorInWhiteListTestCases: Array<{ selectorPath: string[]; whiteList?
     whiteList: [{ selector: '.abc', nestedSelector: [{ selector: '.def'}]}],
     result: true,
   },
+  {
+    selectorPath: ['.abc', '&:hover', '.def'],
+    whiteList: [{ selector: '.abc', nestedSelector: [{ selector: '.def'}]}],
+    result: true,
+  },
 ];
 
 test('isValidPath', () => {

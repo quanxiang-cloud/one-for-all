@@ -9,6 +9,10 @@ export function isSelectorInWhiteList(selectorPath: string[], whiteList?: Select
     return false;
   }
 
+  if (selectorPath[0].startsWith('&:')) {
+    return isSelectorInWhiteList(selectorPath.slice(1), whiteList);
+  }
+
   const currentLevel = whiteList.find(({ selector }) => selector === selectorPath[0]);
   if (!currentLevel) {
     return false;
