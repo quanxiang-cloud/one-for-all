@@ -20,4 +20,3 @@ export function isSelectorInWhiteList(selectorPath: string[], whiteList?: Select
 
   return isSelectorInWhiteList(selectorPath.slice(1), currentLevel.nestedSelector);
 }
-

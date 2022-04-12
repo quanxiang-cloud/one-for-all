@@ -495,8 +495,8 @@
       "projectFolder": "packages/page-engine"
     },
     {
-      "packageName": "@one-for-all/scss-wizard",
-      "projectFolder": "packages/scss-wizard"
+      "packageName": "@one-for-all/scss-puncture",
+      "projectFolder": "packages/scss-puncture"
     },
     {
       "packageName": "@one-for-all/style-guide",

@@ -44,7 +44,7 @@ specifiers:
   '@rush-temp/react-jsx-parser': file:./projects/react-jsx-parser.tgz
   '@rush-temp/rxjs': file:./projects/rxjs.tgz
   '@rush-temp/rxjs6': file:./projects/rxjs6.tgz
-  '@rush-temp/scss-wizard': file:./projects/scss-wizard.tgz
+  '@rush-temp/scss-puncture': file:./projects/scss-puncture.tgz
   '@rush-temp/style-guide': file:./projects/style-guide.tgz
   '@rush-temp/ui': file:./projects/ui.tgz
   '@rush-temp/utils': file:./projects/utils.tgz
@@ -206,7 +206,7 @@ dependencies:
   '@rush-temp/react-jsx-parser': file:projects/react-jsx-parser.tgz_react-dom@17.0.2+react@17.0.2
   '@rush-temp/rxjs': file:projects/rxjs.tgz
   '@rush-temp/rxjs6': file:projects/rxjs6.tgz
-  '@rush-temp/scss-wizard': file:projects/scss-wizard.tgz_ea1c2b121f3a53d3e19a7a2b64ae74a6
+  '@rush-temp/scss-puncture': file:projects/scss-puncture.tgz_ea1c2b121f3a53d3e19a7a2b64ae74a6
   '@rush-temp/style-guide': file:projects/style-guide.tgz_typescript@4.5.5
   '@rush-temp/ui': file:projects/ui.tgz_esbuild@0.14.13
   '@rush-temp/utils': file:projects/utils.tgz_@babel+core@7.17.8
@@ -13293,10 +13293,10 @@ packages:
       rxjs: 6.6.7
     dev: false
 
-  file:projects/scss-wizard.tgz_ea1c2b121f3a53d3e19a7a2b64ae74a6:
-    resolution: {integrity: sha512-fef2ZFNhtBxGouDyerRbjnkA50JO68UKookKch3bw1JQl66WOQAfAM33PoI9vTEjdx5yl8wAwVY4s6hCF8SmjQ==, tarball: file:projects/scss-wizard.tgz}
-    id: file:projects/scss-wizard.tgz
-    name: '@rush-temp/scss-wizard'
+  file:projects/scss-puncture.tgz_ea1c2b121f3a53d3e19a7a2b64ae74a6:
+    resolution: {integrity: sha512-fef2ZFNhtBxGouDyerRbjnkA50JO68UKookKch3bw1JQl66WOQAfAM33PoI9vTEjdx5yl8wAwVY4s6hCF8SmjQ==, tarball: file:projects/scss-puncture.tgz}
+    id: file:projects/scss-puncture.tgz
+    name: '@rush-temp/scss-puncture'
     version: 0.0.0
     dependencies:
       '@rushstack/eslint-config': 2.5.1_eslint@8.7.0+typescript@4.5.5
