@@ -11,10 +11,6 @@ export default function toSCSS(ast: AST): Promise<string> {
     stringifier: postcssScss.stringify,
     map: false,
   }).then((result) => {
-    if (process.env.NODE_ENV === 'test') {
-      return result.css
-    }
-
     return format(result.css);
-  })
+  });
 }

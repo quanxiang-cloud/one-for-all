@@ -21,7 +21,9 @@
   "dependencies": {
     "postcss": "8.4.5",
     "postcss-scss": "4.0.3",
-    "tslib": "2.3.1"
+    "tslib": "2.3.1",
+    "postcss-plugin-sorting": "7.0.2",
+    "postcss-discard-comments": "5.1.1"
   },
   "devDependencies": {
     "@rushstack/eslint-config": "2.5.1",

@@ -1,3 +1,4 @@
+jest.mock('../format');
 import toAST from '../to-ast';
 
 const someBadSCSS = `

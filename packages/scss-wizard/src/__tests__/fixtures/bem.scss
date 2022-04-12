@@ -1,0 +1,25 @@
+// this comment should be trim
+
+// this is comment should be keep
+.button {
+  font-size: 40px;
+  display: inline;
+
+  @include someMixin;
+
+  @media screen {
+    background-color: aliceblue;
+  }
+
+  .icon {
+    float: right;
+  }
+
+  &:hover {
+    color: blue;
+  }
+}
+
+.button--danger {
+  background-color: red;
+}

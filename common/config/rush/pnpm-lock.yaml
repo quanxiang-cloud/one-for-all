@@ -111,8 +111,10 @@ specifiers:
   nearley: ^2.20.1
   npm-run-all: ^4.1.5
   postcss: 8.4.5
+  postcss-discard-comments: 5.1.1
   postcss-import: ^14.0.2
   postcss-loader: ~6.2.1
+  postcss-plugin-sorting: 7.0.2
   postcss-scss: 4.0.3
   precss: ^4.0.0
   pretty-format: ~27.4.6
@@ -271,8 +273,10 @@ dependencies:
   nearley: 2.20.1
   npm-run-all: 4.1.5
   postcss: 8.4.5
+  postcss-discard-comments: 5.1.1_postcss@8.4.5
   postcss-import: 14.0.2_postcss@8.4.5
   postcss-loader: 6.2.1_postcss@8.4.5+webpack@5.70.0
+  postcss-plugin-sorting: 7.0.2_postcss@8.4.5
   postcss-scss: 4.0.3_postcss@8.4.5
   precss: 4.0.0
   pretty-format: 27.4.6
@@ -9629,6 +9633,14 @@ packages:
       postcss-values-parser: 2.0.1
     dev: false
 
+  /postcss-plugin-sorting/7.0.2_postcss@8.4.5:
+    resolution: {integrity: sha512-FUBQjTi3kAPVCxh6KWwequexmDKEuujDzX4xrsHsDUHP5CRCxRtmW0AxDnHhkr9/xJvvMnQaMOMC6z2AbEKebA==}
+    peerDependencies:
+      postcss: ^8.3.9
+    dependencies:
+      postcss: 8.4.5
+    dev: false
+
   /postcss-preset-env/6.7.1:
     resolution: {integrity: sha512-rlRkgX9t0v2On33n7TK8pnkcYOATGQSv48J2RS8GsXhqtg+xk6AummHP88Y5mJo0TLJelBjePvSjScTNkj3+qw==}
     engines: {node: '>=6.0.0'}
@@ -9782,6 +9794,14 @@ packages:
     dependencies:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
+    dev: false
+
+  /postcss-sorting/7.0.1_postcss@8.4.5:
+    resolution: {integrity: sha512-iLBFYz6VRYyLJEJsBJ8M3TCqNcckVzz4wFounSc5Oez35ogE/X+aoC5fFu103Ot7NyvjU3/xqIXn93Gp3kJk4g==}
+    peerDependencies:
+      postcss: ^8.3.9
+    dependencies:
+      postcss: 8.4.5
     dev: false
 
   /postcss-svgo/4.0.3:
@@ -13274,7 +13294,7 @@ packages:
     dev: false
 
   file:projects/scss-wizard.tgz_ea1c2b121f3a53d3e19a7a2b64ae74a6:
-    resolution: {integrity: sha512-pp2FNEAQbk9RWftj+5Ux2jNYpGs8kkkBjtnl8PZIMGOuIStgxHKejXOSSU0JvALJ1oohzOtP86OcI23jynk2eQ==, tarball: file:projects/scss-wizard.tgz}
+    resolution: {integrity: sha512-fef2ZFNhtBxGouDyerRbjnkA50JO68UKookKch3bw1JQl66WOQAfAM33PoI9vTEjdx5yl8wAwVY4s6hCF8SmjQ==, tarball: file:projects/scss-wizard.tgz}
     id: file:projects/scss-wizard.tgz
     name: '@rush-temp/scss-wizard'
     version: 0.0.0
@@ -13288,7 +13308,10 @@ packages:
       eslint: 8.7.0
       jest: 27.4.7
       postcss: 8.4.5
+      postcss-discard-comments: 5.1.1_postcss@8.4.5
+      postcss-plugin-sorting: 7.0.2_postcss@8.4.5
       postcss-scss: 4.0.3_postcss@8.4.5
+      postcss-sorting: 7.0.1_postcss@8.4.5
       rollup: 2.66.0
       rollup-plugin-esbuild: 4.8.2_esbuild@0.14.13+rollup@2.66.0
       ts-jest: 27.1.3_13365270d18bd1970cc0926aba059d61
