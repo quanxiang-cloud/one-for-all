@@ -1,9 +1,0 @@
-.parent{
-  color: red;
-
-  @include someMixin;
-
-  .children {
-    font-size: 20px;
-  }
-}

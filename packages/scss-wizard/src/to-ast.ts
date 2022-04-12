@@ -1,7 +1,8 @@
 import postcss from 'postcss';
 import postcssScss from 'postcss-scss';
+import { AST } from './types';
 
-export default function toAST(scssStr: string): Promise<Object> {
+export default function toAST(scssStr: string): Promise<AST> {
   return postcss([]).process(
     scssStr,
     {

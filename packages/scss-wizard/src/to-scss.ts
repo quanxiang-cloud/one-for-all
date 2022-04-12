@@ -1,8 +1,9 @@
 import postcss from 'postcss';
 import postcssScss from 'postcss-scss';
 import format from './format';
+import { AST } from './types';
 
-export default function toSCSS(ast: Object): Promise<string> {
+export default function toSCSS(ast: AST): Promise<string> {
   return postcss([]).process(postcss.fromJSON(ast), {
     from: 'index.scss',
     to: 'index.css',
