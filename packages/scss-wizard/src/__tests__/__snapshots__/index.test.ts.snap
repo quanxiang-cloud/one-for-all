@@ -3,57 +3,14 @@
 exports[`convert_between_ast_and_scss 1`] = `
 Array [
   Object {
-    "raws": Object {
-      "before": "",
-      "inline": true,
-      "left": " ",
-      "right": "",
-      "text": "some unformatted scss",
-    },
-    "source": Object {
-      "end": Object {
-        "column": 24,
-        "line": 1,
-        "offset": 23,
-      },
-      "inputId": 0,
-      "start": Object {
-        "column": 1,
-        "line": 1,
-        "offset": 0,
-      },
-    },
-    "text": "some unformatted scss",
-    "type": "comment",
-  },
-  Object {
+    "indexes": Object {},
+    "lastEach": 9,
     "nodes": Array [
       Object {
-        "prop": "color",
-        "raws": Object {
-          "before": "
-  ",
-          "between": ": ",
-        },
-        "source": Object {
-          "end": Object {
-            "column": 13,
-            "line": 3,
-            "offset": 46,
-          },
-          "inputId": 0,
-          "start": Object {
-            "column": 3,
-            "line": 3,
-            "offset": 36,
-          },
-        },
-        "type": "decl",
-        "value": "red",
-      },
-      Object {
+        "initialIndex": 1,
         "name": "include",
         "params": "someMixin",
+        "position": 4,
         "raws": Object {
           "afterName": " ",
           "before": "
@@ -77,13 +34,45 @@ Array [
         "type": "atrule",
       },
       Object {
+        "initialIndex": 0,
+        "position": 5,
+        "prop": "color",
+        "raws": Object {
+          "before": "
+  ",
+          "between": ":",
+        },
+        "sortProperty": true,
+        "source": Object {
+          "end": Object {
+            "column": 13,
+            "line": 3,
+            "offset": 46,
+          },
+          "inputId": 0,
+          "start": Object {
+            "column": 3,
+            "line": 3,
+            "offset": 36,
+          },
+        },
+        "type": "decl",
+        "value": "red",
+      },
+      Object {
+        "indexes": Object {},
+        "initialIndex": 2,
+        "lastEach": 9,
         "nodes": Array [
           Object {
+            "initialIndex": 0,
+            "position": 5,
             "prop": "font-size",
             "raws": Object {
               "before": " ",
-              "between": ": ",
+              "between": ":",
             },
+            "sortProperty": true,
             "source": Object {
               "end": Object {
                 "column": 34,
@@ -101,12 +90,13 @@ Array [
             "value": "20px",
           },
         ],
+        "position": 7,
         "raws": Object {
           "after": " ",
           "before": "
 
       ",
-          "between": " ",
+          "between": "",
           "semicolon": true,
         },
         "selector": ".children",
@@ -129,17 +119,16 @@ Array [
     "raws": Object {
       "after": "
 ",
-      "before": "
-",
+      "before": "",
       "between": "",
-      "semicolon": false,
+      "semicolon": true,
     },
     "selector": ".parent",
     "source": Object {
       "end": Object {
         "column": 1,
-        "line": 8,
-        "offset": 109,
+        "line": 12,
+        "offset": 153,
       },
       "inputId": 0,
       "start": Object {
@@ -154,13 +143,12 @@ Array [
 `;
 
 exports[`convert_between_ast_and_scss 2`] = `
-"// some unformatted scss
-.parent{
-  color: red;
+".parent{
 
   @include someMixin;
+  color:red;
 
-      .children { font-size: 20px; }
+      .children{ font-size:20px; }
 }
 "
 `;

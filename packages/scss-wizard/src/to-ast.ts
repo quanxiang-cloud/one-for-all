@@ -1,10 +1,10 @@
-import postcss from 'postcss';
+import postcss, { Container, Rule } from 'postcss';
 import sorting from 'postcss-plugin-sorting';
 import removeComments from 'postcss-discard-comments';
 import postcssScss from 'postcss-scss';
 
-import format from './format';
-import { AST } from './types';
+import { AST, Selector } from './types';
+import { isSelectorInWhiteList } from './utils';
 
 const sortOptions = {
   order: [
@@ -26,22 +26,55 @@ const sortOptions = {
   'properties-order': 'alphabetical',
 };
 
-export default function toAST(scssStr: string): Promise<AST> {
-  return format(scssStr).then((str) => {
-    return postcss([removeComments, sorting(sortOptions)]).process(
-      scssStr,
-      {
-        from: 'index.scss',
-        to: 'index.css',
-        parser: postcssScss.parse,
-        stringifier: postcssScss.stringify,
-        map: false,
-      }
-    );
-  }).then((result) => {
-    const ast = result.root.toJSON();
-    // @ts-ignore
-    ast.inputs[0].css = '';
-    return ast;
-  });
+const processOption = {
+  from: 'index.scss',
+  to: 'index.css',
+  parser: postcssScss.parse,
+  stringifier: postcssScss.stringify,
+  map: false,
+};
+
+function getSelectorPath(rule: Container): string[] {
+  let pointer: Container | undefined = rule;
+  const path = [];
+  while (pointer) {
+    path.push((pointer as Rule).selector);
+    if (rule.parent?.type === 'root') {
+      break;
+    }
+
+    if (pointer !== rule.parent) {
+      // @ts-ignore
+      pointer = rule.parent;
+    } else {
+      break;
+    }
+  }
+
+  return path.reverse();
 }
+
+async function toAST(scssStr: string, selectorWhiteList: Selector[]): Promise<AST> {
+  const result = await postcss([removeComments, sorting(sortOptions)]).process(scssStr, processOption);
+  if (!result.root) {
+    throw new Error('parser scss result no root');
+  }
+
+  const root = result.root;
+
+  root.walkRules((rule) => {
+    const path = getSelectorPath(rule);
+    if (!isSelectorInWhiteList(path, selectorWhiteList)) {
+      rule.remove();
+    }
+  });
+
+  const ast = root.toJSON();
+
+  // @ts-ignore
+  ast.inputs[0].css = '';
+
+  return ast;
+}
+
+export default toAST;

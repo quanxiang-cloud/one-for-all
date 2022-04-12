@@ -4,7 +4,7 @@ exports[`toAST_should_throw_if_encounter_bad_scss 1`] = `
 Array [
   Object {
     "indexes": Object {},
-    "lastEach": 8,
+    "lastEach": 9,
     "nodes": Array [
       Object {
         "initialIndex": 2,
@@ -88,7 +88,7 @@ Array [
       Object {
         "indexes": Object {},
         "initialIndex": 5,
-        "lastEach": 8,
+        "lastEach": 9,
         "nodes": Array [
           Object {
             "initialIndex": 0,
@@ -146,7 +146,7 @@ Array [
       Object {
         "indexes": Object {},
         "initialIndex": 4,
-        "lastEach": 8,
+        "lastEach": 9,
         "nodes": Array [
           Object {
             "initialIndex": 0,
@@ -204,7 +204,7 @@ Array [
       Object {
         "indexes": Object {},
         "initialIndex": 3,
-        "lastEach": 8,
+        "lastEach": 9,
         "name": "media",
         "nodes": Array [
           Object {
@@ -287,7 +287,7 @@ Array [
   },
   Object {
     "indexes": Object {},
-    "lastEach": 8,
+    "lastEach": 9,
     "nodes": Array [
       Object {
         "initialIndex": 0,

@@ -1,8 +1,8 @@
 import { Root } from 'postcss';
 export type AST = Partial<Root>
 
-export interface Rule {
+export interface Selector {
   selector: string;
   desc?: string;
-  subRules?: Rule[];
+  nestedSelector?: Selector[];
 }
