@@ -11,6 +11,7 @@ import Switch from '../shared/switch';
 import Loading from '../shared/loading';
 import Pagination from '../shared/pagination';
 import Select from '../shared/select';
+import Cascader from '../shared/cascader';
 
 import '../css/index.css';
 
@@ -29,5 +30,6 @@ export {
   Tab,
   Loading,
   Pagination,
-  Select
+  Select,
+  Cascader
 };

@@ -64,9 +64,12 @@ async function writeSvgNameToFile(svgNameStr) {
 async function writeSpriteToFile(svgStr) {
   const pathName = 'src/sprite.svg';
   const spriteFile = path.join(basePath, pathName);
+  const spriteFileInLib = path.join(basePath, `lib/${pathName}`);
   try {
     mkdirp.sync(path.dirname(spriteFile));
     fs.writeFileSync(spriteFile, svgStr);
+    mkdirp.sync(path.dirname(spriteFileInLib));
+    fs.writeFileSync(spriteFileInLib, svgStr);
   } catch (error) {
     console.log(error);
   }

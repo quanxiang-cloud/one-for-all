@@ -12,7 +12,7 @@ import PreviewConfigurableComponent from './preview';
 import './index.css';
 
 function Application(): JSX.Element {
-  const astStore = useMemo(() => new CssASTStore(), []);
+  const astStore = useMemo(() => new CssASTStore({}), []);
   const [currentComp, setCurrentComp] = useState<ComponentSpec | null>(null);
 
   function handleSave() {

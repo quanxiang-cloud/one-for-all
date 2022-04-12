@@ -1,0 +1,47 @@
+{
+  "key": "Cascader",
+  "title": "级联选择器",
+  "specs": [
+    {
+      "title": "默认状态",
+      "componentProps": {
+        "options": [
+          {
+            "label": "test",
+            "value": "test",
+            "children": [
+              {
+                "label": "test children",
+                "value": "test children",
+                "children": [
+                  {
+                    "label": "test cd",
+                    "value": "test cd"
+                  },
+                  {
+                    "label": "test cd1",
+                    "value": "test cd1",
+                    "disabled": true
+                  },
+                  {
+                    "label": "test cd2",
+                    "value": "test cd2"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "test2",
+            "value": "test2"
+          }
+        ]
+      },
+      "rules": [
+        {
+          "selector": ".ofa-cascader"
+        }
+      ]
+    }
+  ]
+}
