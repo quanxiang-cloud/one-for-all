@@ -3,12 +3,12 @@ import fs from 'fs';
 import path from 'path';
 import toAST from '../to-ast';
 import toSCSS from '../to-scss';
-import { Selector } from '../types';
+import { FormingRule } from '../types';
 
-const selectorWhiteList: Selector[] = [
+const selectorWhiteList: FormingRule[] = [
   {
     selector: '.button',
-    nestedSelector: [
+    nestedSelectors: [
       { selector: '.icon' },
       { selector: '&:hover' }
     ]

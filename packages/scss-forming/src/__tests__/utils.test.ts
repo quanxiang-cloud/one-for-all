@@ -1,7 +1,7 @@
-import { Selector } from '../types';
+import { FormingRule } from '../types';
 import { isSelectorInWhiteList } from '../utils';
 
-const isSelectorInWhiteListTestCases: Array<{ selectorPath: string[]; whiteList?: Selector[]; result: boolean }> = [
+const isSelectorInWhiteListTestCases: Array<{ selectorPath: string[]; whiteList?: FormingRule[]; result: boolean }> = [
   {
     selectorPath: [],
     result: true,
@@ -33,12 +33,12 @@ const isSelectorInWhiteListTestCases: Array<{ selectorPath: string[]; whiteList?
   },
   {
     selectorPath: ['.abc', '.def'],
-    whiteList: [{ selector: '.abc', nestedSelector: [{ selector: '.def'}]}],
+    whiteList: [{ selector: '.abc', nestedSelectors: [{ selector: '.def'}]}],
     result: true,
   },
   {
     selectorPath: ['.abc', '&:hover', '.def'],
-    whiteList: [{ selector: '.abc', nestedSelector: [{ selector: '.def'}]}],
+    whiteList: [{ selector: '.abc', nestedSelectors: [{ selector: '.def'}]}],
     result: true,
   },
 ];

@@ -23,7 +23,7 @@
     "react-dom": "^17.0.2",
     "classnames": "^2.3.1",
     "codemirror": "^5.65.1",
-    "@one-for-all/scss-puncture": "1.0.0",
+    "@one-for-all/scss-forming": "1.0.0",
     "@leifandersen/react-codemirror2": "~7.2.1"
   },
   "devDependencies": {

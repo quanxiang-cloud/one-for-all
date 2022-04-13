@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import App from './app';
 import { worker } from './mocks/browser';
 
-import { toAST, toSCSS } from '@one-for-all/scss-puncture';
+import { toAST, toSCSS } from '@one-for-all/scss-forming';
 import scss from './demo';
 
 // worker.start({ serviceWorker: { url: '/mockServiceWorker.js' } });

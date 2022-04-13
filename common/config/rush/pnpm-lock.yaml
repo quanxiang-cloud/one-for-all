@@ -44,7 +44,7 @@ specifiers:
   '@rush-temp/react-jsx-parser': file:./projects/react-jsx-parser.tgz
   '@rush-temp/rxjs': file:./projects/rxjs.tgz
   '@rush-temp/rxjs6': file:./projects/rxjs6.tgz
-  '@rush-temp/scss-puncture': file:./projects/scss-puncture.tgz
+  '@rush-temp/scss-forming': file:./projects/scss-forming.tgz
   '@rush-temp/style-guide': file:./projects/style-guide.tgz
   '@rush-temp/ui': file:./projects/ui.tgz
   '@rush-temp/utils': file:./projects/utils.tgz
@@ -111,6 +111,7 @@ specifiers:
   nearley: ^2.20.1
   npm-run-all: ^4.1.5
   postcss: 8.4.5
+  postcss-combine-duplicated-selectors: 10.0.3
   postcss-discard-comments: 5.1.1
   postcss-import: ^14.0.2
   postcss-loader: ~6.2.1
@@ -206,7 +207,7 @@ dependencies:
   '@rush-temp/react-jsx-parser': file:projects/react-jsx-parser.tgz_react-dom@17.0.2+react@17.0.2
   '@rush-temp/rxjs': file:projects/rxjs.tgz
   '@rush-temp/rxjs6': file:projects/rxjs6.tgz
-  '@rush-temp/scss-puncture': file:projects/scss-puncture.tgz_ea1c2b121f3a53d3e19a7a2b64ae74a6
+  '@rush-temp/scss-forming': file:projects/scss-forming.tgz_ea1c2b121f3a53d3e19a7a2b64ae74a6
   '@rush-temp/style-guide': file:projects/style-guide.tgz_typescript@4.5.5
   '@rush-temp/ui': file:projects/ui.tgz_esbuild@0.14.13
   '@rush-temp/utils': file:projects/utils.tgz_@babel+core@7.17.8
@@ -273,6 +274,7 @@ dependencies:
   nearley: 2.20.1
   npm-run-all: 4.1.5
   postcss: 8.4.5
+  postcss-combine-duplicated-selectors: 10.0.3_postcss@8.4.5
   postcss-discard-comments: 5.1.1_postcss@8.4.5
   postcss-import: 14.0.2_postcss@8.4.5
   postcss-loader: 6.2.1_postcss@8.4.5+webpack@5.70.0
@@ -2451,7 +2453,7 @@ packages:
       chalk: 4.1.2
       dom-accessibility-api: 0.5.13
       lz-string: 1.4.4
-      pretty-format: 27.4.6
+      pretty-format: 27.5.1
     dev: false
 
   /@testing-library/jest-dom/5.16.2:
@@ -8954,6 +8956,16 @@ packages:
       postcss-value-parser: 4.2.0
     dev: false
 
+  /postcss-combine-duplicated-selectors/10.0.3_postcss@8.4.5:
+    resolution: {integrity: sha512-IP0BmwFloCskv7DV7xqvzDXqMHpwdczJa6ZvIW8abgHdcIHs9mCJX2ltFhu3EwA51ozp13DByng30+Ke+eIExA==}
+    engines: {node: ^10.0.0 || ^12.0.0 || >=14.0.0}
+    peerDependencies:
+      postcss: ^8.1.0
+    dependencies:
+      postcss: 8.4.5
+      postcss-selector-parser: 6.0.9
+    dev: false
+
   /postcss-convert-values/4.0.1:
     resolution: {integrity: sha512-Kisdo1y77KUC0Jmn0OXU/COOJbzM8cImvw1ZFsBgBgMgb1iL23Zs/LXRe3r+EZqM3vGYKdQ2YJVQ5VkJI+zEJQ==}
     engines: {node: '>=6.9.0'}
@@ -12091,7 +12103,7 @@ packages:
     dev: false
 
   /util-deprecate/1.0.2:
-    resolution: {integrity: sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=}
+    resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
     dev: false
 
   /util.promisify/1.0.1:
@@ -12874,7 +12886,7 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-Up9uQ7mInyJRAVOR3CvpvDQ4CRWSV6+zxS8nWi+TR8biMH0DFSU3Dj6cmh9Ih778Yj8wjL7b/2U4ymu8VOtMJw==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-6HAZ3PUqyzh6e+8nvFqnPGdBq2hYORUDApAFpCj9oyM0e+t9TfwkOoMd+ovPKk/cp6kPE9la32PHxRr+JeqXXQ==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
@@ -13293,10 +13305,10 @@ packages:
       rxjs: 6.6.7
     dev: false
 
-  file:projects/scss-puncture.tgz_ea1c2b121f3a53d3e19a7a2b64ae74a6:
-    resolution: {integrity: sha512-fef2ZFNhtBxGouDyerRbjnkA50JO68UKookKch3bw1JQl66WOQAfAM33PoI9vTEjdx5yl8wAwVY4s6hCF8SmjQ==, tarball: file:projects/scss-puncture.tgz}
-    id: file:projects/scss-puncture.tgz
-    name: '@rush-temp/scss-puncture'
+  file:projects/scss-forming.tgz_ea1c2b121f3a53d3e19a7a2b64ae74a6:
+    resolution: {integrity: sha512-WzyJU5KuK4WrjjX3mTNvUHbwIDUu9YcH36zeB/iFPzPtch0QDWZ7qBr4Qfh++mQbxHNPRgOGWgAS3kUl3zBzRQ==, tarball: file:projects/scss-forming.tgz}
+    id: file:projects/scss-forming.tgz
+    name: '@rush-temp/scss-forming'
     version: 0.0.0
     dependencies:
       '@rushstack/eslint-config': 2.5.1_eslint@8.7.0+typescript@4.5.5
@@ -13306,8 +13318,10 @@ packages:
       '@types/node': 15.14.9
       '@typescript-eslint/parser': 5.10.1_eslint@8.7.0+typescript@4.5.5
       eslint: 8.7.0
+      immutable: 4.0.0
       jest: 27.4.7
       postcss: 8.4.5
+      postcss-combine-duplicated-selectors: 10.0.3_postcss@8.4.5
       postcss-discard-comments: 5.1.1_postcss@8.4.5
       postcss-plugin-sorting: 7.0.2_postcss@8.4.5
       postcss-scss: 4.0.3_postcss@8.4.5

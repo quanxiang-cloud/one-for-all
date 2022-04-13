@@ -5,12 +5,12 @@ import path from 'path';
 
 import toSCSS from '../to-scss';
 import toAST from '../to-ast';
-import { Selector } from '../types';
+import { FormingRule } from '../types';
 
-const selectorWhiteList: Selector[] = [
+const selectorWhiteList: FormingRule[] = [
   {
     selector: '.parent',
-    nestedSelector: [
+    nestedSelectors: [
       { selector: '.children' }
     ]
   }
