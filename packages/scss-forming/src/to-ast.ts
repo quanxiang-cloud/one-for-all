@@ -1,7 +1,8 @@
 import postcss from 'postcss';
 
 import { AST, FormingRule } from './types';
-import { getSelectorPath, isSelectorInWhiteList } from './utils';
+import getRulePath from './utils/get-rule-path';
+import isValidRule from './utils/is-valid-rule';
 import { plugins, processOptions } from './constant';
 
 async function toAST(scssStr: string, formingRules: FormingRule[]): Promise<AST> {
@@ -13,8 +14,8 @@ async function toAST(scssStr: string, formingRules: FormingRule[]): Promise<AST>
   const root = result.root;
 
   root.walkRules((rule) => {
-    const path = getSelectorPath(rule);
-    if (!isSelectorInWhiteList(path, formingRules)) {
+    const path = getRulePath(rule);
+    if (path && !isValidRule(path, formingRules)) {
       rule.remove();
     }
   });

@@ -1,39 +1,76 @@
-import postcss, { Rule } from 'postcss';
-import { fromJS } from 'immutable';
+import postcss, { Result, Root, Rule } from 'postcss';
 
-import { processOptions } from './constant';
+import { plugins, processOptions } from './constant';
 import { AST, FormingRule } from './types';
-import { getSelectorPath, isSelectorInWhiteList } from './utils';
+import getRulePath from './utils/get-rule-path';
+import getSelectorsWhitelist from './utils/get-selectors-whitelist';
 
-async function formingAST(input: AST, formingRules: FormingRule[]): Promise<AST> {
-  const { root } = await postcss([]).process(postcss.fromJSON(input), processOptions);
-
-  let missingSCSSRules = fromJS(formingRules);
-  // remove staled scss rules
+// return missing selectors
+function removeInvalidRule(root: Root, selectorsWhiteList: Set<string>): string[] {
   root.walkRules((rule) => {
+    const path = (getRulePath(rule) || []).join('/');
+    if (!path) {
+      return;
+    }
 
-    const path = getSelectorPath(rule);
-    if (!isSelectorInWhiteList(path, formingRules)) {
-      rule.remove();
+    if (selectorsWhiteList.has(path)) {
+      selectorsWhiteList.delete(path);
+      return;
+    }
+
+    rule.remove();
+  });
+
+  return Array.from(selectorsWhiteList);
+}
+
+function toLeafSelectors(selectors: string[]): string[] {
+  const leafs: string[] = [];
+  const length = selectors.length;
+  const sorted = selectors.sort();
+  sorted.forEach((selectorPath, index) => {
+    if (index === length - 1) {
+      leafs.push(selectorPath);
+    }
+
+    if (!sorted[index].startsWith(selectorPath)) {
+      leafs.push(selectorPath);
     }
   });
 
-  // fill empty new rules
-  // find missing rule
-  // create rule and append
-  // sort by formingRules
-  new Rule({ selector: })
-  root.walkRules((rule) => {
+  return leafs;
+}
 
-  })
+async function formingAST(input: AST, formingRules: FormingRule[]): Promise<Result> {
+  const { root } = await postcss(plugins).process(postcss.fromJSON(input), processOptions);
 
+  const selectorsWhiteList = getSelectorsWhitelist(formingRules, new Set<string>(), '');
+  const missingSelectors = removeInvalidRule(root as Root, selectorsWhiteList);
+  const leafs = toLeafSelectors(missingSelectors);
+  // remove staled scss rules
 
-  const ast = root.toJSON();
+  // create missing rules
+  leafs.forEach((leafPath) => {
+    const selectors = leafPath.split('/').reverse();
+    let rule: Rule | undefined = undefined;
 
-  // @ts-ignore
-  ast.inputs[0].css = '';
+    selectors.forEach((selector) => {
+      if (!rule) {
+        rule = new Rule({ selector });
+        return;
+      }
 
-  return ast;
+      rule = new Rule({ selector }).append(rule);
+    });
+
+    if (rule) {
+      root.append(rule);
+    }
+  });
+
+  const formed = await postcss(plugins).process(root, processOptions);
+
+  return formed;
 }
 
 export default formingAST;
