@@ -12,7 +12,7 @@ export default {
   input: 'src/index.ts',
   output: getOutput(packageJSON.name, packageJSON.version),
 
-  // external: ['rxjs', /@one-for-all\/.*/, /rxjs\/.*/],
+  external: ['rxjs', /@one-for-all\/.*/, /rxjs\/.*/],
 
   plugins: [
     json(),
