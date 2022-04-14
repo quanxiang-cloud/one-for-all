@@ -74,9 +74,9 @@ const todoAppSchema: Artery = {
                 type: 'functional_property',
                 func: {
                   type: 'raw',
-                  args: 'title',
+                  args: 'value',
                   body: `
-                    const title = title.trim();
+                    const title = value.trim();
                     if (!title) {
                       return;
                     }

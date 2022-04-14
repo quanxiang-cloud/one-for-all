@@ -1,12 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`forming 1`] = `
+exports[`formingAST 1`] = `
 ".parent{
 
   @include someMixin;
   color:red;
 
       .children{ font-size:20px; }
+
+      .missing-selector{}
 }
 "
 `;

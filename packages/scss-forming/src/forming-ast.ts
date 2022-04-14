@@ -1,28 +1,10 @@
-import postcss, { Result, Root, Rule } from 'postcss';
+import { fromJSON, Root, Rule } from 'postcss';
+import toFormattedSCSS from './utils/to-formatted-scss';
 
-import { plugins, processOptions } from './constant';
 import { AST, FormingRule } from './types';
-import getRulePath from './utils/get-rule-path';
+import formRoot from './utils/form-root';
 import getSelectorsWhitelist from './utils/get-selectors-whitelist';
-
-// return missing selectors
-function removeInvalidRule(root: Root, selectorsWhiteList: Set<string>): string[] {
-  root.walkRules((rule) => {
-    const path = (getRulePath(rule) || []).join('/');
-    if (!path) {
-      return;
-    }
-
-    if (selectorsWhiteList.has(path)) {
-      selectorsWhiteList.delete(path);
-      return;
-    }
-
-    rule.remove();
-  });
-
-  return Array.from(selectorsWhiteList);
-}
+import removeInvalidRules from './utils/remove-invalid-rules';
 
 function toLeafSelectors(selectors: string[]): string[] {
   const leafs: string[] = [];
@@ -41,15 +23,9 @@ function toLeafSelectors(selectors: string[]): string[] {
   return leafs;
 }
 
-async function formingAST(input: AST, formingRules: FormingRule[]): Promise<Result> {
-  const { root } = await postcss(plugins).process(postcss.fromJSON(input), processOptions);
-
-  const selectorsWhiteList = getSelectorsWhitelist(formingRules, new Set<string>(), '');
-  const missingSelectors = removeInvalidRule(root as Root, selectorsWhiteList);
+function createMissingRules(missingSelectors: string[]): Array<Rule> {
   const leafs = toLeafSelectors(missingSelectors);
-  // remove staled scss rules
-
-  // create missing rules
+  const missingRules: Array<Rule> = [];
   leafs.forEach((leafPath) => {
     const selectors = leafPath.split('/').reverse();
     let rule: Rule | undefined = undefined;
@@ -64,13 +40,25 @@ async function formingAST(input: AST, formingRules: FormingRule[]): Promise<Resu
     });
 
     if (rule) {
-      root.append(rule);
+      missingRules.push(rule);
     }
   });
 
-  const formed = await postcss(plugins).process(root, processOptions);
+  return missingRules;
+}
 
-  return formed;
+async function formingAST(input: AST, formingRules: FormingRule[]): Promise<string> {
+  const root = await formRoot(fromJSON(input) as Root);
+
+  const selectorsWhiteList = getSelectorsWhitelist(formingRules, new Set<string>(), '');
+  const missingSelectors = removeInvalidRules(root as Root, selectorsWhiteList);
+  const missingRules = createMissingRules(missingSelectors);
+  root.append(missingRules);
+
+  const formedRoot = await formRoot(root);
+  const scss = await toFormattedSCSS(formedRoot);
+
+  return scss;
 }
 
 export default formingAST;

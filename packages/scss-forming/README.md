@@ -1,6 +1,6 @@
-# SCSS Puncture
+# SCSS Forming
 
-Remove unwanted SCSS rules and declarations.
+Forming SCSS to the shape you expected.
 
 ```typescript
 import forming from '@one-for-all/scss-forming';

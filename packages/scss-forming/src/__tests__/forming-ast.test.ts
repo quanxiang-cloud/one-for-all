@@ -1,4 +1,5 @@
-jest.mock('../format');
+jest.mock('../utils/to-formatted-scss');
+
 import fs from 'fs';
 import path from 'path';
 import postcss from 'postcss';
@@ -18,6 +19,6 @@ test('formingAST', async () => {
       ]
     }
   ];
-  const { css } = await formingAST(root.toJSON(), formingRules);
-  console.log(css);
+  const formatted = await formingAST(root.toJSON(), formingRules);
+  expect(formatted).toMatchSnapshot();
 });

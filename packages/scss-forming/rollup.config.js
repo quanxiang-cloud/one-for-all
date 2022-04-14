@@ -1,3 +1,4 @@
+import json from '@rollup/plugin-json';
 import esbuild from 'rollup-plugin-esbuild';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
@@ -14,6 +15,7 @@ export default {
   // external: ['rxjs', /@one-for-all\/.*/, /rxjs\/.*/],
 
   plugins: [
+    json(),
     commonjs(),
     replace({
       'process.env.NODE_ENV': JSON.stringify('production'),

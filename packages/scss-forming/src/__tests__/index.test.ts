@@ -1,26 +1,23 @@
-jest.mock('../format');
+jest.mock('../utils/to-formatted-scss');
 
 import fs from 'fs';
 import path from 'path';
 
-import toSCSS from '../to-scss';
-import toAST from '../to-ast';
-import { FormingRule } from '../types';
+import forming from '../index';
+import type { FormingRule } from '../types';
 
-const selectorWhiteList: FormingRule[] = [
+const formingRules: FormingRule[] = [
   {
     selector: '.parent',
-    nestedSelectors: [
+    nested: [
       { selector: '.children' }
     ]
   }
 ];
 
-test('convert_between_ast_and_scss', async () => {
+test('forming', async () => {
   const scssStr = fs.readFileSync(path.join(__dirname, 'fixtures/index.scss'), { encoding: 'utf-8'});
-  const ast = await toAST(scssStr, selectorWhiteList);
-  expect(ast.nodes).toMatchSnapshot();
+  const { scss } = await forming(scssStr, formingRules);
 
-  const scss = await toSCSS(ast);
   expect(scss).toMatchSnapshot();
 });

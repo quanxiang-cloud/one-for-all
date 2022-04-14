@@ -16,6 +16,7 @@ specifiers:
   '@popperjs/core': ^2.11.0
   '@rollup/plugin-alias': ^3.1.8
   '@rollup/plugin-commonjs': ^21.0.1
+  '@rollup/plugin-json': 4.1.0
   '@rollup/plugin-node-resolve': ^13.0.6
   '@rollup/plugin-replace': ^3.0.0
   '@rush-temp/api-spec-adapter': file:./projects/api-spec-adapter.tgz
@@ -179,6 +180,7 @@ dependencies:
   '@popperjs/core': 2.11.4
   '@rollup/plugin-alias': 3.1.9_rollup@2.66.0
   '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
+  '@rollup/plugin-json': 4.1.0_rollup@2.66.0
   '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
   '@rollup/plugin-replace': 3.1.0_rollup@2.66.0
   '@rush-temp/api-spec-adapter': file:projects/api-spec-adapter.tgz_@babel+core@7.17.8
@@ -2252,6 +2254,15 @@ packages:
       is-reference: 1.2.1
       magic-string: 0.25.9
       resolve: 1.22.0
+      rollup: 2.66.0
+    dev: false
+
+  /@rollup/plugin-json/4.1.0_rollup@2.66.0:
+    resolution: {integrity: sha512-yfLbTdNS6amI/2OpmbiBoW12vngr5NW2jCJVZSBEz+H5KfUJZ2M7sDjk0U6GOOdCWFVScShte29o9NezJ53TPw==}
+    peerDependencies:
+      rollup: ^1.20.0 || ^2.0.0
+    dependencies:
+      '@rollup/pluginutils': 3.1.0_rollup@2.66.0
       rollup: 2.66.0
     dev: false
 
@@ -13306,11 +13317,12 @@ packages:
     dev: false
 
   file:projects/scss-forming.tgz_ea1c2b121f3a53d3e19a7a2b64ae74a6:
-    resolution: {integrity: sha512-WzyJU5KuK4WrjjX3mTNvUHbwIDUu9YcH36zeB/iFPzPtch0QDWZ7qBr4Qfh++mQbxHNPRgOGWgAS3kUl3zBzRQ==, tarball: file:projects/scss-forming.tgz}
+    resolution: {integrity: sha512-h+SpqzlAAVgEDWKO2koRuYGZSpkBK5yTf59lxtORHLGsRmFGqAR4GLjayRb7FFN0eVfgI1vkaPtFm5+FRdE8/A==, tarball: file:projects/scss-forming.tgz}
     id: file:projects/scss-forming.tgz
     name: '@rush-temp/scss-forming'
     version: 0.0.0
     dependencies:
+      '@rollup/plugin-json': 4.1.0_rollup@2.66.0
       '@rushstack/eslint-config': 2.5.1_eslint@8.7.0+typescript@4.5.5
       '@rushstack/heft': 0.44.2
       '@types/heft-jest': 1.0.2
