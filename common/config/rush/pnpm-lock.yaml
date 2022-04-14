@@ -11,10 +11,12 @@ specifiers:
   '@one-for-all/icon': 0.4.0
   '@one-for-all/render-engine': 0.18.0
   '@one-for-all/schema-spec': 0.15.0
+  '@one-for-all/style-guide': 0.1.3
   '@one-for-all/ui': 0.2.18
   '@popperjs/core': ^2.11.0
   '@rollup/plugin-alias': ^3.1.8
   '@rollup/plugin-commonjs': ^21.0.1
+  '@rollup/plugin-json': 4.1.0
   '@rollup/plugin-node-resolve': ^13.0.6
   '@rollup/plugin-replace': ^3.0.0
   '@rush-temp/api-spec-adapter': file:./projects/api-spec-adapter.tgz
@@ -43,6 +45,7 @@ specifiers:
   '@rush-temp/react-jsx-parser': file:./projects/react-jsx-parser.tgz
   '@rush-temp/rxjs': file:./projects/rxjs.tgz
   '@rush-temp/rxjs6': file:./projects/rxjs6.tgz
+  '@rush-temp/scss-forming': file:./projects/scss-forming.tgz
   '@rush-temp/style-guide': file:./projects/style-guide.tgz
   '@rush-temp/ui': file:./projects/ui.tgz
   '@rush-temp/utils': file:./projects/utils.tgz
@@ -109,8 +112,12 @@ specifiers:
   nearley: ^2.20.1
   npm-run-all: ^4.1.5
   postcss: 8.4.5
+  postcss-combine-duplicated-selectors: 10.0.3
+  postcss-discard-comments: 5.1.1
   postcss-import: ^14.0.2
   postcss-loader: ~6.2.1
+  postcss-plugin-sorting: 7.0.2
+  postcss-scss: 4.0.3
   precss: ^4.0.0
   pretty-format: ~27.4.6
   quill: ^1.3.6
@@ -168,10 +175,12 @@ dependencies:
   '@one-for-all/icon': 0.4.0
   '@one-for-all/render-engine': 0.18.0
   '@one-for-all/schema-spec': 0.15.0
+  '@one-for-all/style-guide': 0.1.3
   '@one-for-all/ui': 0.2.18
   '@popperjs/core': 2.11.4
   '@rollup/plugin-alias': 3.1.9_rollup@2.66.0
   '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
+  '@rollup/plugin-json': 4.1.0_rollup@2.66.0
   '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
   '@rollup/plugin-replace': 3.1.0_rollup@2.66.0
   '@rush-temp/api-spec-adapter': file:projects/api-spec-adapter.tgz_@babel+core@7.17.8
@@ -200,6 +209,7 @@ dependencies:
   '@rush-temp/react-jsx-parser': file:projects/react-jsx-parser.tgz_react-dom@17.0.2+react@17.0.2
   '@rush-temp/rxjs': file:projects/rxjs.tgz
   '@rush-temp/rxjs6': file:projects/rxjs6.tgz
+  '@rush-temp/scss-forming': file:projects/scss-forming.tgz_ea1c2b121f3a53d3e19a7a2b64ae74a6
   '@rush-temp/style-guide': file:projects/style-guide.tgz_typescript@4.5.5
   '@rush-temp/ui': file:projects/ui.tgz_esbuild@0.14.13
   '@rush-temp/utils': file:projects/utils.tgz_@babel+core@7.17.8
@@ -266,8 +276,12 @@ dependencies:
   nearley: 2.20.1
   npm-run-all: 4.1.5
   postcss: 8.4.5
+  postcss-combine-duplicated-selectors: 10.0.3_postcss@8.4.5
+  postcss-discard-comments: 5.1.1_postcss@8.4.5
   postcss-import: 14.0.2_postcss@8.4.5
   postcss-loader: 6.2.1_postcss@8.4.5+webpack@5.70.0
+  postcss-plugin-sorting: 7.0.2_postcss@8.4.5
+  postcss-scss: 4.0.3_postcss@8.4.5
   precss: 4.0.0
   pretty-format: 27.4.6
   quill: 1.3.7
@@ -2171,8 +2185,8 @@ packages:
     resolution: {integrity: sha512-tPqHVGyGfAJnfNoVvbGJEMxLFPr4VsKySE9WDZw1IYGDLCzXrhSotb7M59aNww4XlCo+PFM/mhQtUpupH9lBww==}
     dev: false
 
-  /@one-for-all/style-guide/0.0.1:
-    resolution: {integrity: sha512-D57aYDJUFDCgRsQLce7LB60aCWf7zJTuqLu7Gmzjn+uo5pUT4WghQibkG1FWMV0JxtJ/X49xgT8DrZFPtF2Ytg==}
+  /@one-for-all/style-guide/0.1.3:
+    resolution: {integrity: sha512-xT4SAaYGaj9sR9vvTHC+rC1bA37DmVo71pvHn1jgHn5PK1ZlsjjID2RpW1TltwZQYPYTBfVwEmeLk7YG0YiXfQ==}
     dependencies:
       css-tree: 2.1.0
       cssbeautify: 0.3.1
@@ -2240,6 +2254,15 @@ packages:
       is-reference: 1.2.1
       magic-string: 0.25.9
       resolve: 1.22.0
+      rollup: 2.66.0
+    dev: false
+
+  /@rollup/plugin-json/4.1.0_rollup@2.66.0:
+    resolution: {integrity: sha512-yfLbTdNS6amI/2OpmbiBoW12vngr5NW2jCJVZSBEz+H5KfUJZ2M7sDjk0U6GOOdCWFVScShte29o9NezJ53TPw==}
+    peerDependencies:
+      rollup: ^1.20.0 || ^2.0.0
+    dependencies:
+      '@rollup/pluginutils': 3.1.0_rollup@2.66.0
       rollup: 2.66.0
     dev: false
 
@@ -2441,7 +2464,7 @@ packages:
       chalk: 4.1.2
       dom-accessibility-api: 0.5.13
       lz-string: 1.4.4
-      pretty-format: 27.4.6
+      pretty-format: 27.5.1
     dev: false
 
   /@testing-library/jest-dom/5.16.2:
@@ -8944,6 +8967,16 @@ packages:
       postcss-value-parser: 4.2.0
     dev: false
 
+  /postcss-combine-duplicated-selectors/10.0.3_postcss@8.4.5:
+    resolution: {integrity: sha512-IP0BmwFloCskv7DV7xqvzDXqMHpwdczJa6ZvIW8abgHdcIHs9mCJX2ltFhu3EwA51ozp13DByng30+Ke+eIExA==}
+    engines: {node: ^10.0.0 || ^12.0.0 || >=14.0.0}
+    peerDependencies:
+      postcss: ^8.1.0
+    dependencies:
+      postcss: 8.4.5
+      postcss-selector-parser: 6.0.9
+    dev: false
+
   /postcss-convert-values/4.0.1:
     resolution: {integrity: sha512-Kisdo1y77KUC0Jmn0OXU/COOJbzM8cImvw1ZFsBgBgMgb1iL23Zs/LXRe3r+EZqM3vGYKdQ2YJVQ5VkJI+zEJQ==}
     engines: {node: '>=6.9.0'}
@@ -9623,6 +9656,14 @@ packages:
       postcss-values-parser: 2.0.1
     dev: false
 
+  /postcss-plugin-sorting/7.0.2_postcss@8.4.5:
+    resolution: {integrity: sha512-FUBQjTi3kAPVCxh6KWwequexmDKEuujDzX4xrsHsDUHP5CRCxRtmW0AxDnHhkr9/xJvvMnQaMOMC6z2AbEKebA==}
+    peerDependencies:
+      postcss: ^8.3.9
+    dependencies:
+      postcss: 8.4.5
+    dev: false
+
   /postcss-preset-env/6.7.1:
     resolution: {integrity: sha512-rlRkgX9t0v2On33n7TK8pnkcYOATGQSv48J2RS8GsXhqtg+xk6AummHP88Y5mJo0TLJelBjePvSjScTNkj3+qw==}
     engines: {node: '>=6.0.0'}
@@ -9729,6 +9770,15 @@ packages:
       postcss: 7.0.39
     dev: false
 
+  /postcss-scss/4.0.3_postcss@8.4.5:
+    resolution: {integrity: sha512-j4KxzWovfdHsyxwl1BxkUal/O4uirvHgdzMKS1aWJBAV0qh2qj5qAZqpeBfVUYGWv+4iK9Az7SPyZ4fyNju1uA==}
+    engines: {node: '>=12.0'}
+    peerDependencies:
+      postcss: ^8.3.3
+    dependencies:
+      postcss: 8.4.5
+    dev: false
+
   /postcss-selector-matches/4.0.0:
     resolution: {integrity: sha512-LgsHwQR/EsRYSqlwdGzeaPKVT0Ml7LAT6E75T8W8xLJY62CE4S/l03BWIt3jT8Taq22kXP08s2SfTSzaraoPww==}
     dependencies:
@@ -9767,6 +9817,14 @@ packages:
     dependencies:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
+    dev: false
+
+  /postcss-sorting/7.0.1_postcss@8.4.5:
+    resolution: {integrity: sha512-iLBFYz6VRYyLJEJsBJ8M3TCqNcckVzz4wFounSc5Oez35ogE/X+aoC5fFu103Ot7NyvjU3/xqIXn93Gp3kJk4g==}
+    peerDependencies:
+      postcss: ^8.3.9
+    dependencies:
+      postcss: 8.4.5
     dev: false
 
   /postcss-svgo/4.0.3:
@@ -12056,7 +12114,7 @@ packages:
     dev: false
 
   /util-deprecate/1.0.2:
-    resolution: {integrity: sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=}
+    resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
     dev: false
 
   /util.promisify/1.0.1:
@@ -12839,7 +12897,7 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-UehrwVAsQC6DAA+7rjmqSBMMyDStk32g6ii50ff8oiR/woW5a4yNduT8cYIuk/pDQkuE2potjfXoVm7IXFSYCA==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-6HAZ3PUqyzh6e+8nvFqnPGdBq2hYORUDApAFpCj9oyM0e+t9TfwkOoMd+ovPKk/cp6kPE9la32PHxRr+JeqXXQ==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
@@ -12849,7 +12907,7 @@ packages:
       '@one-for-all/icon': 0.4.0
       '@one-for-all/render-engine': 0.18.0
       '@one-for-all/schema-spec': 0.15.0
-      '@one-for-all/style-guide': 0.0.1
+      '@one-for-all/style-guide': 0.1.3
       '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
       '@tsconfig/recommended': 1.0.1
@@ -13256,6 +13314,45 @@ packages:
       rollup: 2.66.0
       rollup-plugin-terser: 7.0.2_rollup@2.66.0
       rxjs: 6.6.7
+    dev: false
+
+  file:projects/scss-forming.tgz_ea1c2b121f3a53d3e19a7a2b64ae74a6:
+    resolution: {integrity: sha512-h+SpqzlAAVgEDWKO2koRuYGZSpkBK5yTf59lxtORHLGsRmFGqAR4GLjayRb7FFN0eVfgI1vkaPtFm5+FRdE8/A==, tarball: file:projects/scss-forming.tgz}
+    id: file:projects/scss-forming.tgz
+    name: '@rush-temp/scss-forming'
+    version: 0.0.0
+    dependencies:
+      '@rollup/plugin-json': 4.1.0_rollup@2.66.0
+      '@rushstack/eslint-config': 2.5.1_eslint@8.7.0+typescript@4.5.5
+      '@rushstack/heft': 0.44.2
+      '@types/heft-jest': 1.0.2
+      '@types/jest': 27.4.0
+      '@types/node': 15.14.9
+      '@typescript-eslint/parser': 5.10.1_eslint@8.7.0+typescript@4.5.5
+      eslint: 8.7.0
+      immutable: 4.0.0
+      jest: 27.4.7
+      postcss: 8.4.5
+      postcss-combine-duplicated-selectors: 10.0.3_postcss@8.4.5
+      postcss-discard-comments: 5.1.1_postcss@8.4.5
+      postcss-plugin-sorting: 7.0.2_postcss@8.4.5
+      postcss-scss: 4.0.3_postcss@8.4.5
+      postcss-sorting: 7.0.1_postcss@8.4.5
+      rollup: 2.66.0
+      rollup-plugin-esbuild: 4.8.2_esbuild@0.14.13+rollup@2.66.0
+      ts-jest: 27.1.3_13365270d18bd1970cc0926aba059d61
+      tslib: 2.3.1
+      typescript: 4.5.5
+    transitivePeerDependencies:
+      - '@babel/core'
+      - babel-jest
+      - bufferutil
+      - canvas
+      - esbuild
+      - node-notifier
+      - supports-color
+      - ts-node
+      - utf-8-validate
     dev: false
 
   file:projects/style-guide.tgz_typescript@4.5.5:

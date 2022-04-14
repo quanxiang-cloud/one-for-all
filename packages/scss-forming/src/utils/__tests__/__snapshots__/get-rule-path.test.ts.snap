@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rulePath 1`] = `
+Array [
+  ".foo",
+  ".foo/.bar",
+  ".foo/.bar/.abc",
+  ".foo/.bar/.abc/.def",
+  ".foo/.bar/.abc/.xyz",
+  ".foo/.bar/.baz",
+  ".foo/.bar/.baz:first-child",
+]
+`;
