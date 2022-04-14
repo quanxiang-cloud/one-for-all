@@ -173,6 +173,37 @@ const rootSchema: Artery = {
                 }
               }
             ]
+          },
+          {
+            id: 'scss-forming-link',
+            type: 'html-element',
+            name: 'a',
+            isLink: true,
+            props: {
+              href: {
+                type: 'constant_property',
+                value: '/scss-forming'
+              },
+              style: {
+                type: 'constant_property',
+                value: {
+                  marginRight: '20px',
+                }
+              }
+            },
+            children: [
+              {
+                id: 'scss-forming-text',
+                type: 'html-element',
+                name: 'h2',
+                props: {
+                  children: {
+                    type: 'constant_property',
+                    value: 'Forming SCSS'
+                  }
+                }
+              }
+            ]
           }
         ]
       },
@@ -243,6 +274,16 @@ const rootSchema: Artery = {
           id: 'icon-preview-page',
           type: 'ref-node',
           arteryID: 'SCHEMA_ID_ICON_PREVIEW',
+        },
+      },
+      {
+        id: 'route-for-scss-forming',
+        type: 'route-node',
+        path: 'scss-forming',
+        node: {
+          id: 'scss-forming',
+          type: 'ref-node',
+          arteryID: 'SCHEMA_ID_SCSS_FORMING',
         },
       }
     ]
