@@ -12,5 +12,6 @@ function handleMessage({ data }) {
 }
 
 self.onmessage = handleMessage;
-`
+`;
+
 export default inlinePrettierWorker;

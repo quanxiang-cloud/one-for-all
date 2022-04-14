@@ -4,7 +4,7 @@ import prettierWorker from './prettier-worker';
 
 const worker = new Worker(URL.createObjectURL(new Blob([prettierWorker])));
 
-function format(ast: AST): Promise<string> {
+function toFormattedSCSS(ast: AST): Promise<string> {
   const scssStr = postcss.fromJSON(ast).toString();
 
   return new Promise((resolve, reject) => {
@@ -20,4 +20,4 @@ function format(ast: AST): Promise<string> {
   });
 }
 
-export default format;
+export default toFormattedSCSS;
