@@ -6,6 +6,7 @@ import formRoot from './utils/form-root';
 import getSelectorsWhitelist from './utils/get-selectors-whitelist';
 import removeInvalidRules from './utils/remove-invalid-rules';
 import createRules from './utils/create-rules';
+import removeUnexpectedDecls from './utils/remove-unexpected-declarations';
 
 async function formingAST(input: AST, formingRules: FormingRule[]): Promise<string> {
   const root = await formRoot(fromJSON(input) as Root);
@@ -15,6 +16,8 @@ async function formingAST(input: AST, formingRules: FormingRule[]): Promise<stri
   const missingRules = createRules(missingSelectors);
 
   root.append(missingRules);
+
+  removeUnexpectedDecls(root);
 
   const formedRoot = await formRoot(root);
   const scss = await toFormattedSCSS(formedRoot);

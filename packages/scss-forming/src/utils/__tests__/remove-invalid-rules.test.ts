@@ -25,7 +25,7 @@ test('removeInvalidRules', async () => {
 
   const selectorsWhiteList = getSelectorsWhitelist(formingRules, new Set<string>(), '');
   const missingSelectors = removeInvalidRules(root as Root, selectorsWhiteList);
-  console.log(missingSelectors)
+  console.log(missingSelectors);
 
   console.log(root.toString());
   const rules = createRules(missingSelectors);
@@ -34,8 +34,8 @@ test('removeInvalidRules', async () => {
   console.log(root.toString());
 
   const formedRoot = await formRoot(root);
-  console.log(formedRoot.toString())
+  console.log(formedRoot.toString());
 
   const formattedSCSS = await toFormattedSCSS(formedRoot);
-  console.log(formattedSCSS)
+  console.log(formattedSCSS);
 });
