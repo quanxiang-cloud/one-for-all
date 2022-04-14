@@ -14,3 +14,8 @@ forming(someUglySCSS).then(({ scss, ast }) => {
 
 const { scss, ast } = forming(staledAST);
 ```
+
+## Todo
+
+- sort rules
+- add comment
