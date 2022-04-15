@@ -10,6 +10,7 @@ specifiers:
   '@one-for-all/headless-ui': 0.1.0
   '@one-for-all/render-engine': 0.18.0
   '@one-for-all/schema-spec': 0.15.0
+  '@one-for-all/style-guide': 0.1.3
   '@one-for-all/ui': 0.2.18
   '@popperjs/core': ^2.11.0
   '@rollup/plugin-alias': ^3.1.8
@@ -171,6 +172,7 @@ dependencies:
   '@one-for-all/headless-ui': 0.1.0
   '@one-for-all/render-engine': 0.18.0
   '@one-for-all/schema-spec': 0.15.0
+  '@one-for-all/style-guide': 0.1.3
   '@one-for-all/ui': 0.2.18
   '@popperjs/core': 2.11.4
   '@rollup/plugin-alias': 3.1.9_rollup@2.66.0
@@ -2694,8 +2696,8 @@ packages:
     resolution: {integrity: sha512-tPqHVGyGfAJnfNoVvbGJEMxLFPr4VsKySE9WDZw1IYGDLCzXrhSotb7M59aNww4XlCo+PFM/mhQtUpupH9lBww==}
     dev: false
 
-  /@one-for-all/style-guide/0.0.1:
-    resolution: {integrity: sha512-D57aYDJUFDCgRsQLce7LB60aCWf7zJTuqLu7Gmzjn+uo5pUT4WghQibkG1FWMV0JxtJ/X49xgT8DrZFPtF2Ytg==}
+  /@one-for-all/style-guide/0.1.3:
+    resolution: {integrity: sha512-xT4SAaYGaj9sR9vvTHC+rC1bA37DmVo71pvHn1jgHn5PK1ZlsjjID2RpW1TltwZQYPYTBfVwEmeLk7YG0YiXfQ==}
     dependencies:
       css-tree: 2.1.0
       cssbeautify: 0.3.1
@@ -18808,7 +18810,7 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-UehrwVAsQC6DAA+7rjmqSBMMyDStk32g6ii50ff8oiR/woW5a4yNduT8cYIuk/pDQkuE2potjfXoVm7IXFSYCA==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-hFDlJz6RX5K9FLs/d4dEhWtp3CMV9xE9M1UbBTNysGtYoM2WVjEGmbCJngXccl+IC6yEKpJqhdrYdIGe03DuLQ==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
@@ -18818,7 +18820,7 @@ packages:
       '@one-for-all/icon': 0.4.0
       '@one-for-all/render-engine': 0.18.0
       '@one-for-all/schema-spec': 0.15.0
-      '@one-for-all/style-guide': 0.0.1
+      '@one-for-all/style-guide': 0.1.3
       '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
       '@tsconfig/recommended': 1.0.1
