@@ -1,7 +1,7 @@
 import React, { useEffect, forwardRef, ForwardedRef } from 'react';
 import cs from 'classnames';
+import Icon from '@one-for-all/icon'
 
-import Icon from '@one-for-all/icon';
 import Select from '../select';
 import Input from '../input';
 

@@ -117,7 +117,7 @@ function Table<T extends Record<string, any>>({
           <tr className={cs({ 'ofa-table-adjust-header': canSetColumnWidth })}>
             {headerGroups[0].headers.map((header, index) => {
               return (
-                <th {...header.getHeaderProps()} key={header.id} className="ofa-table-th">
+                <th data-width={widthMap[header.id]} {...header.getHeaderProps()} key={header.id} className="ofa-table-th">
                   {header.render('Header')}
                   {canSetColumnWidth && header.id !== '_selector' && index !== _columns.length - 1 && (
                     <AdjustHandle
