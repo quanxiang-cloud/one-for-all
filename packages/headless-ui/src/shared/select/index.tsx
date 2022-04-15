@@ -14,7 +14,7 @@ export type SelectOption<T> = {
   value: T;
   label: OptionLabel;
   disabled?: boolean;
-}
+};
 
 interface BaseSelectProps<T> {
   className?: string;
@@ -29,7 +29,7 @@ interface BaseSelectProps<T> {
   optionsDesc?: string;
   placeholder?: string | JSX.Element;
   style?: React.CSSProperties;
-  children?: React.ReactElement
+  children?: React.ReactElement;
 }
 
 type SingleTriggerRenderFunc<T> = React.FC<{
@@ -73,14 +73,18 @@ const modifiers = [
 export default function Select<T extends React.Key>(props: SelectProps<T>) {
   const [selectedValue, setSelectedValue] = useState(props.value || props.defaultValue);
   const [triggerActive, setTriggerActive] = useState<boolean>(false);
-  const [selectedOption, setSelectedOption] = useState(Array.isArray(selectedValue) ? props.options.filter(({ value }) => {
-    return selectedValue.includes(value);
-  }) : props.options.find(({ value }) => value === selectedValue));
+  const [selectedOption, setSelectedOption] = useState(
+    Array.isArray(selectedValue)
+      ? props.options.filter(({ value }) => {
+          return selectedValue.includes(value);
+        })
+      : props.options.find(({ value }) => value === selectedValue),
+  );
   const triggerContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setSelectedValue(props.value);
-  }, [props.value])
+  }, [props.value]);
 
   useEffect(() => {
     const { options } = props;
@@ -99,13 +103,9 @@ export default function Select<T extends React.Key>(props: SelectProps<T>) {
     }
 
     setSelectedOption(_selectedOption);
-  }, [selectedValue, props.options])
+  }, [selectedValue, props.options]);
 
-
-
-  const {
-    children, triggerRender, name, inputRef, style, className, disabled, id
-  } = props;
+  const { children, triggerRender, name, inputRef, style, className, disabled, id } = props;
 
   function handleVisibleChange(visible: boolean) {
     setTriggerActive(visible);
@@ -127,24 +127,23 @@ export default function Select<T extends React.Key>(props: SelectProps<T>) {
 
     return (
       <div className={`${optionClassName} ofa-select-options`} style={{ width: `${getTriggerWidth()}px` }}>
-        {optionsDesc && (<p className="ofa-select-options-desc">{optionsDesc}</p>)}
-        {
-          options.map((option) => {
-            const isSelected = Array.isArray(selectedValue) ?
-              selectedValue.includes(option.value) : selectedValue === option.value;
+        {optionsDesc && <p className="ofa-select-options-desc">{optionsDesc}</p>}
+        {options.map((option) => {
+          const isSelected = Array.isArray(selectedValue)
+            ? selectedValue.includes(option.value)
+            : selectedValue === option.value;
 
-            return (
-              <div
-                key={option.value}
-                onClick={(): void => handleClick(option.value)}
-                className={cs('ofa-select-option', { 'ofa-select-option-active': isSelected })}
-              >
-                <div className="ofa-select-option-label">{option.label}</div>
-                {isSelected && <Icon name="check" className="text-current" />}
-              </div>
-            );
-          })
-        }
+          return (
+            <div
+              key={option.value}
+              onClick={(): void => handleClick(option.value)}
+              className={cs('ofa-select-option', { 'ofa-select-option-active': isSelected })}
+            >
+              <div className="ofa-select-option-label">{option.label}</div>
+              {isSelected && <Icon name="check" className="text-current" />}
+            </div>
+          );
+        })}
       </div>
     );
   }
@@ -158,12 +157,14 @@ export default function Select<T extends React.Key>(props: SelectProps<T>) {
 
     if (Array.isArray(selectedOption)) {
       return (triggerRender as MultipleTriggerRenderFunc<React.Key>)({
-        selectedOption, triggerActive,
+        selectedOption,
+        triggerActive,
       });
     }
 
     return (triggerRender as SingleTriggerRenderFunc<React.Key>)({
-      selectedOption, triggerActive,
+      selectedOption,
+      triggerActive,
     });
   }
 
@@ -171,13 +172,13 @@ export default function Select<T extends React.Key>(props: SelectProps<T>) {
     if (!props.multiple) {
       props.onChange?.(value);
       setSelectedValue(value);
-      close()
+      close();
 
       return;
     }
 
     if (selectedValue === undefined) {
-      setSelectedValue([value])
+      setSelectedValue([value]);
       props.onChange?.([value]);
       return;
     }
@@ -185,9 +186,11 @@ export default function Select<T extends React.Key>(props: SelectProps<T>) {
     // remove value from selectedValue if exist
     // add value to selectedValue if not exist
     // todo extract a util method?
-    const _selectedValue = (selectedValue as T[]).includes(value) ? (selectedValue as T[]).filter((_value) => {
-      return _value !== value;
-    }) : [...(selectedValue as T[]), value];
+    const _selectedValue = (selectedValue as T[]).includes(value)
+      ? (selectedValue as T[]).filter((_value) => {
+          return _value !== value;
+        })
+      : [...(selectedValue as T[]), value];
     setSelectedValue(_selectedValue);
     props.onChange?.(_selectedValue);
   }
@@ -216,45 +219,36 @@ export default function Select<T extends React.Key>(props: SelectProps<T>) {
     );
   }
 
-  const arrowStyle: React.CSSProperties | undefined = triggerActive ? {
-    transform: 'rotate(180deg)',
-  } : undefined;
+  const arrowStyle: React.CSSProperties | undefined = triggerActive
+    ? {
+        transform: 'rotate(180deg)',
+      }
+    : undefined;
 
   return (
     <>
-      {
-        children ? React.cloneElement(children as React.ReactElement, { ref: referenceRef }) : (
-          <div
-            {...(disabled ? {} : { onClick: handlePopperClick() })}
-            ref={referenceRef as any}
-            style={style}
-            className={cs('ofa-select-trigger', className, {
-              'ofa-select-trigger-active': triggerActive && !disabled,
-              'ofa-select-trigger-disabled': disabled,
-            })}
-          >
-            {
-              name && (
-                <input
-                  id={id}
-                  type="hidden"
-                  name={name}
-                  ref={inputRef}
-                  defaultValue={selectedValue as string}
-                />
-              )
-            }
-            <div className="ofa-trigger-content" ref={triggerContentRef}>
-              {triggerRender ? renderCustomTrigger() : renderDefaultTrigger()}
-            </div>
-            <Icon name="keyboard_arrow_down" style={arrowStyle} className="trigger-arrow-icon" />
+      {children ? (
+        React.cloneElement(children as React.ReactElement, { ref: referenceRef })
+      ) : (
+        <div
+          {...(disabled ? {} : { onClick: handlePopperClick() })}
+          ref={referenceRef as any}
+          style={style}
+          className={cs('ofa-select-trigger', className, {
+            'ofa-select-trigger-active': triggerActive && !disabled,
+            'ofa-select-trigger-disabled': disabled,
+          })}
+        >
+          {name && (
+            <input id={id} type="hidden" name={name} ref={inputRef} defaultValue={selectedValue as string} />
+          )}
+          <div className="ofa-trigger-content" ref={triggerContentRef}>
+            {triggerRender ? renderCustomTrigger() : renderDefaultTrigger()}
           </div>
-        )
-      }
-      <Popper
-        placement="bottom-start"
-        modifiers={modifiers}
-      >
+          <Icon name="keyboard_arrow_down" style={arrowStyle} className="trigger-arrow-icon" />
+        </div>
+      )}
+      <Popper placement="bottom-start" modifiers={modifiers}>
         {renderOptions()}
       </Popper>
     </>

@@ -15,27 +15,27 @@ function getOutput(pkgName, pkgVersion, filename) {
       file: `dist/${pkgName}@${pkgVersion}/${filename}.js`,
       format: 'system',
       sourcemap: 'inline',
-      assetFileNames: "[name][extname]",
+      assetFileNames: '[name][extname]',
     },
     {
       file: `dist/${pkgName}@${pkgVersion}/${filename}.min.js`,
       format: 'system',
       sourcemap: false,
       plugins: [terser()],
-      assetFileNames: "[name][extname]",
+      assetFileNames: '[name][extname]',
     },
     {
       file: `dist/${pkgName}@latest/${filename}.js`,
       format: 'system',
       sourcemap: 'inline',
-      assetFileNames: "[name][extname]",
+      assetFileNames: '[name][extname]',
     },
     {
       file: `dist/${pkgName}@latest/${filename}.min.js`,
       format: 'system',
       sourcemap: false,
       plugins: [terser()],
-      assetFileNames: "[name][extname]",
+      assetFileNames: '[name][extname]',
     },
   ];
 }
@@ -84,11 +84,11 @@ function getCommonConfigs(side) {
       styles({
         autoModules: /\.m\.scss/,
         // mode: ["extract", "ofa-ui.css"]
-        mode: "extract",
-        mode: ["extract", `ofa-headless-ui-${side}.css`],
+        mode: 'extract',
+        mode: ['extract', `ofa-headless-ui-${side}.css`],
       }),
     ],
-  }
+  };
 }
 
 export default [

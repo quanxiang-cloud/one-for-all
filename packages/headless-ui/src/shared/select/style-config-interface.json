@@ -19,10 +19,7 @@
         },
         {
           "multiple": true,
-          "value": [
-            "Test1",
-            "Test2"
-          ],
+          "value": ["Test1", "Test2"],
           "options": [
             {
               "label": "Test1",
@@ -98,10 +95,7 @@
         {
           "disabled": true,
           "multiple": true,
-          "value": [
-            "Test1",
-            "Test2"
-          ],
+          "value": ["Test1", "Test2"],
           "options": [
             {
               "label": "Test1",

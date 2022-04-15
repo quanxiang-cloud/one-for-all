@@ -9,7 +9,7 @@
 
 .ofa-radio-icon {
   position: relative;
-  transition: all .24s;
+  transition: all 0.24s;
   border-radius: 9999px;
   border: 1px solid gray;
   box-sizing: border-box;
@@ -34,8 +34,8 @@
   border-radius: 16px;
   transform: scale(0);
   opacity: 0;
-  transition: all .3s cubic-bezier(.78, .14, .15, .86);
-  content: " ";
+  transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+  content: ' ';
 }
 
 .ofa-radio-item {
@@ -47,9 +47,9 @@
     border-color: blue;
 
     &::after {
-      transform: scale(.5);
+      transform: scale(0.5);
       opacity: 1;
-      transition: all .3s cubic-bezier(.78, .14, .15, .86);
+      transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
     }
   }
 }

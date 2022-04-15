@@ -28,27 +28,25 @@ export interface PopperProps {
   enableArrow?: boolean;
   placement?: Placement;
   modifiers?: Array<Partial<Modifier<any, any>>>;
-  container?: Element | null,
+  container?: Element | null;
   onVisibleChange?: (visible: boolean) => void;
 }
 
-type PopperHandler<T extends SyntheticEvent, U extends EventHandler<T>> = (
-  handler?: U
-) => U;
+type PopperHandler<T extends SyntheticEvent, U extends EventHandler<T>> = (handler?: U) => U;
 
 type UsePopperResult<T extends Element> = {
-  referenceRef: RefObject<T>,
-  handleClick: PopperHandler<MouseEvent, MouseEventHandler>,
-  handleContextMenu: PopperHandler<MouseEvent, MouseEventHandler>,
-  handleTouchStart: PopperHandler<TouchEvent, TouchEventHandler>,
-  handleTouchEnd: PopperHandler<TouchEvent, TouchEventHandler>,
-  handleMouseEnter: PopperHandler<MouseEvent, MouseEventHandler>,
-  handleMouseLeave: PopperHandler<MouseEvent, MouseEventHandler>,
-  handleFocus: PopperHandler<FocusEvent, FocusEventHandler>,
-  handleBlur: PopperHandler<FocusEvent, FocusEventHandler>,
-  Popper: (props: PopperProps) => JSX.Element,
-  close: () => void
-}
+  referenceRef: RefObject<T>;
+  handleClick: PopperHandler<MouseEvent, MouseEventHandler>;
+  handleContextMenu: PopperHandler<MouseEvent, MouseEventHandler>;
+  handleTouchStart: PopperHandler<TouchEvent, TouchEventHandler>;
+  handleTouchEnd: PopperHandler<TouchEvent, TouchEventHandler>;
+  handleMouseEnter: PopperHandler<MouseEvent, MouseEventHandler>;
+  handleMouseLeave: PopperHandler<MouseEvent, MouseEventHandler>;
+  handleFocus: PopperHandler<FocusEvent, FocusEventHandler>;
+  handleBlur: PopperHandler<FocusEvent, FocusEventHandler>;
+  Popper: (props: PopperProps) => JSX.Element;
+  close: () => void;
+};
 
 const arrowModifier = {
   name: 'arrow',
@@ -57,7 +55,9 @@ const arrowModifier = {
   },
 };
 
-export default function usePopper<T extends Element>(onVisibleChange?: (popperShow: boolean) => void): UsePopperResult<T> {
+export default function usePopper<T extends Element>(
+  onVisibleChange?: (popperShow: boolean) => void,
+): UsePopperResult<T> {
   const referenceRef = useRef<T>(null);
   const popupRef = useRef<HTMLDivElement>(null);
   const context = useContext(PopperContext);
@@ -66,7 +66,6 @@ export default function usePopper<T extends Element>(onVisibleChange?: (popperSh
   useEffect(() => {
     onVisibleChange?.(popperShow);
   }, [popperShow]);
-
 
   let isHoverTrigger = false;
   let hasPopupMouseDown = false;
@@ -77,11 +76,7 @@ export default function usePopper<T extends Element>(onVisibleChange?: (popperSh
     const { target } = event;
     const root = referenceRef.current;
     const popupNode = popupRef.current;
-    if (
-      !root?.contains(target as Node) &&
-      !popupNode?.contains(target as Node) &&
-      !hasPopupMouseDown
-    ) {
+    if (!root?.contains(target as Node) && !popupNode?.contains(target as Node) && !hasPopupMouseDown) {
       close();
     }
   }
@@ -220,16 +215,17 @@ export default function usePopper<T extends Element>(onVisibleChange?: (popperSh
     }
 
     function createPopperInstance(popupContainer: HTMLDivElement): void {
-      referenceRef.current && createPopper(referenceRef.current, popupContainer, {
-        placement: placement || 'bottom',
-        modifiers: (modifiers || []).concat(arrowModifier),
-      });
+      referenceRef.current &&
+        createPopper(referenceRef.current, popupContainer, {
+          placement: placement || 'bottom',
+          modifiers: (modifiers || []).concat(arrowModifier),
+        });
     }
 
     return (
       <PopperContext.Provider value={{ onPopupMouseDown: onPopupMouseDown }}>
-        {
-          popperShow ? (<Portal key="portal" getContainer={getContainer}>
+        {popperShow ? (
+          <Portal key="portal" getContainer={getContainer}>
             <div
               ref={popupRef}
               className={className}
@@ -241,23 +237,26 @@ export default function usePopper<T extends Element>(onVisibleChange?: (popperSh
             >
               {children}
             </div>
-          </Portal>) : null
-        }
+          </Portal>
+        ) : null}
       </PopperContext.Provider>
     );
   }
 
-  return useMemo(() => ({
-    referenceRef,
-    handleClick,
-    handleContextMenu,
-    handleTouchStart,
-    handleTouchEnd,
-    handleMouseEnter,
-    handleMouseLeave,
-    handleFocus,
-    handleBlur,
-    Popper,
-    close,
-  }), [popperShow]);
+  return useMemo(
+    () => ({
+      referenceRef,
+      handleClick,
+      handleContextMenu,
+      handleTouchStart,
+      handleTouchEnd,
+      handleMouseEnter,
+      handleMouseLeave,
+      handleFocus,
+      handleBlur,
+      Popper,
+      close,
+    }),
+    [popperShow],
+  );
 }

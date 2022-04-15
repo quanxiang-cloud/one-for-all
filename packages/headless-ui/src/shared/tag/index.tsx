@@ -12,7 +12,10 @@ function Tag<T extends React.Key>(props: TagProps<T>, ref?: ForwardedRef<HTMLSpa
     <span
       ref={ref}
       style={style}
-      className={cs('ofa-tag', className, { 'ofa-tag-disabled': disabled, [`ofa-tag--${modifier}`]: modifier })}
+      className={cs('ofa-tag', className, {
+        'ofa-tag-disabled': disabled,
+        [`ofa-tag--${modifier}`]: modifier,
+      })}
     >
       {label}
       {onDelete && !disabled && (

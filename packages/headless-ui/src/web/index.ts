@@ -29,5 +29,5 @@ export {
   Tab,
   Loading,
   Pagination,
-  Select
+  Select,
 };

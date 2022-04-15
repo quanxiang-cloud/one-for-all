@@ -19,7 +19,10 @@ async function getInterfaces() {
   const str = JSON.stringify(interfaceList);
 
   const outPath = path.join(process.cwd(), `./dist/${packageJSON.name}@latest/components-interface.json`);
-  const outPath2 = path.join(process.cwd(), `./dist/${packageJSON.name}@${packageJSON.version}/components-interface.json`);
+  const outPath2 = path.join(
+    process.cwd(),
+    `./dist/${packageJSON.name}@${packageJSON.version}/components-interface.json`,
+  );
   fs.writeFile(outPath, str, function (err) {
     if (err) {
       console.log(err);

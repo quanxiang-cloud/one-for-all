@@ -42,8 +42,7 @@ function Input(
       return;
     }
     setValue(value);
-  }, [value])
-
+  }, [value]);
 
   useLayoutEffect(() => {
     if (!otherProps.enterKeyHint) return;

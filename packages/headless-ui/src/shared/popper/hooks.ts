@@ -12,16 +12,8 @@ export default function usePopperShow(
 
   useEffect(() => {
     if (popperShow) {
-      removeClickOutside = addEventListener(
-        document,
-        'mousedown',
-        onDocumentClick,
-      );
-      removeTouchOutside = addEventListener(
-        document,
-        'touchstart',
-        onDocumentClick,
-      );
+      removeClickOutside = addEventListener(document, 'mousedown', onDocumentClick);
+      removeTouchOutside = addEventListener(document, 'touchstart', onDocumentClick);
     } else {
       clearOutsideHandler();
     }

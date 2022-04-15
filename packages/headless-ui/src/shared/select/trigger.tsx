@@ -16,43 +16,43 @@ type MultipleSelectTriggerProps<T> = {
 };
 
 export function SingleSelectTrigger<T>({
-  selectedOption, placeholder,
+  selectedOption,
+  placeholder,
 }: SingleSelectTriggerProps<T>): JSX.Element {
   if (!selectedOption) {
-    return (<span>{placeholder}</span>);
+    return <span>{placeholder}</span>;
   }
 
-  return (
-    <span>{selectedOption.label}</span>
-  );
+  return <span>{selectedOption.label}</span>;
 }
 
-export function MultipleSelectTrigger<T extends React.Key>(
-  { selectedOption, placeholder, onUnselect, disabled }: MultipleSelectTriggerProps<T>,
-): JSX.Element {
+export function MultipleSelectTrigger<T extends React.Key>({
+  selectedOption,
+  placeholder,
+  onUnselect,
+  disabled,
+}: MultipleSelectTriggerProps<T>): JSX.Element {
   if (!selectedOption || !selectedOption.length) {
-    return (<span>{placeholder}</span>);
+    return <span>{placeholder}</span>;
   }
 
   return (
     <>
-      {
-        selectedOption.map(({ value, label }) => {
-          return (
-            <Tag
-              style={{ marginRight: '5px' }}
-              key={value}
-              disabled={disabled}
-              value={value}
-              label={label}
-              onDelete={(id, e): void => {
-                e.stopPropagation();
-                onUnselect(id as any);
-              }}
-            />
-          );
-        })
-      }
+      {selectedOption.map(({ value, label }) => {
+        return (
+          <Tag
+            style={{ marginRight: '5px' }}
+            key={value}
+            disabled={disabled}
+            value={value}
+            label={label}
+            onDelete={(id, e): void => {
+              e.stopPropagation();
+              onUnselect(id as any);
+            }}
+          />
+        );
+      })}
     </>
   );
 }

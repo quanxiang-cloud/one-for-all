@@ -8,9 +8,11 @@ export function addEventListener(
   cb: (a: any) => any,
   option?: boolean | AddEventListenerOptions,
 ): removeEventListener {
-  const callback = ReactDOM.unstable_batchedUpdates ? function run(e: Event) {
-    ReactDOM.unstable_batchedUpdates(cb, e);
-  } : cb;
+  const callback = ReactDOM.unstable_batchedUpdates
+    ? function run(e: Event) {
+        ReactDOM.unstable_batchedUpdates(cb, e);
+      }
+    : cb;
   if (target.addEventListener) {
     target.addEventListener(eventType, callback, option);
   }
@@ -20,4 +22,3 @@ export function addEventListener(
     }
   };
 }
-

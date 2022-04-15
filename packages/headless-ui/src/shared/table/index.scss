@@ -25,7 +25,7 @@
 
 .ofa-table-adjust-header {
   th {
-    background: #F8FAFC;
+    background: #f8fafc;
     box-shadow: inset 0px -1px 0px var(--gray-200);
     border-bottom-width: 0;
   }
@@ -40,7 +40,7 @@
 .ofa-table-td {
   word-break: break-all;
   vertical-align: middle;
-  transition: padding .3s;
+  transition: padding 0.3s;
 }
 
 .ofa-table-tr {
@@ -56,10 +56,10 @@
   z-index: 2;
 }
 
-.ofa-table-td {}
+.ofa-table-td {
+}
 
 .ofa-table-compact {
-
   th,
   td {
     text-overflow: ellipsis;

@@ -1,6 +1,6 @@
 import React, { useEffect, forwardRef, ForwardedRef } from 'react';
 import cs from 'classnames';
-import Icon from '@one-for-all/icon'
+import Icon from '@one-for-all/icon';
 
 import Select from '../select';
 import Input from '../input';
@@ -236,9 +236,9 @@ function Pagination(
           options={
             pageSizeOptions
               ? pageSizeOptions.map((page: number) => ({
-                label: `${page} 条`,
-                value: page,
-              }))
+                  label: `${page} 条`,
+                  value: page,
+                }))
               : []
           }
         />

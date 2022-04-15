@@ -9,7 +9,7 @@
 }
 
 .ofa-btn--disable,
-.ofa-btn--disable>svg {
+.ofa-btn--disable > svg {
   pointer-events: none;
 }
 
@@ -21,7 +21,7 @@
 .ofa-btn--loading {
   @extend .ofa-btn--disable;
 
-  &>svg {
+  & > svg {
     animation: ofa-spin 1s linear infinite;
   }
 }

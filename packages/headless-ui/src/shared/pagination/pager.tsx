@@ -10,7 +10,10 @@ interface Props {
 
 function Pager({ page, active, onClick }: Props) {
   return (
-    <li onClick={onClick} className={cs('ofa-pagination-page-item', { 'ofa-pagination-current-page':active })}>
+    <li
+      onClick={onClick}
+      className={cs('ofa-pagination-page-item', { 'ofa-pagination-current-page': active })}
+    >
       {page}
     </li>
   );
