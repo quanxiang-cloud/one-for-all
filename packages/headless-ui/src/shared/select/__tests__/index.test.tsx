@@ -47,18 +47,3 @@ it("Multiple select test", () => {
   expect(container.querySelector('.ofa-trigger-content')).toHaveTextContent('Test1')
   expect(container.querySelector('.ofa-trigger-content')).toHaveTextContent('Test2')
 });
-
-// it("Prev the page test", () => {
-//   const { container } = render(<Select {...props} current={2} />);
-//   const prev = container.querySelector('.ofa-Select-prev');
-//   prev && fireEvent.click(prev)
-//   expect(container.querySelector('.ofa-Select-current-page')).toHaveTextContent('1')
-// });
-
-// it("Jump the page test", () => {
-//   const { container } = render(<Select {...props} />);
-//   const input = container.querySelector('.ofa-Select-quick-jumper-input');
-//   input && fireEvent.change(input, { target: { value: 2 } })
-//   input && fireEvent.blur(input)
-//   expect(container.querySelector('.ofa-Select-current-page')).toHaveTextContent('2')
-// });
