@@ -29,12 +29,12 @@ if (inBrowser) {
 
 type Target = BasicTarget<TargetElement>;
 
-export type UseEventListenerOptions = {
+export interface UseEventListenerOptions {
   target?: Target;
   capture?: boolean;
   passive?: boolean;
   depends?: Array<unknown>;
-};
+}
 
 function useEventListener(
   type: string,

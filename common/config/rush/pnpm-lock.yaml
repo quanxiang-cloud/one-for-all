@@ -196,7 +196,7 @@ dependencies:
   '@rush-temp/elkjs': file:projects/elkjs.tgz
   '@rush-temp/example': file:projects/example.tgz
   '@rush-temp/formula': file:projects/formula.tgz_d137b8b4b147bc8a685b9ec2ae5786ef
-  '@rush-temp/headless-ui': file:projects/headless-ui.tgz_81b49513bb6a924cfbd69084133e76ae
+  '@rush-temp/headless-ui': file:projects/headless-ui.tgz_16a9f478772f5b111db820f2c717c008
   '@rush-temp/history': file:projects/history.tgz
   '@rush-temp/icon': file:projects/icon.tgz_esbuild@0.14.13
   '@rush-temp/jszip': file:projects/jszip.tgz
@@ -4358,7 +4358,7 @@ packages:
       chalk: 4.1.2
       dom-accessibility-api: 0.5.13
       lz-string: 1.4.4
-      pretty-format: 27.4.6
+      pretty-format: 27.5.1
     dev: false
 
   /@testing-library/jest-dom/5.16.4:
@@ -18907,8 +18907,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  file:projects/headless-ui.tgz_81b49513bb6a924cfbd69084133e76ae:
-    resolution: {integrity: sha512-jp+7bSnVNfbIkTOJc/XQW84GuMnDwp8gA7ACSVbnVJ2yW1xdplih7BJ7nkHHIYcLpfQxqVZOHCe9Jg7e28Jnaw==, tarball: file:projects/headless-ui.tgz}
+  file:projects/headless-ui.tgz_16a9f478772f5b111db820f2c717c008:
+    resolution: {integrity: sha512-XkhTVCj0cEJJLoYnWtmdl7Pg9N9OgDZPptPNJjMQFbhrpHIQRqTH4GbTKK15cEKql5Hn4tVhwLdqtB1KVZrFxQ==, tarball: file:projects/headless-ui.tgz}
     id: file:projects/headless-ui.tgz
     name: '@rush-temp/headless-ui'
     version: 0.0.0
@@ -18918,6 +18918,7 @@ packages:
       '@rollup/plugin-commonjs': 21.0.3_rollup@2.66.0
       '@rollup/plugin-node-resolve': 13.2.0_rollup@2.66.0
       '@rollup/plugin-replace': 3.1.0_rollup@2.66.0
+      '@rushstack/eslint-config': 2.5.1_eslint@8.7.0+typescript@4.5.5
       '@storybook/addon-actions': 6.4.22_b49bddbe4b905ced4713cb857cca91fa
       '@storybook/addon-essentials': 6.4.22_ec67caf0215b0b9031c852d7426a3638
       '@storybook/addon-interactions': 6.4.22_ff0b8e0b096922eb19fbd001eeefaf9c
@@ -18930,9 +18931,11 @@ packages:
       '@types/react': 17.0.44
       '@types/react-dom': 17.0.15
       '@types/react-table': 7.7.10
+      '@typescript-eslint/parser': 5.10.1_eslint@8.7.0+typescript@4.5.5
       babel-loader: 8.2.4_acba72ea4bf9d339cdfcd8f55cdb7006
       classnames: 2.3.1
       css-loader: 5.2.7_webpack@5.72.0
+      eslint: 8.7.0
       glob: 7.2.0
       html-webpack-plugin: 5.5.0_webpack@5.72.0
       jest: 27.4.7
@@ -18967,7 +18970,6 @@ packages:
       - canvas
       - encoding
       - esbuild
-      - eslint
       - fibers
       - lit
       - lit-html
