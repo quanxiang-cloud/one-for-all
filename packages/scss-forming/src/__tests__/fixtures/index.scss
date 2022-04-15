@@ -1,0 +1,12 @@
+// some unformatted scss
+.parent{
+  color: red;
+
+  @include someMixin;
+
+      .children { font-size: 20px; }
+
+  .shouldBeFiltered {
+    color: blue;
+  }
+}

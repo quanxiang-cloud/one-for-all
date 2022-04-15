@@ -1,0 +1,44 @@
+{
+  "name": "@one-for-all/scss-forming",
+  "version": "1.0.0",
+  "description": "Transforming/Manipulating SCSS in browser",
+  "license": "MIT",
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "heft build --clean",
+    "prebundle": "rm -rf dist & yarn run build",
+    "bundle": "rollup -c rollup.config.js",
+    "lint": "eslint src/**/*.ts --fix",
+    "pack": "yarn pack",
+    "prepublishOnly": "./fixup-package-json patch",
+    "postpublish": "./fixup-package-json restore",
+    "test": "jest",
+    "test:coverage": "jest --collectCoverage",
+    "updateSnapshot": "jest --updateSnapshot"
+  },
+  "dependencies": {
+    "postcss": "8.4.5",
+    "postcss-combine-duplicated-selectors": "10.0.3",
+    "postcss-discard-comments": "5.1.1",
+    "postcss-plugin-sorting": "7.0.2",
+    "postcss-scss": "4.0.3",
+    "tslib": "2.3.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-json": "4.1.0",
+    "@rushstack/eslint-config": "2.5.1",
+    "@rushstack/heft": "0.44.2",
+    "@types/heft-jest": "~1.0.2",
+    "@types/jest": "27.4.0",
+    "@types/node": "^15.12.2",
+    "@typescript-eslint/parser": "5.10.1",
+    "eslint": "8.7.0",
+    "jest": "27.4.7",
+    "rollup": "2.66.0",
+    "rollup-plugin-esbuild": "^4.6.0",
+    "ts-jest": "^27.0.7",
+    "typescript": "4.5.5"
+  }
+}

@@ -1,0 +1,34 @@
+.foo {
+  .bar {
+    &:hover {
+      background-color: antiquewhite;
+    }
+
+    .baz {
+      color: red;
+    }
+
+    .baz:first-child {
+
+    }
+
+    .baz {
+      font-size: 30px;
+    }
+
+    .abc {
+      .xyz {
+        font-size: 30px;
+      }
+      .def {
+        .xyz {
+          color: red;
+        }
+
+        .xyz {
+          font-size: 30px;
+        }
+      }
+    }
+  }
+}

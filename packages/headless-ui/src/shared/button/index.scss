@@ -22,7 +22,7 @@
   @extend .ofa-btn--disable;
 
   &>svg {
-    animation: spin 1s linear infinite;
+    animation: ofa-spin 1s linear infinite;
   }
 }
 
@@ -30,14 +30,4 @@
   color: inherit;
   margin-right: 4px;
   fill: currentColor;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
 }

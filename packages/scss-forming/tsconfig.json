@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "lib",
+    "rootDir": "src",
+    "module": "es2015",
+    "types": ["@types/heft-jest", "@types/node"],
+  },
+  "include": ["src/**/*"]
+}
