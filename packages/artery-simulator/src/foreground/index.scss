@@ -1,0 +1,67 @@
+.simulator-foreground::-webkit-scrollbar {
+  display: none;
+  scrollbar-width: none;
+}
+
+.simulator-foreground {
+  scrollbar-width: none;
+}
+
+.foreground-scroll {
+  position: relative;
+}
+
+.shadow-nodes {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.shadow-node {
+  position: absolute;
+  border-width: 1px;
+
+  &:hover:not(.shadow-node--root, .shadow-node--active) {
+    border-color: #4285f4;
+    border-style: dashed;
+  }
+}
+
+.shadow-node--active {
+  border-color: #4285f4;
+  border-style: solid;
+}
+
+.green-zone-indicator {
+  &:not(.green-zone-indicator--root) {
+    background-color: #0080005c;
+  }
+}
+
+// TODO Support all position
+// top
+// right
+// bottom
+// left
+// inner
+// inner-top
+// inner-right
+// inner-bottom
+// inner-left
+$indictorColor: green;
+
+.green-zone-indicator--left {
+  box-shadow: -8px 0 0 0px $indictorColor;
+}
+
+.green-zone-indicator--right {
+  box-shadow: 8px 0 0 0px $indictorColor;
+}
+
+.green-zone-indicator--inner-left {
+  box-shadow: inset 8px 0 0 0px $indictorColor;
+}
+
+.green-zone-indicator--inner-right {
+  box-shadow: inset -8px 0 0 0px $indictorColor;
+}

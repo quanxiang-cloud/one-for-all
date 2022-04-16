@@ -163,6 +163,12 @@ const todoAppSchema: Artery = {
               id: 'todo-title',
               type: 'html-element',
               name: 'span',
+              props: {
+                children: {
+                  type: 'constant_property',
+                  value: 'untitled todo',
+                }
+              },
               toProps: {
                 type: 'to_props_function_spec',
                 args: 'state',
