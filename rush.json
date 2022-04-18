@@ -503,6 +503,10 @@
       "projectFolder": "packages/style-guide"
     },
     {
+      "packageName": "@one-for-all/elements-radar",
+      "projectFolder": "packages/elements-radar"
+    },
+    {
       "packageName": "@one-for-all/ui",
       "projectFolder": "packages/ui"
     },

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      #root {
+        display: grid;
+        width: 500px;
+        height: 500px;
+        padding: 8px;
+        overflow: scroll;
+        row-gap: 10px;
+        column-gap: 10px;
+        grid-template-columns: 1fr;
+        outline: 2px dashed brown;
+      }
+
+      .item {
+        outline: 1px dashed blue;
+        height: 50px;
+        display: contents;
+      }
+
+      .component {
+        height: 40px;
+        outline: 1px dashed red;
+      }
+
+      .current {
+        background-color: aqua;
+      }
+
+      #mask {
+        background-color: brown;
+        opacity: 0.6;
+      }
+    </style>
+    <button id="btn">re-observer</button>
+    <div id="root">
+      <div class="item" id="wrapper1">
+        <div class="component"></div>
+      </div>
+      <div class="item" id="wrapper2">
+        <div class="component"></div>
+      </div>
+      <div class="item" id="wrapper3">
+        <div class="component"></div>
+      </div>
+      <div class="item" id="wrapper4">
+        <div class="component"></div>
+      </div>
+      <div class="item" id="wrapper5">
+        <div class="component"></div>
+      </div>
+      <div class="item" id="wrapper6">
+        <div class="component"></div>
+      </div>
+      <div class="item" id="wrapper7">
+        <div class="component"></div>
+      </div>
+      <div class="item" id="wrapper8">
+        <div class="component"></div>
+      </div>
+      <div class="item" id="wrapper9">
+        <div class="component"></div>
+      </div>
+      <div class="item" id="wrapper">
+        <div class="component current"></div>
+        <div id="mask"></div>
+      </div>
+      <div class="item">
+        <div class="component"></div>
+      </div>
+      <div class="item">
+        <div class="component"></div>
+      </div>
+      <div class="item">
+        <div class="component"></div>
+      </div>
+      <div class="item">
+        <div class="component"></div>
+      </div>
+      <div class="item">
+        <div class="component"></div>
+      </div>
+      <div class="item">
+        <div class="component"></div>
+      </div>
+      <div class="item">
+        <div class="component"></div>
+      </div>
+      <div class="item">
+        <div class="component"></div>
+      </div>
+      <div class="item">
+        <div class="component"></div>
+      </div>
+      <div class="item">
+        <div class="component"></div>
+      </div>
+      <div class="item">
+        <div class="component"></div>
+      </div>
+      <div class="item">
+        <div class="component"></div>
+      </div>
+      <div class="item">
+        <div class="component"></div>
+      </div>
+    </div>
+  </body>
+</html>

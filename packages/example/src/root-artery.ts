@@ -204,6 +204,37 @@ const rootSchema: Artery = {
                 }
               }
             ]
+          },
+          {
+            id: 'radar-demo-link',
+            type: 'html-element',
+            name: 'a',
+            isLink: true,
+            props: {
+              href: {
+                type: 'constant_property',
+                value: '/radar'
+              },
+              style: {
+                type: 'constant_property',
+                value: {
+                  marginRight: '20px',
+                }
+              }
+            },
+            children: [
+              {
+                id: 'radar-demo-text',
+                type: 'html-element',
+                name: 'h2',
+                props: {
+                  children: {
+                    type: 'constant_property',
+                    value: 'Element Radar'
+                  }
+                }
+              }
+            ]
           }
         ]
       },
@@ -284,6 +315,16 @@ const rootSchema: Artery = {
           id: 'scss-forming',
           type: 'ref-node',
           arteryID: 'SCHEMA_ID_SCSS_FORMING',
+        },
+      },
+      {
+        id: 'route-for-elements-radar',
+        type: 'route-node',
+        path: 'radar',
+        node: {
+          id: 'scss-forming',
+          type: 'ref-node',
+          arteryID: 'SCHEMA_ID_RADAR_DEMO',
         },
       }
     ]
