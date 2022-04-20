@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import getIconPathById from './getIconPathById';
 
-export interface IconProps {
+export interface IconProps extends React.SVGProps<SVGSVGElement> {
   name: string;
-  className?: string;
   size?: number | string;
   color?: string;
-  style?: React.CSSProperties;
 }
 
 function Icon(
-  { name, size = 16, color, className = '', style }: IconProps,
+  { name, size = 16, color, className = '', style, ...props }: IconProps,
   ref?: React.Ref<SVGSVGElement>,
 ): JSX.Element {
   const [iconPathStr, setIconPathStr] = useState('');
@@ -31,6 +29,7 @@ function Icon(
 
   return (
     <svg
+      {...props}
       ref={ref}
       data-name={name}
       style={_style}
@@ -41,4 +40,4 @@ function Icon(
   );
 }
 
-export default React.forwardRef(Icon);
+export default React.forwardRef<SVGSVGElement, IconProps>(Icon);
