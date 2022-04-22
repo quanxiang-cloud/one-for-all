@@ -11,9 +11,9 @@ import {
 import { switchMap, share, distinctUntilChanged, debounce, debounceTime } from 'rxjs/operators';
 
 import { getReport, isSame } from './utils';
-import type { Report, Rect } from './type';
+import type { Report, Rect, ElementRect } from './type';
 
-export type { Report, Rect };
+export type { Report, Rect, ElementRect };
 
 export default class Radar {
   private root: HTMLElement;

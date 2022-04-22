@@ -2,7 +2,7 @@
   "name": "@one-for-all/elements-radar",
   "version": "0.1.0",
   "description": "",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "author": "",
   "type": "module",
   "main": "lib/index.js",

@@ -5,10 +5,9 @@ export interface Rect {
   width: number;
 }
 
-export type Report = Map<
-  HTMLElement,
-  {
-    raw: DOMRectReadOnly;
-    rect: Rect;
-  }
->;
+export interface ElementRect {
+  raw: DOMRectReadOnly;
+  rect: Rect;
+}
+
+export type Report = Map< HTMLElement, ElementRect>;
