@@ -14,23 +14,23 @@ interface Props {
 function LoopNodeRender({ node, ctx }: Props): React.ReactElement | null {
   useLifecycleHook(node.lifecycleHooks || {});
 
-  const { node: LoopNode } = node;
+  const { node: LoopedNode } = node;
 
-  if (LoopNode.type !== 'composed-node' && 'toProps' in node) {
+  if (LoopedNode.type !== 'composed-node' && 'toProps' in node) {
     return React.createElement(LoopIndividual, {
       iterableState: node.iterableState,
       loopKey: node.loopKey,
-      node: LoopNode,
+      node: LoopedNode,
       toProps: (v: unknown) => node.toProps(v),
       ctx,
     });
   }
 
-  if (LoopNode.type === 'composed-node') {
+  if (LoopedNode.type === 'composed-node') {
     return React.createElement(LoopComposed, {
       iterableState: node.iterableState,
       loopKey: node.loopKey,
-      node: LoopNode,
+      node: LoopedNode,
       ctx,
     });
   }

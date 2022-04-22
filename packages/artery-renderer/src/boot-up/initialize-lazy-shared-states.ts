@@ -1,5 +1,5 @@
 import { APISpecAdapter, FetchParams } from '@one-for-all/api-spec-adapter';
-import { combineLatest, firstValueFrom, from, last, map, Observable, of, switchMap, take, tap } from 'rxjs';
+import { combineLatest, firstValueFrom, from, last, map, Observable, of, switchMap, take } from 'rxjs';
 import { logger } from '@one-for-all/utils';
 
 import { APIStatesSpec, SharedStatesSpec, InitializerFunc } from '../types';

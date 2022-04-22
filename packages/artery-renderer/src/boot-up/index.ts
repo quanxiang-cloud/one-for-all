@@ -23,7 +23,7 @@ export interface BootResult {
   rootNode: ArteryNode;
 }
 
-async function bootUp({ artery, parentCTX, plugins }: BootUpParams): Promise<BootResult> {
+async function initCTX({ artery, parentCTX, plugins }: BootUpParams): Promise<CTX> {
   const { apiStateSpec, sharedStatesSpec } = artery;
   const _plugins = Object.assign({}, parentCTX?.plugins || {}, plugins || {});
 
@@ -67,14 +67,26 @@ async function bootUp({ artery, parentCTX, plugins }: BootUpParams): Promise<Boo
     plugins: _plugins,
   };
 
-  const rootNode = deserialize(artery.node, {
+  return ctx;
+}
+
+function deserializeNode(node: ArterySpec.Node, ctx: CTX): ArteryNode {
+  const rootNode = deserialize(node, {
     apiStates: ctx.apiStates,
     states: ctx.states,
     history: ctx.history,
   }) as ArteryNode;
+
   if (!rootNode) {
-    return Promise.reject(new Error('failed to init ctx!'));
+    throw new Error('failed to init ctx!');
   }
+
+  return rootNode;
+}
+
+async function bootUp({ artery, parentCTX, plugins }: BootUpParams): Promise<BootResult> {
+  const ctx = await initCTX({ artery, parentCTX, plugins });
+  const rootNode = deserializeNode(artery.node, ctx);
 
   return { ctx, rootNode };
 }

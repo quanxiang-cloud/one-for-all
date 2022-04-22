@@ -1,36 +1,13 @@
-import React, { useEffect, useImperativeHandle, useState } from 'react';
+import React, { useImperativeHandle } from 'react';
 import type { Artery } from '@one-for-all/artery';
-import { logger } from '@one-for-all/utils';
 
 import NodeRender from './node-render';
-import bootUp, { BootResult } from './boot-up';
 import type { Plugins, ArteryRendererCTX } from './types';
+import useBootResult from './boot-up/use-boot-up-result';
 
 interface Props {
   artery: Artery;
   plugins?: Plugins;
-}
-
-function useBootResult(artery: Artery, plugins?: Plugins): BootResult | undefined {
-  const [result, setResult] = useState<BootResult>();
-
-  useEffect(() => {
-    let unMounting = false;
-
-    bootUp({ artery, plugins })
-      .then((bootResult) => {
-        if (!unMounting) {
-          setResult(bootResult);
-        }
-      })
-      .catch(logger.error);
-
-    return () => {
-      unMounting = true;
-    };
-  }, [artery]);
-
-  return result;
 }
 
 function SchemaRender(
