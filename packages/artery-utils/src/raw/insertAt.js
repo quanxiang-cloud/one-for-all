@@ -1,3 +1,4 @@
+import { List } from 'immutable';
 import keyPathById from './keyPathById';
 import { getChildNodeKey } from './utils';
 
@@ -14,7 +15,7 @@ function insertAt(root, parentNodeID, index, node) {
     return root.setIn(root, childrenKeyPath, node);
   }
 
-  const childrenNodes = root.getIn(childrenKeyPath);
+  const childrenNodes = root.getIn(childrenKeyPath) || List();
   const leftSideNodes = childrenNodes.slice(0, index);
   const rightSideNodes = childrenNodes.slice(index);
 
