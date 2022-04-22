@@ -1,3 +1,6 @@
+import byArbitrary from './byArbitrary';
+import { getChildNodeKey } from './utils';
+
 /**
  * @id TreeUtils-firstChild
  * @lookup firstChild
@@ -32,8 +35,8 @@ function firstChild(node, idOrKeyPath) {
     return keyPath.concat(['node']);
   }
 
-  if (node.hasIn(keyPath.concat([childNodesKey, 0]))) {
-    return keyPath.concat([childNodesKey, 0]);
+  if (node.hasIn(keyPath.concat([childNodeKey, 0]))) {
+    return keyPath.concat([childNodeKey, 0]);
   }
 
   return;

@@ -33,6 +33,7 @@ function appendChild(schemaNode, parentID, child) {
 
   const item = node.getIn(childrenKeyPath);
   const size = Iterable.isIterable(item) ? item.size : item.length;
+
   return node.setIn(childrenKeyPath.concat([size]), child).toJS();
 }
 

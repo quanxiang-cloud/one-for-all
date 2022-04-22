@@ -53,4 +53,29 @@ declare module '@one-for-all/artery-utils' {
   export function patchNode(node: Node, partialNode: Partial<Node>): Node | undefined;
   export function deleteByID(node: Node, id: string): Node;
   export function getNodeParents(node: Node, id: string): Node[] | undefined;
+  /**
+   *
+   * @param root Root node
+   * @param referenceNodeID insert before this node
+   * @param node node to be inserted
+   * @returns New root, or undefined if insert failed
+   */
+  export function insertBefore(root: Node, referenceNodeID: string, node: Node): Node | undefined;
+  /**
+   *
+   * @param root Root node
+   * @param referenceNodeID insert after this node
+   * @param node node to be inserted
+   * @returns New root, or undefined if insert failed
+   */
+  export function insertAfter(root: Node, referenceNodeID: string, node: Node): Node | undefined;
+  /**
+   *
+   * @param root Root node
+   * @param parentNodeID
+   * @param index inserted at this index
+   * @param node
+   * @returns New root, or undefined if insert failed
+   */
+  export function insertAt(root, parentNodeID, index, node): Node | undefined;
 }
