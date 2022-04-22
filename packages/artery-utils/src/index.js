@@ -7,3 +7,5 @@ export { default as getNodeParents } from './getNodeParents';
 export { default as patchNode } from './patchNode';
 export { default as travel } from './travel';
 export { default as insertBefore } from './insertBefore';
+export { default as insertAfter } from './insertAfter';
+export { default as insertAt } from './insertAt';
