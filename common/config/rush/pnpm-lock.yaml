@@ -7,7 +7,9 @@ specifiers:
   '@codemirror/lang-javascript': ^0.19.3
   '@leifandersen/react-codemirror2': ~7.2.1
   '@one-for-all/artery-renderer': 0.20.0
+  '@one-for-all/elements-radar': 0.1.0
   '@one-for-all/headless-ui': 0.1.0
+  '@one-for-all/icon': 0.6.1
   '@one-for-all/render-engine': 0.18.0
   '@one-for-all/schema-spec': 0.15.0
   '@one-for-all/style-guide': 0.1.3
@@ -25,6 +27,7 @@ specifiers:
   '@rush-temp/artery-utils': file:./projects/artery-utils.tgz
   '@rush-temp/codemirror': file:./projects/codemirror.tgz
   '@rush-temp/draft-js': file:./projects/draft-js.tgz
+  '@rush-temp/elements-radar': file:./projects/elements-radar.tgz
   '@rush-temp/elkjs': file:./projects/elkjs.tgz
   '@rush-temp/example': file:./projects/example.tgz
   '@rush-temp/formula': file:./projects/formula.tgz
@@ -46,7 +49,6 @@ specifiers:
   '@rush-temp/rxjs6': file:./projects/rxjs6.tgz
   '@rush-temp/scss-forming': file:./projects/scss-forming.tgz
   '@rush-temp/style-guide': file:./projects/style-guide.tgz
-  '@rush-temp/elements-radar': file:./projects/elements-radar.tgz
   '@rush-temp/ui': file:./projects/ui.tgz
   '@rush-temp/utils': file:./projects/utils.tgz
   '@rush-temp/xlsx': file:./projects/xlsx.tgz
@@ -171,7 +173,9 @@ dependencies:
   '@codemirror/lang-javascript': 0.19.7
   '@leifandersen/react-codemirror2': 7.2.1_codemirror@5.65.2+react@17.0.2
   '@one-for-all/artery-renderer': 0.20.0
+  '@one-for-all/elements-radar': 0.1.0
   '@one-for-all/headless-ui': 0.1.0
+  '@one-for-all/icon': 0.6.1
   '@one-for-all/render-engine': 0.18.0
   '@one-for-all/schema-spec': 0.15.0
   '@one-for-all/style-guide': 0.1.3
@@ -189,6 +193,7 @@ dependencies:
   '@rush-temp/artery-utils': file:projects/artery-utils.tgz_esbuild@0.14.13
   '@rush-temp/codemirror': file:projects/codemirror.tgz_esbuild@0.14.13
   '@rush-temp/draft-js': file:projects/draft-js.tgz_react-dom@17.0.2+react@17.0.2
+  '@rush-temp/elements-radar': file:projects/elements-radar.tgz_c445a9d32c5b835fb9c30404148ec5af
   '@rush-temp/elkjs': file:projects/elkjs.tgz
   '@rush-temp/example': file:projects/example.tgz
   '@rush-temp/formula': file:projects/formula.tgz_ea1c2b121f3a53d3e19a7a2b64ae74a6
@@ -210,7 +215,6 @@ dependencies:
   '@rush-temp/rxjs6': file:projects/rxjs6.tgz
   '@rush-temp/scss-forming': file:projects/scss-forming.tgz_ea1c2b121f3a53d3e19a7a2b64ae74a6
   '@rush-temp/style-guide': file:projects/style-guide.tgz_typescript@4.5.5
-  '@rush-temp/elements-radar': file:projects/elements-radar.tgz_c445a9d32c5b835fb9c30404148ec5af
   '@rush-temp/ui': file:projects/ui.tgz_esbuild@0.14.13
   '@rush-temp/utils': file:projects/utils.tgz_@babel+core@7.17.8
   '@rush-temp/xlsx': file:projects/xlsx.tgz
@@ -2140,6 +2144,12 @@ packages:
 
   /@one-for-all/artery/0.15.0:
     resolution: {integrity: sha512-zZmnK09Zt33s335GBdQHMy5sG7+rSrWHaz1mqjIrdXLHWUvkkOISuEV739SWgnCamqEwUv58/QDTH9/VMIb32w==}
+    dev: false
+
+  /@one-for-all/elements-radar/0.1.0:
+    resolution: {integrity: sha512-fsOQPuX+uzjcjQzd1QXnSs6MZr8ud5mMbyJS/prxInwAKAbBAnFeFchWI9nDYyHXOQEGXQ0gcBe6/TNaGFZWTQ==}
+    dependencies:
+      rxjs: 7.5.5
     dev: false
 
   /@one-for-all/headless-ui/0.1.0:
@@ -13090,6 +13100,42 @@ packages:
       - react-dom
     dev: false
 
+  file:projects/elements-radar.tgz_c445a9d32c5b835fb9c30404148ec5af:
+    resolution: {integrity: sha512-siQZROKCkcNeohwEGQBoRvMyHhXrKo2KvnqQHLwQFw/CeESH7foyuAbr0KxusJoPKNrrf6UtPIMNWDiHXAaAVA==, tarball: file:projects/elements-radar.tgz}
+    id: file:projects/elements-radar.tgz
+    name: '@rush-temp/elements-radar'
+    version: 0.0.0
+    dependencies:
+      '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
+      '@rushstack/eslint-config': 2.5.1_eslint@8.7.0+typescript@4.5.5
+      '@rushstack/heft': 0.44.2
+      '@testing-library/jest-dom': 5.16.2
+      '@tsconfig/recommended': 1.0.1
+      '@types/heft-jest': 1.0.2
+      '@typescript-eslint/parser': 5.10.1_eslint@8.7.0+typescript@4.5.5
+      esbuild: 0.14.13
+      eslint: 8.7.0
+      jest: 27.4.7
+      jest-diff: 27.4.6
+      pretty-format: 27.4.6
+      rollup: 2.66.0
+      rollup-plugin-esbuild: 4.8.2_esbuild@0.14.13+rollup@2.66.0
+      rollup-plugin-terser: 7.0.2_rollup@2.66.0
+      rxjs: 7.5.5
+      ts-jest: 27.1.3_13365270d18bd1970cc0926aba059d61
+      typescript: 4.5.5
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@types/jest'
+      - babel-jest
+      - bufferutil
+      - canvas
+      - node-notifier
+      - supports-color
+      - ts-node
+      - utf-8-validate
+    dev: false
+
   file:projects/elkjs.tgz:
     resolution: {integrity: sha512-n31PfDI6ZG9T5JnQdmNdUL85v3nMzG5c34uHaoeUeIAVUBY3AJK1Rqfy9qyR809XOEwxEBCBJu8EmUfK6nPsgg==, tarball: file:projects/elkjs.tgz}
     name: '@rush-temp/elkjs'
@@ -13104,12 +13150,13 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-hFDlJz6RX5K9FLs/d4dEhWtp3CMV9xE9M1UbBTNysGtYoM2WVjEGmbCJngXccl+IC6yEKpJqhdrYdIGe03DuLQ==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-UkybMKAC7h9KvJoJFUXUzporaWZJiCyMVKhK4pxAMCFYB22L6qMV6GPNyLXcqRPAJTVzIKhapOAtXYJRGjMigg==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
       '@leifandersen/react-codemirror2': 7.2.1_codemirror@5.65.2+react@17.0.2
       '@one-for-all/artery-renderer': 0.20.0
+      '@one-for-all/elements-radar': 0.1.0
       '@one-for-all/headless-ui': 0.1.0
       '@one-for-all/icon': 0.6.1
       '@one-for-all/render-engine': 0.18.0
@@ -13180,7 +13227,7 @@ packages:
     dev: false
 
   file:projects/headless-ui.tgz_esbuild@0.14.13:
-    resolution: {integrity: sha512-7uneU/eK8rAXKZZrZOllKQnE1hKq1z2u2FXiY7UzOCZI1OfkmiqOjLEj9Uy2UPRkaHavvRvRXdKDQMhTXVxrYw==, tarball: file:projects/headless-ui.tgz}
+    resolution: {integrity: sha512-R6Tv9XH81RyhrmRLim/UCGtbCrHkkzlwn9z5VSaVzXkepgVsCeBpsJLjoxeU33TiRSkhVM0ulrH38sC9l/OYMA==, tarball: file:projects/headless-ui.tgz}
     id: file:projects/headless-ui.tgz
     name: '@rush-temp/headless-ui'
     version: 0.0.0
@@ -13566,42 +13613,6 @@ packages:
       - supports-color
       - ts-node
       - typescript
-    dev: false
-
-  file:projects/elements-radar.tgz_c445a9d32c5b835fb9c30404148ec5af:
-    resolution: {integrity: sha512-qXg1BHUzUMWExJgIXsuobDRbYPXQnP+iqQGqmd0GLaAS6IpdX+TS8CstVXX4bTHlBXBSdcckyTsyyOOIJb0PsQ==, tarball: file:projects/elements-radar.tgz}
-    id: file:projects/elements-radar.tgz
-    name: '@rush-temp/elements-radar'
-    version: 0.0.0
-    dependencies:
-      '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
-      '@rushstack/eslint-config': 2.5.1_eslint@8.7.0+typescript@4.5.5
-      '@rushstack/heft': 0.44.2
-      '@testing-library/jest-dom': 5.16.2
-      '@tsconfig/recommended': 1.0.1
-      '@types/heft-jest': 1.0.2
-      '@typescript-eslint/parser': 5.10.1_eslint@8.7.0+typescript@4.5.5
-      esbuild: 0.14.13
-      eslint: 8.7.0
-      jest: 27.4.7
-      jest-diff: 27.4.6
-      pretty-format: 27.4.6
-      rollup: 2.66.0
-      rollup-plugin-esbuild: 4.8.2_esbuild@0.14.13+rollup@2.66.0
-      rollup-plugin-terser: 7.0.2_rollup@2.66.0
-      rxjs: 7.5.5
-      ts-jest: 27.1.3_13365270d18bd1970cc0926aba059d61
-      typescript: 4.5.5
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@types/jest'
-      - babel-jest
-      - bufferutil
-      - canvas
-      - node-notifier
-      - supports-color
-      - ts-node
-      - utf-8-validate
     dev: false
 
   file:projects/ui.tgz_esbuild@0.14.13:
