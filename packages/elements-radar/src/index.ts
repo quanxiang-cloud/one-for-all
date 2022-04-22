@@ -8,7 +8,7 @@ import {
   Subscription,
   animationFrames,
 } from 'rxjs';
-import { switchMap, share, distinctUntilChanged, debounce, debounceTime } from 'rxjs/operators';
+import { switchMap, share, distinctUntilChanged, debounce } from 'rxjs/operators';
 
 import { getReport, isSame } from './utils';
 import type { Report, Rect, ElementRect } from './type';
@@ -45,12 +45,15 @@ export default class Radar {
       previousElements = elements;
     });
 
-    this.signal$ = merge(this.scrollSign$, this.targets$, this.resizeSign$).pipe(debounceTime(100));
+    this.signal$ = merge(this.scrollSign$, this.targets$, this.resizeSign$).pipe(
+      // debounceTime(100),
+      debounce(() => animationFrames()),
+    );
 
     this.report$ = this.signal$.pipe(
       switchMap(() => from(getReport(this.targets$.value, this.root))),
-      distinctUntilChanged(isSame),
       debounce(() => animationFrames()),
+      distinctUntilChanged(isSame),
       share(),
     );
   }
