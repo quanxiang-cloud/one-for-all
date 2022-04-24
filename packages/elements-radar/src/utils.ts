@@ -35,10 +35,10 @@ export function getReport(elements: HTMLElement[], root: HTMLElement): Promise<R
   return new Promise((resolve) => {
     const observer = new IntersectionObserver(
       (entries) => {
-        const pairs: Array<[HTMLElement, { raw: DOMRectReadOnly; rect: Rect }]> = entries.map(
+        const pairs: Array<[HTMLElement, { raw: DOMRectReadOnly; relativeRect: Rect }]> = entries.map(
           ({ target, boundingClientRect, rootBounds }) => {
-            const rect: Rect = calcRect(boundingClientRect, rootBounds);
-            return [target as HTMLElement, { rect, raw: boundingClientRect }];
+            const relativeRect: Rect = calcRect(boundingClientRect, rootBounds);
+            return [target as HTMLElement, { relativeRect, raw: boundingClientRect }];
           },
         );
 
