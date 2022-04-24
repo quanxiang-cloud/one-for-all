@@ -42,7 +42,7 @@ function getOutput(pkgName, pkgVersion, filename) {
 
 function getCommonConfigs(side) {
   return {
-    external: ['react', 'react-dom', 'react-is', 'lodash'],
+    external: ['react', 'react-dom', 'react-is', 'lodash', /@one-for-all\/.*/],
 
     plugins: [
       // peerDepsExternal(),

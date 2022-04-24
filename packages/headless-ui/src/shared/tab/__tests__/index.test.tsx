@@ -17,7 +17,7 @@ const tabNavsTestProps: TabNavProps<React.Key> = {
     height: '50px',
   },
   className: 'test-className',
-  activeNavClassName: 'test-active-className',
+  // activeNavClassName: 'test-active-className',
   navsClassName: 'test-navs-className',
   currentKey: 2,
   onClick: (item) => {
@@ -41,7 +41,7 @@ test('tab navs click test', () => {
   const clickTestProps: TabNavProps<React.Key> = {
     navs,
     className: 'tab-click-test-className',
-    activeNavClassName: 'tab-click-test-active-className',
+    // activeNavClassName: 'tab-click-test-active-className',
     currentKey: 3,
     onClick: handleClick,
   };
@@ -59,7 +59,7 @@ test('tab props test', () => {
     direction: 'horizon',
     maxHeight: '500px',
     className: 'test-className',
-    activeNavClassName: 'test-active-className',
+    // activeNavClassName: 'test-active-className',
     navsClassName: 'test-navs-className',
     currentKey: 2,
     onChange: (key) => {
