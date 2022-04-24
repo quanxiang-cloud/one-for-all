@@ -1,0 +1,241 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`travel_call_Visitors 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "id": "new__ref-schema",
+      "schemaID": "whatever",
+      "type": "ref-node",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "exportName": "TodoInput",
+          "id": "new__todo-input",
+          "packageName": "todo-app",
+          "packageVersion": "whatever",
+          "props": Object {
+            "onEnter": Object {
+              "func": Object {
+                "args": "value",
+                "body": "
+                const title = value.trim();
+                if (!title) {
+                  return;
+                }
+
+                this.apiStates.postTodo.fetch({ body: { title }}, () => {
+                  this.apiStates[\\"全部待办列表\\"].refresh();
+                })
+                ",
+                "type": "raw",
+              },
+              "type": "functional_property",
+            },
+          },
+          "supportStateExposure": true,
+          "type": "react-component",
+        },
+      ],
+      "id": "new__todo-input-container",
+      "name": "div",
+      "type": "html-element",
+    },
+    Object {
+      "id": "new__todo-list-loop-composedNode",
+      "iterableState": Object {
+        "convertor": Object {
+          "expression": "state",
+          "type": "state_convert_expression",
+        },
+        "fallback": Array [],
+        "stateID": "全部待办列表",
+        "type": "api_result_property",
+      },
+      "loopKey": "id",
+      "node": Object {
+        "children": Array [],
+        "id": "new__compose-node-container",
+        "nodes": Array [
+          Object {
+            "id": "new__todo-toggle",
+            "name": "input",
+            "props": Object {
+              "checked": Object {
+                "type": "constant_property",
+                "value": true,
+              },
+              "onChange": Object {
+                "func": Object {
+                  "args": "e",
+                  "body": "
+                  this.apiStates['更新待办'].fetch(
+                    { params: { todoId: e.target.dataset.id } },
+                    () => this.apiStates[\\"全部待办列表\\"].refresh()
+                    )",
+                  "type": "raw",
+                },
+                "type": "functional_property",
+              },
+              "type": Object {
+                "type": "constant_property",
+                "value": "checkbox",
+              },
+            },
+            "toProps": Object {
+              "args": "state",
+              "body": "
+              return {
+                'data-id': state.id,
+                checked: state.status === \\"working\\" ? false : true,
+              }",
+              "type": "to_props_function_spec",
+            },
+            "type": "html-element",
+          },
+          Object {
+            "id": "new__todo-title",
+            "name": "span",
+            "toProps": Object {
+              "args": "state",
+              "body": "
+                return {
+                  children: state.title,
+                }
+                ",
+              "type": "to_props_function_spec",
+            },
+            "type": "html-element",
+          },
+          Object {
+            "id": "new__todo-delete",
+            "name": "button",
+            "props": Object {
+              "children": Object {
+                "type": "constant_property",
+                "value": "X",
+              },
+              "onClick": Object {
+                "func": Object {
+                  "args": "e",
+                  "body": "
+                    this.apiStates['删除待办'].fetch({ params: { todoId: e.target.id }}, () => {
+                      this.apiStates[\\"全部待办列表\\"].refresh()
+                    })
+                    ",
+                  "type": "raw",
+                },
+                "type": "functional_property",
+              },
+              "style": Object {
+                "type": "constant_property",
+                "value": Object {
+                  "display": "inline-block",
+                  "float": "right",
+                  "width": "50px",
+                },
+              },
+            },
+            "toProps": Object {
+              "args": "state",
+              "body": "
+                return {
+                  id: state.id,
+                }
+                ",
+              "type": "to_props_function_spec",
+            },
+            "type": "html-element",
+          },
+        ],
+        "outLayer": Object {
+          "id": "todo-item-outLayer",
+          "name": "div",
+          "props": Object {
+            "style": Object {
+              "type": "constant_property",
+              "value": Object {
+                "marginBottom": "8px",
+              },
+            },
+          },
+          "type": "html-element",
+        },
+        "type": "composed-node",
+      },
+      "props": Object {},
+      "type": "loop-container",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "exportName": "TodoFilter",
+          "id": "new__todo-filter",
+          "packageName": "todo-app",
+          "packageVersion": "whatever",
+          "props": Object {
+            "onFetchStatus": Object {
+              "stateID": "todoStatus",
+              "type": "api_invoke_property",
+            },
+            "onToggleStatus": Object {
+              "paramsBuilder": Object {
+                "args": "status",
+                "body": "
+                  return { params: { status } };
+                  ",
+                "type": "param_builder_func_spec",
+              },
+              "stateID": "全部待办列表",
+              "type": "api_invoke_property",
+            },
+          },
+          "type": "react-component",
+        },
+      ],
+      "id": "new__footer",
+      "name": "div",
+      "props": Object {
+        "style": Object {
+          "type": "constant_property",
+          "value": Object {
+            "borderTop": "1px solid #eee",
+            "display": "flex",
+            "justifyContent": "space-between",
+            "paddingTop": "16px",
+          },
+        },
+      },
+      "type": "html-element",
+    },
+  ],
+  "id": "new__container",
+  "lifecycleHooks": Object {
+    "didMount": Object {
+      "args": "",
+      "body": "this.apiStates['全部待办列表'].fetch();",
+      "type": "lifecycle_hook_func_spec",
+    },
+  },
+  "name": "div",
+  "props": Object {
+    "id": Object {
+      "type": "constant_property",
+      "value": "container",
+    },
+    "style": Object {
+      "type": "constant_property",
+      "value": Object {
+        "borderRadius": "2px",
+        "boxShadow": "blue 0px 0px 0px 2px inset, rgb(255, 255, 255) 10px -10px 0px -3px, rgb(31, 193, 27) 10px -10px, rgb(255, 255, 255) 20px -20px 0px -3px, rgb(255, 217, 19) 20px -20px, rgb(255, 255, 255) 30px -30px 0px -3px, rgb(255, 156, 85) 30px -30px, rgb(255, 255, 255) 40px -40px 0px -3px, rgb(255, 85, 85) 40px -40px",
+        "margin": "auto",
+        "marginTop": "100px",
+        "padding": "20px",
+        "width": "500px",
+      },
+    },
+  },
+  "type": "html-element",
+}
+`;

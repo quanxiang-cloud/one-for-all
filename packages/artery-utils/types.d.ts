@@ -37,16 +37,24 @@ declare module '@one-for-all/artery-utils' {
     iterator: WalkIterator<T, Stop>,
   ): T | Stop | undefined;
 
+  type HTMLNode = import('@one-for-all/artery').HTMLNode
+  type ReactComponentNode = import('@one-for-all/artery').ReactComponentNode
+  type LoopContainerNode = import('@one-for-all/artery').LoopContainerNode
+  type ComposedNode = import('@one-for-all/artery').ComposedNode
+  type RefNode = import('@one-for-all/artery').RefNode
+  type JSXNode = import('@one-for-all/artery').JSXNode
+  type RouteNode = import('@one-for-all/artery').RouteNode
+
   export type Visitors = Partial<{
-    htmlNode: (currentNode: import('@one-for-all/artery').HTMLNode) => void;
-    reactComponentNode: (currentNode: import('@one-for-all/artery').ReactComponentNode) => void;
-    loopContainerNode: (currentNode: import('@one-for-all/artery').LoopContainerNode) => void;
-    composedNode: (currentNode: import('@one-for-all/artery').ComposedNode) => void;
-    refNode: (currentNode: import('@one-for-all/artery').RefNode) => void;
-    jsxNode: (currentNode: import('@one-for-all/artery').JSXNode) => void;
-    routeNode: (currentNode: import('@one-for-all/artery').RouteNode) => void;
+    htmlNode: (currentNode: HTMLNode) => HTMLNode | undefined;
+    reactComponentNode: (currentNode: ReactComponentNode) => ReactComponentNode | undefined;
+    loopContainerNode: (currentNode: LoopContainerNode) => LoopContainerNode | undefined;
+    composedNode: (currentNode: ComposedNode) => ComposedNode | undefined;
+    refNode: (currentNode: RefNode) => RefNode | undefined;
+    jsxNode: (currentNode: JSXNode) => JSXNode | undefined;
+    routeNode: (currentNode: RouteNode) => RouteNode | undefined;
   }>;
-  export function travel(node: Node, Visitors: Visitors): void;
+  export function travel(node: Node, Visitors: Visitors): Node;
   export function getNodeParentIDs(node: Node, id: string): string[] | undefined;
   export function findNodeByID(node: Node, id: string): Node | undefined;
   export function appendChild(node: Node, parentID: string, child: Node): Node | undefined;
