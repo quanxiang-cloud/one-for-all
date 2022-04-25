@@ -8,7 +8,7 @@ import {
   Subscription,
   animationFrames,
 } from 'rxjs';
-import { switchMap, share, distinctUntilChanged, debounce } from 'rxjs/operators';
+import { audit, switchMap, share, distinctUntilChanged, debounce, tap, auditTime } from 'rxjs/operators';
 
 import { getReport, isSame } from './utils';
 import type { Report, Rect, ElementRect } from './type';
@@ -19,14 +19,24 @@ export default class Radar {
   private root: HTMLElement;
   private targets$: BehaviorSubject<HTMLElement[]> = new BehaviorSubject<HTMLElement[]>([]);
   private signal$: Observable<unknown>;
-  private scrollSign$: Observable<unknown>;
   private resizeSign$: Subject<unknown> = new Subject();
   private report$: Observable<Report>;
   private resizeObserver: ResizeObserver;
 
   public constructor(root?: HTMLElement) {
     this.root = root || window.document.body;
-    this.scrollSign$ = fromEvent(this.root, 'scroll');
+    const scroll$ = fromEvent(this.root, 'scroll');
+
+    const scrollDone$ = new Subject<void>();
+    let timer: number;
+    scroll$.subscribe(() => {
+      clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        scrollDone$.next();
+      }, 50);
+    });
+
+    const scrollSign$ = scroll$.pipe(audit(() => scrollDone$));
 
     this.resizeObserver = new ResizeObserver(this.onResize);
     this.resizeObserver.observe(this.root);
@@ -45,9 +55,13 @@ export default class Radar {
       previousElements = elements;
     });
 
-    this.signal$ = merge(this.scrollSign$, this.targets$, this.resizeSign$).pipe(
+    this.signal$ = merge(scrollSign$, this.targets$, this.resizeSign$).pipe(
       // debounceTime(100),
       debounce(() => animationFrames()),
+      auditTime(50),
+      tap(() => {
+        console.log('signal$ emit....');
+      })
     );
 
     this.report$ = this.signal$.pipe(
