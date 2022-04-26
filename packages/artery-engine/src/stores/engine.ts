@@ -1,27 +1,26 @@
-import { Context, createContext } from 'react';
 import { BehaviorSubject } from 'rxjs';
+import type { Artery, Node } from '@one-for-all/artery';
+import { set, lensPath } from 'ramda';
 
-function buildContextGetter(): <S extends PageEngineV2.BaseBlocksCommunicationState>(instanceId: string) => Context<BehaviorSubject<PageEngineV2.EngineState<S>>> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const contextMap: Record<string, Context<BehaviorSubject<PageEngineV2.EngineState<any>>>> = {};
+export class Store<T extends ArteryEngine.BaseBlocksCommunicationState> extends BehaviorSubject<ArteryEngine.EngineState<T>> {
+  private set = <T>(path: string, value: T): void => {
+    this.next(set(lensPath(path.split('.')), value, this.getValue()));
+  }
 
-  return <S extends PageEngineV2.BaseBlocksCommunicationState>(instanceId: string): Context<BehaviorSubject<PageEngineV2.EngineState<S>>> => {
-    const context = contextMap[instanceId];
-    if (context) {
-      return context;
-    }
-    const Context = createContext<BehaviorSubject<PageEngineV2.EngineState<S>>>(create<S>({}));
-    contextMap[instanceId] = Context;
-    return Context;
+  public setArteryStore(arteryStore: BehaviorSubject<Artery>): void {
+    this.set('arteryStore$', arteryStore);
+  }
+
+  public setActiveNode = (node?: Node): void => {
+    this.set('activeNode', node);
+  }
+
+  public setBlocksCommunicationState = <T>(blocksCommunicationState: BehaviorSubject<T>): void => {
+    this.set('blocksCommunicationState$', blocksCommunicationState);
   }
 }
 
-export function create<T extends PageEngineV2.BaseBlocksCommunicationState>(stateValue: PageEngineV2.EngineState<T>): BehaviorSubject<PageEngineV2.EngineState<T>> {
-  return new BehaviorSubject<PageEngineV2.EngineState<T>>(stateValue);
+export function create<T extends ArteryEngine.BaseBlocksCommunicationState>(stateValue: ArteryEngine.EngineState<T>): Store<T> {
+  return new Store<T>(stateValue);
 }
 
-export function update<T extends PageEngineV2.BaseBlocksCommunicationState>(store$: BehaviorSubject<PageEngineV2.EngineState<T>>, engineState: Partial<PageEngineV2.EngineState<T>>): void {
-  store$.next({ ...store$.value, ...engineState });
-}
-
-export const getContext = buildContextGetter();

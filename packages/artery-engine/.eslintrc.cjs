@@ -11,6 +11,7 @@ module.exports = {
   parserOptions: { tsconfigRootDir: __dirname },
   rules: {
     '@typescript-eslint/typedef': 'off',
+    '@rushstack/no-new-null': 'off',
     '@typescript-eslint/naming-convention': [
       'error',
       {

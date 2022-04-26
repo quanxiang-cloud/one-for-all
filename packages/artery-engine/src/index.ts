@@ -1,6 +1,6 @@
-import PageEngine2 from './app';
+import ArteryEngine from './app';
 
-export default PageEngine2;
+export default ArteryEngine;
 export * from './type';
 export * from './utils';
-export * from './plugin/command';
+export * from './hooks';

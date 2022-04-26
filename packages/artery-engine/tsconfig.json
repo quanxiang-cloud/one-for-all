@@ -6,8 +6,11 @@
     "module": "ESNext",
     "baseUrl": ".",
     "skipLibCheck": true,
-    "declaration": true
+    "declaration": true,
+    "paths": {
+      "@arteryEngine/*": ["./src/*"]
+    }
   },
   "include": ["src/**/*"],
-  "exclude": ["**/tests", "**/mocks"],
+  "exclude": ["**/tests", "**/mocks"]
 }

@@ -1,25 +1,22 @@
-import React, { CSSProperties, useMemo, useEffect, useContext } from "react";
+import React, { CSSProperties, useMemo, useEffect, useCallback } from "react";
 import { BehaviorSubject } from "rxjs";
 
+import { useEngineStoreContext } from '@arteryEngine/context';
+
 import Block from '../block';
-import { getContext as getEngineStoreContext, update as updateEngineStore  } from '../../stores/engine';
 
 import './style.scss';
 
-export default function Layer<T extends PageEngineV2.BaseBlocksCommunicationState>(props: PageEngineV2.LayerProps<T>): JSX.Element {
-  const { blocks, gridTemplateColumns, gridTemplateRows, zIndex, engineId, blocksCommunicationStateInitialValue, setLayer } = props;
-  const EngineStoreContext = useMemo(() => getEngineStoreContext<T>(engineId), [engineId]);
-  const engineStore$ = useContext(EngineStoreContext);
-  const blocksCommunicationState$ = useMemo(
-    () => new BehaviorSubject<T>(blocksCommunicationStateInitialValue),
-    [blocksCommunicationStateInitialValue]
-  );
+export default function Layer<T extends ArteryEngine.BaseBlocksCommunicationState>(props: ArteryEngine.LayerProps<T>): JSX.Element {
+  const { blocks, gridTemplateColumns, gridTemplateRows, zIndex, blocksCommunicationStateInitialValue, setLayer } = props;
+  const engineStore$ = useEngineStoreContext();
+  const blocksCommunicationState$ = useMemo(() => new BehaviorSubject<T>(blocksCommunicationStateInitialValue), []);
 
   useEffect(() => {
-    updateEngineStore(engineStore$, { blocksCommunicationState$ });
-  }, [blocksCommunicationState$]);
+    engineStore$.setBlocksCommunicationState<T>(blocksCommunicationState$);
+  }, []);
 
-  const pageEngineLayerStyle: CSSProperties = {
+  const arteryEngineLayerStyle: CSSProperties = {
     display: 'grid',
     gap: '1px',
     gridTemplateColumns,
@@ -27,13 +24,16 @@ export default function Layer<T extends PageEngineV2.BaseBlocksCommunicationStat
     zIndex,
   }
 
+  const visibleFilter = useCallback(({ visible }: ArteryEngine.Block<T>): boolean => {
+    return visible !== false;
+  }, []);
+
   return (
-    <div className="page-engine-layer" style={pageEngineLayerStyle}>
-      {blocks.filter(({ visible }) => visible !== false).map((block, index) => (
+    <div className="page-engine-layer" style={arteryEngineLayerStyle}>
+      {blocks.filter(visibleFilter).map((block, index) => (
         <Block<T>
           {...block}
           key={index}
-          engineId={engineId}
           setLayer={setLayer}
         />
       ))}

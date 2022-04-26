@@ -1,6 +1,7 @@
-declare namespace PageEngineV2 {
+declare namespace ArteryEngine {
+  import type { Dispatch, SetStateAction } from 'react';
   import type { BehaviorSubject } from 'rxjs';
-  import type { Artery } from '@one-for-all/artery';
+  import type { Artery, Node } from '@one-for-all/artery';
 
   export interface Block<T extends BaseBlocksCommunicationState> {
     render: (props: BlockItemProps<T>) => JSX.Element;
@@ -12,7 +13,6 @@ declare namespace PageEngineV2 {
   }
 
   export interface BlockProps<T extends BaseBlocksCommunicationState> extends Block<T> {
-    engineId: string;
     setLayer: (transfer: LayerTransfer<T>) => void;
   }
 
@@ -25,32 +25,66 @@ declare namespace PageEngineV2 {
 
   export interface LayerProps<T extends BaseBlocksCommunicationState> extends Layer<T> {
     zIndex: number;
-    engineId: string;
     setLayer: (transfer: LayerTransfer<T>) => void;
   }
 
   export type LayerTransfer<T extends BaseBlocksCommunicationState> = (layer: Layer<T>) => Layer<T>;
 
   export interface BaseBlocksCommunicationState {
-    activeNodeID: string;
+    [key: string]: any;
   }
 
   export type BlocksCommunicationState<T extends BaseBlocksCommunicationState> = BehaviorSubject<T>;
   export interface BlockItemProps<T extends BaseBlocksCommunicationState> {
-    engineId: string;
-    onChange: (schema: Artery) => void;
-    schema: Artery;
-    blocksCommunicationState$: BlocksCommunicationState<T>;
+    onChange: (artery: Artery) => void;
+    artery: Artery;
+    sharedState: T;
+    onSharedStateChange: (path: string, value: any) => void;
     setLayer: (transfer: LayerTransfer<T>) => void;
+    commands?: CommandNameRunnerMap;
+    activeNode?: Node;
+    setActiveNode: (node?: Node) => void;
+    generateNodeId: (prefix?: string) => string;
   }
 
   export interface Props<T extends BaseBlocksCommunicationState> {
-    schema: Artery;
+    artery: Artery;
     layers: Array<Layer<T>>;
   }
 
   export interface EngineState<T extends BaseBlocksCommunicationState> {
-    schemaStore$?: BehaviorSubject<Artery>;
+    arteryStore$?: BehaviorSubject<Artery>;
     blocksCommunicationState$?: BlocksCommunicationState<T>;
+    activeNode?: Node;
+    useCommandState?: UseCommandState;
+  }
+
+  interface RedoUndo {
+    undo?: () => void;
+    redo?: () => void;
+  }
+
+  export interface Command {
+    name: string;
+    execute: (...args: any[]) => RedoUndo;
+    initer?: () => ((() => void) | undefined);
+    keyboard?: string | string[];
+  }
+
+  export type CommandExecuteWrapper = (...args: any[]) => void;
+  export type CommandNameRunnerMap = Record<string, CommandExecuteWrapper>;
+
+  export interface CommandState {
+    currentUndoRedoIndex: number;
+    redoUndoList: RedoUndo[];
+    commandList: Array<Command>;
+    commandNameRunnerMap: CommandNameRunnerMap;
+    destroyList: Array<((() => void) | undefined)>;
+  }
+
+  export interface UseCommandState {
+    commandStateRef: MutableRefObject<CommandState>;
+    registry: (command: Command) => void;
+    commandNameRunnerMap: CommandNameRunnerMap;
   }
 }
