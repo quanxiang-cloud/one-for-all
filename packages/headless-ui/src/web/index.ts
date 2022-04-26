@@ -31,5 +31,5 @@ export {
   Loading,
   Pagination,
   Select,
-  usePopper,
+  usePopper
 };
