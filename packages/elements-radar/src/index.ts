@@ -8,7 +8,7 @@ import {
   Subscription,
   animationFrames,
 } from 'rxjs';
-import { audit, switchMap, share, distinctUntilChanged, debounce, tap, auditTime } from 'rxjs/operators';
+import { audit, switchMap, share, distinctUntilChanged, debounce, auditTime } from 'rxjs/operators';
 
 import { getReport, isSame } from './utils';
 import type { Report, Rect, ElementRect } from './type';
@@ -59,9 +59,6 @@ export default class Radar {
       // debounceTime(100),
       debounce(() => animationFrames()),
       auditTime(50),
-      tap(() => {
-        console.log('signal$ emit....');
-      })
     );
 
     this.report$ = this.signal$.pipe(
