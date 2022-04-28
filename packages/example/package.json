@@ -16,7 +16,7 @@
     "@one-for-all/api-spec-adapter": "0.4.0",
     "@one-for-all/artery": "0.15.0",
     "@one-for-all/artery-renderer": "0.20.0",
-    "@one-for-all/elements-radar": "0.1.0",
+    "@one-for-all/elements-radar": "0.1.2",
     "@one-for-all/headless-ui": "0.1.0",
     "@one-for-all/icon": "0.6.2",
     "@one-for-all/style-guide": "0.1.3",

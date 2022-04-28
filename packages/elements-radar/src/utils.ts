@@ -17,7 +17,7 @@ export function isSame(previous: Report, current: Report): boolean {
   });
 }
 
-function calcRect(raw: DOMRectReadOnly, rootBounds: DOMRectReadOnly | null): Rect {
+export function calcRect(raw: DOMRectReadOnly, rootBounds: DOMRectReadOnly | null): Rect {
   const X = rootBounds?.x || 0;
   const Y = rootBounds?.y || 0;
 
@@ -29,24 +29,4 @@ function calcRect(raw: DOMRectReadOnly, rootBounds: DOMRectReadOnly | null): Rec
   };
 
   return rect;
-}
-
-export function getReport(elements: HTMLElement[], root: HTMLElement): Promise<Report> {
-  return new Promise((resolve) => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const pairs: Array<[HTMLElement, { raw: DOMRectReadOnly; relativeRect: Rect }]> = entries.map(
-          ({ target, boundingClientRect, rootBounds }) => {
-            const relativeRect: Rect = calcRect(boundingClientRect, rootBounds);
-            return [target as HTMLElement, { relativeRect, raw: boundingClientRect }];
-          },
-        );
-
-        resolve(new Map(pairs));
-      },
-      { root },
-    );
-
-    elements.forEach((ele) => observer.observe(ele));
-  });
 }

@@ -23,14 +23,14 @@ function ElementRadarDemo(): JSX.Element {
     const subscription = radar.listen((report) => {
       const deltaX = targetRootRef.current?.scrollLeft || 0;
       const deltaY = targetRootRef.current?.scrollTop || 0;
-      const mirrorCells = Array.from(report.entries()).map(([element, { rect }]) => {
-        rect.x = Math.round(rect.x + deltaX);
-        rect.y = Math.round(rect.y + deltaY);
+      const mirrorCells = Array.from(report.entries()).map(([element, { relativeRect }]) => {
+        // relativeRect.x = Math.round(relativeRect.x + deltaX);
+        // relativeRect.y = Math.round(relativeRect.y + deltaY);
 
         return {
           // @ts-ignore
           id: element.dataset.id as string,
-          rect: rect,
+          rect: relativeRect,
         };
       });
 
