@@ -1,7 +1,7 @@
 {
   "name": "@one-for-all/artery-engine",
   "version": "1.2.0",
-  "description": "page engine v2",
+  "description": "artery engine",
   "license": "Apache-2.0",
   "type": "module",
   "module": "lib",
