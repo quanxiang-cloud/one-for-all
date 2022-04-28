@@ -52,7 +52,7 @@ export default function Block<T extends ArteryEngine.BaseBlocksCommunicationStat
   }
 
   return (
-    <div className="page-engine-layer-block" style={style}>
+    <div className="artery-engine-layer-block" style={style}>
       <Render
         artery={artery}
         onChange={handleArteryChange}
