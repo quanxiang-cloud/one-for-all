@@ -29,7 +29,7 @@ declare module '@one-for-all/artery-utils' {
   export function nextSibling(node: ImmutableNode, idOrKeyPath: IdOrKeyPath): KeyPath | undefined;
   export function nodes(node: ImmutableNode): List<KeyPath>;
   export function parent(node: ImmutableNode, idOrKeyPath: IdOrKeyPath): KeyPath | undefined;
-  export function parentIdPath(node: ImmutableNode, idOrKeyPath: IdOrKeyPath): KeyPath | undefined;
+  export function parentIdsSeq(node: ImmutableNode, idOrKeyPath: IdOrKeyPath): import('immutable').Seq.Indexed<string> | undefined;
   export function previousSibling(node: ImmutableNode, idOrKeyPath: IdOrKeyPath): KeyPath | undefined;
   export function right(node: ImmutableNode, idOrKeyPath: IdOrKeyPath): KeyPath | undefined;
   export function walk<T, Stop = unknown>(

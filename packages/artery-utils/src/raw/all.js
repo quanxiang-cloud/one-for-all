@@ -13,7 +13,7 @@ export { default as left } from './left';
 export { default as nextSibling } from './nextSibling';
 export { default as nodes } from './nodes';
 export { default as parent } from './parent';
-export { default as parentIdPath } from './parentIdPath';
+export { default as parentIdsSeq } from './parentIdsSeq';
 export { default as previousSibling } from './previousSibling';
 export { default as right } from './right';
 export { default as walk } from './walk';

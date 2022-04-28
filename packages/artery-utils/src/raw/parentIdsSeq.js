@@ -2,7 +2,7 @@ import { Seq } from 'immutable';
 import byArbitrary from './byArbitrary';
 import parent from './parent';
 
-function parentIdPath(node, idOrKeyPath) {
+function parentIdsSeq(node, idOrKeyPath) {
   let keyPath = byArbitrary(node, idOrKeyPath);
   if (!keyPath) {
     return;
@@ -17,4 +17,4 @@ function parentIdPath(node, idOrKeyPath) {
   return idPath.reverse();
 }
 
-export default parentIdPath;
+export default parentIdsSeq;
