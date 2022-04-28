@@ -12,6 +12,7 @@ import Loading from '../shared/loading';
 import Pagination from '../shared/pagination';
 import Select from '../shared/select';
 import usePopper from '../shared/popper';
+import SwiperImage from '../shared/swiper-image';
 
 import '../css/index.css';
 
@@ -31,5 +32,6 @@ export {
   Loading,
   Pagination,
   Select,
+  SwiperImage,
   usePopper
 };
