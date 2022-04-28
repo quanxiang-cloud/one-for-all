@@ -1,4 +1,4 @@
-import React, { Ref, forwardRef, useState } from 'react';
+import React, { Ref, forwardRef, useState, useEffect } from 'react';
 import cs from 'classnames';
 
 import './index.css';
@@ -8,6 +8,10 @@ function Switch(
   ref?: Ref<HTMLLabelElement>,
 ): JSX.Element {
   const [switcChecked, setSwitchChecked] = useState(checked);
+
+  useEffect(() => {
+    setSwitchChecked(checked);
+  }, [checked])
 
   const handleToggleSwitch = (): void => {
     if (disabled) {
