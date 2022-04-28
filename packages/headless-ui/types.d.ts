@@ -154,13 +154,13 @@ type TriggerRenderFunc<T> = React.FC<{
 }>;
 
 interface ShowSearchType {
-  filter?: (inputValue: string, path: CascaderOptionType[], names: FilledFieldNamesType) => boolean;
-  render?: (inputValue: string, path: CascaderOptionType[], names: FilledFieldNamesType) => React.ReactNode;
+  filter?: (inputValue: string, path: CascaderOptionType[], names?: FilledFieldNamesType) => boolean;
+  render?: (inputValue: string, path: CascaderOptionType[], names?: FilledFieldNamesType) => React.ReactNode;
   sort?: (
     a: CascaderOptionType[],
     b: CascaderOptionType[],
     inputValue: string,
-    names: FilledFieldNamesType,
+    names?: FilledFieldNamesType,
   ) => number;
   matchInputWidth?: boolean;
   limit?: number | false;
@@ -187,15 +187,15 @@ interface SelectProps<T = unknown> extends BaseProps {
 }
 
 interface CascaderOptionType {
-  value?: NumberString;
-  label?: React.ReactNode;
+  value: NumberString;
+  label: React.ReactNode;
   disabled?: boolean;
   isLeaf?: boolean;
   loading?: boolean;
   children?: CascaderOptionType[];
 }
 
-type PopupPlacement = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
+type PopupPlacement = 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end';
 
 interface FilledFieldNamesType {
   value: NumberString;
@@ -203,28 +203,32 @@ interface FilledFieldNamesType {
   children: string;
 }
 
+type CascaderValue = NumberString[] | NumberString[][];
+
 type CascaderExpandTrigger = 'click' | 'hover';
+
+type CascaderModelType = 'single' | 'single-timely' | 'multiple' | 'unlink';
 
 interface CascaderProps extends BaseProps {
   options: CascaderOptionType[];
-  defaultValue?: NumberString[];
-  value?: NumberString[];
-  onChange?: (value: NumberString[], selectedOptions?: CascaderOptionType[]) => void;
-  displayRender?: (label: string[], selectedOptions?: CascaderOptionType[]) => React.ReactNode;
+  defaultValue?: CascaderValue;
+  value?: CascaderValue;
+  onChange?: (value: CascaderValue, selectedOptions?: CascaderOptionType[] | CascaderOptionType[][]) => void;
+  displayRender?: (label: React.ReactNode[] | React.ReactNode[][], selectedOptions?: CascaderOptionType[] | CascaderOptionType[][]) => React.ReactNode;
   popupClassName?: string;
   popupPlacement?: PopupPlacement;
   placeholder?: string;
   name?: string;
   id?: string;
+  model?: CascaderModelType;
   disabled?: boolean;
   showSearch?: boolean | ShowSearchType;
   notFoundContent?: React.ReactNode;
   loadData?: (selectedOptions?: CascaderOptionType[]) => void;
   expandTrigger?: CascaderExpandTrigger;
   expandIcon?: React.ReactNode;
-  changeOnSelect?: boolean;
   onPopupVisibleChange?: (popupVisible: boolean) => void;
-  popupVisible?: boolean;
+  popupVisible?: boolean; // no
   suffixIcon?: React.ReactNode;
   dropdownRender?: (menus: React.ReactNode) => React.ReactNode;
 }

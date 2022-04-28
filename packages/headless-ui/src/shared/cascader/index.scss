@@ -1,0 +1,131 @@
+.ofa-cascader-popper {
+  margin-top: 4px;
+  box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%), 0 9px 28px 8px rgb(0 0 0 / 5%);
+}
+
+.ofa-cascader-display {
+  display: flex;
+  align-items: center;
+  width: 220px;
+  max-width: 100%;
+  padding: 0 16px;
+  justify-content: space-between;
+  border: 1px solid #d9d9d9;
+  cursor: pointer;
+  &.is-active {
+    border-color: #375ff3;
+  }
+  &.is-disabled {
+    cursor: not-allowed;
+    color: #00000040;
+    background: #f5f5f5;
+  }
+  .ofa-cascader-display-box {
+    flex: 1;
+    position: relative;
+    width: 100%;
+    overflow-x: auto;
+    .ofa-cascader-display-value {
+      display: flex;
+      align-items: center;
+      word-wrap: normal;
+      white-space: nowrap;
+      height: 32px;
+    }
+    &>input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      outline: none;
+      border: none;
+      height: 100%;
+      width: 100%;
+      padding: 0;
+      background-color: rgba(255,255,255,0);
+    }
+  }
+}
+
+.ofa-cascader-empty {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .ofa-cascader-empty-text {
+    margin-bottom: 0;
+  }
+}
+
+.ofa-cascader-options {
+  display: flex;
+  background-color: #fff;
+  .ofa-cascader-option {
+    padding: 5px 0;
+    &:not(:first-child) {
+      border-left: 1px solid #d9d9d9;
+    }
+    .ofa-cascader-option-item {
+      display: flex;
+      align-items: center;
+      padding: 5px 12px;
+      cursor: pointer;
+      &:hover {
+        background-color: #d9d9d9;
+      }
+      &.is-selected {
+        background-color: #d9d9d9;
+      }
+      &.is-disabled {
+        cursor: not-allowed;
+        color: #00000040;
+        background: #f5f5f5;
+      }
+      .ofa-cascader-item-text {
+        flex: 1;
+        margin: 0;
+      }
+    }
+  }
+  .ofa-checkbox-wrapper {
+    background-color: transparent;
+    &.ofa-checkbox-wrapper__indeterminate {
+      .ofa-checkbox-icon {
+        background-color: #fff;
+        border-color: #375ff3;
+        &::after {
+          opacity: 1;
+          width: 50%;
+          height: 50%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background-color: #375ff3;
+          border: none;
+        }
+      }
+    }
+  }
+}
+
+.ofa-cascader-search {
+  padding: 5px 0;
+  max-height: 200px;
+  overflow-y: auto;
+  .ofa-scacader-search-item {
+    padding: 5px 12px;
+    cursor: pointer;
+    &:hover {
+      background-color: #d9d9d9;
+    }
+    &.is-selected {
+      background-color: #d9d9d9;
+    }
+    &.is-disabled {
+      cursor: not-allowed;
+      color: #00000040;
+      background: #f5f5f5;
+    }
+  }
+}

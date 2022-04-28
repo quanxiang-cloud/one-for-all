@@ -1,0 +1,317 @@
+{
+  "key": "Cascader",
+  "title": "级联选择器",
+  "specs": [
+    {
+      "title": "默认状态",
+      "componentProps": {
+        "options": [
+          {
+            "label": "test",
+            "value": "test",
+            "children": [
+              {
+                "label": "test children",
+                "value": "test children",
+                "children": [
+                  {
+                    "label": "test cd",
+                    "value": "test cd"
+                  },
+                  {
+                    "label": "test cd1",
+                    "value": "test cd1",
+                    "disabled": true
+                  },
+                  {
+                    "label": "test cd2",
+                    "value": "test cd2"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "test2",
+            "value": "test2"
+          }
+        ]
+      },
+      "rules": [
+        {
+          "selector": ".ofa-cascader",
+          "desc": "外层容器样式"
+        },
+        {
+          "selector": ".ofa-cascader-display",
+          "desc": "选择器的样式"
+        },
+        {
+          "selector": ".ofa-cascader-display .ofa-cascader-display-box"
+        },
+        {
+          "selector": ".ofa-cascader-display .ofa-cascader-display-box .ofa-cascader-display-value",
+          "desc": "显示所选值的容器样式"
+        },
+        {
+          "selector": ".ofa-cascader-popper",
+          "desc": "弹框外层样式"
+        },
+        {
+          "selector": ".ofa-cascader-options .ofa-cascader-option",
+          "desc": "选项框的样式"
+        },
+        {
+          "selector": ".ofa-cascader-options .ofa-cascader-option .ofa-cascader-option-item",
+          "desc": "一条选项框的样式"
+        },
+        {
+          "selector": ".ofa-cascader-options .ofa-checkbox-wrapper",
+          "desc": "多选时checkbox样式"
+        },
+        {
+          "selector": ".ofa-cascader-search",
+          "desc": "搜索弹窗的样式"
+        },
+        {
+          "selector": ".ofa-cascader-search .ofa-scacader-search-item",
+          "desc": "搜索弹窗中单条记录的样式"
+        }
+      ]
+    },
+    {
+      "title": "可选非叶子节点",
+      "componentProps": {
+        "options": [
+          {
+            "label": "test",
+            "value": "test",
+            "children": [
+              {
+                "label": "test children",
+                "value": "test children",
+                "children": [
+                  {
+                    "label": "test cd",
+                    "value": "test cd"
+                  },
+                  {
+                    "label": "test cd1",
+                    "value": "test cd1",
+                    "disabled": true
+                  },
+                  {
+                    "label": "test cd2",
+                    "value": "test cd2"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "test2",
+            "value": "test2"
+          }
+        ],
+        "model": "single-timely"
+      },
+      "rules": [
+        {
+          "selector": ".ofa-cascader",
+          "desc": "外层容器样式"
+        },
+        {
+          "selector": ".ofa-cascader-display",
+          "desc": "选择器的样式"
+        },
+        {
+          "selector": ".ofa-cascader-display .ofa-cascader-display-box"
+        },
+        {
+          "selector": ".ofa-cascader-display .ofa-cascader-display-box .ofa-cascader-display-value",
+          "desc": "显示所选值的容器样式"
+        },
+        {
+          "selector": ".ofa-cascader-popper",
+          "desc": "弹框外层样式"
+        },
+        {
+          "selector": ".ofa-cascader-options .ofa-cascader-option",
+          "desc": "选项框的样式"
+        },
+        {
+          "selector": ".ofa-cascader-options .ofa-cascader-option .ofa-cascader-option-item",
+          "desc": "一条选项框的样式"
+        },
+        {
+          "selector": ".ofa-cascader-options .ofa-checkbox-wrapper",
+          "desc": "多选时checkbox样式"
+        },
+        {
+          "selector": ".ofa-cascader-search",
+          "desc": "搜索弹窗的样式"
+        },
+        {
+          "selector": ".ofa-cascader-search .ofa-scacader-search-item",
+          "desc": "搜索弹窗中单条记录的样式"
+        }
+      ]
+    },
+    {
+      "title": "多选",
+      "componentProps": {
+        "options": [
+          {
+            "label": "test",
+            "value": "test",
+            "children": [
+              {
+                "label": "test children",
+                "value": "test children",
+                "children": [
+                  {
+                    "label": "test cd",
+                    "value": "test cd"
+                  },
+                  {
+                    "label": "test cd1",
+                    "value": "test cd1",
+                    "disabled": true
+                  },
+                  {
+                    "label": "test cd2",
+                    "value": "test cd2"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "test2",
+            "value": "test2"
+          }
+        ],
+        "model": "multiple"
+      },
+      "rules": [
+        {
+          "selector": ".ofa-cascader",
+          "desc": "外层容器样式"
+        },
+        {
+          "selector": ".ofa-cascader-display",
+          "desc": "选择器的样式"
+        },
+        {
+          "selector": ".ofa-cascader-display .ofa-cascader-display-box"
+        },
+        {
+          "selector": ".ofa-cascader-display .ofa-cascader-display-box .ofa-cascader-display-value",
+          "desc": "显示所选值的容器样式"
+        },
+        {
+          "selector": ".ofa-cascader-popper",
+          "desc": "弹框外层样式"
+        },
+        {
+          "selector": ".ofa-cascader-options .ofa-cascader-option",
+          "desc": "选项框的样式"
+        },
+        {
+          "selector": ".ofa-cascader-options .ofa-cascader-option .ofa-cascader-option-item",
+          "desc": "一条选项框的样式"
+        },
+        {
+          "selector": ".ofa-cascader-options .ofa-checkbox-wrapper",
+          "desc": "多选时checkbox样式"
+        },
+        {
+          "selector": ".ofa-cascader-search",
+          "desc": "搜索弹窗的样式"
+        },
+        {
+          "selector": ".ofa-cascader-search .ofa-scacader-search-item",
+          "desc": "搜索弹窗中单条记录的样式"
+        }
+      ]
+    },
+    {
+      "title": "可单独选中子节点",
+      "componentProps": {
+        "options": [
+          {
+            "label": "test",
+            "value": "test",
+            "children": [
+              {
+                "label": "test children",
+                "value": "test children",
+                "children": [
+                  {
+                    "label": "test cd",
+                    "value": "test cd"
+                  },
+                  {
+                    "label": "test cd1",
+                    "value": "test cd1",
+                    "disabled": true
+                  },
+                  {
+                    "label": "test cd2",
+                    "value": "test cd2"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "label": "test2",
+            "value": "test2"
+          }
+        ],
+        "model": "unlink"
+      },
+      "rules": [
+        {
+          "selector": ".ofa-cascader",
+          "desc": "外层容器样式"
+        },
+        {
+          "selector": ".ofa-cascader-display",
+          "desc": "选择器的样式"
+        },
+        {
+          "selector": ".ofa-cascader-display .ofa-cascader-display-box"
+        },
+        {
+          "selector": ".ofa-cascader-display .ofa-cascader-display-box .ofa-cascader-display-value",
+          "desc": "显示所选值的容器样式"
+        },
+        {
+          "selector": ".ofa-cascader-popper",
+          "desc": "弹框外层样式"
+        },
+        {
+          "selector": ".ofa-cascader-options .ofa-cascader-option",
+          "desc": "选项框的样式"
+        },
+        {
+          "selector": ".ofa-cascader-options .ofa-cascader-option .ofa-cascader-option-item",
+          "desc": "一条选项框的样式"
+        },
+        {
+          "selector": ".ofa-cascader-options .ofa-checkbox-wrapper",
+          "desc": "多选时checkbox样式"
+        },
+        {
+          "selector": ".ofa-cascader-search",
+          "desc": "搜索弹窗的样式"
+        },
+        {
+          "selector": ".ofa-cascader-search .ofa-scacader-search-item",
+          "desc": "搜索弹窗中单条记录的样式"
+        }
+      ]
+    }
+  ]
+}
