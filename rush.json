@@ -491,10 +491,6 @@
       "projectFolder": "packages/icon"
     },
     {
-      "packageName": "@one-for-all/page-engine",
-      "projectFolder": "packages/page-engine"
-    },
-    {
       "packageName": "@one-for-all/scss-forming",
       "projectFolder": "packages/scss-forming"
     },
