@@ -60,63 +60,53 @@ function RenderContourNode({ contourNode, handleDragOver, handleDrop }: Props): 
   }, [immutableNode]);
 
   const _shouldHandleDnd = useShouldHandleDndCallback(contourNode.id);
-  const onDragOver = useCallback((e: React.DragEvent<HTMLDivElement>): any => {
-    if (!_shouldHandleDnd()) {
-      return;
-    }
-
-    preventDefault(e);
-    if (couldFireDragOver.current) {
-      handleDragOver(e);
-      couldFireDragOver.current = false;
-    }
-    return false;
-  }, [handleDragOver, _shouldHandleDnd]);
-  const onDragStart = useCallback((e: React.DragEvent<HTMLDivElement>): any => {
-    // todo this has no affect, fix it!
-    e.dataTransfer.effectAllowed = 'move';
-    setDraggingNodeID(currentArteryNode?.id);
-
-    overrideDragImage(e.dataTransfer);
-  }, [setDraggingNodeID]);
-  const onDragEnd = useCallback(() => {
-    setDraggingNodeID(undefined);
-    setGreenZone(undefined);
-  }, [setDraggingNodeID, setGreenZone]);
-
-  const onDragEnter = useCallback((e: React.DragEvent<HTMLDivElement>): any => {
-    if (!_shouldHandleDnd()) {
-      return;
-    }
-
-    preventDefault(e);
-    return false;
-  }, [_shouldHandleDnd]);
-  const onDrop = useCallback((e: React.DragEvent<HTMLDivElement>): any => {
-    e.stopPropagation();
-    e.preventDefault();
-    handleDrop(e);
-    return false;
-  }, [handleDrop]);
-
-  function handleClick(): void {
-    setActiveNode(currentArteryNode);
-  }
 
   return (
     <>
       <div
         id={`contour-${contourNode.id}`}
         style={style}
-        onClick={handleClick}
+        onClick={() => setActiveNode(currentArteryNode)}
         draggable={contourNode.id !== rootNodeID}
-        onDragStart={onDragStart}
-        onDragEnd={onDragEnd}
+        onDragStart={(e: React.DragEvent<HTMLDivElement>): any => {
+          // todo this has no affect, fix it!
+          e.dataTransfer.effectAllowed = 'move';
+          setDraggingNodeID(currentArteryNode?.id);
+
+          overrideDragImage(e.dataTransfer);
+        }}
+        onDragEnd={() => {
+          setDraggingNodeID(undefined);
+          setGreenZone(undefined);
+        }}
         onDrag={preventDefault}
-        onDragOver={onDragOver}
-        onDragEnter={onDragEnter}
+        onDragOver={(e: React.DragEvent<HTMLDivElement>): any => {
+          if (!_shouldHandleDnd()) {
+            return;
+          }
+
+          preventDefault(e);
+          if (couldFireDragOver.current) {
+            handleDragOver(e);
+            couldFireDragOver.current = false;
+          }
+          return false;
+        }}
+        onDragEnter={(e: React.DragEvent<HTMLDivElement>): any => {
+          if (!_shouldHandleDnd()) {
+            return;
+          }
+
+          preventDefault(e);
+          return false;
+        }}
         onDragLeave={() => { couldFireDragOver.current = true }}
-        onDrop={onDrop}
+        onDrop={(e: React.DragEvent<HTMLDivElement>): any => {
+          e.stopPropagation();
+          e.preventDefault();
+          handleDrop(e);
+          return false;
+        }}
         className={cs('contour-node', {
           'contour-node--root': rootNodeID === contourNode.id,
           'contour-node--active': activeNode?.id === contourNode.id,

@@ -8,7 +8,6 @@ export interface Rect {
 export interface ElementRect {
   raw: DOMRectReadOnly;
   relativeRect: Rect;
-  visible: boolean;
 }
 
 export type Report = Map< HTMLElement, ElementRect>;

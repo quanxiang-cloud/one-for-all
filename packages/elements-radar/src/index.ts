@@ -4,8 +4,9 @@ import {
   BehaviorSubject,
   Subject,
   Subscription,
+  Observable,
 } from 'rxjs';
-import { map, audit, debounceTime, tap, distinctUntilChanged } from 'rxjs/operators';
+import { map, audit, auditTime, tap, distinctUntilChanged } from 'rxjs/operators';
 
 import { calcRect, isSame } from './utils';
 import type { Report, Rect, ElementRect } from './type';
@@ -44,7 +45,7 @@ export default class Radar {
     this.resizeObserver.observe(this.root);
 
     merge(scrollSign$, this.targets$, this.resizeSign$).pipe(
-      debounceTime(100),
+      // auditTime(100),
       // debounce(() => animationFrames()),
       // auditTime(150),
       tap(() => {
@@ -63,8 +64,12 @@ export default class Radar {
 
   private intersectionObserverCallback = (entries: IntersectionObserverEntry[]): void => {
     entries.forEach(({ target, boundingClientRect, rootBounds, isIntersecting }) => {
-      const relativeRect: Rect = calcRect(boundingClientRect, rootBounds);
-      this.report.set(target as HTMLElement, { relativeRect, raw: boundingClientRect, visible: isIntersecting });
+      if (isIntersecting) {
+        const relativeRect: Rect = calcRect(boundingClientRect, rootBounds);
+        this.report.set(target as HTMLElement, { relativeRect, raw: boundingClientRect });
+      } else {
+        this.report.delete(target as HTMLElement);
+      }
     });
 
     this.reportUpdatedSign$.next();
@@ -83,23 +88,15 @@ export default class Radar {
     this.targets$.next(elements);
   }
 
-  public listen(listener: (report: Report) => void): Subscription {
+  public getReport$(): Observable<Report> {
     return this.reportUpdatedSign$.pipe(
       map(() => {
+        // todo optimize this of making copy
         const newReport: Report = new Map();
-        this.report.forEach((value, key) => {
-          if (value.visible) {
-            newReport.set(key, value);
-          }
-        });
-
+        this.report.forEach((value, key) => newReport.set(key, value));
         return newReport;
       }),
       distinctUntilChanged(isSame),
-    ).subscribe(listener);
-  }
-
-  public unListen(subscription: Subscription): void {
-    subscription.unsubscribe();
+    );
   }
 }
