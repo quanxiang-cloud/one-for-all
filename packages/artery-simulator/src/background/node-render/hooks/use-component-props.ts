@@ -8,11 +8,12 @@ import { getNodeExecutor } from '../../../utils';
 function useComponentNodeProps(
   node: ReactComponentNode,
   ctx: CTX,
+  depth: number,
 ): { nodeProps: Record<string, unknown>; wrapperProps: Record<string, unknown> } {
   const nodeProps = useInstantiateProps(node, ctx);
   // use legacy state ref instead of RefObj
   // in order to let useFirstElementChild return the right value
-  const setWrapperElement = useComponentWrapperRef(node);
+  const setWrapperElement = useComponentWrapperRef(node, depth);
   const { rootNodeID } = useContext(ArteryCtx);
 
   return {
@@ -21,7 +22,6 @@ function useComponentNodeProps(
       style: { display: 'contents' },
       ref: setWrapperElement,
       'data-simulator-background-root-node-rect': rootNodeID === node.id ? true : undefined,
-      'data-simulator-node-executor': getNodeExecutor(node),
     },
   };
 }

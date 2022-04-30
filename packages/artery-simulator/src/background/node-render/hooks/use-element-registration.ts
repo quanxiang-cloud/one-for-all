@@ -1,24 +1,12 @@
-import { useContext } from 'react';
-import { AllElementsCTX, VisibleObserverCTX } from '../../contexts';
-import { useNextTick } from '../../../utils';
+import { backgroundElementsChanged$, ALL_BACKGROUND_ELEMENTS, VISIBLE_ELEMENTS_OBSERVER } from '../../../atoms';
 
-type Register = (element: HTMLElement) => void;
-type Unregister = (element: HTMLElement) => void;
+export function register(element: HTMLElement): void {
+  VISIBLE_ELEMENTS_OBSERVER.observe(element);
+  ALL_BACKGROUND_ELEMENTS.set(element, false);
+}
 
-export default function useElementRegistration(): { register: Register; unregister: Unregister } {
-  const observer = useContext(VisibleObserverCTX);
-  const allElements = useContext(AllElementsCTX);
-  const tick = useNextTick();
-
-  return {
-    register: (element) => {
-      observer.observe(element);
-      allElements.set(element, false);
-    },
-    unregister: (element) => {
-      observer.unobserve(element);
-      allElements.delete(element);
-      tick();
-    },
-  };
+export function unregister(element: HTMLElement): void {
+  VISIBLE_ELEMENTS_OBSERVER.unobserve(element);
+  ALL_BACKGROUND_ELEMENTS.delete(element);
+  backgroundElementsChanged$.next();
 }

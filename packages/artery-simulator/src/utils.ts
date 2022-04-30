@@ -1,6 +1,8 @@
 import { byArbitrary, getFirstLevelConcreteChildren, parentIdsSeq } from '@one-for-all/artery-utils';
 import { Rect } from '@one-for-all/elements-radar';
+import { useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
+import { BehaviorSubject } from 'rxjs';
 import { visibleElementsTickState } from './atoms';
 import { ContourNode, Cursor, GreenZoneBetweenNodes, Position } from './types';
 import { NodeWithoutChild } from './types';
@@ -173,4 +175,15 @@ export function calcGreenZoneOfHoveringNodeSupportChildrenAndChildrenIsNotEmpty(
   });
 
   return greenZoneBetweenNodes;
+}
+
+export function useBehaviorSubjectState<T>(subject: BehaviorSubject<T>): T {
+  const [state, setState] = useState(subject.value);
+
+  useEffect(() => {
+    const subscription = subject.subscribe(setState);
+    return () => { subscription.unsubscribe() }
+  }, [subject]);
+
+  return state;
 }

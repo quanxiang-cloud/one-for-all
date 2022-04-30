@@ -8,13 +8,11 @@ import { Artery, Node } from '@one-for-all/artery';
 import Background from './background';
 import Foreground from './foreground';
 import { ArteryCtx } from './contexts';
-import { NodeWithoutChild, SimulatorReport } from './types';
-import { AllElementsCTX, VisibleObserverCTX } from './background/contexts';
-// import RenderGreenZone from './green-zone';
-import RenderGreenZonesBetweenNodes from './green-zone-between-node';
+import { NodeWithoutChild, ContourNodesReport } from './types';
+import GreenZone from './green-zone';
 import { immutableNodeState, isScrollingState } from './atoms';
-import useVisibleObserver from './background/use-visible-observer';
 import './index.scss';
+import useElementsRadar from './use-radar-ref';
 
 export interface Props {
   artery: Artery;
@@ -43,26 +41,14 @@ function Simulator({
   isNodeSupportChildren,
   onDropFile,
 }: Props): JSX.Element {
-  const [report, setReport] = useState<SimulatorReport>();
   const setImmutableNode = useSetRecoilState(immutableNodeState);
   // todo move this into RenderGreenZone
   const simulatorRef = useRef<HTMLDivElement>(null);
+  useElementsRadar(simulatorRef.current);
 
-  const visibleObserver = useVisibleObserver(setReport, simulatorRef.current);
   useEffect(() => {
     setImmutableNode(fromJS(artery.node));
   }, [artery]);
-
-  const timeRef = useRef<number>();
-  const setIsScrolling = useSetRecoilState(isScrollingState);
-
-  function handleScroll(): void {
-    setIsScrolling(true);
-    clearTimeout(timeRef.current);
-    timeRef.current = window.setTimeout(() => {
-      setIsScrolling(false);
-    }, 500);
-  }
 
   return (
     <ArteryCtx.Provider
@@ -77,23 +63,17 @@ function Simulator({
         genNodeID,
       }}
     >
-      <AllElementsCTX.Provider value={ALL_ELEMENTS}>
-        <VisibleObserverCTX.Provider value={visibleObserver}>
-          <div
-            ref={simulatorRef}
-            className={cs('artery-simulator-root', className)}
-            onScroll={handleScroll}
-          >
-            <Background
-              artery={artery}
-              plugins={plugins}
-            />
-            {report && <Foreground report={report} />}
-            {/* <RenderGreenZone /> */}
-            <RenderGreenZonesBetweenNodes />
-          </div>
-        </VisibleObserverCTX.Provider>
-      </AllElementsCTX.Provider>
+      <div
+        ref={simulatorRef}
+        className={cs('artery-simulator-root', className)}
+      >
+        <Background
+          artery={artery}
+          plugins={plugins}
+        />
+        <Foreground />
+        <GreenZone />
+      </div>
     </ArteryCtx.Provider>
   );
 }

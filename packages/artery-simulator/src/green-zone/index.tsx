@@ -1,10 +1,12 @@
 import React from 'react';
 
-import { draggingNodeIDState, greenZonesBetweenNodesState } from './atoms';
-import { useRecoilState } from 'recoil';
+import { draggingNodeIDState, immutableNodeState } from '../atoms';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import useGreenZonesBetweenNodes from './use-green-zones-between-nodes';
 
-function RenderGreenZonesBetweenNodes(): JSX.Element | null {
-  const [greenZonesBetweenNodes] = useRecoilState(greenZonesBetweenNodesState);
+function GreenZone(): JSX.Element | null {
+  const rootNode = useRecoilValue(immutableNodeState)
+  const greenZonesBetweenNodes = useGreenZonesBetweenNodes(rootNode);
   const [draggingNodeID] = useRecoilState(draggingNodeIDState);
 
   if (!draggingNodeID || !greenZonesBetweenNodes.length) {
@@ -31,4 +33,4 @@ function RenderGreenZonesBetweenNodes(): JSX.Element | null {
   );
 }
 
-export default RenderGreenZonesBetweenNodes;
+export default GreenZone;

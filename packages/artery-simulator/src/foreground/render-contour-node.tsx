@@ -1,15 +1,14 @@
-import React, { useCallback, useContext, useMemo, useRef } from 'react';
+import React, { useCallback, useContext, useRef } from 'react';
 import cs from 'classnames';
-import { Node } from '@one-for-all/artery';
-import { byArbitrary } from '@one-for-all/artery-utils';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import useContourNodeStyle from './use-active-contour-node-style';
 import { ArteryCtx } from '../contexts';
 import type { ContourNode } from '../types';
-import { draggingNodeIDState, greenZoneState, hoveringParentIDState, immutableNodeState } from '../atoms';
+import { draggingNodeIDState, greenZoneState, hoveringContourNode$, hoveringParentIDState, immutableNodeState } from '../atoms';
 import { isChildNodeOf, overrideDragImage } from '../utils';
 import Toolbar from './toolbar';
+import useSetActiveNode from './use-set-active-node';
 
 function preventDefault(e: any): false {
   e.preventDefault();
@@ -19,8 +18,6 @@ function preventDefault(e: any): false {
 
 interface Props {
   contourNode: ContourNode;
-  handleDragOver: (e: React.DragEvent<HTMLDivElement>) => void;
-  handleDrop: (e: React.DragEvent<HTMLDivElement>) => void;
 }
 
 function useShouldHandleDndCallback(currentID: string): () => boolean {
@@ -41,23 +38,14 @@ function useShouldHandleDndCallback(currentID: string): () => boolean {
   }, [draggingNodeID, root]);
 }
 
-function RenderContourNode({ contourNode, handleDragOver, handleDrop }: Props): JSX.Element {
+function RenderContourNode({ contourNode }: Props): JSX.Element {
   const [hoveringParentID] = useRecoilState(hoveringParentIDState);
-  const { rootNodeID, activeNode, setActiveNode } = useContext(ArteryCtx);
+  const { rootNodeID, activeNode } = useContext(ArteryCtx);
   const style = useContourNodeStyle(contourNode);
   const setGreenZone = useSetRecoilState(greenZoneState);
   const [draggingNodeID, setDraggingNodeID] = useRecoilState(draggingNodeIDState);
-  const [immutableNode] = useRecoilState(immutableNodeState);
   const couldFireDragOver = useRef<boolean>(true);
-  // todo optimize this
-  const currentArteryNode: Node | undefined = useMemo(() => {
-    const keyPath = byArbitrary(immutableNode, contourNode.id);
-    if (!keyPath) {
-      return;
-    }
-    // @ts-ignore
-    return immutableNode.getIn(keyPath)?.toJS();
-  }, [immutableNode]);
+  const setActiveNode = useSetActiveNode();
 
   const _shouldHandleDnd = useShouldHandleDndCallback(contourNode.id);
 
@@ -66,12 +54,12 @@ function RenderContourNode({ contourNode, handleDragOver, handleDrop }: Props): 
       <div
         id={`contour-${contourNode.id}`}
         style={style}
-        onClick={() => setActiveNode(currentArteryNode)}
+        onClick={() => setActiveNode(contourNode.id)}
         draggable={contourNode.id !== rootNodeID}
         onDragStart={(e: React.DragEvent<HTMLDivElement>): any => {
           // todo this has no affect, fix it!
           e.dataTransfer.effectAllowed = 'move';
-          setDraggingNodeID(currentArteryNode?.id);
+          setDraggingNodeID(contourNode.id);
 
           overrideDragImage(e.dataTransfer);
         }}
@@ -80,22 +68,12 @@ function RenderContourNode({ contourNode, handleDragOver, handleDrop }: Props): 
           setGreenZone(undefined);
         }}
         onDrag={preventDefault}
-        onDragOver={(e: React.DragEvent<HTMLDivElement>): any => {
-          if (!_shouldHandleDnd()) {
-            return;
-          }
-
-          preventDefault(e);
-          if (couldFireDragOver.current) {
-            handleDragOver(e);
-            couldFireDragOver.current = false;
-          }
-          return false;
-        }}
         onDragEnter={(e: React.DragEvent<HTMLDivElement>): any => {
           if (!_shouldHandleDnd()) {
             return;
           }
+
+          hoveringContourNode$.next(contourNode);
 
           preventDefault(e);
           return false;
@@ -104,7 +82,8 @@ function RenderContourNode({ contourNode, handleDragOver, handleDrop }: Props): 
         onDrop={(e: React.DragEvent<HTMLDivElement>): any => {
           e.stopPropagation();
           e.preventDefault();
-          handleDrop(e);
+          console.log('todo, handle drop event')
+          // handleDrop(e);
           return false;
         }}
         className={cs('contour-node', {

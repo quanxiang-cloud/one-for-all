@@ -1,21 +1,17 @@
 import type { HTMLNode, ReactComponentNode } from '@one-for-all/artery';
 import type { Rect, ElementRect } from '@one-for-all/elements-radar';
 
-export interface VisibleNode extends ElementRect {
+export interface ContourNode extends ElementRect {
   id: string;
   absolutePosition: Rect;
   executor: string;
+  depth: number;
 }
 
-export interface SimulatorReport {
-  visibleNodes: VisibleNode[];
+export interface ContourNodesReport {
+  contourNodes: ContourNode[];
   areaHeight: number;
   areaWidth: number;
-}
-
-export interface ContourNode extends VisibleNode {
-  depth: number;
-  area: number;
 }
 
 export interface Cursor {

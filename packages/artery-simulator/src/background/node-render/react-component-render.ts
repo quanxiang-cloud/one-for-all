@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useNodeComponent, CTX, ReactComponentNode } from '@one-for-all/artery-renderer';
 
 import ChildrenRender from './children-render';
 import useComponentNodeProps from './hooks/use-component-props';
 import Placeholder from './placeholder';
 import { useSupportChildrenCheck } from './use-support-children-check';
+import DepthContext from './depth-context';
 
 interface Props {
   node: ReactComponentNode;
@@ -12,7 +13,8 @@ interface Props {
 }
 
 function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | null {
-  const { nodeProps, wrapperProps } = useComponentNodeProps(node, ctx);
+  const currentDepth = useContext(DepthContext) + 1;
+  const { nodeProps, wrapperProps } = useComponentNodeProps(node, ctx, currentDepth);
   const nodeComponent = useNodeComponent(node, ctx.plugins);
   useSupportChildrenCheck(node);
 
@@ -29,12 +31,16 @@ function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | nu
   }
 
   return React.createElement(
-    'div',
-    wrapperProps,
+    DepthContext.Provider,
+    { value: currentDepth },
     React.createElement(
-      nodeComponent,
-      nodeProps,
-      React.createElement(ChildrenRender, { nodes: node.children || [], ctx }),
+      'div',
+      wrapperProps,
+      React.createElement(
+        nodeComponent,
+        nodeProps,
+        React.createElement(ChildrenRender, { nodes: node.children || [], ctx }),
+      ),
     ),
   );
 }

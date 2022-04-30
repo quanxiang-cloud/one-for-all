@@ -1,8 +1,9 @@
+import { BehaviorSubject, filter, Observable, ReplaySubject, Subject } from 'rxjs';
 import immutable from 'immutable';
 import {
   atom,
 } from 'recoil';
-import { ContourNode, GreenZone, GreenZoneBetweenNodes } from './types';
+import { ContourNode, GreenZone, GreenZoneBetweenNodes, ContourNodesReport } from './types';
 
 export const immutableNodeState = atom<Immutable.Collection<unknown, unknown>>({
   key: 'immutableNodeState',
@@ -28,3 +29,19 @@ export const visibleElementsTickState = atom<number>({ key: 'visibleElementsTick
 export const isScrollingState = atom<boolean>({ key: 'isScrollingState', default: false });
 
 export const greenZonesBetweenNodesState = atom<GreenZoneBetweenNodes[]>({ key: 'greenZonesBetweenNodesState', default: [] });
+
+export const contourNodesReport$ = new BehaviorSubject<ContourNodesReport | undefined>(undefined);
+export const hoveringContourNode$ = new Subject<ContourNode | undefined>();
+
+export const ALL_BACKGROUND_ELEMENTS: Map<HTMLElement, boolean> = new Map();
+
+export const backgroundElementsChanged$ = new ReplaySubject<void>(1);
+
+function visibleObserverCallback(entries: IntersectionObserverEntry[]): void {
+  entries.forEach(({ isIntersecting, target }) => {
+    ALL_BACKGROUND_ELEMENTS.set(target as HTMLElement, isIntersecting);
+  });
+  backgroundElementsChanged$.next();
+}
+
+export const VISIBLE_ELEMENTS_OBSERVER = new IntersectionObserver(visibleObserverCallback);

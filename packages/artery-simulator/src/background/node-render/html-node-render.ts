@@ -3,7 +3,7 @@ import { logger } from '@one-for-all/utils';
 import type { CTX, HTMLNode } from '@one-for-all/artery-renderer';
 
 import ChildrenRender from './children-render';
-import PathContext from './path-context';
+import DepthContext from './depth-context';
 import useHTMLNodeProps from './hooks/use-html-node-props';
 import Placeholder from './placeholder';
 import { useSupportChildrenCheck } from './use-support-children-check';
@@ -14,14 +14,14 @@ interface Props {
 }
 
 function HTMLNodeRender({ node, ctx }: Props): React.ReactElement | null {
-  const currentPath = useContext(PathContext);
-  const props = useHTMLNodeProps(node, ctx);
+  const currentDepth = useContext(DepthContext) + 1;
+  const props = useHTMLNodeProps(node, ctx, currentDepth);
   useSupportChildrenCheck(node);
 
   if (!node.name) {
     logger.error(
       'name property is required in html node spec,',
-      `please check the spec of node: ${currentPath}.`,
+      `please check the spec of node: ${node.id}.`,
     );
     return null;
   }
@@ -31,9 +31,13 @@ function HTMLNodeRender({ node, ctx }: Props): React.ReactElement | null {
   }
 
   return React.createElement(
-    node.name,
-    props,
-    React.createElement(ChildrenRender, { nodes: node.children || [], ctx }),
+    DepthContext.Provider,
+    { value: currentDepth },
+    React.createElement(
+      node.name,
+      props,
+      React.createElement(ChildrenRender, { nodes: node.children || [], ctx }),
+    ),
   );
 }
 

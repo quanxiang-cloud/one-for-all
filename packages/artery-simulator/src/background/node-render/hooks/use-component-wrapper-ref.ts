@@ -1,14 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import { ReactComponentNode } from '@one-for-all/artery-renderer';
-import useElementRegistration from './use-element-registration';
+import { register, unregister } from './use-element-registration';
 import useFirstElementChild from './use-first-element-child';
 import { getNodeExecutor } from '../../..//utils';
 
-export default function useComponentWrapperRef(node: ReactComponentNode): (ref: HTMLElement) => void {
+export default function useComponentWrapperRef(node: ReactComponentNode, depth: number): (ref: HTMLElement) => void {
   const [wrapperElement, setWrapperElement] = useState<HTMLElement>();
   const childElement = useFirstElementChild(wrapperElement);
   const latestChildElementRef = useRef<HTMLElement>();
-  const { register, unregister } = useElementRegistration();
 
   useEffect(() => {
     if (latestChildElementRef.current) {
@@ -21,6 +20,7 @@ export default function useComponentWrapperRef(node: ReactComponentNode): (ref: 
 
     childElement.dataset.simulatorNodeId = node.id;
     childElement.dataset.simulatorNodeExecutor = getNodeExecutor(node);
+    childElement.dataset.simulatorNodeDepth = `${depth}`;
     register(childElement);
 
     latestChildElementRef.current = childElement;
