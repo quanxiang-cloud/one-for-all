@@ -59,10 +59,19 @@
 // $indictorColor: green;
 
 .green-zone-position-indicator {
-  position: absolute;
-  will-change: width, height, transform;
   background-color: #0080005c;
   outline: 1px dashed #008000;
+}
+
+.green-zone {
+  position: absolute;
+  will-change: width, height, transform;
+}
+
+.green-zone-between-nodes {
+  border: 2px dashed #008000;
+  border-radius: 2px;
+  background-color: #0080001f;
 }
 
 // .contour-green-zone--left {
@@ -81,8 +90,8 @@
 //   box-shadow: inset -8px 0 0 0px coral;
 // }
 
-.simulator-drag-image {
-  background-color: #0084ff;
-  width: 150px;
-  border-radius: 4px;
-}
+// .simulator-drag-image {
+//   background-color: #0084ff;
+//   width: 150px;
+//   border-radius: 4px;
+// }

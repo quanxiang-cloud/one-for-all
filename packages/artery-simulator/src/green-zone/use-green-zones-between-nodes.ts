@@ -20,10 +20,7 @@ export default function useGreenZonesBetweenNodes(root: Immutable.Collection<unk
 
         return calcGreenZoneOfHoveringNodeSupportChildrenAndChildrenIsNotEmpty(root, hoveringContourNode, contourNodes);
       })
-    ).subscribe((greenZonesBetweenNodes) => {
-      console.log('greenZonesBetweenNodes', greenZonesBetweenNodes);
-      setGreenZones(greenZonesBetweenNodes);
-    });
+    ).subscribe(setGreenZones);
 
     return () => { subscription.unsubscribe(); };
   }, [root]);

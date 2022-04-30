@@ -76,12 +76,12 @@ export function isChildNodeOf(
   parentID: string,
   childID: string,
 ): boolean {
-  const parentIDs = parentIdsSeq(root, parentID);
+  const parentIDs = parentIdsSeq(root, childID);
   if (!parentIDs) {
     return false;
   }
 
-  return parentIDs.keyOf(childID) !== undefined ? false : true;
+  return parentIDs.keyOf(parentID) !== undefined ? true : false;
 }
 
 export function getNodeExecutor(node: NodeWithoutChild): string {

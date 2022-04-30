@@ -8,9 +8,9 @@ import { Artery, Node } from '@one-for-all/artery';
 import Background from './background';
 import Foreground from './foreground';
 import { ArteryCtx } from './contexts';
-import { NodeWithoutChild, ContourNodesReport } from './types';
+import { NodeWithoutChild } from './types';
 import GreenZone from './green-zone';
-import { immutableNodeState, isScrollingState } from './atoms';
+import { immutableNodeState } from './atoms';
 import './index.scss';
 import useElementsRadar from './use-radar-ref';
 

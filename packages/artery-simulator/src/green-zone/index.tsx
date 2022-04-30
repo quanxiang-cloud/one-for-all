@@ -20,7 +20,7 @@ function GreenZone(): JSX.Element | null {
         return (
           <div
             key={`${left.id}-${right.id}`}
-            className="green-zone-position-indicator"
+            className="green-zone green-zone-between-nodes"
             style={{
               height: absolutePosition.height,
               width: absolutePosition.width,

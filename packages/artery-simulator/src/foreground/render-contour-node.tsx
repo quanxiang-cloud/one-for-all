@@ -1,14 +1,15 @@
-import React, { useCallback, useContext, useRef } from 'react';
+import React, { useContext } from 'react';
 import cs from 'classnames';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 
 import useContourNodeStyle from './use-active-contour-node-style';
 import { ArteryCtx } from '../contexts';
 import type { ContourNode } from '../types';
-import { draggingNodeIDState, greenZoneState, hoveringContourNode$, hoveringParentIDState, immutableNodeState } from '../atoms';
-import { isChildNodeOf, overrideDragImage } from '../utils';
+import { draggingNodeIDState, greenZoneState, hoveringContourNode$, hoveringParentIDState } from '../atoms';
+import { overrideDragImage } from '../utils';
 import Toolbar from './toolbar';
 import useSetActiveNode from './use-set-active-node';
+import useShouldHandleDndCallback from './use-should-handle-dnd-callback';
 
 function preventDefault(e: any): false {
   e.preventDefault();
@@ -20,31 +21,12 @@ interface Props {
   contourNode: ContourNode;
 }
 
-function useShouldHandleDndCallback(currentID: string): () => boolean {
-  const shouldHandleRef = useRef<boolean | undefined>();
-  const [root] = useRecoilState(immutableNodeState);
-  const [draggingNodeID] = useRecoilState(draggingNodeIDState);
-
-  return useCallback(() => {
-    if (!draggingNodeID) {
-      return false;
-    }
-
-    if (shouldHandleRef.current === undefined) {
-      shouldHandleRef.current = isChildNodeOf(root, currentID, draggingNodeID);
-    }
-
-    return shouldHandleRef.current;
-  }, [draggingNodeID, root]);
-}
-
 function RenderContourNode({ contourNode }: Props): JSX.Element {
   const [hoveringParentID] = useRecoilState(hoveringParentIDState);
   const { rootNodeID, activeNode } = useContext(ArteryCtx);
   const style = useContourNodeStyle(contourNode);
   const setGreenZone = useSetRecoilState(greenZoneState);
   const [draggingNodeID, setDraggingNodeID] = useRecoilState(draggingNodeIDState);
-  const couldFireDragOver = useRef<boolean>(true);
   const setActiveNode = useSetActiveNode();
 
   const _shouldHandleDnd = useShouldHandleDndCallback(contourNode.id);
@@ -78,7 +60,6 @@ function RenderContourNode({ contourNode }: Props): JSX.Element {
           preventDefault(e);
           return false;
         }}
-        onDragLeave={() => { couldFireDragOver.current = true }}
         onDrop={(e: React.DragEvent<HTMLDivElement>): any => {
           e.stopPropagation();
           e.preventDefault();

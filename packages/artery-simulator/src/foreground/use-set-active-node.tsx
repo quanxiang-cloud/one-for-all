@@ -2,7 +2,7 @@ import { useCallback, useContext } from 'react';
 import { immutableNodeState } from '../atoms';
 import { useRecoilValue } from 'recoil';
 import { byArbitrary } from '@one-for-all/artery-utils';
-import { ArteryCtx } from 'src/contexts';
+import { ArteryCtx } from '../contexts';
 
 export default function useSetActiveNode(): (nodeID: string) => void {
   const rootNode = useRecoilValue(immutableNodeState);
