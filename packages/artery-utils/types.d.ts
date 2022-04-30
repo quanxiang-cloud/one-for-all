@@ -22,6 +22,7 @@ declare module '@one-for-all/artery-utils' {
   export function find(node: ImmutableNode, comparator: Comparator): KeyPath | undefined;
   export function firstChild(node: ImmutableNode, idOrKeyPath: IdOrKeyPath): KeyPath | undefined;
   export function hasChildNodes(node: ImmutableNode, idOrKeyPath: IdOrKeyPath): boolean;
+  export function nodeHasChildNodes(node: ImmutableNode): boolean;
   export function id(node: ImmutableNode, keyPath: KeyPath): string | undefined;
   export function keyPathById(node: ImmutableNode, id: string): KeyPath | undefined;
   export function lastChild(node: ImmutableNode, idOrKeyPath: IdOrKeyPath): KeyPath | undefined;
