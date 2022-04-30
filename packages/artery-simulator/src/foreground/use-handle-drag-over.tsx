@@ -29,5 +29,5 @@ export default function useHandleDragOver(contourNodes: ContourNode[]): (cursor:
     setGreenZonesBetweenNodes(greenZonesBetweenNodes)
   }, [greenZonesBetweenNodes]);
 
-  return throttle(dragOverCallback, 50);
+  return throttle(dragOverCallback, 200);
 }
