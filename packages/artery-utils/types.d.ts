@@ -85,5 +85,13 @@ declare module '@one-for-all/artery-utils' {
    * @param node
    * @returns New root, or undefined if insert failed
    */
-  export function insertAt(root, parentNodeID, index, node): Node | undefined;
+  export function insertAt(root: Node, parentNodeID: string, index: number, node: Node): Node | undefined;
+
+  /**
+   * Get the firstLevel `html-element` or `react-component` type children,
+   * if the child's type is not one of above, this function will find child's children recursively.
+   * @param parent Immutable type node
+   * @returns an array of Immutable nodes
+   */
+  export function getFirstLevelConcreteChildren(parent: ImmutableNode): Array<ImmutableNode>;
 }

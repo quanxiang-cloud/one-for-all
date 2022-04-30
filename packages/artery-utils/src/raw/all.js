@@ -17,3 +17,4 @@ export { default as parentIdsSeq } from './parentIdsSeq';
 export { default as previousSibling } from './previousSibling';
 export { default as right } from './right';
 export { default as walk } from './walk';
+export { default as getFirstLevelConcreteChildren } from './getFirstLevelConcreteChildren';
