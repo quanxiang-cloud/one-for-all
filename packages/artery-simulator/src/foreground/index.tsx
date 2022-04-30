@@ -1,48 +1,16 @@
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 
 import RenderContourNode from './render-contour-node';
-import { contourNodesState, greenZoneState, isScrollingState } from '../atoms';
-import type { ContourNode, Cursor, GreenZone, Position, SimulatorReport } from '../types';
+import { contourNodesState, isScrollingState } from '../atoms';
+import type { SimulatorReport } from '../types';
 import { useContourNodes } from './use-contour-nodes';
-import { throttle } from 'lodash';
-import { calcHoverPosition, getIsNodeSupportCache } from '../utils';
 import './index.scss';
 import useHandleDrop from './use-handle-drop';
+import useHandleDragOver from './use-handle-drag-over';
 
 interface Props {
   report: SimulatorReport;
-}
-
-function useHandleDragOver(): (cursor: Cursor, hoveringContourNode: ContourNode) => void {
-  const positionRef = useRef<Position>();
-  const [greenZone, setGreenZone] = useRecoilState(greenZoneState);
-  const greenZoneRef = useRef<GreenZone>();
-
-  useCallback(() => {
-
-  }, [])
-
-  function optimizedSetGreenZone(newZone?: GreenZone): void {
-    if (newZone?.hoveringNodeID !== greenZone?.hoveringNodeID || newZone?.position !== greenZone?.position) {
-      setGreenZone(newZone);
-    }
-  }
-
-  const handleDragOver = throttle((cursor: Cursor, hoveringContourNode: ContourNode) => {
-    const position = calcHoverPosition({
-      cursor,
-      hoveringRect: hoveringContourNode.raw,
-      supportInner: !!getIsNodeSupportCache(hoveringContourNode.executor),
-    });
-
-    if (positionRef.current !== position) {
-      positionRef.current = position;
-      optimizedSetGreenZone({ position, hoveringNodeID: hoveringContourNode.id, mostInnerNode: hoveringContourNode });
-    }
-  }, 200);
-
-  return handleDragOver;
 }
 
 function Foreground({ report }: Props): JSX.Element {
@@ -50,7 +18,7 @@ function Foreground({ report }: Props): JSX.Element {
   const contourNodes = useContourNodes(report.visibleNodes, isScrolling);
   const setContourNodesState = useSetRecoilState(contourNodesState);
   const handleDrop = useHandleDrop();
-  const handleDragOver = useHandleDragOver();
+  const handleDragOver = useHandleDragOver(contourNodes);
 
   useEffect(() => {
     setContourNodesState(contourNodes);

@@ -1,4 +1,4 @@
-const { getChildNodeKey } = require("./utils");
+import { getChildNodeKey } from "./utils";
 
 export default function getFirstLevelConcreteChildren(parent) {
   const childrenKey = getChildNodeKey(parent);
@@ -17,7 +17,7 @@ export default function getFirstLevelConcreteChildren(parent) {
 
   const children = parent.getIn([childrenKey]);
   const concreteNode = [];
-  children.forEach((child) => {
+  (children ||[]).forEach((child) => {
     const childNodeType = child.getIn(['type'])
     if (childNodeType === 'html-element' || childNodeType === 'react-component') {
       concreteNode.push(child)

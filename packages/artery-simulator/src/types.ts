@@ -43,3 +43,9 @@ export interface GreenZone {
 export type NodeWithoutChild =
   | Pick<HTMLNode, 'type' | 'name'>
   | Pick<ReactComponentNode, 'type' | 'packageName' | 'packageVersion' | 'exportName'>;
+
+export interface GreenZoneBetweenNodes {
+  left: ContourNode;
+  right: ContourNode;
+  absolutePosition: Rect;
+}

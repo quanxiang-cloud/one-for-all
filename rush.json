@@ -486,10 +486,10 @@
       "packageName": "@one-for-all/formula",
       "projectFolder": "packages/formula"
     },
-    {
-      "packageName": "@one-for-all/headless-ui",
-      "projectFolder": "packages/headless-ui"
-    },
+    // {
+    //   "packageName": "@one-for-all/headless-ui",
+    //   "projectFolder": "packages/headless-ui"
+    // },
     {
       "packageName": "@one-for-all/icon",
       "projectFolder": "packages/icon"

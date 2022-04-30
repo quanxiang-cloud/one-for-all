@@ -2,7 +2,7 @@ import immutable from 'immutable';
 import {
   atom,
 } from 'recoil';
-import { ContourNode, GreenZone } from './types';
+import { ContourNode, GreenZone, GreenZoneBetweenNodes } from './types';
 
 export const immutableNodeState = atom<Immutable.Collection<unknown, unknown>>({
   key: 'immutableNodeState',
@@ -26,3 +26,5 @@ export const hoveringParentIDState = atom<string>({ key: 'hoveringParentIDState'
 export const visibleElementsTickState = atom<number>({ key: 'visibleElementsTickState', default: 0 });
 
 export const isScrollingState = atom<boolean>({ key: 'isScrollingState', default: false });
+
+export const greenZonesBetweenNodesState = atom<GreenZoneBetweenNodes[]>({ key: 'greenZonesBetweenNodesState', default: [] });

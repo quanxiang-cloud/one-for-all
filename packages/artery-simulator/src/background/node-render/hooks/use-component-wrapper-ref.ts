@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { ReactComponentNode } from '@one-for-all/artery-renderer';
 import useElementRegistration from './use-element-registration';
 import useFirstElementChild from './use-first-element-child';
+import { getNodeExecutor } from '../../..//utils';
 
 export default function useComponentWrapperRef(node: ReactComponentNode): (ref: HTMLElement) => void {
   const [wrapperElement, setWrapperElement] = useState<HTMLElement>();
@@ -19,6 +20,7 @@ export default function useComponentWrapperRef(node: ReactComponentNode): (ref: 
     }
 
     childElement.dataset.simulatorNodeId = node.id;
+    childElement.dataset.simulatorNodeExecutor = getNodeExecutor(node);
     register(childElement);
 
     latestChildElementRef.current = childElement;

@@ -10,7 +10,8 @@ import Foreground from './foreground';
 import { ArteryCtx } from './contexts';
 import { NodeWithoutChild, SimulatorReport } from './types';
 import { AllElementsCTX, VisibleObserverCTX } from './background/contexts';
-import RenderGreenZone from './green-zone';
+// import RenderGreenZone from './green-zone';
+import RenderGreenZonesBetweenNodes from './green-zone-between-node';
 import { immutableNodeState, isScrollingState } from './atoms';
 import useVisibleObserver from './background/use-visible-observer';
 import './index.scss';
@@ -88,7 +89,8 @@ function Simulator({
               plugins={plugins}
             />
             {report && <Foreground report={report} />}
-            <RenderGreenZone />
+            {/* <RenderGreenZone /> */}
+            <RenderGreenZonesBetweenNodes />
           </div>
         </VisibleObserverCTX.Provider>
       </AllElementsCTX.Provider>
