@@ -58,14 +58,15 @@
 // inner-left
 // $indictorColor: green;
 
-.green-zone-position-indicator {
-  background-color: #0080005c;
-  outline: 1px dashed #008000;
-}
-
 .green-zone {
   position: absolute;
   will-change: width, height, transform;
+}
+
+.green-zone-for-node-without-children {
+  top: 0;
+  background-color: #0080005c;
+  outline: 1px dashed #008000;
 }
 
 .green-zone-between-nodes {

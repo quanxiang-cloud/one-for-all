@@ -1,6 +1,6 @@
 import type { HTMLNode, ReactComponentNode } from '@one-for-all/artery-renderer';
 import React, { useContext, useEffect, useState } from 'react';
-import { cacheIsNodeSupportChildren, getIsNodeSupportCache, getNodeExecutor } from '../../utils';
+import { cacheIsNodeSupportChildren, getIsNodeSupportChildrenFromCache, getNodeExecutor } from '../../utils';
 import { ArteryCtx } from '../../contexts';
 import { NodeWithoutChild } from '../../types';
 
@@ -32,7 +32,7 @@ function Placeholder({ parent }: Props): JSX.Element | null {
   useEffect(() => {
     let unMounting = false;
 
-    const flag = getIsNodeSupportCache(getNodeExecutor(parent));
+    const flag = getIsNodeSupportChildrenFromCache(getNodeExecutor(parent));
     if (flag !== undefined) {
       setShouldRender(flag);
       return;

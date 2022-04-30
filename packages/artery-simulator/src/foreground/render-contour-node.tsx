@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import cs from 'classnames';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 
 import useContourNodeStyle from './use-active-contour-node-style';
 import { ArteryCtx } from '../contexts';
 import type { ContourNode } from '../types';
-import { draggingNodeIDState, greenZoneState, hoveringContourNode$, hoveringParentIDState } from '../atoms';
+import { cursor$, draggingNodeIDState, hoveringContourNode$, hoveringParentIDState } from '../atoms';
 import { overrideDragImage } from '../utils';
 import Toolbar from './toolbar';
 import useSetActiveNode from './use-set-active-node';
@@ -25,7 +25,6 @@ function RenderContourNode({ contourNode }: Props): JSX.Element {
   const [hoveringParentID] = useRecoilState(hoveringParentIDState);
   const { rootNodeID, activeNode } = useContext(ArteryCtx);
   const style = useContourNodeStyle(contourNode);
-  const setGreenZone = useSetRecoilState(greenZoneState);
   const [draggingNodeID, setDraggingNodeID] = useRecoilState(draggingNodeIDState);
   const setActiveNode = useSetActiveNode();
 
@@ -47,7 +46,13 @@ function RenderContourNode({ contourNode }: Props): JSX.Element {
         }}
         onDragEnd={() => {
           setDraggingNodeID(undefined);
-          setGreenZone(undefined);
+          // setGreenZone(undefined);
+        }}
+        onDragOver={(e) => {
+          if (!_shouldHandleDnd()) {
+            return;
+          }
+          cursor$.next({ x: e.clientX, y: e.clientY });
         }}
         onDrag={preventDefault}
         onDragEnter={(e: React.DragEvent<HTMLDivElement>): any => {

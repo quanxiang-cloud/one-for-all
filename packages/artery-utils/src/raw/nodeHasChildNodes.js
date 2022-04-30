@@ -22,7 +22,7 @@ function nodeHasChildNodes(node) {
     return false;
   }
 
-  const childrenNodes = node.getIn(keyPath.concat([childKey]));
+  const childrenNodes = node.getIn([childKey]);
 
   return exists(childrenNodes) && childrenNodes.size > 0;
 }

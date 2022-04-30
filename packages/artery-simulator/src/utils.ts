@@ -66,7 +66,7 @@ export function cacheIsNodeSupportChildren(node: NodeWithoutChild, isSupport: bo
   isNodeSupportChildrenCache.set(cacheKey, isSupport);
 }
 
-export function getIsNodeSupportCache(nodeExecutor: string): boolean | undefined {
+export function getIsNodeSupportChildrenFromCache(nodeExecutor: string): boolean | undefined {
   return isNodeSupportChildrenCache.get(nodeExecutor);
 }
 

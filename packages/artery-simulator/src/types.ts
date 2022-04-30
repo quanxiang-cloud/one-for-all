@@ -30,15 +30,13 @@ export type Position =
   | 'inner-bottom'
   | 'inner-left';
 
-export interface GreenZone {
-  hoveringNodeID: string;
-  position: Position;
-  mostInnerNode: ContourNode;
-}
-
 export type NodeWithoutChild =
   | Pick<HTMLNode, 'type' | 'name'>
   | Pick<ReactComponentNode, 'type' | 'packageName' | 'packageVersion' | 'exportName'>;
+
+export interface GreenZoneForNodeWithoutChildren {
+  contour: ContourNode;
+}
 
 export interface GreenZoneBetweenNodes {
   left: ContourNode;

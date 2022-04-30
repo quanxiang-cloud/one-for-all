@@ -1,9 +1,9 @@
-import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
+import { BehaviorSubject, observable, Observable, ReplaySubject, Subject } from 'rxjs';
 import immutable from 'immutable';
 import {
   atom, selector,
 } from 'recoil';
-import { ContourNode, GreenZone, GreenZoneBetweenNodes, ContourNodesReport } from './types';
+import { ContourNode, GreenZoneBetweenNodes, ContourNodesReport, Cursor } from './types';
 import { byArbitrary } from '@one-for-all/artery-utils';
 
 export const immutableNodeState = atom<Immutable.Collection<unknown, unknown>>({
@@ -11,8 +11,6 @@ export const immutableNodeState = atom<Immutable.Collection<unknown, unknown>>({
   // eslint-disable-next-line new-cap
   default: immutable.Map({}),
 });
-
-export const greenZoneState = atom<GreenZone | undefined>({ key: 'greenZoneState', default: undefined });
 
 export const draggingNodeIDState = atom<string | undefined>({ key: 'draggingNodeIDState', default: undefined });
 export const draggingArteryImmutableNodeState = selector<immutable.Collection<unknown, unknown> | undefined>({
@@ -56,3 +54,5 @@ function visibleObserverCallback(entries: IntersectionObserverEntry[]): void {
 }
 
 export const VISIBLE_ELEMENTS_OBSERVER = new IntersectionObserver(visibleObserverCallback);
+
+export const cursor$ = new Subject<Cursor>();

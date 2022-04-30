@@ -1,13 +1,13 @@
 import { useRecoilState } from 'recoil';
 import React, { useCallback, useContext } from 'react';
 import { Node } from '@one-for-all/artery';
-import { draggingNodeIDState, greenZoneState, immutableNodeState } from '../atoms';
+import { draggingNodeIDState, immutableNodeState } from '../atoms';
 import { dropNode, jsonParse, moveNode } from './helper';
 import { ArteryCtx } from '../contexts';
 
 export default function useHandleDrop(): (e: React.DragEvent<HTMLElement>) => void {
   const [draggingNodeID, setDraggingNodeID] = useRecoilState(draggingNodeIDState);
-  const [greenZone, setGreenZone] = useRecoilState(greenZoneState);
+  // const [greenZone, setGreenZone] = useRecoilState(greenZoneState);
   const [root] = useRecoilState(immutableNodeState);
   const { onChange, artery } = useContext(ArteryCtx);
 
