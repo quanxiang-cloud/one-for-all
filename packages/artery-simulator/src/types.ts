@@ -35,7 +35,9 @@ export type NodeWithoutChild =
   | Pick<ReactComponentNode, 'type' | 'packageName' | 'packageVersion' | 'exportName'>;
 
 export interface GreenZoneForNodeWithoutChildren {
+  type: 'node_without_children';
   contour: ContourNode;
+  position: Position;
 }
 
 export interface GreenZoneAdjacentWithParent {
@@ -56,3 +58,5 @@ export interface GreenZoneBetweenNodes {
 }
 
 export type GreenZoneInsideNode = GreenZoneAdjacentWithParent | GreenZoneBetweenNodes;
+
+export type GreenZone = GreenZoneAdjacentWithParent | GreenZoneBetweenNodes | GreenZoneForNodeWithoutChildren;

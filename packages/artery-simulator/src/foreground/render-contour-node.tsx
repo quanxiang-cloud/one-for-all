@@ -5,7 +5,7 @@ import { useRecoilState } from 'recoil';
 import useContourNodeStyle from './use-active-contour-node-style';
 import { ArteryCtx } from '../contexts';
 import type { ContourNode } from '../types';
-import { cursor$, draggingNodeIDState, hoveringContourNode$, hoveringParentIDState } from '../atoms';
+import { cursor$, draggingNodeIDState, hoveringContourNode$, hoveringParentIDState, onDropEvent$ } from '../atoms';
 import { overrideDragImage } from '../utils';
 import Toolbar from './toolbar';
 import useSetActiveNode from './use-set-active-node';
@@ -27,7 +27,6 @@ function RenderContourNode({ contourNode }: Props): JSX.Element {
   const style = useContourNodeStyle(contourNode);
   const [draggingNodeID, setDraggingNodeID] = useRecoilState(draggingNodeIDState);
   const setActiveNode = useSetActiveNode();
-
   const _shouldHandleDnd = useShouldHandleDndCallback(contourNode.id);
 
   return (
@@ -40,18 +39,18 @@ function RenderContourNode({ contourNode }: Props): JSX.Element {
         onDragStart={(e: React.DragEvent<HTMLDivElement>): any => {
           // todo this has no affect, fix it!
           e.dataTransfer.effectAllowed = 'move';
+          e.dataTransfer.setData('SIMULATOR_DRAGGING_NODE_ID', contourNode.id);
           setDraggingNodeID(contourNode.id);
 
           overrideDragImage(e.dataTransfer);
         }}
-        onDragEnd={() => {
-          setDraggingNodeID(undefined);
-          // setGreenZone(undefined);
-        }}
+        onDragEnd={() => setDraggingNodeID(undefined)}
         onDragOver={(e) => {
           if (!_shouldHandleDnd()) {
             return;
           }
+
+          preventDefault(e);
           cursor$.next({ x: e.clientX, y: e.clientY });
         }}
         onDrag={preventDefault}
@@ -66,9 +65,8 @@ function RenderContourNode({ contourNode }: Props): JSX.Element {
           return false;
         }}
         onDrop={(e: React.DragEvent<HTMLDivElement>): any => {
-          e.stopPropagation();
-          e.preventDefault();
-          console.log('todo, handle drop event')
+          preventDefault(e);
+          onDropEvent$.next(e);
           // handleDrop(e);
           return false;
         }}

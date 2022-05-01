@@ -67,7 +67,7 @@ export default function RenderGreenZoneForNodeWithoutChildren({ greenZone }: Pro
     const subscription = cursor$.pipe(
       audit(() => animationFrames()),
       map(({ x }) => calcPosition(x, isSupportChildren, greenZone.contour.raw)),
-      tap((position) => latestFocusedGreenZone$.next({ position, contour: greenZone.contour })),
+      tap((position) => latestFocusedGreenZone$.next({ position, contour: greenZone.contour, type: 'node_without_children' })),
       map((position) => calcStyle(position, greenZone.contour.absolutePosition))
     ).subscribe(setStyle)
 

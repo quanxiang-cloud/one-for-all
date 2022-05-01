@@ -1,10 +1,10 @@
-import { BehaviorSubject, observable, Observable, ReplaySubject, Subject } from 'rxjs';
-import immutable from 'immutable';
+import { BehaviorSubject, map, observable, Observable, ReplaySubject, Subject } from 'rxjs';
+import immutable, { fromJS } from 'immutable';
 import {
   atom, selector,
 } from 'recoil';
-import { ContourNode, GreenZoneBetweenNodes, ContourNodesReport, Cursor, GreenZoneInsideNode, Position, GreenZoneForNodeWithoutChildren } from './types';
-import { byArbitrary } from '@one-for-all/artery-utils';
+import { ContourNode, GreenZoneBetweenNodes, ContourNodesReport, Cursor, GreenZoneInsideNode, Position, GreenZoneForNodeWithoutChildren, GreenZone } from './types';
+import { byArbitrary, walk } from '@one-for-all/artery-utils';
 
 export const immutableNodeState = atom<Immutable.Collection<unknown, unknown>>({
   key: 'immutableNodeState',
@@ -57,4 +57,6 @@ export const VISIBLE_ELEMENTS_OBSERVER = new IntersectionObserver(visibleObserve
 
 export const cursor$ = new Subject<Cursor>();
 
-export const latestFocusedGreenZone$ = new BehaviorSubject<GreenZoneInsideNode | GreenZoneForNodeWithoutChildren & { position: Position; }  | undefined>(undefined);
+export const latestFocusedGreenZone$ = new BehaviorSubject<GreenZone | undefined>(undefined);
+
+export const onDropEvent$ = new Subject<React.DragEvent>();

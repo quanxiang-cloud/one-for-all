@@ -1,84 +1,86 @@
 import { Node } from '@one-for-all/artery';
 import {
-  deleteByID,
-  findNodeByID,
-  insertAfter,
-  insertBefore,
-  appendChild,
-  insertAt,
+  byArbitrary,
+  _appendTo,
+  ImmutableNode,
+  _insertLeftSiblingTo,
+  _insertRightSiblingTo,
 } from '@one-for-all/artery-utils';
-import { logger } from '@one-for-all/utils';
-import { Position } from '../types';
+import { removeIn } from 'immutable';
+import type { GreenZone } from '../types';
 
 interface MoveNodeParams {
-  root: Node;
-  draggingNodeID: string;
-  hoveringNodeID: string;
-  position: Position;
+  rootNode: ImmutableNode;
+  nodeID: string;
+  greenZone: GreenZone
 }
 
-export function moveNode({
-  root,
-  draggingNodeID,
-  hoveringNodeID,
-  position,
-}: MoveNodeParams): Node | undefined {
-  let _root: Node | undefined = root;
-  const nodeToMove = findNodeByID(root, draggingNodeID);
+export function moveNode({ rootNode, nodeID, greenZone }: MoveNodeParams): ImmutableNode | undefined {
+  let _rootNode: ImmutableNode = rootNode;
+  const nodeToMoveKeyPath = byArbitrary(rootNode, nodeID);
+  if (!nodeToMoveKeyPath) {
+    return;
+  }
+
+  const nodeToMove = rootNode.getIn(nodeToMoveKeyPath) as ImmutableNode | undefined;
   if (!nodeToMove) {
-    logger.error(`can not find source node: ${draggingNodeID}, the move operation will be skipped`);
-    return root;
+    return;
   }
 
-  _root = deleteByID(root, nodeToMove.id);
-  if (position === 'right' || position === 'bottom') {
-    return insertAfter(_root, hoveringNodeID, nodeToMove);
-  }
+  console.log('greenZone:', greenZone)
+  console.log('nodeToMove:', nodeToMove)
 
-  if (position === 'left' || position === 'top') {
-    return insertBefore(_root, hoveringNodeID, nodeToMove);
-  }
+  _rootNode = removeIn(rootNode, nodeToMoveKeyPath);
 
-  if (position === 'inner-right' || position === 'inner-bottom') {
-    return appendChild(_root, hoveringNodeID, nodeToMove);
-  }
-
-  if (position === 'inner-left' || position === 'inner-top' || position === 'inner') {
-    return insertAt(_root, hoveringNodeID, 0, nodeToMove);
-  }
-
-  logger.error('unimplemented move position:', position);
-
-  return root;
+  return insertNode({ rootNode: _rootNode, node: nodeToMove, greenZone })
 }
 
-interface DropNodeParams {
-  root: Node;
-  node: Node;
-  hoveringNodeID: string;
-  position: Position;
+interface InsertNodeParams {
+  rootNode: ImmutableNode;
+  node: Node | ImmutableNode;
+  greenZone: GreenZone
 }
 
-export function dropNode({ root, node, hoveringNodeID, position }: DropNodeParams): Node | undefined {
-  if (position === 'right' || position === 'bottom') {
-    return insertAfter(root, hoveringNodeID, node);
+export function insertNode({ rootNode, node, greenZone }: InsertNodeParams): ImmutableNode | undefined  {
+  if (
+    greenZone.type === 'node_without_children' && (
+      greenZone.position === 'inner' ||
+      greenZone.position === 'inner-left' ||
+      greenZone.position === 'inner-right'
+    )
+  ) {
+    return _appendTo(rootNode, greenZone.contour.id, node);
   }
 
-  if (position === 'left' || position === 'top') {
-    return insertBefore(root, hoveringNodeID, node);
+  if (greenZone.type === 'node_without_children' && greenZone.position === 'left') {
+    return _insertLeftSiblingTo(rootNode, greenZone.contour.id, node)
   }
 
-  if (position === 'inner-right' || position === 'inner-bottom') {
-    return appendChild(root, hoveringNodeID, node);
+  if (greenZone.type === 'node_without_children' && greenZone.position === 'right') {
+    return _insertRightSiblingTo(rootNode, greenZone.contour.id, node)
   }
 
-  if (position === 'inner-left' || position === 'inner-top' || position === 'inner') {
-    return insertAt(root, hoveringNodeID, 0, node);
+  if (greenZone.type === 'adjacent-with-parent' && greenZone.edge === 'left') {
+    return _insertLeftSiblingTo(rootNode, greenZone.child.id, node);
   }
 
-  logger.error('unimplemented drop position:', position);
+  if (greenZone.type === 'adjacent-with-parent' && greenZone.edge === 'right') {
+    return _insertRightSiblingTo(rootNode, greenZone.child.id, node);
+  }
 
-  return root;
+  if (greenZone.type !== 'between-nodes') {
+    return;
+  }
+
+  if (greenZone.left.absolutePosition.height < greenZone.right.absolutePosition.height) {
+    return _insertRightSiblingTo(rootNode, greenZone.left.id, node);
+  }
+
+  if (greenZone.left.absolutePosition.height > greenZone.right.absolutePosition.height) {
+    return _insertLeftSiblingTo(rootNode, greenZone.right.id, node);
+  }
+
+  return _insertRightSiblingTo(rootNode, greenZone.left.id, node);
 }
 
 export function jsonParse<T>(json: string): T | undefined {

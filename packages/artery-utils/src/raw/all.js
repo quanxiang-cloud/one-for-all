@@ -1,3 +1,8 @@
+export { default as _appendTo } from './_appendTo';
+export { default as _insertChildAt } from './_insertChildAt';
+export { default as _insertLeftSiblingTo } from './_insertLeftSiblingTo';
+export { default as _insertRightSiblingTo } from './_insertRightSiblingTo';
+export { default as _prependTo } from './_prependTo';
 export { default as ancestors } from './ancestors';
 export { default as byArbitrary } from './byArbitrary';
 export { default as childAt } from './childAt';

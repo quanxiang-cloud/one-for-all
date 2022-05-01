@@ -6,6 +6,7 @@ function regenerateNodeID<T extends Node | ComposedNode>(node: T, genNodeID: () 
   return node;
 }
 
+// todo optimize performance
 function duplicateNode(node: Node, genNodeID: () => string): Node {
   const newNode = travel(node, {
     htmlNode: (current) => regenerateNodeID(current, genNodeID),

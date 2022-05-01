@@ -1,50 +1,66 @@
-import { useRecoilState } from 'recoil';
-import React, { useCallback, useContext } from 'react';
+import { useRecoilValue } from 'recoil';
+import { useContext, useEffect } from 'react';
 import { Node } from '@one-for-all/artery';
-import { draggingNodeIDState, immutableNodeState } from '../atoms';
-import { dropNode, jsonParse, moveNode } from './helper';
+import { immutableNodeState, latestFocusedGreenZone$, onDropEvent$ } from '../atoms';
+import { insertNode, jsonParse, moveNode } from './helper';
 import { ArteryCtx } from '../contexts';
+import duplicateNode from './toolbar/duplicate-node';
+import { filter, map } from 'rxjs';
 
-export default function useHandleDrop(): (e: React.DragEvent<HTMLElement>) => void {
-  const [draggingNodeID, setDraggingNodeID] = useRecoilState(draggingNodeIDState);
-  // const [greenZone, setGreenZone] = useRecoilState(greenZoneState);
-  const [root] = useRecoilState(immutableNodeState);
-  const { onChange, artery } = useContext(ArteryCtx);
+interface MoveNodeRequest {
+  type: 'move_node_request';
+  nodeID: string;
+}
 
-  return useCallback((e: React.DragEvent<HTMLElement>) => {
-    setDraggingNodeID(undefined);
+interface DropNodeRequest {
+  type: 'insert_node_request';
+  node: Node;
+}
 
-    if (!greenZone) {
-      return;
-    }
+type DropRequest = MoveNodeRequest | DropNodeRequest;
 
-    let newRoot: Node | undefined;
+export default function useHandleDrop(): void {
+  const rootNode = useRecoilValue(immutableNodeState);
+  const { genNodeID, onChange, artery } = useContext(ArteryCtx);
 
-    // move action
+  function getDropRequest(dataTransfer: DataTransfer): DropRequest | undefined {
+    const draggingNodeID = dataTransfer.getData('SIMULATOR_DRAGGING_NODE_ID');
     if (draggingNodeID) {
-      newRoot = moveNode({
-        root: artery.node,
-        draggingNodeID: draggingNodeID,
-        hoveringNodeID: greenZone.hoveringNodeID,
-        position: greenZone.position,
-      });
-    } else {
-      const droppedNode = jsonParse<Node>(e.dataTransfer.getData('__artery-node'));
-      if (droppedNode) {
-        // todo drop action
-        newRoot = dropNode({
-          root: artery.node,
-          node: droppedNode,
-          hoveringNodeID: greenZone.hoveringNodeID,
-          position: greenZone.position,
-        });
-      }
+      return { type: 'move_node_request', nodeID: draggingNodeID };
     }
 
-    if (newRoot) {
-      onChange({ ...artery, node: newRoot });
+    const droppedNode = jsonParse<Node>(dataTransfer.getData('ARTERY_NODE'));
+    if (droppedNode) {
+      return { type: 'insert_node_request', node: duplicateNode(droppedNode, genNodeID) };
     }
 
-    setGreenZone(undefined);
-  }, [draggingNodeID, root, greenZone, artery]);
+    return;
+  }
+
+  useEffect(() => {
+    const subscription = onDropEvent$.pipe(
+      filter(() => !!latestFocusedGreenZone$.value),
+      map((e) => getDropRequest(e.dataTransfer)),
+      filter((request): request is DropRequest => !!request),
+      map((dropRequest) => {
+        if (!latestFocusedGreenZone$.value) {
+          return;
+        }
+
+        if (dropRequest.type === 'move_node_request') {
+          return moveNode({ rootNode, nodeID: dropRequest.nodeID, greenZone: latestFocusedGreenZone$.value });
+        }
+
+        if (dropRequest.type === 'insert_node_request') {
+          return insertNode({ rootNode, node: dropRequest.node, greenZone: latestFocusedGreenZone$.value });
+        }
+      }),
+      map((newRoot) => newRoot ? newRoot.toJS() : undefined),
+      filter((newRoot) => !!newRoot),
+    ).subscribe((node) => {
+      onChange({ ...artery, node: node as unknown as Node });
+    });
+
+    return () => { subscription.unsubscribe(); }
+  }, [genNodeID, artery, onChange, rootNode]);
 }

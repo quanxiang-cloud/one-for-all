@@ -71,8 +71,8 @@ function Simulator({
           artery={artery}
           plugins={plugins}
         />
-        <Foreground />
         <GreenZone />
+        <Foreground />
       </div>
     </ArteryCtx.Provider>
   );

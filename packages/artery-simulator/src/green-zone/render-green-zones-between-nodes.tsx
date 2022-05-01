@@ -33,7 +33,7 @@ function useInsideID(greenZones: GreenZoneInsideNode[]): string {
       audit(() => animationFrames()),
       map((cursor) => greenZones.filter(({ raw }) => isInside(cursor, raw))),
       map((greenZones) => greenZones.length ? greenZones[0] : undefined),
-      tap(latestFocusedGreenZone$),
+      tap((greenZone) => latestFocusedGreenZone$.next(greenZone)),
       map((greenZone) => {
         if (!greenZone) {
           return '';

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { animationFrames, audit, distinctUntilChanged, map } from 'rxjs';
-import { GreenZoneForNodeWithoutChildren, GreenZoneBetweenNodes, GreenZoneInsideNode } from '../types';
+import { GreenZoneForNodeWithoutChildren, GreenZoneBetweenNodes, GreenZoneInsideNode, ContourNode } from '../types';
 import { calcGreenZoneOfHoveringNodeSupportChildrenAndChildrenIsNotEmpty } from './green-zone-helpers';
 import { hoveringContourNode$, contourNodesReport$, immutableNodeState } from '../atoms';
 import { byArbitrary, nodeHasChildNodes } from '@one-for-all/artery-utils';
@@ -14,7 +14,7 @@ export default function useGreenZoneReport() {
     const subscription = hoveringContourNode$.pipe(
       distinctUntilChanged(),
       audit(() => animationFrames()),
-      map((hoveringContourNode) => {
+      map<ContourNode | undefined, Array<GreenZoneInsideNode> | GreenZoneForNodeWithoutChildren>((hoveringContourNode) => {
         if (!hoveringContourNode) {
           return [];
         }
@@ -32,7 +32,7 @@ export default function useGreenZoneReport() {
         const hoveringArteryNode = root.getIn(hoveringNodeKeyPath) as Immutable.Collection<unknown, unknown>;
         const hasChild = nodeHasChildNodes(hoveringArteryNode);
         if (!hasChild) {
-          return { contour: hoveringContourNode };
+          return { contour: hoveringContourNode, type: 'node_without_children', position: 'left' };
         }
 
         return calcGreenZoneOfHoveringNodeSupportChildrenAndChildrenIsNotEmpty(root, hoveringContourNode, contourNodes);
