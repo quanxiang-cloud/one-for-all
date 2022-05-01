@@ -1,8 +1,8 @@
 import { Rect } from '@one-for-all/elements-radar';
 import React, { useEffect, useState } from 'react';
-import { map, distinctUntilChanged, audit } from 'rxjs/operators';
+import { map, distinctUntilChanged, audit, tap } from 'rxjs/operators';
 import { animationFrames } from 'rxjs';
-import { cursor$ } from '../atoms';
+import { cursor$, latestFocusedGreenZone$ } from '../atoms';
 import { Cursor, GreenZoneInsideNode } from '../types';
 import cs from 'classnames';
 
@@ -33,6 +33,7 @@ function useInsideID(greenZones: GreenZoneInsideNode[]): string {
       audit(() => animationFrames()),
       map((cursor) => greenZones.filter(({ raw }) => isInside(cursor, raw))),
       map((greenZones) => greenZones.length ? greenZones[0] : undefined),
+      tap(latestFocusedGreenZone$),
       map((greenZone) => {
         if (!greenZone) {
           return '';

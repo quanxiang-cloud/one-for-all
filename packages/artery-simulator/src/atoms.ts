@@ -3,7 +3,7 @@ import immutable from 'immutable';
 import {
   atom, selector,
 } from 'recoil';
-import { ContourNode, GreenZoneBetweenNodes, ContourNodesReport, Cursor } from './types';
+import { ContourNode, GreenZoneBetweenNodes, ContourNodesReport, Cursor, GreenZoneInsideNode, Position, GreenZoneForNodeWithoutChildren } from './types';
 import { byArbitrary } from '@one-for-all/artery-utils';
 
 export const immutableNodeState = atom<Immutable.Collection<unknown, unknown>>({
@@ -56,3 +56,5 @@ function visibleObserverCallback(entries: IntersectionObserverEntry[]): void {
 export const VISIBLE_ELEMENTS_OBSERVER = new IntersectionObserver(visibleObserverCallback);
 
 export const cursor$ = new Subject<Cursor>();
+
+export const latestFocusedGreenZone$ = new BehaviorSubject<GreenZoneInsideNode | GreenZoneForNodeWithoutChildren & { position: Position; }  | undefined>(undefined);

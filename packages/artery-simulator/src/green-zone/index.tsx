@@ -18,7 +18,7 @@ function GreenZone(): JSX.Element | null {
     return (<RenderGreenZonesBetweenNodes greenZones={greenZoneReport} />);
   }
 
-  return (<RenderGreenZoneForNodeWithoutChildren contour={greenZoneReport.contour} />);
+  return (<RenderGreenZoneForNodeWithoutChildren greenZone={greenZoneReport} />);
 }
 
 export default GreenZone;
