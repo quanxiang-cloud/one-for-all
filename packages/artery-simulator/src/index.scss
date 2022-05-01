@@ -61,6 +61,7 @@
 .green-zone {
   position: absolute;
   will-change: width, height, transform;
+  border-radius: 2px;
 }
 
 .green-zone-for-node-without-children {
@@ -70,9 +71,11 @@
 }
 
 .green-zone-between-nodes {
-  border: 2px dashed #008000;
-  border-radius: 2px;
-  background-color: #0080001f;
+  outline: 2px dashed #008000;
+}
+
+.green-zone-between-nodes--focused {
+  background-color: #0080005c;
 }
 
 // .contour-green-zone--left {

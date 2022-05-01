@@ -3,7 +3,8 @@ import React from 'react';
 import { draggingNodeIDState } from '../atoms';
 import { useRecoilState } from 'recoil';
 import useGreenZoneReport from './use-green-zone-report';
-import GreenZoneForNodeWithoutChildren from './green-zone-for-node-without-children';
+import RenderGreenZoneForNodeWithoutChildren from './render-green-zone-for-node-without-children';
+import RenderGreenZonesBetweenNodes from './render-green-zones-between-nodes';
 
 function GreenZone(): JSX.Element | null {
   const greenZoneReport = useGreenZoneReport();
@@ -14,26 +15,12 @@ function GreenZone(): JSX.Element | null {
   }
 
   if (Array.isArray(greenZoneReport)) {
-    return (
-      <>
-        {greenZoneReport.map(({ left, right, absolutePosition }) => {
-          return (
-            <div
-              key={`${left.id}-${right.id}`}
-              className="green-zone green-zone-between-nodes"
-              style={{
-                height: absolutePosition.height,
-                width: absolutePosition.width,
-                transform: `translate(${absolutePosition.x}px, ${absolutePosition.y}px)`,
-              }}
-            />
-          )
-        })}
-      </>
-    );
+    return (<RenderGreenZonesBetweenNodes greenZones={greenZoneReport} />);
   }
 
-  return (<GreenZoneForNodeWithoutChildren contour={greenZoneReport.contour} />);
+  return (<RenderGreenZoneForNodeWithoutChildren contour={greenZoneReport.contour} />);
 }
 
 export default GreenZone;
+
+

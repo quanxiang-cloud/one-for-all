@@ -57,7 +57,7 @@ function calcStyle(position: Position, absolutePosition: Rect): React.CSSPropert
   return;
 }
 
-export default function GreenZoneForNodeWithoutChildren({ contour }: Props): JSX.Element {
+export default function RenderGreenZoneForNodeWithoutChildren({ contour }: Props): JSX.Element {
   const [style, setStyle] = useState<React.CSSProperties>();
   const isSupportChildren = useMemo(() => {
     return !!getIsNodeSupportChildrenFromCache(contour.executor);
@@ -66,14 +66,8 @@ export default function GreenZoneForNodeWithoutChildren({ contour }: Props): JSX
   useEffect(() => {
     const subscription = cursor$.pipe(
       audit(() => animationFrames()),
-      map(({ x }) => {
-        console.log(x)
-        return calcPosition(x, isSupportChildren, contour.raw)
-      }),
-      map((position) => {
-        console.log(position)
-        return calcStyle(position, contour.absolutePosition);
-      })
+      map(({ x }) => calcPosition(x, isSupportChildren, contour.raw)),
+      map((position) => calcStyle(position, contour.absolutePosition))
     ).subscribe(setStyle)
 
     return () => { subscription.unsubscribe(); }

@@ -3,7 +3,7 @@ import ElementsRadar, { Report } from '@one-for-all/elements-radar';
 import { map } from 'rxjs/operators';
 
 import { ContourNode, ContourNodesReport } from './types';
-import { ALL_BACKGROUND_ELEMENTS, backgroundElementsChanged$, contourNodesReport$, immutableNodeState } from './atoms';
+import { ALL_BACKGROUND_ELEMENTS, backgroundElementsChanged$, contourNodesReport$ } from './atoms';
 
 export default function useElementsRadar(
   root: HTMLElement | null,
@@ -28,6 +28,7 @@ export default function useElementsRadar(
         // TODO: batch read this for preventing reflow
         const deltaX = root.scrollLeft || 0;
         const deltaY = root.scrollTop || 0;
+
         const scrollHeight = root.scrollHeight || 0;
         const scrollWidth = root.scrollWidth || 0;
         const contourNodes: ContourNode[] = Array.from(report.entries()).map(

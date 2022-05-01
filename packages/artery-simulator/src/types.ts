@@ -38,8 +38,21 @@ export interface GreenZoneForNodeWithoutChildren {
   contour: ContourNode;
 }
 
+export interface GreenZoneAdjacentWithParent {
+  type: 'adjacent-with-parent';
+  parent: ContourNode;
+  child: ContourNode;
+  edge: 'left' | 'right';
+  absolutePosition: Rect;
+  raw: Rect;
+}
+
 export interface GreenZoneBetweenNodes {
+  type: 'between-nodes';
   left: ContourNode;
   right: ContourNode;
   absolutePosition: Rect;
+  raw: Rect;
 }
+
+export type GreenZoneInsideNode = GreenZoneAdjacentWithParent | GreenZoneBetweenNodes;

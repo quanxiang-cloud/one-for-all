@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { map } from 'rxjs';
-import { GreenZoneForNodeWithoutChildren, GreenZoneBetweenNodes } from '../types';
+import { animationFrames, audit, distinctUntilChanged, map } from 'rxjs';
+import { GreenZoneForNodeWithoutChildren, GreenZoneBetweenNodes, GreenZoneInsideNode } from '../types';
 import { calcGreenZoneOfHoveringNodeSupportChildrenAndChildrenIsNotEmpty } from './green-zone-helpers';
 import { hoveringContourNode$, contourNodesReport$, immutableNodeState } from '../atoms';
 import { byArbitrary, nodeHasChildNodes } from '@one-for-all/artery-utils';
@@ -8,9 +8,12 @@ import { useRecoilValue } from 'recoil';
 
 export default function useGreenZoneReport() {
   const root = useRecoilValue(immutableNodeState)
-  const [greenZonesBetweenNodes, setGreenZones] = useState<GreenZoneBetweenNodes[] | GreenZoneForNodeWithoutChildren>([]);
+  const [greenZonesBetweenNodes, setGreenZones] = useState<Array<GreenZoneInsideNode> | GreenZoneForNodeWithoutChildren>([]);
+
   useEffect(() => {
     const subscription = hoveringContourNode$.pipe(
+      distinctUntilChanged(),
+      audit(() => animationFrames()),
       map((hoveringContourNode) => {
         if (!hoveringContourNode) {
           return [];

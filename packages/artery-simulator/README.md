@@ -17,3 +17,4 @@
 - dragging handle
 - 优化 `请拖拽组件到此处` 的提示
 - 点击 placeholder 需要可以选中父容器
+- bug: drag hover child node
