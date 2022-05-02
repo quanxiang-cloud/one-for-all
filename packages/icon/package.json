@@ -5,6 +5,7 @@
   "license": "Apache-2.0",
   "module": "lib/src",
   "types": "lib/src/index.d.ts",
+  "type": "module",
   "files": [
     "lib"
   ],

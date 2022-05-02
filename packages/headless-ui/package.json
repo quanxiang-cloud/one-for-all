@@ -4,6 +4,7 @@
   "description": "Migration of qxp-web base components",
   "homepage": "",
   "license": "MIT",
+  "type": "module",
   "main": "lib/src/web/index.js",
   "module": "lib",
   "types": "lib/src/web/index.d.ts",
