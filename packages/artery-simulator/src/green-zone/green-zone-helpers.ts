@@ -184,7 +184,7 @@ export function calcGreenZoneOfHoveringNodeSupportChildrenAndChildrenIsNotEmpty(
   const greenZonesBetweenNodes = firstLevelChildrenContours.map((current) => {
     const rightSiblings = findRightSiblings(current, firstLevelChildrenContours);
     return toGreenZoneBetweenNodes(current, rightSiblings);
-  }).reduce((acc, greenZones) => acc.concat(greenZones));
+  }).reduce((acc, greenZones) => acc.concat(greenZones), []);
   const filteredGreenZones = filterGreenZonesIntersectionWithNode(greenZonesBetweenNodes, firstLevelChildrenContours);
 
   const greenZonesWithParent = getGreenZonesWithParent(hoveringContour, firstLevelChildrenContours);

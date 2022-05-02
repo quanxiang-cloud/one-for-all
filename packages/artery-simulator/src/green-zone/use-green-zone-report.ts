@@ -7,7 +7,7 @@ import { byArbitrary, nodeHasChildNodes } from '@one-for-all/artery-utils';
 import { useRecoilValue } from 'recoil';
 
 export default function useGreenZoneReport() {
-  const root = useRecoilValue(immutableNodeState)
+  const root = useRecoilValue(immutableNodeState);
   const [greenZonesBetweenNodes, setGreenZones] = useState<Array<GreenZoneInsideNode> | GreenZoneForNodeWithoutChildren>([]);
 
   useEffect(() => {

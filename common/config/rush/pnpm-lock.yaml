@@ -10757,7 +10757,7 @@ packages:
     dev: false
 
   file:projects/artery-simulator.tgz_d1d7a1f0ff7525dd0d92693a4e80182a:
-    resolution: {integrity: sha512-d3zamfdZdy5WFTmU9tEiFD+lq1yn8XaspjE2cFbwrF6IqZivZQ55B+mUlLvblAqkSFQo57MEnFDWuE4tXKB+Cw==, tarball: file:projects/artery-simulator.tgz}
+    resolution: {integrity: sha512-lSwlw7HbME5HXhA/QN2NWcTwP1H16np2MjeE6zE+WxF4eCCtY8CPOsOf9pJI4g6eft97HQFkM/EobyAz+fu3XQ==, tarball: file:projects/artery-simulator.tgz}
     id: file:projects/artery-simulator.tgz
     name: '@rush-temp/artery-simulator'
     version: 0.0.0
@@ -10786,6 +10786,7 @@ packages:
       immutable: 4.0.0
       jest: 27.4.7
       lodash: 4.17.21
+      nanoid: 3.3.1
       react: 17.0.2
       recoil: 0.7.2_react-dom@17.0.2+react@17.0.2
       rollup: 2.66.0
@@ -10940,7 +10941,7 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-vElKuQZiekYGrYeJLARujZQilGksgAPJ/OyLTlIIEOl+t8N43x4GvitK/5J8MmCrQf4RdEGCGNcVZyGWitba4Q==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-gJmQEjMIdBNyQh7iNFzVdsHRWC8d28jKi3Nnv2C6pBHUtfkjZ8Y7XGpVwtX8DeoTSSDX5GV/AiDdGY5bVSMBiA==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
@@ -10972,6 +10973,7 @@ packages:
       http-server: 14.1.0
       lodash: 4.17.21
       msw: 0.36.8
+      nanoid: 3.3.1
       npm-run-all: 4.1.5
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2

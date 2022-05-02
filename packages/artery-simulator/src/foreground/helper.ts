@@ -27,12 +27,9 @@ export function moveNode({ rootNode, nodeID, greenZone }: MoveNodeParams): Immut
     return;
   }
 
-  console.log('greenZone:', greenZone)
-  console.log('nodeToMove:', nodeToMove)
-
   _rootNode = removeIn(rootNode, nodeToMoveKeyPath);
 
-  return insertNode({ rootNode: _rootNode, node: nodeToMove, greenZone })
+  return insertNode({ rootNode: _rootNode, node: nodeToMove, greenZone });
 }
 
 interface InsertNodeParams {
@@ -53,11 +50,11 @@ export function insertNode({ rootNode, node, greenZone }: InsertNodeParams): Imm
   }
 
   if (greenZone.type === 'node_without_children' && greenZone.position === 'left') {
-    return _insertLeftSiblingTo(rootNode, greenZone.contour.id, node)
+    return _insertLeftSiblingTo(rootNode, greenZone.contour.id, node);
   }
 
   if (greenZone.type === 'node_without_children' && greenZone.position === 'right') {
-    return _insertRightSiblingTo(rootNode, greenZone.contour.id, node)
+    return _insertRightSiblingTo(rootNode, greenZone.contour.id, node);
   }
 
   if (greenZone.type === 'adjacent-with-parent' && greenZone.edge === 'left') {

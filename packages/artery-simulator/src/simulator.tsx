@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import cs from 'classnames';
 import { useSetRecoilState } from 'recoil';
 import { fromJS } from 'immutable';
@@ -42,9 +42,8 @@ function Simulator({
   onDropFile,
 }: Props): JSX.Element {
   const setImmutableNode = useSetRecoilState(immutableNodeState);
-  // todo move this into RenderGreenZone
-  const simulatorRef = useRef<HTMLDivElement>(null);
-  useElementsRadar(simulatorRef.current);
+  const [rootElement, setRootElement] = useState<HTMLDivElement | null>(null)
+  useElementsRadar(rootElement);
 
   useEffect(() => {
     setImmutableNode(fromJS(artery.node));
@@ -64,7 +63,11 @@ function Simulator({
       }}
     >
       <div
-        ref={simulatorRef}
+        ref={(ref) => {
+          if (ref) {
+            setRootElement(ref)
+          }
+        }}
         className={cs('artery-simulator-root', className)}
       >
         <Background
