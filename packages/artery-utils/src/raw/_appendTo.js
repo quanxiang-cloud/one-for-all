@@ -16,7 +16,7 @@ function _appendTo(root, parentIdOrKeyPath, node) {
   }
 
   const childrenNodes = root.getIn(childrenKeyPath) || List();
-  return root.setIn(childrenKeyPath, childrenNodes.concat(node));
+  return root.setIn(childrenKeyPath, childrenNodes.push(node));
 }
 
 export default _appendTo;
