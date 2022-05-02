@@ -1,12 +1,20 @@
 {
   "name": "@one-for-all/elements-radar",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "",
   "license": "Apache-2.0",
   "author": "",
   "type": "module",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "src",
+    "tsconfig.json",
+    "README.md",
+    "!**/__tests__",
+    "!**/__mocks__"
+  ],
   "scripts": {
     "build": "heft build --clean",
     "bundle": "rm -rf dist && rollup -c rollup.config.js",
