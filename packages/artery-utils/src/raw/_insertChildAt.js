@@ -4,13 +4,13 @@ import { getChildNodeKey } from './utils';
 
 function _insertChildAt(root, parentIdOrKeyPath, index, node) {
   const _parentIdOrKeyPath = byArbitrary(root, parentIdOrKeyPath);
-  if (_parentIdOrKeyPath) {
+  if (!_parentIdOrKeyPath) {
     return;
   }
 
   const parentNode = root.getIn(_parentIdOrKeyPath);
   const childNodeKey = getChildNodeKey(parentNode);
-  const childrenKeyPath = parentKeyPath.concat([childNodeKey]);
+  const childrenKeyPath = _parentIdOrKeyPath.concat([childNodeKey]);
   if (childNodeKey === 'node') {
     return root.setIn(root, childrenKeyPath, node);
   }
