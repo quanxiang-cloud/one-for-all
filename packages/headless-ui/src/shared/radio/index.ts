@@ -1,7 +1,8 @@
-import Radio, { LabelWithInputInstace } from './radio';
+import Radio from './radio';
+export type { LabelWithInputInstace } from './radio';
 import RadioGroup from './group';
 
 import './index.scss';
 
-export { RadioGroup, LabelWithInputInstace };
+export { RadioGroup };
 export default Radio;

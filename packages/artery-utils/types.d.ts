@@ -14,6 +14,14 @@ declare module '@one-for-all/artery-utils' {
 
   export type Comparator = (currentNode: ImmutableNode, keyPath: KeyPath) => boolean;
 
+  export function exists(value: any): boolean;
+  export function getChildNodeKey(node: ImmutableNode): string;
+  export function _appendTo(root: ImmutableNode, parentIdOrKeyPath: IdOrKeyPath, node: Node | ImmutableNode): ImmutableNode | undefined;
+  export function _insertChildAt(root: ImmutableNode, parentIdOrKeyPath: IdOrKeyPath, index: number, node: Node | ImmutableNode): ImmutableNode | undefined;
+  export function _insertLeftSiblingTo(root: ImmutableNode, idOrKeyPath: IdOrKeyPath, node: Node | ImmutableNode): ImmutableNode | undefined;
+  export function _insertRightSiblingTo(root: ImmutableNode, idOrKeyPath: IdOrKeyPath, node: Node | ImmutableNode): ImmutableNode | undefined;
+  export function _prependTo(root: ImmutableNode, parentIdOrKeyPath: IdOrKeyPath, node: Node | ImmutableNode): ImmutableNode | undefined;
+
   export function ancestors(node: ImmutableNode, idOrKeyPath: IdOrKeyPath): List<KeyPath> | undefined;
   export function byArbitrary(node: ImmutableNode, idOrKeyPath: IdOrKeyPath): KeyPath | undefined;
   export function childAt(node: ImmutableNode, idOrKeyPath: IdOrKeyPath, index: number): KeyPath | undefined;
@@ -22,6 +30,7 @@ declare module '@one-for-all/artery-utils' {
   export function find(node: ImmutableNode, comparator: Comparator): KeyPath | undefined;
   export function firstChild(node: ImmutableNode, idOrKeyPath: IdOrKeyPath): KeyPath | undefined;
   export function hasChildNodes(node: ImmutableNode, idOrKeyPath: IdOrKeyPath): boolean;
+  export function nodeHasChildNodes(node: ImmutableNode): boolean;
   export function id(node: ImmutableNode, keyPath: KeyPath): string | undefined;
   export function keyPathById(node: ImmutableNode, id: string): KeyPath | undefined;
   export function lastChild(node: ImmutableNode, idOrKeyPath: IdOrKeyPath): KeyPath | undefined;
@@ -85,5 +94,13 @@ declare module '@one-for-all/artery-utils' {
    * @param node
    * @returns New root, or undefined if insert failed
    */
-  export function insertAt(root, parentNodeID, index, node): Node | undefined;
+  export function insertAt(root: Node, parentNodeID: string, index: number, node: Node): Node | undefined;
+
+  /**
+   * Get the firstLevel `html-element` or `react-component` type children,
+   * if the child's type is not one of above, this function will find child's children recursively.
+   * @param parent Immutable type node
+   * @returns an array of Immutable nodes
+   */
+  export function getFirstLevelConcreteChildren(parent: ImmutableNode): Array<ImmutableNode>;
 }

@@ -1,0 +1,101 @@
+.artery-simulator-root {
+  position: relative;
+  overflow: auto;
+  background-color: white;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  [data-simulator-background-root-node] {
+    outline: 1px dashed cadetblue;
+  }
+
+  [data-simulator-background-root-node-rect] > * {
+    outline: 1px dashed cadetblue;
+  }
+
+  .simulator-background {
+    position: absolute;
+    // space for scrollbar
+    left: 10px;
+    right: 10px;
+    min-height: 90%;
+    // space for root node outline
+    padding: 4px;
+
+    * {
+      pointer-events: none;
+    }
+    // position: absolute;
+    // overflow: auto;
+    // top: 0;
+    // left: 0;
+    // right: 0;
+    // bottom: 0;
+
+    // outline: 1px dashed cadetblue;
+  }
+}
+
+.contour-green-zone {
+  position: absolute;
+  top: 0;
+  will-change: width, height, transform;
+
+  outline: 1px dashed #f85900;
+}
+
+// TODO Support all position
+// top
+// right
+// bottom
+// left
+// inner
+// inner-top
+// inner-right
+// inner-bottom
+// inner-left
+// $indictorColor: green;
+
+.green-zone {
+  position: absolute;
+  will-change: width, height, transform;
+  border-radius: 2px;
+}
+
+.green-zone-for-node-without-children {
+  top: 0;
+  background-color: #0080005c;
+  outline: 1px dashed #008000;
+}
+
+.green-zone-between-nodes {
+  outline: 2px dashed #008000;
+}
+
+.green-zone-between-nodes--focused {
+  background-color: #0080005c;
+}
+
+// .contour-green-zone--left {
+//   box-shadow: -8px 0 0 0px $indictorColor;
+// }
+
+// .contour-green-zone--right {
+//   box-shadow: 8px 0 0 0px $indictorColor;
+// }
+
+// .contour-green-zone--inner-left {
+//   box-shadow: inset 8px 0 0 0px coral;
+// }
+
+// .contour-green-zone--inner-right {
+//   box-shadow: inset -8px 0 0 0px coral;
+// }
+
+// .simulator-drag-image {
+//   background-color: #0084ff;
+//   width: 150px;
+//   border-radius: 4px;
+// }
