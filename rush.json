@@ -345,6 +345,7 @@
    * To install a variant, run "rush install --variant <variant_name>".
    *
    * For more details and instructions, see this article:  https://rushjs.io/pages/advanced/installation_variants/
+   * For more details and instructions, see this article:  https://rushjs.io/pages/advanced/installation_variants/
    */
   "variants": [
     // {
@@ -486,10 +487,10 @@
       "packageName": "@one-for-all/formula",
       "projectFolder": "packages/formula"
     },
-    // {
-    //   "packageName": "@one-for-all/headless-ui",
-    //   "projectFolder": "packages/headless-ui"
-    // },
+    {
+      "packageName": "@one-for-all/headless-ui",
+      "projectFolder": "packages/headless-ui"
+    },
     {
       "packageName": "@one-for-all/icon",
       "projectFolder": "packages/icon"
@@ -505,10 +506,6 @@
     {
       "packageName": "@one-for-all/elements-radar",
       "projectFolder": "packages/elements-radar"
-    },
-    {
-      "packageName": "@one-for-all/ui",
-      "projectFolder": "packages/ui"
     },
     {
       "packageName": "@one-for-all/utils",

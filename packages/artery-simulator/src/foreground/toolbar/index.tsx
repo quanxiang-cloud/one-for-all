@@ -1,13 +1,13 @@
 import React, { useContext, useRef } from 'react';
 import { usePopper } from '@one-for-all/headless-ui';
+import { deleteByID, insertAfter } from '@one-for-all/artery-utils';
+
 import { ArteryCtx } from '../../contexts';
 import ParentNodes from './parent-nodes';
-import { deleteByID, insertAfter } from '@one-for-all/artery-utils';
 import Icon from '@one-for-all/icon';
 import duplicateNode from './duplicate-node';
 import useToolbarStyle from './use-toolbar-style';
 import { useNodeLabel } from './use-node-label';
-import { ContourNode } from '../../types';
 import { useActiveContour } from './use-active-contour';
 
 const modifiers = [
