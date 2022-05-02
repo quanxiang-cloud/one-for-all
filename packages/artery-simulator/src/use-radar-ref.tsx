@@ -45,7 +45,6 @@ export default function useElementsRadar(
               depth,
               raw,
               relativeRect,
-              visible: true,
               executor: element.dataset.simulatorNodeExecutor || '',
               absolutePosition: {
                 height: relativeRect.height,
