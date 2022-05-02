@@ -23,21 +23,24 @@ function ParentNodes({ currentNodeID, onParentClick }: Props): JSX.Element | nul
     }
 
     // @ts-ignore
-    const _parents: Node[] = parentIDs.map((parentID) => {
-      const keyPath = keyPathById(immutableNode, parentID);
-      if (!keyPath) {
-        return;
-      }
-      return immutableNode.getIn(keyPath);
-    }).filter((parentNode) => {
-      if (!parentNode) {
-        return false;
-      }
+    const _parents: Node[] = parentIDs
+      .map((parentID) => {
+        const keyPath = keyPathById(immutableNode, parentID);
+        if (!keyPath) {
+          return;
+        }
+        return immutableNode.getIn(keyPath);
+      })
+      .filter((parentNode) => {
+        if (!parentNode) {
+          return false;
+        }
 
-      // @ts-ignore
-      const parentNodeType = parentNode.getIn(['type']);
-      return parentNodeType === 'html-element' || parentNodeType === 'react-component';
-    }).toJS();
+        // @ts-ignore
+        const parentNodeType = parentNode.getIn(['type']);
+        return parentNodeType === 'html-element' || parentNodeType === 'react-component';
+      })
+      .toJS();
     // just show the max 5 level parent
     setParents(_parents?.reverse().slice(0, 5) || []);
   }, [artery]);

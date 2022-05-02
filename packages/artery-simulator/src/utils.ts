@@ -100,7 +100,9 @@ export function useBehaviorSubjectState<T>(subject: BehaviorSubject<T>): T {
 
   useEffect(() => {
     const subscription = subject.subscribe(setState);
-    return () => { subscription.unsubscribe() }
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [subject]);
 
   return state;

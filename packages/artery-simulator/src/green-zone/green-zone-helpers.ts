@@ -1,12 +1,17 @@
 import { byArbitrary, getFirstLevelConcreteChildren } from '@one-for-all/artery-utils';
 import { Rect } from '@one-for-all/elements-radar';
-import { ContourNode, GreenZoneAdjacentWithParent, GreenZoneBetweenNodes, GreenZoneInsideNode } from '../types';
+import {
+  ContourNode,
+  GreenZoneAdjacentWithParent,
+  GreenZoneBetweenNodes,
+  GreenZoneInsideNode,
+} from '../types';
 
 // todo optimize performance
 function getFirstLevelConcreteChildrenContours(
   root: Immutable.Collection<unknown, unknown>,
   nodeID: string,
-  contourNodes: ContourNode[]
+  contourNodes: ContourNode[],
 ): Array<ContourNode> {
   const nodeKeyPath = byArbitrary(root, nodeID);
   if (!nodeKeyPath) {
@@ -18,37 +23,42 @@ function getFirstLevelConcreteChildrenContours(
     return [];
   }
 
-  const ids: string[] = getFirstLevelConcreteChildren(parentNode).map((child) => child.getIn(['id']) as string);
+  const ids: string[] = getFirstLevelConcreteChildren(parentNode).map(
+    (child) => child.getIn(['id']) as string,
+  );
   return contourNodes.filter(({ id }) => ids.includes(id));
 }
 // type NearestEdge = 'left' | 'right';
 const MIN_GAP = 2;
 function findNearestRightSibling(current: ContourNode, children: ContourNode[]): ContourNode | undefined {
-  return children.filter((sibling) => {
-    if (sibling.id === current.id) {
-      return false;
-    }
+  return children
+    .filter((sibling) => {
+      if (sibling.id === current.id) {
+        return false;
+      }
 
-    if ((current.raw.x + current.raw.width + MIN_GAP) > sibling.raw.x) {
-      return false;
-    }
+      if (current.raw.x + current.raw.width + MIN_GAP > sibling.raw.x) {
+        return false;
+      }
 
-    if (current.raw.y > (sibling.raw.y + sibling.raw.height)) {
-      return false;
-    }
+      if (current.raw.y > sibling.raw.y + sibling.raw.height) {
+        return false;
+      }
 
-    if ((current.raw.y + current.raw.height) < sibling.raw.y) {
-      return false;
-    }
+      if (current.raw.y + current.raw.height < sibling.raw.y) {
+        return false;
+      }
 
-    return true;
-  }).sort((a, b): number => {
-    const X = current.raw.x + current.raw.width;
-    const toALeftEdgeDistance = a.raw.x - X;
-    const toBLeftEdgeDistance = b.raw.x - X;
+      return true;
+    })
+    .sort((a, b): number => {
+      const X = current.raw.x + current.raw.width;
+      const toALeftEdgeDistance = a.raw.x - X;
+      const toBLeftEdgeDistance = b.raw.x - X;
 
-    return toALeftEdgeDistance < toBLeftEdgeDistance ? -1 : 1;
-  }).shift();
+      return toALeftEdgeDistance < toBLeftEdgeDistance ? -1 : 1;
+    })
+    .shift();
 }
 
 function findRightSiblings(current: ContourNode, allSiblings: ContourNode[]): ContourNode[] {
@@ -57,15 +67,15 @@ function findRightSiblings(current: ContourNode, allSiblings: ContourNode[]): Co
       return false;
     }
 
-    if ((current.raw.x + current.raw.width + MIN_GAP) > sibling.raw.x) {
+    if (current.raw.x + current.raw.width + MIN_GAP > sibling.raw.x) {
       return false;
     }
 
-    if (current.raw.y > (sibling.raw.y + sibling.raw.height)) {
+    if (current.raw.y > sibling.raw.y + sibling.raw.height) {
       return false;
     }
 
-    if ((current.raw.y + current.raw.height) < sibling.raw.y) {
+    if (current.raw.y + current.raw.height < sibling.raw.y) {
       return false;
     }
 
@@ -73,7 +83,10 @@ function findRightSiblings(current: ContourNode, allSiblings: ContourNode[]): Co
   });
 }
 
-function toGreenZoneBetweenNodes(current: ContourNode, rightSiblings: ContourNode[]): GreenZoneBetweenNodes[] {
+function toGreenZoneBetweenNodes(
+  current: ContourNode,
+  rightSiblings: ContourNode[],
+): GreenZoneBetweenNodes[] {
   return rightSiblings.map((right) => {
     const absolutePosition: Rect = {
       x: current.absolutePosition.x + current.absolutePosition.width,
@@ -81,7 +94,7 @@ function toGreenZoneBetweenNodes(current: ContourNode, rightSiblings: ContourNod
       width: right.absolutePosition.x - (current.absolutePosition.x + current.absolutePosition.width),
       height: Math.min(
         Math.abs(current.absolutePosition.y - (right.absolutePosition.y + right.absolutePosition.height)),
-        Math.abs(current.absolutePosition.y + current.absolutePosition.height - right.absolutePosition.y)
+        Math.abs(current.absolutePosition.y + current.absolutePosition.height - right.absolutePosition.y),
       ),
     };
 
@@ -110,14 +123,22 @@ function hasInterSection(rectA: Rect, rectB: Rect): boolean {
   return maxStartX < minEndX && maxStartY < minEndY;
 }
 
-function filterGreenZonesIntersectionWithNode(greenZones: GreenZoneBetweenNodes[], contours: ContourNode[]): GreenZoneBetweenNodes[] {
+function filterGreenZonesIntersectionWithNode(
+  greenZones: GreenZoneBetweenNodes[],
+  contours: ContourNode[],
+): GreenZoneBetweenNodes[] {
   return greenZones.filter(({ absolutePosition }) => {
-    const isInterSecting =  contours.some((contour) => hasInterSection(contour.absolutePosition, absolutePosition));
+    const isInterSecting = contours.some((contour) =>
+      hasInterSection(contour.absolutePosition, absolutePosition),
+    );
     return !isInterSecting;
   });
 }
 
-function getGreenZonesWithParent(parent: ContourNode, children: ContourNode[]): GreenZoneAdjacentWithParent[] {
+function getGreenZonesWithParent(
+  parent: ContourNode,
+  children: ContourNode[],
+): GreenZoneAdjacentWithParent[] {
   const greenZoneBetweenParentLeftEdge = children.map<GreenZoneAdjacentWithParent>((child) => {
     const raw: Rect = {
       x: parent.raw.x,
@@ -137,7 +158,7 @@ function getGreenZonesWithParent(parent: ContourNode, children: ContourNode[]): 
         y: child.absolutePosition.y,
         height: child.absolutePosition.height,
         width: child.absolutePosition.x - parent.absolutePosition.x,
-      }
+      },
     };
   });
 
@@ -170,22 +191,33 @@ function getGreenZonesWithParent(parent: ContourNode, children: ContourNode[]): 
       return false;
     }
 
-    return !children.some(({ absolutePosition }) => hasInterSection(absolutePosition, greenZone.absolutePosition));
+    return !children.some(({ absolutePosition }) =>
+      hasInterSection(absolutePosition, greenZone.absolutePosition),
+    );
   });
 }
 
 export function calcGreenZoneOfHoveringNodeSupportChildrenAndChildrenIsNotEmpty(
   root: Immutable.Collection<unknown, unknown>,
   hoveringContour: ContourNode,
-  contourNodes: ContourNode[]
+  contourNodes: ContourNode[],
 ): Array<GreenZoneInsideNode> {
-  const firstLevelChildrenContours = getFirstLevelConcreteChildrenContours(root, hoveringContour.id, contourNodes);
+  const firstLevelChildrenContours = getFirstLevelConcreteChildrenContours(
+    root,
+    hoveringContour.id,
+    contourNodes,
+  );
 
-  const greenZonesBetweenNodes = firstLevelChildrenContours.map((current) => {
-    const rightSiblings = findRightSiblings(current, firstLevelChildrenContours);
-    return toGreenZoneBetweenNodes(current, rightSiblings);
-  }).reduce((acc, greenZones) => acc.concat(greenZones), []);
-  const filteredGreenZones = filterGreenZonesIntersectionWithNode(greenZonesBetweenNodes, firstLevelChildrenContours);
+  const greenZonesBetweenNodes = firstLevelChildrenContours
+    .map((current) => {
+      const rightSiblings = findRightSiblings(current, firstLevelChildrenContours);
+      return toGreenZoneBetweenNodes(current, rightSiblings);
+    })
+    .reduce((acc, greenZones) => acc.concat(greenZones), []);
+  const filteredGreenZones = filterGreenZonesIntersectionWithNode(
+    greenZonesBetweenNodes,
+    firstLevelChildrenContours,
+  );
 
   const greenZonesWithParent = getGreenZonesWithParent(hoveringContour, firstLevelChildrenContours);
 

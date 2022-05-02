@@ -15,12 +15,10 @@ function GreenZone(): JSX.Element | null {
   }
 
   if (Array.isArray(greenZoneReport)) {
-    return (<RenderGreenZonesBetweenNodes greenZones={greenZoneReport} />);
+    return <RenderGreenZonesBetweenNodes greenZones={greenZoneReport} />;
   }
 
-  return (<RenderGreenZoneForNodeWithoutChildren greenZone={greenZoneReport} />);
+  return <RenderGreenZoneForNodeWithoutChildren greenZone={greenZoneReport} />;
 }
 
 export default GreenZone;
-
-

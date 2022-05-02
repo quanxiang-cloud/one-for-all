@@ -8,17 +8,20 @@ export default function useSetActiveNode(): (nodeID: string) => void {
   const rootNode = useRecoilValue(immutableNodeState);
   const { setActiveNode } = useContext(ArteryCtx);
 
-  return useCallback((nodeID: string) => {
-    if (!nodeID) {
-      setActiveNode(undefined);
-      return;
-    }
+  return useCallback(
+    (nodeID: string) => {
+      if (!nodeID) {
+        setActiveNode(undefined);
+        return;
+      }
 
-    const keyPath = byArbitrary(rootNode, nodeID);
-    if (!keyPath) {
-      return;
-    }
-    // @ts-ignore
-    setActiveNode(rootNode.getIn(keyPath)?.toJS());
-  }, [rootNode]);
+      const keyPath = byArbitrary(rootNode, nodeID);
+      if (!keyPath) {
+        return;
+      }
+      // @ts-ignore
+      setActiveNode(rootNode.getIn(keyPath)?.toJS());
+    },
+    [rootNode],
+  );
 }

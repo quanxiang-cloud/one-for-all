@@ -38,29 +38,37 @@ export default function useHandleDrop(): void {
   }
 
   useEffect(() => {
-    const subscription = onDropEvent$.pipe(
-      filter(() => !!latestFocusedGreenZone$.value),
-      map((e) => getDropRequest(e.dataTransfer)),
-      filter((request): request is DropRequest => !!request),
-      map((dropRequest) => {
-        if (!latestFocusedGreenZone$.value) {
-          return;
-        }
+    const subscription = onDropEvent$
+      .pipe(
+        filter(() => !!latestFocusedGreenZone$.value),
+        map((e) => getDropRequest(e.dataTransfer)),
+        filter((request): request is DropRequest => !!request),
+        map((dropRequest) => {
+          if (!latestFocusedGreenZone$.value) {
+            return;
+          }
 
-        if (dropRequest.type === 'move_node_request') {
-          return moveNode({ rootNode, nodeID: dropRequest.nodeID, greenZone: latestFocusedGreenZone$.value });
-        }
+          if (dropRequest.type === 'move_node_request') {
+            return moveNode({
+              rootNode,
+              nodeID: dropRequest.nodeID,
+              greenZone: latestFocusedGreenZone$.value,
+            });
+          }
 
-        if (dropRequest.type === 'insert_node_request') {
-          return insertNode({ rootNode, node: dropRequest.node, greenZone: latestFocusedGreenZone$.value });
-        }
-      }),
-      map((newRoot) => newRoot ? newRoot.toJS() : undefined),
-      filter((newRoot) => !!newRoot),
-    ).subscribe((node) => {
-      onChange({ ...artery, node: node as unknown as Node });
-    });
+          if (dropRequest.type === 'insert_node_request') {
+            return insertNode({ rootNode, node: dropRequest.node, greenZone: latestFocusedGreenZone$.value });
+          }
+        }),
+        map((newRoot) => (newRoot ? newRoot.toJS() : undefined)),
+        filter((newRoot) => !!newRoot),
+      )
+      .subscribe((node) => {
+        onChange({ ...artery, node: node as unknown as Node });
+      });
 
-    return () => { subscription.unsubscribe(); }
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [genNodeID, artery, onChange, rootNode]);
 }

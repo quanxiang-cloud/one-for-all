@@ -8,6 +8,7 @@ import duplicateNode from './duplicate-node';
 import useToolbarStyle from './use-toolbar-style';
 import { useNodeLabel } from './use-node-label';
 import { ContourNode } from '../../types';
+import { useActiveContour } from './use-active-contour';
 
 const modifiers = [
   {
@@ -18,12 +19,9 @@ const modifiers = [
   },
 ];
 
-interface Props {
-  contourNode: ContourNode;
-}
-
 // render toolbar on another context to prevent it be covered by contour node
-function ContourNodeToolbar({ contourNode }: Props): JSX.Element | null {
+function ContourNodeToolbar(): JSX.Element | null {
+  const contourNode = useActiveContour();
   const { activeNode } = useContext(ArteryCtx);
   const { referenceRef, Popper, handleMouseEnter, handleMouseLeave, close } = usePopper<HTMLSpanElement>();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -77,7 +75,7 @@ function ContourNodeToolbar({ contourNode }: Props): JSX.Element | null {
       <span onClick={handleDelete} className="active-contour-node-toolbar__action" title="删除">
         <Icon name="delete_forever" size={16} />
       </span>
-      <Popper placement="bottom-start" modifiers={modifiers} >
+      <Popper placement="bottom-start" modifiers={modifiers}>
         <ParentNodes currentNodeID={contourNode.id} onParentClick={close} />
       </Popper>
     </div>

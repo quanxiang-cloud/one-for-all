@@ -25,7 +25,7 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
     return React.createElement(
       DepthContext.Provider,
       { value: currentDepth },
-      React.createElement(HTMLNodeRender, { node, ctx })
+      React.createElement(HTMLNodeRender, { node, ctx }),
     );
   }
 
@@ -33,7 +33,7 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
     return React.createElement(
       DepthContext.Provider,
       { value: currentDepth },
-      React.createElement(ReactComponentNodeRender, { node, ctx })
+      React.createElement(ReactComponentNodeRender, { node, ctx }),
     );
   }
 

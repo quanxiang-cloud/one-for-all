@@ -11,10 +11,9 @@ interface Props {
 }
 
 function isInside(cursor: Cursor, raw: Rect): boolean {
-  return cursor.x >= raw.x &&
-    cursor.x <= raw.x + raw.width &&
-    cursor.y >= raw.y &&
-    cursor.y <= raw.y + raw.height
+  return (
+    cursor.x >= raw.x && cursor.x <= raw.x + raw.width && cursor.y >= raw.y && cursor.y <= raw.y + raw.height
+  );
 }
 
 function getGreenZoneID(greenZone: GreenZoneInsideNode): string {
@@ -22,30 +21,34 @@ function getGreenZoneID(greenZone: GreenZoneInsideNode): string {
     return `adjacent-${greenZone.parent.id}-${greenZone.child.id}-${greenZone.edge}`;
   }
 
-  return `between-${greenZone.left.id}-${greenZone.right.id}`
+  return `between-${greenZone.left.id}-${greenZone.right.id}`;
 }
 
 function useInsideID(greenZones: GreenZoneInsideNode[]): string {
   const [inSideID, setInsideID] = useState<string>('');
 
   useEffect(() => {
-    const subscription = cursor$.pipe(
-      audit(() => animationFrames()),
-      map((cursor) => greenZones.filter(({ raw }) => isInside(cursor, raw))),
-      map((greenZones) => greenZones.length ? greenZones[0] : undefined),
-      tap((greenZone) => latestFocusedGreenZone$.next(greenZone)),
-      map((greenZone) => {
-        if (!greenZone) {
-          return '';
-        }
+    const subscription = cursor$
+      .pipe(
+        audit(() => animationFrames()),
+        map((cursor) => greenZones.filter(({ raw }) => isInside(cursor, raw))),
+        map((greenZones) => (greenZones.length ? greenZones[0] : undefined)),
+        tap((greenZone) => latestFocusedGreenZone$.next(greenZone)),
+        map((greenZone) => {
+          if (!greenZone) {
+            return '';
+          }
 
-        return getGreenZoneID(greenZone);
-      }),
-      distinctUntilChanged(),
-    ).subscribe(setInsideID);
+          return getGreenZoneID(greenZone);
+        }),
+        distinctUntilChanged(),
+      )
+      .subscribe(setInsideID);
 
-    return () => { subscription.unsubscribe() };
-  },  [greenZones])
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [greenZones]);
 
   return inSideID;
 }
@@ -56,7 +59,7 @@ export default function RenderGreenZonesBetweenNodes({ greenZones }: Props): JSX
   return (
     <>
       {greenZones.map((greenZone) => {
-        const key = getGreenZoneID(greenZone)
+        const key = getGreenZoneID(greenZone);
         if (greenZone.type === 'between-nodes') {
           const { absolutePosition } = greenZone;
           return (

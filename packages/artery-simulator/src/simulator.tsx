@@ -42,7 +42,7 @@ function Simulator({
   onDropFile,
 }: Props): JSX.Element {
   const setImmutableNode = useSetRecoilState(immutableNodeState);
-  const [rootElement, setRootElement] = useState<HTMLDivElement | null>(null)
+  const [rootElement, setRootElement] = useState<HTMLDivElement | null>(null);
   useElementsRadar(rootElement);
 
   useEffect(() => {
@@ -65,15 +65,12 @@ function Simulator({
       <div
         ref={(ref) => {
           if (ref) {
-            setRootElement(ref)
+            setRootElement(ref);
           }
         }}
         className={cs('artery-simulator-root', className)}
       >
-        <Background
-          artery={artery}
-          plugins={plugins}
-        />
+        <Background artery={artery} plugins={plugins} />
         <GreenZone />
         <Foreground />
       </div>

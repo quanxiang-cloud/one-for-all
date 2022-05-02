@@ -17,6 +17,6 @@ export function useSupportChildrenCheck(node: ReactComponentNode | HTMLNode): vo
       .then((flag) => {
         cacheIsNodeSupportChildren(node, flag);
       })
-      .catch(() => { });
+      .catch(() => {});
   }, []);
 }

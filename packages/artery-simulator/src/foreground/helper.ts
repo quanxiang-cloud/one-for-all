@@ -12,7 +12,7 @@ import type { GreenZone } from '../types';
 interface MoveNodeParams {
   rootNode: ImmutableNode;
   nodeID: string;
-  greenZone: GreenZone
+  greenZone: GreenZone;
 }
 
 export function moveNode({ rootNode, nodeID, greenZone }: MoveNodeParams): ImmutableNode | undefined {
@@ -35,16 +35,15 @@ export function moveNode({ rootNode, nodeID, greenZone }: MoveNodeParams): Immut
 interface InsertNodeParams {
   rootNode: ImmutableNode;
   node: Node | ImmutableNode;
-  greenZone: GreenZone
+  greenZone: GreenZone;
 }
 
-export function insertNode({ rootNode, node, greenZone }: InsertNodeParams): ImmutableNode | undefined  {
+export function insertNode({ rootNode, node, greenZone }: InsertNodeParams): ImmutableNode | undefined {
   if (
-    greenZone.type === 'node_without_children' && (
-      greenZone.position === 'inner' ||
+    greenZone.type === 'node_without_children' &&
+    (greenZone.position === 'inner' ||
       greenZone.position === 'inner-left' ||
-      greenZone.position === 'inner-right'
-    )
+      greenZone.position === 'inner-right')
   ) {
     return _appendTo(rootNode, greenZone.contour.id, node);
   }

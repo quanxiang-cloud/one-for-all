@@ -4,7 +4,10 @@ import { register, unregister } from './use-element-registration';
 import useFirstElementChild from './use-first-element-child';
 import { getNodeExecutor } from '../../..//utils';
 
-export default function useComponentWrapperRef(node: ReactComponentNode, depth: number): (ref: HTMLElement) => void {
+export default function useComponentWrapperRef(
+  node: ReactComponentNode,
+  depth: number,
+): (ref: HTMLElement) => void {
   const [wrapperElement, setWrapperElement] = useState<HTMLElement>();
   const childElement = useFirstElementChild(wrapperElement);
   const latestChildElementRef = useRef<HTMLElement>();

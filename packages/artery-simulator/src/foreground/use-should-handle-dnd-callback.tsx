@@ -19,7 +19,7 @@ export default function useShouldHandleDndCallback(currentID: string): () => boo
     }
 
     if (isDraggingParent.current === undefined) {
-      isDraggingParent.current = !!byArbitrary(draggingNode, currentID)
+      isDraggingParent.current = !!byArbitrary(draggingNode, currentID);
     }
 
     return !isDraggingParent.current;

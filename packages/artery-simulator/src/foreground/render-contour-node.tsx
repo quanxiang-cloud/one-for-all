@@ -5,9 +5,14 @@ import { useRecoilState } from 'recoil';
 import useContourNodeStyle from './use-active-contour-node-style';
 import { ArteryCtx } from '../contexts';
 import type { ContourNode } from '../types';
-import { cursor$, draggingNodeIDState, hoveringContourNode$, hoveringParentIDState, onDropEvent$ } from '../atoms';
+import {
+  cursor$,
+  draggingNodeIDState,
+  hoveringContourNode$,
+  hoveringParentIDState,
+  onDropEvent$,
+} from '../atoms';
 import { overrideDragImage } from '../utils';
-import Toolbar from './toolbar';
 import useSetActiveNode from './use-set-active-node';
 import useShouldHandleDndCallback from './use-should-handle-dnd-callback';
 
@@ -77,9 +82,6 @@ function RenderContourNode({ contourNode }: Props): JSX.Element {
           'contour-node--dragging': draggingNodeID === contourNode.id,
         })}
       />
-      {activeNode?.id === contourNode.id && (
-        <Toolbar contourNode={contourNode} />
-      )}
     </>
   );
 }

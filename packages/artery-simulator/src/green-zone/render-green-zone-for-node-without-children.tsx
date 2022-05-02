@@ -61,18 +61,28 @@ export default function RenderGreenZoneForNodeWithoutChildren({ greenZone }: Pro
   const [style, setStyle] = useState<React.CSSProperties>();
   const isSupportChildren = useMemo(() => {
     return !!getIsNodeSupportChildrenFromCache(greenZone.contour.executor);
-  }, [])
+  }, []);
 
   useEffect(() => {
-    const subscription = cursor$.pipe(
-      audit(() => animationFrames()),
-      map(({ x }) => calcPosition(x, isSupportChildren, greenZone.contour.raw)),
-      tap((position) => latestFocusedGreenZone$.next({ position, contour: greenZone.contour, type: 'node_without_children' })),
-      map((position) => calcStyle(position, greenZone.contour.absolutePosition))
-    ).subscribe(setStyle)
+    const subscription = cursor$
+      .pipe(
+        audit(() => animationFrames()),
+        map(({ x }) => calcPosition(x, isSupportChildren, greenZone.contour.raw)),
+        tap((position) =>
+          latestFocusedGreenZone$.next({
+            position,
+            contour: greenZone.contour,
+            type: 'node_without_children',
+          }),
+        ),
+        map((position) => calcStyle(position, greenZone.contour.absolutePosition)),
+      )
+      .subscribe(setStyle);
 
-    return () => { subscription.unsubscribe(); }
-  }, [])
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
-  return (<div className="green-zone green-zone-for-node-without-children" style={style} />)
+  return <div className="green-zone green-zone-for-node-without-children" style={style} />;
 }
