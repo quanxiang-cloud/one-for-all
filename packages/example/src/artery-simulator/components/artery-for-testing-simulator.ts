@@ -12,6 +12,12 @@ const arteryForTestingSimulator: Artery = {
         packageName: 'SimulatorDedicated',
         packageVersion: 'whatever',
         exportName: 'Normal',
+        props: {
+          name: {
+            type: 'constant_property',
+            value: 'normal-component 1'
+          }
+        }
       },
       {
         id: 'a-dev',
@@ -202,6 +208,12 @@ const arteryForTestingSimulator: Artery = {
         packageName: 'SimulatorDedicated',
         packageVersion: 'whatever',
         exportName: 'Normal',
+        props: {
+          name: {
+            type: 'constant_property',
+            value: 'normal-component 2'
+          }
+        }
       },
       {
         id: 'normal-component-bottom-1',
@@ -209,6 +221,12 @@ const arteryForTestingSimulator: Artery = {
         packageName: 'SimulatorDedicated',
         packageVersion: 'whatever',
         exportName: 'Normal',
+        props: {
+          name: {
+            type: 'constant_property',
+            value: 'normal-component 3'
+          }
+        }
       },
     ],
   },

@@ -7,6 +7,8 @@ import arteryForTestingSimulator from './artery-for-testing-simulator';
 import ArterySpec from '@one-for-all/artery';
 import { isSupportChildren } from './helper';
 
+import './index.scss';
+
 function genNodeID(): string {
   return nanoid();
 }
