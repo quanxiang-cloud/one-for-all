@@ -75,7 +75,7 @@ function ContourNodeToolbar(): JSX.Element | null {
       <span onClick={handleDelete} className="active-contour-node-toolbar__action" title="删除">
         <Icon name="delete_forever" size={16} />
       </span>
-      <Popper placement="bottom-start" modifiers={modifiers}>
+      <Popper placement="bottom-start" modifiers={modifiers} container={containerRef.current}>
         <ParentNodes currentNodeID={contourNode.id} onParentClick={close} />
       </Popper>
     </div>
