@@ -10,4 +10,4 @@ export interface ElementRect {
   relativeRect: Rect;
 }
 
-export type Report = Map< HTMLElement, ElementRect>;
+export type Report = Map<HTMLElement, ElementRect>;

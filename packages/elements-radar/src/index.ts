@@ -63,12 +63,11 @@ export default class Radar {
   };
 
   private intersectionObserverCallback = (entries: IntersectionObserverEntry[]): void => {
+    this.report = new Map<HTMLElement, ElementRect>();
     entries.forEach(({ target, boundingClientRect, rootBounds, isIntersecting }) => {
       if (isIntersecting) {
         const relativeRect: Rect = calcRect(boundingClientRect, rootBounds);
         this.report.set(target as HTMLElement, { relativeRect, raw: boundingClientRect });
-      } else {
-        this.report.delete(target as HTMLElement);
       }
     });
 
