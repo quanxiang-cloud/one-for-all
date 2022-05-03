@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { animationFrames, audit, distinctUntilChanged, map } from 'rxjs';
 import {
   GreenZoneForNodeWithoutChildren,
-  GreenZoneBetweenNodes,
   GreenZoneInsideNode,
   ContourNode,
 } from '../types';

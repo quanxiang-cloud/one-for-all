@@ -6,6 +6,7 @@ import { insertNode, jsonParse, moveNode } from './helper';
 import { ArteryCtx } from '../contexts';
 import duplicateNode from './toolbar/duplicate-node';
 import { filter, map } from 'rxjs';
+import { DND_DATA_TRANSFER_TYPE_ARTERY_NODE, DND_DATA_TRANSFER_TYPE_NODE_ID } from '../constants';
 
 interface MoveNodeRequest {
   type: 'move_node_request';
@@ -24,12 +25,12 @@ export default function useHandleDrop(): void {
   const { genNodeID, onChange, artery } = useContext(ArteryCtx);
 
   function getDropRequest(dataTransfer: DataTransfer): DropRequest | undefined {
-    const draggingNodeID = dataTransfer.getData('SIMULATOR_DRAGGING_NODE_ID');
+    const draggingNodeID = dataTransfer.getData(DND_DATA_TRANSFER_TYPE_NODE_ID);
     if (draggingNodeID) {
       return { type: 'move_node_request', nodeID: draggingNodeID };
     }
 
-    const droppedNode = jsonParse<Node>(dataTransfer.getData('ARTERY_NODE'));
+    const droppedNode = jsonParse<Node>(dataTransfer.getData(DND_DATA_TRANSFER_TYPE_ARTERY_NODE));
     if (droppedNode) {
       return { type: 'insert_node_request', node: duplicateNode(droppedNode, genNodeID) };
     }
