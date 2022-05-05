@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react';
 import { animationFrames, audit, distinctUntilChanged, map } from 'rxjs';
-import {
-  GreenZoneForNodeWithoutChildren,
-  GreenZoneInsideNode,
-  ContourNode,
-} from '../types';
+import { GreenZoneForNodeWithoutChildren, GreenZoneInsideNode, ContourNode } from '../types';
 import { calcGreenZoneOfHoveringNodeSupportChildrenAndChildrenIsNotEmpty } from './green-zone-helpers';
 import { hoveringContourNode$, contourNodesReport$, immutableNodeState } from '../atoms';
 import { byArbitrary, nodeHasChildNodes } from '@one-for-all/artery-utils';

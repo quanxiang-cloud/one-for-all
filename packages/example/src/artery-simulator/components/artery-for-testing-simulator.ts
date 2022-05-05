@@ -20,6 +20,19 @@ const arteryForTestingSimulator: Artery = {
         }
       },
       {
+        id: 'normal-component',
+        type: 'react-component',
+        packageName: 'SimulatorDedicated',
+        packageVersion: 'whatever',
+        exportName: 'WillThrow',
+        props: {
+          name: {
+            type: 'constant_property',
+            value: 'normal-component 1'
+          }
+        }
+      },
+      {
         id: 'a-dev',
         type: 'html-element',
         name: 'div',

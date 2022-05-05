@@ -6,6 +6,7 @@ import useComponentNodeProps from './hooks/use-component-props';
 import Placeholder from './placeholder';
 import { useSupportChildrenCheck } from './use-support-children-check';
 import DepthContext from './depth-context';
+import ErrorBoundary from './error-boundary';
 
 interface Props {
   node: ReactComponentNode;
@@ -24,9 +25,13 @@ function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | nu
 
   if (!node.children || !node.children.length) {
     return React.createElement(
-      'div',
-      wrapperProps,
-      React.createElement(nodeComponent, nodeProps, React.createElement(Placeholder, { parent: node })),
+      ErrorBoundary,
+      {},
+      React.createElement(
+        'div',
+        wrapperProps,
+        React.createElement(nodeComponent, nodeProps, React.createElement(Placeholder, { parent: node })),
+      ),
     );
   }
 
@@ -34,12 +39,16 @@ function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | nu
     DepthContext.Provider,
     { value: currentDepth },
     React.createElement(
-      'div',
-      wrapperProps,
+      ErrorBoundary,
+      {},
       React.createElement(
-        nodeComponent,
-        nodeProps,
-        React.createElement(ChildrenRender, { nodes: node.children || [], ctx }),
+        'div',
+        wrapperProps,
+        React.createElement(
+          nodeComponent,
+          nodeProps,
+          React.createElement(ChildrenRender, { nodes: node.children || [], ctx }),
+        ),
       ),
     ),
   );
