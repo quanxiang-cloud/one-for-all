@@ -1,36 +1,30 @@
-# Overview
+# Artery
+
+低代码工具链中的有两个非常重要的环节，一是为开发者提供一套功能完备的用于构建动态页面的页面引擎，二是将前者构建的页面渲染给最终用户使用的渲染引擎。初看上去，页面引擎似乎包含了渲染引擎的能力，但是其实不然。
+
+渲染引擎的重点在于正确且高效的执行开发者的意图，为用户提供符合预期的 UI，渲染引擎只要以一个 URL 为输入就能渲染出一个页面，这个页面又可以链接到其他地址，进而形成完整的业务逻辑链条；页面引擎的重点在组织页面结构和编排页面内元素的交互逻辑，为了能够让开发者操作页面元素，不能简单的也没有必要按照生产环境的标准渲染页面，而且页面引擎还需要提供调试、预览和历史记录等功能。
+
+页面引擎和渲染引擎侧重点虽然不同，但是两者又是紧密联系在一起的。通过页面引擎构建的页面，最终需要交给渲染引擎来渲染，页面引擎最后导出的结果需要被渲染引擎认可，所以为了两者能更好的配合，需要使用统一的语言来沟通。Artery 为此而生。
+
+## Artery 是什么？
 
 Artery 是一种用来描述单页面应用 SPA 的[接口描述语言](https://en.wikipedia.org/wiki/Interface_description_language)，Artery 是一套与实现无关的标准。
 
-我们可以使用 Artery 来描述完整的前端业务，包括 UI、状态和两者之间的关系。理论上，任何的 SPA 都可以使用 Artery 来表达，并由渲染引擎来渲染。[Example](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/example) 的全部功能都是由 Artery 来描述的。
+我们可以使用 Artery 来描述完整的前端业务，包括 UI、状态和两者之间的关系。理论上，任何的 SPA 都可以使用 Artery 来表达，并由渲染引擎来渲染。全象低代码平台前端核心组件的使用 [Demo](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/example) 的全部功能都是由 Artery 来描述的。
 
-Artery 也是[渲染引擎](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/artery-renderer)和[页面引擎](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/artery-engine)对接的共同语言，以 Artery 作为标准，我们可以分别独立开发渲染引擎和页面引擎，使得两者之间没有耦合。
+Artery 是[渲染引擎](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/Artery-renderer)和[页面引擎](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/Artery-engine)对接的共同语言，以 Artery 作为标准，我们可以分别独立开发渲染引擎和页面引擎，使得两者之间没有耦合。
 
-## 为什么要用 Artery 来描述页面
+Artery 本身并没有约定页面引擎和渲染引擎的实现，任何人都可以按照自己的想法实现对 Artery 的编辑、组合和渲染功能。
 
-总体来说使用 Artery 和渲染引擎来构建前端业务有一下几点优势：
+## Artery 结构简介
 
-- 上手难度低，学习 Artery 的成本要远远低于学习 React 或者 Vue 等前端 framework
-- 修改成本低，Artery 其实是属于数据的一部分，修改 Artery 后并不需要重新构建
-- 复制成本低，在 CURD 的场景中，借助 Artery 加渲染引擎的模式，可以快速的构建相似逻辑的前端业务
-- 定制开发容易，可是使用 Artery 自由组合前端的业务逻辑，充分满足客户的定制化需求
-- 实现真正的动态开发，可以根据业务需要，按需开发
+Artery 的结构十分简单，但是任然有许多需要注意的细节，在这里简单给出 Artery 整体结构介绍，更新细节设计请参考对应的 reference。
 
-## Artery 结构说明
+Artery 由三部分组成:
 
-一个完整的 Artery 由三部分组成
-
-- `node` 描述页面结构的 tree
-- `apiStateSpec` 描述页面中使用的 API
-- `sharedStatesSpec` 描述页面中的共享状态
-
-```typescript
-const artery: Artery = {
-  node: {},
-  apiStateSpec: {},
-  sharedStatesSpec: {}
-}
-```
+- `Node` 描述页面结构和组成元素的的 Tree
+- `APIStateSpec` 描述页面中使用的 API
+- `SharedStatesSpec` 描述页面中的共享状态，或者说本地同步状态
 
 ### Node
 
@@ -102,8 +96,8 @@ ReactComponentNode 节点需要使用 React Component 来渲染，需要声明�
 | 名称       | Required | Type         | 描述                                                                                               |
 | :--------- | -------- | ------------ | -------------------------------------------------------------------------------------------------- |
 | `type`     | 是       | `string`     | 值为 `ref-node`                                                                                    |
-| `arteryID` | 是       | `string`     | 被引用的 Artery ID                                                                                 |
-| `fallback` | 否       | `Node` | 当对应的 artery 还有没加载之前，在页面中渲染的内容，可选                                           |
+| `ArteryID` | 是       | `string`     | 被引用的 Artery ID                                                                                 |
+| `fallback` | 否       | `Node` | 当对应的 Artery 还有没加载之前，在页面中渲染的内容，可选                                           |
 | `orphan`   | 否       | `boolean`    | ref-node 默认继承父节点的状态，如果想让父节点和 ref-node 子节点状态隔离，可以将 orphan 设置为 true |
 
 #### RouteNode
@@ -119,7 +113,7 @@ ReactComponentNode 节点需要使用 React Component 来渲染，需要声明�
 
 ## 节点 Property
 
-组件一般需要传递多个指定的参数才能正常渲染，在 artery 中通过 props 定义传递哪些参数和这些参数的值来自哪里。在写 property 时，需要写明 property 的具体类型，类型有下列：
+组件一般需要传递多个指定的参数才能正常渲染，在 Artery 中通过 props 定义传递哪些参数和这些参数的值来自哪里。在写 property 时，需要写明 property 的具体类型，类型有下列：
 
 - `constant_property`
 - `api_result_property`
@@ -204,3 +198,32 @@ ReactComponentNode 节点需要使用 React Component 来渲染，需要声明�
 | `parentID`  | 是       | string                                           |
 | `convertor` | 否       | StateConvertExpression or StateConvertorFuncSpec |
 | `fallback`  | 是       | unknown                                          |
+
+### APIStateSpec
+
+APIStateSpec 里定义了当前页面中用到的哪个 API 和对应的状态名称。APIStateSpec 的数据类型定义如下：
+
+```typescript
+interface APIState {
+  loading: boolean;
+  result?: unknown;
+  error?: Error;
+}
+
+// map of stateID and apiState
+type APIStatesSpec = Record<string, { apiID: string; [key: string]: unknown }>;
+```
+
+注意到在 APIStatesSpec 中只记录了一个 `apiID`, 并没有关于 API request/response 等信息的描述，这是有意为之的，为了让实现方根据自己的实际情况来解析 API 的具体格式，方便扩展。
+
+### SharedStatesSpec
+
+SharedStates 的主要作用是为页面元素之前传递或者共享数据使用，其结构定义相对简单， TypeScript 格式类型定义如下：
+
+```typescript
+interface SharedState {
+  initial: unknown;
+}
+
+type SharedStatesSpec = Record<string, SharedState>;
+```
