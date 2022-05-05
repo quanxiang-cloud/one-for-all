@@ -5,6 +5,7 @@
   "license": "Apache-2.0",
   "module": "lib/src",
   "types": "lib/src/index.d.ts",
+  "type": "module",
   "files": [
     "lib"
   ],
@@ -23,7 +24,7 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
-    "@rollup/plugin-replace": "^3.0.0",
+    "@rollup/plugin-replace": "^4.0.0",
     "@types/react": "~17.0.38",
     "glob": "~7.2.0",
     "mkdirp": "~1.0.4",

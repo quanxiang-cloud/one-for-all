@@ -16,7 +16,8 @@
   "scripts": {
     "bundle": "rm -rf dist && rollup -c rollup.config.js",
     "prepack": "yarn run build",
-    "pack": "yarn pack"
+    "pack": "yarn pack",
+    "build": "echo 'no need to build'"
   },
   "dependencies": {
     "react": "^17.0.2",

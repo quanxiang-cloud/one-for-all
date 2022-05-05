@@ -235,6 +235,37 @@ const rootSchema: Artery = {
                 }
               }
             ]
+          },
+          {
+            id: 'simulator-demo-link',
+            type: 'html-element',
+            name: 'a',
+            isLink: true,
+            props: {
+              href: {
+                type: 'constant_property',
+                value: '/simulator'
+              },
+              style: {
+                type: 'constant_property',
+                value: {
+                  marginRight: '20px',
+                }
+              }
+            },
+            children: [
+              {
+                id: 'simulator-demo-text',
+                type: 'html-element',
+                name: 'h2',
+                props: {
+                  children: {
+                    type: 'constant_property',
+                    value: 'Artery Simulator'
+                  }
+                }
+              }
+            ]
           }
         ]
       },
@@ -326,7 +357,17 @@ const rootSchema: Artery = {
           type: 'ref-node',
           arteryID: 'SCHEMA_ID_RADAR_DEMO',
         },
-      }
+      },
+      {
+        id: 'route-for-simulator',
+        type: 'route-node',
+        path: 'simulator',
+        node: {
+          id: 'artery-simulator-root',
+          type: 'ref-node',
+          arteryID: 'SCHEMA_ID_SIMULATOR',
+        },
+      },
     ]
   }
 };

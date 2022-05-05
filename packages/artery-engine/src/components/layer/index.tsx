@@ -29,7 +29,7 @@ export default function Layer<T extends ArteryEngine.BaseBlocksCommunicationStat
   }, []);
 
   return (
-    <div className="page-engine-layer" style={arteryEngineLayerStyle}>
+    <div className="artery-engine-layer" style={arteryEngineLayerStyle}>
       {blocks.filter(visibleFilter).map((block, index) => (
         <Block<T>
           {...block}

@@ -1,4 +1,5 @@
 export * from './raw/all';
+export * from './raw/utils';
 export { default as appendChild } from './appendChild';
 export { default as deleteByID } from './deleteByID';
 export { default as findNodeByID } from './findNodeByID';

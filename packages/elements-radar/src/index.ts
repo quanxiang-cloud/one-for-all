@@ -1,16 +1,14 @@
 import {
   merge,
-  from,
   fromEvent,
-  Observable,
   BehaviorSubject,
   Subject,
   Subscription,
-  animationFrames,
+  Observable,
 } from 'rxjs';
-import { audit, switchMap, share, distinctUntilChanged, debounce, auditTime } from 'rxjs/operators';
+import { map, audit, auditTime, tap, distinctUntilChanged } from 'rxjs/operators';
 
-import { getReport, isSame } from './utils';
+import { calcRect, isSame } from './utils';
 import type { Report, Rect, ElementRect } from './type';
 
 export type { Report, Rect, ElementRect };
@@ -18,13 +16,16 @@ export type { Report, Rect, ElementRect };
 export default class Radar {
   private root: HTMLElement;
   private targets$: BehaviorSubject<HTMLElement[]> = new BehaviorSubject<HTMLElement[]>([]);
-  private signal$: Observable<unknown>;
   private resizeSign$: Subject<unknown> = new Subject();
-  private report$: Observable<Report>;
   private resizeObserver: ResizeObserver;
+  private report: Report = new Map();
+  private reportUpdatedSign$ = new Subject<void>();
+  private visibleObserver: IntersectionObserver;
 
   public constructor(root?: HTMLElement) {
     this.root = root || window.document.body;
+    this.visibleObserver = new IntersectionObserver(this.intersectionObserverCallback, { root: this.root });
+
     const scroll$ = fromEvent(this.root, 'scroll');
 
     const scrollDone$ = new Subject<void>();
@@ -33,44 +34,44 @@ export default class Radar {
       clearTimeout(timer);
       timer = window.setTimeout(() => {
         scrollDone$.next();
-      }, 50);
+      }, 150);
     });
 
-    const scrollSign$ = scroll$.pipe(audit(() => scrollDone$));
+    const scrollSign$ = scroll$.pipe(
+      audit(() => scrollDone$),
+    );
 
     this.resizeObserver = new ResizeObserver(this.onResize);
     this.resizeObserver.observe(this.root);
 
-    // todo optimize this
-    let previousElements: Array<Element> = [];
-    this.targets$.subscribe((elements) => {
-      previousElements.forEach((ele) => {
-        this.resizeObserver.unobserve(ele);
+    merge(scrollSign$, this.targets$, this.resizeSign$).pipe(
+      // auditTime(100),
+      // debounce(() => animationFrames()),
+      // auditTime(150),
+      tap(() => {
+        this.visibleObserver.disconnect();
+      }),
+    ).subscribe(() => {
+      this.targets$.value.forEach((ele) => {
+        this.visibleObserver.observe(ele);
       });
-
-      elements.forEach((ele) => {
-        this.resizeObserver.observe(ele);
-      });
-
-      previousElements = elements;
     });
-
-    this.signal$ = merge(scrollSign$, this.targets$, this.resizeSign$).pipe(
-      // debounceTime(100),
-      debounce(() => animationFrames()),
-      auditTime(50),
-    );
-
-    this.report$ = this.signal$.pipe(
-      switchMap(() => from(getReport(this.targets$.value, this.root))),
-      debounce(() => animationFrames()),
-      distinctUntilChanged(isSame),
-      share(),
-    );
   }
 
   private onResize = (): void => {
     this.resizeSign$.next('resized');
+  };
+
+  private intersectionObserverCallback = (entries: IntersectionObserverEntry[]): void => {
+    this.report = new Map<HTMLElement, ElementRect>();
+    entries.forEach(({ target, boundingClientRect, rootBounds, isIntersecting }) => {
+      if (isIntersecting) {
+        const relativeRect: Rect = calcRect(boundingClientRect, rootBounds);
+        this.report.set(target as HTMLElement, { relativeRect, raw: boundingClientRect });
+      }
+    });
+
+    this.reportUpdatedSign$.next();
   };
 
   public addTargets(elements: HTMLElement[]): void {
@@ -86,11 +87,15 @@ export default class Radar {
     this.targets$.next(elements);
   }
 
-  public listen(listener: (report: Report) => void): Subscription {
-    return this.report$.subscribe(listener);
-  }
-
-  public unListen(subscription: Subscription): void {
-    subscription.unsubscribe();
+  public getReport$(): Observable<Report> {
+    return this.reportUpdatedSign$.pipe(
+      map(() => {
+        // todo optimize this of making copy
+        const newReport: Report = new Map();
+        this.report.forEach((value, key) => newReport.set(key, value));
+        return newReport;
+      }),
+      distinctUntilChanged(isSame),
+    );
   }
 }

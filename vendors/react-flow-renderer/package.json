@@ -10,7 +10,7 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
-    "@rollup/plugin-replace": "^3.0.0",
+    "@rollup/plugin-replace": "^4.0.0",
     "react-flow-renderer": "^9.6.9",
     "rollup": "2.66.0"
   }
