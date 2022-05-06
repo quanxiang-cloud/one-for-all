@@ -2,14 +2,11 @@ import React, { forwardRef, ForwardedRef, useState, useMemo, useEffect } from 'r
 import Icon from '@one-for-all/icon';
 import cs from 'classnames';
 
-import Tag from '../tag';
-import { isMultiple, getOriginInfoByPath, Tree } from './utils';
+import Tag from '../../tag';
+import { getOriginInfoByPath, Tree } from '../utils';
 
-type Props = {
+interface BaseProps {
   placeholder?: string;
-  id?: string;
-  selectedPath: Tree<CascaderOptionType>[] | Tree<CascaderOptionType>[][];
-  model: CascaderModelType;
   disabled?: boolean;
   isActive: boolean;
   showSearch?: boolean | ShowSearchType;
@@ -18,28 +15,35 @@ type Props = {
   onClear?: () => void;
   onDelete?: (option: CascaderOptionType) => void;
   onChangeSearch?: (searchText: string) => void;
-  displayRender?: (
-    label: React.ReactNode[] | React.ReactNode[][],
-    selectedOptions?: CascaderOptionType[] | CascaderOptionType[][],
-  ) => React.ReactNode;
+};
+
+interface SingleProps extends BaseProps {
+  selectedPath: Tree<CascaderOptionType>[];
+  selectedOptionRender?: (label: React.ReactNode[], selectedOptions: CascaderOptionType[]) => React.ReactNode;
+  multiple: false;
+};
+
+interface MultipleProps extends BaseProps {
+  selectedPath: Tree<CascaderOptionType>[][];
+  selectedOptionRender?: (label: React.ReactNode[][], selectedOptions: CascaderOptionType[][]) => React.ReactNode;
+  multiple: true;
 };
 
 function Display(
   {
     placeholder = '请选择...',
-    id,
     selectedPath,
-    model,
     disabled,
     isActive,
     showSearch,
     suffixIcon,
+    multiple,
     onClick,
     onClear,
     onDelete,
     onChangeSearch,
-    displayRender,
-  }: Props,
+    selectedOptionRender,
+  }: SingleProps | MultipleProps,
   ref?: ForwardedRef<HTMLDivElement>,
 ): JSX.Element {
   const [hover, setHover] = useState(false);
@@ -54,24 +58,25 @@ function Display(
   }, [isActive]);
 
   const { value, label, origins: selectedOptions } = useMemo(() => {
-    return getOriginInfoByPath<CascaderOptionType>(selectedPath);
+    if (multiple) return getOriginInfoByPath(selectedPath);
+    return getOriginInfoByPath(selectedPath);
   }, [selectedPath])
 
-  const handleShow = (e: React.MouseEvent) => {
+  function handleShow(e: React.MouseEvent) {
     if (disabled) return;
     onClick?.(e);
   };
 
-  const handleMouseEnter = () => {
+  function handleMouseEnter() {
     if (disabled || !value.length) return;
     setHover(true);
   };
 
-  const handleMouseLeave = () => {
+  function handleMouseLeave() {
     setHover(false);
   };
 
-  const handleClear = (e: React.MouseEvent) => {
+  function handleClear(e: React.MouseEvent) {
     if (!hover) return;
     e.stopPropagation();
     onClear?.();
@@ -79,25 +84,32 @@ function Display(
     setHover(false);
   };
 
-  const handleDelete = (e: React.MouseEvent, option: CascaderOptionType) => {
+  function handleDelete(e: React.MouseEvent, option: CascaderOptionType) {
     e.stopPropagation();
     onDelete?.(option);
   }
 
-  const handelSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  function handelSearch(e: React.ChangeEvent<HTMLInputElement>) {
     setSearchText(e.target.value);
   }
 
-  const _displayRender = (
+  function _displayRender(
     label: React.ReactNode[] | React.ReactNode[][],
-    selectedOptions?: CascaderOptionType[] | CascaderOptionType[][],
-  ): React.ReactNode => {
-    if (!!displayRender) return displayRender(label, selectedOptions);
-    if (isMultiple(model)) return renderMultipleLabel(label as React.ReactNode[][], selectedOptions as CascaderOptionType[][]);
+    selectedOptions: CascaderOptionType[] | CascaderOptionType[][],
+  ): React.ReactNode {
+    if (multiple) {
+      const _label = label as React.ReactNode[][];
+      const _selectedOptions = selectedOptions as CascaderOptionType[][];
+      if (!!selectedOptionRender) return selectedOptionRender(_label, _selectedOptions);
+      return renderMultipleLabel(_label, _selectedOptions);
+    }
+    const _label = label as React.ReactNode[];
+    const _selectedOptions = selectedOptions as CascaderOptionType[];
+    if (!!selectedOptionRender) return selectedOptionRender(_label, _selectedOptions);
     return <span>{ label.join('/') }</span>;
   }
 
-  const renderMultipleLabel = (label: React.ReactNode[][], selectedOptions: CascaderOptionType[][]): React.ReactNode => {
+  function renderMultipleLabel(label: React.ReactNode[][], selectedOptions: CascaderOptionType[][]): React.ReactNode {
     return <>
       {
         label.map((labelPath, index) => (
@@ -105,7 +117,7 @@ function Display(
             key={index}
             value={index}
             label={labelPath[labelPath.length - 1]}
-            style={{ marginRight: 5 }}
+            style={{ marginRight: 5, zIndex: 1 }}
             onDelete={(value, e) => handleDelete(e, selectedOptions[index][selectedOptions[index].length -1])}
           />
         ))
@@ -126,7 +138,6 @@ function Display(
           {!searchText && _displayRender(label, selectedOptions)}
         </div>
         <input
-          id={id}
           value={searchText}
           onChange={handelSearch}
           readOnly={!showSearch}

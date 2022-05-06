@@ -207,20 +207,15 @@ type CascaderValue = NumberString[] | NumberString[][];
 
 type CascaderExpandTrigger = 'click' | 'hover';
 
-type CascaderModelType = 'single' | 'single-timely' | 'multiple' | 'unlink';
+type SingleCascaderModelType = 'single' | 'timely';
+type MultipleCascaderModelType = 'multiple' | 'unlink';
+type CascaderModelType = SingleCascaderModelType | MultipleCascaderModelType;
 
-interface CascaderProps extends BaseProps {
+interface BaseCascaderProps extends BaseProps {
   options: CascaderOptionType[];
-  defaultValue?: CascaderValue;
-  value?: CascaderValue;
-  onChange?: (value: CascaderValue, selectedOptions?: CascaderOptionType[] | CascaderOptionType[][]) => void;
-  displayRender?: (label: React.ReactNode[] | React.ReactNode[][], selectedOptions?: CascaderOptionType[] | CascaderOptionType[][]) => React.ReactNode;
   popupClassName?: string;
   popupPlacement?: PopupPlacement;
   placeholder?: string;
-  name?: string;
-  id?: string;
-  model?: CascaderModelType;
   disabled?: boolean;
   showSearch?: boolean | ShowSearchType;
   notFoundContent?: React.ReactNode;
@@ -228,9 +223,22 @@ interface CascaderProps extends BaseProps {
   expandTrigger?: CascaderExpandTrigger;
   expandIcon?: React.ReactNode;
   onPopupVisibleChange?: (popupVisible: boolean) => void;
-  popupVisible?: boolean; // no
   suffixIcon?: React.ReactNode;
   dropdownRender?: (menus: React.ReactNode) => React.ReactNode;
+}
+
+interface SingleCascaderProps extends BaseCascaderProps {
+  defaultValue?: NumberString;
+  value?: NumberString;
+  onChange?: (value: NumberString, selectedOptions?: CascaderOptionType[]) => void;
+  selectedOptionRender?: (label: React.ReactNode[], selectedOptions: CascaderOptionType[]) => React.ReactNode;
+}
+
+interface MultipleCascaderProps extends BaseCascaderProps {
+  defaultValue?: NumberString[];
+  value?: NumberString[];
+  onChange?: (value: NumberString[], selectedOptions?: CascaderOptionType[][]) => void;
+  selectedOptionRender?: (label: React.ReactNode[][], selectedOptions: CascaderOptionType[][]) => React.ReactNode;
 }
 
 type SwitcherIcon = {

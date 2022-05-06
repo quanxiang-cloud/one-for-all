@@ -1,75 +1,50 @@
 import { useState, useEffect } from "react";
 
-import { isMultiple, eachForest, eachParent, initTree, getMultiplePathByNodes, BaseTreeNode, Tree } from './utils';
+import { isMultiple, eachForest, eachParent, initTree, BaseTreeNode, Tree } from './utils';
 
-type TreeValueType = NumberString[] | NumberString[][];
+type TreeValueType = NumberString | NumberString[];
 
 type UseTreeReturn<T> = {
   forest: Tree<T>[];
-  checked: (treeNode: Tree<T>, isChecked: boolean) => void;
+  changeChecked: (treeNode: Tree<T>, isChecked: boolean) => void;
   clear: () => void;
 };
 
-export function useTree<T extends BaseTreeNode<T>>({origin, defaultValue, model, hasLoad, onChange} :{
-  origin: T[];
-  defaultValue?: TreeValueType;
-  model: CascaderModelType;
-  hasLoad?: boolean;
-  onChange?: (path: Tree<T>[] | Tree<T>[][]) => void;
-}): UseTreeReturn<T> {
+export function useTree<T extends BaseTreeNode<T>>({origin, defaultValue, model, hasLoad, onChange} :
+  {
+    origin: T[];
+    defaultValue?: TreeValueType;
+    model: CascaderModelType;
+    hasLoad?: boolean;
+    onChange?: (forest: Tree<T>[]) => void;
+  }): UseTreeReturn<T> {
   const [forest, setForest] = useState<Tree<T>[]>([]);
 
   useEffect(() => {
     const resetForest = initTree(origin, !!hasLoad);
     syncTreeCheckedByValue(resetForest, defaultValue || []);
-    setForest(resetForest,);
+    setForest(resetForest);
   }, [origin])
 
   useEffect(() => {
-    onChange?.(getPathByChecked());
+    onChange?.(forest);
   }, [forest]);
 
-  function syncTreeCheckedByValue(tree: Tree<T>[], value: TreeValueType): void {
-    if (value.length === 0) return;
+  function syncTreeCheckedByValue(forest: Tree<T>[], value: NumberString | NumberString[]) {
+    if (!value) return [];
     if (isMultiple(model)) {
-      (value as NumberString[][]).forEach(singleValue => {
-        const path = getSinglePathByValue(tree, singleValue);
-        if (path.length === singleValue.length && singleValue.length !== 0) {
-          checked(path[path.length - 1], true);
+      eachForest(forest, (treeNode) => {
+        if ((value as NumberString[]).includes(treeNode.origin.value)) {
+          changeChecked(treeNode, true, forest);
         }
       });
     } else {
-      const path = getSinglePathByValue(tree, value as NumberString[]);
-      path.forEach(node => node.isChecked = true);
-    }
-  }
-
-  function getSinglePathByValue(tree: Tree<T>[], value: NumberString[]): Tree<T>[] {
-    if (value.length === 0) return [];
-    const path: Tree<T>[] = [];
-    let currentTree = tree;
-    for (let i= 0; i < value.length; i++) {
-      const currentBranch = currentTree.find(branch => branch.origin.value === value[i]);
-      if (!currentBranch) break;
-      path.push(currentBranch);
-      if (!currentBranch.children) break;
-      currentTree = currentBranch.children;
-    }
-    return path;
-  }
-
-  function getPathByChecked(): Tree<T>[] | Tree<T>[][] {
-    if (isMultiple(model)) {
-      const multipleCheckNodes = getMultipleCheckNodes(forest);
-      return getMultiplePathByNodes(multipleCheckNodes);
-    } else {
-      let currentCheckedNode = forest.find(({ isChecked }) => isChecked);
-      const path: Tree<T>[] = [];
-      while (currentCheckedNode) {
-        path.push(currentCheckedNode);
-        currentCheckedNode = currentCheckedNode.children?.find(({ isChecked }) => isChecked);
-      }
-      return path;
+      eachForest(forest, (treeNode) => {
+        if (treeNode.origin.value === value as NumberString) {
+          changeChecked(treeNode, true, forest);
+          return true;
+        }
+      });
     }
   }
 
@@ -85,11 +60,11 @@ export function useTree<T extends BaseTreeNode<T>>({origin, defaultValue, model,
     return checked;
   }
 
-  function checked(treeNode: Tree<T>, isChecked: boolean): void {
+  function changeChecked(treeNode: Tree<T>, isChecked: boolean, changeForest?: Tree<T>[]): void {
     if (treeNode.isChecked === isChecked || treeNode.disabled) return;
 
     if (!isMultiple(model)) {
-      eachForest(forest, (treeNode) => {
+      eachForest(changeForest || forest, (treeNode) => {
         const currentIsChecked = treeNode.isChecked;
         treeNode.isChecked = false;
         return !currentIsChecked;
@@ -115,7 +90,8 @@ export function useTree<T extends BaseTreeNode<T>>({origin, defaultValue, model,
         parentNode.indeterminate = hasChildrenChecked(parentNode);
       });
     }
-    setForest([...forest]);
+
+    !changeForest && setForest([...forest]);
   }
 
   function hasChildChangeChecked(treeNode: Tree<T>): void {
@@ -152,16 +128,16 @@ export function useTree<T extends BaseTreeNode<T>>({origin, defaultValue, model,
 
   function clear(): void {
     if (isMultiple(model)) {
-      getMultipleCheckNodes(forest).forEach(treeNode => checked(treeNode, false));
+      getMultipleCheckNodes(forest).forEach(treeNode => changeChecked(treeNode, false));
     } else {
       forest.filter(({ isChecked, indeterminate }) => isChecked || indeterminate)
-        .forEach(treeNode => checked(treeNode, false));
+        .forEach(treeNode => changeChecked(treeNode, false));
     }
   }
 
   return {
     forest,
-    checked,
+    changeChecked,
     clear,
   }
 }

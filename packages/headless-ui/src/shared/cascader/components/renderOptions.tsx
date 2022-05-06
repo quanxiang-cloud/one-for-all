@@ -3,8 +3,8 @@ import Icon from '@one-for-all/icon';
 
 import cs from 'classnames';
 
-import Checkbox from '../checkbox';
-import { isMultiple, Tree } from './utils';
+import Checkbox from '../../checkbox';
+import { isMultiple, Tree } from '../utils';
 
 type Props = {
   forest: Tree<CascaderOptionType>[];
@@ -13,7 +13,7 @@ type Props = {
   expandIcon?: React.ReactNode;
   notFoundContent: React.ReactNode;
   model: CascaderModelType;
-  onChecked: (treeNode: Tree<CascaderOptionType>, isChecked: boolean) => void;
+  onChangeChecked: (treeNode: Tree<CascaderOptionType>, isChecked: boolean) => void;
   onExpandNodes: (expandNodes: Tree<CascaderOptionType>[]) => void;
   onClose: () => void;
   loadData?: (selectedOptions?: CascaderOptionType[]) => void;
@@ -26,12 +26,12 @@ export default function RenderOptions({
   expandIcon,
   notFoundContent,
   model,
-  onChecked,
+  onChangeChecked,
   onExpandNodes,
   onClose,
   loadData,
 }: Props): JSX.Element {
-  const handleOptionSelected = (expandNode: Tree<CascaderOptionType>, trigger: CascaderExpandTrigger) => {
+  function handleOptionSelected(expandNode: Tree<CascaderOptionType>, trigger: CascaderExpandTrigger) {
     const { origin, isLeaf, children } = expandNode;
     if (
       origin.disabled ||
@@ -55,20 +55,20 @@ export default function RenderOptions({
       loadData?.(currentExpandNodes.map((node) => node.origin));
     }
 
-    if ((isLeaf && trigger !== 'hover') || model === 'single-timely') {
-      onChecked(expandNode, true);
+    if ((isLeaf && trigger !== 'hover') || model === 'timely') {
+      onChangeChecked(expandNode, true);
     }
     onExpandNodes(currentExpandNodes);
   };
 
-  const handleCheckChange = (treeNode: Tree<CascaderOptionType>) => {
-    onChecked(treeNode, !treeNode.isChecked);
+  function handleCheckChange(treeNode: Tree<CascaderOptionType>) {
+    onChangeChecked(treeNode, !treeNode.isChecked);
   };
 
-  const renderOptionsBySelected = (
+  function renderOptionsBySelected(
     forest: Tree<CascaderOptionType>[],
     expandNodes: Tree<CascaderOptionType>[],
-  ): JSX.Element[] => {
+  ): JSX.Element[] {
     const key = getKeyByExpandNodesValue(expandNodes);
     if (!expandNodes.length || !expandNodes[0].children) return [renderOption(forest, key)];
     return [
@@ -86,40 +86,42 @@ export default function RenderOptions({
     return res.join('/');
   }
 
-  const renderOption = (forest: Tree<CascaderOptionType>[], key: string) => (
-    <div className="ofa-cascader-option" key={key}>
-      {forest.map((treeNode) => {
-        const { origin: option, isChecked, indeterminate, isLeaf, disabled } = treeNode;
-        return (
-          <div
-            className={cs(
-              'ofa-cascader-option-item',
-              expandNodes.includes(treeNode) && 'is-selected',
-              option.disabled && 'is-disabled',
-            )}
-            key={option.value}
-            onClick={() => handleOptionSelected(treeNode, 'click')}
-            onMouseEnter={() => handleOptionSelected(treeNode, 'hover')}
-          >
-            {isMultiple(model) && (
-              <div onClick={(e) => e.stopPropagation()}>
-                <Checkbox
-                  style={{ marginRight: 5 }}
-                  indeterminate={model === 'multiple' && indeterminate}
-                  value={isChecked}
-                  checked={isChecked}
-                  disabled={disabled}
-                  onChange={() => handleCheckChange(treeNode)}
-                />
-              </div>
-            )}
-            <p className="ofa-cascader-item-text">{option.label}</p>
-            {!isLeaf && (expandIcon || <Icon name="keyboard_arrow_right" />)}
-          </div>
-        );
-      })}
-    </div>
-  );
+  function renderOption(forest: Tree<CascaderOptionType>[], key: string) {
+    return (
+      <div className="ofa-cascader-option" key={key}>
+        {forest.map((treeNode) => {
+          const { origin: option, isChecked, indeterminate, isLeaf, disabled } = treeNode;
+          return (
+            <div
+              className={cs(
+                'ofa-cascader-option-item',
+                expandNodes.includes(treeNode) && 'is-selected',
+                option.disabled && 'is-disabled',
+              )}
+              key={option.value}
+              onClick={() => handleOptionSelected(treeNode, 'click')}
+              onMouseEnter={() => handleOptionSelected(treeNode, 'hover')}
+            >
+              {isMultiple(model) && (
+                <div onClick={(e) => e.stopPropagation()}>
+                  <Checkbox
+                    style={{ marginRight: 5 }}
+                    indeterminate={model === 'multiple' && indeterminate}
+                    value={isChecked}
+                    checked={isChecked}
+                    disabled={disabled}
+                    onChange={() => handleCheckChange(treeNode)}
+                  />
+                </div>
+              )}
+              <p className="ofa-cascader-item-text">{option.label}</p>
+              {!isLeaf && (expandIcon || <Icon name="keyboard_arrow_right" />)}
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
 
   if (!forest || !forest.length)
     return (

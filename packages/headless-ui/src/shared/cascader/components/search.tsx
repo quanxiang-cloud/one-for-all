@@ -2,14 +2,14 @@ import React, { useMemo } from 'react';
 import Icon from '@one-for-all/icon';
 import cs from 'classnames';
 
-import { searchPaths, getOriginInfoByPath, isMultiple, isObject, Tree } from './utils';
+import { searchPaths, getOriginInfoByPath, isMultiple, Tree } from '../utils';
 
 type Props = {
   searchText: string;
   showSearch: boolean | ShowSearchType;
   forest: Tree<CascaderOptionType>[];
   model: CascaderModelType;
-  onChecked: (treeNode: Tree<CascaderOptionType>, isChecked: boolean) => void;
+  onChangeChecked: (treeNode: Tree<CascaderOptionType>, isChecked: boolean) => void;
   onClose: () => void;
 };
 
@@ -18,11 +18,11 @@ export default function Search({
   showSearch,
   forest,
   model,
-  onChecked,
+  onChangeChecked,
   onClose,
 }: Props): JSX.Element {
   const { filter, render, sort, limit }: ShowSearchType = useMemo(() => {
-    if (isObject(showSearch)) return showSearch as ShowSearchType;
+    if (showSearch instanceof Object) return showSearch;
     return {};
   }, [showSearch]);
 
@@ -30,18 +30,18 @@ export default function Search({
     return searchPaths({ forest, model, searchText, filter, sort, limit });
   }, [searchText]);
 
-  const handleClick = (checkNode: Tree<CascaderOptionType>) => {
+  function handleClick(checkNode: Tree<CascaderOptionType>) {
     if (checkNode.origin.disabled) return;
 
     if (isMultiple(model)) {
-      onChecked(checkNode, !checkNode.isChecked);
+      onChangeChecked(checkNode, !checkNode.isChecked);
     } else {
-      onChecked(checkNode, true);
+      onChangeChecked(checkNode, true);
       onClose();
     }
   }
 
-  const pathHasDisabled = (path: Tree<CascaderOptionType>[]): boolean => {
+  function pathHasDisabled(path: Tree<CascaderOptionType>[]): boolean {
     let hasDisabled = false;
     path.forEach(({ origin }) => {
       if (origin.disabled) hasDisabled = true

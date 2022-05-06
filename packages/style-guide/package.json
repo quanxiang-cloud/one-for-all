@@ -36,6 +36,7 @@
     "rollup-plugin-import-css": "^3.0.2",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-terser": "^7.0.2",
-    "tailwindcss": "^2.2.19"
+    "tailwindcss": "^2.2.19",
+    "typescript": "4.6.2"
   }
 }

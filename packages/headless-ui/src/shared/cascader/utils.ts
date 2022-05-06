@@ -60,6 +60,8 @@ type SingleOriginInfo<T> =  {
 }
 type OriginInfo<T> = MultipleOriginInfo<T> | SingleOriginInfo<T>;
 
+export function getOriginInfoByPath<T extends BaseTreeNode<T>>(path: Tree<T>[]): SingleOriginInfo<T>;
+export function getOriginInfoByPath<T extends BaseTreeNode<T>>(path: Tree<T>[][]): MultipleOriginInfo<T>;
 export function getOriginInfoByPath<T extends BaseTreeNode<T>>(path: Tree<T>[] | Tree<T>[][]): OriginInfo<T> {
   if (!isSinglePath(path)) {
     const origins: T[][] = [];
@@ -101,8 +103,12 @@ export function eachParent<T extends BaseTreeNode<T>>(treeNode: Tree<T>, callbac
   }
 }
 
-export function isMultiple(model: CascaderModelType): boolean {
+export function isMultiple(model: CascaderModelType): model is MultipleCascaderModelType {
   return ['multiple', 'unlink'].includes(model);
+}
+
+export function isMultipleTree<T extends BaseTreeNode<T>>(model: CascaderModelType, tree: Tree<T>[] | Tree<T>[][]): tree is Tree<T>[][] {
+  return isMultiple(model);
 }
 
 export function isSinglePath<T extends BaseTreeNode<T>>(path: Tree<T>[] | Tree<T>[][]): path is Tree<T>[] {
@@ -111,6 +117,15 @@ export function isSinglePath<T extends BaseTreeNode<T>>(path: Tree<T>[] | Tree<T
 
 export function isObject(obj: any): boolean {
   return Object.prototype.toString.call(obj) === '[object Object]'
+}
+
+export function getPathLastValue<T>(multiple: false, path: T[]): T;
+export function getPathLastValue<T>(multiple: true, path: T[][]): T[];
+export function getPathLastValue<T>(multiple: boolean, path: T[] | T[][]): T | T[] {
+  if (multiple) {
+    return (path as T[][]).map(singlePath => singlePath[singlePath.length - 1]);
+  }
+  return path[path.length - 1];
 }
 
 export function getMultiplePathByNodes<T extends BaseTreeNode<T>>(nodes: Tree<T>[]): Tree<T>[][] {
@@ -183,4 +198,33 @@ function getLeafsByNode<T extends BaseTreeNode<T>>(node: Tree<T>): Tree<T>[] {
     leafs.push(node);
   }
   return leafs;
+}
+
+export function getPathByChecked<T extends BaseTreeNode<T>>(multiple: false, forest: Tree<T>[]): Tree<T>[];
+export function getPathByChecked<T extends BaseTreeNode<T>>(multiple: true, forest: Tree<T>[]): Tree<T>[][];
+export function getPathByChecked<T extends BaseTreeNode<T>>(multiple: boolean, forest: Tree<T>[]): Tree<T>[] | Tree<T>[][] {
+  if (multiple) {
+    const multipleCheckNodes = getMultipleCheckNodes(forest);
+    return getMultiplePathByNodes(multipleCheckNodes);
+  } else {
+    let currentCheckedNode = forest.find(({ isChecked }) => isChecked);
+    const path: Tree<T>[] = [];
+    while (currentCheckedNode) {
+      path.push(currentCheckedNode);
+      currentCheckedNode = currentCheckedNode.children?.find(({ isChecked }) => isChecked);
+    }
+    return path;
+  }
+}
+
+function getMultipleCheckNodes<T extends BaseTreeNode<T>>(forest: Tree<T>[]): Tree<T>[] {
+  const checked: Tree<T>[] = [];
+  eachForest(forest, (treeNode) => {
+    if (treeNode.isChecked) {
+      checked.push(treeNode);
+    }
+    // If indeterminate=false, it means that its children is not selected, so need't to traverse the children.
+    return !treeNode.indeterminate;
+  });
+  return checked;
 }
