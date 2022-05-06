@@ -1,0 +1,9 @@
+{
+  "default": [
+    {
+      "label": "图标大小",
+      "name": "size",
+      "type": "number"
+    }
+  ]
+}
