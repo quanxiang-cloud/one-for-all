@@ -10,11 +10,13 @@ import {
   draggingNodeIDState,
   hoveringContourNode$,
   hoveringParentIDState,
+  inDnd$,
   onDropEvent$,
 } from '../atoms';
 import { overrideDragImage } from '../utils';
 import useSetActiveNode from './use-set-active-node';
 import useShouldHandleDndCallback from './use-should-handle-dnd-callback';
+import { DND_DATA_TRANSFER_TYPE_NODE_ID } from '../constants';
 
 function preventDefault(e: any): false {
   e.preventDefault();
@@ -44,23 +46,31 @@ function RenderContourNode({ contourNode }: Props): JSX.Element {
         onDragStart={(e: React.DragEvent<HTMLDivElement>): any => {
           // todo this has no affect, fix it!
           e.dataTransfer.effectAllowed = 'move';
-          e.dataTransfer.setData('SIMULATOR_DRAGGING_NODE_ID', contourNode.id);
+          e.dataTransfer.setData(DND_DATA_TRANSFER_TYPE_NODE_ID, contourNode.id);
           setDraggingNodeID(contourNode.id);
 
           overrideDragImage(e.dataTransfer);
         }}
-        onDragEnd={() => setDraggingNodeID(undefined)}
+        onDragEnd={() => {
+          setDraggingNodeID(undefined);
+          inDnd$.next(false);
+        }}
         onDragOver={(e) => {
-          if (!_shouldHandleDnd()) {
+          if (!_shouldHandleDnd(e)) {
             return;
           }
+
+          inDnd$.next(true);
 
           preventDefault(e);
           cursor$.next({ x: e.clientX, y: e.clientY });
         }}
-        onDrag={preventDefault}
+        onDrag={(e) => {
+          preventDefault(e);
+          inDnd$.next(true);
+        }}
         onDragEnter={(e: React.DragEvent<HTMLDivElement>): any => {
-          if (!_shouldHandleDnd()) {
+          if (!_shouldHandleDnd(e)) {
             return;
           }
 
@@ -69,10 +79,16 @@ function RenderContourNode({ contourNode }: Props): JSX.Element {
           preventDefault(e);
           return false;
         }}
+        onDragLeave={() => {
+          // hoveringContourNode$.next(undefined);
+          inDnd$.next(false);
+        }}
         onDrop={(e: React.DragEvent<HTMLDivElement>): any => {
           preventDefault(e);
           onDropEvent$.next(e);
-          // handleDrop(e);
+
+          inDnd$.next(false);
+
           return false;
         }}
         className={cs('contour-node', {

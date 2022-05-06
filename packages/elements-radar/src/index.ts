@@ -1,12 +1,5 @@
-import {
-  merge,
-  fromEvent,
-  BehaviorSubject,
-  Subject,
-  Subscription,
-  Observable,
-} from 'rxjs';
-import { map, audit, auditTime, tap, distinctUntilChanged } from 'rxjs/operators';
+import { merge, fromEvent, BehaviorSubject, Subject, Observable } from 'rxjs';
+import { map, audit, tap, distinctUntilChanged } from 'rxjs/operators';
 
 import { calcRect, isSame } from './utils';
 import type { Report, Rect, ElementRect } from './type';
@@ -37,25 +30,34 @@ export default class Radar {
       }, 150);
     });
 
-    const scrollSign$ = scroll$.pipe(
-      audit(() => scrollDone$),
-    );
+    const scrollSign$ = scroll$.pipe(audit(() => scrollDone$));
 
     this.resizeObserver = new ResizeObserver(this.onResize);
     this.resizeObserver.observe(this.root);
 
-    merge(scrollSign$, this.targets$, this.resizeSign$).pipe(
-      // auditTime(100),
-      // debounce(() => animationFrames()),
-      // auditTime(150),
-      tap(() => {
-        this.visibleObserver.disconnect();
-      }),
-    ).subscribe(() => {
-      this.targets$.value.forEach((ele) => {
-        this.visibleObserver.observe(ele);
+    this.targets$.subscribe((targets) => {
+      this.resizeObserver.disconnect();
+      this.resizeObserver.observe(this.root);
+
+      targets.forEach((target) => {
+        this.resizeObserver.observe(target);
       });
     });
+
+    merge(scrollSign$, this.targets$, this.resizeSign$)
+      .pipe(
+        // auditTime(100),
+        // debounce(() => animationFrames()),
+        // auditTime(150),
+        tap(() => {
+          this.visibleObserver.disconnect();
+        }),
+      )
+      .subscribe(() => {
+        this.targets$.value.forEach((ele) => {
+          this.visibleObserver.observe(ele);
+        });
+      });
   }
 
   private onResize = (): void => {

@@ -2,13 +2,13 @@ import type { HTMLNode, ReactComponentNode } from '@one-for-all/artery-renderer'
 import React, { useContext, useEffect, useState } from 'react';
 import { cacheIsNodeSupportChildren, getIsNodeSupportChildrenFromCache, getNodeExecutor } from '../../utils';
 import { ArteryCtx } from '../../contexts';
-import { NodeWithoutChild } from '../../types';
+import { NodePrimary } from '../../types';
 
 interface Props {
   parent: HTMLNode | ReactComponentNode;
 }
 
-function getParentNode(parent: HTMLNode | ReactComponentNode): NodeWithoutChild {
+function getParentNode(parent: HTMLNode | ReactComponentNode): NodePrimary {
   if (parent.type === 'html-element') {
     return { type: 'html-element', name: parent.name };
   }

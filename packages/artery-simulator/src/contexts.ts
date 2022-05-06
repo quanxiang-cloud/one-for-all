@@ -1,13 +1,13 @@
 import React from 'react';
 import { Artery, Node } from '@one-for-all/artery';
-import { NodeWithoutChild } from './types';
+import { NodePrimary } from './types';
 
 interface ArteryContext {
   artery: Artery;
   rootNodeID: string;
   activeNode?: Node;
   setActiveNode: (node?: Node) => void;
-  isNodeSupportChildren?: (node: NodeWithoutChild) => Promise<boolean>;
+  isNodeSupportChildren?: (node: NodePrimary) => Promise<boolean>;
   onDropFile?: (file: File) => Promise<string>;
   onChange: (artery: Artery) => void;
   genNodeID: () => string;
