@@ -4,6 +4,7 @@
   "description": "Headless svg icon component",
   "license": "Apache-2.0",
   "module": "lib/src",
+  "main": "lib/src/index.js",
   "types": "lib/src/index.d.ts",
   "type": "module",
   "files": [

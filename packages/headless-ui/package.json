@@ -60,6 +60,7 @@
     "jest": "27.4.7",
     "jest-css-modules": "~2.1.0",
     "mkdirp": "~1.0.4",
+    "resolve-typescript-plugin": "~1.2.0",
     "rollup": "2.66.0",
     "rollup-plugin-esbuild": "^4.6.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",

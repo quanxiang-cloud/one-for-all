@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import Button from '../shared/button';
 
-const Meta: ComponentMeta<typeof Button> = {}
+const Meta: ComponentMeta<typeof Button> = {};
 
 export default {
   title: 'headless-ui/Button',
@@ -19,7 +19,7 @@ export default {
         type: { summary: 'Function' },
       },
       description: '点击事件',
-    }
+    },
   },
 } as ComponentMeta<typeof Button>;
 
@@ -36,4 +36,4 @@ export const Loading = Template.bind({});
 Loading.args = {
   children: 'test loading',
   loading: true,
-}
+};
