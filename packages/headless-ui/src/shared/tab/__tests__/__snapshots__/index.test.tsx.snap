@@ -11,22 +11,22 @@ exports[`tab navs props test 1`] = `
       style="background-color: red; width: 80%; height: 50px;"
     >
       <div
-        class="cursor-pointer relative ofa-tab-nav-item test-navs-className"
+        class="ofa-tab-nav-item test-navs-className"
       >
         tab1
       </div>
       <div
-        class="cursor-pointer relative ofa-tab-nav-item tab-nav__error test-navs-className"
+        class="ofa-tab-nav-item tab-nav__error test-navs-className"
       >
         tab2
       </div>
       <div
-        class="cursor-pointer relative ofa-tab-nav-item tab-nav__warning test-navs-className"
+        class="ofa-tab-nav-item tab-nav__warning test-navs-className"
       >
         tab3
       </div>
       <div
-        class="cursor-pointer relative ofa-tab-nav-item disabled tab-nav__error test-navs-className"
+        class="ofa-tab-nav-item ofa-tab-nav-disabled tab-nav__error test-navs-className"
       >
         tab4
       </div>
@@ -49,30 +49,27 @@ exports[`tab props test 1`] = `
         class="ofa-tab-navs"
       >
         <div
-          class="cursor-pointer relative ofa-tab-nav-item test-navs-className"
+          class="ofa-tab-nav-item test-navs-className"
         >
           tab1
         </div>
         <div
-          class="cursor-pointer relative ofa-tab-nav-item tab-nav__error test-navs-className"
+          class="ofa-tab-nav-item tab-nav__error test-navs-className"
         >
           tab2
         </div>
         <div
-          class="cursor-pointer relative ofa-tab-nav-item tab-nav__warning test-navs-className"
+          class="ofa-tab-nav-item tab-nav__warning test-navs-className"
         >
           tab3
         </div>
         <div
-          class="cursor-pointer relative ofa-tab-nav-item disabled tab-nav__error test-navs-className"
+          class="ofa-tab-nav-item ofa-tab-nav-disabled tab-nav__error test-navs-className"
         >
           tab4
         </div>
       </div>
     </div>
-    <div
-      class="ofa-tab-content"
-    />
   </div>
 </div>
 `;

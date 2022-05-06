@@ -345,6 +345,7 @@
    * To install a variant, run "rush install --variant <variant_name>".
    *
    * For more details and instructions, see this article:  https://rushjs.io/pages/advanced/installation_variants/
+   * For more details and instructions, see this article:  https://rushjs.io/pages/advanced/installation_variants/
    */
   "variants": [
     // {
@@ -471,6 +472,10 @@
       "projectFolder": "packages/artery-renderer"
     },
     {
+      "packageName": "@one-for-all/artery-simulator",
+      "projectFolder": "packages/artery-simulator"
+    },
+    {
       "packageName": "@one-for-all/artery-utils",
       "projectFolder": "packages/artery-utils"
     },
@@ -491,10 +496,6 @@
       "projectFolder": "packages/icon"
     },
     {
-      "packageName": "@one-for-all/page-engine",
-      "projectFolder": "packages/page-engine"
-    },
-    {
       "packageName": "@one-for-all/scss-forming",
       "projectFolder": "packages/scss-forming"
     },
@@ -505,10 +506,6 @@
     {
       "packageName": "@one-for-all/elements-radar",
       "projectFolder": "packages/elements-radar"
-    },
-    {
-      "packageName": "@one-for-all/ui",
-      "projectFolder": "packages/ui"
     },
     {
       "packageName": "@one-for-all/utils",

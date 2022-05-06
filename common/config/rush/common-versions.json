@@ -51,10 +51,7 @@
    * This design avoids unnecessary churn in this file.
    */
   "allowedAlternativeVersions": {
-      "rxjs": ["6.6.7"],
-      "sass-loader": ["^10"],
-      "style-loader": ["^2.0.0"],
-      "css-loader": ["^5.1.1"]
+      "rxjs": ["6.6.7"]
     /**
      * For example, allow some projects to use an older TypeScript compiler
      * (in addition to whatever "usual" version is being used by other projects in the repo):

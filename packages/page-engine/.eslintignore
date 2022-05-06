@@ -1,9 +1,0 @@
-dist
-lib
-node_modules
-scripts/*
-jest.*.js
-rollup.*.js
-
-/*.cjs
-/*.config.js

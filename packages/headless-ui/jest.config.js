@@ -5,6 +5,6 @@ export default {
   name: '@one-for-all/headless-ui',
   moduleNameMapper: {
     '\\.(css|scss|less)$': 'jest-css-modules',
-    '@one-for-all/icon': '<rootDir>../icon/src',
+    '@one-for-all/icon': '<rootDir>../icon/lib/src',
   },
 };

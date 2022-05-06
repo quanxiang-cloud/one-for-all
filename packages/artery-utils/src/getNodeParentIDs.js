@@ -1,10 +1,10 @@
 import { Seq, fromJS } from 'immutable';
-import parentIdPath from './raw/parentIdPath';
+import parentIdsSeq from './raw/parentIdsSeq';
 
 function getNodeParentIDs(schemaNode, nodeID) {
   const node = fromJS(schemaNode);
 
-  const ids = parentIdPath(node, nodeID);
+  const ids = parentIdsSeq(node, nodeID);
 
   return Seq.isSeq(ids) ? ids.toJS() : undefined;
 }

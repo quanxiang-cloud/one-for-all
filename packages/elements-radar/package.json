@@ -1,12 +1,20 @@
 {
   "name": "@one-for-all/elements-radar",
-  "version": "0.1.2",
+  "version": "0.2.1",
   "description": "",
   "license": "Apache-2.0",
   "author": "",
   "type": "module",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "src",
+    "tsconfig.json",
+    "README.md",
+    "!**/__tests__",
+    "!**/__mocks__"
+  ],
   "scripts": {
     "build": "heft build --clean",
     "bundle": "rm -rf dist && rollup -c rollup.config.js",
@@ -30,8 +38,8 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@tsconfig/recommended": "^1.0.1",
     "@types/heft-jest": "~1.0.2",
-    "@typescript-eslint/parser": "5.10.1",
-    "esbuild": "0.14.13",
+    "@typescript-eslint/parser": "^5.20.0",
+    "esbuild": "0.14.38",
     "eslint": "8.7.0",
     "jest": "27.4.7",
     "jest-diff": "~27.4.6",
