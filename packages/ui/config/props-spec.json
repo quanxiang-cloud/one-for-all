@@ -1,0 +1,404 @@
+{
+  "Text": [
+    {
+      "label": "文本内容",
+      "name": "content",
+      "type": "string",
+      "will": "Textarea"
+    },
+    {
+      "label": "可选中文本",
+      "name": "isAllowSelect",
+      "type": "boolean",
+      "will": "Checkbox"
+    },
+    {
+      "label": "点击事件",
+      "name": "onClick",
+      "type": "function"
+    }
+  ],
+  "Image": [
+    {
+      "label": "图片填充",
+      "name": "imageUrl",
+      "type": "string",
+      "will": "ImageUrl"
+    },
+    {
+      "label": "填充方式",
+      "name": "fillMode",
+      "type": "string",
+      "will": "Select",
+      "willProps": {
+        "options": [
+          {
+            "label": "铺满",
+            "value": "cover"
+          },
+          {
+            "label": "拉伸",
+            "value": "contain"
+          },
+          {
+            "label": "适合",
+            "value": "100% 100%"
+          }
+        ]
+      }
+    },
+    {
+      "label": "点击预览大图",
+      "name": "preview",
+      "type": "boolean",
+      "will": "Switch"
+    },
+    {
+      "label": "点击遮罩关闭图片预览",
+      "name": "closeOnMaskClick",
+      "type": "boolean",
+      "will": "Switch"
+    }
+  ],
+  "Button": [
+    {
+      "label": "按钮名称",
+      "name": "children",
+      "type": "react-node"
+    },
+    {
+      "label": "按钮类型",
+      "name": "modifier",
+      "type": "string",
+      "will": "Select",
+      "willProps": {
+        "options": [
+          {
+            "label": "默认",
+            "value": ""
+          },
+          {
+            "label": "主要",
+            "value": "primary"
+          },
+          {
+            "label": "危险",
+            "value": "danger"
+          }
+        ]
+      }
+    },
+    {
+      "label": "按钮功能",
+      "name": "type",
+      "type": "string",
+      "will": "Select",
+      "willProps": {
+        "options": [
+          {
+            "label": "按钮",
+            "value": "button"
+          },
+          {
+            "label": "提交",
+            "value": "submit"
+          },
+          {
+            "label": "重置",
+            "value": "reset"
+          }
+        ]
+      }
+    },
+    {
+      "label": "禁用",
+      "name": "forbidden",
+      "type": "boolean"
+    },
+    {
+      "label": "加载状态",
+      "name": "loading",
+      "type": "boolean"
+    },
+    {
+      "label": "加载文本",
+      "name": "loadingText",
+      "type": "string"
+    },
+    {
+      "label": "图标名称",
+      "name": "iconName",
+      "type": "string"
+    },
+    {
+      "label": "图标大小",
+      "name": "iconSize",
+      "type": "number"
+    },
+    {
+      "label": "点击事件",
+      "name": "onClick",
+      "type": "function"
+    }
+  ],
+  "Icon": [
+    {
+      "label": "图标名称",
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "label": "图标大小",
+      "name": "size",
+      "type": "number"
+    }
+  ],
+  "Link": [
+    {
+      "label": "内容",
+      "name": "content",
+      "type": "string"
+    },
+    {
+      "label": "链接类型",
+      "name": "linkType",
+      "type": "string",
+      "will": "RadioGroup",
+      "willProps": {
+        "options": [
+          {
+            "label": "外部链接",
+            "value": "outside"
+          },
+          {
+            "label": "内部页面",
+            "value": "inside"
+          }
+        ]
+      }
+    },
+    {
+      "label": "链接类型",
+      "name": "linkUrl",
+      "type": "string",
+      "willProps": {
+        "placeholder": "请输入完整url路径 例：https://example.com"
+      }
+    },
+    {
+      "label": "新开标签页",
+      "name": "isBlank",
+      "type": "boolean",
+      "willProps": {
+        "disabled": false
+      }
+    },
+    {
+      "label": "点击事件",
+      "name": "onClick",
+      "type": "function"
+    }
+  ],
+  "Input": [
+    {
+      "label": "类型",
+      "name": "type",
+      "type": "string",
+      "will": "Select",
+      "willProps": {
+        "options": [
+          {
+            "label": "文本框",
+            "value": "text"
+          },
+          {
+            "label": "密码框",
+            "value": "password"
+          },
+          {
+            "label": "数字",
+            "value": "number"
+          }
+        ]
+      }
+    },
+    {
+      "label": "占位符",
+      "name": "placeholder",
+      "type": "string"
+    },
+    {
+      "label": "name",
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "label": "禁用",
+      "name": "disabled",
+      "type": "boolean"
+    },
+    {
+      "label": "只读",
+      "name": "readOnly",
+      "type": "boolean"
+    },
+    {
+      "label": "错误",
+      "name": "error",
+      "type": "boolean"
+    },
+    {
+      "label": "最大长度",
+      "name": "maxLength",
+      "type": "number"
+    },
+    {
+      "label": "点击事件",
+      "name": "onChange",
+      "type": "function"
+    },
+    {
+      "label": "键盘按下事件",
+      "name": "onKeydown",
+      "type": "function"
+    },
+    {
+      "label": "聚焦事件",
+      "name": "onFocus",
+      "type": "function"
+    },
+    {
+      "label": "失焦事件",
+      "name": "onBlur",
+      "type": "function"
+    }
+  ],
+  "Radio": [
+    {
+      "label": "名称",
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "label": "默认选中",
+      "name": "defaultChecked",
+      "type": "boolean",
+      "will": "Switch"
+    },
+    {
+      "label": "禁用",
+      "name": "disabled",
+      "type": "boolean",
+      "will": "Switch"
+    },
+    {
+      "label": "变化事件",
+      "name": "onChange",
+      "type": "function"
+    }
+  ],
+  "Textarea": [
+    {
+      "label": "占位符",
+      "name": "placeholder",
+      "type": "string"
+    },
+    {
+      "label": "名称",
+      "name": "name",
+      "type": "string"
+    },
+    {
+      "label": "默认值",
+      "name": "defaultValue",
+      "type": "string"
+    },
+    {
+      "label": "行数",
+      "name": "cols",
+      "type": "number"
+    },
+    {
+      "label": "列数",
+      "name": "rows",
+      "type": "number"
+    },
+    {
+      "label": "最小输入字符",
+      "name": "minLength",
+      "type": "number"
+    },
+    {
+      "label": "最大输入字符",
+      "name": "maxLength",
+      "type": "number"
+    }
+  ],
+  "Modal": [
+    {
+      "label": "children",
+      "name": "children",
+      "type": "react-node"
+    },
+    {
+      "label": "标题",
+      "name": "title",
+      "type": "string"
+    },
+    {
+      "label": "宽度",
+      "name": "width",
+      "type": "string"
+    },
+    {
+      "label": "高度",
+      "name": "height",
+      "type": "string"
+    },
+    {
+      "label": "显示对话框",
+      "name": "isOpen",
+      "type": "boolean",
+      "will": "Switch"
+    },
+    {
+      "label": "全屏显示",
+      "name": "fullscreen",
+      "type": "boolean",
+      "will": "Switch"
+    },
+    {
+      "label": "配置底部按钮",
+      "name": "footerBtns",
+      "type": "object",
+      "will": "SpecRender",
+      "willProps": {
+        "spec": [
+          {
+            "label": "key",
+            "name": "key",
+            "type": "string"
+          },
+          {
+            "label": "按钮名称",
+            "name": "iconName",
+            "type": "string"
+          },
+          {
+            "label": "文本",
+            "name": "text",
+            "type": "string"
+          },
+          {
+            "label": "点击事件",
+            "name": "onClick",
+            "type": "function"
+          }
+        ],
+        "multiple": true
+      }
+    }
+  ],
+  "Container": [],
+  "Grid": []
+}

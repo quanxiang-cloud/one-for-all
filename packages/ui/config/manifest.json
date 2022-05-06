@@ -1,0 +1,241 @@
+{
+  "Icon": {
+    "category": "基础组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "add",
+          "initialProps": {}
+        },
+        "desc": "加载图标用于表示加载状态",
+        "label": "图标",
+        "initialProps": {
+          "name": "add",
+          "size": 12
+        }
+      }
+    ]
+  },
+  "Button": {
+    "category": "基础组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "smart_button",
+          "initialProps": {}
+        },
+        "desc": "按钮用于提交、提示、操作",
+        "label": "按钮",
+        "initialProps": {
+          "modifier": "primary",
+          "type": "button",
+          "forbidden": false,
+          "loading": false,
+          "loadingText": "加载中...",
+          "iconName": "check",
+          "iconSize": 12
+        }
+      }
+    ]
+  },
+  "Modal": {
+    "category": "基础组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "pages",
+          "initialProps": {
+            "size": 24
+          }
+        },
+        "desc": "模态框用于弹出层",
+        "label": "模态框",
+        "initialProps": {
+          "title": "modal 标题",
+          "width": "auto",
+          "height": "auto",
+          "isOpen": true,
+          "fullscreen": false,
+          "footerBtns": [{
+            "key": "cancel",
+            "iconName": "close",
+            "text": "取消"
+          }, {
+            "key": "confirm",
+            "iconName": "check",
+            "text": "确定"
+          }]
+        }
+      }
+    ]
+  },
+  "Radio": {
+    "category": "表单组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "radio_button_checked",
+          "initialProps": {
+            "size": 24
+          }
+        },
+        "desc": "单选框用于选择",
+        "label": "单选",
+        "initialProps": {
+          "name": "单选",
+          "defaultChecked": false,
+          "disabled": false
+        }
+      }
+    ]
+  },
+  "Image": {
+    "category": "基础组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "image",
+          "initialProps": {}
+        },
+        "desc": "图片用于展示",
+        "label": "图片",
+        "initialProps": {
+          "imageUrl": "",
+          "fillMode": "cover",
+          "preview": false,
+          "closeOnMaskClick": false
+        }
+      }
+    ]
+  },
+  "Input": {
+    "category": "表单组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "text_fields",
+          "initialProps": {
+            "size": 24
+          }
+        },
+        "desc": "单行文本框用于输入",
+        "label": "单行文本",
+        "initialProps": {
+          "type": "text",
+          "placeholder": "请输入内容",
+          "name": "",
+          "disabled": false,
+          "readOnly": false,
+          "error": false,
+          "maxLength": 50
+        }
+      }
+    ]
+  },
+  "Textarea": {
+    "category": "表单组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "wrap_text",
+          "initialProps": {
+            "size": 24
+          }
+        },
+        "desc": "多行文本框用于输入",
+        "label": "多行文本",
+        "initialProps": {
+          "placeholder": "请输入内容",
+          "name": "",
+          "defaultValue": "",
+          "cols": 40,
+          "rows": 5,
+          "minLength": 0,
+          "maxLength": 300
+        }
+      }
+    ]
+  },
+  "Text": {
+    "category": "基础组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "text_format",
+          "initialProps": {}
+        },
+        "desc": "文本用于展示",
+        "label": "文本",
+        "initialProps": {
+          "content": "文本",
+          "isAllowSelect": false
+        }
+      }
+    ]
+  },
+  "Grid": {
+    "category": "布局组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "grid_on",
+          "initialProps": {}
+        },
+        "desc": "栅格布局用于布局",
+        "label": "布局容器",
+        "initialProps": {
+          "colRatio": "12:9:3",
+          "colGap": "16px",
+          "rowGap": "16px"
+        }
+      }
+    ]
+  },
+  "Container": {
+    "category": "布局组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "grid_view",
+          "initialProps": {}
+        },
+        "desc": "容器用于布局",
+        "label": "容器",
+        "initialProps": {
+          "className": "",
+          "style": {}
+        }
+      }
+    ]
+  },
+  "Link": {
+    "category": "基础组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "link",
+          "initialProps": {}
+        },
+        "desc": "链接用于跳转",
+        "label": "链接",
+        "initialProps": {
+          "content": "链接",
+          "linkType": "outside",
+          "linkUrl": "",
+          "isBlank": false
+        }
+      }
+    ]
+  }
+}
