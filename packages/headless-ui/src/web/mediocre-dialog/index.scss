@@ -1,0 +1,33 @@
+.ofa-mediocre-dialog {
+  margin: auto;
+  margin-top: 20vh;
+
+  background-color: white;
+  border: 1px solid grey;
+  border-radius: 4px;
+  min-width: 200px;
+  max-width: 90vw;
+  width: 400px;
+}
+
+.ofa-mediocre-dialog__title {
+  padding: 8px;
+  height: 20px;
+  line-height: 20px;
+}
+
+.ofa-mediocre-dialog__body {
+  min-height: 200px;
+  padding: 16px;
+}
+
+.ofa-mediocre-dialog__footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 8px 16px;
+
+  .ofa-btn {
+    margin-left: 8px;
+  }
+}
