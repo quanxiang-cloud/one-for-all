@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import SwiperImage from '../shared/swiper-image';
 
-export default {
+const SwiperImageMeta: ComponentMeta<typeof SwiperImage> = {
   title: 'headless-ui/SwiperImage',
   component: SwiperImage,
   argTypes: {
@@ -16,9 +16,9 @@ export default {
       description: '默认位置',
       control: 'number',
     },
-    autoplay: {
-      defaultValue: true,
-      description: '是否自动播放',
+    disableAutoplay: {
+      defaultValue: false,
+      description: '是否禁止自动播放',
       control: 'boolean',
     },
     autoplaySpeed: {
@@ -27,9 +27,9 @@ export default {
       description: '自动轮播间隔，单位ms',
       control: 'number',
     },
-    showDots: {
-      defaultValue: true,
-      description: '是否显示面板指示点',
+    hideDots: {
+      defaultValue: false,
+      description: '是否隐藏面板指示点',
       control: 'boolean',
     },
     onChange: {
@@ -40,7 +40,9 @@ export default {
       description: '切换索引的回调',
     },
   },
-} as ComponentMeta<typeof SwiperImage>;
+};
+
+export default SwiperImageMeta;
 
 const Template: ComponentStory<typeof SwiperImage> = (args) => <SwiperImage {...args} />;
 
@@ -48,5 +50,5 @@ export const Normal = Template.bind({});
 
 Normal.args = {
   images: [],
-  style: {height: '500px'},
+  style: { height: '500px' },
 };

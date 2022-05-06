@@ -583,11 +583,15 @@ interface BreadcrumbProps extends BaseProps {
   segmentStyle?: React.CSSProperties;
 }
 
+type ImageItem = {
+  imgUrl: string,
+  content: React.ReactNode,
+}
 interface SwiperImageProps extends BaseProps {
-  images: Array<string>;
+  images: Array<ImageItem>;
   defaultIndex?: number;
-  autoplay?: boolean;
+  disableAutoplay?: boolean;
   autoplaySpeed?: number;
-  showDots?: boolean;
+  hideDots?: boolean;
   onChange?: (index: number) => void;
 }
