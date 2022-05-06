@@ -30,7 +30,7 @@ export type Position =
   | 'inner-bottom'
   | 'inner-left';
 
-export type NodeWithoutChild =
+export type NodePrimary =
   | Pick<HTMLNode, 'type' | 'name'>
   | Pick<ReactComponentNode, 'type' | 'packageName' | 'packageVersion' | 'exportName'>;
 

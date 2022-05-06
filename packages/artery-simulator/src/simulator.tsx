@@ -8,7 +8,7 @@ import { Artery, Node } from '@one-for-all/artery';
 import Background from './background';
 import Foreground from './foreground';
 import { ArteryCtx } from './contexts';
-import { NodeWithoutChild } from './types';
+import { NodePrimary } from './types';
 import GreenZone from './green-zone';
 import { immutableNodeState } from './atoms';
 import './index.scss';
@@ -22,8 +22,9 @@ export interface Props {
   plugins?: Plugins;
   className?: string;
   genNodeID: () => string;
-  isNodeSupportChildren?: (parent: NodeWithoutChild) => Promise<boolean>;
+  isNodeSupportChildren?: (parent: NodePrimary) => Promise<boolean>;
   onDropFile?: (file: File) => Promise<string>;
+  modalLayerNodes?: Array<NodePrimary>;
 }
 
 const ALL_ELEMENTS = new Map();

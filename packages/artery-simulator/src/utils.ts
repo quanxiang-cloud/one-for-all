@@ -4,7 +4,7 @@ import { useSetRecoilState } from 'recoil';
 import { BehaviorSubject } from 'rxjs';
 import { visibleElementsTickState } from './atoms';
 import { Cursor, Position } from './types';
-import { NodeWithoutChild } from './types';
+import { NodePrimary } from './types';
 
 let n = 0;
 
@@ -60,7 +60,7 @@ export function calcHoverPosition({ cursor, hoveringRect, supportInner }: GetPos
 
 const isNodeSupportChildrenCache: Map<string, boolean> = new Map();
 
-export function cacheIsNodeSupportChildren(node: NodeWithoutChild, isSupport: boolean): void {
+export function cacheIsNodeSupportChildren(node: NodePrimary, isSupport: boolean): void {
   const cacheKey = getNodeExecutor(node);
 
   isNodeSupportChildrenCache.set(cacheKey, isSupport);
@@ -83,7 +83,7 @@ export function isChildNodeOf(
   return parentIDs.keyOf(parentID) !== undefined ? true : false;
 }
 
-export function getNodeExecutor(node: NodeWithoutChild): string {
+export function getNodeExecutor(node: NodePrimary): string {
   if (node.type === 'html-element') {
     return `html-element:${node.name}`;
   }
