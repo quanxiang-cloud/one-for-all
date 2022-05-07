@@ -7,6 +7,7 @@ import DepthContext from './depth-context';
 import useHTMLNodeProps from './hooks/use-html-node-props';
 import Placeholder from './placeholder';
 import { useSupportChildrenCheck } from './use-support-children-check';
+import useShouldRenderChildrenPlaceholder from './use-should-render-children-placeholder';
 
 interface Props {
   node: HTMLNode;
@@ -17,6 +18,9 @@ function HTMLNodeRender({ node, ctx }: Props): React.ReactElement | null {
   const currentDepth = useContext(DepthContext) + 1;
   const props = useHTMLNodeProps(node, ctx, currentDepth);
   useSupportChildrenCheck(node);
+  // todo combine useSupportChildrenCheck and shouldRenderPlaceholder
+  useSupportChildrenCheck(node);
+  const shouldRenderPlaceholder = useShouldRenderChildrenPlaceholder(node);
 
   if (!node.name) {
     logger.error(
@@ -27,7 +31,7 @@ function HTMLNodeRender({ node, ctx }: Props): React.ReactElement | null {
   }
 
   if (!node.children || !node.children.length) {
-    return React.createElement(node.name, props, React.createElement(Placeholder, { parent: node }));
+    return React.createElement(node.name, props, shouldRenderPlaceholder ? React.createElement(Placeholder, { parent: node }) : undefined);
   }
 
   return React.createElement(

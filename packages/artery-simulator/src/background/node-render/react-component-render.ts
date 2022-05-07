@@ -7,6 +7,7 @@ import Placeholder from './placeholder';
 import { useSupportChildrenCheck } from './use-support-children-check';
 import DepthContext from './depth-context';
 import ErrorBoundary from './error-boundary';
+import useShouldRenderChildrenPlaceholder from './use-should-render-children-placeholder';
 
 interface Props {
   node: ReactComponentNode;
@@ -17,7 +18,9 @@ function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | nu
   const currentDepth = useContext(DepthContext) + 1;
   const { nodeProps, wrapperProps } = useComponentNodeProps(node, ctx, currentDepth);
   const nodeComponent = useNodeComponent(node, ctx.plugins);
+  // todo combine useSupportChildrenCheck and shouldRenderPlaceholder
   useSupportChildrenCheck(node);
+  const shouldRenderPlaceholder = useShouldRenderChildrenPlaceholder(node);
 
   if (!nodeComponent) {
     return null;
@@ -30,7 +33,11 @@ function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | nu
       React.createElement(
         'div',
         wrapperProps,
-        React.createElement(nodeComponent, nodeProps, React.createElement(Placeholder, { parent: node })),
+        React.createElement(
+          nodeComponent,
+          nodeProps,
+          shouldRenderPlaceholder ? React.createElement(Placeholder, { parent: node }) : undefined
+        ),
       ),
     );
   }
