@@ -6,6 +6,7 @@ specifiers:
   '@babel/preset-env': ~7.16.11
   '@leifandersen/react-codemirror2': ~7.2.1
   '@one-for-all/artery-simulator': 0.3.0
+  '@one-for-all/headless-ui': 0.1.4
   '@one-for-all/style-guide': 0.1.3
   '@popperjs/core': ^2.11.0
   '@rollup/plugin-commonjs': ^21.0.1
@@ -126,6 +127,7 @@ specifiers:
   react-jsx-parser: 1.29.0
   react-table: ^7.7.0
   recoil: 0.7.2
+  resolve-typescript-plugin: ~1.2.0
   rollup: 2.66.0
   rollup-plugin-copy: ^3.4.0
   rollup-plugin-esbuild: ^4.6.0
@@ -156,6 +158,7 @@ dependencies:
   '@babel/preset-env': 7.16.11_@babel+core@7.17.8
   '@leifandersen/react-codemirror2': 7.2.1_codemirror@5.65.2+react@17.0.2
   '@one-for-all/artery-simulator': 0.3.0_react-dom@17.0.2
+  '@one-for-all/headless-ui': 0.1.4
   '@one-for-all/style-guide': 0.1.3
   '@popperjs/core': 2.11.4
   '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
@@ -276,6 +279,7 @@ dependencies:
   react-jsx-parser: 1.29.0_react-dom@17.0.2+react@17.0.2
   react-table: 7.7.0_react@17.0.2
   recoil: 0.7.2_react-dom@17.0.2+react@17.0.2
+  resolve-typescript-plugin: 1.2.0_webpack@5.72.0
   rollup: 2.66.0
   rollup-plugin-copy: 3.4.0
   rollup-plugin-esbuild: 4.8.2_esbuild@0.14.38+rollup@2.66.0
@@ -17877,7 +17881,7 @@ packages:
     dev: false
 
   file:projects/artery-simulator.tgz_d1d7a1f0ff7525dd0d92693a4e80182a:
-    resolution: {integrity: sha512-cPkYP+c44H89nJQBcbnWf7JTxrHA82QU1PfYPKaf6tJ7YvfHy81oQUD09SKl+syVpE+m45+W9bIX/PL7DZPfhQ==, tarball: file:projects/artery-simulator.tgz}
+    resolution: {integrity: sha512-vfQUXvEuVg/fga2+ouoUD5kB6fodsy95Fo/xpaEuts4K7+SRAb7S6M3BSpZ75SVw0VKT5MY05k4kEKKuChjqKQ==, tarball: file:projects/artery-simulator.tgz}
     id: file:projects/artery-simulator.tgz
     name: '@rush-temp/artery-simulator'
     version: 0.0.0
@@ -18061,7 +18065,7 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-u6x9PXZXb3F5JQXw2wEfWaxL8AkM6DbjMX6Pbvxki7DfjvGiQFCVjUxr8fKH5OcxRq5dvCTNf7wOafibsggMDg==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-fiVlyYBK5OHYRipZVIydcnLmzRlVI6H6+a5AWBIHRcxqNrhyzhfLQrwK7SPYtby21rYw5uVNthhSr1rgWnoceA==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
