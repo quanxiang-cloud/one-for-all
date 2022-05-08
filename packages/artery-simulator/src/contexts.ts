@@ -7,7 +7,8 @@ interface ArteryContext {
   rootNodeID: string;
   activeNode?: Node;
   setActiveNode: (node?: Node) => void;
-  isNodeSupportChildren?: (node: NodePrimary) => Promise<boolean>;
+  isNodeSupportChildren: (node: NodePrimary) => Promise<boolean>;
+  isNodeInModalLayer: (node: NodePrimary) => Promise<boolean>;
   onDropFile?: (file: File) => Promise<string>;
   onChange: (artery: Artery) => void;
   genNodeID: () => string;

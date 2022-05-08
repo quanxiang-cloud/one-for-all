@@ -58,18 +58,6 @@ export function calcHoverPosition({ cursor, hoveringRect, supportInner }: GetPos
   return 'inner';
 }
 
-const isNodeSupportChildrenCache: Map<string, boolean> = new Map();
-
-export function cacheIsNodeSupportChildren(node: NodePrimary, isSupport: boolean): void {
-  const cacheKey = getNodeExecutor(node);
-
-  isNodeSupportChildrenCache.set(cacheKey, isSupport);
-}
-
-export function getIsNodeSupportChildrenFromCache(nodeExecutor: string): boolean | undefined {
-  return isNodeSupportChildrenCache.get(nodeExecutor);
-}
-
 export function isChildNodeOf(
   root: Immutable.Collection<unknown, unknown>,
   parentID: string,

@@ -20,3 +20,8 @@
 - bug: drag hover child node
 - todo: test composed and loop node
 - 支持模态框
+  - root layer
+  - modal layer 1
+  - modal layer 2
+  - 组件是否属于 modal layer 需要被动推出
+  - 所以应该定义 modal layer array state，当 artery 变化，有新 node 需要 render 时，push new modal layer 到数组中

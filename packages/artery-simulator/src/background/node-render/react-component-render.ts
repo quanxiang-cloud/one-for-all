@@ -4,10 +4,10 @@ import { useNodeComponent, CTX, ReactComponentNode } from '@one-for-all/artery-r
 import ChildrenRender from './children-render';
 import useComponentNodeProps from './hooks/use-component-props';
 import Placeholder from './placeholder';
-import { useSupportChildrenCheck } from './use-support-children-check';
 import DepthContext from './depth-context';
 import ErrorBoundary from './error-boundary';
-import useShouldRenderChildrenPlaceholder from './use-should-render-children-placeholder';
+import useNodeBehaviorCheck from './hooks/use-node-behavior-check';
+import { checkIfNodeIsModalLayer, checkIfNodeSupportChildren } from 'src/cache';
 
 interface Props {
   node: ReactComponentNode;
@@ -18,11 +18,9 @@ function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | nu
   const currentDepth = useContext(DepthContext) + 1;
   const { nodeProps, wrapperProps } = useComponentNodeProps(node, ctx, currentDepth);
   const nodeComponent = useNodeComponent(node, ctx.plugins);
-  // todo combine useSupportChildrenCheck and shouldRenderPlaceholder
-  useSupportChildrenCheck(node);
-  const shouldRenderPlaceholder = useShouldRenderChildrenPlaceholder(node);
+  const loading = useNodeBehaviorCheck(node);
 
-  if (!nodeComponent) {
+  if (loading || !nodeComponent || checkIfNodeIsModalLayer(node)) {
     return null;
   }
 
@@ -36,7 +34,7 @@ function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | nu
         React.createElement(
           nodeComponent,
           nodeProps,
-          shouldRenderPlaceholder ? React.createElement(Placeholder, { parent: node }) : undefined
+          checkIfNodeSupportChildren(node) ? React.createElement(Placeholder, { parent: node }) : undefined,
         ),
       ),
     );

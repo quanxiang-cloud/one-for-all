@@ -1,7 +1,7 @@
 import { Rect } from '@one-for-all/elements-radar';
 import React, { useEffect, useMemo, useState } from 'react';
 import { audit, map, animationFrames, tap } from 'rxjs';
-import { getIsNodeSupportChildrenFromCache } from '../utils';
+import { checkIfNodeSupportChildren, isNodeSupportChildrenCache } from '../cache';
 import { GreenZoneForNodeWithoutChildren, Position } from '../types';
 import { cursor$, latestFocusedGreenZone$ } from '../atoms';
 
@@ -59,9 +59,7 @@ function calcStyle(position: Position, absolutePosition: Rect): React.CSSPropert
 
 export default function RenderGreenZoneForNodeWithoutChildren({ greenZone }: Props): JSX.Element {
   const [style, setStyle] = useState<React.CSSProperties>();
-  const isSupportChildren = useMemo(() => {
-    return !!getIsNodeSupportChildrenFromCache(greenZone.contour.executor);
-  }, []);
+  const isSupportChildren = !!isNodeSupportChildrenCache.get(greenZone.contour.executor);
 
   useEffect(() => {
     const subscription = cursor$

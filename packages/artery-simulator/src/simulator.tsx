@@ -22,7 +22,8 @@ export interface Props {
   plugins?: Plugins;
   className?: string;
   genNodeID: () => string;
-  isNodeSupportChildren?: (parent: NodePrimary) => Promise<boolean>;
+  isNodeSupportChildren: (node: NodePrimary) => Promise<boolean>;
+  isNodeInModalLayer: (node: NodePrimary) => Promise<boolean>;
   onDropFile?: (file: File) => Promise<string>;
   modalLayerNodes?: Array<NodePrimary>;
 }
@@ -40,6 +41,7 @@ function Simulator({
   plugins,
   genNodeID,
   isNodeSupportChildren,
+  isNodeInModalLayer,
   onDropFile,
 }: Props): JSX.Element {
   const setImmutableNode = useSetRecoilState(immutableNodeState);
@@ -58,6 +60,7 @@ function Simulator({
         activeNode,
         setActiveNode,
         isNodeSupportChildren,
+        isNodeInModalLayer,
         onDropFile,
         onChange,
         genNodeID,

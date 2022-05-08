@@ -11,7 +11,7 @@ import {
   GreenZoneForNodeWithoutChildren,
   GreenZone,
 } from './types';
-import { byArbitrary, walk } from '@one-for-all/artery-utils';
+import { byArbitrary, walk, ImmutableNode, filter } from '@one-for-all/artery-utils';
 
 export const immutableNodeState = atom<Immutable.Collection<unknown, unknown>>({
   key: 'immutableNodeState',
@@ -23,6 +23,7 @@ export const draggingNodeIDState = atom<string | undefined>({
   key: 'draggingNodeIDState',
   default: undefined,
 });
+
 export const draggingArteryImmutableNodeState = selector<immutable.Collection<unknown, unknown> | undefined>({
   key: 'draggingArteryImmutableNodeState',
   get: ({ get }) => {
