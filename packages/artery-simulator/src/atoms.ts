@@ -46,8 +46,6 @@ export const contourNodesState = atom<ContourNode[]>({ key: 'contourNodesState',
 
 export const hoveringParentIDState = atom<string>({ key: 'hoveringParentIDState', default: '' });
 
-export const visibleElementsTickState = atom<number>({ key: 'visibleElementsTickState', default: 0 });
-
 export const greenZonesBetweenNodesState = atom<GreenZoneBetweenNodes[]>({
   key: 'greenZonesBetweenNodesState',
   default: [],
@@ -64,7 +62,6 @@ function visibleObserverCallback(entries: IntersectionObserverEntry[]): void {
     monitoredElements.set(target as HTMLElement, isIntersecting);
   });
   monitoredElements$.next(monitoredElements);
-  // backgroundElementsChanged$.next();
 }
 
 export const VISIBLE_ELEMENTS_OBSERVER = new IntersectionObserver(visibleObserverCallback);
