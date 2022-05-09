@@ -21,7 +21,7 @@ export default class HandleNodeRenderErrorBoundary extends React.Component<Props
   render(): ReactNode {
     if (this.state.hasError) {
       // You can render any custom fallback UI
-      return <span className="text-grey-400"></span>;
+      return null;
     }
 
     return this.props.children;

@@ -1,4 +1,4 @@
-import { useRef, useEffect, useContext } from 'react';
+import { useRef, useEffect, useContext, useState } from 'react';
 import { CTX, HTMLNode } from '@one-for-all/artery-renderer';
 import { useInstantiateProps } from '@one-for-all/artery-renderer';
 
@@ -9,26 +9,26 @@ import SimulatorLayerCtx from '../../context';
 
 export default function useHTMLNodeProps(node: HTMLNode, ctx: CTX, depth: number): Record<string, unknown> {
   const props = useInstantiateProps(node, ctx);
-  const ref = useRef<HTMLElement>();
+  const [ref, setRef] = useState<HTMLElement>();
   const { rootNodeID } = useContext(ArteryCtx);
   const layerCtx = useContext(SimulatorLayerCtx);
 
   useEffect(() => {
-    if (ref.current) {
-      register(ref.current, layerCtx);
+    if (ref) {
+      register(ref, layerCtx);
     }
 
     return () => {
-      if (ref.current) {
-        unregister(ref.current, layerCtx);
+      if (ref) {
+        unregister(ref, layerCtx);
       }
     };
-  }, []);
+  }, [ref]);
 
   // todo support forward ref case
   return {
     ...props,
-    ref,
+    ref: (_ref: HTMLElement) => _ref && setRef(_ref),
     'data-simulator-node-id': node.id,
     'data-simulator-node-depth': depth,
     'data-simulator-node-executor': getNodeExecutor(node),
