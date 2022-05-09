@@ -3,7 +3,7 @@ import React, { PropsWithChildren, ReactNode } from 'react';
 
 type State = { hasError: boolean };
 
-export default class ErrorBoundary extends React.Component<PropsWithChildren<any>, State> {
+export default class HandleNodeRenderErrorBoundary extends React.Component<PropsWithChildren<any>, State> {
   static getDerivedStateFromError(): State {
     // Update state so the next render will show the fallback UI.
     return { hasError: true };

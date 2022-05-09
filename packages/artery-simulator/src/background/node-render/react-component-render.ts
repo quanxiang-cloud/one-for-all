@@ -5,9 +5,9 @@ import ChildrenRender from './children-render';
 import useComponentNodeProps from './hooks/use-component-props';
 import Placeholder from './placeholder';
 import DepthContext from './depth-context';
-import ErrorBoundary from './error-boundary';
+import HandleNodeRenderErrorBoundary from './error-boundary';
 import useNodeBehaviorCheck from './hooks/use-node-behavior-check';
-import { checkIfNodeIsModalLayer, checkIfNodeSupportChildren } from 'src/cache';
+import { checkIfNodeIsModalLayer, checkIfNodeSupportChildren } from '../../cache';
 
 interface Props {
   node: ReactComponentNode;
@@ -26,7 +26,7 @@ function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | nu
 
   if (!node.children || !node.children.length) {
     return React.createElement(
-      ErrorBoundary,
+      HandleNodeRenderErrorBoundary,
       {},
       React.createElement(
         'div',
@@ -44,7 +44,7 @@ function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | nu
     DepthContext.Provider,
     { value: currentDepth },
     React.createElement(
-      ErrorBoundary,
+      HandleNodeRenderErrorBoundary,
       {},
       React.createElement(
         'div',

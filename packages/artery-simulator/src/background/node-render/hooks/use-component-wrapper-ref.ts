@@ -1,8 +1,9 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useContext } from 'react';
 import { ReactComponentNode } from '@one-for-all/artery-renderer';
 import { register, unregister } from './use-element-registration';
 import useFirstElementChild from './use-first-element-child';
 import { getNodeExecutor } from '../../..//utils';
+import SimulatorLayerCtx from '../../context';
 
 export default function useComponentWrapperRef(
   node: ReactComponentNode,
@@ -11,10 +12,11 @@ export default function useComponentWrapperRef(
   const [wrapperElement, setWrapperElement] = useState<HTMLElement>();
   const childElement = useFirstElementChild(wrapperElement);
   const latestChildElementRef = useRef<HTMLElement>();
+  const layerCtx = useContext(SimulatorLayerCtx);
 
   useEffect(() => {
     if (latestChildElementRef.current) {
-      unregister(latestChildElementRef.current);
+      unregister(latestChildElementRef.current, layerCtx);
     }
 
     if (!childElement) {
@@ -24,13 +26,13 @@ export default function useComponentWrapperRef(
     childElement.dataset.simulatorNodeId = node.id;
     childElement.dataset.simulatorNodeExecutor = getNodeExecutor(node);
     childElement.dataset.simulatorNodeDepth = `${depth}`;
-    register(childElement);
+    register(childElement, layerCtx);
 
     latestChildElementRef.current = childElement;
 
     return () => {
       if (childElement) {
-        unregister(childElement);
+        unregister(childElement, layerCtx);
       }
     };
   }, [childElement]);

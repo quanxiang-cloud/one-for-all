@@ -26,6 +26,7 @@ function SimulatorInExample(): JSX.Element {
       setActiveNode={setActiveNode}
       onChange={setArtery}
       isNodeSupportChildren={isSupportChildren}
+      isNodeInModalLayer={() => Promise.resolve(false)}
     />
   );
 }

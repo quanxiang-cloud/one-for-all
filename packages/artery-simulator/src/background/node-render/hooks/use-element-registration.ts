@@ -1,18 +1,15 @@
-import {
-  monitoredElements$,
-  VISIBLE_ELEMENTS_OBSERVER,
-} from '../../../atoms';
+import { SimulatorLayerContext } from 'src/background/context';
 
-export function register(element: HTMLElement): void {
-  VISIBLE_ELEMENTS_OBSERVER.observe(element);
-  const monitoredElements = monitoredElements$.value;
+export function register(element: HTMLElement, layerCtx: SimulatorLayerContext): void {
+  layerCtx.VISIBLE_ELEMENTS_OBSERVER.observe(element);
+  const monitoredElements = layerCtx.monitoredElements$.value;
   monitoredElements.set(element, false);
-  monitoredElements$.next(monitoredElements);
+  layerCtx.monitoredElements$.next(monitoredElements);
 }
 
-export function unregister(element: HTMLElement): void {
-  VISIBLE_ELEMENTS_OBSERVER.unobserve(element);
-  const monitoredElements = monitoredElements$.value;
+export function unregister(element: HTMLElement, layerCtx: SimulatorLayerContext): void {
+  layerCtx.VISIBLE_ELEMENTS_OBSERVER.unobserve(element);
+  const monitoredElements = layerCtx.monitoredElements$.value;
   monitoredElements.delete(element);
-  monitoredElements$.next(monitoredElements);
+  layerCtx.monitoredElements$.next(monitoredElements);
 }

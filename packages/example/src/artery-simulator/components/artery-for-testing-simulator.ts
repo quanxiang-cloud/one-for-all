@@ -7,7 +7,7 @@ const arteryForTestingSimulator: Artery = {
     name: 'div',
     children: [
       {
-        id: 'normal-component',
+        id: 'normal-component1',
         type: 'react-component',
         packageName: 'SimulatorDedicated',
         packageVersion: 'whatever',
@@ -20,7 +20,7 @@ const arteryForTestingSimulator: Artery = {
         }
       },
       {
-        id: 'normal-component',
+        id: 'normal-component2',
         type: 'react-component',
         packageName: 'SimulatorDedicated',
         packageVersion: 'whatever',

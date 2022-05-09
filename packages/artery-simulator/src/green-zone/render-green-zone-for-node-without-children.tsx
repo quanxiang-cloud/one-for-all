@@ -80,7 +80,7 @@ export default function RenderGreenZoneForNodeWithoutChildren({ greenZone }: Pro
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [greenZone]);
 
   return <div className="green-zone green-zone-for-node-without-children" style={style} />;
 }

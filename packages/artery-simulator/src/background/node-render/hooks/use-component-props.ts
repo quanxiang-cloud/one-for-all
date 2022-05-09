@@ -3,7 +3,6 @@ import { CTX, ReactComponentNode, useInstantiateProps } from '@one-for-all/arter
 
 import { ArteryCtx } from '../../../contexts';
 import useComponentWrapperRef from './use-component-wrapper-ref';
-import { getNodeExecutor } from '../../../utils';
 
 function useComponentNodeProps(
   node: ReactComponentNode,

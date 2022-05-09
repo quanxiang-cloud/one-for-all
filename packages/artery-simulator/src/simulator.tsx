@@ -10,9 +10,8 @@ import Foreground from './foreground';
 import { ArteryCtx } from './contexts';
 import { NodePrimary } from './types';
 import GreenZone from './green-zone';
-import { immutableNodeState } from './atoms';
+import { contourNodesReport$, immutableNodeState } from './atoms';
 import './index.scss';
-import useElementsRadar from './use-radar-ref';
 
 export interface Props {
   artery: Artery;
@@ -46,7 +45,6 @@ function Simulator({
 }: Props): JSX.Element {
   const setImmutableNode = useSetRecoilState(immutableNodeState);
   const [rootElement, setRootElement] = useState<HTMLDivElement | null>(null);
-  useElementsRadar(rootElement);
 
   useEffect(() => {
     setImmutableNode(fromJS(artery.node));
@@ -74,7 +72,15 @@ function Simulator({
         }}
         className={cs('artery-simulator-root', className)}
       >
-        <Background artery={artery} plugins={plugins} />
+        {/* root layer */}
+        {rootElement && (
+          <Background
+            artery={artery}
+            plugins={plugins}
+            rootElement={rootElement}
+            onReport={(report) => contourNodesReport$.next(report)}
+          />
+        )}
         <GreenZone />
         <Foreground />
       </div>

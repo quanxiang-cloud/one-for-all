@@ -54,18 +54,6 @@ export const greenZonesBetweenNodesState = atom<GreenZoneBetweenNodes[]>({
 export const contourNodesReport$ = new BehaviorSubject<ContourNodesReport | undefined>(undefined);
 export const hoveringContourNode$ = new Subject<ContourNode | undefined>();
 
-export const monitoredElements$ = new BehaviorSubject<Map<HTMLElement, boolean>>(new Map());
-
-function visibleObserverCallback(entries: IntersectionObserverEntry[]): void {
-  const monitoredElements = monitoredElements$.value;
-  entries.forEach(({ isIntersecting, target }) => {
-    monitoredElements.set(target as HTMLElement, isIntersecting);
-  });
-  monitoredElements$.next(monitoredElements);
-}
-
-export const VISIBLE_ELEMENTS_OBSERVER = new IntersectionObserver(visibleObserverCallback);
-
 export const cursor$ = new Subject<Cursor>();
 
 export const latestFocusedGreenZone$ = new BehaviorSubject<GreenZone | undefined>(undefined);

@@ -1,14 +1,17 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useContext } from 'react';
 import ElementsRadar, { Report } from '@one-for-all/elements-radar';
 import { map } from 'rxjs/operators';
 
-import { ContourNode, ContourNodesReport } from './types';
-import { monitoredElements$, contourNodesReport$ } from './atoms';
+import { ContourNode, ContourNodesReport } from '../types';
+import SimulatorLayerCtx from './context';
 
 export default function useElementsRadar(
   root: HTMLElement | null,
+  onReport: (report?: ContourNodesReport) => void,
 ): React.MutableRefObject<ElementsRadar | undefined> {
+  const { monitoredElements$ } = useContext(SimulatorLayerCtx);
   const radarRef = useRef<ElementsRadar>();
+
   useEffect(() => {
     if (!root) {
       return;
@@ -73,12 +76,12 @@ export default function useElementsRadar(
           return { contourNodes, areaHeight: scrollHeight, areaWidth: scrollWidth };
         }),
       )
-      .subscribe(contourNodesReport$);
+      .subscribe(onReport);
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [root]);
+  }, []);
 
   return radarRef;
 }
