@@ -1,17 +1,14 @@
-import { BehaviorSubject, map, observable, Observable, ReplaySubject, Subject } from 'rxjs';
-import immutable, { fromJS } from 'immutable';
+import { BehaviorSubject, Subject } from 'rxjs';
+import immutable from 'immutable';
 import { atom, selector } from 'recoil';
 import {
   ContourNode,
   GreenZoneBetweenNodes,
   ContourNodesReport,
   Cursor,
-  GreenZoneInsideNode,
-  Position,
-  GreenZoneForNodeWithoutChildren,
   GreenZone,
 } from './types';
-import { byArbitrary, walk, ImmutableNode, filter } from '@one-for-all/artery-utils';
+import { byArbitrary } from '@one-for-all/artery-utils';
 
 export const immutableNodeState = atom<Immutable.Collection<unknown, unknown>>({
   key: 'immutableNodeState',

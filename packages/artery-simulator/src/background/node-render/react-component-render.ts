@@ -12,15 +12,20 @@ import { checkIfNodeIsModalLayer, checkIfNodeSupportChildren } from '../../cache
 interface Props {
   node: ReactComponentNode;
   ctx: CTX;
+  isLayerRoot?: boolean;
 }
 
-function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | null {
+function ReactComponentNodeRender({ node, ctx, isLayerRoot }: Props): React.ReactElement | null {
   const currentDepth = useContext(DepthContext) + 1;
   const { nodeProps, wrapperProps } = useComponentNodeProps(node, ctx, currentDepth);
   const nodeComponent = useNodeComponent(node, ctx.plugins);
   const loading = useNodeBehaviorCheck(node);
 
-  if (loading || !nodeComponent || checkIfNodeIsModalLayer(node)) {
+  if (loading || !nodeComponent) {
+    return null;
+  }
+
+  if (!isLayerRoot && checkIfNodeIsModalLayer(node)) {
     return null;
   }
 

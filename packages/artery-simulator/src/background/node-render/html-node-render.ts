@@ -12,14 +12,19 @@ import useNodeBehaviorCheck from './hooks/use-node-behavior-check';
 interface Props {
   node: HTMLNode;
   ctx: CTX;
+  isLayerRoot?: boolean;
 }
 
-function HTMLNodeRender({ node, ctx }: Props): React.ReactElement | null {
+function HTMLNodeRender({ node, ctx, isLayerRoot }: Props): React.ReactElement | null {
   const currentDepth = useContext(DepthContext) + 1;
   const props = useHTMLNodeProps(node, ctx, currentDepth);
   const loading = useNodeBehaviorCheck(node);
 
-  if (loading || checkIfNodeIsModalLayer(node)) {
+  if (loading) {
+    return null;
+  }
+
+  if (!isLayerRoot && checkIfNodeIsModalLayer(node)) {
     return null;
   }
 

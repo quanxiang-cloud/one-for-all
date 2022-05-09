@@ -11,9 +11,10 @@ import DepthContext from './depth-context';
 interface Props {
   node: ArteryNode;
   ctx: CTX;
+  isLayerRoot?: boolean;
 }
 
-function NodeRender({ node, ctx }: Props): React.ReactElement | null {
+function NodeRender({ node, ctx, isLayerRoot }: Props): React.ReactElement | null {
   const currentDepth = useContext(DepthContext) + 1;
   // todo support render this kind of node
   if (node.type === 'route-node' || node.type === 'jsx-node' || node.type === 'ref-node') {
@@ -25,7 +26,7 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
     return React.createElement(
       DepthContext.Provider,
       { value: currentDepth },
-      React.createElement(HTMLNodeRender, { node, ctx }),
+      React.createElement(HTMLNodeRender, { node, ctx, isLayerRoot }),
     );
   }
 
@@ -33,7 +34,7 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
     return React.createElement(
       DepthContext.Provider,
       { value: currentDepth },
-      React.createElement(ReactComponentNodeRender, { node, ctx }),
+      React.createElement(ReactComponentNodeRender, { node, ctx, isLayerRoot }),
     );
   }
 
