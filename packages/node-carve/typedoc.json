@@ -1,0 +1,8 @@
+{
+  "entryPoints": ["src/index.d.ts"],
+  "entryPointStrategy": "resolve",
+  "out": "docs/api",
+  "name": "Render node-carve Specification",
+  "includeVersion": true,
+  "readme": "./README.md"
+}
