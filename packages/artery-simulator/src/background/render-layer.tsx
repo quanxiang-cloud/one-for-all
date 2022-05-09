@@ -1,18 +1,18 @@
 import React from 'react';
 import { Plugins, useBootResult } from '@one-for-all/artery-renderer';
-import { Artery } from '@one-for-all/artery';
 import NodeRender from './node-render';
 import useElementsRadar from './use-radar-ref';
+import { Artery } from '@one-for-all/artery';
 import { ContourNodesReport } from '../types';
 
-type RenderRootLayerProps = {
+interface Props {
   artery: Artery;
   plugins?: Plugins;
   rootElement: HTMLElement;
   onReport: (report?: ContourNodesReport) => void;
 };
 
-export default function RenderRootLayer({ artery, plugins, rootElement, onReport }: RenderRootLayerProps): JSX.Element | null {
+export default function RenderLayer({ artery, plugins, rootElement, onReport }: Props): JSX.Element | null {
   const { ctx, rootNode } = useBootResult(artery, plugins) || {};
   useElementsRadar(rootElement, onReport);
 

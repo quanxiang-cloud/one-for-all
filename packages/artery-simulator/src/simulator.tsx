@@ -10,8 +10,9 @@ import Foreground from './foreground';
 import { ArteryCtx } from './contexts';
 import { NodePrimary } from './types';
 import GreenZone from './green-zone';
-import { contourNodesReport$, immutableNodeState } from './atoms';
+import { contourNodesReport$, immutableNodeState, modalLayerContourNodesReport$ } from './atoms';
 import './index.scss';
+import useModalLayers from './use-modal-layers';
 
 export interface Props {
   artery: Artery;
@@ -24,7 +25,6 @@ export interface Props {
   isNodeSupportChildren: (node: NodePrimary) => Promise<boolean>;
   isNodeInModalLayer: (node: NodePrimary) => Promise<boolean>;
   onDropFile?: (file: File) => Promise<string>;
-  modalLayerNodes?: Array<NodePrimary>;
 }
 
 const ALL_ELEMENTS = new Map();
@@ -45,6 +45,7 @@ function Simulator({
 }: Props): JSX.Element {
   const setImmutableNode = useSetRecoilState(immutableNodeState);
   const [rootElement, setRootElement] = useState<HTMLDivElement | null>(null);
+  const modalLayerRoots = useModalLayers();
 
   useEffect(() => {
     setImmutableNode(fromJS(artery.node));
@@ -79,6 +80,8 @@ function Simulator({
             plugins={plugins}
             rootElement={rootElement}
             onReport={(report) => contourNodesReport$.next(report)}
+            onModalLayerReport={(report) => modalLayerContourNodesReport$.next(report)}
+            activeModalLayer={modalLayerRoots.find((layerRoot) => layerRoot.getIn(['id']) === 'todo_some id')}
           />
         )}
         <GreenZone />

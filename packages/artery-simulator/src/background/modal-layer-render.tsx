@@ -6,7 +6,6 @@ import { Artery, Node } from '@one-for-all/artery';
 import SimulatorLayerCtx, { createLayerContextVal } from './context';
 import { ContourNodesReport } from '../types';
 import RenderLayer from './render-layer';
-import ModalLayerRender from './modal-layer-render';
 
 import './index.scss';
 
@@ -15,7 +14,6 @@ interface Props {
   plugins?: Plugins;
   activeModalLayer?: ImmutableNode;
   rootElement: HTMLElement;
-  onReport: (report?: ContourNodesReport) => void;
   onModalLayerReport: (report?: ContourNodesReport) => void;
 }
 
@@ -31,26 +29,23 @@ function useModalLayerArtery(artery: Artery, activeModalLayer?: ImmutableNode): 
   }, [activeModalLayer, artery]);
 }
 
-function Background({ artery, plugins, rootElement, onReport, activeModalLayer, onModalLayerReport }: Props): JSX.Element | null {
+function ModalLayerRender({ artery, plugins, rootElement, activeModalLayer, onModalLayerReport }: Props): JSX.Element | null {
   const modalLayerArtery = useModalLayerArtery(artery, activeModalLayer);
+
+  if (!modalLayerArtery) {
+    return null;
+  }
+
   return (
-    <>
-      <SimulatorLayerCtx.Provider value={createLayerContextVal()}>
-        <RenderLayer
-          artery={artery}
-          plugins={plugins}
-          rootElement={rootElement}
-          onReport={onReport}
-        />
-      </SimulatorLayerCtx.Provider>
-      <ModalLayerRender
-        artery={artery}
+    <SimulatorLayerCtx.Provider value={createLayerContextVal()} >
+      <RenderLayer
+        artery={modalLayerArtery}
         plugins={plugins}
         rootElement={rootElement}
-        onModalLayerReport={onModalLayerReport}
+        onReport={onModalLayerReport}
       />
-    </>
+    </SimulatorLayerCtx.Provider>
   );
 }
 
-export default Background;
+export default ModalLayerRender;
