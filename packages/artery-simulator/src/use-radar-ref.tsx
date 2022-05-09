@@ -3,7 +3,7 @@ import ElementsRadar, { Report } from '@one-for-all/elements-radar';
 import { map } from 'rxjs/operators';
 
 import { ContourNode, ContourNodesReport } from './types';
-import { ALL_BACKGROUND_ELEMENTS, backgroundElementsChanged$, contourNodesReport$ } from './atoms';
+import { monitoredElements$, contourNodesReport$ } from './atoms';
 
 export default function useElementsRadar(
   root: HTMLElement | null,
@@ -17,10 +17,10 @@ export default function useElementsRadar(
     const radar = new ElementsRadar(root);
     radarRef.current = radar;
 
-    backgroundElementsChanged$
+    monitoredElements$
       .pipe(
-        map(() => {
-          return Array.from(ALL_BACKGROUND_ELEMENTS.entries())
+        map((monitoredElements) => {
+          return Array.from(monitoredElements.entries())
             .filter(([_, visible]) => visible)
             .map(([ele]) => ele);
         }),

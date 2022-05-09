@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import { ArteryNode, CTX } from '@one-for-all/artery-renderer';
+import { logger } from '@one-for-all/utils';
+import type { ArteryNode, CTX } from '@one-for-all/artery-renderer';
 
 import HTMLNodeRender from './html-node-render';
 import ReactComponentNodeRender from './react-component-render';
-import { logger } from '@one-for-all/utils';
 import ComposeNodeRender from './compose-node-render';
 import LoopContainerNodeRender from './loop-container-node-render';
 import DepthContext from './depth-context';

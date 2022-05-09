@@ -1,16 +1,18 @@
 import {
-  backgroundElementsChanged$,
-  ALL_BACKGROUND_ELEMENTS,
+  monitoredElements$,
   VISIBLE_ELEMENTS_OBSERVER,
 } from '../../../atoms';
 
 export function register(element: HTMLElement): void {
   VISIBLE_ELEMENTS_OBSERVER.observe(element);
-  ALL_BACKGROUND_ELEMENTS.set(element, false);
+  const monitoredElements = monitoredElements$.value;
+  monitoredElements.set(element, false);
+  monitoredElements$.next(monitoredElements);
 }
 
 export function unregister(element: HTMLElement): void {
   VISIBLE_ELEMENTS_OBSERVER.unobserve(element);
-  ALL_BACKGROUND_ELEMENTS.delete(element);
-  backgroundElementsChanged$.next();
+  const monitoredElements = monitoredElements$.value;
+  monitoredElements.delete(element);
+  monitoredElements$.next(monitoredElements);
 }

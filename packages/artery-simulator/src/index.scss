@@ -6,36 +6,6 @@
   * {
     box-sizing: border-box;
   }
-
-  [data-simulator-background-root-node] {
-    outline: 1px dashed cadetblue;
-  }
-
-  [data-simulator-background-root-node-rect] > * {
-    outline: 1px dashed cadetblue;
-  }
-
-  .simulator-background {
-    position: absolute;
-    // space for scrollbar
-    left: 10px;
-    right: 10px;
-    min-height: 90%;
-    // space for root node outline
-    padding: 4px;
-
-    * {
-      pointer-events: none;
-    }
-    // position: absolute;
-    // overflow: auto;
-    // top: 0;
-    // left: 0;
-    // right: 0;
-    // bottom: 0;
-
-    // outline: 1px dashed cadetblue;
-  }
 }
 
 .contour-green-zone {
