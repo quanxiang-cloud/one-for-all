@@ -19,6 +19,10 @@ export interface Props {
   setActiveNode: (node?: Node) => void;
   onChange: (artery: Artery) => void;
   activeNode?: Node;
+  // modal layer root node id
+  activeModalLayer?: string;
+  setActiveModalLayer: (activeModalLayer: string) => void;
+
   plugins?: Plugins;
   className?: string;
   genNodeID: () => string;
@@ -36,6 +40,7 @@ function Simulator({
   className,
   setActiveNode,
   activeNode,
+  activeModalLayer,
 
   plugins,
   genNodeID,
@@ -65,15 +70,7 @@ function Simulator({
         genNodeID,
       }}
     >
-      <div
-        ref={(ref) => {
-          if (ref) {
-            setRootElement(ref);
-          }
-        }}
-        className={cs('artery-simulator-root', className)}
-      >
-        {/* root layer */}
+      <div ref={(ref) => ref && setRootElement(ref)} className={cs('artery-simulator-root', className)}>
         {rootElement && (
           <Background
             artery={artery}
@@ -81,7 +78,7 @@ function Simulator({
             rootElement={rootElement}
             onReport={(report) => contourNodesReport$.next(report)}
             onModalLayerReport={(report) => modalLayerContourNodesReport$.next(report)}
-            activeModalLayer={modalLayerRoots.find((layerRoot) => layerRoot.getIn(['id']) === 'todo_some id')}
+            activeModalLayer={modalLayerRoots.find((layerRoot) => layerRoot.getIn(['id']) === activeModalLayer)}
           />
         )}
         <GreenZone />

@@ -31,13 +31,14 @@ function useModalLayerArtery(artery: Artery, activeModalLayer?: ImmutableNode): 
 
 function ModalLayerRender({ artery, plugins, rootElement, activeModalLayer, onModalLayerReport }: Props): JSX.Element | null {
   const modalLayerArtery = useModalLayerArtery(artery, activeModalLayer);
+  const modalLayerContextValue = useMemo(() => createLayerContextVal(), []);
 
   if (!modalLayerArtery) {
     return null;
   }
 
   return (
-    <SimulatorLayerCtx.Provider value={createLayerContextVal()} >
+    <SimulatorLayerCtx.Provider value={modalLayerContextValue} >
       <RenderLayer
         artery={modalLayerArtery}
         plugins={plugins}

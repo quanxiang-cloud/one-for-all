@@ -31,11 +31,13 @@ function useModalLayerArtery(artery: Artery, activeModalLayer?: ImmutableNode): 
   }, [activeModalLayer, artery]);
 }
 
+const rootSimulatorLayerCtxValue = createLayerContextVal();
+
 function Background({ artery, plugins, rootElement, onReport, activeModalLayer, onModalLayerReport }: Props): JSX.Element | null {
-  const modalLayerArtery = useModalLayerArtery(artery, activeModalLayer);
+
   return (
     <>
-      <SimulatorLayerCtx.Provider value={createLayerContextVal()}>
+      <SimulatorLayerCtx.Provider value={rootSimulatorLayerCtxValue}>
         <RenderLayer
           artery={artery}
           plugins={plugins}
@@ -44,6 +46,7 @@ function Background({ artery, plugins, rootElement, onReport, activeModalLayer, 
         />
       </SimulatorLayerCtx.Provider>
       <ModalLayerRender
+        activeModalLayer={activeModalLayer}
         artery={artery}
         plugins={plugins}
         rootElement={rootElement}

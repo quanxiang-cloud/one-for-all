@@ -29,6 +29,11 @@ function ReactComponentNodeRender({ node, ctx, isLayerRoot }: Props): React.Reac
     return null;
   }
 
+  // todo refactor this
+  if (isLayerRoot && checkIfNodeIsModalLayer(node)) {
+    nodeProps.isOpen = true;
+  }
+
   if (!node.children || !node.children.length) {
     return React.createElement(
       HandleNodeRenderErrorBoundary,
