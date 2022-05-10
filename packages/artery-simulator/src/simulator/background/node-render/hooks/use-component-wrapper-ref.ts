@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useContext } from 'react';
 import { ReactComponentNode } from '@one-for-all/artery-renderer';
 import { register, unregister } from './use-element-registration';
 import useFirstElementChild from './use-first-element-child';
-import { getNodeExecutor } from '../../..//utils';
+import { getNodeExecutor } from '../../../utils';
 import SimulatorLayerCtx from '../../context';
 
 export default function useComponentWrapperRef(

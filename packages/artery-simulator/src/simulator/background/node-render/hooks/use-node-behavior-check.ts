@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 
-import { NodePrimary } from '../../../types';
+import { NodePrimary } from '../../../../types';
 import {
   cacheIsNodeSupportChildren,
   cacheNodeIsModalLayer,

@@ -1,8 +1,8 @@
 import { parentIdsSeq } from '@one-for-all/artery-utils';
 import { useEffect, useState } from 'react';
 import { BehaviorSubject } from 'rxjs';
-import { Cursor, Position } from './types';
-import { NodePrimary } from './types';
+import { Cursor, Position } from '../types';
+import { NodePrimary } from '../types';
 
 const img = new Image();
 img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';

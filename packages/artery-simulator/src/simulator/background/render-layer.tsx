@@ -3,7 +3,7 @@ import { Plugins, useBootResult } from '@one-for-all/artery-renderer';
 import NodeRender from './node-render';
 import useElementsRadar from './use-radar-ref';
 import { Artery } from '@one-for-all/artery';
-import { ContourNodesReport } from '../types';
+import { ContourNodesReport } from '../../types';
 
 interface Props {
   artery: Artery;

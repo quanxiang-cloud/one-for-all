@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { ContourNode } from '../../types';
+import { ContourNode } from '../../../types';
 
 export default function useToolbarStyle(node?: ContourNode): React.CSSProperties | undefined {
   const { absolutePosition, relativeRect } = node || {};

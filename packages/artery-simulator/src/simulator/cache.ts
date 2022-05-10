@@ -1,6 +1,6 @@
 import { Set } from 'immutable';
 import { BehaviorSubject } from 'rxjs';
-import { NodePrimary } from './types';
+import { NodePrimary } from '../types';
 import { getNodeExecutor } from './utils';
 
 export const isNodeSupportChildrenCache: Map<string, boolean> = new Map();

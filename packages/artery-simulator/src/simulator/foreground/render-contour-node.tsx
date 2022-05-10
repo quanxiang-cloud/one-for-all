@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil';
 
 import useContourNodeStyle from './use-active-contour-node-style';
 import { ArteryCtx } from '../contexts';
-import type { ContourNode } from '../types';
+import type { ContourNode } from '../../types';
 import {
   cursor$,
   draggingNodeIDState,

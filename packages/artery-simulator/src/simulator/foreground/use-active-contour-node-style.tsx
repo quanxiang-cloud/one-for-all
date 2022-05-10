@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { ContourNode } from '../types';
+import { ContourNode } from '../../types';
 
 export default function useContourNodeStyle({ depth, absolutePosition }: ContourNode): React.CSSProperties {
   const { height, width, x, y } = absolutePosition;

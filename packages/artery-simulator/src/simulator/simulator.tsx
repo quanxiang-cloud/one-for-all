@@ -8,7 +8,7 @@ import { Artery, Node } from '@one-for-all/artery';
 import Background from './background';
 import Foreground from './foreground';
 import { ArteryCtx } from './contexts';
-import { NodePrimary } from './types';
+import { NodePrimary } from '../types';
 import GreenZone from './green-zone';
 import { contourNodesReport$, immutableNodeState, modalLayerContourNodesReport$ } from './atoms';
 import './index.scss';
@@ -30,8 +30,6 @@ export interface Props {
   isNodeInModalLayer: (node: NodePrimary) => Promise<boolean>;
   onDropFile?: (file: File) => Promise<string>;
 }
-
-const ALL_ELEMENTS = new Map();
 
 function Simulator({
   artery,

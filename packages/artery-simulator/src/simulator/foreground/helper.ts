@@ -7,7 +7,7 @@ import {
   _insertRightSiblingTo,
 } from '@one-for-all/artery-utils';
 import { removeIn } from 'immutable';
-import type { GreenZone } from '../types';
+import type { GreenZone } from '../../types';
 
 interface MoveNodeParams {
   rootNode: ImmutableNode;

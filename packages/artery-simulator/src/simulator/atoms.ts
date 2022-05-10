@@ -7,7 +7,7 @@ import {
   ContourNodesReport,
   Cursor,
   GreenZone,
-} from './types';
+} from '../types';
 import { byArbitrary } from '@one-for-all/artery-utils';
 
 export const immutableNodeState = atom<Immutable.Collection<unknown, unknown>>({

@@ -5,7 +5,7 @@ import {
   GreenZoneAdjacentWithParent,
   GreenZoneBetweenNodes,
   GreenZoneInsideNode,
-} from '../types';
+} from '../../types';
 
 // todo optimize performance
 function getFirstLevelConcreteChildrenContours(

@@ -1,6 +1,6 @@
 import type { HTMLNode, ReactComponentNode } from '@one-for-all/artery-renderer';
 import React from 'react';
-import { NodePrimary } from '../../types';
+import { NodePrimary } from '../../../types';
 
 interface Props {
   parent: HTMLNode | ReactComponentNode;

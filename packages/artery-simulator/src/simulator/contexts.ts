@@ -1,6 +1,6 @@
 import React from 'react';
 import { Artery, Node } from '@one-for-all/artery';
-import { NodePrimary } from './types';
+import { NodePrimary } from '../types';
 
 interface ArteryContext {
   artery: Artery;

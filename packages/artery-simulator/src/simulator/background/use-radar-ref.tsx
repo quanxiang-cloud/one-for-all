@@ -2,7 +2,7 @@ import { useRef, useEffect, useContext } from 'react';
 import ElementsRadar, { Report } from '@one-for-all/elements-radar';
 import { map } from 'rxjs/operators';
 
-import { ContourNode, ContourNodesReport } from '../types';
+import { ContourNode, ContourNodesReport } from '../../types';
 import SimulatorLayerCtx from './context';
 
 export default function useElementsRadar(

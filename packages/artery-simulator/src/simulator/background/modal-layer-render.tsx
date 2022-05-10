@@ -4,7 +4,7 @@ import { Plugins } from '@one-for-all/artery-renderer';
 import { Artery, Node } from '@one-for-all/artery';
 
 import SimulatorLayerCtx, { createLayerContextVal } from './context';
-import { ContourNodesReport } from '../types';
+import { ContourNodesReport } from '../../types';
 import RenderLayer from './render-layer';
 
 import './index.scss';

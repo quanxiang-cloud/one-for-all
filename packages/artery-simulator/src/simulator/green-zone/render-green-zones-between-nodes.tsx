@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { map, distinctUntilChanged, audit, tap } from 'rxjs/operators';
 import { animationFrames } from 'rxjs';
 import { cursor$, latestFocusedGreenZone$ } from '../atoms';
-import { Cursor, GreenZoneInsideNode } from '../types';
+import { Cursor, GreenZoneInsideNode } from '../../types';
 import cs from 'classnames';
 
 interface Props {
