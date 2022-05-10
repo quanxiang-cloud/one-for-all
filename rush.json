@@ -515,6 +515,10 @@
       "packageName": "@one-for-all/utils",
       "projectFolder": "packages/utils"
     },
+    {
+      "packageName": "@one-for-all/window-messenger",
+      "projectFolder": "packages/window-messenger"
+    },
 
     // vendors
     {

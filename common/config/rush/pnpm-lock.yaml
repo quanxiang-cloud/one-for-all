@@ -44,6 +44,7 @@ specifiers:
   '@rush-temp/scss-forming': file:./projects/scss-forming.tgz
   '@rush-temp/style-guide': file:./projects/style-guide.tgz
   '@rush-temp/utils': file:./projects/utils.tgz
+  '@rush-temp/window-messenger': file:./projects/window-messenger.tgz
   '@rush-temp/xlsx': file:./projects/xlsx.tgz
   '@rushstack/eslint-config': 2.5.1
   '@rushstack/heft': 0.44.2
@@ -197,6 +198,7 @@ dependencies:
   '@rush-temp/scss-forming': file:projects/scss-forming.tgz_f84e55a07ac9dd7fe2a5fa1cedacfd7b
   '@rush-temp/style-guide': file:projects/style-guide.tgz_typescript@4.5.5
   '@rush-temp/utils': file:projects/utils.tgz_@babel+core@7.17.8
+  '@rush-temp/window-messenger': file:projects/window-messenger.tgz_c445a9d32c5b835fb9c30404148ec5af
   '@rush-temp/xlsx': file:projects/xlsx.tgz
   '@rushstack/eslint-config': 2.5.1_eslint@8.7.0+typescript@4.5.5
   '@rushstack/heft': 0.44.2
@@ -18528,6 +18530,46 @@ packages:
       typescript: 4.5.5
     transitivePeerDependencies:
       - '@babel/core'
+      - babel-jest
+      - bufferutil
+      - canvas
+      - node-notifier
+      - supports-color
+      - ts-node
+      - utf-8-validate
+    dev: false
+
+  file:projects/window-messenger.tgz_c445a9d32c5b835fb9c30404148ec5af:
+    resolution: {integrity: sha512-6rGYAXrC3IgoumNcs9wYcxnPnY08YTaBk2Y11EohsLmc2fW7sSYEqvaq78pe0xBPtVeuPBD4w3K1Hh9yHsqKAg==, tarball: file:projects/window-messenger.tgz}
+    id: file:projects/window-messenger.tgz
+    name: '@rush-temp/window-messenger'
+    version: 0.0.0
+    dependencies:
+      '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
+      '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
+      '@rollup/plugin-replace': 4.0.0_rollup@2.66.0
+      '@testing-library/jest-dom': 5.16.2
+      '@tsconfig/recommended': 1.0.1
+      '@types/node': 15.14.9
+      '@types/testing-library__jest-dom': 5.14.3
+      '@typescript-eslint/eslint-plugin': 5.10.0_90f137e03b1b22c2c4005fed8530f005
+      '@typescript-eslint/parser': 5.21.0_eslint@8.7.0+typescript@4.5.5
+      esbuild: 0.14.38
+      eslint: 8.7.0
+      eslint-config-google: 0.14.0_eslint@8.7.0
+      eslint-plugin-unused-imports: 2.0.0_1bf9cdc08e57589c8efe570eceb1a5db
+      jest: 27.4.7
+      rollup: 2.66.0
+      rollup-plugin-esbuild-ts: 4.8.2_esbuild@0.14.38+rollup@2.66.0
+      rollup-plugin-terser: 7.0.2_rollup@2.66.0
+      rxjs: 7.5.5
+      ts-jest: 27.1.3_fd6d969551af8ae3ea1cbbb95ec03348
+      tsconfig-paths-jest: 0.0.1
+      tslib: 2.3.1
+      typescript: 4.5.5
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@types/jest'
       - babel-jest
       - bufferutil
       - canvas
