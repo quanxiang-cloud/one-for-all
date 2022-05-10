@@ -1,21 +1,23 @@
+import { generateNodeId } from '@one-for-all/artery-engine';
 import { ComposedNode, Node } from '@one-for-all/artery';
 import { travel } from '@one-for-all/artery-utils';
 
-function regenerateNodeID<T extends Node | ComposedNode>(node: T, genNodeID: () => string): T {
-  node.id = genNodeID();
+function regenerateNodeID<T extends Node | ComposedNode>(node: T): T {
+  node.id = generateNodeId(node.type);
+
   return node;
 }
 
 // todo optimize performance
-function duplicateNode(node: Node, genNodeID: () => string): Node {
+function duplicateNode(node: Node): Node {
   const newNode = travel(node, {
-    htmlNode: (current) => regenerateNodeID(current, genNodeID),
-    reactComponentNode: (current) => regenerateNodeID(current, genNodeID),
-    loopContainerNode: (current) => regenerateNodeID(current, genNodeID),
-    composedNode: (current) => regenerateNodeID(current, genNodeID),
-    refNode: (current) => regenerateNodeID(current, genNodeID),
-    jsxNode: (current) => regenerateNodeID(current, genNodeID),
-    routeNode: (current) => regenerateNodeID(current, genNodeID),
+    htmlNode: (current) => regenerateNodeID(current),
+    reactComponentNode: (current) => regenerateNodeID(current),
+    loopContainerNode: (current) => regenerateNodeID(current),
+    composedNode: (current) => regenerateNodeID(current),
+    refNode: (current) => regenerateNodeID(current),
+    jsxNode: (current) => regenerateNodeID(current),
+    routeNode: (current) => regenerateNodeID(current),
   });
 
   return newNode;

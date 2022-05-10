@@ -25,7 +25,7 @@ function ContourNodeToolbar(): JSX.Element | null {
   const { activeNode } = useContext(ArteryCtx);
   const { referenceRef, Popper, handleMouseEnter, handleMouseLeave, close } = usePopper<HTMLSpanElement>();
   const containerRef = useRef<HTMLDivElement>(null);
-  const { artery, setActiveNode, onChange, genNodeID } = useContext(ArteryCtx);
+  const { artery, setActiveNode, onChange } = useContext(ArteryCtx);
   const style = useToolbarStyle(contourNode);
   const activeNodeLabel = useNodeLabel(activeNode);
 
@@ -44,7 +44,7 @@ function ContourNodeToolbar(): JSX.Element | null {
       return;
     }
 
-    const newNode = duplicateNode(activeNode, genNodeID);
+    const newNode = duplicateNode(activeNode);
     const newRoot = insertAfter(artery.node, activeNode.id, newNode);
     if (!newRoot) {
       return;

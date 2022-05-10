@@ -25,11 +25,21 @@ function useModalLayerArtery(artery: Artery, activeModalLayer?: ImmutableNode): 
 
     const rootModalLayerNode = activeModalLayer.toJS() as unknown as Node;
 
-    return { node: rootModalLayerNode, apiStateSpec: artery.apiStateSpec, sharedStatesSpec: artery.sharedStatesSpec };
+    return {
+      node: rootModalLayerNode,
+      apiStateSpec: artery.apiStateSpec,
+      sharedStatesSpec: artery.sharedStatesSpec,
+    };
   }, [activeModalLayer, artery]);
 }
 
-function ModalLayerRender({ artery, plugins, rootElement, activeModalLayer, onModalLayerReport }: Props): JSX.Element | null {
+function ModalLayerRender({
+  artery,
+  plugins,
+  rootElement,
+  activeModalLayer,
+  onModalLayerReport,
+}: Props): JSX.Element | null {
   const modalLayerArtery = useModalLayerArtery(artery, activeModalLayer);
   const modalLayerContextValue = useMemo(() => createLayerContextVal(), []);
 
@@ -38,7 +48,7 @@ function ModalLayerRender({ artery, plugins, rootElement, activeModalLayer, onMo
   }
 
   return (
-    <SimulatorLayerCtx.Provider value={modalLayerContextValue} >
+    <SimulatorLayerCtx.Provider value={modalLayerContextValue}>
       <RenderLayer
         artery={modalLayerArtery}
         plugins={plugins}

@@ -11,7 +11,10 @@ const NODE_ENV = process.env.NODE_ENV === 'production' ? 'production' : 'dev';
 const isProduction = NODE_ENV === 'production';
 
 export default {
-  input: 'src/index.tsx',
+  input: {
+    index: 'src/index.tsx',
+    simulator: 'src/simulator/index.tsx',
+  },
   output: getOutput(packageJSON.name, packageJSON.version),
 
   external: ['react', 'react-dom', 'lodash', /@one-for-all\/.*/],
@@ -36,7 +39,7 @@ export default {
       exclude: /node_modules/, // default
       sourceMap: isProduction ? false : true, // default
       minify: isProduction,
-      target: 'es2017', // default, or 'es20XX', 'esnext'
+      target: 'es2019', // default, or 'es20XX', 'esnext'
       jsx: 'transform', // default, or 'preserve'
       jsxFactory: 'React.createElement',
       jsxFragment: 'React.Fragment',

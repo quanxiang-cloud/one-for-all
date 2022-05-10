@@ -1,15 +1,12 @@
-import React from 'react';
-import { RecoilRoot } from 'recoil';
+import React, { useEffect } from 'react';
 
-import Simulator, { Props } from './simulator/simulator';
+export default (): JSX.Element => {
+  useEffect(() => {
+    // import('entryURL:./simulator')
+    const asset = new URL('./simulator', import.meta.url);
+  }, []);
 
-export * from './types';
-export * from './simulator/constants';
-
-export default (props: Props): JSX.Element => {
   return (
-    <RecoilRoot>
-      <Simulator {...props} />
-    </RecoilRoot>
+    <div>hell world</div>
   );
 };

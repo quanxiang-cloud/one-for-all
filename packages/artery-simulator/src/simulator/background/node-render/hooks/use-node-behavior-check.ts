@@ -2,10 +2,10 @@ import { useContext, useEffect, useState } from 'react';
 
 import { NodePrimary } from '../../../../types';
 import {
-  cacheIsNodeSupportChildren,
-  cacheNodeIsModalLayer,
-  checkIfNodeIsModalLayer,
-  checkIfNodeSupportChildren,
+  _cacheIsNodeSupportChildren,
+  _cacheNodeIsModalLayer,
+  _checkIfNodeIsModalLayer,
+  _checkIfNodeSupportChildren,
 } from '../../../cache';
 import { ArteryCtx } from '../../../contexts';
 import { HTMLNode, ReactComponentNode } from '@one-for-all/artery-renderer';
@@ -14,13 +14,13 @@ function asyncCheckIfNodeSupportChildren(
   node: NodePrimary,
   checker: (node: NodePrimary) => Promise<boolean>,
 ): Promise<boolean> {
-  const flag = checkIfNodeSupportChildren(node);
+  const flag = _checkIfNodeSupportChildren(node);
   if (flag !== undefined) {
     return Promise.resolve(flag);
   }
 
   return checker(node).then((isSupportChildren) => {
-    cacheIsNodeSupportChildren(node, isSupportChildren);
+    _cacheIsNodeSupportChildren(node, isSupportChildren);
 
     return isSupportChildren;
   });
@@ -30,13 +30,13 @@ function asyncCheckIfNodeShouldRenderInModalLayer(
   node: NodePrimary,
   checker: (node: NodePrimary) => Promise<boolean>,
 ): Promise<boolean> {
-  const flag = checkIfNodeIsModalLayer(node);
+  const flag = _checkIfNodeIsModalLayer(node);
   if (flag !== undefined) {
     return Promise.resolve(flag);
   }
 
   return checker(node).then((isModalLayerRoot) => {
-    cacheNodeIsModalLayer(node, isModalLayerRoot);
+    _cacheNodeIsModalLayer(node, isModalLayerRoot);
     return isModalLayerRoot;
   });
 }

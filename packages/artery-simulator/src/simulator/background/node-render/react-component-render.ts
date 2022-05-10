@@ -7,7 +7,7 @@ import Placeholder from './placeholder';
 import DepthContext from './depth-context';
 import HandleNodeRenderErrorBoundary from './error-boundary';
 import useNodeBehaviorCheck from './hooks/use-node-behavior-check';
-import { checkIfNodeIsModalLayer, checkIfNodeSupportChildren } from '../../cache';
+import { _checkIfNodeIsModalLayer, _checkIfNodeSupportChildren } from '../../cache';
 
 interface Props {
   node: ReactComponentNode;
@@ -25,12 +25,12 @@ function ReactComponentNodeRender({ node, ctx, isLayerRoot }: Props): React.Reac
     return null;
   }
 
-  if (!isLayerRoot && checkIfNodeIsModalLayer(node)) {
+  if (!isLayerRoot && _checkIfNodeIsModalLayer(node)) {
     return null;
   }
 
   // todo refactor this
-  if (isLayerRoot && checkIfNodeIsModalLayer(node)) {
+  if (isLayerRoot && _checkIfNodeIsModalLayer(node)) {
     nodeProps.isOpen = true;
   }
 
@@ -44,7 +44,7 @@ function ReactComponentNodeRender({ node, ctx, isLayerRoot }: Props): React.Reac
         React.createElement(
           nodeComponent,
           nodeProps,
-          checkIfNodeSupportChildren(node) ? React.createElement(Placeholder, { parent: node }) : undefined,
+          _checkIfNodeSupportChildren(node) ? React.createElement(Placeholder, { parent: node }) : undefined,
         ),
       ),
     );

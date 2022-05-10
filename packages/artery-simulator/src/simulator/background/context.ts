@@ -1,10 +1,10 @@
-import React from "react";
-import { BehaviorSubject, noop } from "rxjs";
+import React from 'react';
+import { BehaviorSubject, noop } from 'rxjs';
 
 export type SimulatorLayerContext = {
   VISIBLE_ELEMENTS_OBSERVER: IntersectionObserver;
   monitoredElements$: BehaviorSubject<Map<HTMLElement, boolean>>;
-}
+};
 
 export function createLayerContextVal(): SimulatorLayerContext {
   function visibleObserverCallback(entries: IntersectionObserverEntry[]): void {

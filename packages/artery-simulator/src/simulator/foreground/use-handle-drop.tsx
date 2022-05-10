@@ -22,7 +22,7 @@ type DropRequest = MoveNodeRequest | DropNodeRequest;
 
 export default function useHandleDrop(): void {
   const rootNode = useRecoilValue(immutableNodeState);
-  const { genNodeID, onChange, artery } = useContext(ArteryCtx);
+  const { onChange, artery } = useContext(ArteryCtx);
 
   function getDropRequest(dataTransfer: DataTransfer): DropRequest | undefined {
     const draggingNodeID = dataTransfer.getData(DND_DATA_TRANSFER_TYPE_NODE_ID);
@@ -32,7 +32,7 @@ export default function useHandleDrop(): void {
 
     const droppedNode = jsonParse<Node>(dataTransfer.getData(DND_DATA_TRANSFER_TYPE_ARTERY_NODE));
     if (droppedNode) {
-      return { type: 'insert_node_request', node: duplicateNode(droppedNode, genNodeID) };
+      return { type: 'insert_node_request', node: duplicateNode(droppedNode) };
     }
 
     return;
@@ -71,5 +71,5 @@ export default function useHandleDrop(): void {
     return () => {
       subscription.unsubscribe();
     };
-  }, [genNodeID, artery, onChange, rootNode]);
+  }, [artery, onChange, rootNode]);
 }

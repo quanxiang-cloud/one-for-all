@@ -11,8 +11,9 @@ import { ArteryCtx } from './contexts';
 import { NodePrimary } from '../types';
 import GreenZone from './green-zone';
 import { contourNodesReport$, immutableNodeState, modalLayerContourNodesReport$ } from './atoms';
-import './index.scss';
 import useModalLayers from './use-modal-layers';
+
+import './index.scss';
 
 export interface Props {
   artery: Artery;
@@ -25,7 +26,6 @@ export interface Props {
 
   plugins?: Plugins;
   className?: string;
-  genNodeID: () => string;
   isNodeSupportChildren: (node: NodePrimary) => Promise<boolean>;
   isNodeInModalLayer: (node: NodePrimary) => Promise<boolean>;
   onDropFile?: (file: File) => Promise<string>;
@@ -41,7 +41,6 @@ function Simulator({
   activeModalLayer,
 
   plugins,
-  genNodeID,
   isNodeSupportChildren,
   isNodeInModalLayer,
   onDropFile,
@@ -65,7 +64,6 @@ function Simulator({
         isNodeInModalLayer,
         onDropFile,
         onChange,
-        genNodeID,
       }}
     >
       <div ref={(ref) => ref && setRootElement(ref)} className={cs('artery-simulator-root', className)}>
@@ -76,7 +74,9 @@ function Simulator({
             rootElement={rootElement}
             onReport={(report) => contourNodesReport$.next(report)}
             onModalLayerReport={(report) => modalLayerContourNodesReport$.next(report)}
-            activeModalLayer={modalLayerRoots.find((layerRoot) => layerRoot.getIn(['id']) === activeModalLayer)}
+            activeModalLayer={modalLayerRoots.find(
+              (layerRoot) => layerRoot.getIn(['id']) === activeModalLayer,
+            )}
           />
         )}
         <GreenZone />

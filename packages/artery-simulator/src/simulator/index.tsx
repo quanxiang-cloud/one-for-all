@@ -2,35 +2,42 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import { RecoilRoot } from 'recoil';
 
-import Simulator, { Props } from './simulator';
+import Simulator from './simulator';
+import {
+  onChange,
+  setActiveModalLayer,
+  setActiveNode,
+  useActiveModalLayer,
+  useActiveNode,
+  useArtery,
+  checkNodeSupportChildren,
+  checkNodeIsModalRoot,
+} from './bridge';
 
-export * from '../types';
-export * from '../simulator/constants';
+// todo plugin
+function App(): JSX.Element {
+  const artery = useArtery();
+  const activeNode = useActiveNode();
+  const activeModalLayer = useActiveModalLayer();
 
-function App(props: Props): JSX.Element {
+  if (!artery) {
+    return <div>waiting...</div>;
+  }
+
   return (
     <RecoilRoot>
-      <Simulator {...props} />
+      <Simulator
+        artery={artery}
+        setActiveNode={setActiveNode}
+        onChange={onChange}
+        activeNode={activeNode}
+        activeModalLayer={activeModalLayer}
+        setActiveModalLayer={setActiveModalLayer}
+        isNodeSupportChildren={checkNodeSupportChildren}
+        isNodeInModalLayer={checkNodeIsModalRoot}
+      />
     </RecoilRoot>
   );
-};
-
-// artery: Artery;
-// setActiveNode: (node?: Node) => void;
-// onChange: (artery: Artery) => void;
-// activeNode?: Node;
-// // modal layer root node id
-// activeModalLayer?: string;
-// setActiveModalLayer: (activeModalLayer: string) => void;
-
-// plugins?: Plugins;
-// className?: string;
-// genNodeID: () => string;
-// isNodeSupportChildren: (node: NodePrimary) => Promise<boolean>;
-// isNodeInModalLayer: (node: NodePrimary) => Promise<boolean>;
-
-const frameSideBridge = {
-
 }
 
 const iframeAppRoot = document.createElement('div');

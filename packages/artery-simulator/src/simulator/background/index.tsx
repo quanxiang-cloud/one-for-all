@@ -27,23 +27,28 @@ function useModalLayerArtery(artery: Artery, activeModalLayer?: ImmutableNode): 
 
     const rootModalLayerNode = activeModalLayer.toJS() as unknown as Node;
 
-    return { node: rootModalLayerNode, apiStateSpec: artery.apiStateSpec, sharedStatesSpec: artery.sharedStatesSpec };
+    return {
+      node: rootModalLayerNode,
+      apiStateSpec: artery.apiStateSpec,
+      sharedStatesSpec: artery.sharedStatesSpec,
+    };
   }, [activeModalLayer, artery]);
 }
 
 const rootSimulatorLayerCtxValue = createLayerContextVal();
 
-function Background({ artery, plugins, rootElement, onReport, activeModalLayer, onModalLayerReport }: Props): JSX.Element | null {
-
+function Background({
+  artery,
+  plugins,
+  rootElement,
+  onReport,
+  activeModalLayer,
+  onModalLayerReport,
+}: Props): JSX.Element | null {
   return (
     <>
       <SimulatorLayerCtx.Provider value={rootSimulatorLayerCtxValue}>
-        <RenderLayer
-          artery={artery}
-          plugins={plugins}
-          rootElement={rootElement}
-          onReport={onReport}
-        />
+        <RenderLayer artery={artery} plugins={plugins} rootElement={rootElement} onReport={onReport} />
       </SimulatorLayerCtx.Provider>
       <ModalLayerRender
         activeModalLayer={activeModalLayer}

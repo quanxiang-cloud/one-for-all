@@ -6,7 +6,7 @@ import ChildrenRender from './children-render';
 import DepthContext from './depth-context';
 import useHTMLNodeProps from './hooks/use-html-node-props';
 import Placeholder from './placeholder';
-import { checkIfNodeIsModalLayer, checkIfNodeSupportChildren } from '../../cache';
+import { _checkIfNodeIsModalLayer, _checkIfNodeSupportChildren } from '../../cache';
 import useNodeBehaviorCheck from './hooks/use-node-behavior-check';
 
 interface Props {
@@ -24,7 +24,7 @@ function HTMLNodeRender({ node, ctx, isLayerRoot }: Props): React.ReactElement |
     return null;
   }
 
-  if (!isLayerRoot && checkIfNodeIsModalLayer(node)) {
+  if (!isLayerRoot && _checkIfNodeIsModalLayer(node)) {
     return null;
   }
 
@@ -40,7 +40,7 @@ function HTMLNodeRender({ node, ctx, isLayerRoot }: Props): React.ReactElement |
     return React.createElement(
       node.name,
       props,
-      checkIfNodeSupportChildren(node) ? React.createElement(Placeholder, { parent: node }) : undefined,
+      _checkIfNodeSupportChildren(node) ? React.createElement(Placeholder, { parent: node }) : undefined,
     );
   }
 

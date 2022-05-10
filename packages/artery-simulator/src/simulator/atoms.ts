@@ -1,13 +1,7 @@
 import { BehaviorSubject, Subject } from 'rxjs';
 import immutable from 'immutable';
 import { atom, selector } from 'recoil';
-import {
-  ContourNode,
-  GreenZoneBetweenNodes,
-  ContourNodesReport,
-  Cursor,
-  GreenZone,
-} from '../types';
+import { ContourNode, GreenZoneBetweenNodes, ContourNodesReport, Cursor, GreenZone } from '../types';
 import { byArbitrary } from '@one-for-all/artery-utils';
 
 export const immutableNodeState = atom<Immutable.Collection<unknown, unknown>>({

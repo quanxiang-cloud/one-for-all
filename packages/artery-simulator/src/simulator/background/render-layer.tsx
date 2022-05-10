@@ -10,7 +10,7 @@ interface Props {
   plugins?: Plugins;
   rootElement: HTMLElement;
   onReport: (report?: ContourNodesReport) => void;
-};
+}
 
 export default function RenderLayer({ artery, plugins, rootElement, onReport }: Props): JSX.Element | null {
   const { ctx, rootNode } = useBootResult(artery, plugins) || {};
