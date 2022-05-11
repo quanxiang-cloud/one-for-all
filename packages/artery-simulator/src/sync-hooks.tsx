@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Messenger from './messenger';
 import {
   MESSAGE_TYPE_ARTERY,
@@ -54,6 +54,8 @@ export function useSyncActiveNode(
   setActiveNode: (node?: Node | undefined) => void,
   activeNode: Node | undefined,
 ) {
+  const activeNodeID = useRef<string>();
+
   useEffect(() => {
     if (!messengerRef.current) {
       return;
@@ -69,7 +71,10 @@ export function useSyncActiveNode(
   }, [setActiveNode]);
 
   useEffect(() => {
-    messengerRef.current?.send(MESSAGE_TYPE_ACTIVE_NODE, activeNode);
+    if (activeNodeID.current !== activeNode?.id) {
+      messengerRef.current?.send(MESSAGE_TYPE_ACTIVE_NODE, activeNode);
+      activeNodeID.current = activeNode?.id;
+    }
   }, [activeNode]);
 }
 

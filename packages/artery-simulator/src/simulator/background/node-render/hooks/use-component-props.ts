@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import { CTX, ReactComponentNode, useInstantiateProps } from '@one-for-all/artery-renderer';
 
 import useComponentWrapperRef from './use-component-wrapper-ref';

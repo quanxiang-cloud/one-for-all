@@ -63,9 +63,7 @@ function Simulator({
   useSyncActiveModalLayer(messengerRef, setActiveModalLayer, activeModalLayer);
 
   return (
-    <div className={className}>
-      <iframe ref={iframeRef}></iframe>
-    </div>
+    <iframe className={className} ref={iframeRef}></iframe>
   );
 }
 

@@ -65,10 +65,11 @@ function SimulatorInExample(): JSX.Element {
         setActiveModalLayer={setActiveModalLayer}
       />
       <ArterySimulator
+        className="artery-simulator"
         artery={artery}
-        plugins={{ repository }}
+        // plugins={{ repository }}
         activeNode={activeNode}
-        genNodeID={genNodeID}
+        // genNodeID={genNodeID}
         activeModalLayer={activeModalLayer}
         setActiveModalLayer={setActiveModalLayer}
         setActiveNode={setActiveNode}
