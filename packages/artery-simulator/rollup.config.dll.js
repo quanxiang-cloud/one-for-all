@@ -4,23 +4,21 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
 
-import getOutput from './get-common-output';
-import packageJSON from './package.json';
-import importMetaAssets from '../../common/config/rollup/rollup-plugin-import-meta-assets';
-import { dll } from './rollup-plugin-dll';
-
 const NODE_ENV = process.env.NODE_ENV === 'production' ? 'production' : 'dev';
 const isProduction = NODE_ENV === 'production';
 
+
 export default {
-  input: 'src/index.tsx',
-  output: getOutput(packageJSON.name, packageJSON.version),
+  input: 'src/simulator/index.tsx',
+  output: {
+    file: 'dll/simulator.js',
+    format: 'system',
+    sourcemap: 'inline',
+  },
 
   external: ['react', 'react-dom', 'lodash', /@one-for-all\/.*/],
 
   plugins: [
-    dll(),
-    importMetaAssets(),
     commonjs(),
     styles({ modules: false }),
     resolve({
@@ -36,7 +34,7 @@ export default {
     }),
     esbuild({
       // All options are optional
-      include: /\.[t]sx?$/, // default, inferred from `loaders` option
+      include: /\.[jt]sx?$/, // default, inferred from `loaders` option
       exclude: /node_modules/, // default
       sourceMap: isProduction ? false : true, // default
       minify: isProduction,

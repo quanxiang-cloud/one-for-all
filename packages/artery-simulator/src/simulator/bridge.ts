@@ -12,6 +12,7 @@ import {
 } from './constants';
 
 export const messenger = new Messenger(window, {});
+messenger._connect()
 
 export function useArtery(): Artery | undefined {
   const [artery, setArtery] = useState<Artery>();

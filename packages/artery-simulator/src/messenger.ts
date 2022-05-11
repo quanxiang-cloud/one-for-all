@@ -1,6 +1,6 @@
-import { filter, find, from, map, Observable, Subject, switchMap } from 'rxjs';
+import { filter, find, from, interval, map, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
-interface Message<T = unknown> {
+export interface Message<T = unknown> {
   type: string;
   data: unknown;
 }
@@ -18,8 +18,7 @@ export default class Messenger {
   receive$: Subject<Frame>;
   send$: Subject<Frame>;
   seq = 0;
-
-  messageSeq = new Map<Message, number>();
+  connected = false;
 
   constructor(target: Window, responders: Record<string, Responder>) {
     this.target = target;
@@ -50,6 +49,28 @@ export default class Messenger {
     });
   }
 
+  _connect(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const timer = setTimeout(() => {
+        reject(new Error('messenger connection timeout'))
+      }, 60*1000);
+
+      const subscription = interval(500).pipe(
+        tap(() => {
+          this.send({ type: 'ping', data: 'ping' });
+        }),
+        takeUntil(this.listen('ping'))
+      ).subscribe({
+        complete: () => {
+          subscription.unsubscribe();
+          clearTimeout(timer);
+          this.connected = true;
+          resolve();
+        }
+      })
+    });
+  }
+
   nextSeq(): number {
     this.seq = this.seq + 1;
 
@@ -74,7 +95,7 @@ export default class Messenger {
     const seq = this.nextSeq();
     const wait = new Promise<Message>((resolve, reject) => {
       const timer = setTimeout(() => {
-        reject(new Error('timeout'));
+        reject(new Error(`messenger request timeout, request message type is: ${message.type}`));
       }, 10 * 1000);
 
       const subscription = this.receive$.pipe(find(({ echoSeq }) => echoSeq === seq)).subscribe((frame) => {
