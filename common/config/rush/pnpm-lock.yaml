@@ -30,6 +30,7 @@ specifiers:
   '@rush-temp/icon': file:./projects/icon.tgz
   '@rush-temp/jszip': file:./projects/jszip.tgz
   '@rush-temp/lodash': file:./projects/lodash.tgz
+  '@rush-temp/node-carve': file:./projects/node-carve.tgz
   '@rush-temp/quill': file:./projects/quill.tgz
   '@rush-temp/ramda': file:./projects/ramda.tgz
   '@rush-temp/react': file:./projects/react.tgz
@@ -182,6 +183,7 @@ dependencies:
   '@rush-temp/icon': file:projects/icon.tgz_esbuild@0.14.38
   '@rush-temp/jszip': file:projects/jszip.tgz
   '@rush-temp/lodash': file:projects/lodash.tgz_rollup@2.66.0
+  '@rush-temp/node-carve': file:projects/node-carve.tgz
   '@rush-temp/quill': file:projects/quill.tgz
   '@rush-temp/ramda': file:projects/ramda.tgz
   '@rush-temp/react': file:projects/react.tgz_rollup@2.66.0
@@ -18288,6 +18290,15 @@ packages:
       lodash-es: 4.17.21
     transitivePeerDependencies:
       - rollup
+    dev: false
+
+  file:projects/node-carve.tgz:
+    resolution: {integrity: sha512-XenzxuUmdcGA+cWMJLafLZ6KFu3VO+mIh8pL4roinn1DEQ4Wc8TQMA299gDMXmWp9FlzMpvODwE/+l1Q9JNhDw==, tarball: file:projects/node-carve.tgz}
+    name: '@rush-temp/node-carve'
+    version: 0.0.0
+    dependencies:
+      typedoc: 0.22.13_typescript@4.5.5
+      typescript: 4.5.5
     dev: false
 
   file:projects/quill.tgz:

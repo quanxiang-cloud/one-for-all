@@ -40,38 +40,6 @@
       }
     ]
   },
-  "Modal": {
-    "category": "基础组件",
-    "variants": [
-      {
-        "icon": {
-          "type": "platform",
-          "name": "pages",
-          "initialProps": {
-            "size": 24
-          }
-        },
-        "desc": "模态框用于弹出层",
-        "label": "模态框",
-        "initialProps": {
-          "title": "modal 标题",
-          "width": "auto",
-          "height": "auto",
-          "isOpen": true,
-          "fullscreen": false,
-          "footerBtns": [{
-            "key": "cancel",
-            "iconName": "close",
-            "text": "取消"
-          }, {
-            "key": "confirm",
-            "iconName": "check",
-            "text": "确定"
-          }]
-        }
-      }
-    ]
-  },
   "Radio": {
     "category": "表单组件",
     "variants": [

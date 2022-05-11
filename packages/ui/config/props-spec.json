@@ -1,404 +1,591 @@
 {
-  "Text": [
-    {
-      "label": "文本内容",
-      "name": "content",
-      "type": "string",
-      "will": "Textarea"
-    },
-    {
-      "label": "可选中文本",
-      "name": "isAllowSelect",
-      "type": "boolean",
-      "will": "Checkbox"
-    },
-    {
-      "label": "点击事件",
-      "name": "onClick",
-      "type": "function"
-    }
-  ],
-  "Image": [
-    {
-      "label": "图片填充",
-      "name": "imageUrl",
-      "type": "string",
-      "will": "ImageUrl"
-    },
-    {
-      "label": "填充方式",
-      "name": "fillMode",
-      "type": "string",
-      "will": "Select",
-      "willProps": {
-        "options": [
-          {
-            "label": "铺满",
-            "value": "cover"
+  "Text": {
+      "props": [{
+              "label": "文本内容",
+              "name": "content",
+              "type": "string",
+              "will": "Textarea",
+              "initialValue": "文本"
           },
           {
-            "label": "拉伸",
-            "value": "contain"
+              "label": "可选中文本",
+              "name": "isAllowSelect",
+              "type": "boolean",
+              "will": "Checkbox",
+              "initialValue": false
           },
           {
-            "label": "适合",
-            "value": "100% 100%"
+              "label": "点击事件",
+              "name": "onClick",
+              "type": "function"
           }
-        ]
-      }
-    },
-    {
-      "label": "点击预览大图",
-      "name": "preview",
-      "type": "boolean",
-      "will": "Switch"
-    },
-    {
-      "label": "点击遮罩关闭图片预览",
-      "name": "closeOnMaskClick",
-      "type": "boolean",
-      "will": "Switch"
-    }
-  ],
-  "Button": [
-    {
-      "label": "按钮名称",
-      "name": "children",
-      "type": "react-node"
-    },
-    {
-      "label": "按钮类型",
-      "name": "modifier",
-      "type": "string",
-      "will": "Select",
-      "willProps": {
-        "options": [
-          {
-            "label": "默认",
-            "value": ""
+      ],
+      "isContainer": false,
+      "isOverLayer": false
+  },
+  "Paragraph": {
+      "props": [{
+              "label": "最大显示行数",
+              "name": "maxLength",
+              "type": "number",
+              "initialValue": 5
           },
           {
-            "label": "主要",
-            "value": "primary"
+              "label": "文本内容",
+              "name": "content",
+              "type": "string",
+              "will": "Textarea",
+              "initialValue": "文本"
           },
           {
-            "label": "危险",
-            "value": "danger"
+              "label": "允许选中文本",
+              "name": "isAllowSelect",
+              "type": "boolean",
+              "will": "Switch",
+              "initialValue": false
+          },
+          {
+              "label": "允许空格",
+              "name": "isAllowSpace",
+              "type": "boolean",
+              "will": "Switch",
+              "initialValue": false
+          },
+          {
+              "label": "点击事件",
+              "name": "onClick",
+              "type": "function"
           }
-        ]
-      }
-    },
-    {
-      "label": "按钮功能",
-      "name": "type",
-      "type": "string",
-      "will": "Select",
-      "willProps": {
-        "options": [
-          {
-            "label": "按钮",
-            "value": "button"
+      ],
+      "isContainer": false,
+      "isOverLayer": false
+  },
+  "Image": {
+      "props": [{
+              "label": "图片填充",
+              "name": "imageUrl",
+              "type": "string",
+              "will": "ImageUrl"
           },
           {
-            "label": "提交",
-            "value": "submit"
+              "label": "填充方式",
+              "name": "fillMode",
+              "type": "string",
+              "will": "Select",
+              "willProps": {
+                  "options": [{
+                          "label": "铺满",
+                          "value": "cover"
+                      },
+                      {
+                          "label": "拉伸",
+                          "value": "contain"
+                      },
+                      {
+                          "label": "适合",
+                          "value": "100% 100%"
+                      }
+                  ]
+              }
           },
           {
-            "label": "重置",
-            "value": "reset"
+              "label": "点击预览大图",
+              "name": "preview",
+              "type": "boolean",
+              "will": "Switch"
+          },
+          {
+              "label": "点击遮罩关闭图片预览",
+              "name": "closeOnMaskClick",
+              "type": "boolean",
+              "will": "Switch"
           }
-        ]
-      }
-    },
-    {
-      "label": "禁用",
-      "name": "forbidden",
-      "type": "boolean"
-    },
-    {
-      "label": "加载状态",
-      "name": "loading",
-      "type": "boolean"
-    },
-    {
-      "label": "加载文本",
-      "name": "loadingText",
-      "type": "string"
-    },
-    {
-      "label": "图标名称",
-      "name": "iconName",
-      "type": "string"
-    },
-    {
-      "label": "图标大小",
-      "name": "iconSize",
-      "type": "number"
-    },
-    {
-      "label": "点击事件",
-      "name": "onClick",
-      "type": "function"
-    }
-  ],
-  "Icon": [
-    {
-      "label": "图标名称",
-      "name": "name",
-      "type": "string"
-    },
-    {
-      "label": "图标大小",
-      "name": "size",
-      "type": "number"
-    }
-  ],
-  "Link": [
-    {
-      "label": "内容",
-      "name": "content",
-      "type": "string"
-    },
-    {
-      "label": "链接类型",
-      "name": "linkType",
-      "type": "string",
-      "will": "RadioGroup",
-      "willProps": {
-        "options": [
-          {
-            "label": "外部链接",
-            "value": "outside"
+      ],
+      "isContainer": false,
+      "isOverLayer": false
+  },
+  "Button": {
+      "props": [{
+              "label": "按钮名称",
+              "name": "title",
+              "type": "string",
+              "initialValue": "按钮"
           },
           {
-            "label": "内部页面",
-            "value": "inside"
+              "label": "按钮类型",
+              "name": "modifier",
+              "type": "string",
+              "will": "Select",
+              "willProps": {
+                  "options": [{
+                          "label": "默认",
+                          "value": ""
+                      },
+                      {
+                          "label": "主要",
+                          "value": "primary"
+                      },
+                      {
+                          "label": "危险",
+                          "value": "danger"
+                      }
+                  ]
+              },
+              "initialValue": ""
+          },
+          {
+              "label": "按钮功能",
+              "name": "type",
+              "type": "string",
+              "will": "Select",
+              "willProps": {
+                  "options": [{
+                          "label": "按钮",
+                          "value": "button"
+                      },
+                      {
+                          "label": "提交",
+                          "value": "submit"
+                      },
+                      {
+                          "label": "重置",
+                          "value": "reset"
+                      }
+                  ]
+              },
+              "initialValue": "button"
+          },
+          {
+              "label": "按钮大小",
+              "name": "type",
+              "type": "string",
+              "will": "Select",
+              "willProps": {
+                  "options": [{
+                          "label": "正常",
+                          "value": "normal"
+                      },
+                      {
+                          "label": "紧凑",
+                          "value": "compact"
+                      }
+                  ]
+              },
+              "initialValue": "button"
+          },
+          {
+              "label": "图标名称",
+              "name": "iconName",
+              "type": "string"
+          },
+          {
+              "label": "图标大小",
+              "name": "iconSize",
+              "type": "number"
+          },
+          {
+              "label": "点击事件",
+              "name": "onClick",
+              "type": "function"
           }
-        ]
-      }
-    },
-    {
-      "label": "链接类型",
-      "name": "linkUrl",
-      "type": "string",
-      "willProps": {
-        "placeholder": "请输入完整url路径 例：https://example.com"
-      }
-    },
-    {
-      "label": "新开标签页",
-      "name": "isBlank",
-      "type": "boolean",
-      "willProps": {
-        "disabled": false
-      }
-    },
-    {
-      "label": "点击事件",
-      "name": "onClick",
-      "type": "function"
-    }
-  ],
-  "Input": [
-    {
-      "label": "类型",
-      "name": "type",
-      "type": "string",
-      "will": "Select",
-      "willProps": {
-        "options": [
-          {
-            "label": "文本框",
-            "value": "text"
+      ],
+      "isContainer": false,
+      "isOverLayer": false
+  },
+  "Icon": {
+      "props": [{
+              "label": "图标名称",
+              "name": "name",
+              "type": "string"
           },
           {
-            "label": "密码框",
-            "value": "password"
-          },
-          {
-            "label": "数字",
-            "value": "number"
+              "label": "图标大小",
+              "name": "size",
+              "type": "number"
           }
-        ]
-      }
-    },
-    {
-      "label": "占位符",
-      "name": "placeholder",
-      "type": "string"
-    },
-    {
-      "label": "name",
-      "name": "name",
-      "type": "string"
-    },
-    {
-      "label": "禁用",
-      "name": "disabled",
-      "type": "boolean"
-    },
-    {
-      "label": "只读",
-      "name": "readOnly",
-      "type": "boolean"
-    },
-    {
-      "label": "错误",
-      "name": "error",
-      "type": "boolean"
-    },
-    {
-      "label": "最大长度",
-      "name": "maxLength",
-      "type": "number"
-    },
-    {
-      "label": "点击事件",
-      "name": "onChange",
-      "type": "function"
-    },
-    {
-      "label": "键盘按下事件",
-      "name": "onKeydown",
-      "type": "function"
-    },
-    {
-      "label": "聚焦事件",
-      "name": "onFocus",
-      "type": "function"
-    },
-    {
-      "label": "失焦事件",
-      "name": "onBlur",
-      "type": "function"
-    }
-  ],
-  "Radio": [
-    {
-      "label": "名称",
-      "name": "name",
-      "type": "string"
-    },
-    {
-      "label": "默认选中",
-      "name": "defaultChecked",
-      "type": "boolean",
-      "will": "Switch"
-    },
-    {
-      "label": "禁用",
-      "name": "disabled",
-      "type": "boolean",
-      "will": "Switch"
-    },
-    {
-      "label": "变化事件",
-      "name": "onChange",
-      "type": "function"
-    }
-  ],
-  "Textarea": [
-    {
-      "label": "占位符",
-      "name": "placeholder",
-      "type": "string"
-    },
-    {
-      "label": "名称",
-      "name": "name",
-      "type": "string"
-    },
-    {
-      "label": "默认值",
-      "name": "defaultValue",
-      "type": "string"
-    },
-    {
-      "label": "行数",
-      "name": "cols",
-      "type": "number"
-    },
-    {
-      "label": "列数",
-      "name": "rows",
-      "type": "number"
-    },
-    {
-      "label": "最小输入字符",
-      "name": "minLength",
-      "type": "number"
-    },
-    {
-      "label": "最大输入字符",
-      "name": "maxLength",
-      "type": "number"
-    }
-  ],
-  "Modal": [
-    {
-      "label": "children",
-      "name": "children",
-      "type": "react-node"
-    },
-    {
-      "label": "标题",
-      "name": "title",
-      "type": "string"
-    },
-    {
-      "label": "宽度",
-      "name": "width",
-      "type": "string"
-    },
-    {
-      "label": "高度",
-      "name": "height",
-      "type": "string"
-    },
-    {
-      "label": "显示对话框",
-      "name": "isOpen",
-      "type": "boolean",
-      "will": "Switch"
-    },
-    {
-      "label": "全屏显示",
-      "name": "fullscreen",
-      "type": "boolean",
-      "will": "Switch"
-    },
-    {
-      "label": "配置底部按钮",
-      "name": "footerBtns",
-      "type": "object",
-      "will": "SpecRender",
-      "willProps": {
-        "spec": [
-          {
-            "label": "key",
-            "name": "key",
-            "type": "string"
+      ],
+      "isContainer": false,
+      "isOverLayer": false
+  },
+  "Link": {
+      "props": [{
+              "label": "内容",
+              "name": "content",
+              "type": "string"
           },
           {
-            "label": "按钮名称",
-            "name": "iconName",
-            "type": "string"
+              "label": "链接类型",
+              "name": "linkType",
+              "type": "string",
+              "will": "RadioGroup",
+              "willProps": {
+                  "options": [{
+                          "label": "外部链接",
+                          "value": "outside"
+                      },
+                      {
+                          "label": "内部页面",
+                          "value": "inside"
+                      }
+                  ]
+              },
+              "initialValue": "outside"
           },
           {
-            "label": "文本",
-            "name": "text",
-            "type": "string"
+              "label": "链接类型",
+              "name": "linkUrl",
+              "type": "string",
+              "willProps": {
+                  "placeholder": "请输入完整url路径 例：https://example.com"
+              }
           },
           {
-            "label": "点击事件",
-            "name": "onClick",
-            "type": "function"
+              "label": "新开标签页",
+              "name": "isBlank",
+              "type": "boolean",
+              "willProps": {
+                  "disabled": false
+              }
+          },
+          {
+              "label": "点击事件",
+              "name": "onClick",
+              "type": "function"
           }
-        ],
-        "multiple": true
-      }
-    }
-  ],
-  "Container": [],
-  "Grid": []
+      ],
+      "isContainer": false,
+      "isOverLayer": false
+  },
+  "Input": {
+      "props": [{
+              "label": "类型",
+              "name": "type",
+              "type": "string",
+              "will": "Select",
+              "willProps": {
+                  "options": [{
+                          "label": "文本框",
+                          "value": "text"
+                      },
+                      {
+                          "label": "密码框",
+                          "value": "password"
+                      },
+                      {
+                          "label": "数字",
+                          "value": "number"
+                      }
+                  ]
+              }
+          },
+          {
+              "label": "占位符",
+              "name": "placeholder",
+              "type": "string",
+              "initialValue": "请输入内容"
+          },
+          {
+              "label": "name",
+              "name": "name",
+              "type": "string"
+          },
+          {
+              "label": "默认值",
+              "name": "defaultValue",
+              "type": "string",
+              "desc": "只设置默认值，该组件将成为非受控组件，如果设置了value将会覆盖默认值"
+          },
+          {
+              "label": "值",
+              "name": "value",
+              "type": "string",
+              "desc": "如果设置了value，该组件将成为受控组件"
+          },
+          {
+              "label": "点击事件",
+              "name": "onChange",
+              "type": "function"
+          },
+          {
+              "label": "键盘按下事件",
+              "name": "onKeydown",
+              "type": "function"
+          },
+          {
+              "label": "聚焦事件",
+              "name": "onFocus",
+              "type": "function"
+          },
+          {
+              "label": "失焦事件",
+              "name": "onBlur",
+              "type": "function"
+          }
+      ],
+      "isContainer": false,
+      "isOverLayer": false
+  },
+  "Radio": {
+      "props": [{
+              "label": "选项",
+              "name": "radioOptions",
+              "type": "string",
+              "will": "Textarea",
+              "initialValue": "选项一\n选项二\n选项三\n"
+          },
+          {
+              "label": "变化事件",
+              "name": "onChange",
+              "type": "function"
+          }
+      ],
+      "isContainer": false,
+      "isOverLayer": false
+  },
+  "Textarea": {
+      "props": [{
+              "label": "占位符",
+              "name": "placeholder",
+              "type": "string",
+              "initialValue": "请输入内容"
+          },
+          {
+              "label": "名称",
+              "name": "name",
+              "type": "string"
+          },
+          {
+              "label": "默认值",
+              "name": "defaultValue",
+              "type": "string"
+          },
+          {
+              "label": "行数",
+              "name": "cols",
+              "type": "number"
+          },
+          {
+              "label": "列数",
+              "name": "rows",
+              "type": "number"
+          },
+          {
+              "label": "最小输入字符",
+              "name": "minLength",
+              "type": "number"
+          },
+          {
+              "label": "最大输入字符",
+              "name": "maxLength",
+              "type": "number"
+          },
+          {
+              "label": "点击事件",
+              "name": "onChange",
+              "type": "function"
+          },
+          {
+              "label": "键盘按下事件",
+              "name": "onKeydown",
+              "type": "function"
+          },
+          {
+              "label": "聚焦事件",
+              "name": "onFocus",
+              "type": "function"
+          },
+          {
+              "label": "失焦事件",
+              "name": "onBlur",
+              "type": "function"
+          }
+      ],
+      "isContainer": false,
+      "isOverLayer": false
+  },
+  "Form": {
+      "props": [{
+              "label": "name",
+              "name": "name",
+              "type": "string"
+          },
+          {
+              "label": "action",
+              "name": "action",
+              "type": "string"
+          },
+          {
+              "label": "请求方法",
+              "name": "method",
+              "type": "string",
+              "will": "Select",
+              "willProps": {
+                  "options": [{
+                          "label": "get",
+                          "value": "get"
+                      },
+                      {
+                          "label": "post",
+                          "value": "post"
+                      }
+                  ]
+              },
+              "initialValue": "get"
+          },
+          {
+              "label": "打开方式",
+              "name": "target",
+              "type": "string",
+              "will": "Select",
+              "willProps": {
+                  "options": [{
+                          "label": "在新窗口打开",
+                          "value": "_blank"
+                      },
+                      {
+                          "label": "在当前窗口打开",
+                          "value": "_self"
+                      }
+                  ]
+              },
+              "initialValue": "_blank"
+          },
+          {
+              "label": "提交事件",
+              "name": "onSubmit",
+              "type": "function"
+          }
+      ],
+      "isContainer": true,
+      "isOverLayer": false
+  },
+  "Table": {
+      "props": [{
+              "label": "单元格边框",
+              "type": "boolean",
+              "name": "hasBorder"
+          },
+          {
+              "label": "列配置",
+              "type": "object",
+              "name": "cols",
+              "will": "TableBind"
+          },
+          {
+              "label": "",
+              "type": "object",
+              "name": "rows",
+              "willProps": {
+                  "text": "绑定表格数据",
+                  "type": "array"
+              }
+          }
+      ],
+      "isContainer": false,
+      "isOverLayer": false
+  },
+  "Iframe": {
+      "props": [{
+              "label": "iframe 地址",
+              "name": "iframeAddr",
+              "type": "string"
+          },
+          {
+              "label": "iframe 宽度",
+              "name": "iframeWidth",
+              "type": "string",
+              "initialValue": "auto"
+          },
+          {
+              "label": "iframe 高度",
+              "name": "iframeHeight",
+              "type": "string",
+              "initialValue": "auto"
+          },
+          {
+              "label": "iframe 名称",
+              "name": "iframeName",
+              "type": "string"
+          },
+          {
+              "label": "iframe 额外限制",
+              "name": "sandbox",
+              "type": "string",
+              "initialValue": "allow-scripts allow-same-origin allow-forms"
+          },
+          {
+              "label": "iframe 允许范围:",
+              "name": "iframeAllow",
+              "type": "string"
+          },
+          {
+              "label": "允许激活全屏模式",
+              "name": "allowFullscreen",
+              "type": "boolean"
+          },
+          {
+              "label": "iframe 推荐配置",
+              "name": "",
+              "type": "string",
+              "will": "Select",
+              "willProps": {
+                  "options": [{
+                          "label": "no-referrer",
+                          "value": "no-referrer"
+                      },
+                      {
+                          "label": "no-referrer-when-downgrade",
+                          "value": "no-referrer-when-downgrade"
+                      },
+                      {
+                          "label": "origin",
+                          "value": "origin"
+                      },
+                      {
+                          "label": "origin-when-cross-origin",
+                          "value": "origin-when-cross-origin"
+                      },
+                      {
+                          "label": "same-origin",
+                          "value": "same-origin"
+                      },
+                      {
+                          "label": "strict-origin",
+                          "value": "strict-origin"
+                      },
+                      {
+                          "label": "strict-origin-when-cross-origin",
+                          "value": "strict-origin-when-cross-origin"
+                      },
+                      {
+                          "label": "unsafe-url",
+                          "value": "unsafe-url"
+                      }
+                  ]
+              }
+          }
+      ],
+      "isContainer": false,
+      "isOverLayer": false
+  },
+  "Container": {
+      "props": [],
+      "isContainer": true,
+      "isOverLayer": false
+  },
+  "Grid": {
+      "props": [{
+              "label": "行间距",
+              "name": "colGap",
+              "type": "string"
+          },
+          {
+              "label": "列间距",
+              "name": "rowGap",
+              "type": "string"
+          }
+      ],
+      "isContainer": true,
+      "isOverLayer": false
+  }
 }

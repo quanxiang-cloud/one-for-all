@@ -1,4 +1,4 @@
-import React, { CSSProperties, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { lensPath, set } from 'ramda';
 import { Artery, Node } from '@one-for-all/artery';
 
@@ -8,19 +8,12 @@ import { generateNodeId } from '@arteryEngine/utils';
 import { useEngineStoreContext } from '@arteryEngine/context';
 
 export default function Block<T extends ArteryEngine.BaseBlocksCommunicationState>(props: ArteryEngine.BlockProps<T>): JSX.Element | null {
-  const { gridColumnStart, gridColumnEnd, gridRowStart, gridRowEnd, render: Render, setLayer } = props;
+  const { style, render: Render, id = '', onUpdateLayer } = props;
   const engineStore$ = useEngineStoreContext();
   const engineState = useObservable<ArteryEngine.EngineState<T>>(engineStore$, {});
   const { arteryStore$, blocksCommunicationState$, activeNode, useCommandState } = engineState;
   const artery = useObservable<Artery | undefined>(arteryStore$, undefined);
   const sharedState = useObservable<T>(blocksCommunicationState$, {} as T);
-
-  const style: CSSProperties = {
-    gridColumnStart,
-    gridColumnEnd,
-    gridRowStart,
-    gridRowEnd,
-  }
 
   useCommandState?.registry({
     name: 'updateArtery',
@@ -47,6 +40,10 @@ export default function Block<T extends ArteryEngine.BaseBlocksCommunicationStat
     engineStore$.setActiveNode(node);
   }, [engineStore$]);
 
+  const onUpdateBlock = useCallback((params: Omit<ArteryEngine.UpdateLayer, 'layerId'> & { layerId?: string }): void => {
+    onUpdateLayer({ ...params, blockId: params.blockId ?? id });
+  }, [id, onUpdateLayer]);
+
   if (!artery || !blocksCommunicationState$) {
     return null;
   }
@@ -59,10 +56,11 @@ export default function Block<T extends ArteryEngine.BaseBlocksCommunicationStat
         sharedState={sharedState}
         onSharedStateChange={handleSharedStateChange}
         activeNode={activeNode}
-        setLayer={setLayer}
         commands={useCommandState?.commandNameRunnerMap}
         generateNodeId={generateNodeId}
         setActiveNode={handleSetActiveNode}
+        onUpdateLayer={onUpdateLayer}
+        onUpdateBlock={onUpdateBlock}
       />
     </div>
   )
