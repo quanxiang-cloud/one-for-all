@@ -18,7 +18,7 @@ export const dummy_artery_root_node_id = 'DUMMY_ARTERY_ROOT_NODE_ID';
 
 export function useArtery(): Artery {
   const [artery, setArtery] = useState<Artery>({
-    node: { id: dummy_artery_root_node_id, type: 'html-element', name: 'div' }
+    node: { id: dummy_artery_root_node_id, type: 'html-element', name: 'div' },
   });
   useEffect(() => {
     messenger.listen<Artery>(MESSAGE_TYPE_ARTERY).subscribe(setArtery);

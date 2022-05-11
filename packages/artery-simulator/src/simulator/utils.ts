@@ -87,5 +87,5 @@ export function useBehaviorSubjectState<T>(subject: BehaviorSubject<T>): T {
 export function useArteryRootNodeID(): string {
   const artery = useArtery();
 
-  return useMemo(() => artery.node.id, [artery.node.id])
+  return useMemo(() => artery.node.id, [artery.node.id]);
 }

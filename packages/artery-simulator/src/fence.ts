@@ -92,7 +92,7 @@ export default class Fence {
   public addElement(htmlStr: string): void {
     const template: HTMLTemplateElement | undefined = this.iframe.contentDocument?.createElement('template');
     if (!template) {
-      console.error('failed to create template')
+      console.error('failed to create template');
       return;
     }
     template.innerHTML = htmlStr.trim();
@@ -105,11 +105,11 @@ export default class Fence {
   public addScript(src: string): void {
     const doc = this.iframe.contentDocument;
     if (!doc) {
-      console.error('no contentDocument available')
+      console.error('no contentDocument available');
       return;
     }
     const script = doc.createElement('script');
-    script.type ="systemjs-module";
+    script.type = 'systemjs-module';
     script.src = src;
     doc.body.appendChild(script);
   }

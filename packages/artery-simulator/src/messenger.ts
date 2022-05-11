@@ -52,22 +52,24 @@ export default class Messenger {
   _connect(): Promise<void> {
     return new Promise((resolve, reject) => {
       const timer = setTimeout(() => {
-        reject(new Error('messenger connection timeout'))
-      }, 60*1000);
+        reject(new Error('messenger connection timeout'));
+      }, 60 * 1000);
 
-      const subscription = interval(500).pipe(
-        tap(() => {
-          this.send({ type: 'ping', data: 'ping' });
-        }),
-        takeUntil(this.listen('ping'))
-      ).subscribe({
-        complete: () => {
-          subscription.unsubscribe();
-          clearTimeout(timer);
-          this.connected = true;
-          resolve();
-        }
-      })
+      const subscription = interval(500)
+        .pipe(
+          tap(() => {
+            this.send({ type: 'ping', data: 'ping' });
+          }),
+          takeUntil(this.listen('ping')),
+        )
+        .subscribe({
+          complete: () => {
+            subscription.unsubscribe();
+            clearTimeout(timer);
+            this.connected = true;
+            resolve();
+          },
+        });
     });
   }
 

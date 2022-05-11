@@ -10,9 +10,7 @@ import {
 import { HTMLNode, ReactComponentNode } from '@one-for-all/artery-renderer';
 import { checkNodeSupportChildren, checkNodeIsModalRoot } from '../../../bridge';
 
-function asyncCheckIfNodeSupportChildren(
-  node: NodePrimary,
-): Promise<boolean> {
+function asyncCheckIfNodeSupportChildren(node: NodePrimary): Promise<boolean> {
   const flag = _checkIfNodeSupportChildren(node);
   if (flag !== undefined) {
     return Promise.resolve(flag);
@@ -25,9 +23,7 @@ function asyncCheckIfNodeSupportChildren(
   });
 }
 
-function asyncCheckIfNodeShouldRenderInModalLayer(
-  node: NodePrimary,
-): Promise<boolean> {
+function asyncCheckIfNodeShouldRenderInModalLayer(node: NodePrimary): Promise<boolean> {
   const flag = _checkIfNodeIsModalLayer(node);
   if (flag !== undefined) {
     return Promise.resolve(flag);
@@ -46,14 +42,13 @@ export default function useNodeBehaviorCheck(node: HTMLNode | ReactComponentNode
   useEffect(() => {
     let unMounting = false;
 
-    Promise.all([
-      asyncCheckIfNodeSupportChildren(node),
-      asyncCheckIfNodeShouldRenderInModalLayer(node),
-    ]).then(() => {
-      if (!unMounting) {
-        setLoading(false);
-      }
-    });
+    Promise.all([asyncCheckIfNodeSupportChildren(node), asyncCheckIfNodeShouldRenderInModalLayer(node)]).then(
+      () => {
+        if (!unMounting) {
+          setLoading(false);
+        }
+      },
+    );
 
     return () => {
       unMounting = true;

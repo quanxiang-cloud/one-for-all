@@ -3,16 +3,7 @@ import React from 'react';
 import { RecoilRoot } from 'recoil';
 
 import Simulator from './simulator';
-import {
-  setActiveModalLayer,
-  setActiveNode,
-  useActiveModalLayer,
-  useActiveNode,
-  useArtery,
-  checkNodeSupportChildren,
-  checkNodeIsModalRoot,
-  dummy_artery_root_node_id,
-} from './bridge';
+import { useActiveModalLayer, useActiveNode, useArtery, dummy_artery_root_node_id } from './bridge';
 
 // todo plugin
 function App(): JSX.Element {
@@ -26,14 +17,7 @@ function App(): JSX.Element {
 
   return (
     <RecoilRoot>
-      <Simulator
-        setActiveNode={setActiveNode}
-        activeNode={activeNode}
-        activeModalLayer={activeModalLayer}
-        setActiveModalLayer={setActiveModalLayer}
-        isNodeSupportChildren={checkNodeSupportChildren}
-        isNodeInModalLayer={checkNodeIsModalRoot}
-      />
+      <Simulator activeModalLayer={activeModalLayer} />
     </RecoilRoot>
   );
 }

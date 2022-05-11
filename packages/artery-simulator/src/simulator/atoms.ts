@@ -52,4 +52,4 @@ export const latestFocusedGreenZone$ = new BehaviorSubject<GreenZone | undefined
 
 export const onDropEvent$ = new Subject<React.DragEvent>();
 
-export const inDnd$ = new BehaviorSubject<Boolean>(false);
+export const inDnd$ = new BehaviorSubject<boolean>(false);

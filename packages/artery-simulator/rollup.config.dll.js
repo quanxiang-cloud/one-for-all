@@ -7,7 +7,6 @@ import replace from '@rollup/plugin-replace';
 const NODE_ENV = process.env.NODE_ENV === 'production' ? 'production' : 'dev';
 const isProduction = NODE_ENV === 'production';
 
-
 export default {
   input: 'src/simulator/index.tsx',
   output: {
