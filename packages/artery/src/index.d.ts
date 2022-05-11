@@ -106,6 +106,7 @@ declare module ArterySpec {
     | SharedStateProperty
     | NodeStateProperty
     | FunctionalProperty
+    | NestedProperty
     | SharedStateMutationProperty
     | APIInvokeProperty
     | RenderProperty
@@ -163,6 +164,11 @@ declare module ArterySpec {
   interface FunctionalProperty extends BaseNodeProperty {
     type: 'functional_property';
     func: BaseFunctionSpec;
+  }
+
+  interface NestedProperty extends BaseNodeProperty {
+    type: 'nested_property';
+    value: NodeProperties | NodeProperties[];
   }
 
   /**

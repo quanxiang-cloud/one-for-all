@@ -14,6 +14,7 @@ import useComputedProps from './use-computed-props';
 import PathContext from '../node-render/path-context';
 import useInheritedProps from './use-inherited-props';
 import useLinkProps from './use-link-props';
+import useNestedProps from './use-nested-props';
 
 function useInstantiateProps(node: ArteryNode, ctx: CTX): Record<string, unknown> {
   const currentPath = useContext(PathContext);
@@ -26,6 +27,7 @@ function useInstantiateProps(node: ArteryNode, ctx: CTX): Record<string, unknown
   const computedProps = useComputedProps(node, ctx);
   const inheritedProps = useInheritedProps(node, ctx);
   const funcProps = useFuncProps(node);
+  const nestedProps = useNestedProps(node, ctx);
 
   const sharedStateMutationProps = useSharedStateMutationProps(node, ctx);
   const apiStateInvokeProps = useAPIInvokeProps(node, ctx);
@@ -37,6 +39,7 @@ function useInstantiateProps(node: ArteryNode, ctx: CTX): Record<string, unknown
   return useMemo(() => {
     const instantiateProps = Object.assign(
       constantProps,
+      nestedProps,
       apiStateInvokeProps,
       apiResultProps,
       apiLoadingProps,
