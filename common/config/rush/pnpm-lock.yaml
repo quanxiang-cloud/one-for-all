@@ -5,8 +5,8 @@ specifiers:
   '@babel/core': ~7.17.5
   '@babel/preset-env': ~7.16.11
   '@leifandersen/react-codemirror2': ~7.2.1
-  '@one-for-all/artery-simulator': 0.3.0
-  '@one-for-all/headless-ui': 0.1.4
+  '@one-for-all/artery-engine': 1.2.1
+  '@one-for-all/artery-renderer': 0.20.2
   '@one-for-all/style-guide': 0.1.3
   '@popperjs/core': ^2.11.0
   '@rollup/plugin-commonjs': ^21.0.1
@@ -158,8 +158,8 @@ dependencies:
   '@babel/core': 7.17.8
   '@babel/preset-env': 7.16.11_@babel+core@7.17.8
   '@leifandersen/react-codemirror2': 7.2.1_codemirror@5.65.2+react@17.0.2
-  '@one-for-all/artery-simulator': 0.3.0_react-dom@17.0.2
-  '@one-for-all/headless-ui': 0.1.4
+  '@one-for-all/artery-engine': 1.2.1
+  '@one-for-all/artery-renderer': 0.20.2
   '@one-for-all/style-guide': 0.1.3
   '@popperjs/core': 2.11.4
   '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
@@ -2382,6 +2382,18 @@ packages:
 
   /@one-for-all/api-spec-adapter/0.4.0:
     resolution: {integrity: sha512-0AvMUdxfWa6/gdIgk0PPOzBO17XJnD/6QUAoAdvm1kOU+hmVydXLY4ODRvDHs9cVNvBDjcZwLsdQ0esRelnT7g==}
+    dev: false
+
+  /@one-for-all/artery-engine/1.2.1:
+    resolution: {integrity: sha512-a5a7o93XmIxWlBiwEjmN/7sIHR4eZ2fATdnxKKSpOGRtPu4WYC68cmQ1juO5hItNjJf28mN0H1dZWsvcaD/oZQ==}
+    dependencies:
+      '@one-for-all/artery': 0.15.0
+      classnames: 2.3.1
+      nanoid: 3.3.3
+      ramda: 0.27.2
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      rxjs: 7.5.5
     dev: false
 
   /@one-for-all/artery-renderer/0.20.0:
@@ -17883,11 +17895,13 @@ packages:
     dev: false
 
   file:projects/artery-simulator.tgz_d1d7a1f0ff7525dd0d92693a4e80182a:
-    resolution: {integrity: sha512-vfQUXvEuVg/fga2+ouoUD5kB6fodsy95Fo/xpaEuts4K7+SRAb7S6M3BSpZ75SVw0VKT5MY05k4kEKKuChjqKQ==, tarball: file:projects/artery-simulator.tgz}
+    resolution: {integrity: sha512-UA24WqwEukQYzOJzvO2lUh2K54ZT/0YTtZjMFZyt20u8osM6w4mn+DHKXiUOaianBTlF9DeO2UogKxC9H2QmIg==, tarball: file:projects/artery-simulator.tgz}
     id: file:projects/artery-simulator.tgz
     name: '@rush-temp/artery-simulator'
     version: 0.0.0
     dependencies:
+      '@one-for-all/artery-engine': 1.2.1
+      '@one-for-all/artery-renderer': 0.20.2
       '@one-for-all/headless-ui': 0.1.4
       '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
@@ -18067,12 +18081,12 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-fiVlyYBK5OHYRipZVIydcnLmzRlVI6H6+a5AWBIHRcxqNrhyzhfLQrwK7SPYtby21rYw5uVNthhSr1rgWnoceA==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-BDD6H1JnYaTgpc8AJSb01RYiKILIxCj0SBhnf/yKAzOVHAWYTqfvPouEdLGhTXv+uEbXyWvrq7plpgQ+Hks83w==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
       '@leifandersen/react-codemirror2': 7.2.1_codemirror@5.65.2+react@17.0.2
-      '@one-for-all/artery-renderer': 0.20.0
+      '@one-for-all/artery-renderer': 0.20.2
       '@one-for-all/artery-simulator': 0.3.0_react-dom@17.0.2
       '@one-for-all/elements-radar': 0.1.0
       '@one-for-all/headless-ui': 0.1.4
@@ -18113,7 +18127,6 @@ packages:
     transitivePeerDependencies:
       - debug
       - encoding
-      - react-native
       - supports-color
     dev: false
 
