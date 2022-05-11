@@ -83,3 +83,17 @@ export function buildRouteNode(params: BuildRouteNodeParams): RouteNode {
     ...params,
   }
 }
+
+function buildBlockId<T>(block: ArteryEngine.Block<T>): void {
+  if (!block.id) {
+    block.id = generateNodeId('block-');
+  }
+}
+
+export function buildeLayerId<T>(layer: ArteryEngine.Layer<T>): ArteryEngine.Layer<T> {
+  if (!layer.id) {
+    layer.id = generateNodeId('layer-');
+  }
+  layer.blocks.forEach(buildBlockId);
+  return layer;
+}

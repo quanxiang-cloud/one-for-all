@@ -1,4 +1,4 @@
-import { has, propEq } from 'ramda';
+import { has, propEq, is } from 'ramda';
 import {
   LoopContainerNode, Node, IndividualLoopContainer, ComposedNodeLoopContainer, ComposedNodeChild,
   HTMLNode, ReactComponentNode, LinkNode, RefNode, JSXNode, RouteNode,
@@ -63,3 +63,5 @@ export function isRouteNode(node: Node): node is RouteNode {
 export function isHasSubNode(node: Node): node is RouteNode | LoopContainerNode {
   return isLoopContainerNode(node) || isRouteNode(node)
 }
+
+export const isObject = is(Object);

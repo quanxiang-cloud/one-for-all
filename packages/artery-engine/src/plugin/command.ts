@@ -114,8 +114,6 @@ function useCommandInternal(commandStateRef: MutableRefObject<ArteryEngine.Comma
       const keys = Array.isArray(command.keyboard) ? command.keyboard : [command.keyboard];
       if (keys.includes(keyNames)) {
         commandNameRunnerMap[command.name]?.();
-        e.stopPropagation();
-        e.preventDefault();
       }
     })
   }, []);
