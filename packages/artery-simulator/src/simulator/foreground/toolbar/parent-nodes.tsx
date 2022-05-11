@@ -1,9 +1,11 @@
+import React, { useEffect, useState } from 'react';
 import { Node } from '@one-for-all/artery';
 import { keyPathById, parentIdsSeq } from '@one-for-all/artery-utils';
-import React, { useEffect, useState } from 'react';
+
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { setActiveNode, useArtery } from '../../bridge';
+import { artery$, setActiveNode } from '../../bridge';
 import { hoveringParentIDState, immutableNodeState } from '../../atoms';
+import { useBehaviorSubjectState } from '../../utils';
 
 interface Props {
   currentNodeID: string;
@@ -11,7 +13,7 @@ interface Props {
 }
 
 function ParentNodes({ currentNodeID, onParentClick }: Props): JSX.Element | null {
-  const artery = useArtery();
+  const artery = useBehaviorSubjectState(artery$);
   const [immutableNode] = useRecoilState(immutableNodeState);
   const [parents, setParents] = useState<Node[]>([]);
   const setHoveringParentID = useSetRecoilState(hoveringParentIDState);

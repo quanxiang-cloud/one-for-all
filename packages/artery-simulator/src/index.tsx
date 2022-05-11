@@ -7,6 +7,7 @@ import { Artery, Node } from '@one-for-all/artery';
 
 import { NodePrimary } from './types';
 import { useSyncResponders, useSyncArtery, useSyncActiveNode, useSyncActiveModalLayer } from './sync-hooks';
+import { MESSAGE_TYPE_ARTERY } from './simulator/constants';
 
 interface Props {
   artery: Artery;
@@ -51,9 +52,10 @@ function Simulator({
       return;
     }
 
-    const messenger = new Messenger(iframeRef.current.contentWindow);
-    messenger._connect().then(() => {});
-
+    const messenger = new Messenger(iframeRef.current?.contentWindow, 'host-side');
+    messenger.waitForReady().then(() => {
+      messengerRef.current?.send(MESSAGE_TYPE_ARTERY, artery);
+    });
     messengerRef.current = messenger;
   }, []);
 

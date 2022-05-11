@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { BehaviorSubject } from 'rxjs';
 import { Cursor, Position } from '../types';
 import { NodePrimary } from '../types';
-import { useArtery } from './bridge';
+import { artery$ } from './bridge';
 
 const img = new Image();
 img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
@@ -85,7 +85,7 @@ export function useBehaviorSubjectState<T>(subject: BehaviorSubject<T>): T {
 }
 
 export function useArteryRootNodeID(): string {
-  const artery = useArtery();
+  const artery = useBehaviorSubjectState(artery$);
 
   return useMemo(() => artery.node.id, [artery.node.id]);
 }

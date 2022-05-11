@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import cs from 'classnames';
 import { useRecoilState } from 'recoil';
 
@@ -12,11 +12,11 @@ import {
   inDnd$,
   onDropEvent$,
 } from '../atoms';
-import { overrideDragImage, useArteryRootNodeID } from '../utils';
+import { overrideDragImage, useArteryRootNodeID, useBehaviorSubjectState } from '../utils';
 import useSetActiveNode from './use-set-active-node';
 import useShouldHandleDndCallback from './use-should-handle-dnd-callback';
 import { DND_DATA_TRANSFER_TYPE_NODE_ID } from '../constants';
-import { useActiveNode } from '../bridge';
+import { activeNode$ } from '../bridge';
 
 function preventDefault(e: any): false {
   e.preventDefault();
@@ -31,7 +31,7 @@ interface Props {
 function RenderContourNode({ contourNode }: Props): JSX.Element {
   const [hoveringParentID] = useRecoilState(hoveringParentIDState);
   const rootNodeID = useArteryRootNodeID();
-  const activeNode = useActiveNode();
+  const activeNode = useBehaviorSubjectState(activeNode$);
   const style = useContourNodeStyle(contourNode);
   const [draggingNodeID, setDraggingNodeID] = useRecoilState(draggingNodeIDState);
   const setActiveNode = useSetActiveNode();

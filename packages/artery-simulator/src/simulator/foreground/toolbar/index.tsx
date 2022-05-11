@@ -8,7 +8,8 @@ import duplicateNode from './duplicate-node';
 import useToolbarStyle from './use-toolbar-style';
 import { useNodeLabel } from './use-node-label';
 import { useActiveContour } from './use-active-contour';
-import { onChangeArtery, setActiveNode, useActiveNode, useArtery } from '../../bridge';
+import { activeNode$, artery$, onChangeArtery, setActiveNode } from '../../bridge';
+import { useBehaviorSubjectState } from '../../utils';
 
 const modifiers = [
   {
@@ -22,10 +23,10 @@ const modifiers = [
 // render toolbar on another context to prevent it be covered by contour node
 function ContourNodeToolbar(): JSX.Element | null {
   const contourNode = useActiveContour();
-  const activeNode = useActiveNode();
+  const activeNode = useBehaviorSubjectState(activeNode$);
   const { referenceRef, Popper, handleMouseEnter, handleMouseLeave, close } = usePopper<HTMLSpanElement>();
   const containerRef = useRef<HTMLDivElement>(null);
-  const artery = useArtery();
+  const artery = useBehaviorSubjectState(artery$);
   const style = useToolbarStyle(contourNode);
   const activeNodeLabel = useNodeLabel(activeNode);
 

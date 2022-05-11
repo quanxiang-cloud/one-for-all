@@ -10,18 +10,19 @@ import { contourNodesReport$, immutableNodeState, modalLayerContourNodesReport$ 
 import useModalLayers from './use-modal-layers';
 
 import './index.scss';
-import { useActiveModalLayer, useArtery } from './bridge';
+import { activeModalLayer$, artery$ } from './bridge';
+import { useBehaviorSubjectState } from './utils';
 
 export interface Props {
   plugins?: Plugins;
 }
 
 function Simulator({ plugins }: Props): JSX.Element {
-  const artery = useArtery();
+  const artery = useBehaviorSubjectState(artery$);
   const setImmutableNode = useSetRecoilState(immutableNodeState);
   const [rootElement, setRootElement] = useState<HTMLDivElement | null>(null);
   const modalLayerRoots = useModalLayers();
-  const activeModalLayer = useActiveModalLayer();
+  const activeModalLayer = useBehaviorSubjectState(activeModalLayer$);
 
   useEffect(() => {
     setImmutableNode(fromJS(artery.node));

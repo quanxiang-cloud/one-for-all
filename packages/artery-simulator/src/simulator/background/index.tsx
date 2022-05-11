@@ -46,7 +46,11 @@ function Background({
   return (
     <>
       <SimulatorLayerCtx.Provider value={rootSimulatorLayerCtxValue}>
-        <RenderLayer plugins={plugins} rootElement={rootElement} onReport={onReport} />
+        <RenderLayer
+          plugins={plugins}
+          rootElement={rootElement}
+          onReport={onReport}
+        />
       </SimulatorLayerCtx.Provider>
       <ModalLayerRender
         activeModalLayer={activeModalLayer}

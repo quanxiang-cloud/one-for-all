@@ -21,6 +21,7 @@ interface Frame {
   message: Message;
   seq: number;
   echoSeq?: number;
+  name: string;
 }
 
 type Responder = (data: any) => Promise<any>;
@@ -33,19 +34,36 @@ export default class Messenger {
   connected = false;
 
   responderMap: Record<string, Subscription> = {};
+  name: string;
+  isSubWin: boolean;
 
-  constructor(target: Window) {
+  constructor(target: Window, name: string) {
     this.target = target;
+    this.name = name;
 
     this.send$ = new Subject<Frame>();
     this.receive$ = new Subject<Frame>();
 
-    this.target.addEventListener('message', (e) => {
+    if (window === target) {
+      throw new Error('Messenger: target can not be same as current window');
+    }
+
+    this.isSubWin = window.parent === target;
+
+    window.addEventListener('message', (e) => {
+      if (e.origin !== window.origin) {
+        return;
+      }
+
+      if (this.name === e.data.name) {
+        return;
+      }
+
       this.receive$.next(e.data);
     });
 
     this.send$.subscribe((frame) => {
-      this.target.postMessage(frame);
+      this.target.postMessage(frame, window.origin)
     });
   }
 
@@ -53,12 +71,19 @@ export default class Messenger {
     Object.entries(responders).forEach(([type, responder]) => {
       const subscription = this.receive$
         .pipe(
-          filter((frame) => frame.message.type === type),
+          filter((frame) => {
+            if (frame.message) {
+              return frame.message.type === type;
+            }
+
+            return false;
+          }),
           switchMap(({ message, seq }) => from(Promise.all([responder(message.data), Promise.resolve(seq)]))),
           map(([response, echoSeq]) => ({
             message: { type: `echo_${type}`, data: response },
             echoSeq,
             seq: this.nextSeq(),
+            name: this.name,
           })),
         )
         .subscribe(this.send$);
@@ -71,27 +96,36 @@ export default class Messenger {
     });
   }
 
-  _connect(): Promise<void> {
+  waitForReady(): Promise<void> {
     return new Promise((resolve, reject) => {
+      let subscription: Subscription | undefined;
       const timer = setTimeout(() => {
+        subscription?.unsubscribe();
         reject(new Error('messenger connection timeout'));
-      }, 60 * 1000);
+      }, 20 * 1000);
 
-      const subscription = interval(500)
-        .pipe(
-          tap(() => {
-            this.send('ping', 'ping');
-          }),
-          takeUntil(this.listen('ping')),
-        )
-        .subscribe({
-          complete: () => {
-            subscription.unsubscribe();
-            clearTimeout(timer);
-            this.connected = true;
-            resolve();
-          },
-        });
+      if (this.isSubWin) {
+        subscription = interval(200)
+          .pipe(
+            tap(() => this.send('ping', 'ping')),
+            takeUntil(this.listen('ping')),
+          )
+          .subscribe({
+            complete: () => {
+              subscription?.unsubscribe();
+              clearTimeout(timer);
+              this.connected = true;
+              resolve();
+            },
+          });
+      } else {
+        this.listen('ping').subscribe(() => {
+          this.send('ping', 'ping');
+          clearTimeout(timer);
+          this.connected = true;
+          resolve();
+        })
+      }
     });
   }
 
@@ -105,12 +139,18 @@ export default class Messenger {
     this.send$.next({
       message: { type, data },
       seq: this.nextSeq(),
+      name: this.name,
     });
   }
 
   listen<T>(type: string): Observable<T> {
     return this.receive$.pipe(
-      filter((frame) => frame.message.type === type),
+      filter((frame) => {
+        if (frame.message) {
+          return frame.message.type === type;
+        }
+        return false;
+      }),
       map(({ message }) => message.data as T),
     );
   }
@@ -135,7 +175,7 @@ export default class Messenger {
       });
     });
 
-    this.send$.next({ message: { type, data }, seq });
+    this.send$.next({ message: { type, data }, seq, name: this.name });
 
     return wait;
   }

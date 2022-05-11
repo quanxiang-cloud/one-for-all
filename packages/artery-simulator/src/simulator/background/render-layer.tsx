@@ -4,7 +4,8 @@ import NodeRender from './node-render';
 import useElementsRadar from './use-radar-ref';
 import { Artery } from '@one-for-all/artery';
 import { ContourNodesReport } from '../../types';
-import { useArtery } from '../bridge';
+import { artery$ } from '../bridge';
+import { useBehaviorSubjectState } from '../utils';
 
 interface Props {
   plugins?: Plugins;
@@ -14,7 +15,7 @@ interface Props {
 }
 
 export default function RenderLayer({ artery, plugins, rootElement, onReport }: Props): JSX.Element | null {
-  const _artery = useArtery();
+  const _artery = useBehaviorSubjectState(artery$);
   const { ctx, rootNode } = useBootResult(artery || _artery, plugins) || {};
   useElementsRadar(rootElement, onReport);
 

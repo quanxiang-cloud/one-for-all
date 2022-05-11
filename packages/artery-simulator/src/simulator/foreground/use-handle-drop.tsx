@@ -6,7 +6,8 @@ import { insertNode, jsonParse, moveNode } from './helper';
 import duplicateNode from './toolbar/duplicate-node';
 import { filter, map } from 'rxjs';
 import { DND_DATA_TRANSFER_TYPE_ARTERY_NODE, DND_DATA_TRANSFER_TYPE_NODE_ID } from '../constants';
-import { onChangeArtery, useArtery } from '../bridge';
+import { artery$, onChangeArtery } from '../bridge';
+import { useBehaviorSubjectState } from '../utils';
 
 interface MoveNodeRequest {
   type: 'move_node_request';
@@ -22,7 +23,7 @@ type DropRequest = MoveNodeRequest | DropNodeRequest;
 
 export default function useHandleDrop(): void {
   const rootNode = useRecoilValue(immutableNodeState);
-  const artery = useArtery();
+  const artery = useBehaviorSubjectState(artery$);
 
   function getDropRequest(dataTransfer: DataTransfer): DropRequest | undefined {
     const draggingNodeID = dataTransfer.getData(DND_DATA_TRANSFER_TYPE_NODE_ID);
