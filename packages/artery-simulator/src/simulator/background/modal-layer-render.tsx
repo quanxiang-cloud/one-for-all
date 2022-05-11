@@ -6,11 +6,11 @@ import { Artery, Node } from '@one-for-all/artery';
 import SimulatorLayerCtx, { createLayerContextVal } from './context';
 import { ContourNodesReport } from '../../types';
 import RenderLayer from './render-layer';
+import { useArtery } from '../bridge';
 
 import './index.scss';
 
 interface Props {
-  artery: Artery;
   plugins?: Plugins;
   activeModalLayer?: ImmutableNode;
   rootElement: HTMLElement;
@@ -34,12 +34,12 @@ function useModalLayerArtery(artery: Artery, activeModalLayer?: ImmutableNode): 
 }
 
 function ModalLayerRender({
-  artery,
   plugins,
   rootElement,
   activeModalLayer,
   onModalLayerReport,
 }: Props): JSX.Element | null {
+  const artery = useArtery();
   const modalLayerArtery = useModalLayerArtery(artery, activeModalLayer);
   const modalLayerContextValue = useMemo(() => createLayerContextVal(), []);
 

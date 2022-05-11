@@ -4,16 +4,18 @@ import NodeRender from './node-render';
 import useElementsRadar from './use-radar-ref';
 import { Artery } from '@one-for-all/artery';
 import { ContourNodesReport } from '../../types';
+import { useArtery } from '../bridge';
 
 interface Props {
-  artery: Artery;
   plugins?: Plugins;
   rootElement: HTMLElement;
   onReport: (report?: ContourNodesReport) => void;
+  artery?: Artery;
 }
 
 export default function RenderLayer({ artery, plugins, rootElement, onReport }: Props): JSX.Element | null {
-  const { ctx, rootNode } = useBootResult(artery, plugins) || {};
+  const _artery = useArtery();
+  const { ctx, rootNode } = useBootResult(artery || _artery, plugins) || {};
   useElementsRadar(rootElement, onReport);
 
   if (!ctx || !rootNode) {

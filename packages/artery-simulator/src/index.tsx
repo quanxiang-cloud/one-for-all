@@ -6,7 +6,7 @@ import Messenger, { Message } from './messenger';
 import { MESSAGE_TYPE_ARTERY, MESSAGE_TYPE_CHECK_NODE_IS_MODAL_ROOT, MESSAGE_TYPE_CHECK_NODE_SUPPORT_CHILDREN } from './simulator/constants';
 import { Artery } from '@one-for-all/artery';
 
-import rootartery from '../../example/src/root-artery';
+// import rootartery from '../../example/src/root-artery';
 import { NodePrimary } from './types';
 
 type Props = {
@@ -37,12 +37,12 @@ function Simulator({ artery }: Props): JSX.Element {
           });
         }
       });
-      messenger._connect().then(() => {
-        messenger.send({
-          type: MESSAGE_TYPE_ARTERY,
-          data: rootartery
-        })
-      });
+      // messenger._connect().then(() => {
+      //   messenger.send({
+      //     type: MESSAGE_TYPE_ARTERY,
+      //     data: rootartery
+      //   })
+      // });
     }
   }, []);
 

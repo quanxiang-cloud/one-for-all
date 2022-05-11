@@ -7,18 +7,16 @@ import { Artery, Node } from '@one-for-all/artery';
 
 import Background from './background';
 import Foreground from './foreground';
-import { ArteryCtx } from './contexts';
 import { NodePrimary } from '../types';
 import GreenZone from './green-zone';
 import { contourNodesReport$, immutableNodeState, modalLayerContourNodesReport$ } from './atoms';
 import useModalLayers from './use-modal-layers';
 
 import './index.scss';
+import { useArtery } from './bridge';
 
 export interface Props {
-  artery: Artery;
   setActiveNode: (node?: Node) => void;
-  onChange: (artery: Artery) => void;
   activeNode?: Node;
   // modal layer root node id
   activeModalLayer?: string;
@@ -28,23 +26,15 @@ export interface Props {
   className?: string;
   isNodeSupportChildren: (node: NodePrimary) => Promise<boolean>;
   isNodeInModalLayer: (node: NodePrimary) => Promise<boolean>;
-  onDropFile?: (file: File) => Promise<string>;
 }
 
 function Simulator({
-  artery,
-  onChange,
-
   className,
-  setActiveNode,
-  activeNode,
   activeModalLayer,
 
   plugins,
-  isNodeSupportChildren,
-  isNodeInModalLayer,
-  onDropFile,
 }: Props): JSX.Element {
+  const artery = useArtery();
   const setImmutableNode = useSetRecoilState(immutableNodeState);
   const [rootElement, setRootElement] = useState<HTMLDivElement | null>(null);
   const modalLayerRoots = useModalLayers();
@@ -54,35 +44,21 @@ function Simulator({
   }, [artery]);
 
   return (
-    <ArteryCtx.Provider
-      value={{
-        artery,
-        rootNodeID: artery.node.id,
-        activeNode,
-        setActiveNode,
-        isNodeSupportChildren,
-        isNodeInModalLayer,
-        onDropFile,
-        onChange,
-      }}
-    >
-      <div ref={(ref) => ref && setRootElement(ref)} className={cs('artery-simulator-root', className)}>
-        {rootElement && (
-          <Background
-            artery={artery}
-            plugins={plugins}
-            rootElement={rootElement}
-            onReport={(report) => contourNodesReport$.next(report)}
-            onModalLayerReport={(report) => modalLayerContourNodesReport$.next(report)}
-            activeModalLayer={modalLayerRoots.find(
-              (layerRoot) => layerRoot.getIn(['id']) === activeModalLayer,
-            )}
-          />
-        )}
-        <GreenZone />
-        <Foreground />
-      </div>
-    </ArteryCtx.Provider>
+    <div ref={(ref) => ref && setRootElement(ref)} className={cs('artery-simulator-root', className)}>
+      {rootElement && (
+        <Background
+          plugins={plugins}
+          rootElement={rootElement}
+          onReport={(report) => contourNodesReport$.next(report)}
+          onModalLayerReport={(report) => modalLayerContourNodesReport$.next(report)}
+          activeModalLayer={modalLayerRoots.find(
+            (layerRoot) => layerRoot.getIn(['id']) === activeModalLayer,
+          )}
+        />
+      )}
+      <GreenZone />
+      <Foreground />
+    </div>
   );
 }
 

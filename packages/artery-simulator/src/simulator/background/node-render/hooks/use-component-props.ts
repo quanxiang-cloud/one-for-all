@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 import { CTX, ReactComponentNode, useInstantiateProps } from '@one-for-all/artery-renderer';
 
-import { ArteryCtx } from '../../../contexts';
 import useComponentWrapperRef from './use-component-wrapper-ref';
+import { useArteryRootNodeID } from 'src/simulator/utils';
 
 function useComponentNodeProps(
   node: ReactComponentNode,
@@ -13,7 +13,7 @@ function useComponentNodeProps(
   // use legacy state ref instead of RefObj
   // in order to let useFirstElementChild return the right value
   const setWrapperElement = useComponentWrapperRef(node, depth);
-  const { rootNodeID } = useContext(ArteryCtx);
+  const rootNodeID = useArteryRootNodeID();
 
   return {
     nodeProps,

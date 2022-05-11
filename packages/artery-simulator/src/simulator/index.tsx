@@ -4,7 +4,6 @@ import { RecoilRoot } from 'recoil';
 
 import Simulator from './simulator';
 import {
-  onChange,
   setActiveModalLayer,
   setActiveNode,
   useActiveModalLayer,
@@ -12,6 +11,7 @@ import {
   useArtery,
   checkNodeSupportChildren,
   checkNodeIsModalRoot,
+  dummy_artery_root_node_id,
 } from './bridge';
 
 // todo plugin
@@ -20,16 +20,14 @@ function App(): JSX.Element {
   const activeNode = useActiveNode();
   const activeModalLayer = useActiveModalLayer();
 
-  if (!artery) {
+  if (artery.node.id === dummy_artery_root_node_id) {
     return <div>waiting...</div>;
   }
 
   return (
     <RecoilRoot>
       <Simulator
-        artery={artery}
         setActiveNode={setActiveNode}
-        onChange={onChange}
         activeNode={activeNode}
         activeModalLayer={activeModalLayer}
         setActiveModalLayer={setActiveModalLayer}

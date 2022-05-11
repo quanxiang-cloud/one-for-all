@@ -11,7 +11,6 @@ import ModalLayerRender from './modal-layer-render';
 import './index.scss';
 
 interface Props {
-  artery: Artery;
   plugins?: Plugins;
   activeModalLayer?: ImmutableNode;
   rootElement: HTMLElement;
@@ -38,7 +37,6 @@ function useModalLayerArtery(artery: Artery, activeModalLayer?: ImmutableNode): 
 const rootSimulatorLayerCtxValue = createLayerContextVal();
 
 function Background({
-  artery,
   plugins,
   rootElement,
   onReport,
@@ -48,11 +46,10 @@ function Background({
   return (
     <>
       <SimulatorLayerCtx.Provider value={rootSimulatorLayerCtxValue}>
-        <RenderLayer artery={artery} plugins={plugins} rootElement={rootElement} onReport={onReport} />
+        <RenderLayer plugins={plugins} rootElement={rootElement} onReport={onReport} />
       </SimulatorLayerCtx.Provider>
       <ModalLayerRender
         activeModalLayer={activeModalLayer}
-        artery={artery}
         plugins={plugins}
         rootElement={rootElement}
         onModalLayerReport={onModalLayerReport}

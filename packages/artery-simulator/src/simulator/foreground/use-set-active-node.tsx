@@ -1,12 +1,11 @@
-import { useCallback, useContext } from 'react';
+import { useCallback } from 'react';
 import { immutableNodeState } from '../atoms';
 import { useRecoilValue } from 'recoil';
 import { byArbitrary } from '@one-for-all/artery-utils';
-import { ArteryCtx } from '../contexts';
+import { setActiveNode } from '../bridge';
 
 export default function useSetActiveNode(): (nodeID: string) => void {
   const rootNode = useRecoilValue(immutableNodeState);
-  const { setActiveNode } = useContext(ArteryCtx);
 
   return useCallback(
     (nodeID: string) => {

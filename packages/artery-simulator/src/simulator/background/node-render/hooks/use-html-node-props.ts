@@ -3,14 +3,13 @@ import { CTX, HTMLNode } from '@one-for-all/artery-renderer';
 import { useInstantiateProps } from '@one-for-all/artery-renderer';
 
 import { register, unregister } from './use-element-registration';
-import { ArteryCtx } from '../../../contexts';
-import { getNodeExecutor } from '../../../utils';
+import { getNodeExecutor, useArteryRootNodeID } from '../../../utils';
 import SimulatorLayerCtx from '../../context';
 
 export default function useHTMLNodeProps(node: HTMLNode, ctx: CTX, depth: number): Record<string, unknown> {
   const props = useInstantiateProps(node, ctx);
   const [ref, setRef] = useState<HTMLElement>();
-  const { rootNodeID } = useContext(ArteryCtx);
+  const rootNodeID = useArteryRootNodeID();
   const layerCtx = useContext(SimulatorLayerCtx);
 
   useEffect(() => {

@@ -12,10 +12,14 @@ import {
 } from './constants';
 
 export const messenger = new Messenger(window, {});
-messenger._connect()
+messenger._connect();
 
-export function useArtery(): Artery | undefined {
-  const [artery, setArtery] = useState<Artery>();
+export const dummy_artery_root_node_id = 'DUMMY_ARTERY_ROOT_NODE_ID';
+
+export function useArtery(): Artery {
+  const [artery, setArtery] = useState<Artery>({
+    node: { id: dummy_artery_root_node_id, type: 'html-element', name: 'div' }
+  });
   useEffect(() => {
     messenger.listen<Artery>(MESSAGE_TYPE_ARTERY).subscribe(setArtery);
   }, []);
@@ -49,7 +53,7 @@ export function setActiveModalLayer(nodeID: string | undefined): void {
   messenger.send({ type: MESSAGE_TYPE_ACTIVE_MODAL_LAYER, data: nodeID });
 }
 
-export function onChange(artery: Artery): void {
+export function onChangeArtery(artery: Artery): void {
   messenger.send({ type: MESSAGE_TYPE_ARTERY, data: artery });
 }
 

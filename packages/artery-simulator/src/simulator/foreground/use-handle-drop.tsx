@@ -3,10 +3,10 @@ import { useContext, useEffect } from 'react';
 import { Node } from '@one-for-all/artery';
 import { immutableNodeState, latestFocusedGreenZone$, onDropEvent$ } from '../atoms';
 import { insertNode, jsonParse, moveNode } from './helper';
-import { ArteryCtx } from '../contexts';
 import duplicateNode from './toolbar/duplicate-node';
 import { filter, map } from 'rxjs';
 import { DND_DATA_TRANSFER_TYPE_ARTERY_NODE, DND_DATA_TRANSFER_TYPE_NODE_ID } from '../constants';
+import { onChangeArtery, useArtery } from '../bridge';
 
 interface MoveNodeRequest {
   type: 'move_node_request';
@@ -22,7 +22,7 @@ type DropRequest = MoveNodeRequest | DropNodeRequest;
 
 export default function useHandleDrop(): void {
   const rootNode = useRecoilValue(immutableNodeState);
-  const { onChange, artery } = useContext(ArteryCtx);
+  const artery = useArtery();
 
   function getDropRequest(dataTransfer: DataTransfer): DropRequest | undefined {
     const draggingNodeID = dataTransfer.getData(DND_DATA_TRANSFER_TYPE_NODE_ID);
@@ -65,11 +65,11 @@ export default function useHandleDrop(): void {
         filter((newRoot) => !!newRoot),
       )
       .subscribe((node) => {
-        onChange({ ...artery, node: node as unknown as Node });
+        onChangeArtery({ ...artery, node: node as unknown as Node });
       });
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [artery, onChange, rootNode]);
+  }, [artery, rootNode]);
 }

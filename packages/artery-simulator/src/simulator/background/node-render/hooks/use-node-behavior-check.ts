@@ -7,19 +7,18 @@ import {
   _checkIfNodeIsModalLayer,
   _checkIfNodeSupportChildren,
 } from '../../../cache';
-import { ArteryCtx } from '../../../contexts';
 import { HTMLNode, ReactComponentNode } from '@one-for-all/artery-renderer';
+import { checkNodeSupportChildren, checkNodeIsModalRoot } from '../../../bridge';
 
 function asyncCheckIfNodeSupportChildren(
   node: NodePrimary,
-  checker: (node: NodePrimary) => Promise<boolean>,
 ): Promise<boolean> {
   const flag = _checkIfNodeSupportChildren(node);
   if (flag !== undefined) {
     return Promise.resolve(flag);
   }
 
-  return checker(node).then((isSupportChildren) => {
+  return checkNodeSupportChildren(node).then((isSupportChildren) => {
     _cacheIsNodeSupportChildren(node, isSupportChildren);
 
     return isSupportChildren;
@@ -28,14 +27,13 @@ function asyncCheckIfNodeSupportChildren(
 
 function asyncCheckIfNodeShouldRenderInModalLayer(
   node: NodePrimary,
-  checker: (node: NodePrimary) => Promise<boolean>,
 ): Promise<boolean> {
   const flag = _checkIfNodeIsModalLayer(node);
   if (flag !== undefined) {
     return Promise.resolve(flag);
   }
 
-  return checker(node).then((isModalLayerRoot) => {
+  return checkNodeIsModalRoot(node).then((isModalLayerRoot) => {
     _cacheNodeIsModalLayer(node, isModalLayerRoot);
     return isModalLayerRoot;
   });
@@ -43,16 +41,14 @@ function asyncCheckIfNodeShouldRenderInModalLayer(
 
 // check node support children and whether should be rendered in modal layer
 export default function useNodeBehaviorCheck(node: HTMLNode | ReactComponentNode): boolean {
-  const { isNodeSupportChildren, isNodeInModalLayer } = useContext(ArteryCtx);
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let unMounting = false;
 
     Promise.all([
-      asyncCheckIfNodeSupportChildren(node, isNodeSupportChildren),
-      asyncCheckIfNodeShouldRenderInModalLayer(node, isNodeInModalLayer),
+      asyncCheckIfNodeSupportChildren(node),
+      asyncCheckIfNodeShouldRenderInModalLayer(node),
     ]).then(() => {
       if (!unMounting) {
         setLoading(false);

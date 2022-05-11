@@ -2,13 +2,13 @@ import React, { useContext, useRef } from 'react';
 import { usePopper } from '@one-for-all/headless-ui';
 import { deleteByID, insertAfter } from '@one-for-all/artery-utils';
 
-import { ArteryCtx } from '../../contexts';
 import ParentNodes from './parent-nodes';
 import Icon from '@one-for-all/icon';
 import duplicateNode from './duplicate-node';
 import useToolbarStyle from './use-toolbar-style';
 import { useNodeLabel } from './use-node-label';
 import { useActiveContour } from './use-active-contour';
+import { onChangeArtery, setActiveNode, useActiveNode, useArtery } from '../../bridge';
 
 const modifiers = [
   {
@@ -22,10 +22,10 @@ const modifiers = [
 // render toolbar on another context to prevent it be covered by contour node
 function ContourNodeToolbar(): JSX.Element | null {
   const contourNode = useActiveContour();
-  const { activeNode } = useContext(ArteryCtx);
+  const activeNode = useActiveNode();
   const { referenceRef, Popper, handleMouseEnter, handleMouseLeave, close } = usePopper<HTMLSpanElement>();
   const containerRef = useRef<HTMLDivElement>(null);
-  const { artery, setActiveNode, onChange } = useContext(ArteryCtx);
+  const artery = useArtery();
   const style = useToolbarStyle(contourNode);
   const activeNodeLabel = useNodeLabel(activeNode);
 
@@ -35,7 +35,7 @@ function ContourNodeToolbar(): JSX.Element | null {
     }
 
     const newRoot = deleteByID(artery.node, contourNode.id);
-    onChange({ ...artery, node: newRoot });
+    onChangeArtery({ ...artery, node: newRoot });
     setActiveNode(undefined);
   }
 
@@ -49,7 +49,7 @@ function ContourNodeToolbar(): JSX.Element | null {
     if (!newRoot) {
       return;
     }
-    onChange({ ...artery, node: newRoot });
+    onChangeArtery({ ...artery, node: newRoot });
     // this really annoying if changed the active node, so comment below line
     // setActiveNode(newNode);
   }
