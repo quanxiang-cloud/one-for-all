@@ -335,12 +335,13 @@ test('useShouldRender_should_return_expected_value_according_computed_state', ()
         },
       ],
       fallback: false,
-      convertor: () => {
-        const loading = dummyCTX.statesHubAPI.getState$('some_api_state').value.loading;
-        const sharedState = dummyCTX.statesHubShared.getState$('visible').value;
-        const nodeState = dummyCTX.statesHubShared.getNodeState$(nodePath).value;
+      convertor: (states) => {
+        const _states = states as Record<string, any>;
+        const sharedState = _states.visible;
+        const nodeState = _states[`${nodePath}`];
+        const loading = _states.some_api_state.loading;
 
-        return loading || sharedState || nodeState;
+        return  sharedState || nodeState || loading;
       },
     },
   };
@@ -408,12 +409,12 @@ test('useShouldRender_should_return_Init_value_according_computed_state', () => 
       type: 'computed_property',
       deps: [],
       fallback: false,
-      convertor: () => {
+      convertor: (states) => {
         const loading = dummyCTX.statesHubAPI.getState$('some_api_state').value.loading;
         const sharedState = dummyCTX.statesHubShared.getState$('visible').value;
         const nodeState = dummyCTX.statesHubShared.getNodeState$(nodePath).value;
 
-        return loading || sharedState || nodeState;
+        return sharedState || nodeState || loading;
       },
     },
   };
