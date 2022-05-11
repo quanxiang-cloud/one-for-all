@@ -1,8 +1,8 @@
 import { filter, find, from, interval, map, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
-export interface Message<T = unknown> {
+export interface Message<T = any> {
   type: string;
-  data: unknown;
+  data: T;
 }
 
 interface Frame {

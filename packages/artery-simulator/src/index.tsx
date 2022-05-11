@@ -5,19 +5,32 @@ import Fence from './fence';
 import Messenger, { Message } from './messenger';
 import {
   MESSAGE_TYPE_ARTERY,
-  MESSAGE_TYPE_CHECK_NODE_IS_MODAL_ROOT,
+  MESSAGE_TYPE_ACTIVE_NODE,
+  MESSAGE_TYPE_ACTIVE_MODAL_LAYER,
   MESSAGE_TYPE_CHECK_NODE_SUPPORT_CHILDREN,
+  MESSAGE_TYPE_CHECK_NODE_IS_MODAL_ROOT,
 } from './simulator/constants';
-import { Artery } from '@one-for-all/artery';
+import { Artery, Node } from '@one-for-all/artery';
 
-// import rootartery from '../../example/src/root-artery';
 import { NodePrimary } from './types';
 
-type Props = {
+interface Props {
   artery: Artery;
-};
+  setActiveNode: (node?: Node) => void;
+  onChange: (artery: Artery) => void;
+  activeNode?: Node;
+  // modal layer root node id
+  activeModalLayer?: string;
+  setActiveModalLayer: (activeModalLayer: string) => void;
 
-function Simulator({ artery }: Props): JSX.Element {
+  // todo plugin url
+  plugins?: string;
+  className?: string;
+  isNodeSupportChildren: (node: NodePrimary) => Promise<boolean>;
+  isNodeInModalLayer: (node: NodePrimary) => Promise<boolean>;
+}
+
+function Simulator({ artery, onChange, setActiveNode, isNodeSupportChildren }: Props): JSX.Element {
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
@@ -39,18 +52,24 @@ function Simulator({ artery }: Props): JSX.Element {
         [MESSAGE_TYPE_CHECK_NODE_SUPPORT_CHILDREN]: (
           message: Message<NodePrimary>,
         ): Promise<Message<boolean>> => {
-          return Promise.resolve({
-            type: MESSAGE_TYPE_CHECK_NODE_SUPPORT_CHILDREN,
-            data: true,
+          return isNodeSupportChildren(message.data).then((flag) => {
+            return {
+              type: MESSAGE_TYPE_CHECK_NODE_SUPPORT_CHILDREN,
+              data: flag,
+            }
           });
         },
       });
-      // messenger._connect().then(() => {
-      //   messenger.send({
-      //     type: MESSAGE_TYPE_ARTERY,
-      //     data: rootartery
-      //   })
-      // });
+
+      messenger.listen(MESSAGE_TYPE_ARTERY).subscribe((_artery) => {
+        onChange(_artery as Artery);
+      });
+
+      messenger.listen(MESSAGE_TYPE_ACTIVE_NODE).subscribe((_activeNode) => {
+        setActiveNode(_activeNode as Node);
+      });
+
+      messenger._connect().then(() => {});
     }
   }, []);
 
