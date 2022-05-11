@@ -11,7 +11,7 @@ import {
   MESSAGE_TYPE_CHECK_NODE_IS_MODAL_ROOT,
 } from './constants';
 
-export const messenger = new Messenger(window, {});
+export const messenger = new Messenger(window);
 messenger._connect();
 
 export const dummy_artery_root_node_id = 'DUMMY_ARTERY_ROOT_NODE_ID';
@@ -46,25 +46,23 @@ export function useActiveModalLayer(): string | undefined {
 }
 
 export function setActiveNode(node?: Node): void {
-  messenger.send({ type: MESSAGE_TYPE_ACTIVE_NODE, data: node });
+  messenger.send(MESSAGE_TYPE_ACTIVE_NODE, node);
 }
 
 export function setActiveModalLayer(nodeID: string | undefined): void {
-  messenger.send({ type: MESSAGE_TYPE_ACTIVE_MODAL_LAYER, data: nodeID });
+  messenger.send(MESSAGE_TYPE_ACTIVE_MODAL_LAYER, nodeID);
 }
 
 export function onChangeArtery(artery: Artery): void {
-  messenger.send({ type: MESSAGE_TYPE_ARTERY, data: artery });
+  messenger.send(MESSAGE_TYPE_ARTERY, artery);
 }
 
 export function checkNodeSupportChildren(node: NodePrimary): Promise<boolean> {
   return messenger
-    .request({ type: MESSAGE_TYPE_CHECK_NODE_SUPPORT_CHILDREN, data: node })
+    .request(MESSAGE_TYPE_CHECK_NODE_SUPPORT_CHILDREN, node)
     .then(({ data }) => data as boolean);
 }
 
 export function checkNodeIsModalRoot(node: NodePrimary): Promise<boolean> {
-  return messenger
-    .request({ type: MESSAGE_TYPE_CHECK_NODE_IS_MODAL_ROOT, data: node })
-    .then(({ data }) => data as boolean);
+  return messenger.request(MESSAGE_TYPE_CHECK_NODE_IS_MODAL_ROOT, node).then(({ data }) => data as boolean);
 }

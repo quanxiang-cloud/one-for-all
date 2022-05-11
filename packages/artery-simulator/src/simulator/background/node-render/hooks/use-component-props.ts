@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { CTX, ReactComponentNode, useInstantiateProps } from '@one-for-all/artery-renderer';
 
 import useComponentWrapperRef from './use-component-wrapper-ref';
-import { useArteryRootNodeID } from 'src/simulator/utils';
+import { useArteryRootNodeID } from '../../../utils';
 
 function useComponentNodeProps(
   node: ReactComponentNode,

@@ -1,4 +1,16 @@
-import { filter, find, from, interval, map, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import {
+  filter,
+  find,
+  from,
+  interval,
+  map,
+  Observable,
+  Subject,
+  Subscription,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs';
 
 export interface Message<T = any> {
   type: string;
@@ -11,7 +23,7 @@ interface Frame {
   echoSeq?: number;
 }
 
-type Responder = (message: Message) => Promise<Message>;
+type Responder = (data: any) => Promise<any>;
 
 export default class Messenger {
   target: Window;
@@ -20,7 +32,9 @@ export default class Messenger {
   seq = 0;
   connected = false;
 
-  constructor(target: Window, responders: Record<string, Responder>) {
+  responderMap: Record<string, Subscription> = {};
+
+  constructor(target: Window) {
     this.target = target;
 
     this.send$ = new Subject<Frame>();
@@ -33,19 +47,27 @@ export default class Messenger {
     this.send$.subscribe((frame) => {
       this.target.postMessage(frame);
     });
+  }
 
+  addResponders(responders: Record<string, Responder>): void {
     Object.entries(responders).forEach(([type, responder]) => {
-      this.receive$
+      const subscription = this.receive$
         .pipe(
           filter((frame) => frame.message.type === type),
-          switchMap(({ message, seq }) => from(Promise.all([responder(message), Promise.resolve(seq)]))),
-          map(([responseMessage, echoSeq]) => ({
-            message: responseMessage,
+          switchMap(({ message, seq }) => from(Promise.all([responder(message.data), Promise.resolve(seq)]))),
+          map(([response, echoSeq]) => ({
+            message: { type: `echo_${type}`, data: response },
             echoSeq,
             seq: this.nextSeq(),
           })),
         )
         .subscribe(this.send$);
+
+      if (this.responderMap[type]) {
+        this.responderMap[type].unsubscribe();
+      }
+
+      this.responderMap[type] = subscription;
     });
   }
 
@@ -58,7 +80,7 @@ export default class Messenger {
       const subscription = interval(500)
         .pipe(
           tap(() => {
-            this.send({ type: 'ping', data: 'ping' });
+            this.send('ping', 'ping');
           }),
           takeUntil(this.listen('ping')),
         )
@@ -79,9 +101,9 @@ export default class Messenger {
     return this.seq;
   }
 
-  send(message: Message): void {
+  send(type: string, data: any): void {
     this.send$.next({
-      message: message,
+      message: { type, data },
       seq: this.nextSeq(),
     });
   }
@@ -93,11 +115,11 @@ export default class Messenger {
     );
   }
 
-  request(message: Message): Promise<Message> {
+  request(type: string, data: any): Promise<any> {
     const seq = this.nextSeq();
     const wait = new Promise<Message>((resolve, reject) => {
       const timer = setTimeout(() => {
-        reject(new Error(`messenger request timeout, request message type is: ${message.type}`));
+        reject(new Error(`messenger request timeout, request message type is: ${type}`));
       }, 10 * 1000);
 
       const subscription = this.receive$.pipe(find(({ echoSeq }) => echoSeq === seq)).subscribe((frame) => {
@@ -113,7 +135,7 @@ export default class Messenger {
       });
     });
 
-    this.send$.next({ message: message, seq });
+    this.send$.next({ message: { type, data }, seq });
 
     return wait;
   }
