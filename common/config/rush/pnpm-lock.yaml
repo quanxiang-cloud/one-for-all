@@ -17844,7 +17844,7 @@ packages:
     dev: false
 
   file:projects/artery-renderer.tgz_c445a9d32c5b835fb9c30404148ec5af:
-    resolution: {integrity: sha512-5Ae3kNlMzVIhFGVDYU1sytFOaLgIZ3wF3xPoG9j0UJiud2sFjB6iHXieTF6U3qRDueBe70WEuHqGfXiBkNdgVw==, tarball: file:projects/artery-renderer.tgz}
+    resolution: {integrity: sha512-jR3FT+TthOLIuS10NuhX+utmSJqlQhtGQj72B3YfLNqpPAPpQnaNPnNiJB4kL1E+2WRzY1qcy7AJTVd0ZNwWyw==, tarball: file:projects/artery-renderer.tgz}
     id: file:projects/artery-renderer.tgz
     name: '@rush-temp/artery-renderer'
     version: 0.0.0
@@ -17874,6 +17874,7 @@ packages:
       react-jsx-parser: 1.29.0_react-dom@17.0.2+react@17.0.2
       rollup: 2.66.0
       rollup-plugin-esbuild: 4.8.2_esbuild@0.14.38+rollup@2.66.0
+      rollup-plugin-esbuild-ts: 4.8.2_esbuild@0.14.38+rollup@2.66.0
       rollup-plugin-terser: 7.0.2_rollup@2.66.0
       rxjs: 7.5.5
       ts-jest: 27.1.3_fd6d969551af8ae3ea1cbbb95ec03348
@@ -17895,7 +17896,7 @@ packages:
     dev: false
 
   file:projects/artery-simulator.tgz_d1d7a1f0ff7525dd0d92693a4e80182a:
-    resolution: {integrity: sha512-UA24WqwEukQYzOJzvO2lUh2K54ZT/0YTtZjMFZyt20u8osM6w4mn+DHKXiUOaianBTlF9DeO2UogKxC9H2QmIg==, tarball: file:projects/artery-simulator.tgz}
+    resolution: {integrity: sha512-Zz+FLwv0IXxZjeHM1XcYNSCHTxq6d+LxoRHu7R9xqf0Vd1mtN84E0KM/51Z+dKRmuLy39Z5IXvSHUvzInHjBIw==, tarball: file:projects/artery-simulator.tgz}
     id: file:projects/artery-simulator.tgz
     name: '@rush-temp/artery-simulator'
     version: 0.0.0
@@ -18081,7 +18082,7 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-BDD6H1JnYaTgpc8AJSb01RYiKILIxCj0SBhnf/yKAzOVHAWYTqfvPouEdLGhTXv+uEbXyWvrq7plpgQ+Hks83w==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-Gkjwpv9OqBuBqGgsXtePjf1esWG+CKV4ngV2Mjjl/YURNWMXXZQ56w4sP+K1kYSWpgjzj0diUQn30/tq08Y47g==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
