@@ -99,7 +99,11 @@ onDropEvent$
       }
 
       if (dropRequest.type === 'insert_node_request') {
-        return insertNode({ rootNode:immutableRoot$.value, node: dropRequest.node, greenZone: latestFocusedGreenZone$.value });
+        return insertNode({
+          rootNode: immutableRoot$.value,
+          node: dropRequest.node,
+          greenZone: latestFocusedGreenZone$.value,
+        });
       }
     }),
     map((newRoot) => (newRoot ? newRoot.toJS() : undefined)),
@@ -108,5 +112,3 @@ onDropEvent$
   .subscribe((node) => {
     onChangeArtery({ ...artery$.value, node: node as unknown as Node });
   });
-
-

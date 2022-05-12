@@ -6,7 +6,14 @@ import ParentNodes from './parent-nodes';
 import Icon from '@one-for-all/icon';
 import duplicateNode from './duplicate-node';
 import { useNodeLabel } from './use-node-label';
-import { activeContour$, activeContourToolbarStyle$, activeNode$, artery$, onChangeArtery, setActiveNode } from '../../bridge';
+import {
+  activeContour$,
+  activeContourToolbarStyle$,
+  activeNode$,
+  artery$,
+  onChangeArtery,
+  setActiveNode,
+} from '../../bridge';
 import { useArteryRootNodeID, useBehaviorSubjectState } from '../../utils';
 
 const modifiers = [
@@ -24,7 +31,7 @@ function ContourNodeToolbar(): JSX.Element | null {
   const activeContour = useBehaviorSubjectState(activeContour$);
   const { referenceRef, Popper, handleMouseEnter, handleMouseLeave, close } = usePopper<HTMLSpanElement>();
   const containerRef = useRef<HTMLDivElement>(null);
-  const style = useBehaviorSubjectState(activeContourToolbarStyle$);;
+  const style = useBehaviorSubjectState(activeContourToolbarStyle$);
   const activeNodeLabel = useNodeLabel(activeNode);
   const rootNodeID = useArteryRootNodeID();
 

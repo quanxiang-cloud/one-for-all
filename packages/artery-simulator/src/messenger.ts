@@ -1,3 +1,4 @@
+import { logger } from '@one-for-all/utils';
 import {
   filter,
   find,
@@ -58,13 +59,7 @@ export default class Messenger {
       this.receive$.next(e.data);
       const delta = performance.now() - t1;
       if (delta > 10) {
-        console.log(
-          this.name,
-          'execute on message cost:',
-          delta,
-          'message type:',
-          e.data.type,
-        );
+        logger.log(this.name, 'execute on message cost:', delta, 'message type:', e.data.type);
       }
     });
 

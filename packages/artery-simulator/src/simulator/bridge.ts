@@ -43,31 +43,35 @@ messenger
 
 export const activeContour$ = new BehaviorSubject<ContourNode | undefined>(undefined);
 
-combineLatest({ activeNode: activeNode$, contourNodesReport: contourNodesReport$ }).pipe(
-  map(({ activeNode, contourNodesReport }) => {
-    return contourNodesReport?.contourNodes.find(({ id }) => id === activeNode?.id)
-  }),
-  distinctUntilChanged((p, c) => p?.id === c?.id),
-).subscribe(activeContour$)
+combineLatest({ activeNode: activeNode$, contourNodesReport: contourNodesReport$ })
+  .pipe(
+    map(({ activeNode, contourNodesReport }) => {
+      return contourNodesReport?.contourNodes.find(({ id }) => id === activeNode?.id);
+    }),
+    distinctUntilChanged((p, c) => p?.id === c?.id),
+  )
+  .subscribe(activeContour$);
 
 export const activeContourToolbarStyle$ = new BehaviorSubject<React.CSSProperties | undefined>(undefined);
 
-activeContour$.pipe(
-  filter((n): n is ContourNode => !!n),
-  map(({ absolutePosition, relativeRect }) => {
-    const { x, y, height } = absolutePosition;
+activeContour$
+  .pipe(
+    filter((n): n is ContourNode => !!n),
+    map(({ absolutePosition, relativeRect }) => {
+      const { x, y, height } = absolutePosition;
 
-    if (relativeRect?.y < 40) {
+      if (relativeRect?.y < 40) {
+        return {
+          transform: `translate(${x + 4}px, ${y + height}px)`,
+        };
+      }
+
       return {
-        transform: `translate(${x + 4}px, ${y + height}px)`,
+        transform: `translate(${x + 4}px, ${y}px)`,
       };
-    }
-
-    return {
-      transform: `translate(${x + 4}px, ${y}px)`,
-    };
-  })
-).subscribe(activeContourToolbarStyle$);
+    }),
+  )
+  .subscribe(activeContourToolbarStyle$);
 
 export const activeModalLayer$ = new BehaviorSubject<string | undefined>(undefined);
 messenger.listen<string | undefined>(MESSAGE_TYPE_ACTIVE_MODAL_LAYER).subscribe(activeModalLayer$);

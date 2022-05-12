@@ -20,7 +20,6 @@ import useShouldHandleDndCallback from './use-should-handle-dnd-callback';
 import { DND_DATA_TRANSFER_TYPE_NODE_ID } from '../constants';
 import { activeContour$, immutableRoot$, setActiveNode } from '../bridge';
 
-
 function preventDefault(e: any): false {
   e.preventDefault();
   e.stopPropagation();
@@ -35,13 +34,17 @@ function useWhetherActive(currentID: string): boolean {
   const [flag, setFlag] = useState(false);
 
   useEffect(() => {
-    const subscription = activeContour$.pipe(
-      map((activeContour) => activeContour?.id === currentID),
-      distinctUntilChanged(),
-    ).subscribe(setFlag);
+    const subscription = activeContour$
+      .pipe(
+        map((activeContour) => activeContour?.id === currentID),
+        distinctUntilChanged(),
+      )
+      .subscribe(setFlag);
 
-    return () => { subscription.unsubscribe() };
-  }, [])
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   return flag;
 }

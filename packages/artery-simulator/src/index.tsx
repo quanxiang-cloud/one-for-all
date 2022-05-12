@@ -19,6 +19,8 @@ function buildHeadElements(pluginsSrc: string): InjectElement[] {
       innerText: s,
     }));
 
+  const patchSrc = pluginsSrc.startsWith('http') ? pluginsSrc : `${window.origin}${pluginsSrc}`;
+
   return importMaps.concat([
     // todo fix me
     {
@@ -26,7 +28,7 @@ function buildHeadElements(pluginsSrc: string): InjectElement[] {
       attrs: { type: 'systemjs-importmap' },
       innerText: `{
         "imports": {
-          "TEMPORARY_PATCH_FOR_ARTERY_PLUGINS": "${window.origin}${pluginsSrc}"
+          "TEMPORARY_PATCH_FOR_ARTERY_PLUGINS": "${patchSrc}"
         }
       }`,
     },

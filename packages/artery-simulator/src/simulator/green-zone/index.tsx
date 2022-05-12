@@ -11,12 +11,12 @@ function useInDnd(): boolean {
   const [flag, setFlag] = useState(false);
 
   useEffect(() => {
-    const subscription = inDnd$.pipe(
-      distinctUntilChanged(),
-    ).subscribe(setFlag);
+    const subscription = inDnd$.pipe(distinctUntilChanged()).subscribe(setFlag);
 
-    return () => { subscription.unsubscribe() };
-  }, [])
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   return flag;
 }
