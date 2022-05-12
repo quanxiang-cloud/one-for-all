@@ -25,21 +25,6 @@ export default class Fence {
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Document</title>
-      <script>
-        function sendMessageToParent(message) {
-          window.postMessage({ type: 'custom', message })
-        }
-
-        function addMessageListener(listener) {
-          window.addEventListener('message', (e) => {
-            if (e.data && Reflect.get(e.data, 'type') === 'custom') {
-              listener(e.data.message);
-            }
-          })
-        }
-
-        window.FENCE = { sendMessageToParent, addMessageListener }
-      </script>
       <script type="systemjs-importmap">
       {
         "imports": {
@@ -74,6 +59,7 @@ export default class Fence {
           "@one-for-all/style-guide": "/pkg/style-guide/dist/@one-for-all/style-guide@0.1.5/index.js",
           "@one-for-all/ui": "/pkg/ui/dist/@one-for-all/ui@latest/index.min.js",
           "@one-for-all/utils": "/pkg/utils/dist/@one-for-all/utils@latest/index.min.js",
+          "temporaryPlugins": "/dist/temporaryPlugins.js",
           "csslint": "/pkg/style-guide/dist/@one-for-all/style-guide@0.1.5/csslint.js"
         }
       }
@@ -109,20 +95,8 @@ export default class Fence {
       return;
     }
     const script = doc.createElement('script');
-    script.type = 'systemjs-module';
+    // script.type = 'systemjs-module';
     script.src = src;
     doc.body.appendChild(script);
-  }
-
-  public addMessageListener(listener: (message: any) => void): void {
-    this.iframe.contentWindow?.addEventListener('message', (e) => {
-      if (e.data && Reflect.get(e.data, 'type') === Message.custom) {
-        listener(e.data.message);
-      }
-    });
-  }
-
-  public postMessage(message: any): void {
-    this.iframe.contentWindow?.postMessage({ type: Message.custom, message });
   }
 }

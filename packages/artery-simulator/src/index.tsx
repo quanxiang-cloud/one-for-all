@@ -26,15 +26,16 @@ interface Props {
 }
 
 function Simulator({
-  artery,
-  onChange,
-  activeNode,
-  setActiveNode,
   activeModalLayer,
-  setActiveModalLayer,
-  isNodeSupportChildren,
-  isNodeInModalLayer,
+  activeNode,
+  artery,
   className,
+  isNodeInModalLayer,
+  isNodeSupportChildren,
+  onChange,
+  plugins,
+  setActiveModalLayer,
+  setActiveNode,
 }: Props): JSX.Element {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const messengerRef = useRef<Messenger>();

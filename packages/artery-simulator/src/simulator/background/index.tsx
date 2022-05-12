@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import type { ImmutableNode } from '@one-for-all/artery-utils';
-import { Plugins } from '@one-for-all/artery-renderer';
+import Plugins from 'temporaryPlugins';
 import { Artery, Node } from '@one-for-all/artery';
 
 import SimulatorLayerCtx, { createLayerContextVal } from './context';
@@ -11,7 +11,6 @@ import ModalLayerRender from './modal-layer-render';
 import './index.scss';
 
 interface Props {
-  plugins?: Plugins;
   activeModalLayer?: ImmutableNode;
   rootElement: HTMLElement;
   onReport: (report?: ContourNodesReport) => void;
@@ -37,7 +36,6 @@ function useModalLayerArtery(artery: Artery, activeModalLayer?: ImmutableNode): 
 const rootSimulatorLayerCtxValue = createLayerContextVal();
 
 function Background({
-  plugins,
   rootElement,
   onReport,
   activeModalLayer,
@@ -47,14 +45,14 @@ function Background({
     <>
       <SimulatorLayerCtx.Provider value={rootSimulatorLayerCtxValue}>
         <RenderLayer
-          plugins={plugins}
+          plugins={Plugins}
           rootElement={rootElement}
           onReport={onReport}
         />
       </SimulatorLayerCtx.Provider>
       <ModalLayerRender
         activeModalLayer={activeModalLayer}
-        plugins={plugins}
+        plugins={Plugins}
         rootElement={rootElement}
         onModalLayerReport={onModalLayerReport}
       />
