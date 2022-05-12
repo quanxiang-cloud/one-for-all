@@ -11,29 +11,33 @@ import { Artery, Node } from '@one-for-all/artery';
 import { NodePrimary } from './types';
 
 export function useSyncResponders(
-  messengerRef: React.MutableRefObject<Messenger | undefined>,
+  messenger: Messenger | undefined,
   isNodeInModalLayer: (node: NodePrimary) => Promise<boolean>,
   isNodeSupportChildren: (node: NodePrimary) => Promise<boolean>,
 ) {
   useEffect(() => {
-    messengerRef.current?.addResponders({
+    if (!messenger) {
+      return;
+    }
+
+    messenger.addResponders({
       [MESSAGE_TYPE_CHECK_NODE_IS_MODAL_ROOT]: isNodeInModalLayer,
       [MESSAGE_TYPE_CHECK_NODE_SUPPORT_CHILDREN]: isNodeSupportChildren,
     });
-  }, [isNodeInModalLayer, isNodeSupportChildren]);
+  }, [isNodeInModalLayer, isNodeSupportChildren, messenger]);
 }
 
 export function useSyncActiveModalLayer(
-  messengerRef: React.MutableRefObject<Messenger | undefined>,
+  messenger: Messenger | undefined,
   setActiveModalLayer: (activeModalLayer?: string | undefined) => void,
   activeModalLayer: string | undefined,
 ) {
   useEffect(() => {
-    if (!messengerRef.current) {
+    if (!messenger) {
       return;
     }
 
-    const subscription = messengerRef.current
+    const subscription = messenger
       .listen(MESSAGE_TYPE_ACTIVE_MODAL_LAYER)
       .subscribe((activeModalRootID) => {
         setActiveModalLayer(activeModalRootID as string);
@@ -42,62 +46,73 @@ export function useSyncActiveModalLayer(
     return () => {
       subscription.unsubscribe();
     };
-  }, [setActiveModalLayer]);
+  }, [setActiveModalLayer, messenger]);
 
   useEffect(() => {
-    messengerRef.current?.send(MESSAGE_TYPE_ACTIVE_MODAL_LAYER, activeModalLayer);
-  }, [activeModalLayer]);
+    if (!messenger) {
+      return;
+    }
+
+    messenger.send(MESSAGE_TYPE_ACTIVE_MODAL_LAYER, activeModalLayer);
+  }, [activeModalLayer, messenger]);
 }
 
 export function useSyncActiveNode(
-  messengerRef: React.MutableRefObject<Messenger | undefined>,
+  messenger: Messenger | undefined,
   setActiveNode: (node?: Node | undefined) => void,
   activeNode: Node | undefined,
 ) {
   const activeNodeID = useRef<string>();
 
   useEffect(() => {
-    if (!messengerRef.current) {
+    if (!messenger) {
       return;
     }
 
-    const subscription = messengerRef.current.listen(MESSAGE_TYPE_ACTIVE_NODE).subscribe((_activeNode) => {
+    const subscription = messenger.listen(MESSAGE_TYPE_ACTIVE_NODE).subscribe((_activeNode) => {
       setActiveNode(_activeNode as Node);
     });
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [setActiveNode]);
+  }, [setActiveNode, messenger]);
 
   useEffect(() => {
+    if (!messenger) {
+      return;
+    }
     if (activeNodeID.current !== activeNode?.id) {
-      messengerRef.current?.send(MESSAGE_TYPE_ACTIVE_NODE, activeNode);
+      messenger.send(MESSAGE_TYPE_ACTIVE_NODE, activeNode);
       activeNodeID.current = activeNode?.id;
     }
-  }, [activeNode]);
+  }, [activeNode, messenger]);
 }
 
 export function useSyncArtery(
-  messengerRef: React.MutableRefObject<Messenger | undefined>,
+  messenger: Messenger | undefined,
   onChange: (artery: Artery) => void,
   artery: Artery,
 ) {
   useEffect(() => {
-    if (!messengerRef.current) {
+    if (!messenger) {
       return;
     }
 
-    const subscription = messengerRef.current.listen(MESSAGE_TYPE_ARTERY).subscribe((_artery) => {
+    const subscription = messenger.listen(MESSAGE_TYPE_ARTERY).subscribe((_artery) => {
       onChange(_artery as Artery);
     });
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [onChange]);
+  }, [onChange, messenger]);
 
   useEffect(() => {
-    messengerRef.current?.send(MESSAGE_TYPE_ARTERY, artery);
-  }, [artery]);
+    if (!messenger) {
+      return;
+    }
+
+    messenger.send(MESSAGE_TYPE_ARTERY, artery);
+  }, [artery, messenger]);
 }

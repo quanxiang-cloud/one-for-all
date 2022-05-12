@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import type { ImmutableNode } from '@one-for-all/artery-utils';
-import Plugins from 'temporaryPlugins';
 import { Artery, Node } from '@one-for-all/artery';
+import Plugins from 'temporaryPlugins';
 
 import SimulatorLayerCtx, { createLayerContextVal } from './context';
 import { ContourNodesReport } from '../../types';

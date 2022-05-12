@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { fromJS } from 'immutable';
-import { Plugins } from '@one-for-all/artery-renderer';
+import type { Plugins } from '@one-for-all/artery-renderer';
+
 
 import Background from './background';
 import Foreground from './foreground';
@@ -13,11 +14,7 @@ import './index.scss';
 import { activeModalLayer$, artery$ } from './bridge';
 import { useBehaviorSubjectState } from './utils';
 
-export interface Props {
-  plugins?: Plugins;
-}
-
-function Simulator({ plugins }: Props): JSX.Element {
+function Simulator(): JSX.Element {
   const artery = useBehaviorSubjectState(artery$);
   const setImmutableNode = useSetRecoilState(immutableNodeState);
   const [rootElement, setRootElement] = useState<HTMLDivElement | null>(null);
@@ -32,7 +29,6 @@ function Simulator({ plugins }: Props): JSX.Element {
     <div ref={(ref) => ref && setRootElement(ref)} className="artery-simulator-root">
       {rootElement && (
         <Background
-          plugins={plugins}
           rootElement={rootElement}
           onReport={(report) => contourNodesReport$.next(report)}
           onModalLayerReport={(report) => modalLayerContourNodesReport$.next(report)}

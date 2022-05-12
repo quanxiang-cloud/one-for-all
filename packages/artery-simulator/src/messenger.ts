@@ -12,13 +12,9 @@ import {
   tap,
 } from 'rxjs';
 
-export interface Message<T = any> {
+interface Frame<T = any> {
   type: string;
-  data: T;
-}
-
-interface Frame {
-  message: Message;
+  message: T;
   seq: number;
   echoSeq?: number;
   name: string;
@@ -72,15 +68,16 @@ export default class Messenger {
       const subscription = this.receive$
         .pipe(
           filter((frame) => {
-            if (frame.message) {
-              return frame.message.type === type;
+            if (frame.type) {
+              return frame.type === type;
             }
 
             return false;
           }),
-          switchMap(({ message, seq }) => from(Promise.all([responder(message.data), Promise.resolve(seq)]))),
+          switchMap(({ message, seq }) => from(Promise.all([responder(message), Promise.resolve(seq)]))),
           map(([response, echoSeq]) => ({
-            message: { type: `echo_${type}`, data: response },
+            type: `echo_${type}`,
+            message: response,
             echoSeq,
             seq: this.nextSeq(),
             name: this.name,
@@ -101,8 +98,8 @@ export default class Messenger {
       let subscription: Subscription | undefined;
       const timer = setTimeout(() => {
         subscription?.unsubscribe();
-        reject(new Error('messenger connection timeout'));
-      }, 20 * 1000);
+        reject(new Error(`${this.name} messenger connection timeout`));
+      }, 5 * 1000);
 
       if (this.isSubWin) {
         subscription = interval(200)
@@ -135,9 +132,9 @@ export default class Messenger {
     return this.seq;
   }
 
-  send(type: string, data: any): void {
+  send(type: string, message: any): void {
     this.send$.next({
-      message: { type, data },
+      type, message,
       seq: this.nextSeq(),
       name: this.name,
     });
@@ -146,21 +143,21 @@ export default class Messenger {
   listen<T>(type: string): Observable<T> {
     return this.receive$.pipe(
       filter((frame) => {
-        if (frame.message) {
-          return frame.message.type === type;
+        if (frame.type) {
+          return frame.type === type;
         }
         return false;
       }),
-      map(({ message }) => message.data as T),
+      map(({ message }) => message as T),
     );
   }
 
-  request(type: string, data: any): Promise<any> {
+  request<RequestMessage, ResponseMessage>(type: string, message: RequestMessage): Promise<ResponseMessage> {
     const seq = this.nextSeq();
-    const wait = new Promise<Message>((resolve, reject) => {
+    const wait = new Promise<ResponseMessage>((resolve, reject) => {
       const timer = setTimeout(() => {
         reject(new Error(`messenger request timeout, request message type is: ${type}`));
-      }, 10 * 1000);
+      }, 5 * 1000);
 
       const subscription = this.receive$.pipe(find(({ echoSeq }) => echoSeq === seq)).subscribe((frame) => {
         subscription.unsubscribe();
@@ -175,7 +172,7 @@ export default class Messenger {
       });
     });
 
-    this.send$.next({ message: { type, data }, seq, name: this.name });
+    this.send$.next({ type, message, seq, name: this.name });
 
     return wait;
   }

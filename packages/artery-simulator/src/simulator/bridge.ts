@@ -42,11 +42,9 @@ export function onChangeArtery(artery: Artery): void {
 }
 
 export function checkNodeSupportChildren(node: NodePrimary): Promise<boolean> {
-  return messenger
-    .request(MESSAGE_TYPE_CHECK_NODE_SUPPORT_CHILDREN, node)
-    .then(({ data }) => data as boolean);
+  return messenger.request<NodePrimary, boolean>(MESSAGE_TYPE_CHECK_NODE_SUPPORT_CHILDREN, node)
 }
 
 export function checkNodeIsModalRoot(node: NodePrimary): Promise<boolean> {
-  return messenger.request(MESSAGE_TYPE_CHECK_NODE_IS_MODAL_ROOT, node).then(({ data }) => data as boolean);
+  return messenger.request(MESSAGE_TYPE_CHECK_NODE_IS_MODAL_ROOT, node);
 }
