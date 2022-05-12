@@ -31,7 +31,11 @@ function injectHTML(
   headElements: Array<InjectElement>,
   onLoad?: () => void,
 ): void {
-  console.log('inject html');
+
+  // todo fixme
+  // @ts-ignore
+  iframe.contentWindow.CONFIG = window.CONFIG
+
   if (iframe.contentWindow) {
     // @ts-ignore
     iframe.contentWindow.__fenceIframeLoad = () => {

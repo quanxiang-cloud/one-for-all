@@ -35,6 +35,19 @@ function asyncCheckIfNodeShouldRenderInModalLayer(node: NodePrimary): Promise<bo
   });
 }
 
+function toNodePrimary(node: HTMLNode | ReactComponentNode): NodePrimary {
+  if (node.type === 'html-element') {
+    return { type: 'html-element', name: node.name };
+  }
+
+  return {
+    type: 'react-component',
+    packageName: node.packageName,
+    packageVersion: node.packageName,
+    exportName: node.exportName,
+  };
+}
+
 // check node support children and whether should be rendered in modal layer
 export default function useNodeBehaviorCheck(node: HTMLNode | ReactComponentNode): boolean {
   const [loading, setLoading] = useState(true);
@@ -42,7 +55,7 @@ export default function useNodeBehaviorCheck(node: HTMLNode | ReactComponentNode
   useEffect(() => {
     let unMounting = false;
 
-    Promise.all([asyncCheckIfNodeSupportChildren(node), asyncCheckIfNodeShouldRenderInModalLayer(node)]).then(
+    Promise.all([asyncCheckIfNodeSupportChildren(toNodePrimary(node)), asyncCheckIfNodeShouldRenderInModalLayer(toNodePrimary(node))]).then(
       () => {
         if (!unMounting) {
           setLoading(false);
