@@ -37,11 +37,9 @@ export function useSyncActiveModalLayer(
       return;
     }
 
-    const subscription = messenger
-      .listen(MESSAGE_TYPE_ACTIVE_MODAL_LAYER)
-      .subscribe((activeModalRootID) => {
-        setActiveModalLayer(activeModalRootID as string);
-      });
+    const subscription = messenger.listen(MESSAGE_TYPE_ACTIVE_MODAL_LAYER).subscribe((activeModalRootID) => {
+      setActiveModalLayer(activeModalRootID as string);
+    });
 
     return () => {
       subscription.unsubscribe();

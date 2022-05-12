@@ -59,7 +59,7 @@ export default class Messenger {
     });
 
     this.send$.subscribe((frame) => {
-      this.target.postMessage(frame, window.origin)
+      this.target.postMessage(frame, window.origin);
     });
   }
 
@@ -121,7 +121,7 @@ export default class Messenger {
           clearTimeout(timer);
           this.connected = true;
           resolve();
-        })
+        });
       }
     });
   }
@@ -134,7 +134,8 @@ export default class Messenger {
 
   send(type: string, message: any): void {
     this.send$.next({
-      type, message,
+      type,
+      message,
       seq: this.nextSeq(),
       name: this.name,
     });

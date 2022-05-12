@@ -4,7 +4,7 @@ export type InjectElement = {
   name: string;
   attrs: Record<string, string>;
   innerText?: string;
-}
+};
 
 function toHTML(elements: InjectElement[]): string {
   const template = document.createElement('div');
@@ -22,17 +22,20 @@ function toHTML(elements: InjectElement[]): string {
     template.appendChild(n);
   });
 
-
   return template.innerHTML;
 }
 
-function injectHTML(iframe: HTMLIFrameElement, headElements: Array<InjectElement>, onLoad?: () => void): void {
-  console.log('inject html')
+function injectHTML(
+  iframe: HTMLIFrameElement,
+  headElements: Array<InjectElement>,
+  onLoad?: () => void,
+): void {
+  console.log('inject html');
   if (iframe.contentWindow) {
     // @ts-ignore
     iframe.contentWindow.__fenceIframeLoad = () => {
       onLoad?.();
-    }
+    };
   }
   iframe.contentDocument?.open();
   iframe.contentDocument?.write(`
@@ -66,7 +69,10 @@ interface Props {
   onLoad?: () => void;
 }
 
-function Fence({ headElements, className, onLoad }: Props, ref: React.ForwardedRef<HTMLIFrameElement>): JSX.Element {
+function Fence(
+  { headElements, className, onLoad }: Props,
+  ref: React.ForwardedRef<HTMLIFrameElement>,
+): JSX.Element {
   const [iframeElement, setIframe] = useState<HTMLIFrameElement>();
 
   useEffect(() => {
@@ -75,7 +81,7 @@ function Fence({ headElements, className, onLoad }: Props, ref: React.ForwardedR
     }
 
     injectHTML(iframeElement, headElements, onLoad);
-  }, [iframeElement])
+  }, [iframeElement]);
 
   return (
     <iframe
@@ -91,10 +97,10 @@ function Fence({ headElements, className, onLoad }: Props, ref: React.ForwardedR
           ref.current = _ref;
         }
 
-        setIframe(_ref)
+        setIframe(_ref);
       }}
     />
-  )
+  );
 }
 
 export default React.forwardRef<HTMLIFrameElement, Props>(Fence);

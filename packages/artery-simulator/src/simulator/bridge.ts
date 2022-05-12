@@ -12,7 +12,7 @@ import {
 } from './constants';
 
 export const messenger = new Messenger(window.parent, 'iframe-side');
-messenger.waitForReady().then(() => {})
+messenger.waitForReady().then(() => {});
 
 export const dummy_artery_root_node_id = 'DUMMY_ARTERY_ROOT_NODE_ID';
 
@@ -21,7 +21,7 @@ const dummyArtery: Artery = {
 };
 
 export const artery$ = new BehaviorSubject<Artery>(dummyArtery);
-messenger.listen<Artery>(MESSAGE_TYPE_ARTERY).subscribe(artery$)
+messenger.listen<Artery>(MESSAGE_TYPE_ARTERY).subscribe(artery$);
 
 export const activeNode$ = new BehaviorSubject<Node | undefined>(undefined);
 messenger.listen<Node | undefined>(MESSAGE_TYPE_ACTIVE_NODE).subscribe(activeNode$);
@@ -42,7 +42,7 @@ export function onChangeArtery(artery: Artery): void {
 }
 
 export function checkNodeSupportChildren(node: NodePrimary): Promise<boolean> {
-  return messenger.request<NodePrimary, boolean>(MESSAGE_TYPE_CHECK_NODE_SUPPORT_CHILDREN, node)
+  return messenger.request<NodePrimary, boolean>(MESSAGE_TYPE_CHECK_NODE_SUPPORT_CHILDREN, node);
 }
 
 export function checkNodeIsModalRoot(node: NodePrimary): Promise<boolean> {

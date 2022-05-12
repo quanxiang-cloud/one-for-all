@@ -3,7 +3,6 @@ import { useSetRecoilState } from 'recoil';
 import { fromJS } from 'immutable';
 import type { Plugins } from '@one-for-all/artery-renderer';
 
-
 import Background from './background';
 import Foreground from './foreground';
 import GreenZone from './green-zone';

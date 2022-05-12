@@ -67,7 +67,7 @@ function SimulatorInExample(): JSX.Element {
       <ArterySimulator
         className="artery-simulator"
         artery={artery}
-        // plugins={{ repository }}
+        pluginsSrc="/dist/temporaryPlugins.js"
         activeNode={activeNode}
         // genNodeID={genNodeID}
         activeModalLayer={activeModalLayer}

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import type { ImmutableNode } from '@one-for-all/artery-utils';
 import { Artery, Node } from '@one-for-all/artery';
-import Plugins from 'temporaryPlugins';
+import Plugins from 'TEMPORARY_PATCH_FOR_ARTERY_PLUGINS';
 
 import SimulatorLayerCtx, { createLayerContextVal } from './context';
 import { ContourNodesReport } from '../../types';
@@ -44,11 +44,7 @@ function Background({
   return (
     <>
       <SimulatorLayerCtx.Provider value={rootSimulatorLayerCtxValue}>
-        <RenderLayer
-          plugins={Plugins}
-          rootElement={rootElement}
-          onReport={onReport}
-        />
+        <RenderLayer plugins={Plugins} rootElement={rootElement} onReport={onReport} />
       </SimulatorLayerCtx.Provider>
       <ModalLayerRender
         activeModalLayer={activeModalLayer}
