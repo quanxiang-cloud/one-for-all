@@ -15,7 +15,6 @@ export default function useModalLayers(): Array<ImmutableNode> {
     //   if (nodeType === 'html-element') {
     //     executors.has(getNodeExecutor({ type: 'html-element', name: currentNode.getIn(['name']) as string }));
     //   }
-
     //   if (nodeType === 'react-component') {
     //     return executors.has(
     //       getNodeExecutor({
@@ -26,15 +25,12 @@ export default function useModalLayers(): Array<ImmutableNode> {
     //       }),
     //     );
     //   }
-
     //   return false;
     // });
-
     // if (!keyPathList.size) {
     //   setModalLayers([]);
     //   return;
     // }
-
     // setModalLayers(
     //   keyPathList.map<ImmutableNode>((keyPath) => rootNode.getIn(keyPath) as ImmutableNode).toArray(),
     // );

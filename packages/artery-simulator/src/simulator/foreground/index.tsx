@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import RenderContourNode from './render-contour-node';
 import { contourNodesReport$ } from '../atoms';
@@ -6,6 +6,8 @@ import './index.scss';
 import { useBehaviorSubjectState } from '../utils';
 import useHandleDrop from './use-handle-drop';
 import Toolbar from './toolbar';
+import { activeContour$ } from '../bridge';
+import { distinctUntilChanged, map } from 'rxjs';
 
 function Foreground(): JSX.Element {
   const { contourNodes } = useBehaviorSubjectState(contourNodesReport$) || {};

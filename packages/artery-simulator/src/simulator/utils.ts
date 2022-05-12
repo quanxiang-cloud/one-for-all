@@ -87,8 +87,10 @@ export function useBehaviorSubjectState<T>(subject: BehaviorSubject<T>): T {
 export function useArteryRootNodeID(): string {
   const [rootNodeID, setRootNodeID] = useState('');
   useEffect(() => {
-    const subscription = rootNodID$.subscribe(setRootNodeID)
-    return () => { subscription.unsubscribe() };
+    const subscription = rootNodID$.subscribe(setRootNodeID);
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   return rootNodeID;

@@ -31,10 +31,9 @@ function injectHTML(
   headElements: Array<InjectElement>,
   onLoad?: () => void,
 ): void {
-
   // todo fixme
   // @ts-ignore
-  iframe.contentWindow.CONFIG = window.CONFIG
+  iframe.contentWindow.CONFIG = window.CONFIG;
 
   if (iframe.contentWindow) {
     // @ts-ignore

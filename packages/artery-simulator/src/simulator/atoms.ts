@@ -18,7 +18,9 @@ export const draggingArteryImmutableNodeState = selector<immutable.Collection<un
       return;
     }
 
-    return byArbitrary(immutableRoot$.value, draggingNodeID) as immutable.Collection<unknown, unknown> | undefined;
+    return byArbitrary(immutableRoot$.value, draggingNodeID) as
+      | immutable.Collection<unknown, unknown>
+      | undefined;
   },
 });
 

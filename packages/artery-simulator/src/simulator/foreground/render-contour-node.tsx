@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import cs from 'classnames';
 import { useRecoilState } from 'recoil';
 import type { Node } from '@one-for-all/artery';
+import { byArbitrary, ImmutableNode } from '@one-for-all/artery-utils';
+import { distinctUntilChanged, map } from 'rxjs';
 
 import useContourNodeStyle from './use-active-contour-node-style';
 import type { ContourNode } from '../../types';
@@ -13,11 +15,11 @@ import {
   inDnd$,
   onDropEvent$,
 } from '../atoms';
-import { overrideDragImage, useArteryRootNodeID, useBehaviorSubjectState } from '../utils';
+import { overrideDragImage, useArteryRootNodeID } from '../utils';
 import useShouldHandleDndCallback from './use-should-handle-dnd-callback';
 import { DND_DATA_TRANSFER_TYPE_NODE_ID } from '../constants';
-import { activeNode$, immutableRoot$, setActiveNode } from '../bridge';
-import { byArbitrary, ImmutableNode } from '@one-for-all/artery-utils';
+import { activeContour$, immutableRoot$, setActiveNode } from '../bridge';
+
 
 function preventDefault(e: any): false {
   e.preventDefault();
@@ -29,13 +31,28 @@ interface Props {
   contourNode: ContourNode;
 }
 
+function useWhetherActive(currentID: string): boolean {
+  const [flag, setFlag] = useState(false);
+
+  useEffect(() => {
+    const subscription = activeContour$.pipe(
+      map((activeContour) => activeContour?.id === currentID),
+      distinctUntilChanged(),
+    ).subscribe(setFlag);
+
+    return () => { subscription.unsubscribe() };
+  }, [])
+
+  return flag;
+}
+
 function RenderContourNode({ contourNode }: Props): JSX.Element {
   const [hoveringParentID] = useRecoilState(hoveringParentIDState);
   const rootNodeID = useArteryRootNodeID();
-  const activeNode = useBehaviorSubjectState(activeNode$);
   const style = useContourNodeStyle(contourNode);
   const [draggingNodeID, setDraggingNodeID] = useRecoilState(draggingNodeIDState);
   const _shouldHandleDnd = useShouldHandleDndCallback(contourNode.id);
+  const currentActive = useWhetherActive(contourNode.id);
 
   return (
     <>
@@ -48,7 +65,9 @@ function RenderContourNode({ contourNode }: Props): JSX.Element {
           if (!keyPath) {
             return;
           }
-          const n: ImmutableNode | undefined = immutableRoot$.value.getIn(keyPath) as ImmutableNode | undefined;
+          const n: ImmutableNode | undefined = immutableRoot$.value.getIn(keyPath) as
+            | ImmutableNode
+            | undefined;
           if (!n) {
             return;
           }
@@ -107,7 +126,7 @@ function RenderContourNode({ contourNode }: Props): JSX.Element {
         }}
         className={cs('contour-node', {
           'contour-node--root': rootNodeID === contourNode.id,
-          'contour-node--active': activeNode?.id === contourNode.id,
+          'contour-node--active': currentActive,
           'contour-node--hover-as-parent': hoveringParentID === contourNode.id,
           'contour-node--dragging': draggingNodeID === contourNode.id,
         })}

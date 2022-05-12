@@ -54,9 +54,18 @@ export default class Messenger {
       if (this.name === e.data.name) {
         return;
       }
-      var t1 = performance.now();
+      const t1 = performance.now();
       this.receive$.next(e.data);
-      console.log(this.name, 'execute on message cost:', performance.now() - t1, 'message type:', e.data.type)
+      const delta = performance.now() - t1;
+      if (delta > 10) {
+        console.log(
+          this.name,
+          'execute on message cost:',
+          delta,
+          'message type:',
+          e.data.type,
+        );
+      }
     });
 
     this.send$.subscribe((frame) => {

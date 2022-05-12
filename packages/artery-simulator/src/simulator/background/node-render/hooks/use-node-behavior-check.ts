@@ -55,13 +55,14 @@ export default function useNodeBehaviorCheck(node: HTMLNode | ReactComponentNode
   useEffect(() => {
     let unMounting = false;
 
-    Promise.all([asyncCheckIfNodeSupportChildren(toNodePrimary(node)), asyncCheckIfNodeShouldRenderInModalLayer(toNodePrimary(node))]).then(
-      () => {
-        if (!unMounting) {
-          setLoading(false);
-        }
-      },
-    );
+    Promise.all([
+      asyncCheckIfNodeSupportChildren(toNodePrimary(node)),
+      asyncCheckIfNodeShouldRenderInModalLayer(toNodePrimary(node)),
+    ]).then(() => {
+      if (!unMounting) {
+        setLoading(false);
+      }
+    });
 
     return () => {
       unMounting = true;

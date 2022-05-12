@@ -1,15 +1,13 @@
-import React, { useContext, useRef } from 'react';
+import React, { useRef } from 'react';
 import { usePopper } from '@one-for-all/headless-ui';
 import { deleteByID, insertAfter } from '@one-for-all/artery-utils';
 
 import ParentNodes from './parent-nodes';
 import Icon from '@one-for-all/icon';
 import duplicateNode from './duplicate-node';
-import useToolbarStyle from './use-toolbar-style';
 import { useNodeLabel } from './use-node-label';
-import { useActiveContour } from './use-active-contour';
-import { activeNode$, artery$, onChangeArtery, setActiveNode } from '../../bridge';
-import { useBehaviorSubjectState } from '../../utils';
+import { activeContour$, activeContourToolbarStyle$, activeNode$, artery$, onChangeArtery, setActiveNode } from '../../bridge';
+import { useArteryRootNodeID, useBehaviorSubjectState } from '../../utils';
 
 const modifiers = [
   {
@@ -22,21 +20,21 @@ const modifiers = [
 
 // render toolbar on another context to prevent it be covered by contour node
 function ContourNodeToolbar(): JSX.Element | null {
-  const contourNode = useActiveContour();
   const activeNode = useBehaviorSubjectState(activeNode$);
+  const activeContour = useBehaviorSubjectState(activeContour$);
   const { referenceRef, Popper, handleMouseEnter, handleMouseLeave, close } = usePopper<HTMLSpanElement>();
   const containerRef = useRef<HTMLDivElement>(null);
-  const artery = useBehaviorSubjectState(artery$);
-  const style = useToolbarStyle(contourNode);
+  const style = useBehaviorSubjectState(activeContourToolbarStyle$);;
   const activeNodeLabel = useNodeLabel(activeNode);
+  const rootNodeID = useArteryRootNodeID();
 
   function handleDelete(): void {
-    if (!contourNode) {
+    if (!activeContour$.value) {
       return;
     }
 
-    const newRoot = deleteByID(artery.node, contourNode.id);
-    onChangeArtery({ ...artery, node: newRoot });
+    const newRoot = deleteByID(artery$.value.node, activeContour$.value.id);
+    onChangeArtery({ ...artery$.value, node: newRoot });
     setActiveNode(undefined);
   }
 
@@ -46,16 +44,16 @@ function ContourNodeToolbar(): JSX.Element | null {
     }
 
     const newNode = duplicateNode(activeNode);
-    const newRoot = insertAfter(artery.node, activeNode.id, newNode);
+    const newRoot = insertAfter(artery$.value.node, activeNode.id, newNode);
     if (!newRoot) {
       return;
     }
-    onChangeArtery({ ...artery, node: newRoot });
+    onChangeArtery({ ...artery$.value, node: newRoot });
     // this really annoying if changed the active node, so comment below line
     // setActiveNode(newNode);
   }
 
-  if (!activeNode || !contourNode || activeNode.id === artery.node.id) {
+  if (!activeContour || activeContour.id === rootNodeID) {
     return null;
   }
 
@@ -77,7 +75,7 @@ function ContourNodeToolbar(): JSX.Element | null {
         <Icon name="delete_forever" size={16} />
       </span>
       <Popper placement="bottom-start" modifiers={modifiers} container={containerRef.current}>
-        <ParentNodes currentNodeID={contourNode.id} onParentClick={close} />
+        <ParentNodes currentNodeID={activeContour.id} onParentClick={close} />
       </Popper>
     </div>
   );

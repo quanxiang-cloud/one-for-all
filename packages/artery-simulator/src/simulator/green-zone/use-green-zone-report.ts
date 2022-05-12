@@ -33,10 +33,9 @@ export default function useGreenZoneReport() {
               return [];
             }
 
-            const hoveringArteryNode = immutableRoot$.value.getIn(hoveringNodeKeyPath) as Immutable.Collection<
-              unknown,
-              unknown
-            >;
+            const hoveringArteryNode = immutableRoot$.value.getIn(
+              hoveringNodeKeyPath,
+            ) as Immutable.Collection<unknown, unknown>;
             const hasChild = nodeHasChildNodes(hoveringArteryNode);
             if (!hasChild) {
               return { contour: hoveringContourNode, type: 'node_without_children', position: 'left' };
