@@ -5,14 +5,12 @@ import {
   MESSAGE_TYPE_ACTIVE_NODE,
   MESSAGE_TYPE_ACTIVE_MODAL_LAYER,
   MESSAGE_TYPE_CHECK_NODE_SUPPORT_CHILDREN,
-  MESSAGE_TYPE_CHECK_NODE_IS_MODAL_ROOT,
 } from './simulator/constants';
 import { Artery, Node } from '@one-for-all/artery';
 import { NodePrimary } from './types';
 
 export function useSyncResponders(
   messenger: Messenger | undefined,
-  isNodeInModalLayer: (node: NodePrimary) => Promise<boolean>,
   isNodeSupportChildren: (node: NodePrimary) => Promise<boolean>,
 ) {
   useEffect(() => {
@@ -21,10 +19,9 @@ export function useSyncResponders(
     }
 
     messenger.addResponders({
-      [MESSAGE_TYPE_CHECK_NODE_IS_MODAL_ROOT]: isNodeInModalLayer,
       [MESSAGE_TYPE_CHECK_NODE_SUPPORT_CHILDREN]: isNodeSupportChildren,
     });
-  }, [isNodeInModalLayer, isNodeSupportChildren, messenger]);
+  }, [isNodeSupportChildren, messenger]);
 }
 
 export function useSyncActiveModalLayer(

@@ -11,7 +11,6 @@ import ModalLayerRender from './modal-layer-render';
 import './index.scss';
 
 interface Props {
-  activeModalLayer?: ImmutableNode;
   rootElement: HTMLElement;
   onReport: (report?: ContourNodesReport) => void;
   onModalLayerReport: (report?: ContourNodesReport) => void;
@@ -38,7 +37,6 @@ const rootSimulatorLayerCtxValue = createLayerContextVal();
 function Background({
   rootElement,
   onReport,
-  activeModalLayer,
   onModalLayerReport,
 }: Props): JSX.Element | null {
   return (
@@ -47,7 +45,6 @@ function Background({
         <RenderLayer plugins={Plugins} rootElement={rootElement} onReport={onReport} />
       </SimulatorLayerCtx.Provider>
       <ModalLayerRender
-        activeModalLayer={activeModalLayer}
         plugins={Plugins}
         rootElement={rootElement}
         onModalLayerReport={onModalLayerReport}

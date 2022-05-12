@@ -1,5 +1,5 @@
 import { Artery, Node } from '@one-for-all/artery';
-import { ImmutableNode } from '@one-for-all/artery-utils';
+import { filter as arteryFilter, byArbitrary, ImmutableNode } from '@one-for-all/artery-utils';
 import { fromJS } from 'immutable';
 import { BehaviorSubject, combineLatest, distinctUntilChanged, filter, map, Observable } from 'rxjs';
 
@@ -11,7 +11,6 @@ import {
   MESSAGE_TYPE_ACTIVE_NODE,
   MESSAGE_TYPE_ACTIVE_MODAL_LAYER,
   MESSAGE_TYPE_CHECK_NODE_SUPPORT_CHILDREN,
-  MESSAGE_TYPE_CHECK_NODE_IS_MODAL_ROOT,
 } from './constants';
 
 export const messenger = new Messenger(window.parent, 'iframe-side');
@@ -76,6 +75,53 @@ activeContour$
 export const activeModalLayer$ = new BehaviorSubject<string | undefined>(undefined);
 messenger.listen<string | undefined>(MESSAGE_TYPE_ACTIVE_MODAL_LAYER).subscribe(activeModalLayer$);
 
+export const activeModalLayerArtery$ = new BehaviorSubject<Artery | undefined>(undefined);
+
+activeModalLayer$.pipe(
+  map((activeModalRootID) => {
+    if (!activeModalRootID) {
+      return undefined;
+    }
+
+    return byArbitrary(immutableRoot$.value, activeModalRootID)?.toJS() as Node | undefined;
+  }),
+  map((node) => {
+    if (!node) {
+      return undefined;
+    }
+
+    return {
+      node,
+      apiStateSpec: artery$.value.apiStateSpec,
+      sharedStatesSpec: artery$.value.sharedStatesSpec,
+    }
+  }),
+).subscribe(activeModalLayerArtery$);
+
+function findAllModalLayers(rootNode: ImmutableNode): Array<ImmutableNode> {
+  const keyPathList = arteryFilter(rootNode, (currentNode) => {
+    const nodeType = currentNode.getIn(['type']);
+    if (nodeType !== 'react-component') {
+      return false;
+    }
+
+    const packageName = currentNode.getIn(['packageName']) as string;
+    const exportName = currentNode.getIn(['exportName']) as string;
+
+    return !!window.__modalComponents.find((modalComp) => {
+      return packageName === modalComp.packageName && exportName === modalComp.exportName;
+    });
+  });
+
+  if (!keyPathList.size) {
+    return [];
+  }
+
+  return keyPathList.map<ImmutableNode>((keyPath) => rootNode.getIn(keyPath) as ImmutableNode).toArray();
+}
+
+const allModalRootNodes$ = immutableRoot$.pipe(map(findAllModalLayers));
+
 export function setActiveNode(node?: Node): void {
   messenger.send(MESSAGE_TYPE_ACTIVE_NODE, node);
 }
@@ -90,8 +136,4 @@ export function onChangeArtery(artery: Artery): void {
 
 export function checkNodeSupportChildren(node: NodePrimary): Promise<boolean> {
   return messenger.request<NodePrimary, boolean>(MESSAGE_TYPE_CHECK_NODE_SUPPORT_CHILDREN, node);
-}
-
-export function checkNodeIsModalRoot(node: NodePrimary): Promise<boolean> {
-  return messenger.request(MESSAGE_TYPE_CHECK_NODE_IS_MODAL_ROOT, node);
 }

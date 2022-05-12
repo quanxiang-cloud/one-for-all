@@ -3,12 +3,10 @@ import { useContext, useEffect, useState } from 'react';
 import { NodePrimary } from '../../../../types';
 import {
   _cacheIsNodeSupportChildren,
-  _cacheNodeIsModalLayer,
-  _checkIfNodeIsModalLayer,
   _checkIfNodeSupportChildren,
 } from '../../../cache';
 import { HTMLNode, ReactComponentNode } from '@one-for-all/artery-renderer';
-import { checkNodeSupportChildren, checkNodeIsModalRoot } from '../../../bridge';
+import { checkNodeSupportChildren } from '../../../bridge';
 
 function asyncCheckIfNodeSupportChildren(node: NodePrimary): Promise<boolean> {
   const flag = _checkIfNodeSupportChildren(node);
@@ -20,18 +18,6 @@ function asyncCheckIfNodeSupportChildren(node: NodePrimary): Promise<boolean> {
     _cacheIsNodeSupportChildren(node, isSupportChildren);
 
     return isSupportChildren;
-  });
-}
-
-function asyncCheckIfNodeShouldRenderInModalLayer(node: NodePrimary): Promise<boolean> {
-  const flag = _checkIfNodeIsModalLayer(node);
-  if (flag !== undefined) {
-    return Promise.resolve(flag);
-  }
-
-  return checkNodeIsModalRoot(node).then((isModalLayerRoot) => {
-    _cacheNodeIsModalLayer(node, isModalLayerRoot);
-    return isModalLayerRoot;
   });
 }
 
@@ -55,10 +41,7 @@ export default function useNodeBehaviorCheck(node: HTMLNode | ReactComponentNode
   useEffect(() => {
     let unMounting = false;
 
-    Promise.all([
-      asyncCheckIfNodeSupportChildren(toNodePrimary(node)),
-      asyncCheckIfNodeShouldRenderInModalLayer(toNodePrimary(node)),
-    ]).then(() => {
+    asyncCheckIfNodeSupportChildren(toNodePrimary(node)).then(() => {
       if (!unMounting) {
         setLoading(false);
       }

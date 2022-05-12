@@ -29,6 +29,7 @@ function toHTML(elements: InjectElement[]): string {
 function injectHTML(
   iframe: HTMLIFrameElement,
   headElements: Array<InjectElement>,
+  modalComponents: Array<{ packageName: string; exportName: string; }>,
   onLoad?: () => void,
 ): void {
   // todo fixme
@@ -40,6 +41,9 @@ function injectHTML(
     iframe.contentWindow.__fenceIframeLoad = () => {
       onLoad?.();
     };
+
+    // @ts-ignore
+    iframe.contentWindow.__modalComponents = modalComponents;
   }
   iframe.contentDocument?.open();
   iframe.contentDocument?.write(`
@@ -71,10 +75,11 @@ interface Props {
   headElements: Array<InjectElement>;
   className?: string;
   onLoad?: () => void;
+  modalComponents: Array<{ packageName: string; exportName: string; }>;
 }
 
 function Fence(
-  { headElements, className, onLoad }: Props,
+  { headElements, className, onLoad, modalComponents }: Props,
   ref: React.ForwardedRef<HTMLIFrameElement>,
 ): JSX.Element {
   const [iframeElement, setIframe] = useState<HTMLIFrameElement>();
@@ -84,7 +89,7 @@ function Fence(
       return;
     }
 
-    injectHTML(iframeElement, headElements, onLoad);
+    injectHTML(iframeElement, headElements, modalComponents, onLoad);
   }, [iframeElement]);
 
   return (

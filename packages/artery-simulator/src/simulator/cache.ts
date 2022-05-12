@@ -1,10 +1,10 @@
+import { ReactComponentNode } from '@one-for-all/artery-renderer';
 import { Set } from 'immutable';
 import { BehaviorSubject } from 'rxjs';
 import { NodePrimary } from '../types';
 import { getNodeExecutor } from './utils';
 
 export const isNodeSupportChildrenCache: Map<string, boolean> = new Map();
-export const isModalLayerNodeCache: Map<string, boolean> = new Map();
 export const modalLayerNodeExecutors$ = new BehaviorSubject<Set<string>>(Set());
 
 export function _cacheIsNodeSupportChildren(node: NodePrimary, isSupport: boolean): void {
@@ -17,14 +17,8 @@ export function _checkIfNodeSupportChildren(node: NodePrimary): boolean | undefi
   return isNodeSupportChildrenCache.get(getNodeExecutor(node));
 }
 
-export function _cacheNodeIsModalLayer(node: NodePrimary, flag: boolean): void {
-  const executor = getNodeExecutor(node);
-  isModalLayerNodeCache.set(executor, flag);
-  if (flag) {
-    modalLayerNodeExecutors$.next(modalLayerNodeExecutors$.value.add(executor));
-  }
-}
-
-export function _checkIfNodeIsModalLayer(node: NodePrimary): boolean | undefined {
-  return isModalLayerNodeCache.get(getNodeExecutor(node));
+export function _checkIfNodeIsModalLayer(node: ReactComponentNode): boolean {
+  return !!window.__modalComponents.find(({ packageName, exportName }) => {
+    return packageName === node.packageName && exportName === node.exportName;
+  });
 }

@@ -9,11 +9,10 @@ import RenderLayer from './render-layer';
 
 import './index.scss';
 import { useBehaviorSubjectState } from '../utils';
-import { artery$ } from '../bridge';
+import { activeModalLayerArtery$, artery$ } from '../bridge';
 
 interface Props {
   plugins?: Plugins;
-  activeModalLayer?: ImmutableNode;
   rootElement: HTMLElement;
   onModalLayerReport: (report?: ContourNodesReport) => void;
 }
@@ -37,11 +36,9 @@ function useModalLayerArtery(artery: Artery, activeModalLayer?: ImmutableNode): 
 function ModalLayerRender({
   plugins,
   rootElement,
-  activeModalLayer,
   onModalLayerReport,
 }: Props): JSX.Element | null {
-  const artery = useBehaviorSubjectState(artery$);
-  const modalLayerArtery = useModalLayerArtery(artery, activeModalLayer);
+  const modalLayerArtery = useBehaviorSubjectState(activeModalLayerArtery$);
   const modalLayerContextValue = useMemo(() => createLayerContextVal(), []);
 
   if (!modalLayerArtery) {

@@ -5,4 +5,3 @@ export const MESSAGE_TYPE_ARTERY = 'artery';
 export const MESSAGE_TYPE_ACTIVE_NODE = 'active_node';
 export const MESSAGE_TYPE_ACTIVE_MODAL_LAYER = 'active_modal_layer';
 export const MESSAGE_TYPE_CHECK_NODE_SUPPORT_CHILDREN = 'check_node_support_children';
-export const MESSAGE_TYPE_CHECK_NODE_IS_MODAL_ROOT = 'is_modal_root';

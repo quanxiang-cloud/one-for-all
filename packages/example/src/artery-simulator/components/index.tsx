@@ -4,7 +4,7 @@ import { travel } from '@one-for-all/artery-utils';
 
 import arteryForTestingSimulator from './artery-for-testing-simulator';
 import ArterySpec, { Artery, Node } from '@one-for-all/artery';
-import { isNodeInModalLayer, isSupportChildren } from './helper';
+import { isSupportChildren } from './helper';
 
 import './index.scss';
 
@@ -68,7 +68,7 @@ function SimulatorInExample(): JSX.Element {
         setActiveNode={setActiveNode}
         onChange={setArtery}
         isNodeSupportChildren={isSupportChildren}
-        isNodeInModalLayer={isNodeInModalLayer}
+        modalComponents={[{ packageName: '@one-for-all/headless-ui', exportName: 'MediocreDialog' }]}
       />
     </div>
   );

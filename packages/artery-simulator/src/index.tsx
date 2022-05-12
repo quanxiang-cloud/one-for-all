@@ -56,7 +56,7 @@ interface Props {
   pluginsSrc: string;
   className?: string;
   isNodeSupportChildren: (node: NodePrimary) => Promise<boolean>;
-  isNodeInModalLayer: (node: NodePrimary) => Promise<boolean>;
+  modalComponents: Array<{ packageName: string; exportName: string; }>;
 }
 
 function Simulator({
@@ -64,8 +64,8 @@ function Simulator({
   activeNode,
   artery,
   className,
-  isNodeInModalLayer,
   isNodeSupportChildren,
+  modalComponents,
   onChange,
   pluginsSrc,
   setActiveModalLayer,
@@ -88,7 +88,7 @@ function Simulator({
     setMessenger(msgr);
   }, [iframeLoad]);
 
-  useSyncResponders(messenger, isNodeInModalLayer, isNodeSupportChildren);
+  useSyncResponders(messenger, isNodeSupportChildren);
   useSyncArtery(messenger, onChange, artery);
   useSyncActiveNode(messenger, setActiveNode, activeNode);
   useSyncActiveModalLayer(messenger, setActiveModalLayer, activeModalLayer);
@@ -99,6 +99,7 @@ function Simulator({
       className={className}
       headElements={buildHeadElements(pluginsSrc)}
       onLoad={() => setIframeLoad(true)}
+      modalComponents={modalComponents}
     />
   );
 }
