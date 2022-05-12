@@ -1,11 +1,10 @@
 import { byArbitrary } from '@one-for-all/artery-utils';
 import { useCallback, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
-import { draggingArteryImmutableNodeState, draggingNodeIDState, immutableNodeState } from '../atoms';
+import { draggingArteryImmutableNodeState, draggingNodeIDState } from '../atoms';
 
 export default function useShouldHandleDndCallback(currentID: string): (e: React.DragEvent) => boolean {
   const isDraggingParent = useRef<boolean | undefined>();
-  const rootNode = useRecoilValue(immutableNodeState);
   const draggingNodeID = useRecoilValue(draggingNodeIDState);
   const draggingNode = useRecoilValue(draggingArteryImmutableNodeState);
 
@@ -29,6 +28,6 @@ export default function useShouldHandleDndCallback(currentID: string): (e: React
 
       return !isDraggingParent.current;
     },
-    [rootNode, draggingNodeID, draggingNode],
+    [draggingNodeID, draggingNode],
   );
 }

@@ -4,11 +4,10 @@ import { byArbitrary, nodeHasChildNodes } from '@one-for-all/artery-utils';
 
 import { GreenZoneForNodeWithoutChildren, GreenZoneInsideNode, ContourNode } from '../../types';
 import { calcGreenZoneOfHoveringNodeSupportChildrenAndChildrenIsNotEmpty } from './green-zone-helpers';
-import { hoveringContourNode$, contourNodesReport$, immutableNodeState } from '../atoms';
-import { useRecoilValue } from 'recoil';
+import { hoveringContourNode$, contourNodesReport$ } from '../atoms';
+import { immutableRoot$ } from '../bridge';
 
 export default function useGreenZoneReport() {
-  const root = useRecoilValue(immutableNodeState);
   const [greenZonesBetweenNodes, setGreenZones] = useState<
     Array<GreenZoneInsideNode> | GreenZoneForNodeWithoutChildren
   >([]);
@@ -29,12 +28,12 @@ export default function useGreenZoneReport() {
               return [];
             }
 
-            const hoveringNodeKeyPath = byArbitrary(root, hoveringContourNode.id);
+            const hoveringNodeKeyPath = byArbitrary(immutableRoot$.value, hoveringContourNode.id);
             if (!hoveringNodeKeyPath) {
               return [];
             }
 
-            const hoveringArteryNode = root.getIn(hoveringNodeKeyPath) as Immutable.Collection<
+            const hoveringArteryNode = immutableRoot$.value.getIn(hoveringNodeKeyPath) as Immutable.Collection<
               unknown,
               unknown
             >;
@@ -44,7 +43,7 @@ export default function useGreenZoneReport() {
             }
 
             return calcGreenZoneOfHoveringNodeSupportChildrenAndChildrenIsNotEmpty(
-              root,
+              immutableRoot$.value,
               hoveringContourNode,
               contourNodes,
             );
@@ -56,7 +55,7 @@ export default function useGreenZoneReport() {
     return () => {
       subscription.unsubscribe();
     };
-  }, [root]);
+  }, []);
 
   return greenZonesBetweenNodes;
 }

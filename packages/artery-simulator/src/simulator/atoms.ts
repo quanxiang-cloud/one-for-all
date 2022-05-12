@@ -3,12 +3,7 @@ import immutable from 'immutable';
 import { atom, selector } from 'recoil';
 import { ContourNode, GreenZoneBetweenNodes, ContourNodesReport, Cursor, GreenZone } from '../types';
 import { byArbitrary } from '@one-for-all/artery-utils';
-
-export const immutableNodeState = atom<Immutable.Collection<unknown, unknown>>({
-  key: 'immutableNodeState',
-  // eslint-disable-next-line new-cap
-  default: immutable.Map({}),
-});
+import { immutableRoot$ } from './bridge';
 
 export const draggingNodeIDState = atom<string | undefined>({
   key: 'draggingNodeIDState',
@@ -19,12 +14,11 @@ export const draggingArteryImmutableNodeState = selector<immutable.Collection<un
   key: 'draggingArteryImmutableNodeState',
   get: ({ get }) => {
     const draggingNodeID = get(draggingNodeIDState);
-    const rootNode = get(immutableNodeState);
     if (!draggingNodeID) {
       return;
     }
 
-    return byArbitrary(rootNode, draggingNodeID) as immutable.Collection<unknown, unknown> | undefined;
+    return byArbitrary(immutableRoot$.value, draggingNodeID) as immutable.Collection<unknown, unknown> | undefined;
   },
 });
 

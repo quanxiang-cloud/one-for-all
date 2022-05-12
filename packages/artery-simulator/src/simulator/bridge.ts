@@ -1,5 +1,7 @@
 import { Artery, Node } from '@one-for-all/artery';
-import { BehaviorSubject } from 'rxjs';
+import { ImmutableNode } from '@one-for-all/artery-utils';
+import { fromJS } from 'immutable';
+import { BehaviorSubject, distinctUntilChanged, map, Observable } from 'rxjs';
 
 import Messenger from '../messenger';
 import { NodePrimary } from '../types';
@@ -20,8 +22,15 @@ const dummyArtery: Artery = {
   node: { id: dummy_artery_root_node_id, type: 'html-element', name: 'div' },
 };
 
+export const immutableRoot$ = new BehaviorSubject<ImmutableNode>(fromJS({ id: 'initial', type: 'html', nam: 'div'}));
 export const artery$ = new BehaviorSubject<Artery>(dummyArtery);
 messenger.listen<Artery>(MESSAGE_TYPE_ARTERY).subscribe(artery$);
+artery$.pipe(map<Artery, ImmutableNode>((artery) => fromJS(artery.node))).subscribe(immutableRoot$);
+
+export const rootNodID$: Observable<string> = immutableRoot$.pipe(
+  map((node) => node.getIn(['id']) as string),
+  distinctUntilChanged(),
+);
 
 export const activeNode$ = new BehaviorSubject<Node | undefined>(undefined);
 messenger.listen<Node | undefined>(MESSAGE_TYPE_ACTIVE_NODE).subscribe(activeNode$);

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import type { ImmutableNode } from '@one-for-all/artery-utils';
-import { Artery, Node } from '@one-for-all/artery';
+import type { Artery, Node } from '@one-for-all/artery';
 import Plugins from 'TEMPORARY_PATCH_FOR_ARTERY_PLUGINS';
 
 import SimulatorLayerCtx, { createLayerContextVal } from './context';

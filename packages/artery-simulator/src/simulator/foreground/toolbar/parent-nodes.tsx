@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Node } from '@one-for-all/artery';
 import { keyPathById, parentIdsSeq } from '@one-for-all/artery-utils';
 
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { artery$, setActiveNode } from '../../bridge';
-import { hoveringParentIDState, immutableNodeState } from '../../atoms';
+import { useSetRecoilState } from 'recoil';
+import { artery$, immutableRoot$, setActiveNode } from '../../bridge';
+import { hoveringParentIDState } from '../../atoms';
 import { useBehaviorSubjectState } from '../../utils';
 
 interface Props {
@@ -14,12 +14,11 @@ interface Props {
 
 function ParentNodes({ currentNodeID, onParentClick }: Props): JSX.Element | null {
   const artery = useBehaviorSubjectState(artery$);
-  const [immutableNode] = useRecoilState(immutableNodeState);
   const [parents, setParents] = useState<Node[]>([]);
   const setHoveringParentID = useSetRecoilState(hoveringParentIDState);
 
   useEffect(() => {
-    const parentIDs = parentIdsSeq(immutableNode, currentNodeID);
+    const parentIDs = parentIdsSeq(immutableRoot$.value, currentNodeID);
     if (!parentIDs) {
       return;
     }
@@ -27,11 +26,11 @@ function ParentNodes({ currentNodeID, onParentClick }: Props): JSX.Element | nul
     // @ts-ignore
     const _parents: Node[] = parentIDs
       .map((parentID) => {
-        const keyPath = keyPathById(immutableNode, parentID);
+        const keyPath = keyPathById(immutableRoot$.value, parentID);
         if (!keyPath) {
           return;
         }
-        return immutableNode.getIn(keyPath);
+        return immutableRoot$.value.getIn(keyPath);
       })
       .filter((parentNode) => {
         if (!parentNode) {

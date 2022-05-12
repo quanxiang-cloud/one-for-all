@@ -15,7 +15,7 @@ export default {
     sourcemap: 'inline',
   },
 
-  external: ['react', 'react-dom', 'lodash', /@one-for-all\/.*/],
+  external: ['react', 'react-dom', 'lodash', /@one-for-all\/.*/, 'TEMPORARY_PATCH_FOR_ARTERY_PLUGINS'],
 
   plugins: [
     commonjs(),

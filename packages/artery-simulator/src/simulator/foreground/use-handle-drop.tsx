@@ -1,13 +1,11 @@
-import { useRecoilValue } from 'recoil';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Node } from '@one-for-all/artery';
-import { immutableNodeState, latestFocusedGreenZone$, onDropEvent$ } from '../atoms';
+import { latestFocusedGreenZone$, onDropEvent$ } from '../atoms';
 import { insertNode, jsonParse, moveNode } from './helper';
 import duplicateNode from './toolbar/duplicate-node';
 import { filter, map } from 'rxjs';
 import { DND_DATA_TRANSFER_TYPE_ARTERY_NODE, DND_DATA_TRANSFER_TYPE_NODE_ID } from '../constants';
-import { artery$, onChangeArtery } from '../bridge';
-import { useBehaviorSubjectState } from '../utils';
+import { artery$, immutableRoot$, onChangeArtery } from '../bridge';
 
 interface MoveNodeRequest {
   type: 'move_node_request';
@@ -22,9 +20,6 @@ interface DropNodeRequest {
 type DropRequest = MoveNodeRequest | DropNodeRequest;
 
 export default function useHandleDrop(): void {
-  const rootNode = useRecoilValue(immutableNodeState);
-  const artery = useBehaviorSubjectState(artery$);
-
   function getDropRequest(dataTransfer: DataTransfer): DropRequest | undefined {
     const draggingNodeID = dataTransfer.getData(DND_DATA_TRANSFER_TYPE_NODE_ID);
     if (draggingNodeID) {
@@ -40,6 +35,9 @@ export default function useHandleDrop(): void {
   }
 
   useEffect(() => {
+    const artery = artery$.value;
+    const rootNode = immutableRoot$.value;
+
     const subscription = onDropEvent$
       .pipe(
         filter(() => !!latestFocusedGreenZone$.value),
@@ -72,5 +70,5 @@ export default function useHandleDrop(): void {
     return () => {
       subscription.unsubscribe();
     };
-  }, [artery, rootNode]);
+  }, []);
 }

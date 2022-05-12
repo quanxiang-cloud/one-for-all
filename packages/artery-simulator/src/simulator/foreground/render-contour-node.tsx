@@ -1,6 +1,7 @@
 import React from 'react';
 import cs from 'classnames';
 import { useRecoilState } from 'recoil';
+import type { Node } from '@one-for-all/artery';
 
 import useContourNodeStyle from './use-active-contour-node-style';
 import type { ContourNode } from '../../types';
@@ -13,10 +14,10 @@ import {
   onDropEvent$,
 } from '../atoms';
 import { overrideDragImage, useArteryRootNodeID, useBehaviorSubjectState } from '../utils';
-import useSetActiveNode from './use-set-active-node';
 import useShouldHandleDndCallback from './use-should-handle-dnd-callback';
 import { DND_DATA_TRANSFER_TYPE_NODE_ID } from '../constants';
-import { activeNode$ } from '../bridge';
+import { activeNode$, immutableRoot$, setActiveNode } from '../bridge';
+import { byArbitrary, ImmutableNode } from '@one-for-all/artery-utils';
 
 function preventDefault(e: any): false {
   e.preventDefault();
@@ -34,7 +35,6 @@ function RenderContourNode({ contourNode }: Props): JSX.Element {
   const activeNode = useBehaviorSubjectState(activeNode$);
   const style = useContourNodeStyle(contourNode);
   const [draggingNodeID, setDraggingNodeID] = useRecoilState(draggingNodeIDState);
-  const setActiveNode = useSetActiveNode();
   const _shouldHandleDnd = useShouldHandleDndCallback(contourNode.id);
 
   return (
@@ -42,7 +42,20 @@ function RenderContourNode({ contourNode }: Props): JSX.Element {
       <div
         id={`contour-${contourNode.id}`}
         style={style}
-        onClick={() => setActiveNode(contourNode.id)}
+        // onClick={() => setActiveNode(contourNode.id)}
+        onClick={() => {
+          const keyPath = byArbitrary(immutableRoot$.value, contourNode.id);
+          if (!keyPath) {
+            return;
+          }
+          const n: ImmutableNode | undefined = immutableRoot$.value.getIn(keyPath) as ImmutableNode | undefined;
+          if (!n) {
+            return;
+          }
+
+          // @ts-ignore
+          setActiveNode(n.toJS() as Node);
+        }}
         draggable={contourNode.id !== rootNodeID}
         onDragStart={(e: React.DragEvent<HTMLDivElement>): any => {
           // todo this has no affect, fix it!

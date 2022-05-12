@@ -27,7 +27,7 @@ export default class Radar {
       clearTimeout(timer);
       timer = window.setTimeout(() => {
         scrollDone$.next();
-      }, 150);
+      }, 250);
     });
 
     const scrollSign$ = scroll$.pipe(audit(() => scrollDone$));
