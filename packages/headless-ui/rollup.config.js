@@ -81,12 +81,7 @@ function getCommonConfigs(side) {
           '.js': 'jsx',
         },
       }),
-      styles({
-        autoModules: /\.m\.scss/,
-        // mode: ["extract", "ofa-ui.css"]
-        mode: 'extract',
-        mode: ['extract', `ofa-headless-ui-${side}.css`],
-      }),
+      styles(),
     ],
   };
 }

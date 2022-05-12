@@ -1,5 +1,5 @@
-import { NodeWithoutChild } from '@one-for-all/artery-simulator/lib/types';
+import type { NodePrimary } from '@one-for-all/artery-simulator';
 
-export function isSupportChildren(node: NodeWithoutChild): Promise<boolean> {
+export function isSupportChildren(node: NodePrimary): Promise<boolean> {
   return Promise.resolve(true);
 }

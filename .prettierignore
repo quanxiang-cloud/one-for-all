@@ -114,3 +114,4 @@ packages/ui
 
 # ignore all vendor packages
 vendors/
+packages/artery-simulator/dll/simulator.js

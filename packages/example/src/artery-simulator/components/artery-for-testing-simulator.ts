@@ -7,7 +7,7 @@ const arteryForTestingSimulator: Artery = {
     name: 'div',
     children: [
       {
-        id: 'normal-component',
+        id: 'normal-component1',
         type: 'react-component',
         packageName: 'SimulatorDedicated',
         packageVersion: 'whatever',
@@ -20,7 +20,7 @@ const arteryForTestingSimulator: Artery = {
         }
       },
       {
-        id: 'normal-component',
+        id: 'normal-component2',
         type: 'react-component',
         packageName: 'SimulatorDedicated',
         packageVersion: 'whatever',
@@ -238,6 +238,24 @@ const arteryForTestingSimulator: Artery = {
           name: {
             type: 'constant_property',
             value: 'normal-component 3'
+          }
+        }
+      },
+      {
+        id: 'modal-1',
+        type: 'react-component',
+        packageName: 'SimulatorDedicated',
+        packageVersion: 'whatever',
+        exportName: 'Modal',
+        props: {
+          name: {
+            type: 'constant_property',
+            value: 'normal-component 3'
+          },
+          isOpen: {
+            type: 'shared_state_property',
+            stateID: 'isModalShow',
+            fallback: false,
           }
         }
       },

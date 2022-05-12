@@ -6,22 +6,13 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import typescriptPaths from '../../scripts/rollup-plugin-typescript-paths';
 
 export default [
-  // {
-  //   input: 'src/todo-app/components/index.ts',
-  //   output: {
-  //     file: 'dist/todo-app/todo-components.js',
-  //     format: 'system',
-  //     sourcemap: 'inline',
-  //   },
-
-  //   external: ['react', 'react-dom', /@one-for-all\/.*/],
-
-  //   plugins: commonPlugins,
-  // },
   {
-    input: 'src/index.ts',
+    input: {
+      index: 'src/index.ts',
+      temporaryPlugins: 'src/artery-simulator/temporary-plugins.ts'
+    },
     output: {
-      file: 'dist/index.js',
+      dir: 'dist',
       format: 'system',
       sourcemap: 'inline',
     },
@@ -63,24 +54,3 @@ export default [
     ],
   },
 ];
-
-// {
-//   input: 'src/component-style-config/index.tsx',
-//   output: {
-//     file: 'dist/component-style-config/index.js',
-//     format: 'system',
-//     sourcemap: 'inline',
-//   },
-
-//   external: ['react', 'react-dom', /@one-for-all\/.*/],
-
-//   plugins: [
-//     ...commonPlugins,
-//     copy({
-//       targets: [
-//         { src: path.resolve(__dirname, './src/component-style-config/assets/*'), dest: 'dist/component-style-config' },
-//       ],
-//       copyOnce: true
-//     })
-//   ],
-// },
