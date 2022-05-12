@@ -6,6 +6,8 @@ import useComponentNodeProps from './hooks/use-component-props';
 import Placeholder from './placeholder';
 import { useSupportChildrenCheck } from './use-support-children-check';
 import DepthContext from './depth-context';
+import ErrorBoundary from './error-boundary';
+import useShouldRenderChildrenPlaceholder from './use-should-render-children-placeholder';
 
 interface Props {
   node: ReactComponentNode;
@@ -16,7 +18,9 @@ function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | nu
   const currentDepth = useContext(DepthContext) + 1;
   const { nodeProps, wrapperProps } = useComponentNodeProps(node, ctx, currentDepth);
   const nodeComponent = useNodeComponent(node, ctx.plugins);
+  // todo combine useSupportChildrenCheck and shouldRenderPlaceholder
   useSupportChildrenCheck(node);
+  const shouldRenderPlaceholder = useShouldRenderChildrenPlaceholder(node);
 
   if (!nodeComponent) {
     return null;
@@ -24,9 +28,17 @@ function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | nu
 
   if (!node.children || !node.children.length) {
     return React.createElement(
-      'div',
-      wrapperProps,
-      React.createElement(nodeComponent, nodeProps, React.createElement(Placeholder, { parent: node })),
+      ErrorBoundary,
+      {},
+      React.createElement(
+        'div',
+        wrapperProps,
+        React.createElement(
+          nodeComponent,
+          nodeProps,
+          shouldRenderPlaceholder ? React.createElement(Placeholder, { parent: node }) : undefined
+        ),
+      ),
     );
   }
 
@@ -34,12 +46,16 @@ function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | nu
     DepthContext.Provider,
     { value: currentDepth },
     React.createElement(
-      'div',
-      wrapperProps,
+      ErrorBoundary,
+      {},
       React.createElement(
-        nodeComponent,
-        nodeProps,
-        React.createElement(ChildrenRender, { nodes: node.children || [], ctx }),
+        'div',
+        wrapperProps,
+        React.createElement(
+          nodeComponent,
+          nodeProps,
+          React.createElement(ChildrenRender, { nodes: node.children || [], ctx }),
+        ),
       ),
     ),
   );

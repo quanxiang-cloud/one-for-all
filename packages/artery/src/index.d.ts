@@ -350,7 +350,7 @@ declare module ArterySpec {
     error?: Error;
   }
 
-  // map of stateID and apiID
+  // map of stateID and apiState
   type APIStatesSpec = Record<string, { apiID: string; [key: string]: unknown }>;
 
   // TODO: merge with type definition in api-spec-adapter

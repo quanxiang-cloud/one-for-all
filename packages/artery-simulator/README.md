@@ -19,3 +19,4 @@
 - 点击 placeholder 需要可以选中父容器
 - bug: drag hover child node
 - todo: test composed and loop node
+- 支持模态框

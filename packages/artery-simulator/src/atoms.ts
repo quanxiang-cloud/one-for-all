@@ -73,3 +73,5 @@ export const cursor$ = new Subject<Cursor>();
 export const latestFocusedGreenZone$ = new BehaviorSubject<GreenZone | undefined>(undefined);
 
 export const onDropEvent$ = new Subject<React.DragEvent>();
+
+export const inDnd$ = new BehaviorSubject<Boolean>(false);

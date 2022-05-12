@@ -37,11 +37,19 @@ export default function useElementsRadar(
 
           const scrollHeight = root.scrollHeight || 0;
           const scrollWidth = root.scrollWidth || 0;
+          // todo bug, why contour id has duplicate?
+          const DUPLICATE_CONTOUR_ID = new Set<string>();
           const contourNodes: ContourNode[] = Array.from(report.entries())
             .map(([element, { relativeRect, raw }]) => {
               const id = element.dataset.simulatorNodeId;
               if (!id) {
                 return;
+              }
+
+              if (DUPLICATE_CONTOUR_ID.has(id)) {
+                return;
+              } else {
+                DUPLICATE_CONTOUR_ID.add(id);
               }
 
               const depth = parseInt(element.dataset.simulatorNodeDepth || '0') || 0;

@@ -1,37 +1,39 @@
-import Radio, { RadioGroup } from '../shared/radio';
-import Checkbox, { CheckboxGroup } from '../shared/checkbox';
-import Input from '../shared/input';
-import Divider from '../shared/divider';
-import Tag from '../shared/tag';
-import Tab from '../shared/tab';
-import Button from '../shared/button';
-import Table from '../shared/table';
 import Breadcrumb from '../shared/breadcrumb';
-import Switch from '../shared/switch';
+import Button from '../shared/button';
+import Checkbox, { CheckboxGroup } from '../shared/checkbox';
+import Divider from '../shared/divider';
+import Input from '../shared/input';
 import Loading from '../shared/loading';
+import MediocreDialog from './mediocre-dialog';
 import Pagination from '../shared/pagination';
+import Radio, { RadioGroup } from '../shared/radio';
 import Select from '../shared/select';
+import Switch from '../shared/switch';
+import Tab from '../shared/tab';
+import Table from '../shared/table';
+import Tag from '../shared/tag';
 import usePopper from '../shared/popper';
 import SwiperImage from '../shared/swiper-image';
 
 import '../css/index.css';
 
 export {
-  Radio,
-  RadioGroup,
-  Checkbox,
-  CheckboxGroup,
-  Input,
-  Divider,
-  Tag,
   Breadcrumb,
   Button,
-  Table,
-  Switch,
-  Tab,
+  Checkbox,
+  CheckboxGroup,
+  Divider,
+  Input,
   Loading,
+  MediocreDialog,
   Pagination,
+  Radio,
+  RadioGroup,
   Select,
+  Switch,
   SwiperImage,
-  usePopper
+  Tab,
+  Table,
+  Tag,
+  usePopper,
 };

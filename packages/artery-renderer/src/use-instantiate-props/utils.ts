@@ -64,7 +64,12 @@ export function getComputedState$({
 
     return ctx.statesHubShared.getState$(depID);
   });
-  const initialDeps = deps$.map((dep$) => dep$.value);
+  const initialDeps = deps$.reduce((acc: Record<string, unknown>, dep$, index) => {
+    const key = deps[index].depID;
+    acc[key] = dep$.value;
+    
+    return acc;
+  }, {});
   const state$ = new BehaviorSubject(
     convertState({
       state: initialDeps,

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { draggingNodeIDState } from '../atoms';
+import { draggingNodeIDState, inDnd$ } from '../atoms';
 import { useRecoilState } from 'recoil';
 import useGreenZoneReport from './use-green-zone-report';
 import RenderGreenZoneForNodeWithoutChildren from './render-green-zone-for-node-without-children';
@@ -10,7 +10,7 @@ function GreenZone(): JSX.Element | null {
   const greenZoneReport = useGreenZoneReport();
   const [draggingNodeID] = useRecoilState(draggingNodeIDState);
 
-  if (!draggingNodeID || !greenZoneReport) {
+  if (!inDnd$.value || !greenZoneReport) {
     return null;
   }
 
