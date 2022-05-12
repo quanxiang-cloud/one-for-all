@@ -1,14 +1,12 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import type { Artery, Node } from '@one-for-all/artery';
 
 import simulatorDDL from 'dll:../dll/simulator.js';
-import Fence, { InjectElement } from './fence';
 import Messenger from './messenger';
-
+import Fence, { InjectElement } from './fence';
 import { NodePrimary } from './types';
 import { useSyncResponders, useSyncArtery, useSyncActiveNode, useSyncActiveModalLayer } from './sync-hooks';
 import { MESSAGE_TYPE_ARTERY } from './simulator/constants';
-import { useState } from 'react';
 
 function buildHeadElements(pluginsSrc: string): InjectElement[] {
   const importMaps: InjectElement[] = Array.from(document.scripts)

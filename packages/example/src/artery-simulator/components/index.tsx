@@ -1,18 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import ArterySimulator from '@one-for-all/artery-simulator';
 import { travel } from '@one-for-all/artery-utils';
-import { nanoid } from 'nanoid';
 
-import repository from './repository';
 import arteryForTestingSimulator from './artery-for-testing-simulator';
 import ArterySpec, { Artery, Node } from '@one-for-all/artery';
 import { isNodeInModalLayer, isSupportChildren } from './helper';
 
 import './index.scss';
-
-function genNodeID(): string {
-  return nanoid();
-}
 
 interface RenderModalLayerSelectorProps {
   artery: Artery;
@@ -69,7 +63,6 @@ function SimulatorInExample(): JSX.Element {
         artery={artery}
         pluginsSrc="/dist/temporaryPlugins.js"
         activeNode={activeNode}
-        // genNodeID={genNodeID}
         activeModalLayer={activeModalLayer}
         setActiveModalLayer={setActiveModalLayer}
         setActiveNode={setActiveNode}

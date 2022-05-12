@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import cs from 'classnames';
 
 export type InjectElement = {
   name: string;
@@ -85,7 +86,8 @@ function Fence(
 
   return (
     <iframe
-      className={className}
+      className={cs('simulator-fence', className)}
+      style={{ border: 'none' }}
       ref={(_ref) => {
         // todo fix this
         if (!_ref) {
@@ -104,54 +106,3 @@ function Fence(
 }
 
 export default React.forwardRef<HTMLIFrameElement, Props>(Fence);
-
-// class Fence2 {
-//   public iframe: HTMLIFrameElement;
-
-//   public constructor(iframe: HTMLIFrameElement, headElements: Array<InjectElement>) {
-//     this.iframe = iframe;
-
-//     this.iframe.contentDocument?.open();
-//     this.iframe.contentDocument?.write(`
-//     <!DOCTYPE html>
-//     <html lang="en">
-//     <head>
-//       <meta charset="UTF-8">
-//       <meta http-equiv="X-UA-Compatible" content="IE=edge">
-//       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-//       <title>Document</title>
-//       ${toHTML(headElements)}
-//     </head>
-//     <body>
-//     </body>
-//     </html>
-//     `);
-
-//     this.iframe.contentDocument?.close();
-//   }
-
-//   public addElement(htmlStr: string): void {
-//     const template: HTMLTemplateElement | undefined = this.iframe.contentDocument?.createElement('template');
-//     if (!template) {
-//       console.error('failed to create template');
-//       return;
-//     }
-//     template.innerHTML = htmlStr.trim();
-
-//     Array.from(template.content.childNodes).forEach((n) => {
-//       this.iframe.contentDocument?.body.appendChild(n);
-//     });
-//   }
-
-//   public addScript(src: string): void {
-//     const doc = this.iframe.contentDocument;
-//     if (!doc) {
-//       console.error('no contentDocument available');
-//       return;
-//     }
-//     const script = doc.createElement('script');
-//     // script.type = 'systemjs-module';
-//     script.src = src;
-//     doc.body.appendChild(script);
-//   }
-// }
