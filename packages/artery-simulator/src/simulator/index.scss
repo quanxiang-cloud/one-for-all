@@ -9,14 +9,6 @@
   }
 }
 
-.contour-green-zone {
-  position: absolute;
-  top: 0;
-  will-change: width, height, transform;
-
-  outline: 1px dashed #f85900;
-}
-
 // TODO Support all position
 // top
 // right
@@ -42,7 +34,7 @@
 }
 
 .green-zone-between-nodes {
-  outline: 2px dashed #008000;
+  outline: 1px dashed #008000;
 }
 
 .green-zone-between-nodes--focused {

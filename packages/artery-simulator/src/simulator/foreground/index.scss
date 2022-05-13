@@ -21,7 +21,7 @@
 
 .contour-node {
   position: absolute;
-  border-width: 2px;
+  border-width: 1px;
   border-color: transparent;
 
   &:hover:not(.contour-node--root, .contour-node--active) {
@@ -58,7 +58,7 @@
     margin-right: 4px;
     color: white;
     font-size: 12px;
-    border-radius: 2px;
+    border-radius: 1px;
 
     background-color: #0084ff;
   }
