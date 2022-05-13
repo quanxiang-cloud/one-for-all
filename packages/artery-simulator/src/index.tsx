@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useImperativeHandle } from 'react';
 import type { Artery, Node } from '@one-for-all/artery';
 
 import simulatorDDL from 'dll:../dll/simulator.js';
@@ -43,7 +43,7 @@ function buildHeadElements(pluginsSrc: string): InjectElement[] {
   ]);
 }
 
-interface Props {
+export interface Props {
   artery: Artery;
   setActiveNode: (node?: Node) => void;
   onChange: (artery: Artery) => void;
@@ -59,6 +59,10 @@ interface Props {
   modalComponents: Array<{ packageName: string; exportName: string; }>;
 }
 
+export interface SimulatorRef {
+  iframe: HTMLIFrameElement | null;
+}
+
 function Simulator({
   activeModalLayer,
   activeNode,
@@ -70,10 +74,14 @@ function Simulator({
   pluginsSrc,
   setActiveModalLayer,
   setActiveNode,
-}: Props): JSX.Element {
+}: Props, simulatorRef: React.ForwardedRef<SimulatorRef>): JSX.Element {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [messenger, setMessenger] = useState<Messenger>();
   const [iframeLoad, setIframeLoad] = useState(false);
+
+  useImperativeHandle(simulatorRef, () => {
+    return { iframe: iframeRef.current || null };
+  });
 
   useEffect(() => {
     if (!iframeRef.current?.contentWindow || !iframeLoad) {
@@ -104,4 +112,4 @@ function Simulator({
   );
 }
 
-export default Simulator;
+export default React.forwardRef<SimulatorRef, Props>(Simulator);

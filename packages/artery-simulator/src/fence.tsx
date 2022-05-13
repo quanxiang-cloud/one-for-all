@@ -32,10 +32,6 @@ function injectHTML(
   modalComponents: Array<{ packageName: string; exportName: string; }>,
   onLoad?: () => void,
 ): void {
-  // todo fixme
-  // @ts-ignore
-  iframe.contentWindow.CONFIG = window.CONFIG;
-
   if (iframe.contentWindow) {
     // @ts-ignore
     iframe.contentWindow.__fenceIframeLoad = () => {

@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react';
-import ArterySimulator from '@one-for-all/artery-simulator';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
+import ArterySimulator, { SimulatorRef } from '@one-for-all/artery-simulator';
 import { travel } from '@one-for-all/artery-utils';
 
 import arteryForTestingSimulator from './artery-for-testing-simulator';
@@ -51,6 +51,11 @@ function SimulatorInExample(): JSX.Element {
   const [activeNode, setActiveNode] = useState<ArterySpec.Node>();
   const [artery, setArtery] = useState(arteryForTestingSimulator);
   const [activeModalLayer, setActiveModalLayer] = useState<string | undefined>('');
+  const simulatorRef = useRef<SimulatorRef>(null);
+
+  // useEffect(() => {
+  //   console.log(simulatorRef.current?.iframe)
+  // }, []);
 
   return (
     <div>
@@ -59,6 +64,7 @@ function SimulatorInExample(): JSX.Element {
         setActiveModalLayer={setActiveModalLayer}
       />
       <ArterySimulator
+        ref={simulatorRef}
         className="artery-simulator"
         artery={artery}
         pluginsSrc="/dist/temporaryPlugins.js"
