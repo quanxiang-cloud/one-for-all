@@ -27,7 +27,7 @@ export default function RenderLayer({ artery, plugins, rootElement, onReport }: 
     <div className="simulator-background simulator-background--root">
       {/* extra top padding */}
       <div style={{ height: '20px' }} />
-      <NodeRender node={rootNode} ctx={ctx} isLayerRoot={true} />
+      <NodeRender node={rootNode} ctx={ctx} />
       {/* extra bottom padding */}
       <div style={{ height: '20px' }} />
     </div>

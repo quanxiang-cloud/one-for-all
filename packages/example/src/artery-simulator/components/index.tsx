@@ -18,7 +18,7 @@ function RenderModalLayerSelector({ artery, setActiveModalLayer }: RenderModalLa
     const modalLayerRoots: Array<Node> = []
     travel(artery.node, {
       reactComponentNode: (currentNode): undefined => {
-        if (currentNode.exportName === 'Modal') {
+        if (currentNode.exportName === 'MediocreDialog') {
           modalLayerRoots.push(currentNode)
         }
 
@@ -69,12 +69,11 @@ function SimulatorInExample(): JSX.Element {
         artery={artery}
         pluginsSrc="/dist/temporaryPlugins.js"
         activeNode={activeNode}
-        activeModalLayer={activeModalLayer}
-        setActiveModalLayer={setActiveModalLayer}
+        activeOverLayerNodeID={activeModalLayer}
+        setActiveOverLayerNodeID={setActiveModalLayer}
         setActiveNode={setActiveNode}
         onChange={setArtery}
         isNodeSupportChildren={isSupportChildren}
-        modalComponents={[{ packageName: '@one-for-all/headless-ui', exportName: 'MediocreDialog' }]}
       />
     </div>
   );

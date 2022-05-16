@@ -246,7 +246,7 @@ const arteryForTestingSimulator: Artery = {
         type: 'react-component',
         packageName: 'SimulatorDedicated',
         packageVersion: 'whatever',
-        exportName: 'Modal',
+        exportName: 'MediocreDialog',
         props: {
           name: {
             type: 'constant_property',

@@ -3,7 +3,7 @@ import Messenger from './messenger';
 import {
   MESSAGE_TYPE_ARTERY,
   MESSAGE_TYPE_ACTIVE_NODE,
-  MESSAGE_TYPE_ACTIVE_MODAL_LAYER,
+  MESSAGE_TYPE_ACTIVE_OVER_LAYER_NODE_ID,
   MESSAGE_TYPE_CHECK_NODE_SUPPORT_CHILDREN,
 } from './simulator/constants';
 import { Artery, Node } from '@one-for-all/artery';
@@ -26,30 +26,30 @@ export function useSyncResponders(
 
 export function useSyncActiveModalLayer(
   messenger: Messenger | undefined,
-  setActiveModalLayer: (activeModalLayer?: string | undefined) => void,
-  activeModalLayer: string | undefined,
+  setActiveOverLayerNodeID: (activeOverLayerNodeID?: string | undefined) => void,
+  activeOverLayerNodeID: string | undefined,
 ) {
   useEffect(() => {
     if (!messenger) {
       return;
     }
 
-    const subscription = messenger.listen(MESSAGE_TYPE_ACTIVE_MODAL_LAYER).subscribe((activeModalRootID) => {
-      setActiveModalLayer(activeModalRootID as string);
+    const subscription = messenger.listen(MESSAGE_TYPE_ACTIVE_OVER_LAYER_NODE_ID).subscribe((activeModalRootID) => {
+      setActiveOverLayerNodeID(activeModalRootID as string);
     });
 
     return () => {
       subscription.unsubscribe();
     };
-  }, [setActiveModalLayer, messenger]);
+  }, [setActiveOverLayerNodeID, messenger]);
 
   useEffect(() => {
     if (!messenger) {
       return;
     }
 
-    messenger.send(MESSAGE_TYPE_ACTIVE_MODAL_LAYER, activeModalLayer);
-  }, [activeModalLayer, messenger]);
+    messenger.send(MESSAGE_TYPE_ACTIVE_OVER_LAYER_NODE_ID, activeOverLayerNodeID);
+  }, [activeOverLayerNodeID, messenger]);
 }
 
 export function useSyncActiveNode(

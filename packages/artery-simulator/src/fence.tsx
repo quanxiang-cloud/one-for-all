@@ -29,7 +29,6 @@ function toHTML(elements: InjectElement[]): string {
 function injectHTML(
   iframe: HTMLIFrameElement,
   headElements: Array<InjectElement>,
-  modalComponents: Array<{ packageName: string; exportName: string; }>,
   onLoad?: () => void,
 ): void {
   if (iframe.contentWindow) {
@@ -37,9 +36,6 @@ function injectHTML(
     iframe.contentWindow.__fenceIframeLoad = () => {
       onLoad?.();
     };
-
-    // @ts-ignore
-    iframe.contentWindow.__modalComponents = modalComponents;
   }
   iframe.contentDocument?.open();
   iframe.contentDocument?.write(`
@@ -71,11 +67,10 @@ interface Props {
   headElements: Array<InjectElement>;
   className?: string;
   onLoad?: () => void;
-  modalComponents: Array<{ packageName: string; exportName: string; }>;
 }
 
 function Fence(
-  { headElements, className, onLoad, modalComponents }: Props,
+  { headElements, className, onLoad }: Props,
   ref: React.ForwardedRef<HTMLIFrameElement>,
 ): JSX.Element {
   const [iframeElement, setIframe] = useState<HTMLIFrameElement>();
@@ -85,7 +80,7 @@ function Fence(
       return;
     }
 
-    injectHTML(iframeElement, headElements, modalComponents, onLoad);
+    injectHTML(iframeElement, headElements, onLoad);
   }, [iframeElement]);
 
   return (

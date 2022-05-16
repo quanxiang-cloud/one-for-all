@@ -13,7 +13,7 @@ import WillThrow from './will-throw';
 const repository: Repository = {
   'SimulatorDedicated@whatever': {
     Card,
-    Modal,
+    MediocreDialog: Modal,
     Normal,
     ReturnDomList,
     ReturnNull,

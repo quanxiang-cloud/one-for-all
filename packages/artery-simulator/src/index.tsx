@@ -49,14 +49,13 @@ export interface Props {
   onChange: (artery: Artery) => void;
   activeNode?: Node;
   // modal layer root node id
-  activeModalLayer?: string;
-  setActiveModalLayer: (activeModalLayer?: string) => void;
+  activeOverLayerNodeID?: string;
+  setActiveOverLayerNodeID: (activeOverLayerNodeID?: string) => void;
 
   // todo plugin url
   pluginsSrc: string;
   className?: string;
   isNodeSupportChildren: (node: NodePrimary) => Promise<boolean>;
-  modalComponents: Array<{ packageName: string; exportName: string; }>;
 }
 
 export interface SimulatorRef {
@@ -64,15 +63,14 @@ export interface SimulatorRef {
 }
 
 function Simulator({
-  activeModalLayer,
+  activeOverLayerNodeID,
   activeNode,
   artery,
   className,
   isNodeSupportChildren,
-  modalComponents,
   onChange,
   pluginsSrc,
-  setActiveModalLayer,
+  setActiveOverLayerNodeID,
   setActiveNode,
 }: Props, simulatorRef: React.ForwardedRef<SimulatorRef>): JSX.Element {
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -99,7 +97,7 @@ function Simulator({
   useSyncResponders(messenger, isNodeSupportChildren);
   useSyncArtery(messenger, onChange, artery);
   useSyncActiveNode(messenger, setActiveNode, activeNode);
-  useSyncActiveModalLayer(messenger, setActiveModalLayer, activeModalLayer);
+  useSyncActiveModalLayer(messenger, setActiveOverLayerNodeID, activeOverLayerNodeID);
 
   return (
     <Fence
@@ -107,7 +105,6 @@ function Simulator({
       className={className}
       headElements={buildHeadElements(pluginsSrc)}
       onLoad={() => setIframeLoad(true)}
-      modalComponents={modalComponents}
     />
   );
 }
