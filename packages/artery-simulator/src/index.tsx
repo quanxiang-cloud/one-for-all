@@ -8,7 +8,7 @@ import { NodePrimary } from './types';
 import { useSyncResponders, useSyncArtery, useSyncActiveNode, useSyncActiveModalLayer } from './sync-hooks';
 import { MESSAGE_TYPE_ARTERY } from './simulator/constants';
 
-function buildHeadElements(pluginsSrc: string): InjectElement[] {
+function buildHeadElements(pluginsSrc: string, cssURLs?: Array<string>): InjectElement[] {
   const importMaps: InjectElement[] = Array.from(document.scripts)
     .filter((s) => s.type === 'systemjs-importmap')
     .map((s) => JSON.parse(s.innerText))
@@ -21,7 +21,7 @@ function buildHeadElements(pluginsSrc: string): InjectElement[] {
 
   const patchSrc = pluginsSrc.startsWith('http') ? pluginsSrc : `${window.origin}${pluginsSrc}`;
 
-  return importMaps.concat([
+  const headElements = importMaps.concat([
     // todo fix me
     {
       name: 'script',
@@ -41,6 +41,12 @@ function buildHeadElements(pluginsSrc: string): InjectElement[] {
       attrs: { src: simulatorDDL },
     },
   ]);
+
+  const links: InjectElement[] = (cssURLs || []).map((url) => {
+    return { name: 'link', attrs: { ref: 'stylesheet', href: url } };
+  });
+
+  return headElements.concat(links);
 }
 
 export interface Props {
@@ -54,6 +60,8 @@ export interface Props {
 
   // todo plugin url
   pluginsSrc: string;
+  // todo a better design
+  cssURLs?: Array<string>;
   className?: string;
   isNodeSupportChildren: (node: NodePrimary) => Promise<boolean>;
 }
@@ -67,6 +75,7 @@ function Simulator({
   activeNode,
   artery,
   className,
+  cssURLs,
   isNodeSupportChildren,
   onChange,
   pluginsSrc,
@@ -103,7 +112,7 @@ function Simulator({
     <Fence
       ref={iframeRef}
       className={className}
-      headElements={buildHeadElements(pluginsSrc)}
+      headElements={buildHeadElements(pluginsSrc, cssURLs)}
       onLoad={() => setIframeLoad(true)}
     />
   );
