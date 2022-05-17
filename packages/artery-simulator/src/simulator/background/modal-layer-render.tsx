@@ -1,25 +1,41 @@
-import React, { useMemo } from 'react';
-import { Plugins } from '@one-for-all/artery-renderer';
+import React, { useCallback } from 'react';
+import type { Artery } from '@one-for-all/artery';
+import plugins from 'TEMPORARY_PATCH_FOR_ARTERY_PLUGINS';
+import { useBootResult } from '@one-for-all/artery-renderer';
 
 import SimulatorLayerCtx, { createLayerContextVal } from './context';
-import { ContourNodesReport } from '../../types';
-import RenderLayer from './render-layer';
-
-import './index.scss';
+import useElementsRadar from './use-radar-ref';
+import NodeRender from './node-render';
 import { useBehaviorSubjectState } from '../utils';
 import { activeOverLayerArtery$ } from '../bridge';
+import { modalLayerContourNodesReport$ } from '../atoms';
 
-interface Props {
-  plugins?: Plugins;
-  onModalLayerReport: (report?: ContourNodesReport) => void;
-}
+import './index.scss';
 
 const modalLayerContextValue = createLayerContextVal();
 
-function ModalLayerRender({
-  plugins,
-  onModalLayerReport,
-}: Props): JSX.Element | null {
+interface Props {
+  artery: Artery;
+}
+
+function RenderLayer({ artery }: Props): JSX.Element | null {
+  const { ctx, rootNode } = useBootResult(artery, plugins) || {};
+  const onReport = useCallback((report) => modalLayerContourNodesReport$.next(report), []);
+  useElementsRadar(onReport);
+
+  if (!ctx || !rootNode) {
+    return null;
+  }
+
+  return (
+    <div className="simulator-background-modal-layer">
+      <NodeRender node={rootNode} ctx={ctx} />
+    </div>
+  );
+}
+
+
+function ModalLayerRender(): JSX.Element | null {
   const modalLayerArtery = useBehaviorSubjectState(activeOverLayerArtery$);
 
   if (!modalLayerArtery) {
@@ -28,11 +44,7 @@ function ModalLayerRender({
 
   return (
     <SimulatorLayerCtx.Provider value={modalLayerContextValue}>
-      <RenderLayer
-        artery={modalLayerArtery}
-        plugins={plugins}
-        onReport={onModalLayerReport}
-      />
+      <RenderLayer artery={modalLayerArtery} />
     </SimulatorLayerCtx.Provider>
   );
 }

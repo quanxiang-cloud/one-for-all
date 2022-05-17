@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react';
 import cs from 'classnames';
 
 import { Portal } from '../portal';
-import { uesHandleEsc, useToggleCallback } from './hooks';
+import { uesHandleEsc, usePreventBodyScroll, useToggleCallback } from './hooks';
 import './index.scss';
 
 export type Props = PropsWithChildren<{
@@ -23,6 +23,7 @@ export default function ModalLayer({
 }: Props): JSX.Element | null {
   uesHandleEsc({ isOpen, onClose, callOnCloseWhenEscDown });
   useToggleCallback({ isOpen, onClose });
+  usePreventBodyScroll(isOpen)
 
   if (!isOpen) {
     return null;
