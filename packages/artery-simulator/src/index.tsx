@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useImperativeHandle } from 'react';
 import type { Artery, Node } from '@one-for-all/artery';
+import cs from 'classnames';
 
 import simulatorDDL from 'dll:../dll/simulator.js';
 import Messenger from './messenger';
@@ -7,6 +8,8 @@ import Fence, { InjectElement } from './fence';
 import { NodePrimary } from './types';
 import { useSyncResponders, useSyncArtery, useSyncActiveNode, useSyncActiveModalLayer } from './sync-hooks';
 import { MESSAGE_TYPE_ARTERY } from './simulator/constants';
+
+import './index.scss';
 
 function buildHeadElements(pluginsSrc: string, cssURLs?: Array<string>): InjectElement[] {
   const importMaps: InjectElement[] = Array.from(document.scripts)
@@ -109,12 +112,13 @@ function Simulator({
   useSyncActiveModalLayer(messenger, setActiveOverLayerNodeID, activeOverLayerNodeID);
 
   return (
-    <Fence
-      ref={iframeRef}
-      className={className}
-      headElements={buildHeadElements(pluginsSrc, cssURLs)}
-      onLoad={() => setIframeLoad(true)}
-    />
+    <div className={cs('artery-simulator', className)}>
+      <Fence
+        ref={iframeRef}
+        headElements={buildHeadElements(pluginsSrc, cssURLs)}
+        onLoad={() => setIframeLoad(true)}
+      />
+    </div>
   );
 }
 

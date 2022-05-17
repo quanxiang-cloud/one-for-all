@@ -5,11 +5,11 @@ import { Portal } from '../portal';
 import { uesHandleEsc, useToggleCallback } from './hooks';
 import './index.scss';
 
-type Props = PropsWithChildren<{
+export type Props = PropsWithChildren<{
   isOpen: boolean;
   className?: string;
   onClose?: () => void;
-  container?: HTMLElement | (() => HTMLElement);
+  container?: 'inside' | HTMLElement | (() => HTMLElement);
   callOnCloseWhenEscDown?: boolean;
 }>;
 
@@ -28,9 +28,21 @@ export default function ModalLayer({
     return null;
   }
 
+  if (container === 'inside') {
+    return (
+      <div className={cs('ofa-modal-layer', 'ofa-modal-layer--inside', className)} onClick={() => onClose?.()}>
+        <div className="ofa-modal-layer__backdrop" />
+        {children}
+      </div>
+    )
+  }
+
   return (
     <Portal mountPoint={typeof container === 'function' ? container() : container}>
-      <div className={cs('ofa-modal-layer', className)} onClick={() => onClose?.()}>
+      <div className={cs('ofa-modal-layer', className)} onClick={() => onClose?.()} onScroll={(e) => e.stopPropagation()}>
+        <div
+          className="ofa-modal-layer__backdrop"
+        />
         {children}
       </div>
     </Portal>

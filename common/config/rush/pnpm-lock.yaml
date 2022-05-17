@@ -18033,7 +18033,7 @@ packages:
     dev: false
 
   file:projects/elements-radar.tgz_c445a9d32c5b835fb9c30404148ec5af:
-    resolution: {integrity: sha512-k8hkhNr6GGtUWow3qPxsyqoIAVeH2GEZ0AUe1qbJYYCptDnIrmXNtVFE6HSvtRc6TztdXFD/vi73paZ3twfnnw==, tarball: file:projects/elements-radar.tgz}
+    resolution: {integrity: sha512-XuuoW1/jLgYrNABXFrSrm+6zgFChsom9lDMvpIKYzB1O7VHxRy3tupdMMzmi7G9nuMPzA1FeR9c+qr3bzfzhmQ==, tarball: file:projects/elements-radar.tgz}
     id: file:projects/elements-radar.tgz
     name: '@rush-temp/elements-radar'
     version: 0.0.0
@@ -18052,6 +18052,7 @@ packages:
       pretty-format: 27.4.6
       rollup: 2.66.0
       rollup-plugin-esbuild: 4.8.2_esbuild@0.14.38+rollup@2.66.0
+      rollup-plugin-esbuild-ts: 4.8.2_esbuild@0.14.38+rollup@2.66.0
       rollup-plugin-terser: 7.0.2_rollup@2.66.0
       rxjs: 7.5.5
       ts-jest: 27.1.3_fd6d969551af8ae3ea1cbbb95ec03348
@@ -18082,7 +18083,7 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-Gkjwpv9OqBuBqGgsXtePjf1esWG+CKV4ngV2Mjjl/YURNWMXXZQ56w4sP+K1kYSWpgjzj0diUQn30/tq08Y47g==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-5P2xsr+OBZaGv3jtwz2xV5SOOTMOvGZZo+K9R+YaGpjfYPpKvT4lvddN2HKqF4tS9UFggW1ntBsEBWbi1p6sVA==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:

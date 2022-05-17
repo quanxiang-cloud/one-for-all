@@ -1,12 +1,16 @@
-.artery-simulator-root {
-  position: relative;
-  min-height: 100vh;
-  overflow: auto;
-  background-color: white;
+html, body {
+  width: 100%;
+  // required, override package style
+  height: auto;
+}
 
-  * {
-    box-sizing: border-box;
-  }
+* {
+  box-sizing: border-box;
+}
+
+.artery-simulator-root--modal-open {
+  height: 100vh;
+  overflow: hidden;
 }
 
 // TODO Support all position

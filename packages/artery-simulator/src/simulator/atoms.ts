@@ -45,9 +45,9 @@ export const greenZonesBetweenNodesState = atom<GreenZoneBetweenNodes[]>({
 export const contourNodesReport$ = new BehaviorSubject<ContourNodesReport | undefined>(undefined);
 export const modalLayerContourNodesReport$ = new BehaviorSubject<ContourNodesReport | undefined>(undefined);
 // // todo delete this
-// modalLayerContourNodesReport$.subscribe((report) => {
-//   console.log('report?.contourNodes.length', report?.contourNodes.length)
-// })
+modalLayerContourNodesReport$.subscribe((report) => {
+  console.log('report?.contourNodes.length', report?.contourNodes.length)
+})
 
 export const hoveringContourNode$ = new Subject<ContourNode | undefined>();
 

@@ -20,7 +20,6 @@ function App(): JSX.Element | null {
 }
 
 const iframeAppRoot = document.createElement('div');
-iframeAppRoot.id = 'iframe-app-root';
 document.body.appendChild(iframeAppRoot);
 
 ReactDOM.render(<App />, iframeAppRoot);

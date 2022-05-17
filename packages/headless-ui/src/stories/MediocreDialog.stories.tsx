@@ -16,7 +16,7 @@ export const Default = () => {
     <div>
       <button onClick={() => setIsOpen(true)}>click me to open the Mediocre Dialog</button>
       <MediocreDialog
-        isShow={isOpen}
+        isOpen={isOpen}
         title="this is dialog title"
         onCancel={() => setIsOpen(false)}
         onOk={() => setIsOpen(false)}

@@ -1,11 +1,11 @@
 import type { Artery, Node } from '@one-for-all/artery';
 import { filter as arteryFilter, byArbitrary, ImmutableNode } from '@one-for-all/artery-utils';
 import { fromJS } from 'immutable';
-import { BehaviorSubject, combineLatest, distinctUntilChanged, filter, map, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, distinctUntilChanged, filter, map, Observable, tap } from 'rxjs';
 
 import Messenger from '../messenger';
 import { ContourNode, NodePrimary } from '../types';
-import { contourNodesReport$ } from './atoms';
+import { contourNodesReport$, modalLayerContourNodesReport$ } from './atoms';
 import {
   MESSAGE_TYPE_ARTERY,
   MESSAGE_TYPE_ACTIVE_NODE,
@@ -43,9 +43,16 @@ messenger
 
 export const activeContour$ = new BehaviorSubject<ContourNode | undefined>(undefined);
 
-combineLatest({ activeNode: activeNode$, contourNodesReport: contourNodesReport$ })
+export const activeOverLayerNodeID$ = new BehaviorSubject<string | undefined>(undefined);
+messenger.listen<string | undefined>(MESSAGE_TYPE_ACTIVE_OVER_LAYER_NODE_ID).subscribe(activeOverLayerNodeID$);
+
+combineLatest({ activeNode: activeNode$, contourNodesReport: contourNodesReport$, modalLayerContourNodesReport: modalLayerContourNodesReport$, activeOverLayerNodeID: activeOverLayerNodeID$ })
   .pipe(
-    map(({ activeNode, contourNodesReport }) => {
+    map(({ activeNode, contourNodesReport, modalLayerContourNodesReport, activeOverLayerNodeID }) => {
+      if (activeOverLayerNodeID) {
+        return modalLayerContourNodesReport?.contourNodes.find(({ id }) => id === activeNode?.id);
+      }
+
       return contourNodesReport?.contourNodes.find(({ id }) => id === activeNode?.id);
     }),
     distinctUntilChanged((p, c) => p?.id === c?.id),
@@ -72,9 +79,6 @@ activeContour$
     }),
   )
   .subscribe(activeContourToolbarStyle$);
-
-export const activeOverLayerNodeID$ = new BehaviorSubject<string | undefined>(undefined);
-messenger.listen<string | undefined>(MESSAGE_TYPE_ACTIVE_OVER_LAYER_NODE_ID).subscribe(activeOverLayerNodeID$);
 
 export const activeOverLayerArtery$ = new BehaviorSubject<Artery | undefined>(undefined);
 

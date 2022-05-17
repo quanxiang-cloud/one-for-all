@@ -7,3 +7,15 @@
 
   overflow: auto;
 }
+
+// .ofa-modal-layer--inside {
+//   position: absolute;
+// }
+
+.ofa-modal-layer__backdrop {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: aqua;
+  opacity: 0.5;
+}

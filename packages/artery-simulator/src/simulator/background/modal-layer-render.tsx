@@ -7,21 +7,20 @@ import RenderLayer from './render-layer';
 
 import './index.scss';
 import { useBehaviorSubjectState } from '../utils';
-import { activeOverLayerArtery$, artery$ } from '../bridge';
+import { activeOverLayerArtery$ } from '../bridge';
 
 interface Props {
   plugins?: Plugins;
-  rootElement: HTMLElement;
   onModalLayerReport: (report?: ContourNodesReport) => void;
 }
 
+const modalLayerContextValue = createLayerContextVal();
+
 function ModalLayerRender({
   plugins,
-  rootElement,
   onModalLayerReport,
 }: Props): JSX.Element | null {
   const modalLayerArtery = useBehaviorSubjectState(activeOverLayerArtery$);
-  const modalLayerContextValue = useMemo(() => createLayerContextVal(), []);
 
   if (!modalLayerArtery) {
     return null;
@@ -32,7 +31,6 @@ function ModalLayerRender({
       <RenderLayer
         artery={modalLayerArtery}
         plugins={plugins}
-        rootElement={rootElement}
         onReport={onModalLayerReport}
       />
     </SimulatorLayerCtx.Provider>

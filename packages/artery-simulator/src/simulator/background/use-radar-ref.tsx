@@ -1,13 +1,13 @@
 import { useRef, useEffect, useContext } from 'react';
 import ElementsRadar, { Report } from '@one-for-all/elements-radar';
-import { map } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 
 import { ContourNode, ContourNodesReport } from '../../types';
 import SimulatorLayerCtx from './context';
 
 export default function useElementsRadar(
-  root: HTMLElement | null,
   onReport: (report?: ContourNodesReport) => void,
+  root?: HTMLElement,
 ): React.MutableRefObject<ElementsRadar | undefined> {
   const { monitoredElements$ } = useContext(SimulatorLayerCtx);
   const radarRef = useRef<ElementsRadar>();
@@ -27,6 +27,7 @@ export default function useElementsRadar(
             .filter(([_, visible]) => visible)
             .map(([ele]) => ele);
         }),
+        filter((elements) => !!elements.length),
       )
       .subscribe((elements) => radar.track(elements));
 
@@ -35,8 +36,8 @@ export default function useElementsRadar(
       .pipe(
         map<Report, ContourNodesReport>((report) => {
           // TODO: batch read this for preventing reflow
-          const deltaX = root.scrollLeft || 0;
-          const deltaY = root.scrollTop || 0;
+          const deltaX = window.document.body.scrollLeft || 0;
+          const deltaY = window.document.body.scrollTop || 0;
 
           const scrollHeight = root.scrollHeight || 0;
           const scrollWidth = root.scrollWidth || 0;
@@ -66,8 +67,10 @@ export default function useElementsRadar(
                 absolutePosition: {
                   height: relativeRect.height,
                   width: relativeRect.width,
-                  x: Math.round(relativeRect.x + deltaX),
-                  y: Math.round(relativeRect.y + deltaY),
+                  x: relativeRect.x,
+                  y: relativeRect.y,
+                  // x: Math.round(relativeRect.x + deltaX),
+                  // y: Math.round(relativeRect.y + deltaY),
                 },
               };
             })
@@ -81,7 +84,7 @@ export default function useElementsRadar(
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [root]);
 
   return radarRef;
 }

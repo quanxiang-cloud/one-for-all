@@ -7,7 +7,6 @@ import type { Report, Rect, ElementRect } from './type';
 export type { Report, Rect, ElementRect };
 
 export default class Radar {
-  private root: HTMLElement;
   private targets$: BehaviorSubject<HTMLElement[]> = new BehaviorSubject<HTMLElement[]>([]);
   private resizeSign$: Subject<unknown> = new Subject();
   private resizeObserver: ResizeObserver;
@@ -15,11 +14,10 @@ export default class Radar {
   private reportUpdatedSign$ = new Subject<void>();
   private visibleObserver: IntersectionObserver;
 
-  public constructor(root?: HTMLElement) {
-    this.root = root || window.document.body;
-    this.visibleObserver = new IntersectionObserver(this.intersectionObserverCallback, { root: this.root });
+  public constructor() {
+    this.visibleObserver = new IntersectionObserver(this.intersectionObserverCallback, { root: document });
 
-    const scroll$ = fromEvent(this.root, 'scroll');
+    const scroll$ = fromEvent(document, 'scroll');
 
     const scrollDone$ = new Subject<void>();
     let timer: number;
@@ -33,11 +31,11 @@ export default class Radar {
     const scrollSign$ = scroll$.pipe(audit(() => scrollDone$));
 
     this.resizeObserver = new ResizeObserver(this.onResize);
-    this.resizeObserver.observe(this.root);
+    this.resizeObserver.observe(document.body);
 
     this.targets$.subscribe((targets) => {
       this.resizeObserver.disconnect();
-      this.resizeObserver.observe(this.root);
+      this.resizeObserver.observe(document.body);
 
       targets.forEach((target) => {
         this.resizeObserver.observe(target);
@@ -70,6 +68,9 @@ export default class Radar {
       if (isIntersecting) {
         const relativeRect: Rect = calcRect(boundingClientRect, rootBounds);
         this.report.set(target as HTMLElement, { relativeRect, raw: boundingClientRect });
+      } else {
+        const nodeID = (target as HTMLElement).dataset.simulatorNodeId;
+        console.log('not visible:', nodeID)
       }
     });
 
