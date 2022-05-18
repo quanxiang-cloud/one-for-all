@@ -70,7 +70,9 @@ export default class Radar {
       return;
     }
 
-    const rootXY = this.root ? { x: entries[0].rootBounds?.x || 0, y: entries[0].rootBounds?.y || 0 } : { x: 0, y: 0 };
+    const rootXY = this.root
+      ? { x: entries[0].rootBounds?.x || 0, y: entries[0].rootBounds?.y || 0 }
+      : { x: 0, y: 0 };
     this.report = new Map<HTMLElement, ElementRect>();
     entries.forEach(({ target, boundingClientRect, isIntersecting }) => {
       if (isIntersecting) {

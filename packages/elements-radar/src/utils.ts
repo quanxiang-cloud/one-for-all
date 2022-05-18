@@ -17,7 +17,7 @@ export function isSame(previous: Report, current: Report): boolean {
   });
 }
 
-export function calcRect(raw: DOMRectReadOnly, rootXY: { x: number; y: number; }): Rect {
+export function calcRect(raw: DOMRectReadOnly, rootXY: { x: number; y: number }): Rect {
   const X = rootXY.x;
   const Y = rootXY.y;
 
