@@ -42,7 +42,7 @@ function calcStyle(position: Position, absolutePosition: Rect): React.CSSPropert
     return {
       height: _height,
       width: '8px',
-      transform: `translate(${x - 9}px, ${_y}px)`,
+      transform: `translate(${Math.max(x - 9, 0)}px, ${_y}px)`,
     };
   }
 
@@ -50,7 +50,8 @@ function calcStyle(position: Position, absolutePosition: Rect): React.CSSPropert
     return {
       height: _height,
       width: '8px',
-      transform: `translate(${x + width + 2}px, ${_y}px)`,
+      // todo read innerWidth has performance cost, optimize it
+      transform: `translate(${Math.min(x + width + 2, window.innerWidth - 9)}px, ${_y}px)`,
     };
   }
 

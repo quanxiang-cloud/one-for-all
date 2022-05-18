@@ -17,13 +17,12 @@ body {
 .green-zone {
   position: absolute;
   will-change: width, height, transform;
-  border-radius: 2px;
 }
 
 .green-zone-for-node-without-children {
   top: 0;
   background-color: #0080005c;
-  outline: 1px dashed #008000;
+  outline: 1px solid #008000;
 }
 
 .green-zone-between-nodes {
