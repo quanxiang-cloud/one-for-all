@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { lensPath, set } from 'ramda';
+import { and, lensPath, set } from 'ramda';
 import { Artery, Node } from '@one-for-all/artery';
 
 import { useObservable } from '@arteryEngine/hooks';
@@ -45,8 +45,9 @@ export default function Block<T extends ArteryEngine.BaseBlocksCommunicationStat
   }, [id, onUpdateLayer]);
 
   const { currentUndoRedoIndex, redoUndoList } = useCommandState?.commandStateRef?.current ?? {};
-  const commandsHasNext = currentUndoRedoIndex < redoUndoList.length - 1;
-  const commandsHasPrev = currentUndoRedoIndex > -1;
+  const hasRedoUndoList =  and(redoUndoList, currentUndoRedoIndex);
+  const commandsHasNext =  hasRedoUndoList ? currentUndoRedoIndex < redoUndoList.length - 1 : false;
+  const commandsHasPrev = hasRedoUndoList ? currentUndoRedoIndex > -1 : false;
 
   if (!artery || !blocksCommunicationState$) {
     return null;
