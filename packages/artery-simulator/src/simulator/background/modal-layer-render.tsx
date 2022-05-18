@@ -10,8 +10,6 @@ import { useBehaviorSubjectState } from '../utils';
 import { activeOverLayerArtery$ } from '../bridge';
 import { modalLayerContourNodesReport$ } from '../atoms';
 
-import './index.scss';
-
 const modalLayerContextValue = createLayerContextVal();
 
 interface Props {
