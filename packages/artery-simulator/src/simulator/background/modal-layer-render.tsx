@@ -26,7 +26,7 @@ function RenderLayer({ artery }: Props): JSX.Element | null {
   }
 
   return (
-    <div className="simulator-background-modal-layer">
+    <div className="simulator-background-layer">
       <NodeRender node={rootNode} ctx={ctx} />
     </div>
   );

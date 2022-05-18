@@ -34,7 +34,7 @@ export default function RootLayerRenderLayer(): JSX.Element | null {
   return (
     <SimulatorLayerCtx.Provider value={rootSimulatorLayerCtxValue}>
       <div
-        className="simulator-root-layer"
+        className="simulator-background-layer"
         ref={(ref) => {
           if (ref) {
             setRootElement(ref);

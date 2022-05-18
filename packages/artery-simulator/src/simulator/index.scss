@@ -9,6 +9,12 @@ body {
   box-sizing: border-box;
 }
 
+// create a stacking context prevent children element render on higher layer
+.simulator-background-layer {
+  position: relative;
+  z-index: 0;
+}
+
 .artery-simulator-root--modal-open {
   height: 100vh;
   overflow: hidden;
