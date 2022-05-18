@@ -12,7 +12,7 @@ export default {
   output: {
     file: 'dll/simulator.js',
     format: 'system',
-    sourcemap: 'inline',
+    sourcemap: isProduction ? false : 'inline',
   },
 
   external: ['react', 'react-dom', 'lodash', /@one-for-all\/.*/, 'TEMPORARY_PATCH_FOR_ARTERY_PLUGINS'],
