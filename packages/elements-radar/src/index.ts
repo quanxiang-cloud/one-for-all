@@ -30,8 +30,6 @@ export default class Radar {
       }, 250);
     });
 
-    const scrollSign$ = scroll$.pipe(audit(() => scrollDone$));
-
     this.resizeObserver = new ResizeObserver(this.onResize);
     this.resizeObserver.observe(document.body);
 
@@ -44,7 +42,6 @@ export default class Radar {
       });
     });
 
-    // merge(scrollSign$, this.targets$, this.resizeSign$)
     merge(this.targets$, this.resizeSign$)
       .pipe(
         // auditTime(100),
@@ -53,6 +50,7 @@ export default class Radar {
         tap(() => {
           this.visibleObserver.disconnect();
         }),
+        audit(() => scrollDone$),
       )
       .subscribe(() => {
         this.targets$.value.forEach((ele) => {
