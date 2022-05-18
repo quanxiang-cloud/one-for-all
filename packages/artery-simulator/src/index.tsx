@@ -46,7 +46,7 @@ function buildHeadElements(pluginsSrc: string, cssURLs?: Array<string>): InjectE
   ]);
 
   const links: InjectElement[] = (cssURLs || []).map((url) => {
-    return { name: 'link', attrs: { ref: 'stylesheet', href: url } };
+    return { name: 'link', attrs: { rel: 'stylesheet', href: url } };
   });
 
   return headElements.concat(links);
