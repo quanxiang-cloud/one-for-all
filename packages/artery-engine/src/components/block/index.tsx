@@ -44,6 +44,10 @@ export default function Block<T extends ArteryEngine.BaseBlocksCommunicationStat
     onUpdateLayer({ ...params, blockId: params.blockId ?? id });
   }, [id, onUpdateLayer]);
 
+  const { currentUndoRedoIndex, redoUndoList } = useCommandState?.commandStateRef?.current ?? {};
+  const commandsHasNext = currentUndoRedoIndex < redoUndoList.length - 1;
+  const commandsHasPrev = currentUndoRedoIndex > -1;
+
   if (!artery || !blocksCommunicationState$) {
     return null;
   }
@@ -57,6 +61,8 @@ export default function Block<T extends ArteryEngine.BaseBlocksCommunicationStat
         onSharedStateChange={handleSharedStateChange}
         activeNode={activeNode}
         commands={useCommandState?.commandNameRunnerMap}
+        commandsHasNext={commandsHasNext}
+        commandsHasPrev={commandsHasPrev}
         generateNodeId={generateNodeId}
         setActiveNode={handleSetActiveNode}
         onUpdateLayer={onUpdateLayer}
