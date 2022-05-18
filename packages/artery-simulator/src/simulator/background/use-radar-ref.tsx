@@ -58,10 +58,10 @@ export default function useElementsRadar(
                 absolutePosition: {
                   height: relativeRect.height,
                   width: relativeRect.width,
+                  // when root is undefine, the comparing root will be viewport,
+                  // the relativeRect is relative to viewport,
                   x: root ? relativeRect.x : relativeRect.x - offsetX,
                   y: root ? relativeRect.y : relativeRect.y - offsetY,
-                  // x: Math.round(relativeRect.x + deltaX),
-                  // y: Math.round(relativeRect.y + deltaY),
                 },
               };
             })

@@ -8,4 +8,6 @@ export const MESSAGE_TYPE_CHECK_NODE_SUPPORT_CHILDREN = 'check_node_support_chil
 
 // a temporary patch for over layer components
 // todo fixme
-export const __OVER_LAYER_COMPONENTS: Array<{ packageName: string; exportName: string; }> = [{ packageName: '@one-for-all/headless-ui', exportName: 'MediocreDialog' }];
+export const __OVER_LAYER_COMPONENTS: Array<{ packageName: string; exportName: string }> = [
+  { packageName: '@one-for-all/headless-ui', exportName: 'MediocreDialog' },
+];

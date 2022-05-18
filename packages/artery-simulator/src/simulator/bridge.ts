@@ -44,9 +44,16 @@ messenger
 export const activeContour$ = new BehaviorSubject<ContourNode | undefined>(undefined);
 
 export const activeOverLayerNodeID$ = new BehaviorSubject<string | undefined>(undefined);
-messenger.listen<string | undefined>(MESSAGE_TYPE_ACTIVE_OVER_LAYER_NODE_ID).subscribe(activeOverLayerNodeID$);
+messenger
+  .listen<string | undefined>(MESSAGE_TYPE_ACTIVE_OVER_LAYER_NODE_ID)
+  .subscribe(activeOverLayerNodeID$);
 
-combineLatest({ activeNode: activeNode$, contourNodesReport: contourNodesReport$, modalLayerContourNodesReport: modalLayerContourNodesReport$, activeOverLayerNodeID: activeOverLayerNodeID$ })
+combineLatest({
+  activeNode: activeNode$,
+  contourNodesReport: contourNodesReport$,
+  modalLayerContourNodesReport: modalLayerContourNodesReport$,
+  activeOverLayerNodeID: activeOverLayerNodeID$,
+})
   .pipe(
     map(({ activeNode, contourNodesReport, modalLayerContourNodesReport, activeOverLayerNodeID }) => {
       if (activeOverLayerNodeID) {
@@ -82,33 +89,35 @@ activeContour$
 
 export const activeOverLayerArtery$ = new BehaviorSubject<Artery | undefined>(undefined);
 
-activeOverLayerNodeID$.pipe(
-  map((activeModalRootID) => {
-    if (!activeModalRootID) {
-      return undefined;
-    }
+activeOverLayerNodeID$
+  .pipe(
+    map((activeModalRootID) => {
+      if (!activeModalRootID) {
+        return undefined;
+      }
 
-    const keyPath = byArbitrary(immutableRoot$.value, activeModalRootID);
-    if (!keyPath) {
-      return undefined;
-    }
+      const keyPath = byArbitrary(immutableRoot$.value, activeModalRootID);
+      if (!keyPath) {
+        return undefined;
+      }
 
-    const _node = immutableRoot$.value.getIn(keyPath) as ImmutableNode;
+      const _node = immutableRoot$.value.getIn(keyPath) as ImmutableNode;
 
-    return _node.toJS() as unknown as Node;
-  }),
-  map((node) => {
-    if (!node) {
-      return undefined;
-    }
+      return _node.toJS() as unknown as Node;
+    }),
+    map((node) => {
+      if (!node) {
+        return undefined;
+      }
 
-    return {
-      node,
-      apiStateSpec: artery$.value.apiStateSpec,
-      sharedStatesSpec: artery$.value.sharedStatesSpec,
-    }
-  }),
-).subscribe(activeOverLayerArtery$);
+      return {
+        node,
+        apiStateSpec: artery$.value.apiStateSpec,
+        sharedStatesSpec: artery$.value.sharedStatesSpec,
+      };
+    }),
+  )
+  .subscribe(activeOverLayerArtery$);
 
 function findAllOverLayerNodes(rootNode: ImmutableNode): Array<ImmutableNode> {
   const keyPathList = arteryFilter(rootNode, (currentNode) => {
@@ -131,8 +140,6 @@ function findAllOverLayerNodes(rootNode: ImmutableNode): Array<ImmutableNode> {
 
   return keyPathList.map<ImmutableNode>((keyPath) => rootNode.getIn(keyPath) as ImmutableNode).toArray();
 }
-
-const allModalRootNodes$ = immutableRoot$.pipe(map(findAllOverLayerNodes));
 
 export function setActiveNode(node?: Node): void {
   messenger.send(MESSAGE_TYPE_ACTIVE_NODE, node);

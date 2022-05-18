@@ -68,10 +68,7 @@ interface Props {
   onLoad?: () => void;
 }
 
-function Fence(
-  { headElements, onLoad }: Props,
-  ref: React.ForwardedRef<HTMLIFrameElement>,
-): JSX.Element {
+function Fence({ headElements, onLoad }: Props, ref: React.ForwardedRef<HTMLIFrameElement>): JSX.Element {
   const [iframeElement, setIframe] = useState<HTMLIFrameElement>();
 
   useEffect(() => {

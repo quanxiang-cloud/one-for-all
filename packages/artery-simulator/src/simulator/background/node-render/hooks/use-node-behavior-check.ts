@@ -1,10 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 
 import { NodePrimary } from '../../../../types';
-import {
-  _cacheIsNodeSupportChildren,
-  _checkIfNodeSupportChildren,
-} from '../../../cache';
+import { _cacheIsNodeSupportChildren, _checkIfNodeSupportChildren } from '../../../cache';
 import { HTMLNode, ReactComponentNode } from '@one-for-all/artery-renderer';
 import { checkNodeSupportChildren } from '../../../bridge';
 

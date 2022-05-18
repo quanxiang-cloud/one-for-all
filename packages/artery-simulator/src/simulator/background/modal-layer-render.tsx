@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import type { Artery } from '@one-for-all/artery';
-import plugins from 'TEMPORARY_PATCH_FOR_ARTERY_PLUGINS';
 import { useBootResult } from '@one-for-all/artery-renderer';
+import plugins from 'TEMPORARY_PATCH_FOR_ARTERY_PLUGINS';
 
 import SimulatorLayerCtx, { createLayerContextVal } from './context';
 import useElementsRadar from './use-radar-ref';
@@ -33,7 +33,6 @@ function RenderLayer({ artery }: Props): JSX.Element | null {
     </div>
   );
 }
-
 
 function ModalLayerRender(): JSX.Element | null {
   const modalLayerArtery = useBehaviorSubjectState(activeOverLayerArtery$);

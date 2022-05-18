@@ -25,6 +25,7 @@ function buildHeadElements(pluginsSrc: string, cssURLs?: Array<string>): InjectE
   const patchSrc = pluginsSrc.startsWith('http') ? pluginsSrc : `${window.origin}${pluginsSrc}`;
 
   const headElements = importMaps.concat([
+    // bundle TEMPORARY_PATCH_FOR_ARTERY_PLUGINS as real dll
     // todo fix me
     {
       name: 'script',
@@ -73,18 +74,21 @@ export interface SimulatorRef {
   iframe: HTMLIFrameElement | null;
 }
 
-function Simulator({
-  activeOverLayerNodeID,
-  activeNode,
-  artery,
-  className,
-  cssURLs,
-  isNodeSupportChildren,
-  onChange,
-  pluginsSrc,
-  setActiveOverLayerNodeID,
-  setActiveNode,
-}: Props, simulatorRef: React.ForwardedRef<SimulatorRef>): JSX.Element {
+function Simulator(
+  {
+    activeOverLayerNodeID,
+    activeNode,
+    artery,
+    className,
+    cssURLs,
+    isNodeSupportChildren,
+    onChange,
+    pluginsSrc,
+    setActiveOverLayerNodeID,
+    setActiveNode,
+  }: Props,
+  simulatorRef: React.ForwardedRef<SimulatorRef>,
+): JSX.Element {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [messenger, setMessenger] = useState<Messenger>();
   const [iframeLoad, setIframeLoad] = useState(false);

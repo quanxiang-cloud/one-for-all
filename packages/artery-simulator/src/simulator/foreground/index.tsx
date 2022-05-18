@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import RenderContourNode from './render-contour-node';
-import { contourNodesReport$, modalLayerContourNodesReport$ } from '../atoms';
-import './index.scss';
-import { useBehaviorSubjectState } from '../utils';
 import Toolbar from './toolbar';
+import type { ContourNode } from '../../types';
+import { contourNodesReport$, modalLayerContourNodesReport$ } from '../atoms';
+import { useBehaviorSubjectState } from '../utils';
 import { activeOverLayerNodeID$ } from '../bridge';
-import { ContourNode } from 'src/types';
+
+import './index.scss';
 
 function useContourNodes(): Array<ContourNode> {
   const { contourNodes } = useBehaviorSubjectState(contourNodesReport$) || {};
-  const { contourNodes: modalLayerContourNodes } = useBehaviorSubjectState(modalLayerContourNodesReport$) || {};
+  const { contourNodes: modalLayerContourNodes } =
+    useBehaviorSubjectState(modalLayerContourNodesReport$) || {};
   const activeOverLayerNodeID = useBehaviorSubjectState(activeOverLayerNodeID$);
 
   if (activeOverLayerNodeID) {

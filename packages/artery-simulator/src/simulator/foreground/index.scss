@@ -11,16 +11,11 @@
   border-color: transparent;
 
   &:hover:not(.contour-node--root, .contour-node--active) {
-    // border-color: #0084ff;
-    // border-style: dashed;
     outline: 1px dashed #0084ff;
   }
 }
 
 .contour-node--active {
-  // border-color: #0084ff;
-  // border-style: solid;
-  // outline: 2px solid #0084ff;
   box-shadow: inset 0 0 0 2px #0084ff;
 }
 

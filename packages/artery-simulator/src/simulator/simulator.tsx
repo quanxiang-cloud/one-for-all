@@ -7,7 +7,6 @@ import GreenZone from './green-zone';
 import './index.scss';
 
 function Simulator(): JSX.Element {
-
   return (
     <>
       <Background />

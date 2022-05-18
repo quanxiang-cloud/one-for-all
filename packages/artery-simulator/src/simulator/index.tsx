@@ -7,7 +7,7 @@ import { useArteryRootNodeID } from './utils';
 import { dummy_artery_root_node_id } from './bridge';
 
 function App(): JSX.Element | null {
-  const rootNodeID =  useArteryRootNodeID();
+  const rootNodeID = useArteryRootNodeID();
   if (rootNodeID === dummy_artery_root_node_id) {
     return null;
   }

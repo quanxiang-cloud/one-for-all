@@ -1,6 +1,7 @@
-html, body {
+html,
+body {
   width: 100%;
-  // required, override package style
+  // required, we need body to be scrollable, incase other module style it
   height: auto;
 }
 
@@ -12,18 +13,6 @@ html, body {
   height: 100vh;
   overflow: hidden;
 }
-
-// TODO Support all position
-// top
-// right
-// bottom
-// left
-// inner
-// inner-top
-// inner-right
-// inner-bottom
-// inner-left
-// $indictorColor: green;
 
 .green-zone {
   position: absolute;
@@ -59,10 +48,4 @@ html, body {
 
 // .contour-green-zone--inner-right {
 //   box-shadow: inset -8px 0 0 0px coral;
-// }
-
-// .simulator-drag-image {
-//   background-color: #0084ff;
-//   width: 150px;
-//   border-radius: 4px;
 // }

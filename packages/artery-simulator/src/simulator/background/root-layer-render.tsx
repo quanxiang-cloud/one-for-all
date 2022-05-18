@@ -1,11 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import { useBootResult } from '@one-for-all/artery-renderer';
+import plugins from 'TEMPORARY_PATCH_FOR_ARTERY_PLUGINS';
+
 import NodeRender from './node-render';
 import useElementsRadar from './use-radar-ref';
 import { artery$ } from '../bridge';
 import { useBehaviorSubjectState } from '../utils';
 import { contourNodesReport$ } from '../atoms';
-import plugins from 'TEMPORARY_PATCH_FOR_ARTERY_PLUGINS';
 import SimulatorLayerCtx, { createLayerContextVal } from './context';
 
 const rootSimulatorLayerCtxValue = createLayerContextVal();
@@ -24,7 +25,7 @@ function RenderLayer({ rootElement }: Props): JSX.Element | null {
     return null;
   }
 
-  return (<NodeRender node={rootNode} ctx={ctx} />);
+  return <NodeRender node={rootNode} ctx={ctx} />;
 }
 
 export default function RootLayerRenderLayer(): JSX.Element | null {
@@ -40,7 +41,7 @@ export default function RootLayerRenderLayer(): JSX.Element | null {
           }
         }}
       >
-        {rootElement && (<RenderLayer rootElement={rootElement} />)}
+        {rootElement && <RenderLayer rootElement={rootElement} />}
       </div>
     </SimulatorLayerCtx.Provider>
   );
