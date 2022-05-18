@@ -21,8 +21,9 @@ export default class Radar {
 
     const scroll$ = fromEvent(document, 'scroll');
 
-    const scrollDone$ = new Subject<void>();
+    const scrollDone$ = new BehaviorSubject<void>(undefined);
     let timer: number;
+
     scroll$.subscribe(() => {
       clearTimeout(timer);
       timer = window.setTimeout(() => {
