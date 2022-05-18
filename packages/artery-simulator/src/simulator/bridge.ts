@@ -11,7 +11,6 @@ import {
   MESSAGE_TYPE_ACTIVE_NODE,
   MESSAGE_TYPE_ACTIVE_OVER_LAYER_NODE_ID,
   MESSAGE_TYPE_CHECK_NODE_SUPPORT_CHILDREN,
-  __OVER_LAYER_COMPONENTS,
 } from './constants';
 
 export const messenger = new Messenger(window.parent, 'iframe-side');
@@ -129,7 +128,7 @@ function findAllOverLayerNodes(rootNode: ImmutableNode): Array<ImmutableNode> {
     const packageName = currentNode.getIn(['packageName']) as string;
     const exportName = currentNode.getIn(['exportName']) as string;
 
-    return !!__OVER_LAYER_COMPONENTS.find((modalComp) => {
+    return !!window.__OVER_LAYER_COMPONENTS.find((modalComp) => {
       return packageName === modalComp.packageName && exportName === modalComp.exportName;
     });
   });

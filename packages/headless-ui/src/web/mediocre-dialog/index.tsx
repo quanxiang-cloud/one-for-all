@@ -4,13 +4,14 @@ import ModalLayer, { Props as ModalLayerProps } from '../../shared/modal-layer';
 
 import './index.scss';
 
-type Props = ModalLayerProps & PropsWithChildren<{
-  onOk?: () => void;
-  onCancel?: () => void;
-  cancelBtnText?: string;
-  okBtnText?: string;
-  title?: string;
-}>;
+type Props = ModalLayerProps &
+  PropsWithChildren<{
+    onOk?: () => void;
+    onCancel?: () => void;
+    cancelBtnText?: string;
+    okBtnText?: string;
+    title?: string;
+  }>;
 
 export default function MediocreDialog({
   children,

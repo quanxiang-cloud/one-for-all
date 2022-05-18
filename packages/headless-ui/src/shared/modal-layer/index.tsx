@@ -3,6 +3,7 @@ import cs from 'classnames';
 
 import { Portal } from '../portal';
 import { uesHandleEsc, usePreventBodyScroll, useToggleCallback } from './hooks';
+
 import './index.scss';
 
 export type Props = PropsWithChildren<{
@@ -23,7 +24,7 @@ export default function ModalLayer({
 }: Props): JSX.Element | null {
   uesHandleEsc({ isOpen, onClose, callOnCloseWhenEscDown });
   useToggleCallback({ isOpen, onClose });
-  usePreventBodyScroll(isOpen)
+  usePreventBodyScroll(isOpen);
 
   if (!isOpen) {
     return null;
@@ -31,19 +32,20 @@ export default function ModalLayer({
 
   if (container === 'inside') {
     return (
-      <div className={cs('ofa-modal-layer', 'ofa-modal-layer--inside', className)} onClick={() => onClose?.()}>
-        <div className="ofa-modal-layer__backdrop" />
+      <div
+        className={cs('ofa-modal-layer', 'ofa-modal-layer--inside', className)}
+        onClick={() => onClose?.()}
+      >
+        <div className="ofa-modal-layer__backdrop" onClick={() => onClose?.()} />
         {children}
       </div>
-    )
+    );
   }
 
   return (
     <Portal mountPoint={typeof container === 'function' ? container() : container}>
-      <div className={cs('ofa-modal-layer', className)} onClick={() => onClose?.()} onScroll={(e) => e.stopPropagation()}>
-        <div
-          className="ofa-modal-layer__backdrop"
-        />
+      <div className={cs('ofa-modal-layer', className)} onClick={() => onClose?.()}>
+        <div className="ofa-modal-layer__backdrop" onClick={() => onClose?.()} />
         {children}
       </div>
     </Portal>

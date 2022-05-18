@@ -37,15 +37,18 @@ export function useToggleCallback({ isOpen, onClose }: UseToggleCallbackParams):
   }, [isOpen]);
 }
 
-export function usePreventBodyScroll(isOpen: boolean): void {
-  const originalOverflowRef = useRef<string>(document.body.style.overflow)
+export function usePreventBodyScroll(shouldPreventScroll: boolean): void {
+  const originalOverflowRef = useRef<string>(document.body.style.overflow);
+
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden'
+    if (shouldPreventScroll) {
+      document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = originalOverflowRef.current;
     }
 
-    return () => { document.body.style.overflow = originalOverflowRef.current; }
-  }, [isOpen])
+    return () => {
+      document.body.style.overflow = originalOverflowRef.current;
+    };
+  }, [shouldPreventScroll]);
 }

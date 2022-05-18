@@ -7,6 +7,8 @@ specifiers:
   '@leifandersen/react-codemirror2': ~7.2.1
   '@one-for-all/artery-engine': 1.2.1
   '@one-for-all/artery-renderer': 0.20.2
+  '@one-for-all/artery-simulator': 1.3.0
+  '@one-for-all/headless-ui': 0.3.0
   '@one-for-all/style-guide': 0.1.3
   '@popperjs/core': ^2.11.0
   '@rollup/plugin-commonjs': ^21.0.1
@@ -160,6 +162,8 @@ dependencies:
   '@leifandersen/react-codemirror2': 7.2.1_codemirror@5.65.2+react@17.0.2
   '@one-for-all/artery-engine': 1.2.1
   '@one-for-all/artery-renderer': 0.20.2
+  '@one-for-all/artery-simulator': 1.3.0_react-dom@17.0.2
+  '@one-for-all/headless-ui': 0.3.0
   '@one-for-all/style-guide': 0.1.3
   '@popperjs/core': 2.11.4
   '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
@@ -2422,14 +2426,15 @@ packages:
       rxjs: 7.5.5
     dev: false
 
-  /@one-for-all/artery-simulator/0.3.0_react-dom@17.0.2:
-    resolution: {integrity: sha512-ZOMPSBh/ZARz8mAsoMGPE9WcMJn6gwWfmTv8rBP62Pok/CXkxS+qzxxWU/c9grTiyeRzefhEnCeALs95e3R8pA==}
+  /@one-for-all/artery-simulator/1.3.0_react-dom@17.0.2:
+    resolution: {integrity: sha512-fWdhSHX5qpkmdw+gIYilUTKUMHJ1JYHupDufjfCHz8CV8rc48MphCjEVqMoEmbGMnsIJ1l2UuzfMkJA7JEBiiQ==}
     dependencies:
       '@one-for-all/artery': 0.15.0
+      '@one-for-all/artery-engine': 1.2.1
       '@one-for-all/artery-renderer': 0.20.2
       '@one-for-all/artery-utils': 0.17.0
       '@one-for-all/elements-radar': 0.2.1
-      '@one-for-all/headless-ui': 0.1.4
+      '@one-for-all/headless-ui': 0.3.0
       '@one-for-all/icon': 0.6.2
       '@one-for-all/utils': 0.3.0
       classnames: 2.3.1
@@ -2466,10 +2471,10 @@ packages:
       rxjs: 7.5.5
     dev: false
 
-  /@one-for-all/headless-ui/0.1.4:
-    resolution: {integrity: sha512-rE3HSQvAl9eiu2YcJV1NyzXkeDEUpHoUriMwJSU1wfwDvwmtB1zsTjdkx3VHbEhWC28SW4QdvM6d6XvbBayG7g==}
+  /@one-for-all/headless-ui/0.3.0:
+    resolution: {integrity: sha512-awT/FJik88FRrF2QIpeTMk/iXcwfRtO9NOr0lii4fPWfpojMv397uUFylp5jPzkx4u0vXscmTMVWNpx7Bgh8Bg==}
     dependencies:
-      '@one-for-all/icon': 0.6.1
+      '@one-for-all/icon': 0.6.2
       '@popperjs/core': 2.11.4
       classnames: 2.3.1
       lodash: 4.17.21
@@ -17896,14 +17901,14 @@ packages:
     dev: false
 
   file:projects/artery-simulator.tgz_d1d7a1f0ff7525dd0d92693a4e80182a:
-    resolution: {integrity: sha512-Zz+FLwv0IXxZjeHM1XcYNSCHTxq6d+LxoRHu7R9xqf0Vd1mtN84E0KM/51Z+dKRmuLy39Z5IXvSHUvzInHjBIw==, tarball: file:projects/artery-simulator.tgz}
+    resolution: {integrity: sha512-VEmRUAHfmpk+sIS9gmnPbt4BvznzeSjPglg43wZFx9bBSBjF38EP+fL5XWAk5ou4A/Y+4zjfMWoTSxJarrMMPQ==, tarball: file:projects/artery-simulator.tgz}
     id: file:projects/artery-simulator.tgz
     name: '@rush-temp/artery-simulator'
     version: 0.0.0
     dependencies:
       '@one-for-all/artery-engine': 1.2.1
       '@one-for-all/artery-renderer': 0.20.2
-      '@one-for-all/headless-ui': 0.1.4
+      '@one-for-all/headless-ui': 0.3.0
       '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
       '@rollup/plugin-replace': 4.0.0_rollup@2.66.0
@@ -18083,15 +18088,15 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-5P2xsr+OBZaGv3jtwz2xV5SOOTMOvGZZo+K9R+YaGpjfYPpKvT4lvddN2HKqF4tS9UFggW1ntBsEBWbi1p6sVA==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-WgDJTJkeQPi3K+DXiKSr1JF6PtwX7su95SKQO5s/iUjJAbdmOFGFhjLx81YhfBoararWtIOj5V8adkMUMNa/EA==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
       '@leifandersen/react-codemirror2': 7.2.1_codemirror@5.65.2+react@17.0.2
       '@one-for-all/artery-renderer': 0.20.2
-      '@one-for-all/artery-simulator': 0.3.0_react-dom@17.0.2
+      '@one-for-all/artery-simulator': 1.3.0_react-dom@17.0.2
       '@one-for-all/elements-radar': 0.1.0
-      '@one-for-all/headless-ui': 0.1.4
+      '@one-for-all/headless-ui': 0.3.0
       '@one-for-all/icon': 0.6.1
       '@one-for-all/render-engine': 0.18.0
       '@one-for-all/schema-spec': 0.15.0
@@ -18129,6 +18134,7 @@ packages:
     transitivePeerDependencies:
       - debug
       - encoding
+      - react-native
       - supports-color
     dev: false
 

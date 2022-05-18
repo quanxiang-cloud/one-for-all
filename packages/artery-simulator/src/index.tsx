@@ -68,6 +68,7 @@ export interface Props {
   cssURLs?: Array<string>;
   className?: string;
   isNodeSupportChildren: (node: NodePrimary) => Promise<boolean>;
+  overLayerComponents: Array<{ packageName: string; exportName: string; }>;
 }
 
 export interface SimulatorRef {
@@ -86,6 +87,7 @@ function Simulator(
     pluginsSrc,
     setActiveOverLayerNodeID,
     setActiveNode,
+    overLayerComponents,
   }: Props,
   simulatorRef: React.ForwardedRef<SimulatorRef>,
 ): JSX.Element {
@@ -108,6 +110,9 @@ function Simulator(
     });
 
     setMessenger(msgr);
+
+    // TODO fixme
+    iframeRef.current.contentWindow.__OVER_LAYER_COMPONENTS = overLayerComponents;
   }, [iframeLoad]);
 
   useSyncResponders(messenger, isNodeSupportChildren);
