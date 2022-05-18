@@ -9,6 +9,7 @@ import {
   Subject,
   Subscription,
   switchMap,
+  take,
   takeUntil,
   tap,
 } from 'rxjs';
@@ -101,6 +102,7 @@ export default class Messenger {
   waitForReady(): Promise<void> {
     return new Promise((resolve, reject) => {
       let subscription: Subscription | undefined;
+
       const timer = setTimeout(() => {
         subscription?.unsubscribe();
         reject(new Error(`${this.name} messenger connection timeout`));
@@ -121,7 +123,7 @@ export default class Messenger {
             },
           });
       } else {
-        this.listen('ping').subscribe(() => {
+        this.listen('ping').pipe(take(1)).subscribe(() => {
           this.send('ping', 'ping');
           clearTimeout(timer);
           this.connected = true;
