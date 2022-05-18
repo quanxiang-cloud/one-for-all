@@ -7,7 +7,6 @@ import './index.scss';
 type Props = ModalLayerProps &
   PropsWithChildren<{
     onOk?: () => void;
-    onCancel?: () => void;
     cancelBtnText?: string;
     okBtnText?: string;
     title?: string;
@@ -16,20 +15,20 @@ type Props = ModalLayerProps &
 export default function MediocreDialog({
   children,
   isOpen,
+  onClose,
   onOk,
-  onCancel,
   title,
   okBtnText = '确定',
   cancelBtnText = '取消',
   container,
 }: Props): JSX.Element {
   return (
-    <ModalLayer isOpen={isOpen} container={container}>
+    <ModalLayer isOpen={isOpen} container={container} onClose={onClose}>
       <div className="ofa-mediocre-dialog">
         {title && <div className="ofa-mediocre-dialog__title">{title}</div>}
         <div className="ofa-mediocre-dialog__body">{children}</div>
         <div className="ofa-mediocre-dialog__footer">
-          <Button onClick={onCancel}>{cancelBtnText}</Button>
+          <Button onClick={onClose}>{cancelBtnText}</Button>
           <Button onClick={onOk} modifier="primary">
             {okBtnText}
           </Button>

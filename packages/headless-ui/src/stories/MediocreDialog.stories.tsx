@@ -18,7 +18,7 @@ export const Default = () => {
       <MediocreDialog
         isOpen={isOpen}
         title="this is dialog title"
-        onCancel={() => setIsOpen(false)}
+        onClose={() => setIsOpen(false)}
         onOk={() => setIsOpen(false)}
       >
         <h1>some thing in the dialog body</h1>

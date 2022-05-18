@@ -32,10 +32,7 @@ export default function ModalLayer({
 
   if (container === 'inside') {
     return (
-      <div
-        className={cs('ofa-modal-layer', 'ofa-modal-layer--inside', className)}
-        onClick={() => onClose?.()}
-      >
+      <div className={cs('ofa-modal-layer', 'ofa-modal-layer--inside', className)}>
         <div className="ofa-modal-layer__backdrop" onClick={() => onClose?.()} />
         {children}
       </div>
@@ -44,7 +41,7 @@ export default function ModalLayer({
 
   return (
     <Portal mountPoint={typeof container === 'function' ? container() : container}>
-      <div className={cs('ofa-modal-layer', className)} onClick={() => onClose?.()}>
+      <div className={cs('ofa-modal-layer', className)}>
         <div className="ofa-modal-layer__backdrop" onClick={() => onClose?.()} />
         {children}
       </div>
