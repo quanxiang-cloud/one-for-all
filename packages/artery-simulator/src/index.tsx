@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useImperativeHandle } from 'react';
 import type { Artery, Node } from '@one-for-all/artery';
+import cs from 'classnames';
 
 import simulatorDDL from 'dll:../dll/simulator.js';
 import Messenger from './messenger';
@@ -7,6 +8,8 @@ import Fence, { InjectElement } from './fence';
 import { NodePrimary } from './types';
 import { useSyncResponders, useSyncArtery, useSyncActiveNode, useSyncActiveModalLayer } from './sync-hooks';
 import { MESSAGE_TYPE_ARTERY } from './simulator/constants';
+
+import './index.scss';
 
 function buildHeadElements(pluginsSrc: string, cssURLs?: Array<string>): InjectElement[] {
   const importMaps: InjectElement[] = Array.from(document.scripts)
@@ -22,6 +25,7 @@ function buildHeadElements(pluginsSrc: string, cssURLs?: Array<string>): InjectE
   const patchSrc = pluginsSrc.startsWith('http') ? pluginsSrc : `${window.origin}${pluginsSrc}`;
 
   const headElements = importMaps.concat([
+    // bundle TEMPORARY_PATCH_FOR_ARTERY_PLUGINS as real dll
     // todo fix me
     {
       name: 'script',
@@ -64,24 +68,29 @@ export interface Props {
   cssURLs?: Array<string>;
   className?: string;
   isNodeSupportChildren: (node: NodePrimary) => Promise<boolean>;
+  overLayerComponents: Array<{ packageName: string; exportName: string; }>;
 }
 
 export interface SimulatorRef {
   iframe: HTMLIFrameElement | null;
 }
 
-function Simulator({
-  activeOverLayerNodeID,
-  activeNode,
-  artery,
-  className,
-  cssURLs,
-  isNodeSupportChildren,
-  onChange,
-  pluginsSrc,
-  setActiveOverLayerNodeID,
-  setActiveNode,
-}: Props, simulatorRef: React.ForwardedRef<SimulatorRef>): JSX.Element {
+function Simulator(
+  {
+    activeOverLayerNodeID,
+    activeNode,
+    artery,
+    className,
+    cssURLs,
+    isNodeSupportChildren,
+    onChange,
+    pluginsSrc,
+    setActiveOverLayerNodeID,
+    setActiveNode,
+    overLayerComponents,
+  }: Props,
+  simulatorRef: React.ForwardedRef<SimulatorRef>,
+): JSX.Element {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [messenger, setMessenger] = useState<Messenger>();
   const [iframeLoad, setIframeLoad] = useState(false);
@@ -101,6 +110,9 @@ function Simulator({
     });
 
     setMessenger(msgr);
+
+    // TODO fixme
+    iframeRef.current.contentWindow.__OVER_LAYER_COMPONENTS = overLayerComponents;
   }, [iframeLoad]);
 
   useSyncResponders(messenger, isNodeSupportChildren);
@@ -109,12 +121,13 @@ function Simulator({
   useSyncActiveModalLayer(messenger, setActiveOverLayerNodeID, activeOverLayerNodeID);
 
   return (
-    <Fence
-      ref={iframeRef}
-      className={className}
-      headElements={buildHeadElements(pluginsSrc, cssURLs)}
-      onLoad={() => setIframeLoad(true)}
-    />
+    <div className={cs('artery-simulator', className)}>
+      <Fence
+        ref={iframeRef}
+        headElements={buildHeadElements(pluginsSrc, cssURLs)}
+        onLoad={() => setIframeLoad(true)}
+      />
+    </div>
   );
 }
 

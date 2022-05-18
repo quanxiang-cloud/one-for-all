@@ -34,9 +34,11 @@ export function useSyncActiveModalLayer(
       return;
     }
 
-    const subscription = messenger.listen(MESSAGE_TYPE_ACTIVE_OVER_LAYER_NODE_ID).subscribe((activeModalRootID) => {
-      setActiveOverLayerNodeID(activeModalRootID as string);
-    });
+    const subscription = messenger
+      .listen(MESSAGE_TYPE_ACTIVE_OVER_LAYER_NODE_ID)
+      .subscribe((activeModalRootID) => {
+        setActiveOverLayerNodeID(activeModalRootID as string);
+      });
 
     return () => {
       subscription.unsubscribe();

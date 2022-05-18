@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface UesHandleEscParma {
   isOpen: boolean;
@@ -35,4 +35,20 @@ export function useToggleCallback({ isOpen, onClose }: UseToggleCallbackParams):
       onClose?.();
     }
   }, [isOpen]);
+}
+
+export function usePreventBodyScroll(shouldPreventScroll: boolean): void {
+  const originalOverflowRef = useRef<string>(document.body.style.overflow);
+
+  useEffect(() => {
+    if (shouldPreventScroll) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = originalOverflowRef.current;
+    }
+
+    return () => {
+      document.body.style.overflow = originalOverflowRef.current;
+    };
+  }, [shouldPreventScroll]);
 }

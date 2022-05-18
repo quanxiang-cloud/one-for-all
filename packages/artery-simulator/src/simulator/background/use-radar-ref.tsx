@@ -1,22 +1,18 @@
 import { useRef, useEffect, useContext } from 'react';
 import ElementsRadar, { Report } from '@one-for-all/elements-radar';
-import { map } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 
 import { ContourNode, ContourNodesReport } from '../../types';
 import SimulatorLayerCtx from './context';
 
 export default function useElementsRadar(
-  root: HTMLElement | null,
   onReport: (report?: ContourNodesReport) => void,
+  root?: HTMLElement,
 ): React.MutableRefObject<ElementsRadar | undefined> {
   const { monitoredElements$ } = useContext(SimulatorLayerCtx);
   const radarRef = useRef<ElementsRadar>();
 
   useEffect(() => {
-    if (!root) {
-      return;
-    }
-
     const radar = new ElementsRadar(root);
     radarRef.current = radar;
 
@@ -27,6 +23,7 @@ export default function useElementsRadar(
             .filter(([_, visible]) => visible)
             .map(([ele]) => ele);
         }),
+        filter((elements) => !!elements.length),
       )
       .subscribe((elements) => radar.track(elements));
 
@@ -34,12 +31,6 @@ export default function useElementsRadar(
       .getReport$()
       .pipe(
         map<Report, ContourNodesReport>((report) => {
-          // TODO: batch read this for preventing reflow
-          const deltaX = root.scrollLeft || 0;
-          const deltaY = root.scrollTop || 0;
-
-          const scrollHeight = root.scrollHeight || 0;
-          const scrollWidth = root.scrollWidth || 0;
           // todo bug, why contour id has duplicate?
           const DUPLICATE_CONTOUR_ID = new Set<string>();
           const contourNodes: ContourNode[] = Array.from(report.entries())
@@ -56,6 +47,7 @@ export default function useElementsRadar(
               }
 
               const depth = parseInt(element.dataset.simulatorNodeDepth || '0') || 0;
+              const { x: offsetX, y: offsetY } = document.body.getBoundingClientRect();
 
               return {
                 id,
@@ -66,14 +58,16 @@ export default function useElementsRadar(
                 absolutePosition: {
                   height: relativeRect.height,
                   width: relativeRect.width,
-                  x: Math.round(relativeRect.x + deltaX),
-                  y: Math.round(relativeRect.y + deltaY),
+                  // when root is undefine, the comparing root will be viewport,
+                  // the relativeRect is relative to viewport,
+                  x: root ? relativeRect.x : relativeRect.x - offsetX,
+                  y: root ? relativeRect.y : relativeRect.y - offsetY,
                 },
               };
             })
             .filter((n): n is ContourNode => !!n);
 
-          return { contourNodes, areaHeight: scrollHeight, areaWidth: scrollWidth };
+          return { contourNodes };
         }),
       )
       .subscribe(onReport);
@@ -81,7 +75,7 @@ export default function useElementsRadar(
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [root]);
 
   return radarRef;
 }

@@ -9,7 +9,6 @@ import SimulatorLayerCtx from '../../context';
 export default function useHTMLNodeProps(node: HTMLNode, ctx: CTX, depth: number): Record<string, unknown> {
   const props = useInstantiateProps(node, ctx);
   const [ref, setRef] = useState<HTMLElement>();
-  const rootNodeID = useArteryRootNodeID();
   const layerCtx = useContext(SimulatorLayerCtx);
 
   useEffect(() => {
@@ -31,6 +30,5 @@ export default function useHTMLNodeProps(node: HTMLNode, ctx: CTX, depth: number
     'data-simulator-node-id': node.id,
     'data-simulator-node-depth': depth,
     'data-simulator-node-executor': getNodeExecutor(node),
-    'data-simulator-background-root-node': rootNodeID === node.id ? true : undefined,
   };
 }

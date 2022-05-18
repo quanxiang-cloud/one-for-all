@@ -242,9 +242,9 @@ const arteryForTestingSimulator: Artery = {
         }
       },
       {
-        id: 'modal-1',
+        id: 'modal-layer',
         type: 'react-component',
-        packageName: 'SimulatorDedicated',
+        packageName: '@one-for-all/headless-ui',
         packageVersion: 'whatever',
         exportName: 'MediocreDialog',
         props: {
@@ -257,7 +257,20 @@ const arteryForTestingSimulator: Artery = {
             stateID: 'isModalShow',
             fallback: false,
           }
-        }
+        },
+        children: [
+          {
+            id: 'modal-childre-h1',
+            type: 'html-element',
+            name: 'h1',
+            props: {
+              children: {
+                type: 'constant_property',
+                value: 'this is modal content'
+              }
+            }
+          }
+        ]
       },
     ],
   },

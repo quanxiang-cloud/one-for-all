@@ -29,9 +29,10 @@ function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | nu
     return null;
   }
 
-  // todo refactor this
+  // TODO refactor this
   if (isLayerRoot && _checkIfNodeIsModalLayer(node)) {
     nodeProps.isOpen = true;
+    nodeProps.container = 'inside';
   }
 
   if (!node.children || !node.children.length) {

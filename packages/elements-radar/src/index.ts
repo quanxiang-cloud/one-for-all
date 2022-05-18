@@ -7,19 +7,19 @@ import type { Report, Rect, ElementRect } from './type';
 export type { Report, Rect, ElementRect };
 
 export default class Radar {
-  private root: HTMLElement;
   private targets$: BehaviorSubject<HTMLElement[]> = new BehaviorSubject<HTMLElement[]>([]);
   private resizeSign$: Subject<unknown> = new Subject();
   private resizeObserver: ResizeObserver;
   private report: Report = new Map();
   private reportUpdatedSign$ = new Subject<void>();
   private visibleObserver: IntersectionObserver;
+  private root: HTMLElement | undefined;
 
   public constructor(root?: HTMLElement) {
-    this.root = root || window.document.body;
-    this.visibleObserver = new IntersectionObserver(this.intersectionObserverCallback, { root: this.root });
+    this.root = root;
+    this.visibleObserver = new IntersectionObserver(this.intersectionObserverCallback, { root });
 
-    const scroll$ = fromEvent(this.root, 'scroll');
+    const scroll$ = fromEvent(document, 'scroll');
 
     const scrollDone$ = new Subject<void>();
     let timer: number;
@@ -33,18 +33,19 @@ export default class Radar {
     const scrollSign$ = scroll$.pipe(audit(() => scrollDone$));
 
     this.resizeObserver = new ResizeObserver(this.onResize);
-    this.resizeObserver.observe(this.root);
+    this.resizeObserver.observe(document.body);
 
     this.targets$.subscribe((targets) => {
       this.resizeObserver.disconnect();
-      this.resizeObserver.observe(this.root);
+      this.resizeObserver.observe(document.body);
 
       targets.forEach((target) => {
         this.resizeObserver.observe(target);
       });
     });
 
-    merge(scrollSign$, this.targets$, this.resizeSign$)
+    // merge(scrollSign$, this.targets$, this.resizeSign$)
+    merge(this.targets$, this.resizeSign$)
       .pipe(
         // auditTime(100),
         // debounce(() => animationFrames()),
@@ -65,10 +66,17 @@ export default class Radar {
   };
 
   private intersectionObserverCallback = (entries: IntersectionObserverEntry[]): void => {
+    if (!entries.length) {
+      return;
+    }
+
+    const rootXY = this.root
+      ? { x: entries[0].rootBounds?.x || 0, y: entries[0].rootBounds?.y || 0 }
+      : { x: 0, y: 0 };
     this.report = new Map<HTMLElement, ElementRect>();
-    entries.forEach(({ target, boundingClientRect, rootBounds, isIntersecting }) => {
+    entries.forEach(({ target, boundingClientRect, isIntersecting }) => {
       if (isIntersecting) {
-        const relativeRect: Rect = calcRect(boundingClientRect, rootBounds);
+        const relativeRect: Rect = calcRect(boundingClientRect, rootXY);
         this.report.set(target as HTMLElement, { relativeRect, raw: boundingClientRect });
       }
     });

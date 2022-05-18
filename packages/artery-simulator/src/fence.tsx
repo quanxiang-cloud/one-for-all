@@ -65,14 +65,10 @@ function injectHTML(
 
 interface Props {
   headElements: Array<InjectElement>;
-  className?: string;
   onLoad?: () => void;
 }
 
-function Fence(
-  { headElements, className, onLoad }: Props,
-  ref: React.ForwardedRef<HTMLIFrameElement>,
-): JSX.Element {
+function Fence({ headElements, onLoad }: Props, ref: React.ForwardedRef<HTMLIFrameElement>): JSX.Element {
   const [iframeElement, setIframe] = useState<HTMLIFrameElement>();
 
   useEffect(() => {
@@ -85,8 +81,7 @@ function Fence(
 
   return (
     <iframe
-      className={cs('simulator-fence', className)}
-      style={{ border: 'none' }}
+      className="simulator-fence"
       ref={(_ref) => {
         // todo fix this
         if (!_ref) {

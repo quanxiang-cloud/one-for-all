@@ -1,38 +1,22 @@
-.simulator-foreground::-webkit-scrollbar {
-  display: none;
-  scrollbar-width: none;
-}
-
-.simulator-foreground {
-  scrollbar-width: none;
-  padding: 0 8px;
-}
-
-.foreground-scroll {
-  position: relative;
-}
-
 .contour-nodes {
   position: absolute;
   top: 0;
-  left: 0;
   z-index: 1;
 }
 
 .contour-node {
   position: absolute;
+  top: 0;
   border-width: 1px;
   border-color: transparent;
 
   &:hover:not(.contour-node--root, .contour-node--active) {
-    border-color: #0084ff;
-    border-style: dashed;
+    outline: 1px dashed #0084ff;
   }
 }
 
 .contour-node--active {
-  border-color: #0084ff;
-  border-style: solid;
+  box-shadow: inset 0 0 0 2px #0084ff;
 }
 
 .contour-node--hover-as-parent {

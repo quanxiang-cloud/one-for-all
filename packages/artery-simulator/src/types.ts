@@ -10,8 +10,6 @@ export interface ContourNode extends ElementRect {
 
 export interface ContourNodesReport {
   contourNodes: ContourNode[];
-  areaHeight: number;
-  areaWidth: number;
 }
 
 export interface Cursor {

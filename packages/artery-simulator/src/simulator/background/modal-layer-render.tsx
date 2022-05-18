@@ -1,27 +1,39 @@
-import React, { useMemo } from 'react';
-import { Plugins } from '@one-for-all/artery-renderer';
+import React, { useCallback } from 'react';
+import type { Artery } from '@one-for-all/artery';
+import { useBootResult } from '@one-for-all/artery-renderer';
+import plugins from 'TEMPORARY_PATCH_FOR_ARTERY_PLUGINS';
 
 import SimulatorLayerCtx, { createLayerContextVal } from './context';
-import { ContourNodesReport } from '../../types';
-import RenderLayer from './render-layer';
-
-import './index.scss';
+import useElementsRadar from './use-radar-ref';
+import NodeRender from './node-render';
 import { useBehaviorSubjectState } from '../utils';
-import { activeOverLayerArtery$, artery$ } from '../bridge';
+import { activeOverLayerArtery$ } from '../bridge';
+import { modalLayerContourNodesReport$ } from '../atoms';
+
+const modalLayerContextValue = createLayerContextVal();
 
 interface Props {
-  plugins?: Plugins;
-  rootElement: HTMLElement;
-  onModalLayerReport: (report?: ContourNodesReport) => void;
+  artery: Artery;
 }
 
-function ModalLayerRender({
-  plugins,
-  rootElement,
-  onModalLayerReport,
-}: Props): JSX.Element | null {
+function RenderLayer({ artery }: Props): JSX.Element | null {
+  const { ctx, rootNode } = useBootResult(artery, plugins) || {};
+  const onReport = useCallback((report) => modalLayerContourNodesReport$.next(report), []);
+  useElementsRadar(onReport);
+
+  if (!ctx || !rootNode) {
+    return null;
+  }
+
+  return (
+    <div className="simulator-background-modal-layer">
+      <NodeRender node={rootNode} ctx={ctx} />
+    </div>
+  );
+}
+
+function ModalLayerRender(): JSX.Element | null {
   const modalLayerArtery = useBehaviorSubjectState(activeOverLayerArtery$);
-  const modalLayerContextValue = useMemo(() => createLayerContextVal(), []);
 
   if (!modalLayerArtery) {
     return null;
@@ -29,12 +41,7 @@ function ModalLayerRender({
 
   return (
     <SimulatorLayerCtx.Provider value={modalLayerContextValue}>
-      <RenderLayer
-        artery={modalLayerArtery}
-        plugins={plugins}
-        rootElement={rootElement}
-        onReport={onModalLayerReport}
-      />
+      <RenderLayer artery={modalLayerArtery} />
     </SimulatorLayerCtx.Provider>
   );
 }

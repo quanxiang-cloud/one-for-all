@@ -8,6 +8,10 @@ import { isSupportChildren } from './helper';
 
 import './index.scss';
 
+const __OVER_LAYER_COMPONENTS: Array<{ packageName: string; exportName: string; }> = [
+  { packageName: '@one-for-all/headless-ui', exportName: 'MediocreDialog' },
+];
+
 interface RenderModalLayerSelectorProps {
   artery: Artery;
   setActiveModalLayer: (id?: string) => void;
@@ -74,6 +78,7 @@ function SimulatorInExample(): JSX.Element {
         setActiveNode={setActiveNode}
         onChange={setArtery}
         isNodeSupportChildren={isSupportChildren}
+        overLayerComponents={__OVER_LAYER_COMPONENTS}
       />
     </div>
   );

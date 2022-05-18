@@ -1,0 +1,17 @@
+.artery-simulator {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-columns: 1fr;
+  padding: 16px;
+}
+
+.simulator-fence {
+  width: 100%;
+  height: 100%;
+
+  background-color: white;
+  border: none;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.11), 0 2px 2px rgba(0, 0, 0, 0.11), 0 4px 4px rgba(0, 0, 0, 0.11),
+    0 6px 8px rgba(0, 0, 0, 0.11), 0 8px 16px rgba(0, 0, 0, 0.11);
+}
