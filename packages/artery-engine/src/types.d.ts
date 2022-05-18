@@ -39,6 +39,8 @@ declare namespace ArteryEngine {
     sharedState: T;
     onSharedStateChange: (path: string, value: any) => void;
     commands?: CommandNameRunnerMap;
+    commandsHasNext: boolean;
+    commandsHasPrev: boolean;
     activeNode?: Node;
     setActiveNode: (node?: Node) => void;
     generateNodeId: (prefix?: string) => string;
