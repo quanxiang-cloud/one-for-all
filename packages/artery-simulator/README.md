@@ -2,26 +2,12 @@
 
 技术要点
 
-- wrap every node in a element, which `display: contents`, so the wrapped element looks like no exist
-- IntersectionObserver node position, register it, used to render a mirror element
-- implement drag and drop on mirror element
-- the real node could be rendered as really as possible
-
-- Simulator render artery structure, but not interactive
-- Simulator tell you the clicked node position
-- Simulator zoom in?
-
-## TODO
-
-- 优化性能
-- dragging handle
-- 优化 `请拖拽组件到此处` 的提示
-- 点击 placeholder 需要可以选中父容器
-- bug: drag hover child node
-- todo: test composed and loop node
-- 支持模态框
-  - root layer
-  - modal layer 1
-  - modal layer 2
-  - 组件是否属于 modal layer 需要被动推出
-  - 所以应该定义 modal layer array state，当 artery 变化，有新 node 需要 render 时，push new modal layer 到数组中
+- 渲染组件时，将其放入一个不影响布局的的 container 中，`display: contents`
+  - 借助此 container 可以找到组件渲染的实际 DOM
+  - 组件加载后，将其实际 DOM 缓存起来，卸载前将其删除
+- 创建 `IntersectionObserver` 并对上述的 DOM 集合进行监听 (A)
+  - 在 callback 中就可以获得 DOM 的 boundingClientRect
+  - 可以使用 boundingClientRect 在组件上层渲染一个表示其位置和大小的 contour 元素
+  - 在 contour 元素上实现点击选中、拖拽等功能
+- 监听 mutation 和 resize 事件
+  - 当上述事件发生后，需要重新执行步骤 A
