@@ -1,6 +1,7 @@
 import { ReactComponentNode } from '@one-for-all/artery-renderer';
 import { Set } from 'immutable';
 import { BehaviorSubject } from 'rxjs';
+
 import { NodePrimary } from '../types';
 import { getNodeExecutor } from './utils';
 

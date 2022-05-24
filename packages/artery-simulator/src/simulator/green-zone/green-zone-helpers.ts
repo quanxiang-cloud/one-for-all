@@ -30,36 +30,6 @@ function getFirstLevelConcreteChildrenContours(
 }
 // type NearestEdge = 'left' | 'right';
 const MIN_GAP = 2;
-function findNearestRightSibling(current: ContourNode, children: ContourNode[]): ContourNode | undefined {
-  return children
-    .filter((sibling) => {
-      if (sibling.id === current.id) {
-        return false;
-      }
-
-      if (current.raw.x + current.raw.width + MIN_GAP > sibling.raw.x) {
-        return false;
-      }
-
-      if (current.raw.y > sibling.raw.y + sibling.raw.height) {
-        return false;
-      }
-
-      if (current.raw.y + current.raw.height < sibling.raw.y) {
-        return false;
-      }
-
-      return true;
-    })
-    .sort((a, b): number => {
-      const X = current.raw.x + current.raw.width;
-      const toALeftEdgeDistance = a.raw.x - X;
-      const toBLeftEdgeDistance = b.raw.x - X;
-
-      return toALeftEdgeDistance < toBLeftEdgeDistance ? -1 : 1;
-    })
-    .shift();
-}
 
 function findRightSiblings(current: ContourNode, allSiblings: ContourNode[]): ContourNode[] {
   return allSiblings.filter((sibling) => {
