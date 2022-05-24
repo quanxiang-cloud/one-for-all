@@ -41,6 +41,7 @@ export default function useFirstElementChild(parentElement: HTMLElement | undefi
       setChildElement(parentElement.firstElementChild as HTMLElement);
     }
 
+    // todo mutation observer should be singleton
     const observer = new MutationObserver(mutationCallback(setChildElement));
     observer.observe(parentElement, observerInit);
 

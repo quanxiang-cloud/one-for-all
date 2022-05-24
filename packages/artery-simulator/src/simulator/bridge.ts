@@ -1,7 +1,7 @@
 import type { Artery, Node } from '@one-for-all/artery';
-import { filter as arteryFilter, byArbitrary, ImmutableNode } from '@one-for-all/artery-utils';
+import { byArbitrary, ImmutableNode } from '@one-for-all/artery-utils';
 import { fromJS } from 'immutable';
-import { BehaviorSubject, combineLatest, distinctUntilChanged, filter, map, Observable, tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, distinctUntilChanged, filter, map, noop, Observable } from 'rxjs';
 
 import Messenger from '../messenger';
 import { ContourNode, NodePrimary } from '../types';
@@ -14,7 +14,7 @@ import {
 } from './constants';
 
 export const messenger = new Messenger(window.parent, 'iframe-side');
-messenger.waitForReady().then(() => {});
+messenger.waitForReady().then(() => {}).catch(noop);
 
 export const dummy_artery_root_node_id = 'DUMMY_ARTERY_ROOT_NODE_ID';
 
@@ -118,27 +118,27 @@ activeOverLayerNodeID$
   )
   .subscribe(activeOverLayerArtery$);
 
-function findAllOverLayerNodes(rootNode: ImmutableNode): Array<ImmutableNode> {
-  const keyPathList = arteryFilter(rootNode, (currentNode) => {
-    const nodeType = currentNode.getIn(['type']);
-    if (nodeType !== 'react-component') {
-      return false;
-    }
+// function findAllOverLayerNodes(rootNode: ImmutableNode): Array<ImmutableNode> {
+//   const keyPathList = arteryFilter(rootNode, (currentNode) => {
+//     const nodeType = currentNode.getIn(['type']);
+//     if (nodeType !== 'react-component') {
+//       return false;
+//     }
 
-    const packageName = currentNode.getIn(['packageName']) as string;
-    const exportName = currentNode.getIn(['exportName']) as string;
+//     const packageName = currentNode.getIn(['packageName']) as string;
+//     const exportName = currentNode.getIn(['exportName']) as string;
 
-    return !!window.__OVER_LAYER_COMPONENTS.find((modalComp) => {
-      return packageName === modalComp.packageName && exportName === modalComp.exportName;
-    });
-  });
+//     return !!window.__OVER_LAYER_COMPONENTS.find((modalComp) => {
+//       return packageName === modalComp.packageName && exportName === modalComp.exportName;
+//     });
+//   });
 
-  if (!keyPathList.size) {
-    return [];
-  }
+//   if (!keyPathList.size) {
+//     return [];
+//   }
 
-  return keyPathList.map<ImmutableNode>((keyPath) => rootNode.getIn(keyPath) as ImmutableNode).toArray();
-}
+//   return keyPathList.map<ImmutableNode>((keyPath) => rootNode.getIn(keyPath) as ImmutableNode).toArray();
+// }
 
 export function setActiveNode(node?: Node): void {
   messenger.send(MESSAGE_TYPE_ACTIVE_NODE, node);

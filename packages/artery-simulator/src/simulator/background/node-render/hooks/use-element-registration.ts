@@ -2,6 +2,8 @@ import type { SimulatorLayerContext } from '../../context';
 
 export function register(element: HTMLElement, layerCtx: SimulatorLayerContext): void {
   layerCtx.VISIBLE_ELEMENTS_OBSERVER.observe(element);
+  // todo emit a monitoredElements is useless?
+  // delete it?
   const monitoredElements = layerCtx.monitoredElements$.value;
   layerCtx.monitoredElements$.next(monitoredElements);
 }

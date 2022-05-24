@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useImperativeHandle } from 'react';
 import type { Artery, Node } from '@one-for-all/artery';
 import cs from 'classnames';
+import { noop } from 'rxjs';
 
 import simulatorDDL from 'dll:../dll/simulator.js';
 import Messenger from './messenger';
@@ -107,7 +108,7 @@ function Simulator(
     const msgr = new Messenger(iframeRef.current?.contentWindow, 'host-side');
     msgr.waitForReady().then(() => {
       msgr.send(MESSAGE_TYPE_ARTERY, artery);
-    });
+    }).catch(noop);
 
     setMessenger(msgr);
 

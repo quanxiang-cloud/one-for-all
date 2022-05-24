@@ -1,4 +1,4 @@
-import React, { useImperativeHandle } from 'react';
+import React, { useEffect, useImperativeHandle } from 'react';
 import type { Artery } from '@one-for-all/artery';
 
 import NodeRender from './node-render';

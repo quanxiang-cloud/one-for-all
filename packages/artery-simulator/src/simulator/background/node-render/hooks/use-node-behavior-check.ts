@@ -1,4 +1,5 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { noop } from 'rxjs';
 
 import { NodePrimary } from '../../../../types';
 import { _cacheIsNodeSupportChildren, _checkIfNodeSupportChildren } from '../../../cache';
@@ -42,7 +43,7 @@ export default function useNodeBehaviorCheck(node: HTMLNode | ReactComponentNode
       if (!unMounting) {
         setLoading(false);
       }
-    });
+    }).catch(noop);
 
     return () => {
       unMounting = true;
