@@ -1,6 +1,5 @@
 import type { HTMLNode, ReactComponentNode } from '@one-for-all/artery';
 import type { Rect, ElementRect } from '@one-for-all/elements-radar';
-import React from 'react';
 
 export interface ContourNode extends ElementRect {
   id: string;

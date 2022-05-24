@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import Messenger from './messenger';
+import { useEffect, useRef } from 'react';
+import Messenger from './lib/messenger';
 import {
   MESSAGE_TYPE_ARTERY,
   MESSAGE_TYPE_ACTIVE_NODE,

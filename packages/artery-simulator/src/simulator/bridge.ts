@@ -1,7 +1,7 @@
 import { distinctUntilChanged, noop } from 'rxjs';
 import type { Artery, Node } from '@one-for-all/artery';
 
-import Messenger from '../messenger';
+import Messenger from '../lib/messenger';
 import { NodePrimary } from '../types';
 import { activeNode$, activeOverLayerNodeID$, artery$, dropResult$ } from './states-center';
 import {

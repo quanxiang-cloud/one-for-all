@@ -4,7 +4,7 @@ import cs from 'classnames';
 import { noop } from 'rxjs';
 
 import simulatorDDL from 'dll:../dll/simulator.js';
-import Messenger from './messenger';
+import Messenger from './lib/messenger';
 import Fence, { InjectElement } from './fence';
 import { NodePrimary } from './types';
 import { useSyncResponders, useSyncArtery, useSyncActiveNode, useSyncActiveModalLayer } from './sync-hooks';

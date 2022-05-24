@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import cs from 'classnames';
 
 export type InjectElement = {
   name: string;
