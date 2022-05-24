@@ -23,7 +23,7 @@ export default function useGreenZoneReport() {
               return [];
             }
 
-            const contourNodes = contourNodesReport$.value?.contourNodes;
+            const contourNodes = contourNodesReport$.value;
             if (!contourNodes?.length) {
               return [];
             }

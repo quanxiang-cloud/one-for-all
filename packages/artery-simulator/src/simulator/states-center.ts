@@ -3,7 +3,7 @@ import { BehaviorSubject, Subject, map, Observable, distinctUntilChanged, combin
 import { byArbitrary, ImmutableNode } from '@one-for-all/artery-utils';
 import type { Artery, Node } from '@one-for-all/artery';
 
-import { ContourNode, ContourNodesReport, Cursor, GreenZone } from '../types';
+import { ContourNode, Cursor, GreenZone } from '../types';
 import { DND_DATA_TRANSFER_TYPE_ARTERY_NODE, DND_DATA_TRANSFER_TYPE_NODE_ID } from './constants';
 import { duplicateNode, insertNode, jsonParse, moveNode } from './foreground/helper';
 
@@ -33,7 +33,7 @@ function getDropRequest(dataTransfer: DataTransfer): DropRequest | undefined {
   return;
 }
 
-export const contourNodesReport$ = new BehaviorSubject<ContourNodesReport | undefined>(undefined);
+export const contourNodesReport$ = new BehaviorSubject<ContourNode[] | undefined>(undefined);
 export const cursor$ = new Subject<Cursor>();
 export const draggingArteryImmutableNode$ = new BehaviorSubject<ImmutableNode | undefined>(undefined);
 export const draggingNodeID$ = new BehaviorSubject<string>('');
@@ -41,7 +41,7 @@ export const hoveringContourNode$ = new Subject<ContourNode | undefined>();
 export const hoveringParentID$ = new BehaviorSubject('');
 export const inDnd$ = new BehaviorSubject<boolean>(false);
 export const latestFocusedGreenZone$ = new BehaviorSubject<GreenZone | undefined>(undefined);
-export const modalLayerContourNodesReport$ = new BehaviorSubject<ContourNodesReport | undefined>(undefined);
+export const modalLayerContourNodesReport$ = new BehaviorSubject<ContourNode[] | undefined>(undefined);
 export const onDropEvent$ = new Subject<React.DragEvent>();
 
 export const dummy_artery_root_node_id = 'DUMMY_ARTERY_ROOT_NODE_ID';
@@ -145,10 +145,10 @@ combineLatest({
   .pipe(
     map(({ activeNode, contourNodesReport, modalLayerContourNodesReport, activeOverLayerNodeID }) => {
       if (activeOverLayerNodeID) {
-        return modalLayerContourNodesReport?.contourNodes.find(({ id }) => id === activeNode?.id);
+        return modalLayerContourNodesReport?.find(({ id }) => id === activeNode?.id);
       }
 
-      return contourNodesReport?.contourNodes.find(({ id }) => id === activeNode?.id);
+      return contourNodesReport?.find(({ id }) => id === activeNode?.id);
     }),
     distinctUntilChanged((p, c) => p?.id === c?.id),
   )

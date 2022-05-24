@@ -8,10 +8,6 @@ export interface ContourNode extends ElementRect {
   depth: number;
 }
 
-export interface ContourNodesReport {
-  contourNodes: ContourNode[];
-}
-
 export interface Cursor {
   x: number;
   y: number;

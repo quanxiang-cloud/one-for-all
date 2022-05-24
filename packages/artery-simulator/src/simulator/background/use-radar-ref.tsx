@@ -2,11 +2,11 @@ import { useRef, useEffect, useContext } from 'react';
 import ElementsRadar, { Report } from '@one-for-all/elements-radar';
 import { map, filter } from 'rxjs/operators';
 
-import { ContourNode, ContourNodesReport } from '../../types';
+import { ContourNode } from '../../types';
 import MonitoredElementsContext from './context';
 
 export default function useElementsRadar(
-  onReport: (report?: ContourNodesReport) => void,
+  onReport: (report?: ContourNode[]) => void,
   root?: HTMLElement,
 ): React.MutableRefObject<ElementsRadar | undefined> {
   const monitoredElements$ = useContext(MonitoredElementsContext);
@@ -23,7 +23,7 @@ export default function useElementsRadar(
     const subscription = radar
       .getReport$()
       .pipe(
-        map<Report, ContourNodesReport>((report) => {
+        map<Report, ContourNode[]>((report) => {
           // todo bug, why contour id has duplicate?
           const DUPLICATE_CONTOUR_ID = new Set<string>();
           const contourNodes: ContourNode[] = Array.from(report.entries())
@@ -60,7 +60,7 @@ export default function useElementsRadar(
             })
             .filter((n): n is ContourNode => !!n);
 
-          return { contourNodes };
+          return contourNodes;
         }),
       )
       .subscribe(onReport);
