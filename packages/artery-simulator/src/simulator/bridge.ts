@@ -14,7 +14,10 @@ import {
 } from './constants';
 
 export const messenger = new Messenger(window.parent, 'iframe-side');
-messenger.waitForReady().then(() => {}).catch(noop);
+messenger
+  .waitForReady()
+  .then(() => {})
+  .catch(noop);
 
 export const dummy_artery_root_node_id = 'DUMMY_ARTERY_ROOT_NODE_ID';
 

@@ -9,5 +9,5 @@ declare module 'TEMPORARY_PATCH_FOR_ARTERY_PLUGINS' {
 }
 
 declare interface Window {
-  __OVER_LAYER_COMPONENTS: Array<{ packageName: string; exportName: string; }>;
+  __OVER_LAYER_COMPONENTS: Array<{ packageName: string; exportName: string }>;
 }

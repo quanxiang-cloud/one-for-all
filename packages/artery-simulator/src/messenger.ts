@@ -123,12 +123,14 @@ export default class Messenger {
             },
           });
       } else {
-        this.listen('ping').pipe(take(1)).subscribe(() => {
-          this.send('ping', 'ping');
-          clearTimeout(timer);
-          this.connected = true;
-          resolve();
-        });
+        this.listen('ping')
+          .pipe(take(1))
+          .subscribe(() => {
+            this.send('ping', 'ping');
+            clearTimeout(timer);
+            this.connected = true;
+            resolve();
+          });
       }
     });
   }

@@ -17,9 +17,7 @@ export default function useElementsRadar(
     radarRef.current = radar;
 
     monitoredElements$
-      .pipe(
-        filter((elements) => !!elements.size),
-      )
+      .pipe(filter((elements) => !!elements.size))
       .subscribe((elements) => radar.track(Array.from(elements)));
 
     const subscription = radar

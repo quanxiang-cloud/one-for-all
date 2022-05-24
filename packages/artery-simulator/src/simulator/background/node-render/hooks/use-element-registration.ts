@@ -5,7 +5,10 @@ export function register(element: HTMLElement, monitoredElements$: BehaviorSubje
   monitoredElements$.next(monitoredElements.add(element));
 }
 
-export function unregister(element: HTMLElement, monitoredElements$: BehaviorSubject<Set<HTMLElement>>): void {
+export function unregister(
+  element: HTMLElement,
+  monitoredElements$: BehaviorSubject<Set<HTMLElement>>,
+): void {
   const monitoredElements = monitoredElements$.value;
   monitoredElements.delete(element);
   monitoredElements$.next(monitoredElements);

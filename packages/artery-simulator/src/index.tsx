@@ -69,7 +69,7 @@ export interface Props {
   cssURLs?: Array<string>;
   className?: string;
   isNodeSupportChildren: (node: NodePrimary) => Promise<boolean>;
-  overLayerComponents: Array<{ packageName: string; exportName: string; }>;
+  overLayerComponents: Array<{ packageName: string; exportName: string }>;
 }
 
 export interface SimulatorRef {
@@ -106,9 +106,12 @@ function Simulator(
     }
 
     const msgr = new Messenger(iframeRef.current?.contentWindow, 'host-side');
-    msgr.waitForReady().then(() => {
-      msgr.send(MESSAGE_TYPE_ARTERY, artery);
-    }).catch(noop);
+    msgr
+      .waitForReady()
+      .then(() => {
+        msgr.send(MESSAGE_TYPE_ARTERY, artery);
+      })
+      .catch(noop);
 
     setMessenger(msgr);
 

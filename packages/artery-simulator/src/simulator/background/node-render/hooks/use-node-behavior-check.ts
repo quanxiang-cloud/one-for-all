@@ -39,11 +39,13 @@ export default function useNodeBehaviorCheck(node: HTMLNode | ReactComponentNode
   useEffect(() => {
     let unMounting = false;
 
-    asyncCheckIfNodeSupportChildren(toNodePrimary(node)).then(() => {
-      if (!unMounting) {
-        setLoading(false);
-      }
-    }).catch(noop);
+    asyncCheckIfNodeSupportChildren(toNodePrimary(node))
+      .then(() => {
+        if (!unMounting) {
+          setLoading(false);
+        }
+      })
+      .catch(noop);
 
     return () => {
       unMounting = true;
