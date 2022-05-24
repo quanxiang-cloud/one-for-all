@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Node } from '@one-for-all/artery';
 import { keyPathById, parentIdsSeq } from '@one-for-all/artery-utils';
 
-import { useSetRecoilState } from 'recoil';
 import { artery$, immutableRoot$, setActiveNode } from '../../bridge';
-import { hoveringParentIDState } from '../../atoms';
 import { useBehaviorSubjectState } from '../../utils';
+import { hoveringParentID$ } from '../../atoms';
 
 interface Props {
   currentNodeID: string;
@@ -15,7 +14,6 @@ interface Props {
 function ParentNodes({ currentNodeID, onParentClick }: Props): JSX.Element | null {
   const artery = useBehaviorSubjectState(artery$);
   const [parents, setParents] = useState<Node[]>([]);
-  const setHoveringParentID = useSetRecoilState(hoveringParentIDState);
 
   useEffect(() => {
     const parentIDs = parentIdsSeq(immutableRoot$.value, currentNodeID);
@@ -59,14 +57,14 @@ function ParentNodes({ currentNodeID, onParentClick }: Props): JSX.Element | nul
             key={id}
             className="active-node-parents__parent"
             onMouseEnter={() => {
-              setHoveringParentID(id);
+              hoveringParentID$.next(id);
             }}
             onMouseLeave={() => {
-              setHoveringParentID('');
+              hoveringParentID$.next('');
             }}
             onClick={(e) => {
               e.stopPropagation();
-              setHoveringParentID('');
+              hoveringParentID$.next('');
               setActiveNode(parent);
               onParentClick();
             }}

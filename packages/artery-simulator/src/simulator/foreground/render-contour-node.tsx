@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import cs from 'classnames';
-import { useRecoilState } from 'recoil';
 import type { Node } from '@one-for-all/artery';
 import { byArbitrary, ImmutableNode } from '@one-for-all/artery-utils';
 import { distinctUntilChanged, map } from 'rxjs';
@@ -9,13 +8,13 @@ import useContourNodeStyle from './use-active-contour-node-style';
 import type { ContourNode } from '../../types';
 import {
   cursor$,
-  draggingNodeIDState,
+  draggingNodeID$,
   hoveringContourNode$,
-  hoveringParentIDState,
+  hoveringParentID$,
   inDnd$,
   onDropEvent$,
 } from '../atoms';
-import { overrideDragImage, useArteryRootNodeID } from '../utils';
+import { overrideDragImage, useArteryRootNodeID, useBehaviorSubjectState } from '../utils';
 import useShouldHandleDndCallback from './use-should-handle-dnd-callback';
 import { DND_DATA_TRANSFER_TYPE_NODE_ID } from '../constants';
 import { activeContour$, immutableRoot$, setActiveNode } from '../bridge';
@@ -50,12 +49,12 @@ function useWhetherActive(currentID: string): boolean {
 }
 
 function RenderContourNode({ contourNode }: Props): JSX.Element {
-  const [hoveringParentID] = useRecoilState(hoveringParentIDState);
+  const hoveringParentID = useBehaviorSubjectState(hoveringParentID$);
   const rootNodeID = useArteryRootNodeID();
   const style = useContourNodeStyle(contourNode);
-  const [draggingNodeID, setDraggingNodeID] = useRecoilState(draggingNodeIDState);
   const _shouldHandleDnd = useShouldHandleDndCallback(contourNode.id);
   const currentActive = useWhetherActive(contourNode.id);
+  const [isDragging, setIsDragging] = useState(false);
 
   return (
     <>
@@ -83,12 +82,14 @@ function RenderContourNode({ contourNode }: Props): JSX.Element {
           // todo this has no affect, fix it!
           e.dataTransfer.effectAllowed = 'move';
           e.dataTransfer.setData(DND_DATA_TRANSFER_TYPE_NODE_ID, contourNode.id);
-          setDraggingNodeID(contourNode.id);
+          draggingNodeID$.next(contourNode.id);
+          setIsDragging(true);
 
           overrideDragImage(e.dataTransfer);
         }}
         onDragEnd={() => {
-          setDraggingNodeID(undefined);
+          draggingNodeID$.next('');
+          setIsDragging(true);
           inDnd$.next(false);
         }}
         onDragOver={(e) => {
@@ -131,7 +132,7 @@ function RenderContourNode({ contourNode }: Props): JSX.Element {
           'contour-node--root': rootNodeID === contourNode.id,
           'contour-node--active': currentActive,
           'contour-node--hover-as-parent': hoveringParentID === contourNode.id,
-          'contour-node--dragging': draggingNodeID === contourNode.id,
+          'contour-node--dragging': isDragging,
         })}
       />
     </>

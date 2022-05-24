@@ -1,6 +1,5 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { RecoilRoot } from 'recoil';
 
 import Simulator from './simulator';
 import { useArteryRootNodeID } from './utils';
@@ -12,11 +11,7 @@ function App(): JSX.Element | null {
     return null;
   }
 
-  return (
-    <RecoilRoot>
-      <Simulator />
-    </RecoilRoot>
-  );
+  return <Simulator />;
 }
 
 const iframeAppRoot = document.createElement('div');

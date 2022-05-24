@@ -16,7 +16,11 @@ function ChildrenRender({ nodes, ctx }: ChildrenRenderProps): React.ReactElement
   return React.createElement(
     React.Fragment,
     null,
-    nodes.map((node) => React.createElement(NodeRender, { key: node.id, node: node, ctx })),
+    // why concat index on element key?
+    // https://reactjs.org/docs/reconciliation.html#recursing-on-children
+    // we depended on node mount/unmount to update monitoredElements$,
+    // add index to node key to force it re-render
+    nodes.map((node, i) => React.createElement(NodeRender, { key: `${node.id}-${i}`, node: node, ctx })),
   );
 }
 

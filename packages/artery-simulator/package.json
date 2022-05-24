@@ -9,7 +9,8 @@
   ],
   "scripts": {
     "build": "tsc",
-    "prebundle": "NODE_ENV=production rollup -c rollup.config.dll.js",
+    "productionprebundle": "NODE_ENV=production rollup -c rollup.config.dll.js",
+    "prebundle": "rollup -c rollup.config.dll.js",
     "bundle": "rm -rf dist && rollup -c rollup.config.js",
     "lint": "eslint src/**/*.ts src/**/*.tsx --fix",
     "prepack": "yarn run build",
@@ -30,7 +31,6 @@
     "immutable": "4.0.0",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
-    "recoil": "0.7.2",
     "rxjs": "^7.4.0"
   },
   "devDependencies": {

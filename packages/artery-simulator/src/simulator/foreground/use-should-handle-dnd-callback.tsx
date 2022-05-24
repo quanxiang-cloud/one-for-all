@@ -1,12 +1,12 @@
 import { byArbitrary } from '@one-for-all/artery-utils';
 import { useCallback, useRef } from 'react';
-import { useRecoilValue } from 'recoil';
-import { draggingArteryImmutableNodeState, draggingNodeIDState } from '../atoms';
+import { draggingArteryImmutableNode$, draggingNodeID$ } from '../atoms';
+import { useBehaviorSubjectState } from '../utils';
 
 export default function useShouldHandleDndCallback(currentID: string): (e: React.DragEvent) => boolean {
   const isDraggingParent = useRef<boolean | undefined>();
-  const draggingNodeID = useRecoilValue(draggingNodeIDState);
-  const draggingNode = useRecoilValue(draggingArteryImmutableNodeState);
+  const draggingNodeID = useBehaviorSubjectState(draggingNodeID$);
+  const draggingNode = useBehaviorSubjectState(draggingArteryImmutableNode$);
 
   return useCallback(
     (e: React.DragEvent) => {
