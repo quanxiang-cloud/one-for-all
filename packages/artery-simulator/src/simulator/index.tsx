@@ -4,8 +4,8 @@ import React from 'react';
 import Background from './background';
 import Foreground from './foreground';
 import GreenZone from './green-zone';
-import { useArteryRootNodeID } from './utils';
 import { DUMMY_ARTERY_ROOT_NODE_ID } from './constants';
+import { useArteryRootNodeID } from './states-center';
 
 import './index.scss';
 

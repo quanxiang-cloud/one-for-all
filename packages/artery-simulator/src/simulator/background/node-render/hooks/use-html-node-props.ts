@@ -1,9 +1,9 @@
-import { useRef, useEffect, useContext, useState } from 'react';
+import { useEffect, useContext, useState } from 'react';
 import { CTX, HTMLNode } from '@one-for-all/artery-renderer';
 import { useInstantiateProps } from '@one-for-all/artery-renderer';
 
 import { register, unregister } from './use-element-registration';
-import { getNodeExecutor, useArteryRootNodeID } from '../../../utils';
+import { getNodeExecutor } from '../../../utils';
 import MonitoredElementsContext from '../../context';
 
 export default function useHTMLNodeProps(node: HTMLNode, ctx: CTX, depth: number): Record<string, unknown> {

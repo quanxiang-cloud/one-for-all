@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { fromJS } from 'immutable';
 import { BehaviorSubject, Subject, map, Observable, distinctUntilChanged, combineLatest, filter } from 'rxjs';
 import { byArbitrary, ImmutableNode } from '@one-for-all/artery-utils';
@@ -5,7 +6,7 @@ import type { Artery, Node } from '@one-for-all/artery';
 
 import { ContourNode, Cursor, GreenZone } from '../types';
 import { DND_DATA_TRANSFER_TYPE_ARTERY_NODE, DND_DATA_TRANSFER_TYPE_NODE_ID, DUMMY_ARTERY_ROOT_NODE_ID } from './constants';
-import { duplicateNode, insertNode, jsonParse, moveNode } from './foreground/helper';
+import { duplicateNode, insertNode, jsonParse, moveNode } from './utils';
 
 interface MoveNodeRequest {
   type: 'move_node_request';
@@ -90,6 +91,18 @@ export const dropResult$ = onDropEvent$.pipe(
   map((newRoot) => (newRoot ? newRoot.toJS() : undefined)),
   filter((newRoot) => !!newRoot),
 );
+
+export function useArteryRootNodeID(): string {
+  const [rootNodeID, setRootNodeID] = useState('');
+  useEffect(() => {
+    const subscription = rootNodID$.subscribe(setRootNodeID);
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  return rootNodeID;
+}
 
 artery$.pipe(map<Artery, ImmutableNode>((artery) => fromJS(artery.node))).subscribe(immutableRoot$);
 

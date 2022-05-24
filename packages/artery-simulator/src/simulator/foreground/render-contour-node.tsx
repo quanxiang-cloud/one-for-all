@@ -15,8 +15,9 @@ import {
   onDropEvent$,
   activeContour$,
   immutableRoot$,
+  useArteryRootNodeID,
 } from '../states-center';
-import { overrideDragImage, useArteryRootNodeID, useBehaviorSubjectState } from '../utils';
+import { overrideDragImage, useBehaviorSubjectState } from '../utils';
 import useShouldHandleDndCallback from './use-should-handle-dnd-callback';
 import { DND_DATA_TRANSFER_TYPE_NODE_ID } from '../constants';
 import { setActiveNode } from '../bridge';
