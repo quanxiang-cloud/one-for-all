@@ -5,7 +5,7 @@ import { noop } from 'rxjs';
 
 import simulatorDDL from 'dll:../dll/simulator.js';
 import Messenger from './lib/messenger';
-import Fence, { InjectElement } from './fence';
+import Fence, { InjectElement } from './lib/fence';
 import { NodePrimary } from './types';
 import { useSyncResponders, useSyncArtery, useSyncActiveNode, useSyncActiveModalLayer } from './sync-hooks';
 import { MESSAGE_TYPE_ARTERY } from './simulator/constants';
