@@ -3,13 +3,13 @@ import ElementsRadar, { Report } from '@one-for-all/elements-radar';
 import { map, filter } from 'rxjs/operators';
 
 import { ContourNode, ContourNodesReport } from '../../types';
-import SimulatorLayerCtx from './context';
+import MonitoredElementsContext from './context';
 
 export default function useElementsRadar(
   onReport: (report?: ContourNodesReport) => void,
   root?: HTMLElement,
 ): React.MutableRefObject<ElementsRadar | undefined> {
-  const { monitoredElements$ } = useContext(SimulatorLayerCtx);
+  const monitoredElements$ = useContext(MonitoredElementsContext);
   const radarRef = useRef<ElementsRadar>();
 
   useEffect(() => {
@@ -18,14 +18,9 @@ export default function useElementsRadar(
 
     monitoredElements$
       .pipe(
-        map((monitoredElements) => {
-          return Array.from(monitoredElements.entries())
-            .filter(([_, visible]) => visible)
-            .map(([ele]) => ele);
-        }),
-        filter((elements) => !!elements.length),
+        filter((elements) => !!elements.size),
       )
-      .subscribe((elements) => radar.track(elements));
+      .subscribe((elements) => radar.track(Array.from(elements)));
 
     const subscription = radar
       .getReport$()

@@ -2,15 +2,16 @@ import React, { useCallback } from 'react';
 import type { Artery } from '@one-for-all/artery';
 import { useBootResult } from '@one-for-all/artery-renderer';
 import plugins from 'TEMPORARY_PATCH_FOR_ARTERY_PLUGINS';
+import { BehaviorSubject } from 'rxjs';
 
-import SimulatorLayerCtx, { createLayerContextVal } from './context';
 import useElementsRadar from './use-radar-ref';
 import NodeRender from './node-render';
 import { useBehaviorSubjectState } from '../utils';
 import { activeOverLayerArtery$ } from '../bridge';
 import { modalLayerContourNodesReport$ } from '../atoms';
+import MonitoredElementsContext from './context';
 
-const modalLayerContextValue = createLayerContextVal();
+const monitoredElements = new BehaviorSubject<Set<HTMLElement>>(new Set<HTMLElement>());
 
 interface Props {
   artery: Artery;
@@ -40,9 +41,9 @@ function ModalLayerRender(): JSX.Element | null {
   }
 
   return (
-    <SimulatorLayerCtx.Provider value={modalLayerContextValue}>
+    <MonitoredElementsContext.Provider value={monitoredElements}>
       <RenderLayer artery={modalLayerArtery} />
-    </SimulatorLayerCtx.Provider>
+    </MonitoredElementsContext.Provider>
   );
 }
 

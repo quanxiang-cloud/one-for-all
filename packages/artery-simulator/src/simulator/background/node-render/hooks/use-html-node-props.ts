@@ -4,12 +4,12 @@ import { useInstantiateProps } from '@one-for-all/artery-renderer';
 
 import { register, unregister } from './use-element-registration';
 import { getNodeExecutor, useArteryRootNodeID } from '../../../utils';
-import SimulatorLayerCtx from '../../context';
+import MonitoredElementsContext from '../../context';
 
 export default function useHTMLNodeProps(node: HTMLNode, ctx: CTX, depth: number): Record<string, unknown> {
   const props = useInstantiateProps(node, ctx);
   const [ref, setRef] = useState<HTMLElement>();
-  const layerCtx = useContext(SimulatorLayerCtx);
+  const layerCtx = useContext(MonitoredElementsContext);
 
   useEffect(() => {
     if (ref) {

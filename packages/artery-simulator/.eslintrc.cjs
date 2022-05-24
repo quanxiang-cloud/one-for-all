@@ -10,6 +10,7 @@ module.exports = {
   ],
   parserOptions: { tsconfigRootDir: __dirname },
   rules: {
+    'react/jsx-no-bind': { allowArrowFunctions: true },
     '@typescript-eslint/typedef': 'off',
     '@typescript-eslint/naming-convention': [
       'error',

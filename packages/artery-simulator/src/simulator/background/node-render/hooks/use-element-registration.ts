@@ -1,16 +1,12 @@
-import type { SimulatorLayerContext } from '../../context';
+import { BehaviorSubject } from 'rxjs';
 
-export function register(element: HTMLElement, layerCtx: SimulatorLayerContext): void {
-  layerCtx.VISIBLE_ELEMENTS_OBSERVER.observe(element);
-  // todo emit a monitoredElements is useless?
-  // delete it?
-  const monitoredElements = layerCtx.monitoredElements$.value;
-  layerCtx.monitoredElements$.next(monitoredElements);
+export function register(element: HTMLElement, monitoredElements$: BehaviorSubject<Set<HTMLElement>>): void {
+  const monitoredElements = monitoredElements$.value;
+  monitoredElements$.next(monitoredElements.add(element));
 }
 
-export function unregister(element: HTMLElement, layerCtx: SimulatorLayerContext): void {
-  layerCtx.VISIBLE_ELEMENTS_OBSERVER.unobserve(element);
-  const monitoredElements = layerCtx.monitoredElements$.value;
+export function unregister(element: HTMLElement, monitoredElements$: BehaviorSubject<Set<HTMLElement>>): void {
+  const monitoredElements = monitoredElements$.value;
   monitoredElements.delete(element);
-  layerCtx.monitoredElements$.next(monitoredElements);
+  monitoredElements$.next(monitoredElements);
 }

@@ -1,29 +1,6 @@
 import React from 'react';
-import { BehaviorSubject, noop } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
-export type SimulatorLayerContext = {
-  VISIBLE_ELEMENTS_OBSERVER: IntersectionObserver;
-  monitoredElements$: BehaviorSubject<Map<HTMLElement, boolean>>;
-};
+const MonitoredElementsContext = React.createContext<BehaviorSubject<Set<HTMLElement>>>(new BehaviorSubject<Set<HTMLElement>>(new Set<HTMLElement>()));
 
-export function createLayerContextVal(): SimulatorLayerContext {
-  function visibleObserverCallback(entries: IntersectionObserverEntry[]): void {
-    const monitoredElements = monitoredElements$.value;
-    entries.forEach(({ isIntersecting, target }) => {
-      monitoredElements.set(target as HTMLElement, isIntersecting);
-    });
-    monitoredElements$.next(monitoredElements);
-  }
-
-  const monitoredElements$ = new BehaviorSubject<Map<HTMLElement, boolean>>(new Map());
-  const VISIBLE_ELEMENTS_OBSERVER = new IntersectionObserver(visibleObserverCallback);
-
-  return { monitoredElements$, VISIBLE_ELEMENTS_OBSERVER };
-}
-
-const SimulatorLayerCtx = React.createContext<SimulatorLayerContext>({
-  monitoredElements$: new BehaviorSubject<Map<HTMLElement, boolean>>(new Map()),
-  VISIBLE_ELEMENTS_OBSERVER: new IntersectionObserver(noop),
-});
-
-export default SimulatorLayerCtx;
+export default MonitoredElementsContext;

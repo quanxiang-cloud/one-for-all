@@ -1,15 +1,16 @@
 import React, { useCallback, useState } from 'react';
 import { useBootResult } from '@one-for-all/artery-renderer';
 import plugins from 'TEMPORARY_PATCH_FOR_ARTERY_PLUGINS';
+import { BehaviorSubject } from 'rxjs';
 
 import NodeRender from './node-render';
 import useElementsRadar from './use-radar-ref';
 import { artery$ } from '../bridge';
 import { useBehaviorSubjectState } from '../utils';
 import { contourNodesReport$ } from '../atoms';
-import SimulatorLayerCtx, { createLayerContextVal } from './context';
+import MonitoredElementsContext from './context';
 
-const rootSimulatorLayerCtxValue = createLayerContextVal();
+const monitoredElements = new BehaviorSubject<Set<HTMLElement>>(new Set<HTMLElement>());
 
 interface Props {
   rootElement: HTMLElement;
@@ -32,7 +33,7 @@ export default function RootLayerRenderLayer(): JSX.Element | null {
   const [rootElement, setRootElement] = useState<HTMLDivElement>();
 
   return (
-    <SimulatorLayerCtx.Provider value={rootSimulatorLayerCtxValue}>
+    <MonitoredElementsContext.Provider value={monitoredElements}>
       <div
         className="simulator-background-layer"
         ref={(ref) => {
@@ -43,6 +44,6 @@ export default function RootLayerRenderLayer(): JSX.Element | null {
       >
         {rootElement && <RenderLayer rootElement={rootElement} />}
       </div>
-    </SimulatorLayerCtx.Provider>
+    </MonitoredElementsContext.Provider>
   );
 }
