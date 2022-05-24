@@ -14,7 +14,8 @@ import {
   travel,
 } from '@one-for-all/artery-utils';
 
-import type { GreenZone, Cursor, Position, NodePrimary } from '../types';
+import type { GreenZone, Cursor, Position, NodePrimary, DropRequest } from '../types';
+import { DND_DATA_TRANSFER_TYPE_ARTERY_NODE, DND_DATA_TRANSFER_TYPE_NODE_ID } from './constants';
 
 const img = new Image();
 img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
@@ -192,4 +193,18 @@ export function duplicateNode(node: Node): Node {
   });
 
   return newNode;
+}
+
+export function getDropRequest(dataTransfer: DataTransfer): DropRequest | undefined {
+  const draggingNodeID = dataTransfer.getData(DND_DATA_TRANSFER_TYPE_NODE_ID);
+  if (draggingNodeID) {
+    return { type: 'move_node_request', nodeID: draggingNodeID };
+  }
+
+  const droppedNode = jsonParse<Node>(dataTransfer.getData(DND_DATA_TRANSFER_TYPE_ARTERY_NODE));
+  if (droppedNode) {
+    return { type: 'insert_node_request', node: duplicateNode(droppedNode) };
+  }
+
+  return;
 }

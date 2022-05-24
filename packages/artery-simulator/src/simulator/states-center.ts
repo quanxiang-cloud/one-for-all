@@ -4,35 +4,9 @@ import { BehaviorSubject, Subject, map, Observable, distinctUntilChanged, combin
 import { byArbitrary, ImmutableNode } from '@one-for-all/artery-utils';
 import type { Artery, Node } from '@one-for-all/artery';
 
-import { ContourNode, Cursor, GreenZone } from '../types';
-import { DND_DATA_TRANSFER_TYPE_ARTERY_NODE, DND_DATA_TRANSFER_TYPE_NODE_ID, DUMMY_ARTERY_ROOT_NODE_ID } from './constants';
-import { duplicateNode, insertNode, jsonParse, moveNode } from './utils';
-
-interface MoveNodeRequest {
-  type: 'move_node_request';
-  nodeID: string;
-}
-
-interface DropNodeRequest {
-  type: 'insert_node_request';
-  node: Node;
-}
-
-type DropRequest = MoveNodeRequest | DropNodeRequest;
-
-function getDropRequest(dataTransfer: DataTransfer): DropRequest | undefined {
-  const draggingNodeID = dataTransfer.getData(DND_DATA_TRANSFER_TYPE_NODE_ID);
-  if (draggingNodeID) {
-    return { type: 'move_node_request', nodeID: draggingNodeID };
-  }
-
-  const droppedNode = jsonParse<Node>(dataTransfer.getData(DND_DATA_TRANSFER_TYPE_ARTERY_NODE));
-  if (droppedNode) {
-    return { type: 'insert_node_request', node: duplicateNode(droppedNode) };
-  }
-
-  return;
-}
+import { ContourNode, Cursor, DropRequest, GreenZone } from '../types';
+import { DUMMY_ARTERY_ROOT_NODE_ID } from './constants';
+import { getDropRequest, insertNode, jsonParse, moveNode } from './utils';
 
 export const contourNodesReport$ = new BehaviorSubject<ContourNode[] | undefined>(undefined);
 export const cursor$ = new Subject<Cursor>();
