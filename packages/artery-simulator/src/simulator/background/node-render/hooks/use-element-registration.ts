@@ -1,4 +1,4 @@
-import { SimulatorLayerContext } from 'src/simulator/background/context';
+import type { SimulatorLayerContext } from '../../context';
 
 export function register(element: HTMLElement, layerCtx: SimulatorLayerContext): void {
   layerCtx.VISIBLE_ELEMENTS_OBSERVER.observe(element);
