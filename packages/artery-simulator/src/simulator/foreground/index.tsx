@@ -10,8 +10,7 @@ import './index.scss';
 
 function useContourNodes(): Array<ContourNode> {
   const contourNodes = useBehaviorSubjectState(contourNodesReport$) || [];
-  const modalLayerContourNodes =
-    useBehaviorSubjectState(modalLayerContourNodesReport$) || [];
+  const modalLayerContourNodes = useBehaviorSubjectState(modalLayerContourNodesReport$) || [];
   const activeOverLayerNodeID = useBehaviorSubjectState(activeOverLayerNodeID$);
 
   if (activeOverLayerNodeID) {

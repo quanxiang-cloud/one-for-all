@@ -6,7 +6,13 @@ import ParentNodes from './parent-nodes';
 import Icon from '@one-for-all/icon';
 import { useNodeLabel } from './use-node-label';
 import { onChangeArtery, setActiveNode } from '../../bridge';
-import { activeContour$, activeContourToolbarStyle$, activeNode$, artery$, useArteryRootNodeID } from '../../states-center';
+import {
+  activeContour$,
+  activeContourToolbarStyle$,
+  activeNode$,
+  artery$,
+  useArteryRootNodeID,
+} from '../../states-center';
 import { duplicateNode, useBehaviorSubjectState } from '../../utils';
 
 const modifiers = [

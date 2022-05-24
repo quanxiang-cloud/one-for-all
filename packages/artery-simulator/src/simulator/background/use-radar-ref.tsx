@@ -5,6 +5,45 @@ import { map, filter } from 'rxjs/operators';
 import { ContourNode } from '../../types';
 import MonitoredElementsContext from './context';
 
+function generateContourNodeReport(report: Report, root: HTMLElement | undefined): ContourNode[] {
+  // todo bug, why contour id has duplicate?
+  const DUPLICATE_CONTOUR_ID = new Set<string>();
+
+  return Array.from(report.entries())
+    .map(([element, { relativeRect, raw }]) => {
+      const id = element.dataset.simulatorNodeId;
+      if (!id) {
+        return;
+      }
+
+      if (DUPLICATE_CONTOUR_ID.has(id)) {
+        return;
+      } else {
+        DUPLICATE_CONTOUR_ID.add(id);
+      }
+
+      const depth = parseInt(element.dataset.simulatorNodeDepth || '0') || 0;
+      const { x: offsetX, y: offsetY } = document.body.getBoundingClientRect();
+
+      return {
+        id,
+        depth,
+        raw,
+        relativeRect,
+        executor: element.dataset.simulatorNodeExecutor || '',
+        absolutePosition: {
+          height: relativeRect.height,
+          width: relativeRect.width,
+          // when root is undefine, the comparing root will be viewport,
+          // the relativeRect is relative to viewport,
+          x: root ? relativeRect.x : relativeRect.x - offsetX,
+          y: root ? relativeRect.y : relativeRect.y - offsetY,
+        },
+      };
+    })
+    .filter((n): n is ContourNode => !!n);
+}
+
 export default function useElementsRadar(
   onReport: (report?: ContourNode[]) => void,
   root?: HTMLElement,
@@ -22,47 +61,7 @@ export default function useElementsRadar(
 
     const subscription = radar
       .getReport$()
-      .pipe(
-        map<Report, ContourNode[]>((report) => {
-          // todo bug, why contour id has duplicate?
-          const DUPLICATE_CONTOUR_ID = new Set<string>();
-          const contourNodes: ContourNode[] = Array.from(report.entries())
-            .map(([element, { relativeRect, raw }]) => {
-              const id = element.dataset.simulatorNodeId;
-              if (!id) {
-                return;
-              }
-
-              if (DUPLICATE_CONTOUR_ID.has(id)) {
-                return;
-              } else {
-                DUPLICATE_CONTOUR_ID.add(id);
-              }
-
-              const depth = parseInt(element.dataset.simulatorNodeDepth || '0') || 0;
-              const { x: offsetX, y: offsetY } = document.body.getBoundingClientRect();
-
-              return {
-                id,
-                depth,
-                raw,
-                relativeRect,
-                executor: element.dataset.simulatorNodeExecutor || '',
-                absolutePosition: {
-                  height: relativeRect.height,
-                  width: relativeRect.width,
-                  // when root is undefine, the comparing root will be viewport,
-                  // the relativeRect is relative to viewport,
-                  x: root ? relativeRect.x : relativeRect.x - offsetX,
-                  y: root ? relativeRect.y : relativeRect.y - offsetY,
-                },
-              };
-            })
-            .filter((n): n is ContourNode => !!n);
-
-          return contourNodes;
-        }),
-      )
+      .pipe(map<Report, ContourNode[]>((report) => generateContourNodeReport(report, root)))
       .subscribe(onReport);
 
     return () => {
