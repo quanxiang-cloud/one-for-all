@@ -3,7 +3,7 @@ import React from 'react';
 
 import Simulator from './simulator';
 import { useArteryRootNodeID } from './utils';
-import { dummy_artery_root_node_id } from './bridge';
+import { dummy_artery_root_node_id } from './states-center';
 
 function App(): JSX.Element | null {
   const rootNodeID = useArteryRootNodeID();

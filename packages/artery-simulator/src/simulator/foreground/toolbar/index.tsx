@@ -4,17 +4,11 @@ import { deleteByID, insertAfter } from '@one-for-all/artery-utils';
 
 import ParentNodes from './parent-nodes';
 import Icon from '@one-for-all/icon';
-import duplicateNode from './duplicate-node';
 import { useNodeLabel } from './use-node-label';
-import {
-  activeContour$,
-  activeContourToolbarStyle$,
-  activeNode$,
-  artery$,
-  onChangeArtery,
-  setActiveNode,
-} from '../../bridge';
+import { onChangeArtery, setActiveNode } from '../../bridge';
+import { activeContour$, activeContourToolbarStyle$, activeNode$, artery$ } from '../../states-center';
 import { useArteryRootNodeID, useBehaviorSubjectState } from '../../utils';
+import { duplicateNode } from '../helper';
 
 const modifiers = [
   {

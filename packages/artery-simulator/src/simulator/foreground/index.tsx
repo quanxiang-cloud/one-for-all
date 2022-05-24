@@ -3,9 +3,8 @@ import React from 'react';
 import RenderContourNode from './render-contour-node';
 import Toolbar from './toolbar';
 import type { ContourNode } from '../../types';
-import { contourNodesReport$, modalLayerContourNodesReport$ } from '../atoms';
+import { activeOverLayerNodeID$, contourNodesReport$, modalLayerContourNodesReport$ } from '../states-center';
 import { useBehaviorSubjectState } from '../utils';
-import { activeOverLayerNodeID$ } from '../bridge';
 
 import './index.scss';
 

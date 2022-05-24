@@ -5,9 +5,9 @@ import { BehaviorSubject } from 'rxjs';
 
 import NodeRender from './node-render';
 import useElementsRadar from './use-radar-ref';
-import { artery$ } from '../bridge';
+import { artery$ } from '../states-center';
 import { useBehaviorSubjectState } from '../utils';
-import { contourNodesReport$ } from '../atoms';
+import { contourNodesReport$ } from '../states-center';
 import MonitoredElementsContext from './context';
 
 const monitoredElements = new BehaviorSubject<Set<HTMLElement>>(new Set<HTMLElement>());

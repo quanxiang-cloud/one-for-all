@@ -1,10 +1,11 @@
-import { Rect } from '@one-for-all/elements-radar';
+import cs from 'classnames';
 import React, { useEffect, useState } from 'react';
+import { Rect } from '@one-for-all/elements-radar';
 import { map, distinctUntilChanged, audit, tap } from 'rxjs/operators';
 import { animationFrames } from 'rxjs';
-import { cursor$, latestFocusedGreenZone$ } from '../atoms';
+
+import { cursor$, latestFocusedGreenZone$ } from '../states-center';
 import { Cursor, GreenZoneInsideNode } from '../../types';
-import cs from 'classnames';
 
 interface Props {
   greenZones: GreenZoneInsideNode[];

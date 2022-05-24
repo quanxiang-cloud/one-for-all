@@ -4,8 +4,8 @@ import { byArbitrary, nodeHasChildNodes } from '@one-for-all/artery-utils';
 
 import { GreenZoneForNodeWithoutChildren, GreenZoneInsideNode, ContourNode } from '../../types';
 import { calcGreenZoneOfHoveringNodeSupportChildrenAndChildrenIsNotEmpty } from './green-zone-helpers';
-import { hoveringContourNode$, contourNodesReport$ } from '../atoms';
-import { immutableRoot$ } from '../bridge';
+import { hoveringContourNode$, contourNodesReport$ } from '../states-center';
+import { immutableRoot$ } from '../states-center';
 
 export default function useGreenZoneReport() {
   const [greenZonesBetweenNodes, setGreenZones] = useState<

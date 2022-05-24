@@ -1,9 +1,10 @@
+import React, { useEffect, useState } from 'react';
 import { Rect } from '@one-for-all/elements-radar';
-import React, { useEffect, useMemo, useState } from 'react';
 import { audit, map, animationFrames, tap } from 'rxjs';
+
 import { _checkIfNodeSupportChildren, isNodeSupportChildrenCache } from '../cache';
 import { GreenZoneForNodeWithoutChildren, Position } from '../../types';
-import { cursor$, latestFocusedGreenZone$ } from '../atoms';
+import { cursor$, latestFocusedGreenZone$ } from '../states-center';
 
 interface Props {
   greenZone: GreenZoneForNodeWithoutChildren;

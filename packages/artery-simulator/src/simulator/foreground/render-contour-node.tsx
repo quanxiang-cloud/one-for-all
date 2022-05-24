@@ -13,11 +13,13 @@ import {
   hoveringParentID$,
   inDnd$,
   onDropEvent$,
-} from '../atoms';
+  activeContour$,
+  immutableRoot$,
+} from '../states-center';
 import { overrideDragImage, useArteryRootNodeID, useBehaviorSubjectState } from '../utils';
 import useShouldHandleDndCallback from './use-should-handle-dnd-callback';
 import { DND_DATA_TRANSFER_TYPE_NODE_ID } from '../constants';
-import { activeContour$, immutableRoot$, setActiveNode } from '../bridge';
+import { setActiveNode } from '../bridge';
 
 function preventDefault(e: any): false {
   e.preventDefault();

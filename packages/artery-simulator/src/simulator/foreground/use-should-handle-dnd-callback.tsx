@@ -1,6 +1,6 @@
 import { byArbitrary } from '@one-for-all/artery-utils';
 import { useCallback, useRef } from 'react';
-import { draggingArteryImmutableNode$, draggingNodeID$ } from '../atoms';
+import { draggingArteryImmutableNode$, draggingNodeID$ } from '../states-center';
 import { useBehaviorSubjectState } from '../utils';
 
 export default function useShouldHandleDndCallback(currentID: string): (e: React.DragEvent) => boolean {

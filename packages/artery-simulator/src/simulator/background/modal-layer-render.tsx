@@ -7,8 +7,8 @@ import { BehaviorSubject } from 'rxjs';
 import useElementsRadar from './use-radar-ref';
 import NodeRender from './node-render';
 import { useBehaviorSubjectState } from '../utils';
-import { activeOverLayerArtery$ } from '../bridge';
-import { modalLayerContourNodesReport$ } from '../atoms';
+import { activeOverLayerArtery$ } from '../states-center';
+import { modalLayerContourNodesReport$ } from '../states-center';
 import MonitoredElementsContext from './context';
 
 const monitoredElements = new BehaviorSubject<Set<HTMLElement>>(new Set<HTMLElement>());

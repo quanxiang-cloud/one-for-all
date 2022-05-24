@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { distinctUntilChanged } from 'rxjs';
 
-import { inDnd$ } from '../atoms';
 import useGreenZoneReport from './use-green-zone-report';
 import RenderGreenZoneForNodeWithoutChildren from './render-green-zone-for-node-without-children';
 import RenderGreenZonesBetweenNodes from './render-green-zones-between-nodes';
-import { distinctUntilChanged } from 'rxjs';
+import { inDnd$ } from '../states-center';
 
 // todo util hook
 function useInDnd(): boolean {

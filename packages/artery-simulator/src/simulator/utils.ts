@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { BehaviorSubject } from 'rxjs';
 import { Cursor, Position } from '../types';
 import { NodePrimary } from '../types';
-import { rootNodID$ } from './bridge';
+import { rootNodID$ } from './states-center';
 
 const img = new Image();
 img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';

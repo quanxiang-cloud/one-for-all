@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Node } from '@one-for-all/artery';
 import { keyPathById, parentIdsSeq } from '@one-for-all/artery-utils';
 
-import { artery$, immutableRoot$, setActiveNode } from '../../bridge';
+import { setActiveNode } from '../../bridge';
 import { useBehaviorSubjectState } from '../../utils';
-import { hoveringParentID$ } from '../../atoms';
+import { hoveringParentID$, artery$, immutableRoot$ } from '../../states-center';
 
 interface Props {
   currentNodeID: string;

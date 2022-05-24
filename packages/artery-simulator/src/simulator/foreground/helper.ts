@@ -1,10 +1,13 @@
 import { Node } from '@one-for-all/artery';
+import { generateNodeId } from '@one-for-all/artery-engine';
 import {
   byArbitrary,
   _appendTo,
   ImmutableNode,
   _insertLeftSiblingTo,
   _insertRightSiblingTo,
+  ComposedNode,
+  travel,
 } from '@one-for-all/artery-utils';
 import { removeIn } from 'immutable';
 import type { GreenZone } from '../../types';
@@ -85,4 +88,25 @@ export function jsonParse<T>(json: string): T | undefined {
   } catch (error) {
     return;
   }
+}
+
+function regenerateNodeID<T extends Node | ComposedNode>(node: T): T {
+  node.id = generateNodeId(node.type);
+
+  return node;
+}
+
+// todo optimize performance
+export function duplicateNode(node: Node): Node {
+  const newNode = travel(node, {
+    htmlNode: (current) => regenerateNodeID(current),
+    reactComponentNode: (current) => regenerateNodeID(current),
+    loopContainerNode: (current) => regenerateNodeID(current),
+    composedNode: (current) => regenerateNodeID(current),
+    refNode: (current) => regenerateNodeID(current),
+    jsxNode: (current) => regenerateNodeID(current),
+    routeNode: (current) => regenerateNodeID(current),
+  });
+
+  return newNode;
 }
