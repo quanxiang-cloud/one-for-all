@@ -5,13 +5,13 @@ import Background from './background';
 import Foreground from './foreground';
 import GreenZone from './green-zone';
 import { useArteryRootNodeID } from './utils';
-import { dummy_artery_root_node_id } from './states-center';
+import { DUMMY_ARTERY_ROOT_NODE_ID } from './constants';
 
 import './index.scss';
 
 function Simulator(): JSX.Element | null {
   const rootNodeID = useArteryRootNodeID();
-  if (rootNodeID === dummy_artery_root_node_id) {
+  if (rootNodeID === DUMMY_ARTERY_ROOT_NODE_ID) {
     return null;
   }
 

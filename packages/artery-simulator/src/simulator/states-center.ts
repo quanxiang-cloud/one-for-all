@@ -4,7 +4,7 @@ import { byArbitrary, ImmutableNode } from '@one-for-all/artery-utils';
 import type { Artery, Node } from '@one-for-all/artery';
 
 import { ContourNode, Cursor, GreenZone } from '../types';
-import { DND_DATA_TRANSFER_TYPE_ARTERY_NODE, DND_DATA_TRANSFER_TYPE_NODE_ID } from './constants';
+import { DND_DATA_TRANSFER_TYPE_ARTERY_NODE, DND_DATA_TRANSFER_TYPE_NODE_ID, DUMMY_ARTERY_ROOT_NODE_ID } from './constants';
 import { duplicateNode, insertNode, jsonParse, moveNode } from './foreground/helper';
 
 interface MoveNodeRequest {
@@ -44,9 +44,8 @@ export const latestFocusedGreenZone$ = new BehaviorSubject<GreenZone | undefined
 export const modalLayerContourNodesReport$ = new BehaviorSubject<ContourNode[] | undefined>(undefined);
 export const onDropEvent$ = new Subject<React.DragEvent>();
 
-export const dummy_artery_root_node_id = 'DUMMY_ARTERY_ROOT_NODE_ID';
 const dummyArtery: Artery = {
-  node: { id: dummy_artery_root_node_id, type: 'html-element', name: 'div' },
+  node: { id: DUMMY_ARTERY_ROOT_NODE_ID, type: 'html-element', name: 'div' },
 };
 
 export const immutableRoot$ = new BehaviorSubject<ImmutableNode>(
