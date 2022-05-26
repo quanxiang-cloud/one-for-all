@@ -16,7 +16,7 @@ export default {
   input: 'src/index.tsx',
   output: getOutput(packageJSON.name, packageJSON.version),
 
-  external: ['react', 'react-dom', 'lodash', /@one-for-all\/.*/],
+  external: ['react', 'react-dom', 'lodash', /@one-for-all\/.*/, 'rxjs', /rxjs\/.*/,],
 
   plugins: [
     dll(),
