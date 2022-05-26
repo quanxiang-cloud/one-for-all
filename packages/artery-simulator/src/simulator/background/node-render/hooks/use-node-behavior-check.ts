@@ -27,7 +27,7 @@ function toNodePrimary(node: HTMLNode | ReactComponentNode): NodePrimary {
   return {
     type: 'react-component',
     packageName: node.packageName,
-    packageVersion: node.packageName,
+    packageVersion: node.packageVersion,
     exportName: node.exportName,
   };
 }
