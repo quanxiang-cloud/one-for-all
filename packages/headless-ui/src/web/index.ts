@@ -13,6 +13,7 @@ import Tab from '../shared/tab';
 import Table from '../shared/table';
 import Tag from '../shared/tag';
 import usePopper from '../shared/popper';
+import SwiperImage from '../shared/swiper-image';
 
 import '../css/index.css';
 
@@ -30,6 +31,7 @@ export {
   RadioGroup,
   Select,
   Switch,
+  SwiperImage,
   Tab,
   Table,
   Tag,
