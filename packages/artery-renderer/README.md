@@ -4,9 +4,13 @@ Render [Artery](https://github.com/quanxiang-cloud/one-for-all/tree/main/package
 
 Artery Renderer, aka 渲染引擎, 可以将 Artery 渲染成真正的 Web 页面。Artery Renderer 是低代码前端领域的重要组成部分，但是它并不依附于低代码而存在，在一般的单页面应用和传统服务端渲染的场景也可以使用，提升开发和迭代效率。
 
+和其他同类渲染引擎相比，Artery Renderer 最大的特点就是**开放**和**可扩展**。Artery Renderer 不要求在某个公司的特定生态里才能使用。Artery Renderer 没有内置任何组件，但是可以接对几乎任何组件库。Artery Renderer 不限定任何的 API 风格，开发者可以根据自己的实际业务实现相应的 adapter。开发者不但可以使用 Artery Renderer 来完成整个前端的所有页面的渲染，也可以将其当作一个普通的组件，使用到页面的某个部分中。
+
+渲染引擎，可以看作是组件和状态的编排系统。在 Artery 中声明页面中所需的组件和应该被赋予组件的状态来源，由 Artery Renderer 来实例化这些状态并将其绑定到组件上。更多内容请参考 Artery Renderer 的[实现说明](docs/zh/how-artery-renderer-works.md)
+
 ## 对 Artery 的全面支持
 
-Artery 是一种与实现无关的接口描述语言，Artery Renderer 提供了对 Artery 的全面支持。
+Artery Renderer 提供了对 Artery 的全面支持，包括:
 
 - 支持路由
 - 支持动态下载组件
