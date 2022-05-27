@@ -12,7 +12,7 @@ Artery 是一种用来描述单页面应用 SPA 的[接口描述语言](https://
 
 我们可以使用 Artery 来描述完整的前端业务，包括 UI、状态和两者之间的关系。理论上，任何的 SPA 都可以使用 Artery 来表达，并由渲染引擎来渲染。全象低代码平台前端核心组件的使用 [Demo](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/example) 的全部功能都是由 Artery 来描述的。
 
-Artery 是[渲染引擎](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/Artery-renderer)和[页面引擎](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/Artery-engine)对接的共同语言，以 Artery 作为标准，我们可以分别独立开发渲染引擎和页面引擎，使得两者之间没有耦合。
+Artery 是[渲染引擎](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/artery-renderer)和[页面引擎](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/artery-engine)对接的共同语言，以 Artery 作为标准，我们可以分别独立开发渲染引擎和页面引擎，使得两者之间没有耦合。
 
 Artery 本身并没有约定页面引擎和渲染引擎的实现，任何人都可以按照自己的想法实现对 Artery 的编辑、组合和渲染功能。
 
