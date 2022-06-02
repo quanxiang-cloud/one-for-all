@@ -4,7 +4,7 @@ import {
 } from '@one-for-all/artery';
 import { customAlphabet } from 'nanoid';
 
-export const uuid = customAlphabet('1234567890qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM', 8);
+export const uuid = customAlphabet('1234567890qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM', 10);
 
 export function generateNodeId(prefix?: string): string {
   return `${prefix || ''}${uuid()}`;
@@ -33,7 +33,7 @@ export function buildLinkNode(params: BuildLinkNodeParams): LinkNode {
 export type BuildReactComponentNodeParams = Omit<ReactComponentNode, 'id' | 'type'>;
 export function buildReactComponentNode(params: BuildReactComponentNodeParams): ReactComponentNode {
   return {
-    id: generateNodeId('react-component-'),
+    id: generateNodeId('rc-'),
     type: 'react-component',
     ...params,
   }

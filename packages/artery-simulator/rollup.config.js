@@ -8,7 +8,6 @@ import referenceModule from 'rollup-plugin-reference-module';
 import getOutput from './get-common-output';
 import packageJSON from './package.json';
 import importMetaAssets from '../../common/config/rollup/rollup-plugin-import-meta-assets';
-import { dll } from './rollup-plugin-dll';
 
 const NODE_ENV = process.env.NODE_ENV === 'production' ? 'production' : 'dev';
 const isProduction = NODE_ENV === 'production';
@@ -20,7 +19,6 @@ export default {
   external: ['react', 'react-dom', 'lodash', /@one-for-all\/.*/, 'rxjs', /rxjs\/.*/,],
 
   plugins: [
-    dll(),
     importMetaAssets(),
     commonjs(),
     styles({ modules: false }),
