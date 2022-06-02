@@ -3,7 +3,7 @@ import type { Artery, Node } from '@one-for-all/artery';
 import cs from 'classnames';
 import { noop } from 'rxjs';
 
-import simulatorDDL from 'dll:../dll/simulator.js';
+import simulatorRef from 'REF:./simulator/index';
 import Messenger from './lib/messenger';
 import Fence, { InjectElement } from './lib/fence';
 import { NodePrimary } from './types';
@@ -43,7 +43,7 @@ function buildHeadElements(pluginsSrc: string, cssURLs?: Array<string>): InjectE
     },
     {
       name: 'script',
-      attrs: { src: simulatorDDL },
+      attrs: { src: simulatorRef },
     },
   ]);
 

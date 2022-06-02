@@ -1,6 +1,6 @@
 {
   "name": "@one-for-all/artery-simulator",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "license": "Apache-2.0",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -9,7 +9,6 @@
   ],
   "scripts": {
     "build": "tsc",
-    "prebundle": "NODE_ENV=production rollup -c rollup.config.dll.js",
     "bundle": "rm -rf dist && rollup -c rollup.config.js",
     "lint": "eslint src/**/*.ts src/**/*.tsx --fix",
     "prepack": "yarn run build",
@@ -54,6 +53,7 @@
     "jest": "27.4.7",
     "rollup": "2.66.0",
     "rollup-plugin-esbuild-ts": "^4.8.2",
+    "rollup-plugin-reference-module": "0.0.1",
     "rollup-plugin-styles": "^3.14.1",
     "rollup-plugin-terser": "^7.0.2",
     "sass": "1.51.0",

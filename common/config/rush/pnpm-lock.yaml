@@ -127,7 +127,6 @@ specifiers:
   react-flow-renderer: ^9.6.9
   react-jsx-parser: 1.29.0
   react-table: ^7.7.0
-  recoil: 0.7.2
   resolve-typescript-plugin: ~1.2.0
   rollup: 2.66.0
   rollup-plugin-copy: ^3.4.0
@@ -136,6 +135,7 @@ specifiers:
   rollup-plugin-import-css: ^3.0.2
   rollup-plugin-peer-deps-external: ^2.2.4
   rollup-plugin-postcss: ^4.0.2
+  rollup-plugin-reference-module: 0.0.1
   rollup-plugin-styles: ^3.14.1
   rollup-plugin-terser: ^7.0.2
   sass: 1.51.0
@@ -280,7 +280,6 @@ dependencies:
   react-flow-renderer: 9.7.4_react-dom@17.0.2+react@17.0.2
   react-jsx-parser: 1.29.0_react-dom@17.0.2+react@17.0.2
   react-table: 7.7.0_react@17.0.2
-  recoil: 0.7.2_react-dom@17.0.2+react@17.0.2
   resolve-typescript-plugin: 1.2.0_webpack@5.72.0
   rollup: 2.66.0
   rollup-plugin-copy: 3.4.0
@@ -289,6 +288,7 @@ dependencies:
   rollup-plugin-import-css: 3.0.3_rollup@2.66.0
   rollup-plugin-peer-deps-external: 2.2.4_rollup@2.66.0
   rollup-plugin-postcss: 4.0.2_postcss@8.4.5
+  rollup-plugin-reference-module: 0.0.1
   rollup-plugin-styles: 3.14.1_rollup@2.66.0
   rollup-plugin-terser: 7.0.2_rollup@2.66.0
   sass: 1.51.0
@@ -15368,6 +15368,12 @@ packages:
       - ts-node
     dev: false
 
+  /rollup-plugin-reference-module/0.0.1:
+    resolution: {integrity: sha512-juS7laDzClnOZ3QfoK5J9oQDbjQxQ+XEJTvoJBonvVQ1D87pxYVh1Urg1xn/xqj06zdGfnfPKPlNQYxIOdiLkw==}
+    dependencies:
+      rollup: 2.75.5
+    dev: false
+
   /rollup-plugin-styles/3.14.1_rollup@2.66.0:
     resolution: {integrity: sha512-0JodP26O3WZ8320X3sBn5S2SOPv9Al2tLyOmLco+H2UqLjbmycM9KWGypLjcDuIEWwa0oLYiXpViMmO2yyeqIA==}
     engines: {node: '>=10'}
@@ -15415,6 +15421,14 @@ packages:
 
   /rollup/2.66.0:
     resolution: {integrity: sha512-L6mKOkdyP8HK5kKJXaiWG7KZDumPJjuo1P+cfyHOJPNNTK3Moe7zCH5+fy7v8pVmHXtlxorzaBjvkBMB23s98g==}
+    engines: {node: '>=10.0.0'}
+    hasBin: true
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: false
+
+  /rollup/2.75.5:
+    resolution: {integrity: sha512-JzNlJZDison3o2mOxVmb44Oz7t74EfSd1SQrplQk0wSaXV7uLQXtVdHbxlcT3w+8tZ1TL4r/eLfc7nAbz38BBA==}
     engines: {node: '>=10.0.0'}
     hasBin: true
     optionalDependencies:
@@ -17897,7 +17911,7 @@ packages:
     dev: false
 
   file:projects/artery-simulator.tgz_d1d7a1f0ff7525dd0d92693a4e80182a:
-    resolution: {integrity: sha512-CYEqB6TBULWIAnj5u1W4W4ygBEOWgbcf3oXyPKDFyqcBkLzBBo/cdenXi3XpBO7cOj8+IFRPrxArFgF8hBm6Wg==, tarball: file:projects/artery-simulator.tgz}
+    resolution: {integrity: sha512-X66fXv04uMWfo5QoIqROSO9zPpH8mCRVzE2ruwnz1BDH0ob2iuOGzZQhWVDW/7Y9JsLA+yXUf8w/vNBIdg/toQ==, tarball: file:projects/artery-simulator.tgz}
     id: file:projects/artery-simulator.tgz
     name: '@rush-temp/artery-simulator'
     version: 0.0.0
@@ -17935,6 +17949,7 @@ packages:
       recoil: 0.7.2_react-dom@17.0.2+react@17.0.2
       rollup: 2.66.0
       rollup-plugin-esbuild-ts: 4.8.2_esbuild@0.14.38+rollup@2.66.0
+      rollup-plugin-reference-module: 0.0.1
       rollup-plugin-styles: 3.14.1_rollup@2.66.0
       rollup-plugin-terser: 7.0.2_rollup@2.66.0
       rxjs: 7.5.5
@@ -17951,7 +17966,6 @@ packages:
       - canvas
       - node-notifier
       - react-dom
-      - react-native
       - react-test-renderer
       - supports-color
       - ts-node

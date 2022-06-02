@@ -3,6 +3,7 @@ import styles from 'rollup-plugin-styles';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
+import referenceModule from 'rollup-plugin-reference-module';
 
 import getOutput from './get-common-output';
 import packageJSON from './package.json';
@@ -33,6 +34,9 @@ export default {
       values: {
         'process.env.NODE_ENV': JSON.stringify('production'),
       },
+    }),
+    referenceModule({
+      extensions: ['js', 'ts', 'tsx'],
     }),
     esbuild({
       // All options are optional
