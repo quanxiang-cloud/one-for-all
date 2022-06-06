@@ -2,6 +2,7 @@ import React from 'react';
 
 import RenderContourNode from './render-contour-node';
 import Toolbar from './toolbar';
+import FallbackContourNode from './fallback-contour';
 import type { ContourNode } from '../../types';
 import { activeOverLayerNodeID$, contourNodesReport$, modalLayerContourNodesReport$ } from '../states-center';
 import { useBehaviorSubjectState } from '../utils';
@@ -22,6 +23,7 @@ function useContourNodes(): Array<ContourNode> {
 
 function Foreground(): JSX.Element {
   const contourNodes = useContourNodes();
+  const hideFallbackContour = useBehaviorSubjectState(activeOverLayerNodeID$);
 
   return (
     <>
@@ -30,6 +32,7 @@ function Foreground(): JSX.Element {
           return <RenderContourNode key={`contour-${contour.id}`} contourNode={contour} />;
         })}
       </div>
+      {!hideFallbackContour && (<FallbackContourNode />)}
       <Toolbar />
     </>
   );

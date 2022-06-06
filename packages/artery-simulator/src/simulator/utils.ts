@@ -134,6 +134,10 @@ interface InsertNodeParams {
 }
 
 export function insertNode({ rootNode, node, greenZone }: InsertNodeParams): ImmutableNode | undefined {
+  if(greenZone.type === 'fallback-contour-green-zone') {
+    return _appendTo(rootNode, rootNode.getIn(['id']) as string, node);
+  }
+
   if (
     greenZone.type === 'node_without_children' &&
     (greenZone.position === 'inner' ||

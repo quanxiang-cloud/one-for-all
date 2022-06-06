@@ -51,9 +51,13 @@ export interface GreenZoneBetweenNodes {
   raw: Rect;
 }
 
+export interface FallbackContourGreenZone {
+  type: 'fallback-contour-green-zone';
+}
+
 export type GreenZoneInsideNode = GreenZoneAdjacentWithParent | GreenZoneBetweenNodes;
 
-export type GreenZone = GreenZoneAdjacentWithParent | GreenZoneBetweenNodes | GreenZoneForNodeWithoutChildren;
+export type GreenZone = GreenZoneAdjacentWithParent | GreenZoneBetweenNodes | GreenZoneForNodeWithoutChildren | FallbackContourGreenZone;
 
 export interface MoveNodeRequest {
   type: 'move_node_request';

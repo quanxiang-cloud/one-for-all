@@ -21,8 +21,7 @@ export default function getOutput(pkgName, pkgVersion) {
     {
       dir: `dist/${pkgName}@latest`,
       format: 'system',
-      sourcemap: false,
-      plugins: [terser()],
+      sourcemap: 'inline',
     },
   ];
 }

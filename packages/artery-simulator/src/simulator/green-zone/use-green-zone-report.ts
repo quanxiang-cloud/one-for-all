@@ -6,6 +6,7 @@ import { GreenZoneForNodeWithoutChildren, GreenZoneInsideNode, ContourNode } fro
 import { calcGreenZoneOfHoveringNodeSupportChildrenAndChildrenIsNotEmpty } from './green-zone-helpers';
 import { hoveringContourNode$, contourNodesReport$ } from '../states-center';
 import { immutableRoot$ } from '../states-center';
+import { FALLBACK_CONTOUR_NODE_ID } from '../constants';
 
 export default function useGreenZoneReport() {
   const [greenZonesBetweenNodes, setGreenZones] = useState<
@@ -19,7 +20,7 @@ export default function useGreenZoneReport() {
         audit(() => animationFrames()),
         map<ContourNode | undefined, Array<GreenZoneInsideNode> | GreenZoneForNodeWithoutChildren>(
           (hoveringContourNode) => {
-            if (!hoveringContourNode) {
+            if (!hoveringContourNode || hoveringContourNode?.id === FALLBACK_CONTOUR_NODE_ID) {
               return [];
             }
 
