@@ -1,6 +1,6 @@
 {
   "name": "@one-for-all/artery-simulator",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "license": "Apache-2.0",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
