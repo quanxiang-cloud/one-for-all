@@ -92,7 +92,7 @@ function RenderContourNode({ contourNode }: Props): JSX.Element {
         }}
         onDragEnd={() => {
           draggingNodeID$.next('');
-          setIsDragging(true);
+          setIsDragging(false);
           inDnd$.next(false);
         }}
         onDragOver={(e) => {
