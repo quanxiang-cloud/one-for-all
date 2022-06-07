@@ -1,4 +1,5 @@
 export { default as _appendTo } from './_appendTo';
+export { default as _flat } from './_flat';
 export { default as _insertChildAt } from './_insertChildAt';
 export { default as _insertLeftSiblingTo } from './_insertLeftSiblingTo';
 export { default as _insertRightSiblingTo } from './_insertRightSiblingTo';
