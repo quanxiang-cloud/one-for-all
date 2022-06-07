@@ -17,7 +17,7 @@
     "@one-for-all/artery": "0.16.0",
     "@one-for-all/artery-renderer": "0.20.2",
     "@one-for-all/artery-simulator": "1.4.2",
-    "@one-for-all/artery-utils": "0.18.0",
+    "@one-for-all/artery-utils": "0.18.1",
     "@one-for-all/elements-radar": "0.3.0",
     "@one-for-all/headless-ui": "0.4.0",
     "@one-for-all/icon": "0.6.2",
