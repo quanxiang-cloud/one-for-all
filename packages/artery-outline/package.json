@@ -1,0 +1,62 @@
+{
+  "name": "@one-for-all/artery-outline",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "bundle": "rm -rf dist && rollup -c rollup.config.js",
+    "lint": "eslint src/**/*.ts src/**/*.tsx --fix",
+    "prepack": "yarn run build",
+    "test": "jest",
+    "test:coverage": "jest --collectCoverage",
+    "updateSnapshot": "jest --updateSnapshot"
+  },
+  "dependencies": {
+    "@dnd-kit/core": "~6.0.3",
+    "@dnd-kit/sortable": "~7.0.0",
+    "@dnd-kit/utilities": "~3.2.0",
+    "@one-for-all/artery": "0.16.0",
+    "@one-for-all/artery-utils": "0.18.1",
+    "@one-for-all/icon": "0.6.2",
+    "@one-for-all/utils": "0.3.0",
+    "classnames": "^2.3.1",
+    "react": "^17.0.2"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "@rollup/plugin-replace": "^4.0.0",
+    "@rushstack/eslint-config": "2.5.1",
+    "@rushstack/heft": "0.44.2",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.0.0",
+    "@testing-library/react-hooks": "^7.0.2",
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/react": "~17.0.38",
+    "@types/react-dom": "^17.0.11",
+    "@types/testing-library__jest-dom": "~5.14.2",
+    "@typescript-eslint/eslint-plugin": "5.10.0",
+    "@typescript-eslint/parser": "^5.20.0",
+    "esbuild": "0.14.38",
+    "eslint": "8.7.0",
+    "http-server": "^14.1.0",
+    "immutable": "4.0.0",
+    "jest": "27.4.7",
+    "rollup": "2.66.0",
+    "rollup-plugin-esbuild-ts": "^4.8.2",
+    "rollup-plugin-reference-module": "0.0.1",
+    "rollup-plugin-styles": "^3.14.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "sass": "1.51.0",
+    "ts-jest": "^27.0.7",
+    "tsconfig-paths-jest": "^0.0.1",
+    "tslib": "2.3.1",
+    "typescript": "4.7.2"
+  }
+}

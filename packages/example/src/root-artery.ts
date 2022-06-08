@@ -100,7 +100,7 @@ const rootSchema: Artery = {
             },
             children: [
               {
-                id: 'about-page',
+                id: 'about-page-link-text',
                 type: 'html-element',
                 name: 'h2',
                 props: {
@@ -285,12 +285,12 @@ const rootSchema: Artery = {
         type: 'route-node',
         path: 'about',
         node: {
-          id: 'about-page',
+          id: 'about-page-container',
           type: 'html-element',
           name: 'div',
           children: [
             {
-              id: 'icon',
+              id: 'icon-for-accessible',
               type: 'react-component',
               packageName: '@one-for-all/icon',
               packageVersion: 'someversion',
@@ -303,7 +303,7 @@ const rootSchema: Artery = {
               },
             },
             {
-              id: 'icon',
+              id: 'icon-for-account_balance_wallet',
               type: 'react-component',
               packageName: '@one-for-all/icon',
               packageVersion: 'someversion',
@@ -323,7 +323,7 @@ const rootSchema: Artery = {
         type: 'route-node',
         path: 'style-guide',
         node: {
-          id: 'style-guide-page',
+          id: 'style-guide-page-ref-node',
           type: 'ref-node',
           arteryID: 'SCHEMA_ID_STYLE_GUIDE',
         },
@@ -333,7 +333,7 @@ const rootSchema: Artery = {
         type: 'route-node',
         path: 'icon-preview',
         node: {
-          id: 'icon-preview-page',
+          id: 'icon-preview-page-ref-node',
           type: 'ref-node',
           arteryID: 'SCHEMA_ID_ICON_PREVIEW',
         },
@@ -343,7 +343,7 @@ const rootSchema: Artery = {
         type: 'route-node',
         path: 'scss-forming',
         node: {
-          id: 'scss-forming',
+          id: 'scss-forming-ref-node',
           type: 'ref-node',
           arteryID: 'SCHEMA_ID_SCSS_FORMING',
         },

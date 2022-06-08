@@ -9,6 +9,7 @@ export default [
   {
     input: {
       index: 'src/index.ts',
+      outline: 'src/outline.tsx',
       temporaryPlugins: 'src/artery-simulator/temporary-plugins.ts'
     },
     output: {

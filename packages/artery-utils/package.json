@@ -3,7 +3,8 @@
   "version": "0.18.1",
   "license": "Apache-2.0",
   "type": "module",
-  "module": "lib",
+  "module": "lib/index.js",
+  "main": "lib/index.js",
   "types": "types.d.ts",
   "files": [
     "lib",

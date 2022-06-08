@@ -472,6 +472,10 @@
       "projectFolder": "packages/artery-engine"
     },
     {
+      "packageName": "@one-for-all/artery-outline",
+      "projectFolder": "packages/artery-outline"
+    },
+    {
       "packageName": "@one-for-all/artery-renderer",
       "projectFolder": "packages/artery-renderer"
     },

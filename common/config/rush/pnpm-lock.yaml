@@ -4,11 +4,11 @@ specifiers:
   '@babel/cli': ~7.17.6
   '@babel/core': ~7.17.5
   '@babel/preset-env': ~7.16.11
+  '@dnd-kit/core': ~6.0.3
+  '@dnd-kit/sortable': ~7.0.0
   '@leifandersen/react-codemirror2': ~7.2.1
   '@one-for-all/artery-engine': 1.2.1
   '@one-for-all/artery-renderer': 0.20.2
-  '@one-for-all/artery-simulator': 1.4.2
-  '@one-for-all/artery-utils': 0.17.0
   '@one-for-all/style-guide': 0.1.3
   '@popperjs/core': ^2.11.0
   '@rollup/plugin-commonjs': ^21.0.1
@@ -18,6 +18,7 @@ specifiers:
   '@rush-temp/api-spec-adapter': file:./projects/api-spec-adapter.tgz
   '@rush-temp/artery': file:./projects/artery.tgz
   '@rush-temp/artery-engine': file:./projects/artery-engine.tgz
+  '@rush-temp/artery-outline': file:./projects/artery-outline.tgz
   '@rush-temp/artery-renderer': file:./projects/artery-renderer.tgz
   '@rush-temp/artery-simulator': file:./projects/artery-simulator.tgz
   '@rush-temp/artery-utils': file:./projects/artery-utils.tgz
@@ -159,11 +160,11 @@ dependencies:
   '@babel/cli': 7.17.6_@babel+core@7.17.8
   '@babel/core': 7.17.8
   '@babel/preset-env': 7.16.11_@babel+core@7.17.8
+  '@dnd-kit/core': 6.0.3_react-dom@17.0.2+react@17.0.2
+  '@dnd-kit/sortable': 7.0.0_@dnd-kit+core@6.0.3+react@17.0.2
   '@leifandersen/react-codemirror2': 7.2.1_codemirror@5.65.2+react@17.0.2
   '@one-for-all/artery-engine': 1.2.1
   '@one-for-all/artery-renderer': 0.20.2
-  '@one-for-all/artery-simulator': 1.4.2_react-dom@17.0.2
-  '@one-for-all/artery-utils': 0.17.0
   '@one-for-all/style-guide': 0.1.3
   '@popperjs/core': 2.11.4
   '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
@@ -173,6 +174,7 @@ dependencies:
   '@rush-temp/api-spec-adapter': file:projects/api-spec-adapter.tgz_@babel+core@7.17.8
   '@rush-temp/artery': file:projects/artery.tgz
   '@rush-temp/artery-engine': file:projects/artery-engine.tgz_@babel+core@7.17.8
+  '@rush-temp/artery-outline': file:projects/artery-outline.tgz_d1d7a1f0ff7525dd0d92693a4e80182a
   '@rush-temp/artery-renderer': file:projects/artery-renderer.tgz_c445a9d32c5b835fb9c30404148ec5af
   '@rush-temp/artery-simulator': file:projects/artery-simulator.tgz_d1d7a1f0ff7525dd0d92693a4e80182a
   '@rush-temp/artery-utils': file:projects/artery-utils.tgz_esbuild@0.14.38
@@ -1834,6 +1836,49 @@ packages:
   /@discoveryjs/json-ext/0.5.7:
     resolution: {integrity: sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==}
     engines: {node: '>=10.0.0'}
+    dev: false
+
+  /@dnd-kit/accessibility/3.0.1_react@17.0.2:
+    resolution: {integrity: sha512-HXRrwS9YUYQO9lFRc/49uO/VICbM+O+ZRpFDe9Pd1rwVv2PCNkRiTZRdxrDgng/UkvdC3Re9r2vwPpXXrWeFzg==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 17.0.2
+      tslib: 2.3.1
+    dev: false
+
+  /@dnd-kit/core/6.0.3_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-8u/yer6W1uvDfAq7EmWWDYpOJzzx1Okylcy9STKzSmEJLXqyO3WiEdhSfW50WJUKjMl2TfvUi6DHZuYCuyAD7g==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@dnd-kit/accessibility': 3.0.1_react@17.0.2
+      '@dnd-kit/utilities': 3.2.0_react@17.0.2
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      tslib: 2.3.1
+    dev: false
+
+  /@dnd-kit/sortable/7.0.0_@dnd-kit+core@6.0.3+react@17.0.2:
+    resolution: {integrity: sha512-Em6d1n18lMmpRnNB9mmBWN/X7wNDnIw26tab+c7H0jCjW9UQ0+lRV+vatB1lLzFZlgQgIas/A/TXZDY16RQA5Q==}
+    peerDependencies:
+      '@dnd-kit/core': ^6.0.0
+      react: '>=16.8.0'
+    dependencies:
+      '@dnd-kit/core': 6.0.3_react-dom@17.0.2+react@17.0.2
+      '@dnd-kit/utilities': 3.2.0_react@17.0.2
+      react: 17.0.2
+      tslib: 2.3.1
+    dev: false
+
+  /@dnd-kit/utilities/3.2.0_react@17.0.2:
+    resolution: {integrity: sha512-h65/pn2IPCCIWwdlR2BMLqRkDxpTEONA+HQW3n765HBijLYGyrnTCLa2YQt8VVjjSQD6EfFlTE6aS2Q/b6nb2g==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 17.0.2
+      tslib: 2.3.1
     dev: false
 
   /@emotion/cache/10.0.29:
@@ -17886,6 +17931,61 @@ packages:
       - utf-8-validate
     dev: false
 
+  file:projects/artery-outline.tgz_d1d7a1f0ff7525dd0d92693a4e80182a:
+    resolution: {integrity: sha512-/ED0EiKVP/IEXeBjEkQqmJJ0Qc6giF9ebwS3n0efHea+c5xKceMpsrHUUnQwAV1TYc5/Hz4Ip/i4+DT+jFx0Uw==, tarball: file:projects/artery-outline.tgz}
+    id: file:projects/artery-outline.tgz
+    name: '@rush-temp/artery-outline'
+    version: 0.0.0
+    dependencies:
+      '@dnd-kit/core': 6.0.3_react-dom@17.0.2+react@17.0.2
+      '@dnd-kit/sortable': 7.0.0_@dnd-kit+core@6.0.3+react@17.0.2
+      '@dnd-kit/utilities': 3.2.0_react@17.0.2
+      '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
+      '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
+      '@rollup/plugin-replace': 4.0.0_rollup@2.66.0
+      '@rushstack/eslint-config': 2.5.1_eslint@8.7.0+typescript@4.7.2
+      '@rushstack/heft': 0.44.2
+      '@testing-library/jest-dom': 5.16.2
+      '@testing-library/react': 12.1.4_react-dom@17.0.2+react@17.0.2
+      '@testing-library/react-hooks': 7.0.2_react-dom@17.0.2+react@17.0.2
+      '@tsconfig/recommended': 1.0.1
+      '@types/react': 17.0.41
+      '@types/react-dom': 17.0.14
+      '@types/testing-library__jest-dom': 5.14.3
+      '@typescript-eslint/eslint-plugin': 5.10.0_23e97e4219f7bec3672e939dffc68d2e
+      '@typescript-eslint/parser': 5.21.0_eslint@8.7.0+typescript@4.7.2
+      classnames: 2.3.1
+      esbuild: 0.14.38
+      eslint: 8.7.0
+      http-server: 14.1.0
+      immutable: 4.0.0
+      jest: 27.4.7
+      react: 17.0.2
+      rollup: 2.66.0
+      rollup-plugin-esbuild-ts: 4.8.2_esbuild@0.14.38+rollup@2.66.0
+      rollup-plugin-reference-module: 0.0.1
+      rollup-plugin-styles: 3.14.1_rollup@2.66.0
+      rollup-plugin-terser: 7.0.2_rollup@2.66.0
+      sass: 1.51.0
+      ts-jest: 27.1.3_d3fc34bf46567922407d492cfe592942
+      tsconfig-paths-jest: 0.0.1
+      tslib: 2.3.1
+      typescript: 4.7.2
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@types/jest'
+      - babel-jest
+      - bufferutil
+      - canvas
+      - debug
+      - node-notifier
+      - react-dom
+      - react-test-renderer
+      - supports-color
+      - ts-node
+      - utf-8-validate
+    dev: false
+
   file:projects/artery-renderer.tgz_c445a9d32c5b835fb9c30404148ec5af:
     resolution: {integrity: sha512-JcXJUosJgsjYUPH69vCOt7uavmVzK4jmsmLCvV6bev5BQ6OMCR87xkmesfe2WYHsF5zNXLzijINEcDmPSasKnA==, tarball: file:projects/artery-renderer.tgz}
     id: file:projects/artery-renderer.tgz
@@ -17939,7 +18039,7 @@ packages:
     dev: false
 
   file:projects/artery-simulator.tgz_d1d7a1f0ff7525dd0d92693a4e80182a:
-    resolution: {integrity: sha512-48D4a/ZBLdtF+r5mmym0kRjFa5vPFWCJ/rho9h8flBnBTBU9yGNS4CuI3/A2c4SKESXq/yVcSP7kMxBlRaLrlg==, tarball: file:projects/artery-simulator.tgz}
+    resolution: {integrity: sha512-iglu1PpoMEb4H9r/L/gNpStAqYPj0FnxtIVI+wElmsjx5BnVNE+60tqxt/rY/iTJq2hD/oKGWKit0YyMjAHJLQ==, tarball: file:projects/artery-simulator.tgz}
     id: file:projects/artery-simulator.tgz
     name: '@rush-temp/artery-simulator'
     version: 0.0.0
@@ -18129,7 +18229,7 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-havNZ4Ze8UksNEh+Ss6z5/4PtehpkQA1hqloBl/GDKvjgA7VBGnM3/dML+RYB9+V5YmzRjKZbyKI3lby+TZB9g==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-4UqtKAgWIYwje0FGHS3v/pLHqKuZy41s3fJnMaBkLFlgDCe19JLYcPoOo5QUph/UTvQhtew82ACGb5YsuKeong==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
@@ -18176,7 +18276,6 @@ packages:
     transitivePeerDependencies:
       - debug
       - encoding
-      - react-native
       - supports-color
     dev: false
 
