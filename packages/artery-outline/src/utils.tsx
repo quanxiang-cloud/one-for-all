@@ -1,18 +1,44 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Node } from '@one-for-all/artery';
-import { ImmutableNode, KeyPath, _flat } from '@one-for-all/artery-utils';
-import { fromJS } from 'immutable';
+import {
+  ancestors,
+  ImmutableNode,
+  KeyPath,
+  _flat,
+  _insertChildAt,
+  _insertRightSiblingTo,
+} from '@one-for-all/artery-utils';
+import { fromJS, List } from 'immutable';
 import { arrayMove } from '@dnd-kit/sortable';
+import { logger } from '@one-for-all/utils';
 
 import { INDENTATION_WIDTH } from './constants';
 import { Entry, NodePrimary } from './types';
+
+const NODE_TYPE_WHITE_LIST = ['html-element', 'react-component', 'loop-container'];
 
 export function useFlattenNodes(
   rootNode: Node,
   collapsedNodeIDs: string[],
   draggingId?: string,
 ): Array<[KeyPath, ImmutableNode]> {
-  const rawPairs = useMemo(() => _flat(fromJS(rootNode)), [rootNode]);
+  const rawPairs = useMemo(() => {
+    let pairs: Array<[KeyPath, ImmutableNode]> = _flat(fromJS(rootNode)).slice();
+    for (let i = 0; i < pairs.length; ) {
+      const nodeType = pairs[i][1].getIn(['type']);
+      if (NODE_TYPE_WHITE_LIST.includes(nodeType as string)) {
+        i = i + 1;
+        continue;
+      }
+
+      const keyPathStr: string = pairs[i][0].toJS().join('/');
+      while (pairs[i]?.[0].toJS().join('/').startsWith(keyPathStr)) {
+        pairs.splice(i, 1);
+      }
+    }
+
+    return pairs;
+  }, [rootNode]);
 
   return useMemo(() => {
     let _rawPairs = rawPairs.slice();
@@ -103,4 +129,42 @@ function getMaxDepth(entry?: Entry): number {
   }
 
   return entry.isContainer ? entry.depth + 1 : entry.depth;
+}
+
+export function insertBelowTo(
+  rootNode: ImmutableNode,
+  targetEntry: Entry,
+  projectedDepth: number,
+  node: ImmutableNode,
+): ImmutableNode | undefined {
+  if (projectedDepth === targetEntry.depth) {
+    logger.debug(`[artery-outline] move [${node.getIn(['id'])}] to right of [${targetEntry.id}]`);
+
+    return _insertRightSiblingTo(rootNode, targetEntry.id, node);
+  }
+
+  if (projectedDepth > targetEntry.depth) {
+    logger.debug(
+      `[artery-outline] move [${node.getIn(['id'])}] to the first position of [${targetEntry.id}]'s children`,
+    );
+
+    return _insertChildAt(rootNode, targetEntry.id, 0, node);
+  }
+
+  const parentIndex = targetEntry.depth - projectedDepth - 1;
+  const parentList = ancestors(rootNode, targetEntry.id) || List();
+  if (!parentList || !parentList.size) {
+    logger.error(`[artery-outline] fatal error, can not find over node parents`);
+    return;
+  }
+
+  const parentKeyPath = parentList.get(parentIndex);
+  if (!parentKeyPath) {
+    logger.error(`[artery-outline] fatal error, no ancestor at index ${parentIndex}`);
+    return;
+  }
+
+  logger.debug(`[artery-outline] move [${node.getIn(['id'])}] to right of [${parentKeyPath.toJS()}]`);
+
+  return _insertRightSiblingTo(rootNode, parentKeyPath, node);
 }

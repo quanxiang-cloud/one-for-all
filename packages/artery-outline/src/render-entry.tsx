@@ -12,29 +12,32 @@ interface Props {
   id: string;
   name: string;
   isSelected: boolean;
-  isDragging: boolean;
   iconRender: (node: NodePrimary) => JSX.Element;
   depth: number;
   onNameChange: (newName: string) => void;
   collapsedStatus: CollapsedStatus;
   onCollapse: () => void;
   onRemove: () => void;
+  onClick: () => void;
 }
 
 function RenderEntry({
   id,
   name,
+  isSelected,
   depth,
   onCollapse,
   collapsedStatus,
   onRemove,
   onNameChange,
+  onClick,
 }: Props): JSX.Element {
   const {
     attributes,
     isDragging,
     listeners,
     isSorting,
+    isOver,
     setDraggableNodeRef,
     setDroppableNodeRef,
     transform,
@@ -52,11 +55,12 @@ function RenderEntry({
     <div
       ref={setDroppableNodeRef}
       style={style}
-      className={cs('outline-entry', { 'outline-entry--dragging': isDragging })}
+      className={cs('outline-entry', { 'outline-entry--dragging': isDragging, 'outline-entry--selected': isSelected })}
     >
       <div
         className={cs('outline-entry-content', {
           'outline-entry-content--dragging': isDragging,
+          'outline-entry-content--isOver': isOver,
         })}
       >
         {!isDragging && (
@@ -89,7 +93,7 @@ function RenderEntry({
                 }}
               />
             ) : (
-              <span onDoubleClick={() => setRenaming(true)} className="outline-entry__name">
+              <span onClick={onClick} onDoubleClick={() => setRenaming(true)} className="outline-entry__name">
                 {name}
               </span>
             )}

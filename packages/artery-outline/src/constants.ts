@@ -30,7 +30,7 @@ export const dropAnimationConfig: DropAnimation = {
 export const adjustTranslate: Modifier = ({ transform }) => {
   return {
     ...transform,
-    y: transform.y - 10,
+    y: transform.y,
     x: transform.x + 20,
   };
 };

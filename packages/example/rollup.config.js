@@ -10,7 +10,7 @@ export default [
     input: {
       index: 'src/index.ts',
       outline: 'src/outline.tsx',
-      temporaryPlugins: 'src/artery-simulator/temporary-plugins.ts'
+      temporaryPlugins: 'src/artery-simulator/temporary-plugins.ts',
     },
     output: {
       dir: 'dist',

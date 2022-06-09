@@ -10,17 +10,18 @@ interface Props {
   isSelected: boolean;
   onNameChange: (newName: string) => void;
   iconRender: (node: NodePrimary) => JSX.Element;
+  onClick: () => void;
 }
 
 const style: React.CSSProperties = {
-  '--spacing': `0`,
+  '--spacing': `4px`,
 } as React.CSSProperties;
 
-function RootEntry({ name, onNameChange }: Props): JSX.Element {
+function RootEntry({ name, onNameChange, onClick, isSelected }: Props): JSX.Element {
   const [renaming, setRenaming] = useState(false);
 
   return (
-    <div style={style} className={cs('outline-entry')}>
+    <div style={style} className={cs('outline-entry', { 'outline-entry--selected': isSelected })}>
       <div className={cs('outline-entry-content')}>
         {renaming ? (
           <EntryNameInput
@@ -32,7 +33,7 @@ function RootEntry({ name, onNameChange }: Props): JSX.Element {
             }}
           />
         ) : (
-          <span onDoubleClick={() => setRenaming(true)} className="outline-entry__name">
+          <span onClick={onClick} onDoubleClick={() => setRenaming(true)} className="outline-entry__name">
             {name}
           </span>
         )}

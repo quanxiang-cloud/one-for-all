@@ -1,5 +1,6 @@
-import { byArbitrary } from '@one-for-all/artery-utils';
 import { List } from 'immutable';
+
+import byArbitrary from './byArbitrary';
 import { getChildNodeKey } from './utils';
 
 function _insertChildAt(root, parentIdOrKeyPath, index, node) {

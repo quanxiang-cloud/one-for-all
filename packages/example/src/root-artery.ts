@@ -137,11 +137,11 @@ const rootSchema: Artery = {
                 props: {
                   children: {
                     type: 'constant_property',
-                    value: 'Style Guide'
-                  }
-                }
-              }
-            ]
+                    value: 'Style Guide',
+                  },
+                },
+              },
+            ],
           },
           {
             id: 'icon-preview',
@@ -151,14 +151,14 @@ const rootSchema: Artery = {
             props: {
               href: {
                 type: 'constant_property',
-                value: '/icon-preview'
+                value: '/icon-preview',
               },
               style: {
                 type: 'constant_property',
                 value: {
                   marginRight: '20px',
-                }
-              }
+                },
+              },
             },
             children: [
               {
@@ -168,11 +168,11 @@ const rootSchema: Artery = {
                 props: {
                   children: {
                     type: 'constant_property',
-                    value: 'icon preview'
-                  }
-                }
-              }
-            ]
+                    value: 'icon preview',
+                  },
+                },
+              },
+            ],
           },
           {
             id: 'scss-forming-link',
@@ -182,14 +182,14 @@ const rootSchema: Artery = {
             props: {
               href: {
                 type: 'constant_property',
-                value: '/scss-forming'
+                value: '/scss-forming',
               },
               style: {
                 type: 'constant_property',
                 value: {
                   marginRight: '20px',
-                }
-              }
+                },
+              },
             },
             children: [
               {
@@ -199,11 +199,11 @@ const rootSchema: Artery = {
                 props: {
                   children: {
                     type: 'constant_property',
-                    value: 'Forming SCSS'
-                  }
-                }
-              }
-            ]
+                    value: 'Forming SCSS',
+                  },
+                },
+              },
+            ],
           },
           {
             id: 'radar-demo-link',
@@ -213,14 +213,14 @@ const rootSchema: Artery = {
             props: {
               href: {
                 type: 'constant_property',
-                value: '/radar'
+                value: '/radar',
               },
               style: {
                 type: 'constant_property',
                 value: {
                   marginRight: '20px',
-                }
-              }
+                },
+              },
             },
             children: [
               {
@@ -230,11 +230,11 @@ const rootSchema: Artery = {
                 props: {
                   children: {
                     type: 'constant_property',
-                    value: 'Element Radar'
-                  }
-                }
-              }
-            ]
+                    value: 'Element Radar',
+                  },
+                },
+              },
+            ],
           },
           {
             id: 'simulator-demo-link',
@@ -244,14 +244,14 @@ const rootSchema: Artery = {
             props: {
               href: {
                 type: 'constant_property',
-                value: '/simulator'
+                value: '/simulator',
               },
               style: {
                 type: 'constant_property',
                 value: {
                   marginRight: '20px',
-                }
-              }
+                },
+              },
             },
             children: [
               {
@@ -261,13 +261,13 @@ const rootSchema: Artery = {
                 props: {
                   children: {
                     type: 'constant_property',
-                    value: 'Artery Simulator'
-                  }
-                }
-              }
-            ]
-          }
-        ]
+                    value: 'Artery Simulator',
+                  },
+                },
+              },
+            ],
+          },
+        ],
       },
       {
         id: 'route-for-todo',
@@ -368,8 +368,8 @@ const rootSchema: Artery = {
           arteryID: 'SCHEMA_ID_SIMULATOR',
         },
       },
-    ]
-  }
+    ],
+  },
 };
 
 export default rootSchema;

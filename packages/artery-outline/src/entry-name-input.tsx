@@ -22,7 +22,7 @@ export default function EntryNameInput({ name, onCancel, onChange }: NameInput):
   }, []);
 
   function handleEnterKeyDown(e: React.KeyboardEvent<HTMLInputElement>): void {
-    if (e.key === 'Escape') {
+    if (e.key === 'Escape' && !e.nativeEvent.isComposing) {
       onCancel();
       return;
     }
@@ -31,7 +31,7 @@ export default function EntryNameInput({ name, onCancel, onChange }: NameInput):
       return;
     }
 
-    const newName = ref.current?.value.trim();
+    const newName = ref.current?.value.trim().slice(0, 50);
     if (!newName || newName === name) {
       onCancel();
       return;
@@ -42,7 +42,13 @@ export default function EntryNameInput({ name, onCancel, onChange }: NameInput):
 
   return (
     <div className="outline-entry__name">
-      <input ref={ref} type="text" defaultValue={name} onKeyDown={handleEnterKeyDown} />
+      <input
+        ref={ref}
+        type="text"
+        defaultValue={name}
+        onKeyDown={handleEnterKeyDown}
+        placeholder="最长 50 个字符"
+      />
     </div>
   );
 }

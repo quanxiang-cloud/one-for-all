@@ -4,12 +4,11 @@ import ReactDOM from 'react-dom';
 import { Node } from '@one-for-all/artery';
 import { useState } from 'react';
 import {
-  ancestors,
-  byArbitrary,
   deleteByID,
   ImmutableNode,
   patchNode,
   _insertChildAt,
+  _insertLeftSiblingTo,
   _insertRightSiblingTo,
 } from '@one-for-all/artery-utils';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
@@ -18,8 +17,6 @@ import {
   DndContext,
   closestCenter,
   DragStartEvent,
-  DragMoveEvent,
-  DragOverEvent,
   DragEndEvent,
   DragOverlay,
   useSensor,
@@ -29,21 +26,28 @@ import {
 
 import RootEntry from './root-entry';
 import RenderEntry from './render-entry';
-import { getProjectionDepth, pairToEntry, useFlattenNodes } from './utils';
-import { CollapsedStatus, NodePrimary, Entry } from './types';
+import { getProjectionDepth, insertBelowTo, pairToEntry, useFlattenNodes } from './utils';
+import { CollapsedStatus, NodePrimary } from './types';
 import { adjustTranslate, dropAnimationConfig, measuring, mouseSensorOptions } from './constants';
 
 import './index.scss';
 
 export interface Props {
   rootNode: Node;
+  activeNode?: Node;
+  onActiveNodeChange: (activeNode: Node) => void;
   onChange: (node: Node) => void;
   isContainer: (node: NodePrimary) => boolean;
 }
 
-function Outline({ rootNode, isContainer, onChange }: Props): JSX.Element | null {
+function Outline({
+  rootNode,
+  isContainer,
+  onChange,
+  activeNode,
+  onActiveNodeChange,
+}: Props): JSX.Element | null {
   const [collapsedNodeIDs, setCollapsedNodeIDs] = useState(new Set<string>([]));
-  const [selectedID, setSelectedID] = useState('');
   const [draggingId, setDraggingId] = useState('');
   const [offsetLeft, setOffsetLeft] = useState(0);
   const [overId, setOverId] = useState<string | null>(null);
@@ -71,21 +75,6 @@ function Outline({ rootNode, isContainer, onChange }: Props): JSX.Element | null
     onChange(node.toJS() as unknown as Node);
   }
 
-  function handleDragStart({ active: { id: activeId } }: DragStartEvent) {
-    setDraggingId(activeId as string);
-    // setOverId(activeId);
-
-    document.body.style.setProperty('cursor', 'grabbing');
-  }
-
-  function handleDragMove({ delta }: DragMoveEvent) {
-    setOffsetLeft(delta.x);
-  }
-
-  function handleDragOver({ over }: DragOverEvent) {
-    setOverId(over?.id.toString() ?? null);
-  }
-
   function handleDragEnd({ active, over }: DragEndEvent) {
     resetState();
 
@@ -93,14 +82,22 @@ function Outline({ rootNode, isContainer, onChange }: Props): JSX.Element | null
       return;
     }
 
-    const overEntry = entries.find(({ id }) => id === over.id);
-    if (!overEntry) {
-      logger.error('[artery-outline] fatal error, can not find over entry for id:', over.id);
+    const draggingIndex = entries.findIndex(({ id }) => id === active.id);
+    const overIndex = entries.findIndex(({ id }) => id === over.id);
+    if (draggingIndex === -1 || overIndex === -1) {
+      logger.error(
+        `[artery-outline] fatal error, can not find over entry [${over.id}] or dragging entry [${active.id}]`,
+      );
       return;
     }
 
+    // 将 entry 向下拖动时，预期释放的位置在 `over` 下方
+    // 将 entry 向上拖动时，预期释放的位置在 `over` 上方
+    // 口诀：上上下下
+    const draggingDirection = draggingIndex < overIndex ? 'below' : 'above';
+
     let _rootNode: ImmutableNode | undefined = fromJS(rootNode);
-    const draggingNodeKeyPath = byArbitrary(_rootNode, draggingId);
+    const draggingNodeKeyPath = flattenNodePairs.find(([, node]) => node.getIn(['id']) === draggingId)?.[0];
     if (!draggingNodeKeyPath) {
       logger.error('[artery-outline] fatal error, can not find dragging node keyPath of', draggingId);
       return;
@@ -115,61 +112,30 @@ function Outline({ rootNode, isContainer, onChange }: Props): JSX.Element | null
       return;
     }
 
-    const overNodeKeyPath = byArbitrary(_rootNode, overEntry.id);
-    if (!overNodeKeyPath) {
-      logger.error('[artery-outline] fatal error, can not find overNodeKeyPath of', overEntry.id);
-      return;
-    }
-
     _rootNode = removeIn(_rootNode, draggingNodeKeyPath);
 
-    if (projectionDepth > overEntry.depth) {
-      logger.debug(`[artery-outline] move [${draggingId}] to the first position of [${over.id}]'s children`);
-      _rootNode = _insertChildAt(_rootNode, overNodeKeyPath, 0, draggingNode as ImmutableNode);
+    const overNodeKeyPath = flattenNodePairs.find(([, node]) => node.getIn(['id']) === over.id)?.[0];
+    if (!overNodeKeyPath) {
+      logger.error('[artery-outline] fatal error, can not find overNodeKeyPath of', over.id);
+      return;
+    }
+
+    if (draggingDirection === 'below') {
+      _rootNode = insertBelowTo(
+        _rootNode,
+        entries[overIndex],
+        projectionDepth,
+        draggingNode as ImmutableNode,
+      );
+
       onChangeWithLog(_rootNode);
       return;
     }
 
-    if (projectionDepth === overEntry.depth) {
-      logger.debug(`[artery-outline] move [${draggingId}] to right of [${over.id}]`);
-      _rootNode = _insertRightSiblingTo(_rootNode, overNodeKeyPath, draggingNode as ImmutableNode);
-      onChangeWithLog(_rootNode);
-      return;
-    }
+    const entryAboveOverEntry = entries[Math.max(overIndex - 1, 0)];
+    _rootNode = insertBelowTo(_rootNode, entryAboveOverEntry, projectionDepth, draggingNode as ImmutableNode);
 
-    const parentIndex = overEntry.depth - projectionDepth - 1;
-    const parentList = ancestors(_rootNode, overNodeKeyPath);
-    if (!parentList || !parentList.size) {
-      logger.error(`[artery-outline] fatal error, can not find over node parents`);
-      return;
-    }
-
-    const parentKeyPath = parentList.reverse().get(parentIndex);
-    if (!parentKeyPath) {
-      logger.error(`[artery-outline] fatal error, no ancestor at index ${parentIndex}`);
-      return;
-    }
-
-    logger.debug(`[artery-outline] move [${draggingId}] to right of [${parentKeyPath.toJS()}]`);
-    _rootNode = _insertRightSiblingTo(_rootNode, parentKeyPath, draggingNode as ImmutableNode);
     onChangeWithLog(_rootNode);
-
-    // if (projected && over) {
-    //   const {depth, parentId} = projected;
-    //   const clonedItems: FlattenedItem[] = JSON.parse(
-    //     JSON.stringify(flattenTree(items))
-    //   );
-    //   const overIndex = clonedItems.findIndex(({id}) => id === over.id);
-    //   const activeIndex = clonedItems.findIndex(({id}) => id === active.id);
-    //   const activeTreeItem = clonedItems[activeIndex];
-
-    //   clonedItems[activeIndex] = {...activeTreeItem, depth, parentId};
-
-    //   const sortedItems = arrayMove(clonedItems, activeIndex, overIndex);
-    //   const newItems = buildTree(sortedItems);
-
-    //   setItems(newItems);
-    // }
   }
 
   function resetState() {
@@ -195,6 +161,12 @@ function Outline({ rootNode, isContainer, onChange }: Props): JSX.Element | null
     setCollapsedNodeIDs(new Set(Array.from(collapsedNodeIDs)));
   }
 
+  function handleEntryClick(id: string): void {
+    onActiveNodeChange(
+      flattenNodePairs.find(([_, node]) => node.getIn(['id']) === id)?.[1].toJS() as unknown as Node,
+    );
+  }
+
   if (!entries.length) {
     return null;
   }
@@ -204,9 +176,12 @@ function Outline({ rootNode, isContainer, onChange }: Props): JSX.Element | null
       sensors={sensors}
       collisionDetection={closestCenter}
       measuring={measuring}
-      onDragStart={handleDragStart}
-      onDragMove={handleDragMove}
-      onDragOver={handleDragOver}
+      onDragStart={({ active: { id: activeId } }: DragStartEvent) => {
+        setDraggingId(activeId as string);
+        document.body.style.setProperty('cursor', 'grabbing');
+      }}
+      onDragMove={({ delta }) => setOffsetLeft(delta.x)}
+      onDragOver={({ over }) => setOverId(over?.id.toString() ?? null)}
       onDragEnd={handleDragEnd}
       onDragCancel={() => resetState()}
     >
@@ -214,10 +189,11 @@ function Outline({ rootNode, isContainer, onChange }: Props): JSX.Element | null
         id={entries[0].id}
         name={entries[0].name}
         iconRender={() => <span>i</span>}
-        isSelected={selectedID === entries[0].id}
+        isSelected={activeNode?.id === entries[0].id}
+        onClick={() => handleEntryClick(entries[0].id)}
         onNameChange={(newName) => {
           rootNode.label = newName;
-          onChange(rootNode);
+          onChange({ ...rootNode });
         }}
       />
       <SortableContext items={entryIDs.slice(1)} strategy={verticalListSortingStrategy}>
@@ -232,8 +208,8 @@ function Outline({ rootNode, isContainer, onChange }: Props): JSX.Element | null
               key={id}
               id={id}
               name={name}
-              isSelected={selectedID === id}
-              isDragging={draggingId === id}
+              onClick={() => handleEntryClick(id)}
+              isSelected={activeNode?.id === id}
               iconRender={() => <span>i</span>}
               depth={draggingId === id ? projectionDepth : depth}
               collapsedStatus={collapsedStatus}

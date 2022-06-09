@@ -5,11 +5,20 @@
   font-size: 14px;
   color: #222;
   background-color: white;
+  border-radius: 4px;
 }
 
 .outline-entry--dragging {
   z-index: 1;
 }
+
+.outline-entry--selected:not(.outline-entry--dragging) {
+  background-color: #DEE9FF;
+}
+
+// .outline-entry-content--isOver {
+//   outline: 1px dashed hotpink;
+// }
 
 .outline-entry-content {
   position: relative;
@@ -82,7 +91,7 @@
   display: inline-block;
   max-width: 300px;
   font-size: 12px;
-  padding: 4px;
+  padding: 2px;
   outline: 1px solid #e2e8f0;
   text-overflow: ellipsis;
   overflow: hidden;
