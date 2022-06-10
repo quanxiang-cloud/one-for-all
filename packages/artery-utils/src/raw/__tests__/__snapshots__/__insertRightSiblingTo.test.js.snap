@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`_insertRightSiblingTo_to_middle 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "id": "ref-schema",
+      "schemaID": "whatever",
+      "type": "ref-node",
+    },
+    Object {
+      "id": "todo-input-container",
+      "name": "div",
+      "type": "html-element",
+    },
+    Object {
+      "id": "todo-list-loop-composedNode",
+      "node": Object {
+        "id": "compose-node-container",
+        "nodes": Array [
+          Object {
+            "id": "todo-toggle",
+            "name": "input",
+            "type": "html-element",
+          },
+          Object {
+            "id": "todo-title",
+            "name": "span",
+            "type": "html-element",
+          },
+          Object {
+            "id": "todo-delete",
+            "name": "button",
+            "type": "html-element",
+          },
+        ],
+        "type": "composed-node",
+      },
+      "type": "loop-container",
+    },
+    Object {
+      "foo": "bar ",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "exportName": "TodoFilter",
+          "id": "todo-filter",
+          "packageName": "todo-app",
+          "packageVersion": "whatever",
+          "type": "react-component",
+        },
+      ],
+      "id": "footer",
+      "name": "div",
+      "type": "html-element",
+    },
+  ],
+  "id": "container",
+  "name": "div",
+  "type": "html-element",
+}
+`;

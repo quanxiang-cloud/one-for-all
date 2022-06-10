@@ -4,7 +4,7 @@ import ElementRadarDemo from './demo';
 const repo: Repository = {
   'radar-demo@whatever': {
     default: ElementRadarDemo,
-  }
-}
+  },
+};
 
 export default repo;

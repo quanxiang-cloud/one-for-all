@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useFlattenNodes_should_filter_collapsed_node_children filter_children_of_active_node_todo-list-loop-composedNode 1`] = `
+Array [
+  ":container",
+  "children/0:ref-schema",
+  "children/1:todo-input-container",
+  "children/1/children/0:todo-input",
+  "children/2:todo-list-loop-composedNode",
+  "children/3:footer",
+  "children/3/children/0:todo-filter",
+]
+`;
+
+exports[`useFlattenNodes_should_filter_collapsed_node_children filter_children_of_todo-input-container 1`] = `
+Array [
+  ":container",
+  "children/0:ref-schema",
+  "children/1:todo-input-container",
+  "children/2:todo-list-loop-composedNode",
+  "children/2/node:compose-node-container",
+  "children/2/node/nodes/0:todo-toggle",
+  "children/2/node/nodes/1:todo-title",
+  "children/2/node/nodes/2:todo-delete",
+  "children/3:footer",
+  "children/3/children/0:todo-filter",
+]
+`;
+
+exports[`useFlattenNodes_should_filter_collapsed_node_children filter_children_of_todo-list-loop-composedNode 1`] = `
+Array [
+  ":container",
+  "children/0:ref-schema",
+  "children/1:todo-input-container",
+  "children/1/children/0:todo-input",
+  "children/2:todo-list-loop-composedNode",
+  "children/3:footer",
+  "children/3/children/0:todo-filter",
+]
+`;
+
+exports[`useFlattenNodes_should_filter_collapsed_node_children filter_first_level_nodes 1`] = `
+Array [
+  ":container",
+]
+`;
+
+exports[`useFlattenNodes_should_return_all_nodes 1`] = `
+Array [
+  ":container",
+  "children/0:ref-schema",
+  "children/1:todo-input-container",
+  "children/1/children/0:todo-input",
+  "children/2:todo-list-loop-composedNode",
+  "children/2/node:compose-node-container",
+  "children/2/node/nodes/0:todo-toggle",
+  "children/2/node/nodes/1:todo-title",
+  "children/2/node/nodes/2:todo-delete",
+  "children/3:footer",
+  "children/3/children/0:todo-filter",
+]
+`;

@@ -14,5 +14,5 @@ export default function Modal({ isOpen }: Props): JSX.Element {
     <MediocreDialog isShow={isOpen}>
       <div style={style}>this is modal component</div>
     </MediocreDialog>
-  )
+  );
 }

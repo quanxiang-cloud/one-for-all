@@ -15,9 +15,9 @@ const arteryForTestingSimulator: Artery = {
         props: {
           name: {
             type: 'constant_property',
-            value: 'normal-component 1'
-          }
-        }
+            value: 'normal-component 1',
+          },
+        },
       },
       {
         id: 'normal-component2',
@@ -28,9 +28,9 @@ const arteryForTestingSimulator: Artery = {
         props: {
           name: {
             type: 'constant_property',
-            value: 'normal-component 1'
-          }
-        }
+            value: 'normal-component 1',
+          },
+        },
       },
       {
         id: 'a-dev',
@@ -224,9 +224,9 @@ const arteryForTestingSimulator: Artery = {
         props: {
           name: {
             type: 'constant_property',
-            value: 'normal-component 2'
-          }
-        }
+            value: 'normal-component 2',
+          },
+        },
       },
       {
         id: 'normal-component-bottom-1',
@@ -237,9 +237,9 @@ const arteryForTestingSimulator: Artery = {
         props: {
           name: {
             type: 'constant_property',
-            value: 'normal-component 3'
-          }
-        }
+            value: 'normal-component 3',
+          },
+        },
       },
       {
         id: 'modal-layer',
@@ -250,13 +250,13 @@ const arteryForTestingSimulator: Artery = {
         props: {
           name: {
             type: 'constant_property',
-            value: 'normal-component 3'
+            value: 'normal-component 3',
           },
           isOpen: {
             type: 'shared_state_property',
             stateID: 'isModalShow',
             fallback: false,
-          }
+          },
         },
         children: [
           {
@@ -266,11 +266,11 @@ const arteryForTestingSimulator: Artery = {
             props: {
               children: {
                 type: 'constant_property',
-                value: 'this is modal content'
-              }
-            }
-          }
-        ]
+                value: 'this is modal content',
+              },
+            },
+          },
+        ],
       },
     ],
   },

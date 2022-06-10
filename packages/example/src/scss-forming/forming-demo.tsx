@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 type InputProps = {
   onChange: (v: string) => void;
   title: string;
-}
+};
 
 function Input({ onChange, title }: InputProps): JSX.Element {
   const [value, setValue] = useState('');
@@ -28,11 +28,11 @@ function Input({ onChange, title }: InputProps): JSX.Element {
 type FormattedProps = {
   scss: string;
   formingRules: string;
-}
+};
 
 function Formatted({ scss, formingRules }: FormattedProps): JSX.Element {
   const [formatted, setFormatted] = useState('');
-  const [astStr, setASTStr] = useState('')
+  const [astStr, setASTStr] = useState('');
 
   function handleFormIt() {
     try {
@@ -40,7 +40,7 @@ function Formatted({ scss, formingRules }: FormattedProps): JSX.Element {
       forming(scss, rules).then(({ scss: formattedSCSS, ast }) => {
         setFormatted(formattedSCSS);
         setASTStr(JSON.stringify(ast, null, 2));
-      })
+      });
     } catch (error) {
       setFormatted(`${error}`);
     }
@@ -48,8 +48,10 @@ function Formatted({ scss, formingRules }: FormattedProps): JSX.Element {
 
   return (
     <div style={{ gridColumn: '1/3' }}>
-      <p><button onClick={handleFormIt}>Form It!</button></p>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr'}}>
+      <p>
+        <button onClick={handleFormIt}>Form It!</button>
+      </p>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
         <div>
           <h3>formatted scss</h3>
           <textarea style={{ width: '100%', height: '300px' }} value={formatted} />
@@ -60,7 +62,7 @@ function Formatted({ scss, formingRules }: FormattedProps): JSX.Element {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 function FormingDemo(): JSX.Element {
@@ -69,11 +71,11 @@ function FormingDemo(): JSX.Element {
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', rowGap: '8px', columnGap: '8px' }}>
-      <Input title='请输入 SCSS' onChange={setSCSS} />
-      <Input title='请输入 forming rules' onChange={setFormingRules} />
+      <Input title="请输入 SCSS" onChange={setSCSS} />
+      <Input title="请输入 forming rules" onChange={setFormingRules} />
       <Formatted scss={scss} formingRules={formingRules} />
     </div>
-  )
+  );
 }
 
 export default FormingDemo;

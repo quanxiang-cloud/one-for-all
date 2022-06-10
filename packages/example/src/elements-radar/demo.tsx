@@ -8,8 +8,8 @@ import './index.scss';
 function ElementRadarDemo(): JSX.Element {
   const [visibleCells, setVisibleCells] = useState<Array<HTMLElement>>([]);
   const targetRootRef = useRef<HTMLDivElement>(null);
-  const [mirrors, setMirrors] = useState<Array<{ id: string; rect: Rect; }>>([]);
-  const [scrollSize, setScrollSize] = useState<{ height: number; width: number; }>({ height: 0, width: 0 });
+  const [mirrors, setMirrors] = useState<Array<{ id: string; rect: Rect }>>([]);
+  const [scrollSize, setScrollSize] = useState<{ height: number; width: number }>({ height: 0, width: 0 });
   const [scrollPosition, setScrollPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -34,13 +34,16 @@ function ElementRadarDemo(): JSX.Element {
         };
       });
 
-      setScrollSize({ height: targetRootRef.current?.scrollHeight || 0, width: targetRootRef.current?.scrollWidth || 0 });
+      setScrollSize({
+        height: targetRootRef.current?.scrollHeight || 0,
+        width: targetRootRef.current?.scrollWidth || 0,
+      });
       setMirrors(mirrorCells);
     });
 
     return () => {
-      radar.unListen(subscription)
-    }
+      radar.unListen(subscription);
+    };
   }, [visibleCells]);
 
   return (
@@ -57,15 +60,11 @@ function ElementRadarDemo(): JSX.Element {
         </div>
         <div>
           <h1>雷达</h1>
-          <Mirror
-            mirrors={mirrors}
-            scrollSize={scrollSize}
-            onScroll={setScrollPosition}
-          />
+          <Mirror mirrors={mirrors} scrollSize={scrollSize} onScroll={setScrollPosition} />
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default ElementRadarDemo;

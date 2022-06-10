@@ -1,4 +1,4 @@
-import { Artery } from "@one-for-all/artery";
+import { Artery } from '@one-for-all/artery';
 
 const artery: Artery = {
   node: {
@@ -7,8 +7,8 @@ const artery: Artery = {
     packageName: 'form-scss',
     packageVersion: 'whatever',
     exportName: 'default',
-    props: {}
-  }
-}
+    props: {},
+  },
+};
 
 export default artery;

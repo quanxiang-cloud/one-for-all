@@ -6,8 +6,8 @@ const iconSchema: Artery = {
     type: 'react-component',
     packageName: 'icon',
     packageVersion: '0.4.0',
-    exportName: 'PreviewIcon'
-  }
-}
+    exportName: 'PreviewIcon',
+  },
+};
 
 export default iconSchema;

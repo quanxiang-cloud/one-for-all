@@ -8,7 +8,7 @@ import { isSupportChildren } from './helper';
 
 import './index.scss';
 
-const __OVER_LAYER_COMPONENTS: Array<{ packageName: string; exportName: string; }> = [
+const __OVER_LAYER_COMPONENTS: Array<{ packageName: string; exportName: string }> = [
   { packageName: '@one-for-all/headless-ui', exportName: 'MediocreDialog' },
 ];
 
@@ -17,25 +17,28 @@ interface RenderModalLayerSelectorProps {
   setActiveModalLayer: (id?: string) => void;
 }
 
-function RenderModalLayerSelector({ artery, setActiveModalLayer }: RenderModalLayerSelectorProps): JSX.Element {
+function RenderModalLayerSelector({
+  artery,
+  setActiveModalLayer,
+}: RenderModalLayerSelectorProps): JSX.Element {
   const modalLayerRoots = useMemo(() => {
-    const modalLayerRoots: Array<Node> = []
+    const modalLayerRoots: Array<Node> = [];
     travel(artery.node, {
       reactComponentNode: (currentNode): undefined => {
         if (currentNode.exportName === 'MediocreDialog') {
-          modalLayerRoots.push(currentNode)
+          modalLayerRoots.push(currentNode);
         }
 
         return;
-      }
-    })
+      },
+    });
     return modalLayerRoots;
   }, [artery]);
 
   return (
     <div>
       <h3>modal layers</h3>
-      <div onClick={() => setActiveModalLayer()} >show root</div>
+      <div onClick={() => setActiveModalLayer()}>show root</div>
       {modalLayerRoots.map((modalNode) => {
         return (
           <div
@@ -45,10 +48,10 @@ function RenderModalLayerSelector({ artery, setActiveModalLayer }: RenderModalLa
           >
             {modalNode.label || modalNode.id}
           </div>
-        )
+        );
       })}
     </div>
-  )
+  );
 }
 
 function SimulatorInExample(): JSX.Element {
@@ -63,10 +66,7 @@ function SimulatorInExample(): JSX.Element {
 
   return (
     <div>
-      <RenderModalLayerSelector
-        artery={artery}
-        setActiveModalLayer={setActiveModalLayer}
-      />
+      <RenderModalLayerSelector artery={artery} setActiveModalLayer={setActiveModalLayer} />
       <ArterySimulator
         ref={simulatorRef}
         className="artery-simulator"

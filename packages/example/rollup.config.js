@@ -9,7 +9,8 @@ export default [
   {
     input: {
       index: 'src/index.ts',
-      temporaryPlugins: 'src/artery-simulator/temporary-plugins.ts'
+      outline: 'src/outline.tsx',
+      temporaryPlugins: 'src/artery-simulator/temporary-plugins.ts',
     },
     output: {
       dir: 'dist',
