@@ -1,0 +1,23 @@
+{
+  "name": "@one-for-all/node-carve",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "type": "module",
+  "module": "lib",
+  "types": "src/index.d.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "build": "echo 'no need to build'",
+    "bundle": "echo 'no need to bundle this package'",
+    "pack": "yarn pack",
+    "prepack": "yarn run build",
+    "docs": "typedoc"
+  },
+  "devDependencies": {
+    "typedoc": "^0.22.17",
+    "typescript": "4.7.2"
+  }
+}

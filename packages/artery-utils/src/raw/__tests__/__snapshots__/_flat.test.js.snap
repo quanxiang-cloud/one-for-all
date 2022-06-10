@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`flat 1`] = `
+Array [
+  Array [
+    "",
+    "container",
+  ],
+  Array [
+    "children/0",
+    "ref-schema",
+  ],
+  Array [
+    "children/1",
+    "todo-input-container",
+  ],
+  Array [
+    "children/1/children/0",
+    "todo-input",
+  ],
+  Array [
+    "children/2",
+    "todo-list-loop-composedNode",
+  ],
+  Array [
+    "children/2/node",
+    "compose-node-container",
+  ],
+  Array [
+    "children/2/node/nodes/0",
+    "todo-toggle",
+  ],
+  Array [
+    "children/2/node/nodes/1",
+    "todo-title",
+  ],
+  Array [
+    "children/2/node/nodes/2",
+    "todo-delete",
+  ],
+  Array [
+    "children/3",
+    "footer",
+  ],
+  Array [
+    "children/3/children/0",
+    "todo-filter",
+  ],
+]
+`;

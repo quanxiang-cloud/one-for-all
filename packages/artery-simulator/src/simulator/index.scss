@@ -1,0 +1,63 @@
+html,
+body {
+  width: 100%;
+  // required, we need body to be scrollable, incase other module style it
+  height: auto;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+// create a stacking context prevent children element render on higher layer
+.simulator-background-layer {
+  position: relative;
+  z-index: 0;
+}
+
+.artery-simulator-root--modal-open {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.green-zone {
+  top: 0;
+  position: absolute;
+  will-change: width, height, transform;
+}
+
+.green-zone-for-node-without-children {
+  background-color: #0080005c;
+  outline: 1px solid #008000;
+}
+
+.green-zone-between-nodes {
+  outline: 1px dashed #008000;
+}
+
+.green-zone-between-nodes--focused {
+  background-color: #0080005c;
+}
+
+// .contour-green-zone--left {
+//   box-shadow: -8px 0 0 0px $indictorColor;
+// }
+
+// .contour-green-zone--right {
+//   box-shadow: 8px 0 0 0px $indictorColor;
+// }
+
+// .contour-green-zone--inner-left {
+//   box-shadow: inset 8px 0 0 0px coral;
+// }
+
+// .contour-green-zone--inner-right {
+//   box-shadow: inset -8px 0 0 0px coral;
+// }
+
+.placeholder-for-container-node-children {
+  padding: 8px;
+  color: #94a3b8;
+  text-align: center;
+  background-color: #f8fafc;
+}

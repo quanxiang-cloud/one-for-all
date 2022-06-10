@@ -1,0 +1,17 @@
+.ofa-modal-layer {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  inset: 0;
+
+  overflow: auto;
+}
+
+.ofa-modal-layer__backdrop {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  z-index: -1;
+}

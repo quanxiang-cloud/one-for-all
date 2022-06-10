@@ -7,11 +7,24 @@ const arteryForTestingSimulator: Artery = {
     name: 'div',
     children: [
       {
-        id: 'normal-component',
+        id: 'normal-component1',
         type: 'react-component',
         packageName: 'SimulatorDedicated',
         packageVersion: 'whatever',
         exportName: 'Normal',
+        props: {
+          name: {
+            type: 'constant_property',
+            value: 'normal-component 1'
+          }
+        }
+      },
+      {
+        id: 'normal-component2',
+        type: 'react-component',
+        packageName: 'SimulatorDedicated',
+        packageVersion: 'whatever',
+        exportName: 'WillThrow',
         props: {
           name: {
             type: 'constant_property',
@@ -227,6 +240,37 @@ const arteryForTestingSimulator: Artery = {
             value: 'normal-component 3'
           }
         }
+      },
+      {
+        id: 'modal-layer',
+        type: 'react-component',
+        packageName: '@one-for-all/headless-ui',
+        packageVersion: 'whatever',
+        exportName: 'MediocreDialog',
+        props: {
+          name: {
+            type: 'constant_property',
+            value: 'normal-component 3'
+          },
+          isOpen: {
+            type: 'shared_state_property',
+            stateID: 'isModalShow',
+            fallback: false,
+          }
+        },
+        children: [
+          {
+            id: 'modal-childre-h1',
+            type: 'html-element',
+            name: 'h1',
+            props: {
+              children: {
+                type: 'constant_property',
+                value: 'this is modal content'
+              }
+            }
+          }
+        ]
       },
     ],
   },

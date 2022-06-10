@@ -54,15 +54,19 @@ type ComponentLoader = (locator: ComponentLoaderParam) => Promise<DynamicCompone
 
 ### Repository
 
+渲染页面的组件可以动态加载，也可以直接注入到 Artery Renderer 实例中。在渲染阶段，当节点需要外部组件时，会首先查找 `Repository`，如果没有对应的实现才会调用 `ComponentLoader`。 `Repository` 是一个组件实现的集合对象，一个 Artery 中可能用到的 package 不止一个，但是 package 名称应当是全局唯一的。Repository 就是 package 和 package 中的组件的集合，类型如下:
+
 ```typescript
 type Repository = Record<PackageNameVersion, Record<string, Component>>;
 ```
 
-渲染页面的组件可以动态加载，也可以直接注入到渲染引擎实例中。在渲染阶段，当节点需要外部组件时，
-会首先查找 `Repository`，如果没有对应的实现才会调用 `ComponentLoaderParam`。 `Repository`
- 是一个组件实现的集合对象，类型如下:
+其中 `PackageNameVersion` 是 package `名称`和`版本`使用 `@` 连在一起的字符串，例如 `myAwesomeComponents@1.0.0`, `Record<string, Component>` 中的 `string` 为 package 中的组件的 export name。
 
 ### APISpecAdapter
+
+动态渲染页面离不开 API 数据。Artery Renderer 使用 RxJS 内置的 [ajax](https://rxjs.dev/api/ajax/ajax) 来作为 HTTP client。当调用 API 时，开发者有责任提供符合要求的[request config](https://github.com/quanxiang-cloud/one-for-all/blob/main/packages/api-spec-adapter/src/types.ts#L35) 对象，此对象中包含了一个 HTTP 请求所必须的 Method, URL 和 Params 等信息。
+
+手动构造完整的 request config 对象会很繁琐且不可扩展，为了让 view、model 和 API 之前的层次更加清晰，Artery Renderer 提供了 `APISpecAdapter` 接口。`APISpecAdapter` 中有一个 `RequestBuilder` 方法，用来将统一的参数转化为标准的 request config 对象。你可以根据自己的实际业务需求实现完整的 `APISpecAdapter`，也可以扩展我们提供的一个[适配 swagger spec 的实现](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/api-spec-adapter)。
 
 ```typescript
 type RequestBuilder = (apiID: string, fetchParams?: FetchParams) => AjaxConfig | undefined;
@@ -80,23 +84,14 @@ interface APISpecAdapter {
 }
 ```
 
-动态渲染页面离不开 API 数据。渲染引擎使用 RxJS 内置的 [ajax](https://rxjs.dev/api/ajax/ajax)
- 来作为 HTTP client。当调用 API 时，开发者有责任提供符合要求的[request config](https://github.com/quanxiang-cloud/one-for-all/blob/main/packages/api-spec-adapter/src/types.ts#L35)
-对象，此对象中包含了一个 HTTP 请求所必须的 Method, URL 和 Params 等信息。
-
-手动构造完整的 request config 对象会很繁琐且不可扩展，为了让 view、model 和 API 之前的层次
-更加清晰，渲染引擎提供了 `APISpecAdapter` 接口。`APISpecAdapter` 中有一个 `RequestBuilder`
- 方法，用来将统一的参数转化为标准的 request config 对象。你可以根据自己的实际业务需求实现完整
-的 `APISpecAdapter`，也可以扩展我们提供的一个[适配 swagger spec 的实现](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/api-spec-adapter)。
-
 ### RefLoader
 
+对于体积较大的 Artery，我们可以将其拆分成各个部分，然后使用 `ref-node` 类型在渲染阶段将其组合。Artery Renderer 的 `RefLoader` 接口用于下载这种引用类型的 Artery。
+
 ```typescript
-type RefLoader = (arteryID: string) => Promise<{ schema: ArterySpec.Artery; plugins?: Plugins }>;
+type RefLoader = (arteryID: string) => Promise<{ Artery: ArterySpec.Artery; plugins?: Plugins }>;
 ```
 
-对于体积较大的 Schema，我们可以将其拆分成各个部分，然后使用 `ref-node` 类型在渲染阶段将其组
-合。渲染引擎的 `RefLoader` 接口用于下载这种引用类型的 Schema。
 
 ## Usage
 

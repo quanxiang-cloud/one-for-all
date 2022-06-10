@@ -1,4 +1,4 @@
-import type { HTMLNode, ReactComponentNode } from '@one-for-all/artery';
+import type { Node, HTMLNode, ReactComponentNode } from '@one-for-all/artery';
 import type { Rect, ElementRect } from '@one-for-all/elements-radar';
 
 export interface ContourNode extends ElementRect {
@@ -6,12 +6,6 @@ export interface ContourNode extends ElementRect {
   absolutePosition: Rect;
   executor: string;
   depth: number;
-}
-
-export interface ContourNodesReport {
-  contourNodes: ContourNode[];
-  areaHeight: number;
-  areaWidth: number;
 }
 
 export interface Cursor {
@@ -30,7 +24,7 @@ export type Position =
   | 'inner-bottom'
   | 'inner-left';
 
-export type NodeWithoutChild =
+export type NodePrimary =
   | Pick<HTMLNode, 'type' | 'name'>
   | Pick<ReactComponentNode, 'type' | 'packageName' | 'packageVersion' | 'exportName'>;
 
@@ -57,6 +51,22 @@ export interface GreenZoneBetweenNodes {
   raw: Rect;
 }
 
+export interface FallbackContourGreenZone {
+  type: 'fallback-contour-green-zone';
+}
+
 export type GreenZoneInsideNode = GreenZoneAdjacentWithParent | GreenZoneBetweenNodes;
 
-export type GreenZone = GreenZoneAdjacentWithParent | GreenZoneBetweenNodes | GreenZoneForNodeWithoutChildren;
+export type GreenZone = GreenZoneAdjacentWithParent | GreenZoneBetweenNodes | GreenZoneForNodeWithoutChildren | FallbackContourGreenZone;
+
+export interface MoveNodeRequest {
+  type: 'move_node_request';
+  nodeID: string;
+}
+
+export interface DropNodeRequest {
+  type: 'insert_node_request';
+  node: Node;
+}
+
+export type DropRequest = MoveNodeRequest | DropNodeRequest;

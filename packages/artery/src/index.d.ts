@@ -320,10 +320,6 @@ declare module ArterySpec {
   interface ComposedNode extends BaseNode {
     type: 'composed-node';
     outLayer?: ComposeOutLayer;
-    /**
-     * @deprecated use nodes instead
-     */
-    children: Array<ComposedNodeChild>;
     nodes: Array<ComposedNodeChild>;
   }
 

@@ -1,6 +1,6 @@
 import { createBrowserHistory } from 'history';
 import { BehaviorSubject } from 'rxjs';
-import ArterySpec from '@one-for-all/artery';
+import type ArterySpec from '@one-for-all/artery';
 
 import getAPIStates from './api-states';
 import deserialize from './deserialize';

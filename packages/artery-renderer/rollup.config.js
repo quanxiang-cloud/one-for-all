@@ -1,4 +1,4 @@
-import esbuild from 'rollup-plugin-esbuild';
+import esbuild from 'rollup-plugin-esbuild-ts';
 import resolve from '@rollup/plugin-node-resolve';
 
 import typescriptPaths from '../../common/config/rollup/rollup-plugin-typescript-paths';

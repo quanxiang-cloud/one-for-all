@@ -1,0 +1,326 @@
+{
+  "Breadcrumb": {
+    "category": "基础组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "keyboard_arrow_right",
+          "initialProps": {}
+        },
+        "desc": "面包屑用于展示层级",
+        "label": "面包屑",
+        "initialProps": {
+          "segments": [
+            {
+              "key": "key",
+              "text": "level1"
+            },
+            {
+              "key": "key2",
+              "text": "level2"
+            }
+          ],
+          "separator": "/"
+        }
+      }
+    ]
+  },
+  "Button": {
+    "category": "基础组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "smart_button",
+          "initialProps": {}
+        },
+        "desc": "按钮用于提交、提示、操作",
+        "label": "按钮",
+        "initialProps": {
+          "children": "按钮",
+          "modifier": "primary",
+          "type": "button",
+          "size": "normal",
+          "iconSize": 12,
+          "iconName": "",
+          "preview": false,
+          "closeOnMaskClick": false
+        }
+      }
+    ]
+  },
+  "Input": {
+    "category": "表单组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "text_fields",
+          "initialProps": {
+            "size": 24
+          }
+        },
+        "desc": "单行文本框用于输入",
+        "label": "单行文本",
+        "initialProps": {
+          "placeholder": "请输入内容",
+          "type": "text",
+          "name": ""
+        }
+      }
+    ]
+  },
+  "CheckboxGroup": {
+    "category": "表单组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "check_box",
+          "initialProps": {}
+        },
+        "desc": "复选框用于选中必要项并提交",
+        "label": "复选框",
+        "initialProps": {
+          "options": [
+            {
+              "label": "选项一",
+              "value": "选项一"
+            },
+            {
+              "label": "选项二",
+              "value": "选项二"
+            },
+            {
+              "label": "选项三",
+              "value": "选项三"
+            }
+          ],
+          "disabled": false
+        }
+      }
+    ]
+  },
+  "RadioGroup": {
+    "category": "表单组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "radio_button_checked",
+          "initialProps": {}
+        },
+        "desc": "单选框用于选中必要项并提交",
+        "label": "单选框",
+        "initialProps": {
+          "options": [
+            {
+              "label": "选项一",
+              "value": "选项一"
+            },
+            {
+              "label": "选项二",
+              "value": "选项二"
+            },
+            {
+              "label": "选项三",
+              "value": "选项三"
+            }
+          ],
+          "disabled": false
+        }
+      }
+    ]
+  },
+  "Divider": {
+    "category": "基础组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "horizontal_distribute",
+          "initialProps": {}
+        },
+        "desc": "分隔线",
+        "label": "分隔线",
+        "initialProps": {
+          "direction": "horizontal",
+          "size": "100%",
+          "thickness": "1px"
+        }
+      }
+    ]
+  },
+  "Loading": {
+    "category": "基础组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "loading",
+          "initialProps": {}
+        },
+        "desc": "显示加载状态",
+        "label": "加载组件",
+        "initialProps": {
+          "desc": "loading...",
+          "iconSize": 12,
+          "vertical": true
+        }
+      }
+    ]
+  },
+  "Pagination": {
+    "category": "高级组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "format_list_numbered",
+          "initialProps": {}
+        },
+        "desc": "控制分页",
+        "label": "分页器",
+        "initialProps": {
+          "current": 1,
+          "total": 0,
+          "pageSize": 10,
+          "pageSizeOptions": [10, 20, 50, 100],
+          "showSizeChanger": true
+        }
+      }
+    ]
+  },
+  "Switch": {
+    "category": "表单组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "toggle_off",
+          "initialProps": {}
+        },
+        "desc": "决定某个元素是否启用",
+        "label": "开关",
+        "initialProps": {
+          "onText": "开启",
+          "offText": "关闭",
+          "disabled": false,
+          "checked": false
+        }
+      }
+    ]
+  },
+  "Table": {
+    "category": "高级组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "border_all",
+          "initialProps": {}
+        },
+        "desc": "表格展示数据",
+        "label": "表格",
+        "initialProps": {
+          "columns": [
+            {
+              "width": 100,
+              "fixed": false,
+              "Header": "第一列",
+              "id": "col1",
+              "accessor": "col1"
+            }
+          ],
+          "data": [
+            {
+              "col1": "第一列数据"
+            }
+          ],
+          "emptyTips": "无数据"
+        }
+      }
+    ]
+  },
+  "Select": {
+    "category": "表单组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "arrow_drop_down_circle",
+          "initialProps": {}
+        },
+        "desc": "单选下拉框",
+        "label": "单选下拉框",
+        "initialProps": {
+          "multiple": false,
+          "options": [
+            {
+              "label": "选项一",
+              "value": "选项一"
+            },
+            {
+              "label": "选项二",
+              "value": "选项二"
+            },
+            {
+              "label": "选项三",
+              "value": "选项三"
+            }
+          ],
+          "disabled": false
+        }
+      },
+      {
+        "icon": {
+          "type": "platform",
+          "name": "fact_check",
+          "initialProps": {}
+        },
+        "desc": "多选下拉框",
+        "label": "多选下拉框",
+        "initialProps": {
+          "multiple": true,
+          "options": [
+            {
+              "label": "选项一",
+              "value": "选项一"
+            },
+            {
+              "label": "选项二",
+              "value": "选项二"
+            },
+            {
+              "label": "选项三",
+              "value": "选项三"
+            }
+          ],
+          "disabled": false
+        }
+      }
+    ]
+  },
+  "Tag": {
+    "category": "基础组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "tag",
+          "initialProps": {}
+        },
+        "desc": "标签",
+        "label": "标签",
+        "initialProps": {
+          "label": "标签",
+          "value": "tag",
+          "deleteIconSize": 12,
+          "disabled": false,
+          "modifier": ""
+        }
+      }
+    ]
+  }
+}

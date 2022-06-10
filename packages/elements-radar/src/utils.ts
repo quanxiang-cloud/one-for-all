@@ -17,9 +17,9 @@ export function isSame(previous: Report, current: Report): boolean {
   });
 }
 
-export function calcRect(raw: DOMRectReadOnly, rootBounds: DOMRectReadOnly | null): Rect {
-  const X = rootBounds?.x || 0;
-  const Y = rootBounds?.y || 0;
+export function calcRect(raw: DOMRectReadOnly, rootXY: { x: number; y: number }): Rect {
+  const X = rootXY.x;
+  const Y = rootXY.y;
 
   const rect: Rect = {
     height: Math.round(raw.height),

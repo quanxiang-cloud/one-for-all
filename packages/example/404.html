@@ -4,12 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Render Engine Demo</title>
-    <link rel="stylesheet" href="/pkg/headless-ui/dist/@one-for-all/headless-ui@latest/ofa-headless-ui-web.css" />
     <script type="systemjs-importmap">
       {
         "imports": {
-          "react": "https://ofapkg.pek3b.qingstor.com/react@17.0.1/react.17.0.1.min.js",
-          "react-dom": "https://ofapkg.pek3b.qingstor.com/react-dom@17.0.1/react-dom.17.0.1.min.js",
+          "react": "https://ofapkg.pek3b.qingstor.com/react@17.0.1/react.17.0.1.js",
+          "react-dom": "https://ofapkg.pek3b.qingstor.com/react-dom@17.0.1/react-dom.17.0.1.js",
           "rxjs/ajax": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-ajax.min.js",
           "rxjs/fetch": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-fetch.min.js",
           "rxjs/operators": "https://ofapkg.pek3b.qingstor.com/@ofa/rxjs@7.4.0/rxjs-operators.min.js",
@@ -29,6 +28,7 @@
           "@one-for-all/api-spec-adapter": "https://ofapkg.pek3b.qingstor.com/@one-for-all/api-spec-adapter@latest/index.min.js",
           "@one-for-all/artery-renderer": "/pkg/artery-renderer/dist/@one-for-all/artery-renderer@latest/index.js",
           "@one-for-all/artery-simulator": "/pkg/artery-simulator/dist/@one-for-all/artery-simulator@latest/index.js",
+          "@one-for-all/artery-engine": "/pkg/artery-engine/dist/@one-for-all/artery-engine@latest/index.js",
           "@one-for-all/artery-utils": "/pkg/artery-utils/dist/@one-for-all/artery-utils@latest/index.js",
           "@one-for-all/elements-radar": "/pkg/elements-radar/dist/@one-for-all/elements-radar@latest/index.js",
           "@one-for-all/headless-ui": "/pkg/headless-ui/dist/@one-for-all/headless-ui@latest/web.js",
@@ -38,6 +38,7 @@
           "@one-for-all/style-guide": "/pkg/style-guide/dist/@one-for-all/style-guide@0.1.5/index.js",
           "@one-for-all/ui": "/pkg/ui/dist/@one-for-all/ui@latest/index.min.js",
           "@one-for-all/utils": "/pkg/utils/dist/@one-for-all/utils@latest/index.min.js",
+          "temporaryPlugins": "/dist/temporaryPlugins.js",
           "csslint": "/pkg/style-guide/dist/@one-for-all/style-guide@0.1.5/csslint.js"
         }
       }

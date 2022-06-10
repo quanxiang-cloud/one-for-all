@@ -1,0 +1,11 @@
+{
+  "default": {
+    "props": [{
+      "label": "图标大小",
+      "name": "size",
+      "type": "number"
+    }],
+    "isContainer": false,
+    "isOverLayer": false
+  }
+}

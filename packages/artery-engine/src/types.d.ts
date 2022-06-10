@@ -1,31 +1,29 @@
 declare namespace ArteryEngine {
-  import type { Dispatch, SetStateAction } from 'react';
+  import type { Dispatch, SetStateAction, CSSProperties } from 'react';
   import type { BehaviorSubject } from 'rxjs';
   import type { Artery, Node } from '@one-for-all/artery';
 
   export interface Block<T extends BaseBlocksCommunicationState> {
     render: (props: BlockItemProps<T>) => JSX.Element;
-    gridColumnStart?: string;
-    gridColumnEnd?: string;
-    gridRowStart?: string;
-    gridRowEnd?: string;
-    visible?: boolean;
+    style?: CSSProperties;
+    hide?: boolean;
+    id?: string;
   }
 
   export interface BlockProps<T extends BaseBlocksCommunicationState> extends Block<T> {
-    setLayer: (transfer: LayerTransfer<T>) => void;
+    onUpdateLayer: (params: Omit<UpdateLayer, 'layerId'> & { layerId?: string }) => void;
   }
 
   export interface Layer<T extends BaseBlocksCommunicationState> {
     blocks: Array<Block<T>>;
-    gridTemplateColumns: string;
-    gridTemplateRows: string;
-    blocksCommunicationStateInitialValue: T;
+    style?: CSSProperties;
+    id?: string;
+    hide?: boolean;
   }
 
   export interface LayerProps<T extends BaseBlocksCommunicationState> extends Layer<T> {
     zIndex: number;
-    setLayer: (transfer: LayerTransfer<T>) => void;
+    updateLayer: (params: UpdateLayer) => void;
   }
 
   export type LayerTransfer<T extends BaseBlocksCommunicationState> = (layer: Layer<T>) => Layer<T>;
@@ -40,16 +38,20 @@ declare namespace ArteryEngine {
     artery: Artery;
     sharedState: T;
     onSharedStateChange: (path: string, value: any) => void;
-    setLayer: (transfer: LayerTransfer<T>) => void;
     commands?: CommandNameRunnerMap;
+    commandsHasNext: boolean;
+    commandsHasPrev: boolean;
     activeNode?: Node;
     setActiveNode: (node?: Node) => void;
     generateNodeId: (prefix?: string) => string;
+    onUpdateLayer: (params: Omit<UpdateLayer, 'blockId' | 'layerId'> & { layerId?: string }) => void;
+    onUpdateBlock: (params: Omit<UpdateLayer, 'layerId'> & { layerId?: string }) => void;
   }
 
   export interface Props<T extends BaseBlocksCommunicationState> {
     artery: Artery;
     layers: Array<Layer<T>>;
+    blocksCommunicationStateInitialValue: T;
   }
 
   export interface EngineState<T extends BaseBlocksCommunicationState> {
@@ -86,5 +88,12 @@ declare namespace ArteryEngine {
     commandStateRef: MutableRefObject<CommandState>;
     registry: (command: Command) => void;
     commandNameRunnerMap: CommandNameRunnerMap;
+  }
+
+  export interface UpdateLayer {
+    layerId: string;
+    blockId?: string;
+    name: string;
+    value: unknown;
   }
 }
