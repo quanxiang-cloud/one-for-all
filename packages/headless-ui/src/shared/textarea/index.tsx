@@ -13,15 +13,15 @@ import React, {
 import { omit } from 'lodash';
 import cs from 'classnames';
 
-import './index.css';
-
-function Input(
+function Textarea(
   {
     className,
     value,
     style,
     error,
     disabled,
+    cols,
+    rows,
     readOnly,
     defaultValue,
     onChange,
@@ -30,12 +30,12 @@ function Input(
     onBlur,
     onKeyDown,
     ...otherProps
-  }: InputProps,
-  ref: ForwardedRef<HTMLInputElement>,
+  }: TextareaProps,
+  ref: ForwardedRef<HTMLTextAreaElement>,
 ): JSX.Element {
   const [inputValue, setValue] = useState<string>(defaultValue ?? '');
   const [focused, setFocused] = useState<boolean>(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (value === undefined) {
@@ -52,45 +52,47 @@ function Input(
     };
   }, [otherProps.enterKeyHint]);
 
-  useImperativeHandle(ref, () => inputRef.current as HTMLInputElement);
+  useImperativeHandle(ref, () => inputRef.current as HTMLTextAreaElement);
 
-  function handleChange(e: ChangeEvent<HTMLInputElement>): void {
+  function handleChange(e: ChangeEvent<HTMLTextAreaElement>): void {
     setValue(e.target.value);
     onChange?.(e.target.value, e);
   }
 
-  function handleKeyDown(e: KeyboardEvent<HTMLInputElement>): void {
+  function handleKeyDown(e: KeyboardEvent<HTMLTextAreaElement>): void {
     if (onEnterPress && (e.code === 'Enter' || e.keyCode === 13)) {
       onEnterPress(e);
     }
     onKeyDown?.(e);
   }
 
-  function handleFocus(e: FocusEvent<HTMLInputElement>): void {
+  function handleFocus(e: FocusEvent<HTMLTextAreaElement>): void {
     setFocused(true);
     onFocus?.(e);
   }
 
-  function handleBlur(e: FocusEvent<HTMLInputElement>): void {
+  function handleBlur(e: FocusEvent<HTMLTextAreaElement>): void {
     setFocused(false);
     onBlur?.(e);
   }
 
   return (
-    <input
+    <textarea
       {...omit(otherProps, 'enterKeyHint')}
       ref={inputRef}
       value={inputValue}
       disabled={disabled}
       readOnly={readOnly}
+      cols={cols}
+      rows={rows}
       style={style}
       className={cs(
-        'ofa-input',
+        'ofa-textarea',
         {
-          'ofa-input__disabled': disabled,
-          'ofa-input__readOnly': readOnly,
-          'ofa-input__focus': focused,
-          'ofa-input__error': error,
+          'ofa-textarea__disabled': disabled,
+          'ofa-textarea__readOnly': readOnly,
+          'ofa-textarea__focus': focused,
+          'ofa-textarea__error': error,
         },
         className,
       )}
@@ -98,7 +100,7 @@ function Input(
       onKeyDown={handleKeyDown}
       onFocus={handleFocus}
       onBlur={handleBlur}
-    />
+    ></textarea>
   );
 }
-export default forwardRef<HTMLInputElement, InputProps>(Input);
+export default forwardRef<HTMLTextAreaElement, TextareaProps>(Textarea);

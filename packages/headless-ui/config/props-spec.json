@@ -4,7 +4,8 @@
       {
         "label": "元素",
         "name": "segments",
-        "type": "object"
+        "type": "object",
+        "desc": "每一项可以设置text(文本），path（点击后跳转对应路径）属性"
       },
       {
         "label": "分隔符",
@@ -17,11 +18,6 @@
   },
   "Button": {
     "props": [
-      {
-        "label": "按钮文本",
-        "name": "children",
-        "type": "string"
-      },
       {
         "label": "按钮类型",
         "name": "modifier",
@@ -85,12 +81,12 @@
         }
       },
       {
-        "label": "是否加载",
+        "label": "加载",
         "name": "loading",
         "type": "boolean"
       },
       {
-        "label": "是否禁用",
+        "label": "禁用",
         "name": "forbidden",
         "type": "boolean"
       },
@@ -110,7 +106,7 @@
         "type": "function"
       }
     ],
-    "isContainer": false,
+    "isContainer": true,
     "isOverLayer": false
   },
   "Input": {
@@ -149,6 +145,18 @@
         "type": "string"
       },
       {
+        "label": "默认值",
+        "name": "defaultValue",
+        "type": "string",
+        "desc": "只设置默认值，该组件将成为非受控组件，如果设置了value将会覆盖默认值"
+      },
+      {
+        "label": "值",
+        "name": "value",
+        "type": "string",
+        "desc": "如果设置了value，该组件将成为受控组件"
+      },
+      {
         "label": "禁用",
         "name": "disabled",
         "type": "boolean"
@@ -164,6 +172,59 @@
         "type": "boolean"
       },
       {
+        "label": "点击事件",
+        "name": "onChange",
+        "type": "function"
+      },
+      {
+        "label": "键盘按下事件",
+        "name": "onKeydown",
+        "type": "function"
+      },
+      {
+        "label": "聚焦事件",
+        "name": "onFocus",
+        "type": "function"
+      },
+      {
+        "label": "失焦事件",
+        "name": "onBlur",
+        "type": "function"
+      }
+    ],
+    "isContainer": false,
+    "isOverLayer": false
+  },
+  "Textarea": {
+    "props": [
+      {
+        "label": "占位符",
+        "name": "placeholder",
+        "type": "string",
+        "initialValue": "请输入内容"
+      },
+      {
+        "label": "name",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "label": "行数",
+        "name": "cols",
+        "type": "number",
+        "willProps": {
+          "min": 0
+        }
+      },
+      {
+        "label": "列数",
+        "name": "rows",
+        "type": "number",
+        "willProps": {
+          "min": 0
+        }
+      },
+      {
         "label": "默认值",
         "name": "defaultValue",
         "type": "string",
@@ -174,6 +235,21 @@
         "name": "value",
         "type": "string",
         "desc": "如果设置了value，该组件将成为受控组件"
+      },
+      {
+        "label": "禁用",
+        "name": "disabled",
+        "type": "boolean"
+      },
+      {
+        "label": "只读",
+        "name": "readOnly",
+        "type": "boolean"
+      },
+      {
+        "label": "错误",
+        "name": "error",
+        "type": "boolean"
       },
       {
         "label": "点击事件",
@@ -217,7 +293,7 @@
         "type": "string"
       },
       {
-        "label": "是否禁用",
+        "label": "禁用",
         "name": "disabled",
         "type": "boolean"
       },
@@ -257,14 +333,12 @@
       {
         "label": "尺寸",
         "type": "string",
-        "name": "size",
-        "desc": "100% 或 (number)px"
+        "name": "size"
       },
       {
         "label": "粗细",
         "type": "string",
-        "name": "thickness",
-        "desc": "100% 或 (number)px"
+        "name": "thickness"
       }
     ],
     "isContainer": false,
@@ -283,7 +357,7 @@
         "name": "iconSize"
       },
       {
-        "label": "是否垂直",
+        "label": "垂直",
         "type": "boolean",
         "name": "vertical"
       }
@@ -329,7 +403,7 @@
         "name": "showLessItems"
       },
       {
-        "label": "变化事件",
+        "label": "页码变化事件",
         "type": "function",
         "name": "onChange",
         "willProps": {
@@ -358,7 +432,7 @@
         "type": "string"
       },
       {
-        "label": "是否禁用",
+        "label": "禁用",
         "name": "disabled",
         "type": "boolean"
       },
@@ -434,7 +508,7 @@
         "type": "string"
       },
       {
-        "label": "是否禁用",
+        "label": "禁用",
         "name": "disabled",
         "type": "boolean"
       },
@@ -465,14 +539,14 @@
         "type": "object"
       },
       {
-        "label": "空白提示",
-        "name": "emptyTips",
+        "label": "行ID",
+        "name": "rowKey",
         "type": "string"
       },
       {
-        "label": "紧凑",
-        "name": "isCompact",
-        "type": "boolean"
+        "label": "空白提示",
+        "name": "emptyTips",
+        "type": "string"
       },
       {
         "label": "加载",
@@ -480,14 +554,15 @@
         "type": "boolean"
       },
       {
-        "label": "显示复选框",
+        "label": "允许选择",
         "name": "showCheckbox",
         "type": "boolean"
       },
       {
         "label": "允许跨页选择",
         "name": "canAcrossPageChoose",
-        "type": "boolean"
+        "type": "boolean",
+        "desc": "仅在允许选择时生效"
       },
       {
         "label": "允许设置列宽",
@@ -514,6 +589,7 @@
         "label": "宽度变化事件",
         "name": "widthMapChange",
         "type": "function",
+        "desc": "仅在允许设置列宽时生效",
         "willProps": {
           "args": "widthMap"
         }
@@ -581,6 +657,50 @@
         "type": "function",
         "willProps": {
           "args": "value, e"
+        }
+      }
+    ],
+    "isContainer": false,
+    "isOverLayer": false
+  },
+  "SwiperImage": {
+    "props": [
+      {
+        "label": "图片路径",
+        "name": "images",
+        "type": "object",
+        "will": "imageUrlGroup"
+      },
+      {
+        "label": "默认图片编号",
+        "name": "defaultIndex",
+        "type": "number",
+        "willProps": {
+          "min": 0
+        }
+      },
+      {
+        "label": "禁止自动播放",
+        "name": "disableAutoplay",
+        "type": "boolean"
+      },
+      {
+        "label": "自动播放速度",
+        "name": "autoplaySpeed",
+        "type": "number",
+        "desc": "单位：毫秒"
+      },
+      {
+        "label": "隐藏切换点",
+        "name": "hideDots",
+        "type": "boolean"
+      },
+      {
+        "label": "图片变化事件",
+        "name": "onChange",
+        "type": "function",
+        "willProps": {
+          "args": "value"
         }
       }
     ],

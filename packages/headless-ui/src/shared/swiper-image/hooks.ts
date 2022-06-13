@@ -1,18 +1,18 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 type useNextReturn = {
-  newImages: Array<ImageItem>;
+  newImages: Array<string>;
   current: number;
   setCurrent: Dispatch<SetStateAction<number>>;
   setNext: () => void;
   clearTimer: () => void;
 };
 
-function removeDuplicate(arr: Array<ImageItem>): Array<ImageItem> {
+function removeDuplicate(arr: Array<string>): Array<string> {
   const obj: Record<string, boolean> = {};
-  return arr.reduce(function (newArr: Array<ImageItem>, next: ImageItem) {
-    if (!(next.imgUrl in obj)) {
-      obj[next.imgUrl] = true;
+  return arr.reduce(function (newArr: Array<string>, next: string) {
+    if (!(next in obj)) {
+      obj[next] = true;
       newArr.push(next);
     }
     return newArr;
@@ -20,7 +20,7 @@ function removeDuplicate(arr: Array<ImageItem>): Array<ImageItem> {
 }
 
 function useNext(
-  images: Array<ImageItem>,
+  images: Array<string>,
   defaultIndex: number,
   disableAutoplay: boolean,
   autoplaySpeed: number,

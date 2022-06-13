@@ -39,27 +39,25 @@ function SwiperImage(
       onMouseEnter={() => clearTimer()}
       onMouseLeave={() => !disableAutoplay && setNext()}
     >
-      {newImages.map(({ imgUrl, content }) => {
+      {newImages.map((imgUrl) => {
         return (
           <div
             key={imgUrl}
             style={{ backgroundImage: `url(${imgUrl})` }}
             className={cs('ofa-swiper-image-slide', {
-              'ofa-swiper-image-active': newImages[current].imgUrl === imgUrl,
+              'ofa-swiper-image-active': newImages[current] === imgUrl,
             })}
-          >
-            {content}
-          </div>
+          ></div>
         );
       })}
       {!dots && (
         <ul className='ofa-swiper-image-dots'>
-          {newImages.map(({ imgUrl }, index) => {
+          {newImages.map((imgUrl, index) => {
             return (
               <li
                 key={imgUrl}
                 className={cs('ofa-swiper-image-dot', {
-                  'ofa-swiper-image-dot-active': newImages[current].imgUrl === imgUrl,
+                  'ofa-swiper-image-dot-active': newImages[current] === imgUrl,
                 })}
                 onClick={() => {
                   onChange?.(index);

@@ -1,0 +1,73 @@
+{
+  "key": "Input",
+  "title": "输入框",
+  "specs": [
+    {
+      "title": "默认状态",
+      "componentProps": {},
+      "rules": [
+        {
+          "selector": ".ofa-textarea",
+          "desc": "基础样式",
+          "pseudo": [
+            {
+              "selector": "hover",
+              "desc": "鼠标移入样式"
+            },
+            {
+              "selector": "focus",
+              "desc": "激活状态样式"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "只读",
+      "componentProps": {
+        "readOnly": true,
+        "value": "Test"
+      },
+      "rules": [
+        {
+          "selector": ".ofa-textarea__readOnly",
+          "desc": "只读状态样式"
+        }
+      ]
+    },
+    {
+      "title": "禁止",
+      "componentProps": {
+        "disabled": true
+      },
+      "rules": [
+        {
+          "selector": ".ofa-textarea__disabled",
+          "desc": "禁止状态样式"
+        }
+      ]
+    },
+    {
+      "title": "错误",
+      "componentProps": {
+        "error": true
+      },
+      "rules": [
+        {
+          "selector": ".ofa-textarea__error",
+          "desc": "错误状态样式",
+          "pseudo": [
+            {
+              "selector": "hover",
+              "desc": "鼠标移入样式"
+            },
+            {
+              "selector": "focus",
+              "desc": "激活状态样式"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

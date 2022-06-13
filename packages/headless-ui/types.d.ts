@@ -582,16 +582,21 @@ interface BreadcrumbProps extends BaseProps {
   segmentClass?: string;
   segmentStyle?: React.CSSProperties;
 }
-
-type ImageItem = {
-  imgUrl: string,
-  content: React.ReactNode,
-}
 interface SwiperImageProps extends BaseProps {
-  images: Array<ImageItem>;
+  images: Array<string>;
   defaultIndex?: number;
   disableAutoplay?: boolean;
   autoplaySpeed?: number;
   hideDots?: boolean;
   onChange?: (index: number) => void;
+}
+
+interface TextareaProps extends Omit<InputProps, 'type'> {
+  cols?: number; 
+  rows?: number;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+  onEnterPress?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+  onChange?: (val: string, e: React.ChangeEvent) => void;
+  onFocus?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void; 
 }
