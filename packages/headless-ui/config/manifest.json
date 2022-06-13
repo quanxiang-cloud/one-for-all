@@ -71,6 +71,29 @@
       }
     ]
   },
+  "Textarea": {
+    "category": "表单组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "wrap_text",
+          "initialProps": {
+            "size": 24
+          }
+        },
+        "desc": "多行文本框用于输入",
+        "label": "多行文本",
+        "initialProps": {
+          "placeholder": "请输入内容",
+          "type": "text",
+          "name": "",
+          "col": 5,
+          "row": 5
+        }
+      }
+    ]
+  },
   "CheckboxGroup": {
     "category": "表单组件",
     "variants": [

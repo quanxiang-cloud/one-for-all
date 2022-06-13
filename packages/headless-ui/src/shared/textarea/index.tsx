@@ -20,6 +20,8 @@ function Textarea(
     style,
     error,
     disabled,
+    cols,
+    rows,
     readOnly,
     defaultValue,
     onChange,
@@ -81,6 +83,8 @@ function Textarea(
       value={inputValue}
       disabled={disabled}
       readOnly={readOnly}
+      cols={cols}
+      rows={rows}
       style={style}
       className={cs(
         'ofa-textarea',
