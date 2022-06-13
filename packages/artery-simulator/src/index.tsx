@@ -3,56 +3,14 @@ import type { Artery, Node } from '@one-for-all/artery';
 import cs from 'classnames';
 import { noop } from 'rxjs';
 
-import simulatorRef from 'REF:./simulator/index';
 import Messenger from './lib/messenger';
-import Fence, { InjectElement } from './lib/fence';
+import Fence from './lib/fence';
 import { NodePrimary } from './types';
 import { useSyncResponders, useSyncArtery, useSyncActiveNode, useSyncActiveModalLayer } from './sync-hooks';
 import { MESSAGE_TYPE_ARTERY } from './simulator/constants';
+import buildHeadElements from './build-head-elements';
 
 import './index.scss';
-
-function buildHeadElements(pluginsSrc: string, cssURLs?: Array<string>): InjectElement[] {
-  const importMaps: InjectElement[] = Array.from(document.scripts)
-    .filter((s) => s.type === 'systemjs-importmap')
-    .map((s) => JSON.parse(s.innerText))
-    .map((s) => JSON.stringify(s))
-    .map((s) => ({
-      name: 'script',
-      attrs: { type: 'systemjs-importmap' },
-      innerText: s,
-    }));
-
-  const patchSrc = pluginsSrc.startsWith('http') ? pluginsSrc : `${window.origin}${pluginsSrc}`;
-
-  const headElements = importMaps.concat([
-    // bundle TEMPORARY_PATCH_FOR_ARTERY_PLUGINS as real dll
-    // todo fix me
-    {
-      name: 'script',
-      attrs: { type: 'systemjs-importmap' },
-      innerText: `{
-        "imports": {
-          "TEMPORARY_PATCH_FOR_ARTERY_PLUGINS": "${patchSrc}"
-        }
-      }`,
-    },
-    {
-      name: 'script',
-      attrs: { src: 'https://ofapkg.pek3b.qingstor.com/system@6.10.3/system.6.10.3.min.js' },
-    },
-    {
-      name: 'script',
-      attrs: { src: simulatorRef },
-    },
-  ]);
-
-  const links: InjectElement[] = (cssURLs || []).map((url) => {
-    return { name: 'link', attrs: { rel: 'stylesheet', href: url } };
-  });
-
-  return headElements.concat(links);
-}
 
 export interface Props {
   artery: Artery;
