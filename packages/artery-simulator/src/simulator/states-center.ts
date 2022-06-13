@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
-import { fromJS } from 'immutable';
+import { fromJS, List, setIn } from 'immutable';
 import { BehaviorSubject, Subject, map, Observable, distinctUntilChanged, combineLatest, filter } from 'rxjs';
-import { byArbitrary, ImmutableNode } from '@one-for-all/artery-utils';
+import { byArbitrary, ImmutableNode, insertAt } from '@one-for-all/artery-utils';
 import type { Artery, Node } from '@one-for-all/artery';
 
 import { ContourNode, Cursor, DropRequest, GreenZone } from '../types';
 import { DUMMY_ARTERY_ROOT_NODE_ID } from './constants';
 import { getDropRequest, insertNode, jsonParse, moveNode } from './utils';
+import { _checkIfNodeIsModalLayer } from './cache';
 
 export const contourNodesReport$ = new BehaviorSubject<ContourNode[] | undefined>(undefined);
 export const cursor$ = new Subject<Cursor>();
@@ -52,6 +53,15 @@ export const dropResult$ = onDropEvent$.pipe(
         nodeID: dropRequest.nodeID,
         greenZone: latestFocusedGreenZone$.value,
       });
+    }
+
+    if (
+      dropRequest.type === 'insert_node_request' &&
+      dropRequest.node.type === 'react-component' &&
+      _checkIfNodeIsModalLayer(dropRequest.node)
+    )  {
+      const firstLevelChildren = ((immutableRoot$.value.getIn(['children']) || List()) as unknown as List<any>).push([dropRequest.node]);
+      return setIn(immutableRoot$.value, ['children'], firstLevelChildren);
     }
 
     if (dropRequest.type === 'insert_node_request') {

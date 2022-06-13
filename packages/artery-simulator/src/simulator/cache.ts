@@ -1,4 +1,4 @@
-import { ReactComponentNode } from '@one-for-all/artery-renderer';
+import type { ReactComponentNode } from '@one-for-all/artery';
 import { Set } from 'immutable';
 import { BehaviorSubject } from 'rxjs';
 
@@ -21,6 +21,6 @@ export function _checkIfNodeSupportChildren(node: NodePrimary): boolean | undefi
 export function _checkIfNodeIsModalLayer(node: ReactComponentNode): boolean {
   return !!window.__OVER_LAYER_COMPONENTS.find(({ packageName, exportName }) => {
     // todo fixme
-    return exportName === node.exportName;
+    return exportName === node.exportName && packageName === node.packageName;
   });
 }

@@ -16,6 +16,7 @@ import {
 
 import type { GreenZone, Cursor, Position, NodePrimary, DropRequest } from '../types';
 import { DND_DATA_TRANSFER_TYPE_ARTERY_NODE, DND_DATA_TRANSFER_TYPE_NODE_ID } from './constants';
+import { _checkIfNodeIsModalLayer } from './cache';
 
 const img = new Image();
 img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
