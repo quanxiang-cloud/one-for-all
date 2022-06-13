@@ -137,6 +137,10 @@ export function insertBelowTo(
   projectedDepth: number,
   node: ImmutableNode,
 ): ImmutableNode | undefined {
+  if (targetEntry.id === rootNode.getIn(['id'])) {
+    return _insertChildAt(rootNode, targetEntry.id, 0, node);
+  }
+
   if (projectedDepth === targetEntry.depth) {
     logger.debug(`[artery-outline] move [${node.getIn(['id'])}] to right of [${targetEntry.id}]`);
 
