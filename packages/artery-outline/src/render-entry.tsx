@@ -55,7 +55,19 @@ function RenderEntry({
     <div
       ref={setDroppableNodeRef}
       style={style}
-      className={cs('outline-entry', { 'outline-entry--dragging': isDragging, 'outline-entry--selected': isSelected })}
+      onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+        // only fire onClick event when click entry name or the most outside div
+        if (
+          e.target === e.currentTarget ||
+          (e.target as HTMLDivElement).className.indexOf('outline-entry__name') !== -1
+        ) {
+          onClick();
+        }
+      }}
+      className={cs('outline-entry', {
+        'outline-entry--dragging': isDragging,
+        'outline-entry--selected': isSelected,
+      })}
     >
       <div
         className={cs('outline-entry-content', {
@@ -93,7 +105,7 @@ function RenderEntry({
                 }}
               />
             ) : (
-              <span onClick={onClick} onDoubleClick={() => setRenaming(true)} className="outline-entry__name">
+              <span onDoubleClick={() => setRenaming(true)} className="outline-entry__name">
                 {name}
               </span>
             )}

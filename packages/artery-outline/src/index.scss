@@ -6,6 +6,10 @@
   color: #222;
   background-color: white;
   border-radius: 4px;
+
+  &:hover {
+    background-color: #f0f6ff;
+  }
 }
 
 .outline-entry--dragging {
@@ -13,7 +17,7 @@
 }
 
 .outline-entry--selected:not(.outline-entry--dragging) {
-  background-color: #DEE9FF;
+  background-color: #dee9ff;
 }
 
 // .outline-entry-content--isOver {
@@ -59,6 +63,7 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  user-select: none;
 }
 
 .action {
