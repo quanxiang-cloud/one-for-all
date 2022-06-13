@@ -1,5 +1,5 @@
-import type { NodePrimary } from '@one-for-all/artery-simulator';
+import type { NodePrimary } from '@one-for-all/artery-simulator/lib/types';
 
-export function isSupportChildren(node: NodePrimary): Promise<boolean> {
-  return Promise.resolve(true);
+export function isContainer(node: NodePrimary): boolean {
+  return true;
 }

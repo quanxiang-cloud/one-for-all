@@ -41,7 +41,7 @@ export function onChangeArtery(artery: Artery): void {
   messenger.send(MESSAGE_TYPE_ARTERY, artery);
 }
 
-export function checkNodeSupportChildren(node: NodePrimary): Promise<boolean> {
+export function checkNodeIsContainer(node: NodePrimary): Promise<boolean> {
   return messenger.request<NodePrimary, boolean>(MESSAGE_TYPE_CHECK_NODE_SUPPORT_CHILDREN, node);
 }
 

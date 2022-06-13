@@ -26,7 +26,7 @@ export interface Props {
   // todo a better design
   cssURLs?: Array<string>;
   className?: string;
-  isNodeSupportChildren: (node: NodePrimary) => Promise<boolean>;
+  isContainer: (node: NodePrimary) => boolean;
   overLayerComponents: Array<{ packageName: string; exportName: string }>;
 }
 
@@ -41,7 +41,7 @@ function Simulator(
     artery,
     className,
     cssURLs,
-    isNodeSupportChildren,
+    isContainer,
     onChange,
     pluginsSrc,
     setActiveOverLayerNodeID,
@@ -77,7 +77,7 @@ function Simulator(
     iframeRef.current.contentWindow.__OVER_LAYER_COMPONENTS = overLayerComponents;
   }, [iframeLoad]);
 
-  useSyncResponders(messenger, isNodeSupportChildren);
+  useSyncResponders(messenger, isContainer);
   useSyncArtery(messenger, onChange, artery);
   useSyncActiveNode(messenger, setActiveNode, activeNode);
   useSyncActiveModalLayer(messenger, setActiveOverLayerNodeID, activeOverLayerNodeID);

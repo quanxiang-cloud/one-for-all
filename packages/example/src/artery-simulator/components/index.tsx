@@ -4,7 +4,7 @@ import { travel } from '@one-for-all/artery-utils';
 
 import arteryForTestingSimulator from './artery-for-testing-simulator';
 import ArterySpec, { Artery, Node } from '@one-for-all/artery';
-import { isSupportChildren } from './helper';
+import { isContainer } from './helper';
 
 import './index.scss';
 
@@ -77,7 +77,7 @@ function SimulatorInExample(): JSX.Element {
         setActiveOverLayerNodeID={setActiveModalLayer}
         setActiveNode={setActiveNode}
         onChange={setArtery}
-        isNodeSupportChildren={isSupportChildren}
+        isContainer={isContainer}
         overLayerComponents={__OVER_LAYER_COMPONENTS}
       />
     </div>

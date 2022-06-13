@@ -11,7 +11,7 @@ import { NodePrimary } from './types';
 
 export function useSyncResponders(
   messenger: Messenger | undefined,
-  isNodeSupportChildren: (node: NodePrimary) => Promise<boolean>,
+  isNodeSupportChildren: (node: NodePrimary) => boolean,
 ) {
   useEffect(() => {
     if (!messenger) {

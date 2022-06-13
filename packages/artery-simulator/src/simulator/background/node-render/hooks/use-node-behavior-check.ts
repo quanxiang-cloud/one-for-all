@@ -4,7 +4,7 @@ import { noop } from 'rxjs';
 import { NodePrimary } from '../../../../types';
 import { _cacheIsNodeSupportChildren, _checkIfNodeSupportChildren } from '../../../cache';
 import { HTMLNode, ReactComponentNode } from '@one-for-all/artery-renderer';
-import { checkNodeSupportChildren } from '../../../bridge';
+import { checkNodeIsContainer } from '../../../bridge';
 
 function asyncCheckIfNodeSupportChildren(node: NodePrimary): Promise<boolean> {
   const flag = _checkIfNodeSupportChildren(node);
@@ -12,7 +12,7 @@ function asyncCheckIfNodeSupportChildren(node: NodePrimary): Promise<boolean> {
     return Promise.resolve(flag);
   }
 
-  return checkNodeSupportChildren(node).then((isSupportChildren) => {
+  return checkNodeIsContainer(node).then((isSupportChildren) => {
     _cacheIsNodeSupportChildren(node, isSupportChildren);
 
     return isSupportChildren;

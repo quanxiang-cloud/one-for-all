@@ -22,7 +22,7 @@ interface Frame<T = any> {
   name: string;
 }
 
-type Responder = (data: any) => Promise<any>;
+type Responder = (data: any) => any;
 
 export default class Messenger {
   target: Window;
