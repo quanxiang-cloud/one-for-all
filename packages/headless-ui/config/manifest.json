@@ -228,17 +228,70 @@
             {
               "width": 100,
               "fixed": false,
-              "Header": "第一列",
-              "id": "col1",
-              "accessor": "col1"
+              "Header": "Dessert",
+              "id": "dessert",
+              "accessor": "dessert"
+            },
+            {
+              "Header": "Calories",
+              "id": "calories",
+              "accessor": "calories"
+            },
+            {
+              "Header": "Fat (g)",
+              "id": "fat",
+              "accessor": "fat"
+            },
+            {
+              "Header": "Carbs (g)",
+              "id": "carbs",
+              "accessor": "carbs"
+            },
+            {
+              "Header": "Protein (g)",
+              "id": "protein",
+              "accessor": "protein"
             }
           ],
           "data": [
             {
-              "col1": "第一列数据"
+              "dessert": "Frozen yoghurt",
+              "calories": 159,
+              "fat": 6,
+              "carbs": 24,
+              "protein": 4
+            },
+            {
+              "dessert": "Ice cream sandwich",
+              "calories": 237,
+              "fat": 9,
+              "carbs": 37,
+              "protein": 4.3
+            },
+            {
+              "dessert": "Eclair",
+              "calories": 262,
+              "fat": 16,
+              "carbs": 24,
+              "protein": 6
+            },
+            {
+              "dessert": "Cupcake",
+              "calories": 305,
+              "fat": 3.7,
+              "carbs": 67,
+              "protein": 4.3
+            },
+            {
+              "dessert": "Gingerbread",
+              "calories": 356,
+              "fat": 16,
+              "carbs": 49,
+              "protein": 3.9
             }
           ],
-          "emptyTips": "无数据"
+          "emptyTips": "无数据",
+          "rowKey": "dessert"
         }
       }
     ]
@@ -319,6 +372,27 @@
           "deleteIconSize": 12,
           "disabled": false,
           "modifier": ""
+        }
+      }
+    ]
+  },
+  "SwiperImage": {
+    "category": "高级组件",
+    "variants": [
+      {
+        "icon": {
+          "type": "platform",
+          "name": "swap_horiz",
+          "initialProps": {}
+        },
+        "desc": "轮播图片",
+        "label": "轮播图",
+        "initialProps": {
+          "images": [""],
+          "defaultIndex": 0,
+          "disableAutoplay": false,
+          "autoplaySpeed": 3000,
+          "hideDots": false
         }
       }
     ]
