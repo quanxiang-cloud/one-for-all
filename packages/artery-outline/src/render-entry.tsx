@@ -59,7 +59,7 @@ function RenderEntry({
         // only fire onClick event when click entry name or the most outside div
         if (
           e.target === e.currentTarget ||
-          (e.target as HTMLDivElement).className.indexOf('outline-entry__name') !== -1
+          (e.target as HTMLElement).dataset.entryName
         ) {
           onClick();
         }
@@ -105,7 +105,7 @@ function RenderEntry({
                 }}
               />
             ) : (
-              <span onDoubleClick={() => setRenaming(true)} className="outline-entry__name">
+              <span onDoubleClick={() => setRenaming(true)} className="outline-entry__name" data-entry-name={name}>
                 {name}
               </span>
             )}
