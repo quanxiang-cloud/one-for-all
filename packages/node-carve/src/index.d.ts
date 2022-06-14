@@ -19,7 +19,7 @@ declare module NodeCarvePropSpec {
    * and it follows Progressive enhancement principle
    * we will provide more and more enhance types
    */
-  type EnhanceWillTypes = 'ImageUrl' | 'FunctionBind' | 'VaribleBind';
+  type EnhanceWillTypes = 'ImageUrl' | 'ImageUrlGroup' | 'FunctionBind' | 'VaribleBind';
 
   type ImageUrlProps = {}
 
