@@ -12,11 +12,11 @@
     "lib"
   ],
   "scripts": {
-    "build": "yarn run clean && tsc --build tsconfig.json",
+    "build": "yarn run clean && tsc --build tsconfig.json && tsc --build tsconfig-es.json",
     "build-storybook": "build-storybook",
-    "bundle": "yarn run build && rollup -c && node scripts/generate-interface-list.js",
+    "bundle": "yarn run build && rollup -c && node scripts/generate-interface-list.js && node scripts/generate-artery-config.js",
     "bundle:watch": "rollup -c -w",
-    "clean": "rm -rf dist lib",
+    "clean": "rm -rf dist lib artery-configs",
     "lint": "eslint src/**/*.ts --fix",
     "pack": "yarn pack",
     "storybook": "start-storybook -p 6006",
@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@babel/core": "~7.17.5",
+    "@one-for-all/node-carve": "0.1.0",
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rollup/plugin-replace": "^4.0.0",
