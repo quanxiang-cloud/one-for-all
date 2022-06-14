@@ -18,8 +18,8 @@
   },
   "dependencies": {
     "@one-for-all/artery": "0.16.0",
-    "@one-for-all/artery-engine": "1.2.1",
-    "@one-for-all/artery-renderer": "0.21.0",
+    "@one-for-all/artery-engine": "1.5.0",
+    "@one-for-all/artery-renderer": "0.21.1",
     "@one-for-all/artery-utils": "0.18.1",
     "@one-for-all/elements-radar": "0.3.0",
     "@one-for-all/headless-ui": "0.5.0",
