@@ -10,5 +10,7 @@
       "path": "../icon"
     }
   ],
-  "include": ["src/**/*", "./global.d.ts", "./types.d.ts"]
+  "include": ["src/**/*", "./global.d.ts", "./types.d.ts"],
+  "exclude": ["**/__tests__/*", "**/artery-config.ts"]
 }
+

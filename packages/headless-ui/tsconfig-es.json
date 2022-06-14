@@ -1,0 +1,11 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+      "outDir": "artery-configs",
+      "rootDir": ".",
+      "module": "ES6"
+    },
+    "include": ["**/artery-config.ts"]
+  }
+  
+  
