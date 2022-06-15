@@ -20,7 +20,7 @@
     "@one-for-all/artery-simulator": "1.5.0",
     "@one-for-all/artery-utils": "0.18.1",
     "@one-for-all/elements-radar": "0.3.0",
-    "@one-for-all/headless-ui": "0.7.0",
+    "@one-for-all/headless-ui": "0.8.0",
     "@one-for-all/icon": "0.6.2",
     "@one-for-all/style-guide": "0.1.3",
     "classnames": "^2.3.1",
