@@ -28,6 +28,11 @@ const propsSpec: PropsSpec = {
       type: 'boolean',
     },
     {
+      label: '模态框标题',
+      name: 'title',
+      type: 'string',
+    },
+    {
       label: '确认按钮动作',
       name: 'onOk',
       type: 'function',
