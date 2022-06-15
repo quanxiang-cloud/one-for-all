@@ -102,14 +102,15 @@ draggingNodeID$
   )
   .subscribe(draggingArteryImmutableNode$);
 
-activeOverLayerNodeID$
+
+combineLatest({ immutableRoot: immutableRoot$, activeOverLayerNodeID: activeOverLayerNodeID$})
   .pipe(
-    map((activeModalRootID) => {
-      if (!activeModalRootID) {
+    map(({ activeOverLayerNodeID }) => {
+      if (!activeOverLayerNodeID) {
         return undefined;
       }
 
-      const keyPath = byArbitrary(immutableRoot$.value, activeModalRootID);
+      const keyPath = byArbitrary(immutableRoot$.value, activeOverLayerNodeID);
       if (!keyPath) {
         return undefined;
       }
