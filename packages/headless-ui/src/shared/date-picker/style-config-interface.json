@@ -1,0 +1,16 @@
+{
+  "key": "DatePicker",
+  "title": "时间选择器",
+  "specs": [
+    {
+      "title": "默认状态",
+      "componentProps": {},
+      "rules": [
+        {
+          "selector": ".ofa-date-picker",
+          "desc": "外层容器样式"
+        }
+      ]
+    }
+  ]
+}

@@ -10,6 +10,9 @@ declare module NodeCarvePropSpec {
     | 'NumberPicker'
     | 'Select'
     | 'Switch'
+    | 'DatePicker'
+    | 'TimePicker'
+    | 'DateTimePicker'
     | 'Checkbox'
     | 'RadioGroup'
     | 'CheckboxGroup';
