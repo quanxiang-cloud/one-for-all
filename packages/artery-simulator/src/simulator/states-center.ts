@@ -60,7 +60,7 @@ export const dropResult$ = onDropEvent$.pipe(
       dropRequest.node.type === 'react-component' &&
       _checkIfNodeIsModalLayer(dropRequest.node)
     )  {
-      const firstLevelChildren = ((immutableRoot$.value.getIn(['children']) || List()) as unknown as List<any>).push([dropRequest.node]);
+      const firstLevelChildren = ((immutableRoot$.value.getIn(['children']) || List()) as unknown as List<any>).push(dropRequest.node);
       return setIn(immutableRoot$.value, ['children'], firstLevelChildren);
     }
 
