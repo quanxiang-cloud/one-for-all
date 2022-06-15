@@ -1,4 +1,3 @@
-import type { ReactComponentNode } from '@one-for-all/artery';
 import { Set } from 'immutable';
 import { BehaviorSubject } from 'rxjs';
 
@@ -18,7 +17,11 @@ export function _checkIfNodeSupportChildren(node: NodePrimary): boolean | undefi
   return isNodeSupportChildrenCache.get(getNodeExecutor(node));
 }
 
-export function _checkIfNodeIsModalLayer(node: ReactComponentNode): boolean {
+export function _checkIfNodeIsModalLayer(node: NodePrimary): boolean {
+  if (node.type !== 'react-component') {
+    return false;
+  }
+
   return !!window.__OVER_LAYER_COMPONENTS.find(({ packageName, exportName }) => {
     // todo fixme
     return exportName === node.exportName && packageName === node.packageName;
