@@ -1,4 +1,4 @@
-import { PropsSpec } from "packages/node-carve/src";
+import { PropsSpec } from "@one-for-all/node-carve";
 
 const manifest = {
   category: '表单组件',
@@ -9,8 +9,8 @@ const manifest = {
         name: 'calendar_today',
         initialProps: {},
       },
-      desc: '日期选择器',
-      label: '可以选择日期',
+      desc: '可以选择日期',
+      label: '日期选择器',
       initialProps: {},
     },
   ],
