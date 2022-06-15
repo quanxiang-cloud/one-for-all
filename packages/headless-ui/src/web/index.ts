@@ -14,6 +14,8 @@ import Table from '../shared/table';
 import Tag from '../shared/tag';
 import usePopper from '../shared/popper';
 import SwiperImage from '../shared/swiper-image';
+import Textarea from '../shared/textarea';
+import { DatePicker, DateTimePicker, TimePicker } from '../shared/date-picker';
 
 import '../css/index.css';
 
@@ -24,6 +26,7 @@ export {
   CheckboxGroup,
   Divider,
   Input,
+  Textarea,
   Loading,
   MediocreDialog,
   Pagination,
@@ -36,4 +39,7 @@ export {
   Table,
   Tag,
   usePopper,
+  DatePicker,
+  DateTimePicker,
+  TimePicker,
 };

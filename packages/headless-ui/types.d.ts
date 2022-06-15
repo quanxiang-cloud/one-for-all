@@ -195,7 +195,7 @@ interface CascaderOptionType {
   children?: CascaderOptionType[];
 }
 
-type PopupPlacement = 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
+type PopupPlacement = 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end';
 
 interface FilledFieldNamesType {
   value: NumberString;
@@ -599,4 +599,32 @@ interface TextareaProps extends Omit<InputProps, 'type'> {
   onChange?: (val: string, e: React.ChangeEvent) => void;
   onFocus?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
   onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void; 
+}
+
+type DatePickerValueType = Date | string;
+type DatePickerModeType = 'time' | 'date' | 'month' | 'quarter' | 'year';
+type DatePickerTimeAccuracyType = 'hour' | 'minute' | 'second';
+interface DatePickerProps extends BaseProps {
+  defaultValue?: DatePickerValueType;
+  value?: DatePickerValueType;
+  disabled?: boolean;
+  popupClassName?: string;
+  popupStyle?: React.CSSProperties;
+  placeholder?: string;
+  inputReadOnly?: boolean;
+  hiddenPresent?: boolean;
+  timeAccuracy?: DatePickerTimeAccuracyType;
+  placement?: PopupPlacement;
+  mode?: DatePickerModeType;
+  nextIcon?: React.ReactNode;
+  prevIcon?: React.ReactNode;
+  superNextIcon?: React.ReactNode;
+  superPrevIcon?: React.ReactNode;
+  suffixIcon?: React.ReactNode;
+  format?: ((date: Date) => string) | string;
+  dateRender?: (currentDate: Date, pickDate: Date | undefined) => React.ReactNode; // no
+  disabledDate?: (date: Date) => boolean;
+  disabledTime?: (type: DatePickerTimeAccuracyType, time: number) => boolean;
+  onOpenChange?: (open: boolean) => void;
+  onChange?: (date: Date | undefined) => void;
 }

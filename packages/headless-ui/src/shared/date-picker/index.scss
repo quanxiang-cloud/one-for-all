@@ -1,0 +1,190 @@
+.ofa-date-picker {
+  display: inline-block;
+}
+
+.ofa-date-picker-input {
+  display: flex;
+  align-items: center;
+  border: 1px solid #d9d9d9;
+  padding: 5px;
+  &.is-disabled {
+    cursor: not-allowed;
+    color: #00000040;
+    background: #f5f5f5;
+    .ofa-svg-icon {
+      cursor: not-allowed;
+    }
+  }
+  & > input {
+    border: none;
+    outline: none;
+    background-color: transparent;
+  }
+  .ofa-svg-icon {
+    cursor: pointer;
+  }
+}
+
+.ofa-date-picker-panel {
+  margin-top: 4px;
+  background-color: #fff;
+  box-shadow: 0 3px 6px -4px rgb(0 0 0 / 12%), 0 6px 16px 0 rgb(0 0 0 / 8%), 0 9px 28px 8px rgb(0 0 0 / 5%);
+  .ofa-date-picker-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom: 1px solid #d9d9d9;
+    .ofa-date-picker-time {
+      flex: 1;
+      text-align: center;
+    }
+    .ofa-date-picker-icon-box  {
+      display: inline-flex;
+      cursor: pointer;
+      &:hover {
+        background-color: #d9d9d9;
+      }
+    }
+  }
+  .ofa-pick-time-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid #d9d9d9;
+    padding: 10px 0;
+    flex: 1;
+  }
+  .ofa-pick-time-container {
+    display: flex;
+    height: 180px;
+    &.left-border-none {
+      .ofa-pick-time-column:first-child {
+        border-left: none;
+      }
+    }
+    .ofa-pick-time-column {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow-y: auto;
+      border-left: 1px solid #d9d9d9;
+      &>span {
+        text-align: center;
+        cursor: pointer;
+        padding: 5px 20px 5px 10px;
+        &:hover {
+          background-color: #d9d9d9;
+        }
+        &.is-selected {
+          background-color: aqua;
+        }
+        &.is-disabled {
+          color: #00000040;
+          background: #f5f5f5;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+  .ofa-date-picker-body {
+    display: flex;
+  }
+  .ofa-date-picker-footer {
+    text-align: center;
+    border-top: 1px solid #d9d9d9;
+    .ofa-date-picker-common-footer {
+      position: relative;
+      padding: 10px;
+      .ofa-date-picker-text-button {
+        float: left;
+      }
+      button {
+        float: right;
+      }
+      &::after {
+        content: '.';
+        clear: both;
+        height: 0;
+        display: block;
+        visibility: hidden;
+      }
+    }
+  }
+  .ofa-date-picker-common-header {
+    display: flex;
+    align-items: center;
+    width: 240px;
+    padding: 10px;
+  }
+  .ofa-pick-date,
+  .ofa-pick-year,
+  .ofa-pick-month,
+  .ofa-pick-century,
+  .ofa-pick-quarter {
+    display: grid;
+    width: 240px;
+    padding: 10px;
+    & > span {
+      text-align: center;
+    }
+  }
+  .ofa-pick-date {
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 5px;
+  }
+  .ofa-pick-year,
+  .ofa-pick-month {
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+  }
+  .ofa-pick-century {
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px 5px;
+    font-size: 14px;
+  }
+  .ofa-pick-quarter {
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
+  }
+  .ofa-pick-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    &:hover {
+      background-color: #d9d9d9;
+    }
+    &.is-other-panel {
+      background: #f5f5f5;
+    }
+    &.is-today {
+      border: 1px solid aqua;
+    }
+    &.is-selected {
+      background-color: aqua;
+    }
+    &.is-disabled {
+      color: #00000040;
+      background: #f5f5f5;
+      border: none;
+      cursor: not-allowed;
+    }
+  }
+  .ofa-date-picker-text-button {
+    cursor: pointer;
+    &:hover {
+      color: aqua;
+    }
+    &:not(:last-child) {
+      margin-right: 5px;
+    }
+    &.is-disabled {
+      color: #00000040;
+      background: #f5f5f5;
+      cursor: not-allowed;
+    }
+  }
+}
