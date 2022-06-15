@@ -1,4 +1,4 @@
-import { PropsSpec } from 'packages/node-carve/src';
+import { PropsSpec } from '@one-for-all/node-carve';
 
 const manifest = {
   category: '表单组件',
@@ -9,8 +9,8 @@ const manifest = {
         name: 'date_range',
         initialProps: {},
       },
-      desc: '日期时间选择器',
-      label: '可以选择日期时间',
+      desc: '可以选择日期时间',
+      label: '日期时间选择器',
       initialProps: {
         timeAccuracy: "second"
       },
