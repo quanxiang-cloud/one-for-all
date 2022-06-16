@@ -3,10 +3,6 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import DatePicker from '../shared/date-picker';
 
-function consoleDate(date: Date): void {
-  console.log(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds());
-}
-
 const datePickerMeta: ComponentMeta<typeof DatePicker> = {
   title: 'headless-ui/DatePicker',
   component: DatePicker,
@@ -208,7 +204,6 @@ Normal.args = {
   },
   onChange(date) {
     if (!date) return;
-    consoleDate(date);
   },
   disabledDate(date) {
     return date.getFullYear() === 2022;
