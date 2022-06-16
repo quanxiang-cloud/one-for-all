@@ -23,6 +23,14 @@ export const defaultFormatMap: {[key in DatePickerModeType]: string} = {
   'year': 'YYYY',
 };
 
+export function getDefaultFormat(mode: DatePickerModeType, timeAccuracy?: DatePickerTimeAccuracyType) {
+  let formatStr = defaultFormatMap[mode];
+  if (mode === 'date' && timeAccuracy) {
+    formatStr = 'YYYY-MM-DD HH:mm:ss';
+  }
+  return formatStr;
+}
+
 export function isLegalDate(dateStr: string, mode: DatePickerModeType): boolean {
   return dayjs(transformDate(dateStr, mode)).isValid();
 };
@@ -113,4 +121,14 @@ export function scrollTo(dom: HTMLElement, location: number, delay?: number): vo
     requestAnimationFrame(() => scrollByTimes(dom, location, speed, times - 1));
   }
   requestAnimationFrame(() => scrollByTimes(dom, location, speed, times));
+}
+
+export function formatDate(date: Dayjs | undefined, format: ((date: Date) => string) | string): string {
+  if (!date) return '';
+
+  if (typeof format === 'string') {
+    return date.format(format).replace('Q', getQuarterByMonth(date.month()));
+  } else {
+    return format(date.toDate());
+  }
 }

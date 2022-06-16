@@ -3,7 +3,7 @@ import cs from 'classnames';
 import Icon from '@one-for-all/icon';
 import dayjs, { Dayjs } from 'dayjs';
 
-import { isLegalDate, transformDate, getQuarterByMonth, defaultFormatMap } from '../utils';
+import { isLegalDate, transformDate, formatDate } from '../utils';
 
 interface Props {
   placeholder?: string;
@@ -12,7 +12,7 @@ interface Props {
   readOnly?: boolean;
   suffixIcon?: React.ReactNode;
   mode: DatePickerModeType;
-  format?: ((date: Date) => string) | string;
+  format: ((date: Date) => string) | string;
   timeAccuracy?: DatePickerTimeAccuracyType;
   onChangeInput?: (date: Dayjs) => boolean;
   onClick?: (e: React.MouseEvent) => void;
@@ -29,7 +29,6 @@ function DatePickerInput(
     suffixIcon,
     mode,
     format,
-    timeAccuracy,
     onChangeInput,
     onBlur,
     onClick,
@@ -37,11 +36,11 @@ function DatePickerInput(
   }: Props,
   ref?: Ref<HTMLDivElement>,
 ) {
-  const [inputValue, setInputValue] = useState(formatDate(date));
+  const [inputValue, setInputValue] = useState(formatDate(date, format));
   const [hover, setHover] = useState(false);
 
   useEffect(() => {
-    setInputValue(formatDate(date));
+    setInputValue(formatDate(date, format));
   }, [date]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -50,7 +49,7 @@ function DatePickerInput(
 
   function handleBlur() {
     onBlur?.();
-    setInputValue(formatDate(date));
+    setInputValue(formatDate(date, format));
   };
 
   function handleKeyDown(e: React.KeyboardEvent) {
@@ -58,31 +57,12 @@ function DatePickerInput(
     if (inputValue && isLegalDate(inputValue, mode)) {
       const inputDate = dayjs(transformDate(inputValue, mode));
       if (onChangeInput?.(inputDate) === false) {
-        setInputValue(formatDate(date));
+        setInputValue(formatDate(date, format));
       }
     } else {
-      setInputValue(formatDate(date));
+      setInputValue(formatDate(date, format));
     }
   };
-
-  function formatDate(date: Dayjs | undefined): string {
-    if (!date) return '';
-  
-    if (typeof format === 'string') {
-      return date.format(format).replace('Q', getQuarterByMonth(date.month()));
-    }
-  
-    if (typeof format === 'function') {
-      return format(date.toDate());
-    }
-  
-    let formatStr = defaultFormatMap[mode];
-    if (mode === 'date' && timeAccuracy) {
-      formatStr = 'YYYY-MM-DD HH:mm:ss';
-    }
-  
-    return date.format(formatStr).replace('Q', getQuarterByMonth(date.month()));
-  }
 
   return (
     <div

@@ -626,5 +626,5 @@ interface DatePickerProps extends BaseProps {
   disabledDate?: (date: Date) => boolean;
   disabledTime?: (type: DatePickerTimeAccuracyType, time: number) => boolean;
   onOpenChange?: (open: boolean) => void;
-  onChange?: (date: Date | undefined) => void;
+  onChange?: (date: Date | string | undefined) => void;
 }

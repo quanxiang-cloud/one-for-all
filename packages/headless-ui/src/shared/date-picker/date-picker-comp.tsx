@@ -7,7 +7,7 @@ import './index.scss';
 import usePopper from '../popper';
 import DatePickerInput from './components/datePickerInput';
 import DatePickerPanel, { RenderHeaderProps, RenderBodyProps, RenderFooterProps } from './components/datePickerPanel';
-import { PickScope, transformDate } from './utils';
+import { formatDate, getDefaultFormat, PickScope, transformDate } from './utils';
 import RenderBody from './components/renderBody'
 import RenderHeader from './components/renderHeader';
 import RenderFooter from './components/renderFooter';
@@ -47,6 +47,7 @@ ref?: Ref<HTMLDivElement>): JSX.Element {
     if (mode === 'time' && !timeAccuracy) return 'second';
     if (['time', 'date'].includes(mode)) return timeAccuracy;
   }, [mode, timeAccuracy]);
+  const formatWays = format || getDefaultFormat(mode, timeAccuracy);
 
   useEffect(() => createDateByValue(defaultValue), []);
 
@@ -72,7 +73,12 @@ ref?: Ref<HTMLDivElement>): JSX.Element {
       return false;
     }
     setDate(date);
-    onChange?.(date?.toDate());
+    if(format || mode === 'time') {
+      onChange?.(formatDate(date, formatWays))
+    } else {
+      onChange?.(date?.toDate());
+    }
+
     close();
     return true;
   };
@@ -139,12 +145,12 @@ ref?: Ref<HTMLDivElement>): JSX.Element {
         readOnly={inputReadOnly}
         suffixIcon={suffixIcon}
         mode={mode}
-        format={format}
+        format={formatWays}
         timeAccuracy={_timeAccuracy}
         onClick={(e) => !disabled && handleClick()(e)}
         onBlur={handleBlur}
         onChangeInput={handleChange}
-        onClear={() => setDate(undefined)}
+        onClear={() => { setDate(undefined); onChange?.(undefined) }}
       />
       <Popper placement={placement} className={popupClassName} style={popupStyle}>
         <DatePickerPanel

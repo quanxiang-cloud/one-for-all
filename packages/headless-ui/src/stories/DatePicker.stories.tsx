@@ -3,8 +3,19 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import DatePicker from '../shared/date-picker';
 
-function consoleDate(date: Date): void {
-  console.log(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds());
+function consoleDate(date: Date | string): void {
+  if (typeof date === 'string') {
+    console.log(date);
+  } else {
+    console.log(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      date.getHours(),
+      date.getMinutes(),
+      date.getSeconds(),
+    );
+  }
 }
 
 const datePickerMeta: ComponentMeta<typeof DatePicker> = {
@@ -214,14 +225,18 @@ Normal.args = {
     return date.getFullYear() === 2022;
     // return date.getMonth() === 4;
     // return [2,5,6,8,10].includes(date.getDate());
-  }
-}
+  },
+};
 
-export const Date = Template.bind({});
-Date.args = {
+export const Dates = Template.bind({});
+Dates.args = {
   defaultValue: '2019-10-02',
   mode: 'date',
-}
+  onChange(date) {
+    if (!date) return;
+    consoleDate(date);
+  },
+};
 
 export const DateTime = Template.bind({});
 DateTime.args = {
@@ -229,16 +244,24 @@ DateTime.args = {
   mode: 'date',
   timeAccuracy: 'second',
   disabledTime(type, time) {
-    if (type === 'hour') return [3,5,7].includes(time);
+    if (type === 'hour') return [3, 5, 7].includes(time);
     return false;
-  }
-}
+  },
+  onChange(date) {
+    if (!date) return;
+    consoleDate(date);
+  },
+};
 
 export const Month = Template.bind({});
 Month.args = {
   defaultValue: '2019-10',
   mode: 'month',
-}
+  onChange(date) {
+    if (!date) return;
+    consoleDate(date);
+  },
+};
 
 export const Quarter = Template.bind({});
 Quarter.args = {
@@ -247,31 +270,47 @@ Quarter.args = {
   disabledDate(date) {
     // consoleDate(date);
     return date.getMonth() === 3;
-  }
-}
+  },
+  onChange(date) {
+    if (!date) return;
+    consoleDate(date);
+  },
+};
 
 export const Year = Template.bind({});
 Year.args = {
   defaultValue: '2019',
   mode: 'year',
-}
+  onChange(date) {
+    if (!date) return;
+    consoleDate(date);
+  },
+};
 
 export const Time = Template.bind({});
 Time.args = {
   defaultValue: '10:09:10',
   mode: 'time',
   disabledTime(type, time) {
-    if (type === 'hour') return [3,5,7].includes(time);
+    if (type === 'hour') return [3, 5, 7].includes(time);
     return false;
-  }
-}
+  },
+  onChange(date) {
+    if (!date) return;
+    consoleDate(date);
+  },
+};
 
 export const formatCustom = Template.bind({});
 formatCustom.args = {
   timeAccuracy: 'minute',
   format: 'YY/MM-DD HH:mm',
+  onChange(date) {
+    if (!date) return;
+    consoleDate(date);
+  },
   // format: (date: Date) => `custom: ${date.getFullYear()}-----${date.getMonth()}`
-}
+};
 
 export const CustomIcon = Template.bind({});
 CustomIcon.args = {
@@ -279,10 +318,10 @@ CustomIcon.args = {
   nextIcon: <span style={{ margin: '0 5px' }}>&gt;</span>,
   prevIcon: <span style={{ margin: '0 5px' }}>&lt;</span>,
   superNextIcon: <span>&gt;&gt;</span>,
-  superPrevIcon: <span>&lt;&lt;</span>
-}
+  superPrevIcon: <span>&lt;&lt;</span>,
+};
 
 export const Disabled = Template.bind({});
 Disabled.args = {
   disabled: true,
-}
+};
