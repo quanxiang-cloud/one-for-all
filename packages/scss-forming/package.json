@@ -2,7 +2,7 @@
   "name": "@one-for-all/scss-forming",
   "version": "1.0.0",
   "description": "Transforming/Manipulating SCSS in browser",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "type": "module",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

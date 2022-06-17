@@ -3,7 +3,7 @@
   "version": "0.8.1",
   "description": "Migration of qxp-web base components",
   "homepage": "",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "type": "module",
   "main": "lib/src/web/index.js",
   "module": "lib",
