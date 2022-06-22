@@ -57,7 +57,6 @@ npm install @one-for-all/artery-renderer
 ```jsx
 import React from 'react';
 import { RefLoader, Repository, ArteryRenderer } from '@one-for-all/artery-renderer';
-<<<<<<< HEAD
 
 const plugins: Plugins = {
   apiSpecAdapter?: APISpecAdapter,
@@ -70,13 +69,6 @@ function Demo() {
   const Artery = getArteryBySomeway();
 
   return (<ArteryRenderer Artery={Artery} plugins={plugins} />);
-=======
-
-function Demo() {
-  const artery = getArteryBySomeway();
-
-  return (<ArteryRenderer artery={artery} />);
->>>>>>> 11c69f4b (docs: Update artery-renderer docs)
 }
 
 ```
