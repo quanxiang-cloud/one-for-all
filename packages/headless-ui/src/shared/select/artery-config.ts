@@ -78,11 +78,6 @@ const propsSpec: PropsSpec = {
       type: 'string',
     },
     {
-      label: '值',
-      name: 'value',
-      type: 'string',
-    },
-    {
       label: '默认值',
       name: 'defaultValue',
       type: 'string',
@@ -96,6 +91,12 @@ const propsSpec: PropsSpec = {
       label: '变化事件',
       name: 'onChange',
       type: 'function',
+    },
+    {
+      label: "选项样式",
+      name: "optionClassName",
+      type: "string",
+      will: "ClassName"
     },
     {
       label: '选项显隐事件',

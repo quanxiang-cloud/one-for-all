@@ -64,6 +64,18 @@ const propsSpec: PropsSpec = {
       type: 'boolean',
     },
     {
+      label: "浮层样式",
+      name: "popupClassName",
+      type: "string",
+      will: "ClassName"
+    },
+    {
+      label: "popupStyle",
+      name: "popupStyle",
+      type: "object",
+      will: "StyleSheet"
+    },
+    {
       label: '返回值形式',
       name: 'format',
       type: 'function',

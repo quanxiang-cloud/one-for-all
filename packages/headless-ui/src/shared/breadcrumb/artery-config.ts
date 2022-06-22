@@ -41,6 +41,24 @@ const propsSpec: PropsSpec = {
       name: 'separator',
       type: 'string',
     },
+    {
+      label: "激活样式",
+      name: "activeClass",
+      type: "string",
+      will: "ClassName"
+    },
+    {
+      label: "segmentClass",
+      name: "segmentClass",
+      type: "string",
+      will: "ClassName"
+    },
+    {
+      label: "segmentStyle",
+      name: "segmentStyle",
+      type: "object",
+      will: "StyleSheet"
+    }
   ],
   isContainer: false,
   isOverLayer: false,
