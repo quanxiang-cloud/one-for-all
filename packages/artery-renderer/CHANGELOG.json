@@ -2,6 +2,18 @@
   "name": "@one-for-all/artery-renderer",
   "entries": [
     {
+      "version": "0.21.2",
+      "tag": "@one-for-all/artery-renderer_v0.21.2",
+      "date": "Thu, 23 Jun 2022 09:16:00 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Add document about Artery Renderer"
+          }
+        ]
+      }
+    },
+    {
       "version": "0.20.2",
       "tag": "@one-for-all/artery-renderer_v0.20.2",
       "date": "Wed, 06 Apr 2022 06:27:49 GMT",
