@@ -10,6 +10,7 @@ function SwiperImage(
     images = [],
     defaultIndex = 0,
     disableAutoplay = false,
+    fillMode = 'cover',
     autoplaySpeed = 3000,
     hideDots = false,
     onChange,
@@ -43,7 +44,7 @@ function SwiperImage(
         return (
           <div
             key={imgUrl}
-            style={{ backgroundImage: `url(${imgUrl})` }}
+            style={{ backgroundImage: `url(${imgUrl})`, backgroundSize: `${fillMode}` }}
             className={cs('ofa-swiper-image-slide', {
               'ofa-swiper-image-active': newImages[current] === imgUrl,
             })}
