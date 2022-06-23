@@ -477,7 +477,8 @@
     },
     {
       "packageName": "@one-for-all/artery-renderer",
-      "projectFolder": "packages/artery-renderer"
+      "projectFolder": "packages/artery-renderer",
+      "shouldPublish": true
     },
     {
       "packageName": "@one-for-all/artery-simulator",

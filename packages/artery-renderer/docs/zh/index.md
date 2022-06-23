@@ -1,25 +1,30 @@
-# Overview
+# Artery Renderer
 
-渲染引擎可以解析 Schema 并将其渲染成 UI。
+AKA 渲染引擎，渲染 [Artery](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/artery) 成真实的 UI。
 
-在使用渲染引擎之前，建议先了解一下 [Schema](https://github.com/quanxiang-cloud/one-for-all/tree/master/packages/schema-spec) 的格式。
+TL;DR;
 
-## Install
+- Artery Renderer 是一种 MVC 架构的实现
+- Artery Renderer 基于 React 和 RxJS 分别实现了 View 和 Model
+- Artery Renderer 扩展性极强，使用者可以按需实现插件
 
-你可以使用 yarn 或者 npm 安装渲染引擎。
+- 使用指南
+- [实现概述](./how-artery-renderer-works.md)
+- FAQ
+
+## 快速开始
+
+使用 npm 或者 yarn 安装:
 
 ```bash
-npm install @one-for-all/render-engine
-
-# or
-
-yarn add @one-for-all/render-engine
+npm install @one-for-all/artery-renderer
 ```
 
-## Motivation
+在你的源代码中的 import artery-renderer:
 
-渲染引擎是低代码前端领域的重要组成部分，但是它并不依附于低代码而存在，在一般的单页面应用和传统服
-务端渲染的场景也可以使用渲染引擎，提升开发和迭代效率。
+```jsx
+import React from 'react';
+import { RefLoader, Repository, ArteryRenderer } from '@one-for-all/artery-renderer';
 
 总体来说使用 Schema 和渲染引擎来构建前端业务有一下几点优势：
 
@@ -103,18 +108,13 @@ import { RenderEngine, SchemaRender } from '@one-for-all/render-engine';
 
 // react component
 function Demo() {
-  const schema = getSchemaBySomeway();
+  const artery = getArteryBySomeway();
 
-  return (<SchemaRender schema={schema} />);
+  return (<ArteryRenderer artery={artery} />);
 }
-
-// render engine instance
-const container = document.getElementById('some-container');
-const renderEngine = new RenderEngine(schema);
-renderEngine.render(container);
 
 ```
 
 ## Example
 
-请参考 https://github.com/quanxiang-cloud/one-for-all/tree/master/packages/example
+please checkout our [example repo](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/example) for more.
