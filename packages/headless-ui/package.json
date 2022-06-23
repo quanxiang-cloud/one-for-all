@@ -1,6 +1,6 @@
 {
   "name": "@one-for-all/headless-ui",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Migration of qxp-web base components",
   "homepage": "",
   "license": "Apache-2.0",
@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@babel/core": "~7.17.5",
-    "@one-for-all/node-carve": "0.1.0",
+    "@one-for-all/node-carve": "0.2.0",
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rollup/plugin-replace": "^4.0.0",
