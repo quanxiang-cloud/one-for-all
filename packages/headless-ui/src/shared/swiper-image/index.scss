@@ -1,6 +1,6 @@
 .ofa-swiper-image-wrapper {
-  width: 100%;
-  height: 100%;
+  width: 100px;
+  height: 100px;
   position: relative;
   overflow: hidden;
 }
@@ -12,9 +12,6 @@
   opacity: 0;
   transition: opacity 0.5s ease;
   background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
-  background-blend-mode: overlay;
 }
 
 .ofa-swiper-image-active {
@@ -34,8 +31,8 @@
 
 .ofa-swiper-image-dot {
   cursor: pointer;
-  width: 36px;
-  height: 4px;
+  width: 10px;
+  height: 10px;
   background: #ccc;
   margin-right: 3px;
   margin-left: 3px;

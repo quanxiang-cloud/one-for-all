@@ -584,6 +584,7 @@ interface BreadcrumbProps extends BaseProps {
 }
 interface SwiperImageProps extends BaseProps {
   images: Array<string>;
+  fillMode?: string;
   defaultIndex?: number;
   disableAutoplay?: boolean;
   autoplaySpeed?: number;

@@ -15,7 +15,9 @@ declare module NodeCarvePropSpec {
     | 'DateTimePicker'
     | 'Checkbox'
     | 'RadioGroup'
-    | 'CheckboxGroup';
+    | 'CheckboxGroup'
+    | 'ClassName'
+    | 'StyleSheet'
 
   /**
    * node carve support some enhance configuration component

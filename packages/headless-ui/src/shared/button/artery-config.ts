@@ -114,6 +114,18 @@ const propsSpec: PropsSpec = {
       name: 'onClick',
       type: 'function',
     },
+    {
+      label: "文本样式",
+      name: "textClassName",
+      type: "string",
+      will: "ClassName"
+    },
+    {
+      label: "图标样式",
+      name: "iconClassName",
+      type: "string",
+      will: "ClassName"
+    },
   ],
   isContainer: true,
   isOverLayer: false,

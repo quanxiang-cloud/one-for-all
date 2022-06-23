@@ -61,13 +61,6 @@ const propsSpec: PropsSpec = {
       label: '默认值',
       name: 'defaultValue',
       type: 'string',
-      desc: '只设置默认值，该组件将成为非受控组件，如果设置了value将会覆盖默认值',
-    },
-    {
-      label: '值',
-      name: 'value',
-      type: 'string',
-      desc: '如果设置了value，该组件将成为受控组件',
     },
     {
       label: '禁用',
