@@ -20,6 +20,7 @@ function Pagination(
     showQuickJumper,
     showLessItems,
     onChange,
+    style,
     className,
   }: PaginationProps,
   ref: ForwardedRef<HTMLUListElement>,
@@ -263,7 +264,7 @@ function Pagination(
   }
 
   return (
-    <ul ref={ref} className={cs('ofa-pagination', className)}>
+    <ul ref={ref} className={cs('ofa-pagination', className)} style={style}>
       <li className="ofa-pagination-total">{totalText || `共 ${total} 条数据`}</li>
       {prevIcon}
       {pagerList}
