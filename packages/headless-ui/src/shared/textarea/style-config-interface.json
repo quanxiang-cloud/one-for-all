@@ -1,6 +1,6 @@
 {
-  "key": "Input",
-  "title": "输入框",
+  "key": "Textarea",
+  "title": "多行输入框",
   "specs": [
     {
       "title": "默认状态",

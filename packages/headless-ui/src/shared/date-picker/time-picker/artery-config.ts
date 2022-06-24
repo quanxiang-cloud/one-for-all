@@ -30,6 +30,9 @@ const propsSpec: PropsSpec = {
       name: 'defaultValue',
       type: 'object',
       will: 'TimePicker',
+      willProps: {
+        placeholder: "请选择时间"
+      }
     },
     {
       label: '时间精度',
