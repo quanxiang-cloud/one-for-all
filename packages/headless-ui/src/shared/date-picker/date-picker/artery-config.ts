@@ -28,6 +28,9 @@ const propsSpec: PropsSpec = {
       name: 'defaultValue',
       type: 'object',
       will: 'DatePicker',
+      willProps: {
+        placeholder: "请选择日期"
+      }
     },
     {
       label: '禁用',
