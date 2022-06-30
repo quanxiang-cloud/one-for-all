@@ -74,6 +74,9 @@ export function tryToProps(
       'An error occurred while calling toProps with the following parameter:',
       source,
       '\n',
+      'error:',
+      error,
+      '\n',
       `please check the toProps spec of node: ${currentPath},`,
       'the corresponding node will be skipped for render.',
     );
