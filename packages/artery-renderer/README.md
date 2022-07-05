@@ -1,10 +1,17 @@
 # Artery Renderer
 
-Artery Renderer, aka 渲染引擎, 可以将 [Artery](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/artery) 渲染成真正的 Web 页面。
+Artery Renderer, aka 渲染引擎, 将 [Artery](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/artery) 渲染成真正的 Web 页面。
 
-和其他渲染引擎相比，Artery Renderer 最大的特点就是**开放**和**可扩展**。Artery Renderer 不要求在某个公司的特定生态里才能使用；Artery Renderer 没有内置任何组件，但是可以接对几乎任何组件库；Artery Renderer 不限定任何的 API 风格，开发者可以根据自己的实际业务实现相应的 adapter；开发者不但可以使用 Artery Renderer 来完成整个前端的所有页面的渲染，也可以将其当作一个普通的组件，使用到页面的某个部分中。
+[查看 Artery Renderer 的实现原理](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/artery-renderer/docs/01-how-artery-renderer-works.md)。
 
-[查看 Artery Renderer 的实现原理](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/artery-renderer/docs/zh/how-artery-renderer-works.md)。
+## 为什么选择 Artery Renderer？
+
+- Artery Renderer 是一个通用的渲染引擎
+- Artery Renderer 提供了对 Artery 的全面支持，包括路由和各种类型的 Property 等
+- Artery Renderer 不要求在某个公司的特定生态里才能使用
+- Artery Renderer 没有内置任何组件，但是可以接对几乎任何组件库
+- Artery Renderer 不限定任何的 API 风格，开发者可以根据自己的实际业务实现相应的 adapter
+- Artery Renderer 可以完成整个前端的所有页面渲染，也可以将其当作一个普通的组件，使用到页面的某个部分中
 
 ## 对 Artery 的全面支持
 
@@ -34,19 +41,7 @@ Artery Renderer 没有限定 API 风格或者 request/response 格式，开发�
 
 对于体积较大的 Artery，我们可以将其拆分成各个部分，然后使用 `ref-node` 类型在渲染阶段将其组合。Artery Renderer 的 `RefLoader` 接口用于下载这种引用类型的 Artery。
 
-AKA render engine, render [Artery](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/artery) into read UI.
-
-TL;DR;
-
-- Artery Renderer is a implementation of MVC
-- Artery Renderer uses React and RxJS to implement View and Model
-- Artery Renderer is extremely extensible, you can implement plug-ins as needed
-
-- Usage
-- How Artery Renderer works
-- FAQ
-
-## Quick Start
+## 安装和使用
 
 Install by npm or yarn:
 
@@ -56,13 +51,19 @@ npm install @one-for-all/artery-renderer
 
 ```jsx
 import React from 'react';
-import { RefLoader, Repository, ArteryRenderer } from '@one-for-all/artery-renderer';
+import { ArteryRenderer } from '@one-for-all/artery-renderer';
+import type { RefLoader, Repository } from '@one-for-all/artery-renderer';
+
+// const myCustomAPIAdapter: APISpecAdapter = {};
+// const myCustomRepository: Repository = {};
+// const myCustomRefLoader: refLoader = (arteryID: string): Promise<{ artery: ArterySpec.Artery; plugins?: Plugins }> => { return fetchSomething(); }
+// const myCustomComponentLoader: ComponentLoader = (locator: ComponentLoaderParam) => { return someComponent; };
 
 const plugins: Plugins = {
-  apiSpecAdapter?: APISpecAdapter,
-  repository?: Repository,
-  refLoader?: RefLoader,
-  componentLoader?: ComponentLoader,
+  // apiSpecAdapter: myCustomAPIAdapter,
+  // repository: myCustomRepository,
+  // refLoader: myCustomRefLoader,
+  // componentLoader: myCustomComponentLoader,
 };
 
 function Demo() {
