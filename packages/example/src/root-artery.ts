@@ -44,7 +44,7 @@ const rootSchema: Artery = {
                 props: {
                   children: {
                     type: 'constant_property',
-                    value: '主页',
+                    value: '首页',
                   },
                 },
               },

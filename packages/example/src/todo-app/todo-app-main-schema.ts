@@ -121,7 +121,6 @@ const todoAppSchema: Artery = {
               },
             },
           },
-          children: [],
           nodes: [
             {
               id: 'todo-toggle',
