@@ -42,27 +42,21 @@ Artery 是一份有明确结构的 JSON 数据，只要复制一份 Artery 将�
 - Artery Renderer 不限定任何的 API 风格，开发者可以根据自己的实际业务实现相应的 adapter
 - Artery Renderer 可以完成整个前端的所有页面渲染，也可以将其当作一个普通的组件，使用到页面的某个部分中
 
-## 对 Artery 的全面支持
+## 开放能力
 
-Artery Renderer 提供了对 Artery 的全面支持，包括但不限于:
-
-- 支持路由
-- 支持 sharedState 和 apiState
-- 支持按需下载组件
-- 支持原生的 HTML Node
-- 支持各种类型的 property
-
-## 灵活的扩展能力
-
-Artery Renderer 提供了必要的扩展接口，开发者可以根据自己的实际情况按需实现。
+Artery Renderer 之所以能够如此通用和灵活，是因为其将在不同场景下有很大差异的部分，都提供了自定义实现的接口。
 
 ### ComponentLoader & Repository
 
 Artery Renderer 没有内置任何组件，渲染时用到的组件需要开发者通过实现 `ComponentLoader` or/and `Repository` 这两个接口来提供，这意味着开发者可以使用任意的自己喜欢的组件，可以很容易实现组件升级和替换，可以很方便的实现 A/B test 等。
 
+不过，Artery Render 是基于 React 实现的，所以天然支持渲染 HTML 节点，所以你要实现的页面不需要 React 组件，那这两个接口可以不实现。
+
 ### APISpecAdapter
 
-Artery Renderer 没有限定 API 风格或者 request/response 格式，开发者可以通过实现 `APISpecAdapter` 来对接已有的 API，而不需要为了使用 Artery Renderer 而修改 API。如何对接的 API 为 RESTful 风格，那可以直接使用我们提供的 [adapter](https://www.npmjs.com/package/@one-for-all/api-spec-adapter)。
+Artery Renderer 没有限定 API 风格或者 request/response 格式，开发者可以通过实现 `APISpecAdapter` 来对接已有的 API，而不需要为了使用 Artery Renderer 而修改 API。
+
+如果对接的 API 为 RESTful 风格，那可以直接使用我们提供的 [adapter](https://www.npmjs.com/package/@one-for-all/api-spec-adapter)。
 
 除了可以灵活的对接已有 API 以外，`APISpecAdapter` 的另一个重要作用就是大大简化了在 Artery 中声明调用 API 逻辑的成本。例如在 Artery 中，我们只需要写 `this.apiState.someData.fetch({ foo: 'bar' })` 就可以调用某个 API，而不用关心 API 的具体 request 格式。
 
