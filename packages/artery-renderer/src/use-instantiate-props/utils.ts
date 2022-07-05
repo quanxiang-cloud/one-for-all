@@ -1,4 +1,4 @@
-import { BehaviorSubject, combineLatestWith, map, of, skip, tap } from 'rxjs';
+import { BehaviorSubject, map, skip, tap, combineLatest } from 'rxjs';
 import { logger } from '@one-for-all/utils';
 import type { ComputedDependency } from '@one-for-all/artery';
 
@@ -65,10 +65,10 @@ export function getComputedState$({
     return ctx.statesHubShared.getState$(depID);
   });
   const initialDeps = deps$.reduce((acc: Record<string, unknown>, dep$, index) => {
-    const key = deps[index].depID;
-    acc[key] = dep$.value;
-    
-    return acc;
+    return {
+      ...acc,
+      [deps[index].depID]: dep$.value
+    };
   }, {});
   const state$ = new BehaviorSubject(
     convertState({
@@ -79,12 +79,17 @@ export function getComputedState$({
     }),
   );
 
-  of(true)
+  combineLatest(deps$)
     .pipe(
-      combineLatestWith(deps$),
-      map((_, ..._dep) => {
+      map((_deps) => {
+        const updatedDeps = _deps.reduce((acc: Record<string, unknown>, _dep, index) => {
+          return {
+            ...acc,
+            [deps[index].depID]: _dep
+          };
+        }, {});
         return convertState({
-          state: _dep,
+          state: updatedDeps,
           convertor: convertor,
           fallback: _fallback,
           propName,
