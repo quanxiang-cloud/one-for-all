@@ -1,6 +1,6 @@
 # Artery Renderer
 
-Artery Renderer, aka 渲染引擎, 将 [Artery](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/artery) 渲染成真正的 Web 页面。
+Artery Renderer 是低代码领域渲染引擎的一个实现, 可以将 [Artery](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/artery) 渲染成真正的 Web 页面。
 
 [查看 Artery Renderer 的实现原理](https://github.com/quanxiang-cloud/one-for-all/tree/main/packages/artery-renderer/docs/01-how-artery-renderer-works.md)
 
@@ -8,7 +8,7 @@ Artery Renderer, aka 渲染引擎, 将 [Artery](https://github.com/quanxiang-clo
 
 ## 什么场景下适合用 Artery Renderer？
 
-只有在适合的场景中，Artery Renderer 才能体现它的价值，这些场景可以大致归位三类：
+只有在适合的场景中，Artery Renderer 才能发挥它的最大价值，考虑下你的业务是否在如下场景中：
 
 - **业务需求经常变更的场景**：例如促销活动页面，问卷调查页面等。
 - **大量相似业务的场景**：例如相似模式的数据的列表页面，详情页和创建修改页面等。
@@ -17,7 +17,9 @@ Artery Renderer, aka 渲染引擎, 将 [Artery](https://github.com/quanxiang-clo
 
 以上场景都有的共同特点是**多变**和**不确定性**，如果用传统的方式实现上述场景的业务，需要耗费大量的人力做重复的事情。
 
-如果用 Artery + Artery Renderer 或者说低代码的方式来实现，不但节省了人力，而且还能加快迭代速度。概括的说，我们从以下几个维度来解决问题：
+如果用 Artery + Artery Renderer 或者说低代码的方式来实现，不但节省了人力，而且还能加快迭代速度。
+
+概括的说，我们是从以下几个维度来解决上面的问题。
 
 ### 更高层次的语言抽象
 
