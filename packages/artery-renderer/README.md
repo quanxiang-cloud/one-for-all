@@ -52,9 +52,9 @@ Artery Renderer 之所以能够如此通用和灵活，是因为其将在不同�
 
 ### ComponentLoader & Repository
 
-Artery Renderer 没有内置任何组件，渲染时用到的组件需要开发者通过实现 `ComponentLoader` or/and `Repository` 这两个接口来提供，这意味着开发者可以使用任意的自己喜欢的组件，可以很容易实现组件升级和替换，可以很方便的实现 A/B test 等。
+Artery Renderer 没有内置任何组件，而是提供了 `ComponentLoader` 和 `Repository` 接口。通过实现这两个接口，开发者可以任意的按照自己的需求或者喜爱来选择使用具体哪些组件，而且可以很容易实现组件升级和替换，可以很方便的实现 A/B test 等。
 
-不过，Artery Render 是基于 React 实现的，所以天然支持渲染 HTML 节点，所以你要实现的页面不需要 React 组件，那这两个接口可以不实现。
+不过，Artery Render 是基于 React 实现的，所以天然支持渲染 HTML 节点，如果 Artery 中没有需要使用组件渲染的节点，那这两个接口可以不实现。
 
 ### APISpecAdapter
 
