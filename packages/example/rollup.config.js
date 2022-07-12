@@ -3,10 +3,13 @@ import commonjs from '@rollup/plugin-commonjs';
 import styles from 'rollup-plugin-styles';
 import esbuild from 'rollup-plugin-esbuild';
 import html from '@rollup/plugin-html';
+import replace from '@rollup/plugin-replace';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 
 import typescriptPaths from '../../scripts/rollup-plugin-typescript-paths';
+
+const external = ['react', 'react-dom', 'lodash', /@one-for-all\/.*/];
 
 export default [
   {
@@ -21,11 +24,17 @@ export default [
       sourcemap: 'inline',
     },
 
-    external: ['react', 'react-dom', 'lodash', /@one-for-all\/.*/],
+    external,
 
     plugins: [
       commonjs(),
       styles({ modules: false }),
+      replace({
+        preventAssignment: true,
+        values: {
+          'process.env.NODE_ENV': JSON.stringify('production'),
+        },
+      }),
       nodeResolve({
         browser: true,
         mainFields: ['main'],
@@ -66,10 +75,16 @@ export default [
       plugins: [terser()],
     },
 
-    external: ['react', 'react-dom', 'lodash', /@one-for-all\/.*/],
+    external,
 
     plugins: [
       commonjs(),
+      replace({
+        preventAssignment: true,
+        values: {
+          'process.env.NODE_ENV': JSON.stringify('production'),
+        },
+      }),
       styles({ modules: false }),
       nodeResolve({
         browser: true,
@@ -98,6 +113,7 @@ export default [
         // Like @rollup/plugin-replace
         define: {
           __VERSION__: '"x.y.z"',
+          'process.env.NODE_ENV': 'production',
         },
         tsconfig: 'tsconfig.json', // default
         // Add extra loaders

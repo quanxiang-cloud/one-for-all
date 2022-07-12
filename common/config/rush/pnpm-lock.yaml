@@ -8,6 +8,7 @@ specifiers:
   '@dnd-kit/sortable': ~7.0.0
   '@dnd-kit/utilities': ~3.2.0
   '@leifandersen/react-codemirror2': ~7.2.1
+  '@monaco-editor/react': 4.4.4
   '@one-for-all/headless-ui': 0.8.2
   '@one-for-all/style-guide': 0.1.3
   '@popperjs/core': ^2.11.0
@@ -34,7 +35,6 @@ specifiers:
   '@rush-temp/icon': file:./projects/icon.tgz
   '@rush-temp/jszip': file:./projects/jszip.tgz
   '@rush-temp/lodash': file:./projects/lodash.tgz
-  '@rush-temp/monaco-editor': file:./projects/monaco-editor.tgz
   '@rush-temp/node-carve': file:./projects/node-carve.tgz
   '@rush-temp/quill': file:./projects/quill.tgz
   '@rush-temp/ramda': file:./projects/ramda.tgz
@@ -168,6 +168,7 @@ dependencies:
   '@dnd-kit/sortable': 7.0.0_@dnd-kit+core@6.0.3+react@17.0.2
   '@dnd-kit/utilities': 3.2.0_react@17.0.2
   '@leifandersen/react-codemirror2': 7.2.1_codemirror@5.65.2+react@17.0.2
+  '@monaco-editor/react': 4.4.4_66b714495a9e953b0598750a09f73ca1
   '@one-for-all/headless-ui': 0.8.2
   '@one-for-all/style-guide': 0.1.3
   '@popperjs/core': 2.11.4
@@ -194,7 +195,6 @@ dependencies:
   '@rush-temp/icon': file:projects/icon.tgz_esbuild@0.14.38
   '@rush-temp/jszip': file:projects/jszip.tgz
   '@rush-temp/lodash': file:projects/lodash.tgz_rollup@2.66.0
-  '@rush-temp/monaco-editor': file:projects/monaco-editor.tgz_esbuild@0.14.38
   '@rush-temp/node-carve': file:projects/node-carve.tgz
   '@rush-temp/quill': file:projects/quill.tgz
   '@rush-temp/ramda': file:projects/ramda.tgz
@@ -2360,6 +2360,29 @@ packages:
 
   /@microsoft/tsdoc/0.14.1:
     resolution: {integrity: sha512-6Wci+Tp3CgPt/B9B0a3J4s3yMgLNSku6w5TV6mN+61C71UqsRBv2FUibBf3tPGlNxebgPHMEUzKpb1ggE8KCKw==}
+    dev: false
+
+  /@monaco-editor/loader/1.3.2_monaco-editor@0.33.0:
+    resolution: {integrity: sha512-BTDbpHl3e47r3AAtpfVFTlAi7WXv4UQ/xZmz8atKl4q7epQV5e7+JbigFDViWF71VBi4IIBdcWP57Hj+OWuc9g==}
+    peerDependencies:
+      monaco-editor: '>= 0.21.0 < 1'
+    dependencies:
+      monaco-editor: 0.33.0
+      state-local: 1.0.7
+    dev: false
+
+  /@monaco-editor/react/4.4.4_66b714495a9e953b0598750a09f73ca1:
+    resolution: {integrity: sha512-yQsYnVkgP5RC5ZMoRVCXSBn4D4hLUOgoQK+AZJpVY57NDXmEb57OVaaYKh8/RTzxkpuLV278hKNw5DnuzlgQwg==}
+    peerDependencies:
+      monaco-editor: '>= 0.25.0 < 1'
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@monaco-editor/loader': 1.3.2_monaco-editor@0.33.0
+      monaco-editor: 0.33.0
+      prop-types: 15.8.1
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
     dev: false
 
   /@mrmlnc/readdir-enhanced/2.2.1:
@@ -16064,6 +16087,10 @@ packages:
     resolution: {integrity: sha512-h88QkzREN/hy8eRdyNhhsO7RSJ5oyTqxxmmn0dzBIMUclZsjpfmrsg81vp8mjjAs2vAZ72nyWxRUwSwmh0e4xg==}
     dev: false
 
+  /state-local/1.0.7:
+    resolution: {integrity: sha512-HTEHMNieakEnoe33shBYcZ7NX83ACUjCu8c40iOGEZsngj9zRnkqS9j1pqQPXwobB0ZcVTk27REb7COQ0UR59w==}
+    dev: false
+
   /state-toggle/1.0.3:
     resolution: {integrity: sha512-d/5Z4/2iiCnHw6Xzghyhb+GcmF89bxwgXG60wjIiZaxnymbyOmI8Hk4VqHXiVVp6u2ysaskFfXg3ekCj4WNftQ==}
     dev: false
@@ -18244,11 +18271,12 @@ packages:
     dev: false
 
   file:projects/example.tgz:
-    resolution: {integrity: sha512-4jEVyTVgwrGo2Ir9OUK66Xu6PHl70uIrIc1fFsDr26o6cTAUNLkIidvDfv4O7vVpQZrwzAAbVPppX1wQ5ubuWQ==, tarball: file:projects/example.tgz}
+    resolution: {integrity: sha512-PW0yOab7Qm8IOvAy8ZYP7Dl/9BWwvSDbLNjsoFP/VFO+lJOep9AF2InJvZpD4UpChlaUX/LdWK/vcnvvwIXcgA==, tarball: file:projects/example.tgz}
     name: '@rush-temp/example'
     version: 0.0.0
     dependencies:
       '@leifandersen/react-codemirror2': 7.2.1_codemirror@5.65.2+react@17.0.2
+      '@monaco-editor/react': 4.4.4_66b714495a9e953b0598750a09f73ca1
       '@one-for-all/artery-renderer': 0.21.2
       '@one-for-all/artery-simulator': 1.4.2_react-dom@17.0.2
       '@one-for-all/artery-utils': 0.17.0
@@ -18261,6 +18289,7 @@ packages:
       '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
       '@rollup/plugin-html': 0.2.4_rollup@2.66.0
       '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
+      '@rollup/plugin-replace': 4.0.0_rollup@2.66.0
       '@tsconfig/recommended': 1.0.1
       '@types/lodash': 4.14.180
       '@types/react': 17.0.41
@@ -18278,6 +18307,7 @@ packages:
       eslint-plugin-unused-imports: 2.0.0_1bf9cdc08e57589c8efe570eceb1a5db
       http-server: 14.1.0
       lodash: 4.17.21
+      monaco-editor: 0.33.0
       msw: 0.36.8
       nanoid: 3.3.3
       npm-run-all: 4.1.5
@@ -18289,6 +18319,7 @@ packages:
       rollup-plugin-styles: 3.14.1_rollup@2.66.0
       sass: 1.51.0
       typescript: 4.7.2
+      yaml: 1.10.2
     transitivePeerDependencies:
       - debug
       - encoding
@@ -18469,24 +18500,6 @@ packages:
       lodash-es: 4.17.21
     transitivePeerDependencies:
       - rollup
-    dev: false
-
-  file:projects/monaco-editor.tgz_esbuild@0.14.38:
-    resolution: {integrity: sha512-MJqv52/9cXbuxqQYMg748leYtu4qn+OYewytnhoE6FDnlrn2E+2qBsuIQ8rixeEPPacJs1CV98EjdSd3zIKfdg==, tarball: file:projects/monaco-editor.tgz}
-    id: file:projects/monaco-editor.tgz
-    name: '@rush-temp/monaco-editor'
-    version: 0.0.0
-    dependencies:
-      '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
-      '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
-      monaco-editor: 0.33.0
-      rollup: 2.66.0
-      rollup-plugin-esbuild: 4.8.2_esbuild@0.14.38+rollup@2.66.0
-      rollup-plugin-styles: 3.14.1_rollup@2.66.0
-      rollup-plugin-terser: 7.0.2_rollup@2.66.0
-    transitivePeerDependencies:
-      - esbuild
-      - supports-color
     dev: false
 
   file:projects/node-carve.tgz:
