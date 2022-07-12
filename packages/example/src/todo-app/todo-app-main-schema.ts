@@ -266,7 +266,7 @@ const todoAppSchema: Artery = {
                 fallback: '',
                 convertor: {
                   type: 'state_convert_expression',
-                  expression: '`共 ${state.length} 条记录`'
+                  expression: '`共 ${state.length} 条记录记录记录`'
                 }
               }
             }

@@ -26,9 +26,6 @@ function HTMLNodeRender({ node, ctx }: Props): React.ReactElement | null {
   }
 
   if (!node.children || !node.children.length) {
-    if (node.name === 'span') {
-      console.log(props)
-    }
     return React.createElement(node.name, props);
   }
 

@@ -2,7 +2,7 @@ export default `
 apiStateSpec:
   postTodo:
     apiID: 'post:/todos'
-  全部待办列表:
+  todoList:
     apiID: 'get:/todos'
   更新待办:
     apiID: 'put:/todos/{todoId}'
@@ -19,9 +19,9 @@ sharedStatesSpec:
       func:
         type: initializer_func_spec
         args: dependencies
-        body: 'return dependencies["全部待办列表"].length'
+        body: 'return dependencies["todoList"].length'
       dependencies:
-        全部待办列表: {}
+        todoList: {}
 node:
   id: container
   type: html-element
@@ -30,7 +30,7 @@ node:
     didMount:
       type: lifecycle_hook_func_spec
       args: ''
-      body: 'this.apiStates["全部待办列表"].fetch();'
+      body: 'this.apiStates["todoList"].fetch();'
   props:
     id:
       type: constant_property
@@ -76,7 +76,7 @@ node:
                   }
 
                   this.apiStates.postTodo.fetch({ body: { title }}, () => {
-                    this.apiStates["全部待办列表"].refresh();
+                    this.apiStates["todoList"].refresh();
                   })
 
     - id: todo-list-loop-composedNode
@@ -85,7 +85,7 @@ node:
       loopKey: id
       iterableState:
         type: api_result_property
-        stateID: 全部待办列表
+        stateID: todoList
         fallback: []
         convertor:
           type: state_convert_expression
@@ -129,7 +129,7 @@ node:
                   body: |
                     this.apiStates['更新待办'].fetch(
                       { params: { todoId: e.target.dataset.id } },
-                      () => this.apiStates["全部待办列表"].refresh()
+                      () => this.apiStates["todoList"].refresh()
                     )
           - id: todo-title
             type: html-element
@@ -161,7 +161,7 @@ node:
                   args: e
                   body: |
                     this.apiStates['删除待办'].fetch({ params: { todoId: e.target.id }}, () => {
-                      this.apiStates["全部待办列表"].refresh()
+                      this.apiStates["todoList"].refresh()
                     })
             toProps:
               type: to_props_function_spec
@@ -190,7 +190,7 @@ node:
           props:
             onToggleStatus:
               type: api_invoke_property
-              stateID: 全部待办列表
+              stateID: todoList
               paramsBuilder:
                 type: param_builder_func_spec
                 args: status
@@ -199,16 +199,16 @@ node:
             onFetchStatus:
               type: api_invoke_property
               stateID: todoStatus
-        - id: todo-count
-          type: html-element
-          name: span
-          props:
-            id:
-              type: api_result_property
-              stateID: 全部待办列表
-              fallback: ''
-              convertor:
-                type: state_convert_expression
-                # expression: '\`共 \${state.length} 条记录\`'
-                expression: state
+        # - id: todo-count
+        #   type: html-element
+        #   name: span
+        #   props:
+        #     children:
+        #       type: api_result_property
+        #       stateID: todoList
+        #       fallback: 'fallback'
+        #       convertor:
+        #         type: state_convert_expression
+        #         # expression: "\`共 \${state.length} 条记录\`"
+        #         expression: console.log(state)
 `;
