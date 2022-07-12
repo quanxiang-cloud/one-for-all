@@ -34,6 +34,7 @@ specifiers:
   '@rush-temp/icon': file:./projects/icon.tgz
   '@rush-temp/jszip': file:./projects/jszip.tgz
   '@rush-temp/lodash': file:./projects/lodash.tgz
+  '@rush-temp/monaco-editor': file:./projects/monaco-editor.tgz
   '@rush-temp/node-carve': file:./projects/node-carve.tgz
   '@rush-temp/quill': file:./projects/quill.tgz
   '@rush-temp/ramda': file:./projects/ramda.tgz
@@ -110,6 +111,7 @@ specifiers:
   lodash: ^4.17.21
   lodash-es: 4.17.21
   mkdirp: ~1.0.4
+  monaco-editor: 0.33.0
   moo: ^0.5.1
   msw: ^0.36.5
   nanoid: ^3.1.30
@@ -192,6 +194,7 @@ dependencies:
   '@rush-temp/icon': file:projects/icon.tgz_esbuild@0.14.38
   '@rush-temp/jszip': file:projects/jszip.tgz
   '@rush-temp/lodash': file:projects/lodash.tgz_rollup@2.66.0
+  '@rush-temp/monaco-editor': file:projects/monaco-editor.tgz_esbuild@0.14.38
   '@rush-temp/node-carve': file:projects/node-carve.tgz
   '@rush-temp/quill': file:projects/quill.tgz
   '@rush-temp/ramda': file:projects/ramda.tgz
@@ -268,6 +271,7 @@ dependencies:
   lodash: 4.17.21
   lodash-es: 4.17.21
   mkdirp: 1.0.4
+  monaco-editor: 0.33.0
   moo: 0.5.1
   msw: 0.36.8
   nanoid: 3.3.1
@@ -12217,6 +12221,10 @@ packages:
     engines: {node: '>=6'}
     dev: false
 
+  /monaco-editor/0.33.0:
+    resolution: {integrity: sha512-VcRWPSLIUEgQJQIE0pVT8FcGBIgFoxz7jtqctE+IiCxWugD0DwgyQBcZBhdSrdMC84eumoqMZsGl2GTreOzwqw==}
+    dev: false
+
   /moo/0.5.1:
     resolution: {integrity: sha512-I1mnb5xn4fO80BH9BLcF0yLypy2UKl+Cb01Fu0hJRkJjlCRtxZMWkTdAtDd5ZqCOxtCkhmRwyI57vWT+1iZ67w==}
     dev: false
@@ -18461,6 +18469,24 @@ packages:
       lodash-es: 4.17.21
     transitivePeerDependencies:
       - rollup
+    dev: false
+
+  file:projects/monaco-editor.tgz_esbuild@0.14.38:
+    resolution: {integrity: sha512-MJqv52/9cXbuxqQYMg748leYtu4qn+OYewytnhoE6FDnlrn2E+2qBsuIQ8rixeEPPacJs1CV98EjdSd3zIKfdg==, tarball: file:projects/monaco-editor.tgz}
+    id: file:projects/monaco-editor.tgz
+    name: '@rush-temp/monaco-editor'
+    version: 0.0.0
+    dependencies:
+      '@rollup/plugin-commonjs': 21.0.2_rollup@2.66.0
+      '@rollup/plugin-node-resolve': 13.1.3_rollup@2.66.0
+      monaco-editor: 0.33.0
+      rollup: 2.66.0
+      rollup-plugin-esbuild: 4.8.2_esbuild@0.14.38+rollup@2.66.0
+      rollup-plugin-styles: 3.14.1_rollup@2.66.0
+      rollup-plugin-terser: 7.0.2_rollup@2.66.0
+    transitivePeerDependencies:
+      - esbuild
+      - supports-color
     dev: false
 
   file:projects/node-carve.tgz:

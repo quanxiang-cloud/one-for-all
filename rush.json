@@ -552,6 +552,11 @@
       "shouldPublish": false
     },
     {
+      "packageName": "@one-for-all/monaco-editor",
+      "projectFolder": "vendors/monaco-editor",
+      "shouldPublish": false
+    },
+    {
       "packageName": "@one-for-all/quill",
       "projectFolder": "vendors/quill",
       "shouldPublish": false
