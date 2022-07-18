@@ -32,7 +32,6 @@ export default function TodoInput({ onEnter, __exposeState }: Props): JSX.Elemen
 
   return (
     <ThirdPartyInput
-      autoFocus
       value={value}
       disabled={loading}
       onChange={(e) => setValue(e.target.value)}

@@ -255,22 +255,22 @@ const todoAppSchema: Artery = {
               },
             },
           },
-          {
-            id: 'todo-count',
-            type: 'html-element',
-            name: 'span',
-            props: {
-              children: {
-                type: 'api_result_property',
-                stateID: '全部待办列表',
-                fallback: '',
-                convertor: {
-                  type: 'state_convert_expression',
-                  expression: '`共 ${state.length} 条记录记录记录`'
-                }
-              }
-            }
-          }
+          // {
+          //   id: 'todo-count',
+          //   type: 'html-element',
+          //   name: 'span',
+          //   props: {
+          //     children: {
+          //       type: 'api_result_property',
+          //       stateID: '全部待办列表',
+          //       fallback: '',
+          //       convertor: {
+          //         type: 'state_convert_expression',
+          //         expression: '`共 ${state.length} 条记录记录记录`'
+          //       }
+          //     }
+          //   }
+          // }
         ],
       },
     ],

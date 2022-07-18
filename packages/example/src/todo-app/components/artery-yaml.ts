@@ -209,6 +209,5 @@ node:
         #       fallback: 'fallback'
         #       convertor:
         #         type: state_convert_expression
-        #         # expression: "\`共 \${state.length} 条记录\`"
-        #         expression: console.log(state)
+        #         expression: "\`共 \${state.length} 条记录\`"
 `;

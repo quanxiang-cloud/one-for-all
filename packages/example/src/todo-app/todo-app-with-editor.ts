@@ -10,25 +10,32 @@ const todoWithEditor: Artery = {
         type: 'constant_property',
         value: {
           display: 'grid',
-          gridTemplateColumns: 'auto 1fr',
+          gridTemplateColumns: '550px 1fr',
           gridGap: '60px',
         }
       }
     },
     children: [
       {
-        id: 'todo-app-render',
-        type: 'react-component',
-        packageName: 'todo-with-editor',
-        exportName: 'TodoRender',
-        packageVersion: 'whatever',
-        props: {
-          artery: {
-            type: 'shared_state_property',
-            stateID: 'artery',
-            fallback: '',
-          }
-        }
+        id: 'todo-app-render-wrapper',
+        type: 'html-element',
+        name: 'div',
+        children: [
+          {
+            id: 'todo-app-render',
+            type: 'react-component',
+            packageName: 'todo-with-editor',
+            exportName: 'TodoRender',
+            packageVersion: 'whatever',
+            props: {
+              artery: {
+                type: 'shared_state_property',
+                stateID: 'artery',
+                fallback: '',
+              }
+            }
+          },
+        ],
       },
       {
         id: 'editor',
