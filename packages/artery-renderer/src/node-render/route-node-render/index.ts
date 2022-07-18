@@ -20,7 +20,7 @@ function buildCurrentPath(parentPath: string, routePath: string): string {
   return `${parentPath}/${trimSlash(routePath)}`;
 }
 
-function RouteNodeRender({ node }: Props): React.ReactElement | null {
+function RouteNodeRender({ node }: Props): React.ReactElement {
   const ctx = useCTX();
   useLifecycleHook(node.lifecycleHooks || {});
 
@@ -28,15 +28,15 @@ function RouteNodeRender({ node }: Props): React.ReactElement | null {
   const currentRoutePath = buildCurrentPath(parentRoutePath, node.path);
   const match = useMatch(ctx.location$, currentRoutePath, node.exactly ?? false);
 
-  if (match) {
-    return React.createElement(
-      RoutePathContext.Provider,
-      { value: currentRoutePath },
-      React.createElement(NodeRender, { node: node.node, ctx }),
-    );
+  if (!match) {
+    return React.createElement(React.Fragment);
   }
 
-  return null;
+  return React.createElement(
+    RoutePathContext.Provider,
+    { value: currentRoutePath },
+    React.createElement(NodeRender, { node: node.node, ctx }),
+  );
 }
 
 export default RouteNodeRender;

@@ -31,12 +31,12 @@ export interface Props {
   ctx: CTX;
 }
 
-function LoopComposed({ iterableState, loopKey, node, ctx }: Props): React.ReactElement | null {
+function LoopComposed({ iterableState, loopKey, node, ctx }: Props): React.ReactElement {
   const parentPath = useContext(PathContext);
   const iterable = useIterable(iterableState, ctx);
 
   if (!iterable) {
-    return null;
+    return React.createElement(React.Fragment);
   }
 
   return React.createElement(

@@ -9,7 +9,7 @@ interface Props {
   node: RefNode;
 }
 
-export default function RefNodeRender({ node }: Props): React.ReactElement | null {
+export default function RefNodeRender({ node }: Props): React.ReactElement {
   const ctx = useCTX();
   useLifecycleHook(node.lifecycleHooks || {});
   const result = useRefResult(
@@ -22,7 +22,7 @@ export default function RefNodeRender({ node }: Props): React.ReactElement | nul
       return React.createElement(NodeRender, { node: node.fallback, ctx });
     }
 
-    return null;
+    return React.createElement(React.Fragment);
   }
 
   return React.createElement(NodeRender, { node: result.rootNode, ctx: result.ctx });

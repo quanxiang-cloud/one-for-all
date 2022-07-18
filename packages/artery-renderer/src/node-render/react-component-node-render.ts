@@ -11,14 +11,14 @@ interface Props {
   node: ReactComponentNode;
 }
 
-function ReactComponentNodeRender({ node }: Props): React.ReactElement | null {
+function ReactComponentNodeRender({ node }: Props): React.ReactElement {
   const ctx = useCTX();
   const props = useInstantiateProps(node);
   const nodeComponent = useNodeComponent(node, ctx.plugins);
   useLifecycleHook(node.lifecycleHooks || {});
 
   if (!nodeComponent) {
-    return null;
+    return React.createElement(React.Fragment);
   }
 
   if (!node.children || !node.children.length) {

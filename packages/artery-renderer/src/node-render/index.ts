@@ -15,9 +15,9 @@ interface ChildrenRenderProps {
   nodes: ArteryNode[];
 }
 
-export function ChildrenRender({ nodes }: ChildrenRenderProps): React.ReactElement | null {
+export function ChildrenRender({ nodes }: ChildrenRenderProps): React.ReactElement {
   if (!nodes.length) {
-    return null;
+    return React.createElement(React.Fragment);
   }
 
   return React.createElement(
@@ -31,13 +31,13 @@ interface Props {
   node: ArteryNode;
 }
 
-function NodeRender({ node }: Props): React.ReactElement | null {
+function NodeRender({ node }: Props): React.ReactElement {
   const parentPath = useContext(PathContext);
   const currentPath = `${parentPath}/${node.id}`;
   const shouldRender = useShouldRender(node);
 
   if (!shouldRender) {
-    return null;
+    return React.createElement(React.Fragment);
   }
 
   if (node.type === 'route-node') {
@@ -89,7 +89,7 @@ function NodeRender({ node }: Props): React.ReactElement | null {
   }
 
   logger.error('Unrecognized node type of node:', node);
-  return null;
+  return React.createElement(React.Fragment);
 }
 
 export default NodeRender;

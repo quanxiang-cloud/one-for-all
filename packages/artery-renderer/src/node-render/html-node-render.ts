@@ -12,7 +12,7 @@ interface Props {
   node: HTMLNode;
 }
 
-function HTMLNodeRender({ node }: Props): React.ReactElement | null {
+function HTMLNodeRender({ node }: Props): React.ReactElement {
   const ctx = useCTX();
   const props = useInstantiateProps(node);
   useLifecycleHook(node.lifecycleHooks || {});
@@ -23,7 +23,7 @@ function HTMLNodeRender({ node }: Props): React.ReactElement | null {
       'name property is required in html node spec,',
       `please check the spec of node: ${currentPath}.`,
     );
-    return null;
+    return React.createElement(React.Fragment);
   }
 
   if (!node.children || !node.children.length) {

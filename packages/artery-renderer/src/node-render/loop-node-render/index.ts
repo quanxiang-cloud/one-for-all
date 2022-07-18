@@ -11,7 +11,7 @@ interface Props {
   node: LoopContainerNode;
 }
 
-function LoopNodeRender({ node }: Props): React.ReactElement | null {
+function LoopNodeRender({ node }: Props): React.ReactElement {
   const ctx = useCTX();
   useLifecycleHook(node.lifecycleHooks || {});
 
@@ -38,7 +38,7 @@ function LoopNodeRender({ node }: Props): React.ReactElement | null {
 
   logger.error('Unrecognized loop node:', node);
 
-  return null;
+  return React.createElement(React.Fragment);
 }
 
 export default LoopNodeRender;

@@ -24,13 +24,13 @@ function ReactComponentOutLayerRender({
   outLayer,
   ctx,
   children,
-}: ReactComponentOutLayerRenderProps): React.ReactElement | null {
+}: ReactComponentOutLayerRenderProps): React.ReactElement {
   const props = useInstantiateProps(outLayer);
   const nodeComponent = useNodeComponent(outLayer, ctx.plugins);
   useLifecycleHook(outLayer.lifecycleHooks || {});
 
   if (!nodeComponent) {
-    return null;
+    return React.createElement(React.Fragment);
   }
 
   return React.createElement(nodeComponent, props, children);
@@ -41,7 +41,7 @@ type Props = PropsWithChildren<{
   ctx: CTX;
 }>;
 
-export default function OutLayerRender({ outLayer, ctx, children }: Props): React.ReactElement | null {
+export default function OutLayerRender({ outLayer, ctx, children }: Props): React.ReactElement {
   if (outLayer?.type === 'html-element') {
     return React.createElement(HTMLOutLayerRender, { outLayer, ctx }, children);
   }

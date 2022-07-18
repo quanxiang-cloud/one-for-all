@@ -13,7 +13,7 @@ export interface Props {
   ctx: CTX;
 }
 
-function LoopIndividual({ iterableState, loopKey, node, ctx, toProps }: Props): React.ReactElement | null {
+function LoopIndividual({ iterableState, loopKey, node, ctx, toProps }: Props): React.ReactElement {
   const parentPath = useContext(PathContext);
   const mergedPropsList = useMergedPropsList({
     iterableState,
@@ -24,7 +24,7 @@ function LoopIndividual({ iterableState, loopKey, node, ctx, toProps }: Props): 
   });
 
   if (!mergedPropsList) {
-    return null;
+    return React.createElement(React.Fragment);
   }
 
   return React.createElement(

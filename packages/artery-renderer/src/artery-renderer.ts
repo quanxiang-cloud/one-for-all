@@ -14,7 +14,7 @@ interface Props {
 function SchemaRender(
   { artery, plugins }: Props,
   ref: React.Ref<ArteryRendererCTX | undefined>,
-): React.ReactElement | null {
+): React.ReactElement {
   const { ctx, rootNode } = useBootResult(artery, plugins) || {};
 
   useImperativeHandle(
@@ -30,7 +30,7 @@ function SchemaRender(
   );
 
   if (!ctx || !rootNode) {
-    return null;
+    return React.createElement(React.Fragment);
   }
 
   return React.createElement(

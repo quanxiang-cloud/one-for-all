@@ -3,7 +3,7 @@ import { logger } from '@one-for-all/utils';
 import type { TProps } from 'react-jsx-parser';
 
 import useInstantiateProps from '../use-instantiate-props';
-import type { CTX, JSXNode } from '../types';
+import type { JSXNode } from '../types';
 import { useLifecycleHook } from './hooks';
 import PathContext from './path-context';
 
@@ -38,7 +38,7 @@ function useReactJSXParser(): React.Component<TProps> | null {
   return com;
 }
 
-function JSXNodeRender({ node }: Props): React.ReactElement | null {
+function JSXNodeRender({ node }: Props): React.ReactElement {
   const props = useInstantiateProps(node);
   useLifecycleHook(node.lifecycleHooks || {});
   const currentPath = useContext(PathContext);
@@ -46,11 +46,11 @@ function JSXNodeRender({ node }: Props): React.ReactElement | null {
 
   if (!node.jsx) {
     logger.error('jsx string is required,', `please check the spec of node: ${currentPath}.`);
-    return null;
+    return React.createElement(React.Fragment);
   }
 
   if (!ReactJSXParser) {
-    return null;
+    return React.createElement(React.Fragment);
   }
 
   return React.createElement(ReactJSXParser as any, {
