@@ -2,12 +2,14 @@ import { useMemo } from 'react';
 
 import { logger } from '@one-for-all/utils';
 
-import { CTX, SharedStateMutationProperty, ArteryNode } from '../types';
+import { SharedStateMutationProperty, ArteryNode } from '../types';
+import useCTX from '../use-ctx';
 
 type MutateProps = Record<string, (value: unknown) => void>;
 type Pair = [string, SharedStateMutationProperty];
 
-function useSharedStateMutationProps(node: ArteryNode, ctx: CTX): MutateProps {
+function useSharedStateMutationProps(node: ArteryNode): MutateProps {
+  const ctx = useCTX();
   return useMemo(() => {
     if (!node.props) {
       return {};

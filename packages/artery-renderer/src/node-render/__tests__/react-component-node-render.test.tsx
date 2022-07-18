@@ -6,6 +6,7 @@ import { render } from '@testing-library/react';
 import dummyCTX from '../../boot-up/__tests__/fixtures/dummy-ctx';
 import ReactComponentNodeRender from '../react-component-node-render';
 import { Repository, ReactComponentNode } from '../../types';
+import { CTXContext } from '../../use-ctx';
 
 const dummyComponent: React.FC<PropsWithChildren<unknown>> = ({ children }): JSX.Element => {
   return <div id="some_dummy_component">{children}</div>;
@@ -25,7 +26,11 @@ test('ReactComponentNodeRender_should_return_null_no_component', () => {
     exportName: 'Foo',
   };
 
-  const { container } = render(<ReactComponentNodeRender node={node} ctx={dummyCTX} />);
+  const { container } = render(
+    <CTXContext.Provider value={dummyCTX}>
+      <ReactComponentNodeRender node={node} />
+    </CTXContext.Provider>,
+  );
 
   expect(container).toBeEmptyDOMElement();
 });
@@ -41,7 +46,11 @@ test('ReactComponentNodeRender_match_snapshots', () => {
     exportName: 'Foo',
   };
 
-  const { container } = render(<ReactComponentNodeRender node={node} ctx={dummyCTX} />);
+  const { container } = render(
+    <CTXContext.Provider value={dummyCTX}>
+      <ReactComponentNodeRender node={node} />
+    </CTXContext.Provider>,
+  );
 
   expect(container).toMatchSnapshot();
 });
@@ -64,7 +73,11 @@ test('ReactComponentNodeRender_match_snapshots_with_children', () => {
     ],
   };
 
-  const { container } = render(<ReactComponentNodeRender node={node} ctx={dummyCTX} />);
+  const { container } = render(
+    <CTXContext.Provider value={dummyCTX}>
+      <ReactComponentNodeRender node={node} />
+    </CTXContext.Provider>,
+  );
 
   expect(container).toMatchSnapshot();
 });

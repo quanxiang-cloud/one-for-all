@@ -15,7 +15,7 @@ function getAPIStates(statesHubAPI: StatesHubAPI): Readonly<Record<string, APISt
         },
         rawFetch: (rawFetchOption: RawFetchOption, callback?: APIFetchCallback | undefined): void => {
           statesHubAPI.rawFetch(p, rawFetchOption);
-        }
+        },
       };
     },
   };

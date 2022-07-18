@@ -9,6 +9,7 @@ import { LoopContainerNode, Repository } from '../../../types';
 import bootUp from '../../../boot-up';
 import LoopNodeRender from '..';
 import LoopContainer, { Props } from '../loop-individual';
+import { CTXContext } from '../../../use-ctx';
 
 const dummyComponent: React.FC<PropsWithChildren<unknown>> = (): JSX.Element => {
   return <div id="some_dummy_component"></div>;
@@ -37,7 +38,11 @@ test('LoopContainer_resolve_empty_value', () => {
     },
   };
 
-  const { container } = render(<LoopContainer {...props} />);
+  const { container } = render(
+    <CTXContext.Provider value={dummyCTX}>
+      <LoopContainer {...props} />
+    </CTXContext.Provider>,
+  );
 
   expect(container).toMatchSnapshot();
 });
@@ -72,7 +77,11 @@ test('LoopContainer_should_log_error_when_iterableState_is_not_iterable', async 
     },
   };
 
-  render(<LoopContainer {...props} />);
+  render(
+    <CTXContext.Provider value={ctx}>
+      <LoopContainer {...props} />
+    </CTXContext.Provider>,
+  );
 
   expect(logger.error).toBeCalled();
 });
@@ -108,7 +117,11 @@ test('LoopContainer_resolve_items', async () => {
     },
   };
 
-  const { container } = render(<LoopContainer {...props} />);
+  const { container } = render(
+    <CTXContext.Provider value={ctx}>
+      <LoopContainer {...props} />
+    </CTXContext.Provider>,
+  );
 
   expect(container).toMatchSnapshot();
 });
@@ -188,7 +201,11 @@ test('LoopNode_with_ReactOutLayer_composedNode', async () => {
     },
   };
 
-  const { container } = render(<LoopNodeRender node={loopNode} ctx={ctx} />);
+  const { container } = render(
+    <CTXContext.Provider value={ctx}>
+      <LoopNodeRender node={loopNode} />
+    </CTXContext.Provider>,
+  );
 
   expect(container).toMatchSnapshot();
 });
@@ -272,7 +289,11 @@ test('LoopNode_with_HTMLOutLayer_composedNode', async () => {
     },
   };
 
-  const { container } = render(<LoopNodeRender node={loopNode} ctx={ctx} />);
+  const { container } = render(
+    <CTXContext.Provider value={ctx}>
+      <LoopNodeRender node={loopNode} />
+    </CTXContext.Provider>,
+  );
 
   expect(container).toMatchSnapshot();
 });
@@ -317,7 +338,11 @@ test('LoopNode_with_ordinaryNode_HTMLNode', async () => {
     },
   };
 
-  const { container } = render(<LoopNodeRender node={loopNode} ctx={ctx} />);
+  const { container } = render(
+    <CTXContext.Provider value={ctx}>
+      <LoopNodeRender node={loopNode} />
+    </CTXContext.Provider>,
+  );
 
   expect(container).toMatchSnapshot();
 });
@@ -364,7 +389,11 @@ test('LoopNode_with_ordinaryNode_ReactNode', async () => {
     },
   };
 
-  const { container } = render(<LoopNodeRender node={loopNode} ctx={ctx} />);
+  const { container } = render(
+    <CTXContext.Provider value={ctx}>
+      <LoopNodeRender node={loopNode} />
+    </CTXContext.Provider>,
+  );
 
   expect(container).toMatchSnapshot();
 });

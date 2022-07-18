@@ -4,6 +4,7 @@ import type { Artery } from '@one-for-all/artery';
 import NodeRender from './node-render';
 import type { Plugins, ArteryRendererCTX } from './types';
 import useBootResult from './boot-up/use-boot-up-result';
+import { CTXContext } from './use-ctx';
 
 interface Props {
   artery: Artery;
@@ -32,7 +33,11 @@ function SchemaRender(
     return null;
   }
 
-  return React.createElement(NodeRender, { node: rootNode, ctx: ctx });
+  return React.createElement(
+    CTXContext.Provider,
+    { value: ctx },
+    React.createElement(NodeRender, { node: rootNode }),
+  );
 }
 
 export default React.forwardRef<ArteryRendererCTX | undefined, Props>(SchemaRender);

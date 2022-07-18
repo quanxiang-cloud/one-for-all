@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import { BehaviorSubject, combineLatest, distinctUntilKeyChanged, map, Observable, skip } from 'rxjs';
 import type { APILoadingProperty } from '@one-for-all/artery';
 
-import { APIState, CTX, ArteryNode } from '../types';
+import { APIState, ArteryNode } from '../types';
+import useCTX from '../use-ctx';
 
-function useAPILoadingProps(node: ArteryNode, ctx: CTX): Record<string, unknown> {
+function useAPILoadingProps(node: ArteryNode): Record<string, unknown> {
+  const ctx = useCTX();
   const states$: Record<string, BehaviorSubject<APIState>> = {};
 
   Object.entries(node.props || {})

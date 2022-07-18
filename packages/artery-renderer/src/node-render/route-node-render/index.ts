@@ -5,11 +5,11 @@ import RoutePathContext from './route-path-context';
 import useMatch from './use-match';
 import { trimSlash } from './utils';
 import { useLifecycleHook } from '../hooks';
-import type { CTX, RouteNode } from '../../types';
+import type { RouteNode } from '../../types';
+import useCTX from '../../use-ctx';
 
 export interface Props {
   node: RouteNode;
-  ctx: CTX;
 }
 
 function buildCurrentPath(parentPath: string, routePath: string): string {
@@ -20,7 +20,8 @@ function buildCurrentPath(parentPath: string, routePath: string): string {
   return `${parentPath}/${trimSlash(routePath)}`;
 }
 
-function RouteNodeRender({ node, ctx }: Props): React.ReactElement | null {
+function RouteNodeRender({ node }: Props): React.ReactElement | null {
+  const ctx = useCTX();
   useLifecycleHook(node.lifecycleHooks || {});
 
   const parentRoutePath = useContext(RoutePathContext);

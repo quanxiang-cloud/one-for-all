@@ -2,7 +2,15 @@ import { BehaviorSubject, noop } from 'rxjs';
 import type { APISpecAdapter } from '@one-for-all/api-spec-adapter';
 import { logger } from '@one-for-all/utils';
 
-import type { StatesHubAPI, APIState, APIStatesSpec, FetchOption, APIState$WithActions, RawFetchOption, APIFetchCallback } from '../types';
+import type {
+  StatesHubAPI,
+  APIState,
+  APIStatesSpec,
+  FetchOption,
+  APIState$WithActions,
+  RawFetchOption,
+  APIFetchCallback,
+} from '../types';
 import { initialState } from './http/response';
 import initAPIState from './init-api-state';
 
@@ -85,7 +93,7 @@ export default class Hub implements StatesHubAPI {
     );
   }
 
-  public rawFetch(stateID: string, rawFetchOption: RawFetchOption & { callback?: APIFetchCallback; }): void {
+  public rawFetch(stateID: string, rawFetchOption: RawFetchOption & { callback?: APIFetchCallback }): void {
     const { rawFetch } = this.findState$(stateID) || {};
     if (rawFetch) {
       rawFetch(rawFetchOption);

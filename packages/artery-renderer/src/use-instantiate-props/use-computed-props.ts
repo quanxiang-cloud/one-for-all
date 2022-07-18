@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { BehaviorSubject, combineLatest, skip } from 'rxjs';
 
-import { CTX, ArteryNode, ComputedProperty } from '../types';
+import { ArteryNode, ComputedProperty } from '../types';
+import useCTX from '../use-ctx';
 import { getComputedState$ } from './utils';
 
-export default function useComputedProps(node: ArteryNode, ctx: CTX): Record<string, unknown> {
+export default function useComputedProps(node: ArteryNode): Record<string, unknown> {
+  const ctx = useCTX();
   const states$: Record<string, BehaviorSubject<unknown>> = {};
 
   Object.entries(node.props || {})

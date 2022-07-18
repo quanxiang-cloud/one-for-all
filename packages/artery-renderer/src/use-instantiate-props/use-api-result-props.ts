@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { BehaviorSubject, combineLatest, distinctUntilKeyChanged, map, Observable, skip, tap } from 'rxjs';
 
-import { APIResultProperty, APIState, CTX, ArteryNode, StateConvertor } from '../types';
+import { APIResultProperty, APIState, ArteryNode, StateConvertor } from '../types';
+import useCTX from '../use-ctx';
 import { convertState } from './utils';
 
-function useAPIResultProps(node: ArteryNode, ctx: CTX): Record<string, unknown> {
+function useAPIResultProps(node: ArteryNode): Record<string, unknown> {
+  const ctx = useCTX();
   const adapters: Record<string, StateConvertor | undefined> = {};
   const states$: Record<string, BehaviorSubject<APIState>> = {};
   const initialFallbacks: Record<string, unknown> = {};

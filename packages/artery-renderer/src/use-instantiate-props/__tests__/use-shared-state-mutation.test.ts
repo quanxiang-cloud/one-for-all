@@ -7,6 +7,8 @@ import SharedStatesHub from '../../boot-up/states-hub-shared';
 import useSharedStateMutationProps from '../use-shared-state-mutation';
 
 import dummyCTX from '../../boot-up/__tests__/fixtures/dummy-ctx';
+import React from 'react';
+import { CTXContext } from '../../use-ctx';
 
 test('useSharedStateMutationProps_resolve_raw_data_when_adapter_is_undefined', () => {
   const sharedStates = new SharedStatesHub({});
@@ -23,8 +25,10 @@ test('useSharedStateMutationProps_resolve_raw_data_when_adapter_is_undefined', (
       },
     },
   };
+  const wrapper: React.FC = ({ children }) =>
+    React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
 
-  const { result, unmount } = renderHook(() => useSharedStateMutationProps(node, dummyCTX));
+  const { result, unmount } = renderHook(() => useSharedStateMutationProps(node), { wrapper });
 
   act(() => {
     result.current.onChange(1);
@@ -63,8 +67,10 @@ test('useSharedStateMutationProps_should_not_mutate_state_when_adapter_throw', (
       },
     },
   };
+  const wrapper: React.FC = ({ children }) =>
+    React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
 
-  const { result, unmount } = renderHook(() => useSharedStateMutationProps(node, dummyCTX));
+  const { result, unmount } = renderHook(() => useSharedStateMutationProps(node), { wrapper });
 
   act(() => {
     result.current.onChange(1);
@@ -93,8 +99,10 @@ test('useSharedStateMutationProps_should_resolve_adapter_returned', () => {
       },
     },
   };
+  const wrapper: React.FC = ({ children }) =>
+    React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
 
-  const { result, unmount } = renderHook(() => useSharedStateMutationProps(node, dummyCTX));
+  const { result, unmount } = renderHook(() => useSharedStateMutationProps(node), { wrapper });
 
   act(() => {
     result.current.onChange(1);
@@ -124,8 +132,10 @@ test('useSharedStateMutationProps_should_call_adapter_correctly', () => {
       },
     },
   };
+  const wrapper: React.FC = ({ children }) =>
+    React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
 
-  const { result, unmount } = renderHook(() => useSharedStateMutationProps(node, dummyCTX));
+  const { result, unmount } = renderHook(() => useSharedStateMutationProps(node), { wrapper });
 
   act(() => {
     result.current.onChange({ foo: 'bar' });

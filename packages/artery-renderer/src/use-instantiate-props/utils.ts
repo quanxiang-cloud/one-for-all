@@ -67,7 +67,7 @@ export function getComputedState$({
   const initialDeps = deps$.reduce((acc: Record<string, unknown>, dep$, index) => {
     return {
       ...acc,
-      [deps[index].depID]: dep$.value
+      [deps[index].depID]: dep$.value,
     };
   }, {});
   const state$ = new BehaviorSubject(
@@ -85,7 +85,7 @@ export function getComputedState$({
         const updatedDeps = _deps.reduce((acc: Record<string, unknown>, _dep, index) => {
           return {
             ...acc,
-            [deps[index].depID]: _dep
+            [deps[index].depID]: _dep,
           };
         }, {});
         return convertState({

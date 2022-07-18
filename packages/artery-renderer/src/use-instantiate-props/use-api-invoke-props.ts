@@ -2,11 +2,14 @@ import { useMemo } from 'react';
 import { FetchParams } from '@one-for-all/api-spec-adapter';
 import { logger } from '@one-for-all/utils';
 
-import { APIInvokeProperty, CTX, ArteryNode } from '../types';
+import { APIInvokeProperty, ArteryNode } from '../types';
+import useCTX from '../use-ctx';
 
 type APICallProps = Record<string, (...args: unknown[]) => void>;
 
-export default function useAPIInvokeProps(node: ArteryNode, ctx: CTX): APICallProps {
+export default function useAPIInvokeProps(node: ArteryNode): APICallProps {
+  const ctx = useCTX();
+
   return useMemo(() => {
     if (!node.props) {
       return {};

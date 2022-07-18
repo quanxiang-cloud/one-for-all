@@ -3,15 +3,16 @@ import { logger } from '@one-for-all/utils';
 
 import LoopIndividual from './loop-individual';
 import LoopComposed from './loop-composed';
-import type { CTX, LoopContainerNode } from '../../types';
+import type { LoopContainerNode } from '../../types';
 import { useLifecycleHook } from '../hooks';
+import useCTX from '../../use-ctx';
 
 interface Props {
   node: LoopContainerNode;
-  ctx: CTX;
 }
 
-function LoopNodeRender({ node, ctx }: Props): React.ReactElement | null {
+function LoopNodeRender({ node }: Props): React.ReactElement | null {
+  const ctx = useCTX();
   useLifecycleHook(node.lifecycleHooks || {});
 
   const { node: LoopedNode } = node;

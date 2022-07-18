@@ -4,6 +4,7 @@ import type { ConstantProperty } from '@one-for-all/artery';
 
 import NodeRender from '../node-render';
 import { CTX, ArteryNode, RenderProperty } from '../types';
+import useCTX from '../use-ctx';
 
 type Render = (...args: unknown[]) => React.ReactElement;
 type RenderProps = Record<string, Render>;
@@ -41,7 +42,8 @@ function buildRender(
   };
 }
 
-function useRenderProps({ props }: ArteryNode, ctx: CTX): RenderProps {
+function useRenderProps({ props }: ArteryNode): RenderProps {
+  const ctx = useCTX();
   return useMemo(() => {
     return Object.entries(props || {})
       .filter((pair): pair is [string, RenderProperty] => {

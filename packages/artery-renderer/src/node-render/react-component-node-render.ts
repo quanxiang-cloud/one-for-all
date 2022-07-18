@@ -2,17 +2,18 @@ import React from 'react';
 
 import useInstantiateProps from '../use-instantiate-props';
 import { ChildrenRender } from './index';
-import type { CTX, ReactComponentNode } from '../types';
+import type { ReactComponentNode } from '../types';
 import { useLifecycleHook } from './hooks';
 import useNodeComponent from './hooks/use-node-component';
+import useCTX from '../use-ctx';
 
 interface Props {
   node: ReactComponentNode;
-  ctx: CTX;
 }
 
-function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | null {
-  const props = useInstantiateProps(node, ctx);
+function ReactComponentNodeRender({ node }: Props): React.ReactElement | null {
+  const ctx = useCTX();
+  const props = useInstantiateProps(node);
   const nodeComponent = useNodeComponent(node, ctx.plugins);
   useLifecycleHook(node.lifecycleHooks || {});
 
@@ -27,7 +28,7 @@ function ReactComponentNodeRender({ node, ctx }: Props): React.ReactElement | nu
   return React.createElement(
     nodeComponent,
     props,
-    React.createElement(ChildrenRender, { nodes: node.children || [], ctx }),
+    React.createElement(ChildrenRender, { nodes: node.children || [] }),
   );
 }
 

@@ -1,3 +1,4 @@
+import React from 'react';
 import { logger } from '@one-for-all/utils';
 import { renderHook } from '@testing-library/react-hooks/pure';
 
@@ -5,6 +6,7 @@ import StatesHubAPI from '../../../boot-up/states-hub-api';
 import dummyCTX from '../../../boot-up/__tests__/fixtures/dummy-ctx';
 import { useIterable } from '../helpers';
 import { PlainState } from '../../..';
+import { CTXContext } from '../../../use-ctx';
 
 const dummyStatesHubAPI = new StatesHubAPI({
   apiSpecAdapter: { build: () => ({ url: '', method: '' }) },
@@ -36,7 +38,9 @@ test('useIterable_should_return_null_if_state_is_not_iterable', () => {
   ];
 
   for (const iterableState of iterableStates) {
-    const { result, unmount } = renderHook(() => useIterable(iterableState, dummyCTX));
+    const wrapper: React.FC = ({ children }) =>
+      React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
+    const { result, unmount } = renderHook(() => useIterable(iterableState, dummyCTX), { wrapper });
     expect(result.current).toBeNull();
     unmount();
   }

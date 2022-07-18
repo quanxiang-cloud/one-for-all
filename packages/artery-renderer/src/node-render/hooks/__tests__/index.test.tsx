@@ -1,3 +1,4 @@
+import React from 'react';
 import { logger } from '@one-for-all/utils';
 import { act, renderHook } from '@testing-library/react-hooks/pure';
 import { APISpecAdapter } from '@one-for-all/api-spec-adapter/lib/src/types';
@@ -9,6 +10,7 @@ import SharedStateHub from '../../../boot-up/states-hub-shared';
 import SharedStatesHub from '../../../boot-up/states-hub-shared';
 import dummyCTX from '../../../boot-up/__tests__/fixtures/dummy-ctx';
 import { useLifecycleHook, useRefResult, useShouldRender } from '../index';
+import { CTXContext } from '../../../use-ctx';
 
 function wait(timeSecond: number): Promise<boolean> {
   return new Promise((resolve) => {
@@ -154,9 +156,11 @@ test('useShouldRender_should_return_expected_value_according_api_loading', async
       },
     },
   };
+  const wrapper: React.FC = ({ children }) =>
+    React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
 
-  const { result: res1, unmount: unmount1 } = renderHook(() => useShouldRender(node1, dummyCTX));
-  const { result: res2, unmount: unmount2 } = renderHook(() => useShouldRender(node2, dummyCTX));
+  const { result: res1, unmount: unmount1 } = renderHook(() => useShouldRender(node1), { wrapper });
+  const { result: res2, unmount: unmount2 } = renderHook(() => useShouldRender(node2), { wrapper });
 
   expect(res1.current).toBe(false);
   expect(res2.current).toBe(true);
@@ -191,7 +195,9 @@ test('useShouldRender_should_return_expected_value_according_api_result', async 
     },
   };
 
-  const { result, unmount } = renderHook(() => useShouldRender(node, dummyCTX));
+  const wrapper: React.FC = ({ children }) =>
+    React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
+  const { result, unmount } = renderHook(() => useShouldRender(node), { wrapper });
 
   // fallback
   expect(result.current).toBe(false);
@@ -249,7 +255,9 @@ test('useShouldRender_should_return_expected_value_according_shared_state', () =
   };
 
   expect(sharedStates.getState$('visible').value).toBe(false);
-  const { result, unmount } = renderHook(() => useShouldRender(node, dummyCTX));
+  const wrapper: React.FC = ({ children }) =>
+    React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
+  const { result, unmount } = renderHook(() => useShouldRender(node), { wrapper });
   expect(result.current).toBe(true);
 
   act(() => {
@@ -292,7 +300,9 @@ test('useShouldRender_should_return_expected_value_according_node_state', () => 
     },
   };
 
-  const { result, unmount } = renderHook(() => useShouldRender(node, dummyCTX));
+  const wrapper: React.FC = ({ children }) =>
+    React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
+  const { result, unmount } = renderHook(() => useShouldRender(node), { wrapper });
   expect(result.current).toBe(false);
 
   act(() => {
@@ -341,7 +351,7 @@ test('useShouldRender_should_return_expected_value_according_computed_state', ()
         const nodeState = _states[`${nodePath}`];
         const loading = _states.some_api_state.loading;
 
-        return  sharedState || nodeState || loading;
+        return sharedState || nodeState || loading;
       },
     },
   };
@@ -357,7 +367,9 @@ test('useShouldRender_should_return_expected_value_according_computed_state', ()
   expect(apiStateHub.getState$('some_api_state').value.result).toBeUndefined();
   expect(sharedStates.getState$('visible').value).toBe(false);
   expect(sharedStates.getNodeState$(nodePath).value).toBe(false);
-  const { result, unmount } = renderHook(() => useShouldRender(node, dummyCTX));
+  const wrapper: React.FC = ({ children }) =>
+    React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
+  const { result, unmount } = renderHook(() => useShouldRender(node), { wrapper });
   expect(result.current).toBe(true);
 
   act(() => {
@@ -430,7 +442,9 @@ test('useShouldRender_should_return_Init_value_according_computed_state', () => 
   expect(apiStateHub.getState$('some_api_state').value.result).toBeUndefined();
   expect(sharedStates.getState$('visible').value).toBe(false);
   expect(sharedStates.getNodeState$(nodePath).value).toBe(false);
-  const { result, unmount } = renderHook(() => useShouldRender(node, dummyCTX));
+  const wrapper: React.FC = ({ children }) =>
+    React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
+  const { result, unmount } = renderHook(() => useShouldRender(node), { wrapper });
   expect(result.current).toBe(true);
 
   act(() => {

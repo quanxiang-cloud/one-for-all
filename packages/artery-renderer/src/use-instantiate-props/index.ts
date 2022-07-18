@@ -1,6 +1,6 @@
 import { useMemo, useContext } from 'react';
 
-import { CTX, ArteryNode } from '../types';
+import { ArteryNode } from '../types';
 import useConstantProps from './use-constant-props';
 import useAPIResultProps from './use-api-result-props';
 import useAPILoadingProps from './use-api-loading-props';
@@ -14,25 +14,27 @@ import useComputedProps from './use-computed-props';
 import PathContext from '../node-render/path-context';
 import useInheritedProps from './use-inherited-props';
 import useLinkProps from './use-link-props';
+import useCTX from '../use-ctx';
 
-function useInstantiateProps(node: ArteryNode, ctx: CTX): Record<string, unknown> {
+function useInstantiateProps(node: ArteryNode): Record<string, unknown> {
+  const ctx = useCTX();
   const currentPath = useContext(PathContext);
 
   const constantProps = useConstantProps(node);
-  const apiResultProps = useAPIResultProps(node, ctx);
-  const apiLoadingProps = useAPILoadingProps(node, ctx);
-  const sharedStateProps = useSharedStateProps(node, ctx);
-  const internalHookProps = useInternalHookProps(node, ctx);
-  const computedProps = useComputedProps(node, ctx);
-  const inheritedProps = useInheritedProps(node, ctx);
+  const apiResultProps = useAPIResultProps(node);
+  const apiLoadingProps = useAPILoadingProps(node);
+  const sharedStateProps = useSharedStateProps(node);
+  const internalHookProps = useInternalHookProps(node);
+  const computedProps = useComputedProps(node);
+  const inheritedProps = useInheritedProps(node);
   const funcProps = useFuncProps(node);
 
-  const sharedStateMutationProps = useSharedStateMutationProps(node, ctx);
-  const apiStateInvokeProps = useAPIInvokeProps(node, ctx);
-  const renderProps = useRenderProps(node, ctx);
+  const sharedStateMutationProps = useSharedStateMutationProps(node);
+  const apiStateInvokeProps = useAPIInvokeProps(node);
+  const renderProps = useRenderProps(node);
 
   // todo support user defined onClick event
-  const linkProps = useLinkProps(node, ctx);
+  const linkProps = useLinkProps(node);
 
   return useMemo(() => {
     const instantiateProps = Object.assign(

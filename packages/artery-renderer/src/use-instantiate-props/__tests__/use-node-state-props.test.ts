@@ -7,6 +7,8 @@ import StatesHubShared from '../../boot-up/states-hub-shared';
 import useSharedStateProps from '../use-shared-state-props';
 
 import dummyCTX from '../../boot-up/__tests__/fixtures/dummy-ctx';
+import React from 'react';
+import { CTXContext } from '../../use-ctx';
 
 describe('useNodeStateProps_resolve_expected_value', () => {
   const hub = new StatesHubShared({});
@@ -28,8 +30,10 @@ describe('useNodeStateProps_resolve_expected_value', () => {
         },
       },
     };
+    const wrapper: React.FC = ({ children }) =>
+      React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
 
-    const { result, unmount } = renderHook(() => useSharedStateProps(node, dummyCTX));
+    const { result, unmount } = renderHook(() => useSharedStateProps(node), { wrapper });
     expect(result.current.anotherNodeState).toEqual('123');
 
     unmount();
@@ -48,8 +52,10 @@ describe('useNodeStateProps_resolve_expected_value', () => {
         },
       },
     };
+    const wrapper: React.FC = ({ children }) =>
+      React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
 
-    const { result, unmount } = renderHook(() => useSharedStateProps(node, dummyCTX));
+    const { result, unmount } = renderHook(() => useSharedStateProps(node), { wrapper });
     expect(result.current.anotherNodeState).toEqual(someNodeInternalState);
 
     unmount();
@@ -71,8 +77,10 @@ describe('useNodeStateProps_resolve_expected_value', () => {
         },
       },
     };
+    const wrapper: React.FC = ({ children }) =>
+      React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
 
-    const { result, unmount } = renderHook(() => useSharedStateProps(node, dummyCTX));
+    const { result, unmount } = renderHook(() => useSharedStateProps(node), { wrapper });
     expect(result.current.anotherNodeState).toEqual(false);
     expect(logger.error).toBeCalled();
 
@@ -93,8 +101,10 @@ describe('useNodeStateProps_resolve_expected_value', () => {
         },
       },
     };
+    const wrapper: React.FC = ({ children }) =>
+      React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
 
-    const { result, unmount } = renderHook(() => useSharedStateProps(node, dummyCTX));
+    const { result, unmount } = renderHook(() => useSharedStateProps(node), { wrapper });
     expect(result.current.anotherNodeState).toEqual(false);
     expect(logger.error).not.toBeCalled();
 
@@ -115,8 +125,10 @@ describe('useNodeStateProps_resolve_expected_value', () => {
         },
       },
     };
+    const wrapper: React.FC = ({ children }) =>
+      React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
 
-    const { result, unmount } = renderHook(() => useSharedStateProps(node, dummyCTX));
+    const { result, unmount } = renderHook(() => useSharedStateProps(node), { wrapper });
 
     expect(result.current.anotherNodeState).toEqual('bar');
 
@@ -140,8 +152,10 @@ test('useNodeStateProps_should_resolve_after_changed', () => {
       },
     },
   };
+  const wrapper: React.FC = ({ children }) =>
+    React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
 
-  const { result, unmount } = renderHook(() => useSharedStateProps(node, dummyCTX));
+  const { result, unmount } = renderHook(() => useSharedStateProps(node), { wrapper });
 
   expect(result.current.anotherNodeState).toEqual(false);
 

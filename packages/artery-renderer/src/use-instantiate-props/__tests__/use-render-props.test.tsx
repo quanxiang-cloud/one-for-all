@@ -5,6 +5,7 @@ import { ArteryNode } from '../../types';
 import dummyCTX from '../../boot-up/__tests__/fixtures/dummy-ctx';
 import CustomRender from './fixtures/custom-render';
 import NodeRender from '../../node-render';
+import { CTXContext } from '../../use-ctx';
 
 dummyCTX.plugins.repository = {
   'testPackage@version': {
@@ -34,7 +35,11 @@ test('useRenderProps_simplest_case', () => {
     },
   };
 
-  const { container } = render(<NodeRender node={node} ctx={dummyCTX} />);
+  const { container } = render(
+    <CTXContext.Provider value={dummyCTX}>
+      <NodeRender node={node} />
+    </CTXContext.Provider>,
+  );
 
   expect(container).toMatchSnapshot();
 });

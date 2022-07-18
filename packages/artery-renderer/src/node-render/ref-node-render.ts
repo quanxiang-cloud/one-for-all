@@ -2,14 +2,15 @@ import React from 'react';
 
 import NodeRender from './index';
 import { useLifecycleHook, useRefResult } from './hooks';
-import type { CTX, RefNode } from '../types';
+import type { RefNode } from '../types';
+import useCTX from '../use-ctx';
 
 interface Props {
   node: RefNode;
-  ctx: CTX;
 }
 
-export default function RefNodeRender({ node, ctx }: Props): React.ReactElement | null {
+export default function RefNodeRender({ node }: Props): React.ReactElement | null {
+  const ctx = useCTX();
   useLifecycleHook(node.lifecycleHooks || {});
   const result = useRefResult(
     { arteryID: node.arteryID, refLoader: ctx.plugins.refLoader, orphan: node.orphan },

@@ -3,7 +3,7 @@ import { logger } from '@one-for-all/utils';
 
 import PathContext from './path-context';
 import { useShouldRender } from './hooks';
-import { CTX, ArteryNode } from '../types';
+import { ArteryNode } from '../types';
 import JSXNodeRender from './jsx-node-render';
 import RefNodeRender from './ref-node-render';
 import HTMLNodeRender from './html-node-render';
@@ -13,10 +13,9 @@ import ReactComponentNodeRender from './react-component-node-render';
 
 interface ChildrenRenderProps {
   nodes: ArteryNode[];
-  ctx: CTX;
 }
 
-export function ChildrenRender({ nodes, ctx }: ChildrenRenderProps): React.ReactElement | null {
+export function ChildrenRender({ nodes }: ChildrenRenderProps): React.ReactElement | null {
   if (!nodes.length) {
     return null;
   }
@@ -24,19 +23,18 @@ export function ChildrenRender({ nodes, ctx }: ChildrenRenderProps): React.React
   return React.createElement(
     React.Fragment,
     null,
-    nodes.map((node) => React.createElement(NodeRender, { key: node.id, node: node, ctx })),
+    nodes.map((node) => React.createElement(NodeRender, { key: node.id, node: node })),
   );
 }
 
 interface Props {
   node: ArteryNode;
-  ctx: CTX;
 }
 
-function NodeRender({ node, ctx }: Props): React.ReactElement | null {
+function NodeRender({ node }: Props): React.ReactElement | null {
   const parentPath = useContext(PathContext);
   const currentPath = `${parentPath}/${node.id}`;
-  const shouldRender = useShouldRender(node, ctx);
+  const shouldRender = useShouldRender(node);
 
   if (!shouldRender) {
     return null;
@@ -46,7 +44,7 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
     return React.createElement(
       PathContext.Provider,
       { value: currentPath },
-      React.createElement(RouteNodeRender, { node, ctx }),
+      React.createElement(RouteNodeRender, { node }),
     );
   }
 
@@ -54,7 +52,7 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
     return React.createElement(
       PathContext.Provider,
       { value: currentPath },
-      React.createElement(LoopNodeRender, { node, ctx }),
+      React.createElement(LoopNodeRender, { node }),
     );
   }
 
@@ -62,7 +60,7 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
     return React.createElement(
       PathContext.Provider,
       { value: currentPath },
-      React.createElement(HTMLNodeRender, { node, ctx }),
+      React.createElement(HTMLNodeRender, { node }),
     );
   }
 
@@ -70,7 +68,7 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
     return React.createElement(
       PathContext.Provider,
       { value: currentPath },
-      React.createElement(ReactComponentNodeRender, { node, ctx }),
+      React.createElement(ReactComponentNodeRender, { node }),
     );
   }
 
@@ -78,7 +76,7 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
     return React.createElement(
       PathContext.Provider,
       { value: currentPath },
-      React.createElement(RefNodeRender, { node, ctx }),
+      React.createElement(RefNodeRender, { node }),
     );
   }
 
@@ -86,7 +84,7 @@ function NodeRender({ node, ctx }: Props): React.ReactElement | null {
     return React.createElement(
       PathContext.Provider,
       { value: currentPath },
-      React.createElement(JSXNodeRender, { node, ctx }),
+      React.createElement(JSXNodeRender, { node }),
     );
   }
 

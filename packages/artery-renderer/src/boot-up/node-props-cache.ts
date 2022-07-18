@@ -33,12 +33,12 @@ class Store implements NodePropsCache {
     return this.cache[parentID];
   }
 
-  public setProps(path: string, nodeID: ArteryNode['id'] ,props: Record<string, unknown>): void {
+  public setProps(path: string, nodeID: ArteryNode['id'], props: Record<string, unknown>): void {
     const nodePathID = getNodeIDByPath(path);
     // to avoid reset props while node is dummyLoopContainer or placeholder-node
     // or some meaningless node but use useInstantiateProps to parse specific props
     // like iterableState, shouldRender
-    if(!nodePathID || NODE_SHOULD_NOT_CACHE.includes(nodeID) ||!this.shouldCache(nodePathID)) {
+    if (!nodePathID || NODE_SHOULD_NOT_CACHE.includes(nodeID) || !this.shouldCache(nodePathID)) {
       return;
     }
 

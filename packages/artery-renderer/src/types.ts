@@ -41,11 +41,7 @@ export type NodeProperty =
   | ComputedProperty
   | InheritedProperty;
 
-export type PlainState =
-  | APIResultProperty
-  | SharedStateProperty
-  | NodeStateProperty
-  | ConstantProperty;
+export type PlainState = APIResultProperty | SharedStateProperty | NodeStateProperty | ConstantProperty;
 
 /**
  * APIResultProperty define a value converted from API response.
@@ -251,7 +247,7 @@ export interface StatesHubAPI {
   findState$: (stateID: string) => APIState$WithActions | undefined;
   getState$: (stateID: string) => BehaviorSubject<APIState>;
   fetch: (stateID: string, fetchOption: FetchOption) => void;
-  rawFetch: (stateID: string, rawFetchOption: RawFetchOption & { callback?: APIFetchCallback; }) => void;
+  rawFetch: (stateID: string, rawFetchOption: RawFetchOption & { callback?: APIFetchCallback }) => void;
   refresh: (stateID: string) => void;
 }
 
@@ -259,7 +255,7 @@ export interface APIState$WithActions {
   state$: BehaviorSubject<APIState>;
   fetch: (fetchOption: FetchOption) => void;
   refresh: () => void;
-  rawFetch: (rawFetchOption: RawFetchOption & { callback?: APIFetchCallback; }) => void;
+  rawFetch: (rawFetchOption: RawFetchOption & { callback?: APIFetchCallback }) => void;
 }
 
 export type APIFetchCallback = (state: Omit<APIState, 'loading'>) => void;
@@ -282,7 +278,7 @@ export interface APIStateWithFetch extends APIState {
 
 export interface NodePropsCache {
   getProps$: (parentID: string) => BehaviorSubject<Record<string, unknown>> | undefined;
-  setProps: (path: string, nodeID: ArteryNode['id'] ,props: Record<string, unknown>) => void;
+  setProps: (path: string, nodeID: ArteryNode['id'], props: Record<string, unknown>) => void;
   shouldCache: (nodeID: string) => boolean;
 }
 export interface CTX {

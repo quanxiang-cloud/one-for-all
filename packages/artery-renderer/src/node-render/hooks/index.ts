@@ -79,7 +79,7 @@ export function useRefResult(
   return result;
 }
 
-export function useShouldRender(node: ArteryNode, ctx: CTX): boolean {
+export function useShouldRender(node: ArteryNode): boolean {
   const condition = node.shouldRender;
   const placeholderNode: ArteryNode = {
     id: 'placeholder-node',
@@ -88,7 +88,7 @@ export function useShouldRender(node: ArteryNode, ctx: CTX): boolean {
     props: condition ? { shouldRender: condition } : undefined,
   };
 
-  const { shouldRender } = useInstantiateProps(placeholderNode, ctx);
+  const { shouldRender } = useInstantiateProps(placeholderNode);
 
   if (!condition) {
     return true;

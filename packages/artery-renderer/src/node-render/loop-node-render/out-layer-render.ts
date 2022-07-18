@@ -11,7 +11,7 @@ type HTMLOutLayerRenderProps = PropsWithChildren<{
 }>;
 
 function HTMLOutLayerRender({ outLayer, ctx, children }: HTMLOutLayerRenderProps): React.ReactElement {
-  const props = useInstantiateProps(outLayer, ctx);
+  const props = useInstantiateProps(outLayer);
   return React.createElement(outLayer.name, props, children);
 }
 
@@ -25,7 +25,7 @@ function ReactComponentOutLayerRender({
   ctx,
   children,
 }: ReactComponentOutLayerRenderProps): React.ReactElement | null {
-  const props = useInstantiateProps(outLayer, ctx);
+  const props = useInstantiateProps(outLayer);
   const nodeComponent = useNodeComponent(outLayer, ctx.plugins);
   useLifecycleHook(outLayer.lifecycleHooks || {});
 

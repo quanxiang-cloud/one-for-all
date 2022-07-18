@@ -1,6 +1,8 @@
+import React from 'react';
 import { act, renderHook } from '@testing-library/react-hooks/pure';
 import type { APISpecAdapter } from '@one-for-all/api-spec-adapter';
 
+import { CTXContext } from '../../use-ctx';
 import useAPILoadingProps from '../use-api-loading-props';
 import StatesHubAPI from '../../boot-up/states-hub-api';
 import { ArteryNode } from '../../types';
@@ -29,8 +31,11 @@ test('useAPILoadingProps_resolve_expected_values', () => {
       },
     },
   };
+  const wrapper: React.FC = ({ children }) =>
+    React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
 
-  const { result, unmount } = renderHook(() => useAPILoadingProps(node, dummyCTX));
+  const { result, unmount } = renderHook(() => useAPILoadingProps(node), { wrapper });
+
   expect(result.current.loading).toBe(false);
 
   act(() => {

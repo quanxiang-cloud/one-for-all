@@ -1,7 +1,9 @@
+import React from 'react';
 import { act, renderHook } from '@testing-library/react-hooks/pure';
 import type { APISpecAdapter } from '@one-for-all/api-spec-adapter';
 import { logger } from '@one-for-all/utils';
 
+import { CTXContext } from '../../use-ctx';
 import useAPIResultProps from '../use-api-result-props';
 import StatesHubAPI from '../../boot-up/states-hub-api';
 import { ArteryNode } from '../../types';
@@ -33,8 +35,10 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
         },
       },
     };
+    const wrapper: React.FC = ({ children }) =>
+      React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
 
-    const { result, unmount } = renderHook(() => useAPIResultProps(node, dummyCTX));
+    const { result, unmount } = renderHook(() => useAPIResultProps(node), { wrapper });
     expect(result.current.foo).toBe(fallback);
 
     unmount();
@@ -56,8 +60,10 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
         },
       },
     };
+    const wrapper: React.FC = ({ children }) =>
+      React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
 
-    const { result, unmount } = renderHook(() => useAPIResultProps(node, dummyCTX));
+    const { result, unmount } = renderHook(() => useAPIResultProps(node), { wrapper });
     act(() => {
       apiStateHub.getState$('some_api_state').next({
         result: undefined,
@@ -117,8 +123,10 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
         },
       },
     };
+    const wrapper: React.FC = ({ children }) =>
+      React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
 
-    const { result, unmount } = renderHook(() => useAPIResultProps(node, dummyCTX));
+    const { result, unmount } = renderHook(() => useAPIResultProps(node), { wrapper });
     act(() => {
       apiStateHub.getState$('some_api_state').next({
         result: true,
@@ -171,8 +179,10 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
         },
       },
     };
+    const wrapper: React.FC = ({ children }) =>
+      React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
 
-    const { result, unmount } = renderHook(() => useAPIResultProps(node, dummyCTX));
+    const { result, unmount } = renderHook(() => useAPIResultProps(node), { wrapper });
     act(() => {
       apiStateHub.getState$('some_api_state').next({
         result: { foo: 'bar' },
@@ -203,9 +213,11 @@ describe('useAPIResultProps_resolve_expected_fallback', () => {
         },
       },
     };
+    const wrapper: React.FC = ({ children }) =>
+      React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
 
+    const { result, unmount } = renderHook(() => useAPIResultProps(node), { wrapper });
     const latestFallback = { bar: 'baz' };
-    const { result, unmount } = renderHook(() => useAPIResultProps(node, dummyCTX));
     act(() => {
       apiStateHub.getState$('some_api_state').next({
         result: latestFallback,
@@ -244,8 +256,10 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
         },
       },
     };
+    const wrapper: React.FC = ({ children }) =>
+      React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
 
-    const { result, unmount } = renderHook(() => useAPIResultProps(node, dummyCTX));
+    const { result, unmount } = renderHook(() => useAPIResultProps(node), { wrapper });
 
     expect(result.current.foo).toEqual(fallback);
     expect(adapter).not.toBeCalled();
@@ -271,8 +285,10 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
         },
       },
     };
+    const wrapper: React.FC = ({ children }) =>
+      React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
 
-    const { result, unmount } = renderHook(() => useAPIResultProps(node, dummyCTX));
+    const { result, unmount } = renderHook(() => useAPIResultProps(node), { wrapper });
 
     act(() => {
       apiStateHub.getState$('some_api_state').next({
@@ -306,8 +322,10 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
         },
       },
     };
+    const wrapper: React.FC = ({ children }) =>
+      React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
 
-    const { result, unmount } = renderHook(() => useAPIResultProps(node, dummyCTX));
+    const { result, unmount } = renderHook(() => useAPIResultProps(node), { wrapper });
 
     act(() => {
       apiStateHub.getState$('some_api_state').next({
@@ -340,8 +358,10 @@ describe('useAPIResultProps_should_call_adapter_correctly', () => {
         },
       },
     };
+    const wrapper: React.FC = ({ children }) =>
+      React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
 
-    const { result, unmount } = renderHook(() => useAPIResultProps(node, dummyCTX));
+    const { result, unmount } = renderHook(() => useAPIResultProps(node), { wrapper });
 
     act(() => {
       apiStateHub.getState$('some_api_state').next({
@@ -378,8 +398,10 @@ test('useAPIResultProps_resolve_expected_value', () => {
       },
     },
   };
+  const wrapper: React.FC = ({ children }) =>
+    React.createElement(CTXContext.Provider, { value: dummyCTX }, children);
 
-  const { result, unmount } = renderHook(() => useAPIResultProps(node, dummyCTX));
+  const { result, unmount } = renderHook(() => useAPIResultProps(node), { wrapper });
 
   act(() => {
     apiStateHub.getState$('some_api_state').next({

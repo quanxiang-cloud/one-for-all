@@ -1,9 +1,6 @@
 import ArterySpec from '@one-for-all/artery';
 
-export default function parseInheritProperty(
-  node: ArterySpec.Node,
-  cacheIDs: Set<string>,
-): Set<string> {
+export default function parseInheritProperty(node: ArterySpec.Node, cacheIDs: Set<string>): Set<string> {
   const props = node.props || {};
 
   Object.values(props).forEach((property) => {
@@ -11,7 +8,7 @@ export default function parseInheritProperty(
       return;
     }
 
-    if(!property.parentID) {
+    if (!property.parentID) {
       return;
     }
 

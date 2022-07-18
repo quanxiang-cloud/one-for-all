@@ -1,7 +1,9 @@
 import React from 'react';
-import { CTX, ArteryNode } from '../types';
+import { ArteryNode } from '../types';
+import useCTX from '../use-ctx';
 
-function useLinkProps(node: ArteryNode, ctx: CTX): Record<string, unknown> {
+function useLinkProps(node: ArteryNode): Record<string, unknown> {
+  const ctx = useCTX();
   if ('isLink' in node && node.isLink && node.type === 'html-element' && node.name === 'a') {
     return {
       onClick: (e: React.MouseEvent<HTMLAnchorElement>) => {

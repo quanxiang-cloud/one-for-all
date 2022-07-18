@@ -9,7 +9,6 @@ import PathContext from './path-context';
 
 interface Props {
   node: JSXNode;
-  ctx: CTX;
 }
 
 function useReactJSXParser(): React.Component<TProps> | null {
@@ -39,8 +38,8 @@ function useReactJSXParser(): React.Component<TProps> | null {
   return com;
 }
 
-function JSXNodeRender({ node, ctx }: Props): React.ReactElement | null {
-  const props = useInstantiateProps(node, ctx);
+function JSXNodeRender({ node }: Props): React.ReactElement | null {
+  const props = useInstantiateProps(node);
   useLifecycleHook(node.lifecycleHooks || {});
   const currentPath = useContext(PathContext);
   const ReactJSXParser = useReactJSXParser();

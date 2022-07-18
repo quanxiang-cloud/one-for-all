@@ -213,7 +213,7 @@ test('StatesHubAPI_rawFetch', (done) => {
   apiStates.rawFetch('findPetsByTags', {
     callback: fetchCallback,
     method: 'get',
-    url: 'some_url'
+    url: 'some_url',
   });
 });
 

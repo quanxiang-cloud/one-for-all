@@ -1,12 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Observable, skip, tap } from 'rxjs';
 
-import { CTX, SharedStateProperty, NodeStateProperty, ArteryNode, StateConvertor } from '../types';
+import { SharedStateProperty, NodeStateProperty, ArteryNode, StateConvertor } from '../types';
+import useCTX from '../use-ctx';
 import { convertState } from './utils';
 
 type Pair = [string, SharedStateProperty | NodeStateProperty];
 
-function useSharedStateProps(node: ArteryNode, ctx: CTX): Record<string, unknown> {
+function useSharedStateProps(node: ArteryNode): Record<string, unknown> {
+  const ctx = useCTX();
   const convertors: Record<string, StateConvertor | undefined> = {};
   const states$: Record<string, BehaviorSubject<unknown>> = {};
   const initialFallbacks: Record<string, unknown> = {};

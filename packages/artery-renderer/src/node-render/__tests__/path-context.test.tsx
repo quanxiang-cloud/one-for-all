@@ -1,21 +1,13 @@
 jest.mock('../../repository');
 
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import { render } from '@testing-library/react';
 
 import dummyCTX from '../../boot-up/__tests__/fixtures/dummy-ctx';
 import NodeRender from '../index';
-import { ArteryNode, Repository } from '../../types';
+import { ArteryNode } from '../../types';
 import renderPathRepository from './fixtures/render-path';
-
-const dummyComponent: React.FC<PropsWithChildren<unknown>> = ({ children }): JSX.Element => {
-  return <div id="some_dummy_component">{children}</div>;
-};
-const repository: Repository = {
-  'foo@whatever': {
-    Foo: dummyComponent,
-  },
-};
+import { CTXContext } from '../../use-ctx';
 
 const list = [{ id: 'a' }, { id: 'b' }, { id: 'c' }, { id: 'd' }, { id: 'e' }, { id: 'f' }, { id: 'g' }];
 
@@ -100,7 +92,10 @@ test('node_path_match_expect_value', () => {
       },
     ],
   };
-
-  const { container } = render(<NodeRender node={node} ctx={dummyCTX} />);
+  const { container } = render(
+    <CTXContext.Provider value={dummyCTX}>
+      <NodeRender node={node} />
+    </CTXContext.Provider>,
+  );
   expect(container).toMatchSnapshot();
 });

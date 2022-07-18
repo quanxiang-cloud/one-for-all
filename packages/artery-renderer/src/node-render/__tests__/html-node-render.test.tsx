@@ -5,6 +5,7 @@ import { render } from '@testing-library/react';
 import HTMLNodeRender from '../html-node-render';
 import dummyCTX from '../../boot-up/__tests__/fixtures/dummy-ctx';
 import { HTMLNode } from '../../types';
+import { CTXContext } from '../../use-ctx';
 
 test('HTMLNodeRender_should_handle_empty_html_tag', () => {
   const node: HTMLNode = {
@@ -23,7 +24,11 @@ test('HTMLNodeRender_should_handle_empty_html_tag', () => {
     },
   };
 
-  const { container } = render(<HTMLNodeRender node={node} ctx={dummyCTX} />);
+  const { container } = render(
+    <CTXContext.Provider value={dummyCTX}>
+      <HTMLNodeRender node={node} />
+    </CTXContext.Provider>,
+  );
 
   expect(logger.error).toBeCalled();
   expect(container).toMatchSnapshot();
@@ -71,7 +76,11 @@ test('HTMLNodeRender_match_snapshots', () => {
       },
     ],
   };
-  const { container } = render(<HTMLNodeRender node={node} ctx={dummyCTX} />);
+  const { container } = render(
+    <CTXContext.Provider value={dummyCTX}>
+      <HTMLNodeRender node={node} />
+    </CTXContext.Provider>,
+  );
 
   expect(container).toMatchSnapshot();
 });

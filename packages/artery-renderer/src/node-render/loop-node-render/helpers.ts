@@ -16,7 +16,7 @@ export function useIterable(iterableState: PlainState, ctx: CTX): Array<unknown>
     props: { iterable: iterableState },
   };
 
-  const { iterable } = useInstantiateProps(dummyNode, ctx);
+  const { iterable } = useInstantiateProps(dummyNode);
 
   if (!Array.isArray(iterable)) {
     const nodeID = currentPath.split('/').pop();

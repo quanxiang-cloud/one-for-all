@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { BehaviorSubject, combineLatest, map, Observable, of, skip, tap } from 'rxjs';
 
-import { CTX, InheritedProperty, ArteryNode, StateConvertor } from '../types';
+import { InheritedProperty, ArteryNode, StateConvertor } from '../types';
+import useCTX from '../use-ctx';
 import { convertState } from './utils';
 
-function useInheritedProps(node: ArteryNode, ctx: CTX): Record<string, unknown> {
-
+function useInheritedProps(node: ArteryNode): Record<string, unknown> {
+  const ctx = useCTX();
   const convertors: Record<string, StateConvertor | undefined> = {};
   const states$: Record<string, BehaviorSubject<Record<string, unknown>> | undefined> = {};
   const initialFallbacks: Record<string, unknown> = {};

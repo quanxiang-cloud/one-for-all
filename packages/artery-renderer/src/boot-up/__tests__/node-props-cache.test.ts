@@ -13,7 +13,7 @@ test('inherited_node_props_hub_resolve_expected_value', () => {
 
   expect(hub.shouldCache('parentID')).toBeTruthy();
 
-  hub.setProps('ROOT/parentID', 'parentID',{ someValue: 1 });
+  hub.setProps('ROOT/parentID', 'parentID', { someValue: 1 });
   hub.setProps('ROOT/parentID_not_cache', 'parentID_not_cache', { someValue: 1 });
   expect(hub.getProps$('parentID')?.value).toEqual({ someValue: 1 });
   expect(hub.getProps$('parentID_not_cache')?.value).toEqual({});
@@ -27,11 +27,11 @@ test('loop_node_inherited_props_hub_resolve_expected_value', () => {
 
   expect(hub.shouldCache('parentID')).toBeTruthy();
 
-  hub.setProps('ROOT/parentID/0', 'parentID',{ someValue: 1 });
-  hub.setProps('ROOT/parentID_not_cache/0', 'parentID_not_cache' ,{ someValue: 1 });
+  hub.setProps('ROOT/parentID/0', 'parentID', { someValue: 1 });
+  hub.setProps('ROOT/parentID_not_cache/0', 'parentID_not_cache', { someValue: 1 });
 
-  hub.setProps('ROOT/parentID/4/otherParentID', 'otherParentID',{ someValue: 1 });
-  hub.setProps('ROOT/parentID_not_cache/4/some_otherParentID', 'some_otherParentID' ,{ someValue: 1 });
+  hub.setProps('ROOT/parentID/4/otherParentID', 'otherParentID', { someValue: 1 });
+  hub.setProps('ROOT/parentID_not_cache/4/some_otherParentID', 'some_otherParentID', { someValue: 1 });
   expect(hub.getProps$('parentID')?.value).toEqual({ someValue: 1 });
   expect(hub.getProps$('parentID_not_cache')?.value).toEqual({});
   expect(hub.getProps$('otherParentID')?.value).toEqual({ someValue: 1 });

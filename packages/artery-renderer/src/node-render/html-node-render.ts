@@ -2,18 +2,19 @@ import React, { useContext } from 'react';
 import { logger } from '@one-for-all/utils';
 
 import useInstantiateProps from '../use-instantiate-props';
-import type { CTX, HTMLNode } from '../types';
+import type { HTMLNode } from '../types';
 import { ChildrenRender } from './index';
 import { useLifecycleHook } from './hooks';
 import PathContext from './path-context';
+import useCTX from '../use-ctx';
 
 interface Props {
   node: HTMLNode;
-  ctx: CTX;
 }
 
-function HTMLNodeRender({ node, ctx }: Props): React.ReactElement | null {
-  const props = useInstantiateProps(node, ctx);
+function HTMLNodeRender({ node }: Props): React.ReactElement | null {
+  const ctx = useCTX();
+  const props = useInstantiateProps(node);
   useLifecycleHook(node.lifecycleHooks || {});
   const currentPath = useContext(PathContext);
 
