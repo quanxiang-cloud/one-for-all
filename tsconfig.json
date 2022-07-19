@@ -64,14 +64,5 @@
     /* Advanced Options */
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
     "skipLibCheck": true
-  },
-  "plugins": [
-    {
-      "name": "typescript-plugin-css-modules",
-      "options": {
-        "classnameTransform": "dashes",
-        "customMatcher": "\\.module\\.scss$"
-      }
-    }
-  ]
+  }
 }
