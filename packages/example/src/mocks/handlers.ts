@@ -16,7 +16,7 @@ const tasks: Todo[] = [
   },
   {
     id: 22,
-    title: 'kk',
+    title: 'another task',
     status: 'done',
     create_date: '2017-12-24T00:00:00.000Z',
   },
