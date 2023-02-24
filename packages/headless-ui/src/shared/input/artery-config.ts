@@ -84,7 +84,7 @@ const propsSpec: PropsSpec = {
     },
     {
       label: '键盘按下事件',
-      name: 'onKeydown',
+      name: 'onKeyDown',
       type: 'function',
     },
     {
