@@ -9,8 +9,8 @@ import todoAppMainSchema from './todo-app/todo-app-main-schema';
 import todoHeaderSchema from './todo-app/todo-header';
 import todoAppRepository from './todo-app/repository';
 
-// import styleGuideSchema from './component-style-config/schema';
-// import styleGuideRepository from './component-style-config/repository';
+import styleGuideSchema from './component-style-config/schema';
+import styleGuideRepository from './component-style-config/repository';
 
 import iconPreviewSchema from './icon-preview/schema';
 import iconPreviewRepository from './icon-preview/repository';
@@ -28,7 +28,7 @@ const apiSpecAdapter = new SwaggerSpecAdapter(apiDoc);
 const repository: Repository = Object.assign(
   {},
   todoAppRepository,
-  // styleGuideRepository,
+  styleGuideRepository,
   iconPreviewRepository,
   scssFormingRepo,
   radarDemoRepo,
@@ -38,7 +38,7 @@ const repository: Repository = Object.assign(
 const schemaDB: Record<string, Artery> = {
   SCHEMA_ID_TODO: todoAppMainSchema,
   SCHEMA_ID_TODO_HEADER: todoHeaderSchema,
-  // SCHEMA_ID_STYLE_GUIDE: styleGuideSchema,
+  SCHEMA_ID_STYLE_GUIDE: styleGuideSchema,
   SCHEMA_ID_ICON_PREVIEW: iconPreviewSchema,
   SCHEMA_ID_SCSS_FORMING: scssFormingArtery,
   SCHEMA_ID_RADAR_DEMO: radarDemoArtery,

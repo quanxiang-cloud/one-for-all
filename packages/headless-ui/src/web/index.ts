@@ -8,6 +8,7 @@ import MediocreDialog from './mediocre-dialog';
 import Pagination from '../shared/pagination';
 import Radio, { RadioGroup } from '../shared/radio';
 import Select from '../shared/select';
+import Cascader, { TimelyCascader, MultipleCascader, UnlinkCascader } from '../shared/cascader';
 import Switch from '../shared/switch';
 import Tab from '../shared/tab';
 import Table from '../shared/table';
@@ -33,6 +34,10 @@ export {
   Radio,
   RadioGroup,
   Select,
+  Cascader,
+  TimelyCascader,
+  MultipleCascader,
+  UnlinkCascader,
   Switch,
   SwiperImage,
   Tab,
