@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "autoprefixer": "10.4.2",
-    "postcss": "8.4.5",
+    "postcss": "8.4.31",
     "postcss-import": "^14.0.2",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rushstack/eslint-config": "2.6.2",
